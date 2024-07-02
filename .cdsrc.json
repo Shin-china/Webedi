@@ -1,0 +1,30 @@
+{
+  "odata": {
+    "version": "v2"
+  },
+  "cdsc": {
+    "betterSqliteSessionVariables": true
+  },
+  "requires": {
+    "db": {
+      "[pg]": {
+        "kind": "postgres",
+        "credentials": {
+          "host": "211.144.197.139",
+          "port": 15432,
+          "user": "postgres",
+          "password": "sh1nCh1n@",
+          "database": "UWEB"
+        }
+      }
+    },
+    "[production]": {
+      "auth": "xsuaa",
+      "db": "hana"
+    },
+    "auth": "xsuaa"
+  },
+  "dependencies": {
+    "@cap-js/postgres": "^1"
+  }
+}

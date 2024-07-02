@@ -1,0 +1,50 @@
+{
+  "name": "app",
+  "version": "0.0.1",
+  "private": true,
+  "description": "An SAP Fiori application.",
+  "scripts": {
+    "start": "ui5 serve --config=ui5.yaml   --accept-remote-connections --open index.html",
+    "local": "node node_modules/@sap/approuter/approuter.js",
+    "build:ui": "run-s build:apps",
+    "clearCoverage": "shx rm -rf coverage",
+    "lint": "eslint ./webapp/**/*.js && prettier --plugin-search-dir=. --check ./webapp/**/*.{js,xml} --no-error-on-unmatched-pattern",
+    "lint-fix": "eslint ./webapp/**/*.js --fix && prettier --plugin-search-dir=. --write ./webapp/**/*.{js,xml} --no-error-on-unmatched-pattern",
+    "build:apps": "ui5 build --config=ui5.yaml --clean-dest --dest dist --include-task=generateManifestBundle",
+    "build:cf": "ui5 build preload --clean-dest --config ui5-deploy.yaml --include-task=generateCachebusterInfo",
+    "build:mta": "rimraf resources mta_archives && mbt build",
+    "deploy": "fiori cfDeploy",
+    "undeploy": "cf undeploy usapfe --delete-services --delete-service-keys --delete-service-brokers"
+  },
+  "devDependencies": {
+    "ui5-cc-spreadsheetimporter": "0.26.1",
+    "@prettier/plugin-xml": "latest",
+    "@sap/cds-dk": "^7",
+    "@sap/ui5-builder-webide-extension": "^1.1.8",
+    "@ui5/cli": "^3.9.2",
+    "eslint": "latest",
+    "karma": "^6.4.2",
+    "karma-chrome-launcher": "^3.2.0",
+    "karma-coverage": "^2.2.0",
+    "karma-ui5": "latest",
+    "mbt": "^1.2.18",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^3.2.5",
+    "prettier-plugin-packagejson": "^2.4.12",
+    "shx": "^0.3.4",
+    "ui5-middleware-livereload": "latest",
+    "ui5-task-zipper": "^0.5.0"
+  },
+  "dependencies": {
+    "ui5-middleware-cfdestination": "^3.3.11"
+  },
+  "ui5": {
+    "dependencies": [
+      "ui5-middleware-livereload",
+      "ui5-middleware-cfdestination",
+      "@sap/ui5-builder-webide-extension",
+      "ui5-task-zipper",
+      "mbt"
+    ]
+  }
+}

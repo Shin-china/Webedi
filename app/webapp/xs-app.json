@@ -1,0 +1,33 @@
+{
+  "welcomeFile": "webapp/index.html",
+  "authenticationMethod": "route",
+  "logout": {
+    "logoutEndpoint": "/do/logout"
+  },
+  "routes": [
+    {
+      "source": "^/sap/ui5/1/(.*)$",
+      "target": "$1",
+      "destination": "UI5",
+      "csrfProtection": false
+    },
+    {
+      "source": "^/srv/(.*)$",
+      "target": "$1",
+      "destination": "srv_api",
+      "authenticationType": "none"
+    },
+    {
+      "source": "^/ADS/(.*)$",
+      "target": "$1",
+      "destination": "ADS",
+      "authenticationType": "none"
+    },
+    {
+      "source": "^/OAuth/(.*)$",
+      "target": "$1",
+      "destination": "OAuth",
+      "authenticationType": "none"
+    }
+  ]
+}

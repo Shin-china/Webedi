@@ -1,0 +1,82 @@
+server:
+  port: 9000
+  max-http-header-size: 80KB
+  compression:   #压缩
+    enabled: true
+    mime-types: [text/html, text/xml, text/plain, text/css, text/javascript, application/javascript, application/json, application/xml]
+  servlet:
+    encoding:
+      charset: UTF-8
+  tomcat:
+    max-http-response-header-size: 80KB     #默认为8KB
+  jetty:
+    max-http-response-header-size: 80KB     #默认为8KB
+
+spring:
+  session:
+    timeout: 10800
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    password: sh1nCh1n@
+    embedded-database-connection: none
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://211.144.197.139:15432/UWEB
+    username: postgres
+    hikari:
+      connection-timeout: 30000 # 等待连接池分配连接的最大时长（毫秒），超过这个时长还没可用的连接则发生SQLException， 默认:30秒
+      minimum-idle: 5 # 最小连接数
+      maximum-pool-size: 20 # 最大连接数
+      idle-timeout: 600000 # 连接超时的最大时长（毫秒），超时则被释放（retired），默认:10分钟
+      pool-name: usapHikariPool # 连接池名字
+      max-lifetime: 1800000 # 连接的生命时长（毫秒），超时而且没被使用则被释放（retired），默认:30分钟 1800000ms
+      connection-test-query: SELECT 1 # 连接测试语句
+      registerMbeans: true #是否运行连接监控
+  config:
+    activate:
+      on-profile: default
+  sql:
+    init:
+      #每次系统启动会执行自动的SQL     never-不执行  always-执行
+      mode: never
+  servlet:
+    multipart:
+      max-file-size: 50MB # 最大文件上传大小
+vcap:
+  services:
+    objectstore-service:
+      credentials:
+        accessKeyId: AKIAVF53ZLWPKKD36SZY
+        bucket: hcp-b5e2b29d-63cb-4cfb-b340-b13b8176aa2b
+        secretAccessKey: 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
+        url: s3://AKIAVF53ZLWPKKD36SZY:Z%2F8isf0UzlaQ%2F%2FIBjAp2WUUdxyA0fhQT%2BnR%2BvqJU@s3-ap-northeast-1.amazonaws.com/hcp-b5e2b29d-63cb-4cfb-b340-b13b8176aa2b
+        host: s3-ap-northeast-1.amazonaws.com
+        username: hcp-s3-75827d34-add6-4898-b7c2-f02ee8cce14d
+        region: ap-northeast-1
+
+cds:
+  drafts:
+    deletionTimeout: 1D
+  security:
+   # authentication:
+    #  mode: never    #访问CDS不需要登录
+    mock:
+      users:
+        - name: tom
+          password: 1
+          roles:
+            - Administrators
+            - ForUmesSystem
+          additional:
+            firstName: tom_firstName
+            lastName: tom_lastName
+            email: tom@mail.com
+        - name: sunny
+          password: 1
+          roles:
+            - ForUmesSystem
+          additional:
+            firstName: sunny_firstName
+            lastName: sunny_lastName
+            email: sunny@mail.com
+      enabled: true    
+ 

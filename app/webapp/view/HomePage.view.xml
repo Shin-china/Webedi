@@ -1,0 +1,47 @@
+<mvc:View controllerName="umc.app.controller.HomePage"
+	xmlns="sap.m"
+	xmlns:m="sap.m"
+	xmlns:f="sap.f"
+	xmlns:l="sap.ui.layout"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:uxap="sap.uxap">
+
+<f:DynamicPage id="dynamicPageId" headerExpanded="true" showFooter="true" busy="{localModel>/busy}">
+    <f:title>
+        <f:DynamicPageTitle id="DynamicPageTitle">
+            <f:content>
+                <m:Label id="_IDGenLabel1" labelFor="MENU_NAME" text="{com>SYSTEM_NAME}" vAlign="Bottom" width="15em" />
+            </f:content>
+        </f:DynamicPageTitle>
+    </f:title>
+
+
+    <f:content>
+        <uxap:ObjectPageLayout busy="{localModel>/isBusy}" showFooter="true" id="homePage">
+            <uxap:sections>
+                <uxap:ObjectPageSection id="_IDGenObjectPageSection1" title="{com>MENU_MODULE_SYS}">
+
+                    <uxap:subSections >
+                        <uxap:ObjectPageSubSection id="_IDGenObjectPageSubSection1" title="">
+                            <uxap:blocks>
+                                <l:HorizontalLayout id="TileContainerExpandedSYS" allowWrapping="true" content="{path:'/HOMEPAGE_MENU_LIST',filters:{path:'MENU_MODULE',operator:'EQ',
+                            value1:'SYS'}}" class="sapUiTinyMarginTopBottom">
+                                    <GenericTile width="10em" id="_IDGenGenericTile1" header="{MENU_NAME}" subheader="{MENU_SUB_NAME}" state="{=${state} || 'Loaded'}" scope="Display" press="homeOnPress" class="sapUiTinyMarginEnd" sizeBehavior="{/sizeBehavior}">
+                                        <TileContent id="_IDGenTileContent1" unit="{MENU_UNIT}" footer="{MENU_FOOTER}">
+                                            <NumericContent id="_IDGenNumericContent1" withMargin="false" nullifyValue="false" valueColor="{=${MENU_VALUECOLOR} || 'None'}" value="{MENU_VALUE}" icon="{MENU_ICON}"/>
+                                        </TileContent>
+                                    </GenericTile>
+                                </l:HorizontalLayout>
+                            </uxap:blocks>
+                        </uxap:ObjectPageSubSection>
+                    </uxap:subSections>
+                </uxap:ObjectPageSection>
+            </uxap:sections>
+            <uxap:footer>
+
+            </uxap:footer>
+        </uxap:ObjectPageLayout>
+    </f:content>
+</f:DynamicPage>
+
+</mvc:View>
