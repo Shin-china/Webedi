@@ -1,0 +1,62 @@
+<mvc:View controllerName="umc.app.controller.sys.sys01_user_l"
+	xmlns="sap.m"
+	xmlns:f="sap.f"
+	xmlns:smartFilterBar="sap.ui.comp.smartfilterbar"
+	xmlns:smartTable="sap.ui.comp.smarttable"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:table="sap.ui.table">
+
+	<f:DynamicPage id="dynamicPageId" headerExpanded="true" showFooter="false" busy="{localModel>/busy}" fitContent="true" preserveHeaderStateOnScroll="true">
+		<f:title>
+			<f:DynamicPageTitle id="DynamicPageTitle">
+				<f:heading>
+					<Title id="Title" text="{sys>sys01Title}"/>
+				</f:heading>
+				<f:navigationActions>
+					<Button id="_IDGenButton3" icon="sap-icon://nav-back" tooltip="nav-back" press="navTo('RouteMainView')"/>
+				</f:navigationActions>
+			</f:DynamicPageTitle>
+		</f:title>
+
+		<f:header>
+			<f:DynamicPageHeader id="DynamicPageHeader" pinnable="true">
+				<f:content>
+					<OverflowToolbar id="_IDGenOverflowToolbar1">
+						<content>
+							<ToolbarSpacer id="_IDGenToolbarSpacer1"/>
+							<Button id="_IDGenButton2" icon="sap-icon://edit" text="{sys>SYS01_BUTTON_CREAT}" press="onCreate" enabled="true" width="10em"/>
+						</content>
+					</OverflowToolbar>
+					<smartFilterBar:SmartFilterBar id="smartFilterBar" useToolbar="false" entitySet="SYS_T01_USER" persistencyKey="receiptprintFilterBar" showFilterConfiguration="true">
+						<smartFilterBar:controlConfiguration>
+							<smartFilterBar:ControlConfiguration id="_IDGenControlConfiguration3" key="USER_ID" visibleInAdvancedArea="true" />
+
+							<smartFilterBar:ControlConfiguration id="_IDGenControlConfiguration1" key="BP_NUMBER" visibleInAdvancedArea="true" />
+						</smartFilterBar:controlConfiguration>
+					</smartFilterBar:SmartFilterBar>
+				</f:content>
+			</f:DynamicPageHeader>
+		</f:header>
+
+		<f:content>
+			<!-- -->
+			<smartTable:SmartTable id="ID" tableType="Table" enableAutoColumnWidth="true" entitySet="SYS_T01_USER" 
+			ignoredFields="UP_BY,USER_PWD,UP_FLAG,ID" 
+			requestAtLeastFields="ID" 
+			initiallyVisibleFields="USER_ID,USER_TYPE,BP_NUMBER,USER_STATUS,VALID_DATE_FROM,VALID_DATE_TO" smartFilterId="smartFilterBar" enableExport="true" beforeExport="onBeforeExport" useVariantManagement="true" useTablePersonalisation="true" header="{com>TITLE_RESULT}" showRowCount="true" persistencyKey="sys01_SmartTableAnalytical_Explored" enableAutoBinding="false">
+
+				<table:Table id="detailTable" rowMode="Auto" rowActionCount="1" selectionMode="None" alternateRowColors="true" fixedColumnCount="3">
+					<table:rowActionTemplate>
+						<table:RowAction id="RowAction">
+							<table:items>
+								<table:RowActionItem id="RowActionItem" type="Navigation" press="onPress"/>
+							</table:items>
+						</table:RowAction>
+					</table:rowActionTemplate>
+				</table:Table>
+			</smartTable:SmartTable>
+		</f:content>
+
+	</f:DynamicPage>
+
+</mvc:View>

@@ -1,0 +1,49 @@
+<mvc:View xmlns:smartfield="sap.ui.comp.smartfield"
+	controllerName="umc.app.controller.sys.sys01_user_d"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.m"
+	xmlns:c="sap.ui.core"
+	xmlns:f="sap.f"
+	xmlns:l="sap.ui.layout"
+	displayBlock="true"
+	height="100%"
+	busyIndicatorDelay="0"
+>
+<f:DynamicPage id="dynamicPageId" headerExpanded="true" showFooter="true" busy="{localModel>/isBusy}">
+	<f:title>
+		<f:DynamicPageTitle id="dynamicPageId">
+			<f:heading>
+				<Toolbar id="_IDGenToolbar1">
+					<Title id="_IDGenTitle1" text="{sys>SYS01_mainTitle}"/>
+				</Toolbar>
+			</f:heading>
+			<f:navigationActions>
+				<Button id="_IDGenButton2" icon="sap-icon://nav-back" tooltip="nav-back" press="navTo('RouteList_sys01')"/>
+			</f:navigationActions>
+		</f:DynamicPageTitle>
+	</f:title>
+
+	<f:header>
+		<f:DynamicPageHeader id="DynamicPageHeaderId" pinnable="true">
+			<f:content>
+				<OverflowToolbar id="OverflowToolbarId">
+					<content>
+						<ToolbarSpacer id="ToolbarSpacerId"/>
+						<Button id="ButtonId1" text="{com>BUTTON_SAVE}" icon="sap-icon://save" press="onSave/Button" />
+					</content>
+				</OverflowToolbar>
+				<l:VerticalLayout id="vertiscalLayoutId" >
+					<FlexBox id="flexBoxId" wrap="Wrap" fitContainer="true">
+						<!-- USER S4 ID-->
+						 <l:VerticalLayout id="userS4Id" class="sapUiSmallMarginEnd" visible="{parts:[{path:'localModel>/editable'},{path:'localModel>/jurisdiction'},{path:'localModel>/isCreate'}],formatter: '.formatter.getEditableSaveCommon'}">
+							<Label id="userS4Label" labelFor="USER_S4_ID" text="{sys>SYS01_LABEL_USER_S4_ID}"/>
+							<smartfield:SmartField id="USER_S4_ID" maxLength="40" value="{USER_S4_ID}" showLabel="false"></smartfield:SmartField>
+						 </l:VerticalLayout>
+					</FlexBox>
+				</l:VerticalLayout>
+			</f:content>
+		</f:DynamicPageHeader>
+	</f:header>
+
+</f:DynamicPage>
+</mvc:View>

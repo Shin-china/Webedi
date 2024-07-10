@@ -2,6 +2,8 @@ package customer.handlers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestBody;
+
 import com.alibaba.fastjson.JSON;
 import com.sap.cds.services.handler.EventHandler;
 import com.sap.cds.services.handler.annotations.On;
@@ -20,12 +22,12 @@ public class Sys01Handler implements EventHandler {
 
     // 新增用户
     @On(event = "SYS01_USER_addUser")
-    public void createUser(SYS01UserAddUserContext context) {
+    public void createUser(@RequestBody SYS01UserAddUserContext context) {
         String content = context.getUserJson();
         // content = "{userId:'Stanley'}";
         Sys001User user = JSON.parseObject(content, Sys001User.class);
         sysUserService.insertUser(user);
-        System.out.println(content);
+        System.out.println(context);
         context.setResult("success");
     }
 }

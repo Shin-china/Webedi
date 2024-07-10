@@ -18,6 +18,18 @@
         }
       }
     },
+    "crossNavigation": {
+      "inbounds": {
+        "intent1": {
+          "signature": {
+            "parameters": {},
+            "additionalParameters": "allowed"
+          },
+          "semanticObject": "op",
+          "action": "display"
+        }
+      }
+    },
     "resources": "resources.json",
     "sourceTemplate": {
       "id": "@sap/generator-fiori:basic",
@@ -116,12 +128,13 @@
       "routes": [
         {
           "name": "RouteView1",
-          "pattern": ":?query:",
+          "pattern": "",
           "target": [
             "TargetMainView"
           ]
         },
-        {"pattern": "RouteCre_sys01","name": "RouteCre_sys01","target": "sys01_user_d"}
+        {"pattern": "RouteList_sys01","name": "RouteList_sys01","target": "sys01_user_l"},
+        {"pattern": "RouteEdit_sys01/{headID}","name": "RouteEdit_sys01","target": "sys01_user_d"}
       ],
       "targets": {
         "TargetMainView": {
@@ -131,7 +144,8 @@
           "viewId": "HomePage",
           "viewName": "HomePage"
         },
-        "sys01_user_l": {"viewName": "sys/sys01_user_l","viewId": "sys01_user_l"}
+        "sys01_user_l": {"viewName": "sys/sys01_user_l","viewId": "sys01_user_l"},
+        "sys01_user_d": {"viewName": "sys/sys01_user_d","viewId": "sys01_user_d"}
       }
     },
     "rootView": {

@@ -7,7 +7,9 @@ sap.ui.define(
   
       return BaseController.extend("umc.app.controller.App", {
         onInit: function() {
+          this.getView().addStyleClass("sapUiSizeCompact");
         }
+
       });
     }
   );
