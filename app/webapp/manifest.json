@@ -106,6 +106,15 @@
         "settings": {
           "bundleName": "umc.app.i18n.com"
         }
+      },
+      "sys": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "umc.app.i18n.sys"
+        }
+      },
+      "localModel": {
+        "type": "sap.ui.model.json.JSONModel"
       }
     },
     "resources": {

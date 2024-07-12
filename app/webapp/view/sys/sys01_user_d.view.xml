@@ -9,9 +9,9 @@
 	height="100%"
 	busyIndicatorDelay="0"
 >
-<f:DynamicPage id="dynamicPageId" headerExpanded="true" showFooter="true" busy="{localModel>/isBusy}">
+<f:DynamicPage id="dynamicPageId1" headerExpanded="true" showFooter="true" busy="{localModel>/isBusy}">
 	<f:title>
-		<f:DynamicPageTitle id="dynamicPageId">
+		<f:DynamicPageTitle id="dynamicPageTitleId">
 			<f:heading>
 				<Toolbar id="_IDGenToolbar1">
 					<Title id="_IDGenTitle1" text="{sys>SYS01_mainTitle}"/>
@@ -29,16 +29,30 @@
 				<OverflowToolbar id="OverflowToolbarId">
 					<content>
 						<ToolbarSpacer id="ToolbarSpacerId"/>
-						<Button id="ButtonId1" text="{com>BUTTON_SAVE}" icon="sap-icon://save" press="onSave/Button" />
+						<Button id="ButtonId1" text="{com>BUTTON_SAVE}" icon="sap-icon://save" press="onSave" />
+						<Button id="ButtonId2" text="{com>BUTTON_EDIT}" icon="sap-icon://edit" press="onEdit" />
 					</content>
 				</OverflowToolbar>
-				<l:VerticalLayout id="vertiscalLayoutId" >
+				<l:VerticalLayout id="vertiscalLayoutId" class="sapUiSmallMarginEnd">
 					<FlexBox id="flexBoxId" wrap="Wrap" fitContainer="true">
 						<!-- USER S4 ID-->
-						 <l:VerticalLayout id="userS4Id" class="sapUiSmallMarginEnd" visible="{parts:[{path:'localModel>/editable'},{path:'localModel>/jurisdiction'},{path:'localModel>/isCreate'}],formatter: '.formatter.getEditableSaveCommon'}">
-							<Label id="userS4Label" labelFor="USER_S4_ID" text="{sys>SYS01_LABEL_USER_S4_ID}"/>
-							<smartfield:SmartField id="USER_S4_ID" maxLength="40" value="{USER_S4_ID}" showLabel="false"></smartfield:SmartField>
-						 </l:VerticalLayout>
+							<l:VerticalLayout id="_IDGenVerticalLayout1" class="sapUiSmallMarginEnd">
+								<Label id="_IDGenLabel1" labelFor="USER_S4_ID1" text="{sys>SYS01_LABEL_USER_S4_ID}"/>
+								<Input id="_IDGenSmartField1" value="{USER_ID}" editable="false" width="18em"/>
+							</l:VerticalLayout>
+						<!-- User Status-->
+						<l:VerticalLayout id="_IDGenVerticalLayout2" class="sapUiSmallMarginEnd">
+							<Label id="_IDGenLabel2" labelFor="USER_TYPE_ID" text="{sys>SYS01_LABEL_USER_STATUS}"/>
+							<Select id="idSelectList" enabled="true" selectedKey="1" items="{ path: 'list>/ListItems' , sorter: {path: 'Type'} }"  > 
+							  	<c:Item id="idFirstColumnTextItem" key="{Type}" text="{Name}"  />
+							</Select>
+						</l:VerticalLayout>
+						<!-- BP Number-->
+						<l:VerticalLayout id="_IDGenVerticalLayout3" class="sapUiSmallMarginEnd">
+							<Label id="_IDGenLabel3" labelFor="BP_NUMBER_ID" text="{sys>SYS01_LABEL_BP_NUMBER}"/>
+							<smartfield:SmartField id="_IDGenSmartField3" value="{BP_NUMBER}" editable="true"  width="11em"/>
+						</l:VerticalLayout>
+
 					</FlexBox>
 				</l:VerticalLayout>
 			</f:content>

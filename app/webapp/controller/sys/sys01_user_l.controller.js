@@ -12,11 +12,11 @@ sap.ui.define([
       		// 设置自己的 OData模型为默认模型
 			this._setDefaultDataModel("TableService");
 
+
 		},
 		onPress:function(oEvent){
 			var oItem = oEvent.getSource();
 			var oContext = oItem.getBindingContext();
-			var test = oContext.getObject().ID;
 			this._onPressNav(oEvent,"RouteEdit_sys01",oContext.getObject().ID);
 		}
 	});
