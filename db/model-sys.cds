@@ -10,6 +10,7 @@ entity T01_USER : cuid{
   @title: '{i18n>USER_TYPE}' USER_TYPE                 : String(1);     //User Type: 1.Internal Employee 2.External Vendor
   @title: '{i18n>BP_NUMBER}' BP_NUMBER                 : String(10);   //BP Number
   @title: '{i18n>USER_STATUS}' USER_STATUS             : String(1);     //User Status: 1.Active 2.Inactive 3.Locked
+  @title: '{i18n>USER_NAME}' USER_NAME                 : String(50);   //User Name
   @title: '{i18n>VALID_DATE_FROM}' VALID_DATE_FROM     : Date not null; //有效期(From)
   @title: '{i18n>VALID_DATE_TO}' VALID_DATE_TO         : Date;          //有效期(To)
   @title: '{i18n>CD_TIME}' CD_TIME                     : DateTime   @cds.on.insert: $now; //创建时间
@@ -21,6 +22,9 @@ entity T01_USER : cuid{
 
   USER_2_ROLES                                         : Composition of many T04_USER_2_ROLE
                                                            on USER_2_ROLES.USER_ID = ID; //ITEM信息
+
+  USER_2_PLANT                                         : Composition of many T09_USER_2_PLANT
+                                                           on USER_2_PLANT.USER_ID = ID; //ITEM信息
 }
 
 entity T02_ROLE : CUID_FILED {

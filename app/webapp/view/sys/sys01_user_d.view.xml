@@ -1,8 +1,9 @@
-<mvc:View xmlns:smartfield="sap.ui.comp.smartfield"
+<mvc:View xmlns:smarttable="sap.ui.comp.smarttable" xmlns:smartfield="sap.ui.comp.smartfield"
 	controllerName="umc.app.controller.sys.sys01_user_d"
 	xmlns:mvc="sap.ui.core.mvc"
 	xmlns="sap.m"
 	xmlns:c="sap.ui.core"
+	xmlns:t="sap.ui.table"
 	xmlns:f="sap.f"
 	xmlns:l="sap.ui.layout"
 	displayBlock="true"
@@ -38,19 +39,45 @@
 						<!-- USER S4 ID-->
 							<l:VerticalLayout id="_IDGenVerticalLayout1" class="sapUiSmallMarginEnd">
 								<Label id="_IDGenLabel1" labelFor="USER_S4_ID1" text="{sys>SYS01_LABEL_USER_S4_ID}"/>
-								<Input id="_IDGenSmartField1" value="{USER_ID}" editable="false" width="18em"/>
+								<Input id="USER_ID" value="{USER_ID}" editable="{localModel>/createable}" width="18em" />
 							</l:VerticalLayout>
 						<!-- User Status-->
 						<l:VerticalLayout id="_IDGenVerticalLayout2" class="sapUiSmallMarginEnd">
-							<Label id="_IDGenLabel2" labelFor="USER_TYPE_ID" text="{sys>SYS01_LABEL_USER_STATUS}"/>
-							<Select id="idSelectList" enabled="true" selectedKey="1" items="{ path: 'list>/ListItems' , sorter: {path: 'Type'} }"  > 
-							  	<c:Item id="idFirstColumnTextItem" key="{Type}" text="{Name}"  />
+							<Label id="_IDGenLabel2" labelFor="USER_STATUS_ID" text="{sys>SYS01_LABEL_USER_STATUS}"/>
+							<Select id="idSelectList" enabled="true" items="{ path: 'list>/ListItems' , sorter: {path: 'Type'} }" selectedKey="{USER_STATUS}" editable="{localModel>/editable}"  > 
+							  	<!--<c:Item id="idFirstColumnTextItem" key="{list>Type}" text="{list>Name}"  />-->
+								<c:Item id="USER_STATUS" key="{path:'list>Type'}" text="{list>Name}"  />
+							</Select>
+						</l:VerticalLayout>
+
+						<!-- User Type-->
+						<l:VerticalLayout id="_IDGenVerticalLayout7" class="sapUiSmallMarginEnd">
+							<Label id="_IDGenLabel7" labelFor="USER_TYPE_ID" text="{sys>SYS01_LABEL_USER_TYPE}"/>
+							<Select id="idSelectList7" enabled="true" items="{ path: 'list>/UserType' , sorter: {path: 'Type'} }" selectedKey="{USER_TYPE}" editable="{localModel>/editable}" > 
+							  	<!--<c:Item id="idFirstColumnTextItem" key="{list>Type}" text="{list>Name}"  />-->
+								<c:Item id="USER_TYPE" key="{path:'list>Type'}" text="{list>Name}"   />
 							</Select>
 						</l:VerticalLayout>
 						<!-- BP Number-->
 						<l:VerticalLayout id="_IDGenVerticalLayout3" class="sapUiSmallMarginEnd">
-							<Label id="_IDGenLabel3" labelFor="BP_NUMBER_ID" text="{sys>SYS01_LABEL_BP_NUMBER}"/>
-							<smartfield:SmartField id="_IDGenSmartField3" value="{BP_NUMBER}" editable="true"  width="11em"/>
+							<Label id="_IDGenLabel3" labelFor="BP_NUMBER_ID" text="{sys>SYS01_LABEL_BP_NUMBER}" width="12em"/>
+							<Input id="BP_NUMBER" value="{BP_NUMBER}" editable="{localModel>/editable}"  width="12em"/>
+						</l:VerticalLayout>
+						<l:VerticalLayout id="idVerticalLayout4" class="sapUiSmallMarginEnd">
+							<Label id="_IDGenLabel4" labelFor="USER_NAME" text="{sys>SYS01_LABEL_USER_NAME}" />
+							<Input id="USER_NAME" value="{USER_NAME}" editable="{localModel>/editable}" width="8em"/>
+						</l:VerticalLayout>
+
+						<!--Valid From-->
+						<l:VerticalLayout id="idVerticalLayout5" class="sapUiSmallMarginEnd">
+							<Label id="_IDGenLabel5" labelFor="VALID_FROM" text="{sys>SYS01_LABEL_VALID_FROM}" />
+							<DatePicker id="VALID_FROM"  value="{'path':'VALID_DATE_FROM','type':'sap.ui.model.type.Date','formatOptions':{'pattern':'yyyy-MM-dd'}}" editable="{localModel>/editable}" width="8em"/>
+						</l:VerticalLayout>
+
+						<!--Valid To-->
+						<l:VerticalLayout id="idVerticalLayout6" class="sapUiSmallMarginEnd">
+							<Label id="_IDGenLabel6" labelFor="VALID_TO" text="{sys>SYS01_LABEL_VALID_TO}" />
+							<DatePicker id="VALID_TO" value="{'path':'VALID_DATE_TO','type':'sap.ui.model.type.Date','formatOptions':{'pattern':'yyyy-MM-dd'}}" editable="{localModel>/editable}" width="8em"/>
 						</l:VerticalLayout>
 
 					</FlexBox>
@@ -59,5 +86,87 @@
 		</f:DynamicPageHeader>
 	</f:header>
 
+	<f:content>
+		<IconTabBar id="idIconTabBar" expanded="true" expandable="false" class="sapUiSmallMarginBottom" backgroundDesign="Translucent">
+			<items>
+
+				<IconTabFilter  id="idIconTabFilter" text="{sys>SYS01_TAB_PLANT}" icon="sap-icon://folder"  >
+				   <!-- 编辑状态下显示所有表中的工厂作为选择 -->
+					<smarttable:SmartTable id="smartTable1" persistencyKey="Table1" visible="{localModel>/showall}" entitySet="MST_T02_SAP_PLANT" useVariantManagement="false" header="{sys>SYS01_TAB_TITLE_PLANT}" enableAutoBinding="true">
+						<t:Table id="idTable1" rowActionCount="1" >
+							<t:columns>
+								<!--Plant ID-->
+								<t:Column id="idColumn1" autoResizable="true" sortProperty="PLANT_ID" filterProperty="PLANT_ID">
+									<t:customData>
+										<c:CustomData key="p13nData" value='\{"columKey":"PLANT_ID","leadingProperty":"PLANT_ID"}' />
+									</t:customData>
+									<t:label>
+										<Label id="_IDGenLabel10" text="{sys>SYS01_LABEL_PLANT_ID}" />
+									</t:label>
+									<t:template>
+										<Text id="_IDGenText1" text="{PLANT_ID}"/>
+									</t:template>
+								</t:Column>
+								<!--Plant Name-->
+								<t:Column id="idColumn2" autoResizable="true" sortProperty="PLANT_NAME" filterProperty="PLANT_NAME">
+									<t:customData>
+										<c:CustomData key="p13nData" value='\{"columKey":"PLANT_NAME","leadingProperty":"PLANT_NAME"}' />
+									</t:customData>
+									<t:label>
+										<Label id="_IDGenLabel11" text="{sys>SYS01_LABEL_PLANT_NAME}" />
+									</t:label>
+									<t:template>
+										<Text id="_IDGenText2" text="{PLANT_NAME}"/>
+									</t:template>
+								</t:Column>
+							</t:columns>
+						</t:Table>
+
+					</smarttable:SmartTable>
+
+				   <!-- 显示状态显示保重存的数据 -->
+				   <smarttable:SmartTable id="smartTable2" persistencyKey="Table1" visible="{localModel>/showresult}" entitySet="SYS_T09_USER_2_PLANT"  beforeRebindTable=".onRebindPlant" useVariantManagement="false" header="{sys>SYS01_TAB_TITLE_PLANT}" enableAutoBinding="true" >
+					<t:Table id="idTable2" rowActionCount="1" selectionMode="None">
+						<t:columns>
+							<!--Plant ID-->
+							<t:Column id="idColumn21" autoResizable="true" sortProperty="TO_PLANT/PLANT_ID" filterProperty="TO_PLANT/PLANT_ID">
+								<t:customData>
+									<c:CustomData key="p13nData" value='\{"columKey":"TO_PLANT/PLANT_ID","leadingProperty":"TO_PLANT/PLANT_ID"}' />
+								</t:customData>
+								<t:label>
+									<Label id="_IDGenLabel20" text="{sys>SYS01_LABEL_PLANT_ID}" />
+								</t:label>
+								<t:template>
+									<Text id="_IDGenText21" text="{TO_PLANT/PLANT_ID}"/>
+								</t:template>
+							</t:Column>
+							<!--Plant Name-->
+							<t:Column id="idColumn22" autoResizable="true" sortProperty="PLANT_NAME" filterProperty="PLANT_NAME">
+								<t:customData>
+									<c:CustomData key="p13nData" value='\{"columKey":"TO_PLANT/PLANT_NAME","leadingProperty":"TO_PLANT/PLANT_NAME"}' />
+								</t:customData>
+								<t:label>
+									<Label id="_IDGenLabel22" text="{sys>SYS01_LABEL_PLANT_NAME}" />
+								</t:label>
+								<t:template>
+									<Text id="_IDGenText22" text="{TO_PLANT/PLANT_NAME}"/>
+								</t:template>
+							</t:Column>
+						</t:columns>
+					</t:Table>
+
+				</smarttable:SmartTable>
+				</IconTabFilter>
+			</items>
+		</IconTabBar>
+	</f:content>
+
+	<!-- 创建报错消息框 -->
+	<f:footer>
+		<OverflowToolbar id="otbFooter" >
+			<Button icon="sap-icon://alert" text="{=${message>/}.length}" visible="{=${message>/}.length > 0}" type="Emphasized" press="onClickMessagePopover" id="messageButton">
+			</Button>
+		</OverflowToolbar>
+	</f:footer>
 </f:DynamicPage>
 </mvc:View>

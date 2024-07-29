@@ -8,11 +8,12 @@ import lombok.*;
 public class Sys001User {
     private String userId;
     private String userType;
+    private String bpNumber;
+    private String userStatus;
     private String userName;
     private LocalDate validDateTo;
     private LocalDate validDateFrom;
 
     private ArrayList<String> roles;
-
     private ArrayList<String> plants;
 }

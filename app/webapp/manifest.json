@@ -143,7 +143,9 @@
           ]
         },
         {"pattern": "RouteList_sys01","name": "RouteList_sys01","target": "sys01_user_l"},
-        {"pattern": "RouteEdit_sys01/{headID}","name": "RouteEdit_sys01","target": "sys01_user_d"}
+        {"pattern": "RouteEdit_sys01/{headID}","name": "RouteEdit_sys01","target": "sys01_user_d"},
+        {"pattern": "RouteCre_sys01","name": "RouteCre_sys01","target": "sys01_user_d"}
+
       ],
       "targets": {
         "TargetMainView": {

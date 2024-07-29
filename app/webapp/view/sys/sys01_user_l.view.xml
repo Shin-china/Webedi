@@ -21,12 +21,6 @@
 		<f:header>
 			<f:DynamicPageHeader id="DynamicPageHeader" pinnable="true">
 				<f:content>
-					<OverflowToolbar id="_IDGenOverflowToolbar1">
-						<content>
-							<ToolbarSpacer id="_IDGenToolbarSpacer1"/>
-							<Button id="_IDGenButton2" icon="sap-icon://edit" text="{sys>SYS01_BUTTON_CREAT}" press="onCreate" enabled="true" width="10em"/>
-						</content>
-					</OverflowToolbar>
 					<smartFilterBar:SmartFilterBar id="smartFilterBar" useToolbar="false" entitySet="SYS_T01_USER" persistencyKey="receiptprintFilterBar" showFilterConfiguration="true">
 						<smartFilterBar:controlConfiguration>
 							<smartFilterBar:ControlConfiguration id="_IDGenControlConfiguration3" key="USER_ID" visibleInAdvancedArea="true" />
@@ -39,15 +33,35 @@
 		</f:header>
 
 		<f:content>
-			<!-- -->
+
 			<smartTable:SmartTable id="ID" tableType="Table" enableAutoColumnWidth="true" entitySet="SYS_T01_USER" 
 			ignoredFields="UP_BY,USER_PWD,UP_FLAG,ID" 
 			requestAtLeastFields="ID" 
 			initiallyVisibleFields="USER_ID,USER_TYPE,BP_NUMBER,USER_STATUS,VALID_DATE_FROM,VALID_DATE_TO" smartFilterId="smartFilterBar" enableExport="true" beforeExport="onBeforeExport" useVariantManagement="true" useTablePersonalisation="true" header="{com>TITLE_RESULT}" showRowCount="true" persistencyKey="sys01_SmartTableAnalytical_Explored" enableAutoBinding="false">
-
-				<table:Table id="detailTable" rowMode="Auto" rowActionCount="1" selectionMode="None" alternateRowColors="true" fixedColumnCount="3">
+			<!-- Add Button-->
+			<smartTable:customToolbar>
+				<OverflowToolbar design="Transparent">
+					<ToolbarSpacer />
+					<OverflowToolbarButton icon="sap-icon://add" text="{sys>SYS01_BUTTON_CREAT}" tooltip="{sys>SYS01_BUTTON_CREAT}" press="onCreate"></OverflowToolbarButton>
+					<OverflowToolbarButton icon="sap-icon://delete" text="{sys>SYS01_BUTTON_DEL}" tooltip="{sys>SYS01_BUTTON_DEL}" press="onDel"></OverflowToolbarButton>
+				</OverflowToolbar>
+			</smartTable:customToolbar>
+			<!-- End-->
+				<table:Table id="detailTable" rowMode="Auto" rowActionCount="1"  alternateRowColors="true" fixedColumnCount="3">
 					<table:rowActionTemplate>
 						<table:RowAction id="RowAction">
+								<!--Plant ID-->
+								<t:Column id="idColumn1" autoResizable="true" sortProperty="PLANT_ID" filterProperty="PLANT_ID">
+									<t:customData>
+										<c:CustomData key="p13nData" value='\{"columKey":"PLANT_ID","leadingProperty":"PLANT_ID"}' />
+									</t:customData>
+									<t:label>
+										<Label id="_IDGenLabel10" text="{sys>SYS01_LABEL_PLANT_ID}" />
+									</t:label>
+									<t:template>
+										<Text id="_IDGenText1" text="{PLANT_ID}"/>
+									</t:template>
+								</t:Column>
 							<table:items>
 								<table:RowActionItem id="RowActionItem" type="Navigation" press="onPress"/>
 							</table:items>
