@@ -1,5 +1,6 @@
-using {COMM.IF_CUID_FILED as IF_CUID_FILED} from './model-common';
+namespace PCH;
 
+using {COMM.IF_CUID_FILED as IF_CUID_FILED} from './model-common';
 
 
 entity PCH_T01_PO_H : IF_CUID_FILED { //采购订单抬头
