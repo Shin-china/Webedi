@@ -20,15 +20,31 @@
         <uxap:ObjectPageLayout busy="{localModel>/isBusy}" showFooter="true" id="homePage">
             <uxap:sections>
                 <uxap:ObjectPageSection id="_IDGenObjectPageSection1" title="{com>MENU_MODULE_SYS}">
-
                     <uxap:subSections >
                         <uxap:ObjectPageSubSection id="_IDGenObjectPageSubSection1" title="">
                             <uxap:blocks>
-                                <l:HorizontalLayout id="TileContainerExpandedSYS" allowWrapping="true" content="{path:'/HOMEPAGE_MENU_LIST',filters:{path:'MENU_MODULE',operator:'EQ',
-                            value1:'SYS'}}" class="sapUiTinyMarginTopBottom">
+                                <l:HorizontalLayout id="TileContainerExpandedSYS" allowWrapping="true" content="{path:'/HOMEPAGE_MENU_LIST',filters:{path:'MENU_MODULE',operator:'EQ',value1:'SYS'}}" class="sapUiTinyMarginTopBottom">
                                     <GenericTile width="10em" id="_IDGenGenericTile1" header="{MENU_NAME}" subheader="{MENU_SUB_NAME}" state="{=${state} || 'Loaded'}" scope="Display" press="homeOnPress" class="sapUiTinyMarginEnd" sizeBehavior="{/sizeBehavior}">
                                         <TileContent id="_IDGenTileContent1" unit="{MENU_UNIT}" footer="{MENU_FOOTER}">
                                             <NumericContent id="_IDGenNumericContent1" withMargin="false" nullifyValue="false" valueColor="{=${MENU_VALUECOLOR} || 'None'}" value="{MENU_VALUE}" icon="{MENU_ICON}"/>
+                                        </TileContent>
+                                    </GenericTile>
+                                </l:HorizontalLayout>
+                            </uxap:blocks>
+                        </uxap:ObjectPageSubSection>
+                    </uxap:subSections>
+                </uxap:ObjectPageSection>
+            </uxap:sections>
+            <uxap:sections>
+                <uxap:ObjectPageSection id="_IDGenObjectPageSection2" title="{com>MENU_MODULE_PCH}">
+                    <uxap:subSections >
+                        <uxap:ObjectPageSubSection id="_IDGenObjectPageSubSection2" title="">
+                            <uxap:blocks>
+                                <l:HorizontalLayout id="TileContainerExpandedPCH" allowWrapping="true" content="{path:'/HOMEPAGE_MENU_LIST',filters:{path:'MENU_MODULE',operator:'EQ',
+                                value1:'PCH'}}" class="sapUiTinyMarginTopBottom">
+                                    <GenericTile width="10em" id="_IDGenGenericTile2" header="{MENU_NAME}" subheader="{MENU_SUB_NAME}" state="{=${state} || 'Loaded'}" scope="Display" press="homeOnPress" class="sapUiTinyMarginEnd" sizeBehavior="{/sizeBehavior}">
+                                        <TileContent id="_IDGenTileContent2" unit="{MENU_UNIT}" footer="{MENU_FOOTER}">
+                                            <NumericContent id="_IDGenNumericContent2" withMargin="false" nullifyValue="false" valueColor="{=${MENU_VALUECOLOR} || 'None'}" value="{MENU_VALUE}" icon="{MENU_ICON}"/>
                                         </TileContent>
                                     </GenericTile>
                                 </l:HorizontalLayout>
