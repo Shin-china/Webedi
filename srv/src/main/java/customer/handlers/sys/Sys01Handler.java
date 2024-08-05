@@ -1,4 +1,4 @@
-package customer.handlers;
+package customer.handlers.sys;
 
 import java.util.Map;
 
@@ -25,7 +25,7 @@ public class Sys01Handler implements EventHandler {
 
     // 新增用户
     @On(event = "SYS01_USER_addUser")
-    public void createUser(@RequestBody SYS01UserAddUserContext context) {
+    public void createUser(SYS01UserAddUserContext context) {
         String content = context.getUserJson();
         Sys001User user = JSON.parseObject(content, Sys001User.class);
         // 检查用户是否重复

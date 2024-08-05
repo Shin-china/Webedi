@@ -71,6 +71,15 @@
 			<artifactId>h2</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+
+		<!-- MAIL Server -->
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-mail</artifactId>
+			<version>3.2.5</version>
+		</dependency>
+
 		<!-- pg数据库 -->
 		<dependency>
 			<groupId>com.sap.cds</groupId>

@@ -1,0 +1,65 @@
+<mvc:View xmlns:smarttable="sap.ui.comp.smarttable" xmlns:smartfilterbar="sap.ui.comp.smartfilterbar"
+	controllerName="umc.app.controller.sys.sys05_mail_l"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.m"
+    xmlns:f = "sap.f"
+	xmlns:c="sap.ui.core"
+    xmlns:smartFilterBar="sap.ui.comp.smartfilterbar"
+	displayBlock="true"
+    xmlns:table="sap.ui.table"
+	height="100%"
+	busyIndicatorDelay="0"
+>
+<f:DynamicPage id="DynamicPage" headerExpanded="true"  showFooter="false" fitContent="true" preserveHeaderStateOnScroll="true">
+    <f:title>
+        <f:DynamicPageTitle id="idDynamicPageTitle">
+            <f:heading>
+                <Title id="sidSysTitle" text="{sys>sys05Title}"/>
+            </f:heading>
+            <f:navigationActions>
+                <Button id="idButton" icon="sap-icon://nav-back" press="onNavBack" tooltip="nav-back"/>
+            </f:navigationActions>
+        </f:DynamicPageTitle>
+    </f:title>
+    <f:header>
+        <f:DynamicPageHeader id="idDynamicPageHeader" pinnable="true">
+            <f:content>
+                <smartfilterbar:SmartFilterBar id="idSmartFilterBar" useToolbar="false" entitySet="SYS_T11_MAIL_TEMPLATE" persistencyKey="SYS_T11_MAIL_TEMPLATE" showFilterConfiguration="true">
+                    <smartFilterBar:controlConfiguration>
+                        <smartfilterbar:ControlConfiguration id="idControlConfiguration1" key="TEMPLATE_ID"/>
+                        <smartfilterbar:ControlConfiguration id="idControlConfiguration2" key="MAIL_NAME"/>
+                        <smartfilterbar:ControlConfiguration id="idControlConfiguration3" key="MAIL_TITLE"/>
+                    </smartFilterBar:controlConfiguration>
+                </smartfilterbar:SmartFilterBar>
+            </f:content>
+        </f:DynamicPageHeader>
+    </f:header>
+
+    <f:content>
+        <smarttable:SmartTable id="idSmartTable" enableAutoColumnWidth="true" entitySet="SYS_T11_MAIL_TEMPLATE" 
+        ignoredFields="MAIL_CONTENT" initiallyVisibleFields="TEMPLATE_ID,MAIL_NAME,MAIL_TITLE">
+			<!-- Add Button-->
+			<smarttable:customToolbar>
+				<OverflowToolbar design="Transparent">
+					<ToolbarSpacer />
+					<OverflowToolbarButton icon="sap-icon://add" text="{sys>SYS01_BUTTON_CREAT}" tooltip="{sys>SYS01_BUTTON_CREAT}" press="onCreate"></OverflowToolbarButton>
+					<OverflowToolbarButton icon="sap-icon://delete" text="{sys>SYS01_BUTTON_DEL}" tooltip="{sys>SYS01_BUTTON_DEL}" press="onDel"></OverflowToolbarButton>
+				</OverflowToolbar>
+			</smarttable:customToolbar>
+			<!-- End-->
+			<table:Table id="detailTable" rowMode="Auto" rowActionCount="1" selectionMode="None" alternateRowColors="true" >
+				<table:columns>
+					
+				</table:columns>
+				<table:rowActionTemplate>
+					<table:RowAction id="RowAction">
+						<table:items>
+							<table:RowActionItem id="RowActionItem" type="Navigation" press="onPress"/>
+						</table:items>
+					</table:RowAction>
+				</table:rowActionTemplate>
+			</table:Table>
+        </smarttable:SmartTable>
+    </f:content>
+</f:DynamicPage>
+</mvc:View>

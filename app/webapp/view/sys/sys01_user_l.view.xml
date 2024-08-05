@@ -3,8 +3,10 @@
 	xmlns:f="sap.f"
 	xmlns:smartFilterBar="sap.ui.comp.smartfilterbar"
 	xmlns:smartTable="sap.ui.comp.smarttable"
+	xmlns:core="sap.ui.core"
 	xmlns:mvc="sap.ui.core.mvc"
-	xmlns:table="sap.ui.table">
+	xmlns:table="sap.ui.table"
+	xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1" height="100%">
 
 	<f:DynamicPage id="dynamicPageId" headerExpanded="true" showFooter="false" busy="{localModel>/busy}" fitContent="true" preserveHeaderStateOnScroll="true">
 		<f:title>
@@ -47,27 +49,19 @@
 				</OverflowToolbar>
 			</smartTable:customToolbar>
 			<!-- End-->
-				<table:Table id="detailTable" rowMode="Auto" rowActionCount="1"  alternateRowColors="true" fixedColumnCount="3">
-					<table:rowActionTemplate>
-						<table:RowAction id="RowAction">
-								<!--Plant ID-->
-								<t:Column id="idColumn1" autoResizable="true" sortProperty="PLANT_ID" filterProperty="PLANT_ID">
-									<t:customData>
-										<c:CustomData key="p13nData" value='\{"columKey":"PLANT_ID","leadingProperty":"PLANT_ID"}' />
-									</t:customData>
-									<t:label>
-										<Label id="_IDGenLabel10" text="{sys>SYS01_LABEL_PLANT_ID}" />
-									</t:label>
-									<t:template>
-										<Text id="_IDGenText1" text="{PLANT_ID}"/>
-									</t:template>
-								</t:Column>
-							<table:items>
-								<table:RowActionItem id="RowActionItem" type="Navigation" press="onPress"/>
-							</table:items>
-						</table:RowAction>
-					</table:rowActionTemplate>
-				</table:Table>
+
+			<table:Table id="detailTable" rowMode="Auto" rowActionCount="1" selectionMode="None" alternateRowColors="true" >
+				<table:columns>
+					
+				</table:columns>
+				<table:rowActionTemplate>
+					<table:RowAction id="RowAction">
+						<table:items>
+							<table:RowActionItem id="RowActionItem" type="Navigation" press="onPress"/>
+						</table:items>
+					</table:RowAction>
+				</table:rowActionTemplate>
+			</table:Table>
 			</smartTable:SmartTable>
 		</f:content>
 

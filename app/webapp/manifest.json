@@ -144,7 +144,9 @@
         },
         {"pattern": "RouteList_sys01","name": "RouteList_sys01","target": "sys01_user_l"},
         {"pattern": "RouteEdit_sys01/{headID}","name": "RouteEdit_sys01","target": "sys01_user_d"},
-        {"pattern": "RouteCre_sys01","name": "RouteCre_sys01","target": "sys01_user_d"}
+        {"pattern": "RouteCre_sys01","name": "RouteCre_sys01","target": "sys01_user_d"},
+        {"pattern": "RouteList_sys05","name": "RouteList_sys05","target": "sys05_mail_l"},
+        {"pattern": "RouteEdit_sys05/{headID}","name": "RouteEdit_sys05","target": "sys05_mail_d"}
 
       ],
       "targets": {
@@ -156,7 +158,9 @@
           "viewName": "HomePage"
         },
         "sys01_user_l": {"viewName": "sys/sys01_user_l","viewId": "sys01_user_l"},
-        "sys01_user_d": {"viewName": "sys/sys01_user_d","viewId": "sys01_user_d"}
+        "sys01_user_d": {"viewName": "sys/sys01_user_d","viewId": "sys01_user_d"},
+        "sys05_mail_l": {"viewName": "sys/sys05_mail_l","viewId": "sys05_mail_l"},
+        "sys05_mail_d": {"viewName": "sys/sys05_mail_d","viewId": "sys05_mail_d"}
       }
     },
     "rootView": {

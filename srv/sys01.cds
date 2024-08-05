@@ -6,5 +6,6 @@ extend service TableService with {
   action SYS01_USER_addUser(userJson : String) returns String; //Insert User
   action SYS01_USER_editUser(userJson : String) returns String;//Edit User
   action SYS01_USER_deleteUser(userJson : String) returns String;//Delete User
+  action sendEmail(emailJson : String) returns String;//Send Email
 
 }

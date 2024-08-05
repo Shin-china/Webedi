@@ -8,7 +8,7 @@
         "@cap-js/postgres": "^1.5.1"
       },
     "devDependencies": {
-    "@sap/cds-dk": "^7",
+    "@sap/cds-dk": "^8.1.0",
     "@sap/ux-specification": "^1.120.6",
     "rimraf": "^3.0.2"
     },
