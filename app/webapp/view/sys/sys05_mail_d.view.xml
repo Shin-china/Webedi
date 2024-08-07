@@ -9,7 +9,7 @@
 	height="100%"
 	busyIndicatorDelay="0"
 >
-<f:DynamicPage id="idDynamicPage" headerExpanded="true" showFooter="true">
+<f:DynamicPage id="idDynamicPage" showFooter="true">
     <!-- Title -->
     <f:title>
         <f:DynamicPageTitle id="idDynamicPageTitle">
@@ -29,33 +29,35 @@
                     <content>
                         <ToolbarSpacer id="idToolbarSpacer"/>
 						<Button id="ButtonId1" text="{com>BUTTON_SAVE}" icon="sap-icon://save" press="onSave" />
-                        <Button id="ButtonId2" text="{com>BUTTON_EDIT}" icon="sap-icon://edit" press="onEdit" />
                     </content>
                 </OverflowToolbar>
                 <l:VerticalLayout id="idVerticalLayout" class="sapUiSmallMarginEnd">
                     <FlexBox id="idFlexBox" wrap="Wrap" fitContainer="true">
                         <!--Temlate ID  -->
                         <l:VerticalLayout id="idVerticalLayout1">
-                            <Label id="idLabel1" labelFor="TEMPLATE_ID" text="TEMPLATE_ID"/>
-                            <Input id="idInput1" value="{TEMPLATE_ID}"/>
+                            <Label id="idLabel1" labelFor="LAB_TEMPLATE_ID" text="TEMPLATE_ID"/>
+                            <Input id="idInput1" value="{TEMPLATE_ID}" editable="true" width="18em"/>
                         </l:VerticalLayout>
                         <!--Temlate ID  -->
-                        <l:VerticalLayout id="idVerticalLayout2">
-                            <Label id="idLabel2" labelFor="MAIL_NAME" text="MAIL_NAME"/>
+                        <l:VerticalLayout id="idVerticalLayout2" >
+                            <Label id="idLabel2" labelFor="LAB_MAIL_NAME" text="MAIL_NAME"/>
                             <Input id="idInput2" value="{MAIL_NAME}"/>
                         </l:VerticalLayout>
                         <!--Temlate ID  -->
                         <l:VerticalLayout id="idVerticalLayout3">
-                            <Label id="idLabel3" labelFor="MAIL_TITLE" text="MAIL_TITLE"/>
+                            <Label id="idLabel3" labelFor="LAB_MAIL_TITLE" text="MAIL_TITLE"/>
                             <Input id="idInput3" value="{MAIL_TITLE}"/>
                         </l:VerticalLayout>
                     </FlexBox>
-                    <l:content>
-                        <TextArea width="540px" height="240px" id="idTextArea" value="{MAIL_CONTENT}"/>
-                    </l:content>
+
                 </l:VerticalLayout>
+
             </f:content>
         </f:DynamicPageHeader>
      </f:header>
+     <!-- Item -->
+     <f:content>
+                <TextArea width="1540px"  height="600px" id="idTextArea" value="{MAIL_CONTENT}"/>
+     </f:content>
 </f:DynamicPage>
 </mvc:View>

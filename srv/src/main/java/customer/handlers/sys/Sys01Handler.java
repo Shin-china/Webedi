@@ -15,7 +15,7 @@ import cds.gen.tableservice.SYS01UserDeleteUserContext;
 import cds.gen.tableservice.SYS01UserEditUserContext;
 import cds.gen.tableservice.TableService_;
 import customer.bean.sys.Sys001User;
-import customer.service.SysUserService;
+import customer.service.sys.SysUserService;
 
 @Component
 @ServiceName(TableService_.CDS_NAME)
@@ -31,7 +31,6 @@ public class Sys01Handler implements EventHandler {
         // 检查用户是否重复
         sysUserService.checkUserExist(user);
         String userId = sysUserService.insertUser(user);
-        System.out.println(context);
         context.setResult("success");
     }
 

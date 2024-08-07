@@ -13,17 +13,6 @@ server:
     max-http-response-header-size: 80KB     #默认为8KB
 
 spring:
-  mail:
-    host: smtp-mail.outlook.com
-    port: 25
-    username: uweb-sender@umc.co.jp
-    password: W5wiKsSX
-    properties:
-      mail:
-        smtp:
-          auth: true
-          starttls:
-            enable: true
   session:
     timeout: 10800
   datasource:
