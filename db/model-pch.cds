@@ -1,3 +1,6 @@
+namespace PCH;
+
+
 using {COMM.IF_CUID_FILED as IF_CUID_FILED} from './model-common';
 
 

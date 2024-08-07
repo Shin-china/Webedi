@@ -52,18 +52,6 @@ spring:
   servlet:
     multipart:
       max-file-size: 50MB # 最大文件上传大小
-vcap:
-  services:
-    objectstore-service:
-      credentials:
-        accessKeyId: AKIAVF53ZLWPKKD36SZY
-        bucket: hcp-b5e2b29d-63cb-4cfb-b340-b13b8176aa2b
-        secretAccessKey: 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
-        url: s3://AKIAVF53ZLWPKKD36SZY:Z%2F8isf0UzlaQ%2F%2FIBjAp2WUUdxyA0fhQT%2BnR%2BvqJU@s3-ap-northeast-1.amazonaws.com/hcp-b5e2b29d-63cb-4cfb-b340-b13b8176aa2b
-        host: s3-ap-northeast-1.amazonaws.com
-        username: hcp-s3-75827d34-add6-4898-b7c2-f02ee8cce14d
-        region: ap-northeast-1
-
 cds:
   drafts:
     deletionTimeout: 1D

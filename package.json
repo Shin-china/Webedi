@@ -5,16 +5,17 @@
     "license": "ISC",
     "repository": "<Add your repository here>",
     "dependencies": {
-        "@cap-js/postgres": "^1.5.1"
-      },
+        "@cap-js/postgres": "^1.5.1",
+        "umc-webedi-cds": "file:"
+    },
     "devDependencies": {
-    "@sap/cds-dk": "^8.1.0",
-    "@sap/ux-specification": "^1.120.6",
-    "rimraf": "^3.0.2"
+        "@sap/cds-dk": "^8.1.0",
+        "@sap/ux-specification": "^1.120.6",
+        "rimraf": "^3.0.2"
     },
     "scripts": {
-    "undeploy": "cf undeploy usapbe --delete-services --delete-service-keys --delete-service-brokers",
-    "build": "rimraf resources mta_archives && mbt build --mtar archive",
-    "deploy": "cf deploy mta_archives/archive.mtar --retries 1"
+        "undeploy": "cf undeploy usapbe --delete-services --delete-service-keys --delete-service-brokers",
+        "build": "rimraf resources mta_archives && mbt build --mtar archive",
+        "deploy": "cf deploy mta_archives/archive.mtar --retries 1"
     }
 }

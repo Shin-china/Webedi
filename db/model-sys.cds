@@ -146,6 +146,6 @@ entity T10_MENU {
 entity T11_MAIL_TEMPLATE{
     @title: '{i18n>TEMPLATE_ID}' key TEMPLATE_ID : String(36); //邮件ID
     @title: '{i18n>MAIL_NAME}' MAIL_NAME : localized String(200); //邮件名称
-    @title : '{i18n>MAIL_TITLE}' MAIL_TITLE : localized String(50); //邮件标题
+    @title: '{i18n>MAIL_TITLE}' MAIL_TITLE : localized String(50); //邮件标题
     @title: '{i18n>MAIL_CONTENT}' MAIL_CONTENT : localized String(2000); //邮件内容
 }
