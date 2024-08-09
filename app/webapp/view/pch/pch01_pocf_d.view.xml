@@ -1,0 +1,129 @@
+<mvc:View 
+	controllerName="umc.app.controller.pch.pch01_pocf_d" 
+	displayBlock="true"
+	xmlns:core="sap.ui.core" 
+	xmlns="sap.m"
+	xmlns:f="sap.f" 
+	xmlns:unified="sap.ui.unified" 
+	xmlns:layout="sap.ui.layout" 
+	xmlns:t="sap.ui.table"
+	xmlns:smartFilterBar="sap.ui.comp.smartfilterbar" 
+	xmlns:smartTable="sap.ui.comp.smarttable" 
+	xmlns:sv="sap.ui.comp.smartvariants"
+	xmlns:mvc="sap.ui.core.mvc" 
+	xmlns:smartField="sap.ui.comp.smartfield" 
+	xmlns:smartform="sap.ui.comp.smartform"  
+	xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+	xmlns:smartfield="sap.ui.comp.smartfield"
+  xmlns:l="sap.ui.layout"
+  xmlns:uxap="sap.uxap"
+  xmlns:table="sap.ui.table">
+
+  <f:DynamicPageTitle id="DynamicPageTitle">
+    <f:heading>
+      <Title id="Title" text="{pch>pch01Title}"/>
+    </f:heading>
+    <f:navigationActions>
+      <Button id="_IDGenButton3" icon="sap-icon://nav-back" tooltip="nav-back" press="navTo('RouteMainView')"/>
+    </f:navigationActions>
+  </f:DynamicPageTitle>
+
+  <f:DynamicPageHeader id="DynamicPageHeader" pinnable="true">
+    <f:content>
+      <smartFilterBar:SmartFilterBar id="smartFilterBar" entitySet="PCH_01_DL" persistencyKey="PCH01_TEMPLATE" showFilterConfiguration="true">
+        <smartFilterBar:controlConfiguration>
+          <smartFilterBar:ControlConfiguration id="idControlConfiguration1" key="SUPPLIER"     visibleInAdvancedArea="true" label="{pch>D_SUPPLIER}" index="0"/>
+          <smartFilterBar:ControlConfiguration id="idControlConfiguration2" key="BP_NAME1"     visibleInAdvancedArea="true" label="{pch>D_BP_NAME1}" index="1"/>
+          <smartFilterBar:ControlConfiguration id="idControlConfiguration3" key="PO_NO"        visibleInAdvancedArea="true" label="{pch>D_PO_NO}"        filterType='single' controlType="auto" index="2"/>
+          <smartFilterBar:ControlConfiguration id="idControlConfiguration4" key="MAT_ID"       visibleInAdvancedArea="true" label="{pch>D_MAT_ID}"       filterType='single' controlType="auto" index="3"/>
+          <smartFilterBar:ControlConfiguration id="idControlConfiguration5" key="PO_TYPE"      visibleInAdvancedArea="true" label="{pch>D_PO_TYPE}"      filterType='single' controlType="dropDownList" index="4"/> 
+          <!--status-->
+          <smartFilterBar:ControlConfiguration index="5" id="idControlConfiguration6" key="STATUS" label="{pch>D_STATUS}" visibleInAdvancedArea="true">
+            <smartFilterBar:customControl>
+              <MultiComboBox id="idmulticomboboxSTASUT">
+                <core:ListItem id="idListItem1" key="1" text="未回答(発注)"/>
+                <core:ListItem id="idListItem2" key="2" text="一部回答(発注)"/>
+                <core:ListItem id="idListItem3" key="3" text="回答済(発注)"/>
+              </MultiComboBox>
+            </smartFilterBar:customControl>
+          </smartFilterBar:ControlConfiguration>
+          <smartFilterBar:ControlConfiguration id="idControlConfiguration7" key="PO_DATE"      visibleInAdvancedArea="true" label="{pch>D_PO_DATE}"      filterType='single' controlType="date" index="6"/> 
+          <smartFilterBar:ControlConfiguration id="idControlConfiguration8" key="PO_D_DATE"    visibleInAdvancedArea="true" label="{pch>D_PO_D_DATE}"    filterType='single' controlType="date" index="7"/> 
+          <smartFilterBar:ControlConfiguration id="idControlConfiguration9" key="CUSTOMER_MAT" visibleInAdvancedArea="true" label="{pch>D_CUSTOMER_MAT}" filterType='single' controlType="auto" index="8"/> 
+          <smartFilterBar:ControlConfiguration id="idControlConfiguration10" key="SUPPLIER_MAT" visibleInAdvancedArea="true" label="{pch>D_SUPPLIER_MAT}" filterType='single' controlType="auto" index="9"/>      
+        </smartFilterBar:controlConfiguration>
+      </smartFilterBar:SmartFilterBar>
+    </f:content>
+  </f:DynamicPageHeader>
+  <smartTable:SmartTable  id="idSmartTable" smartFilterId="smartFilterBar" enableAutoColumnWidth="true" entitySet="PCH_01_DL" 
+          ignoredFields="" initiallyVisibleFields="SUPPLIER,BP_NAME1,PO_NO,MAT_ID,PO_TYPE,PO_DATE,PO_D_DATE,CUSTOMER_MAT,SUPPLIER_MAT,STATUS" enableExport="true" beforeExport="onBeforeExport" header="{pch>tResult}" enableAutoBinding="true" editable="false" >
+    <table:Table id="detailTable" rowMode="Auto" rowActionCount="1" selectionMode="None" alternateRowColors="true" fixedColumnCount="0">
+      <!-- <table:columns>
+        <table:Column id="colSupplier" width="10rem" sortProperty="SUPPLIER" filterProperty="SUPPLIER">
+          <table:customData>
+            <core:CustomData key="p13nData"
+                value='\{"columnKey":"SUPPLIER", "leadingProperty":"SUPPLIER", "sortProperty":"SUPPLIER", "filterProperty":"SUPPLIER"}'/>
+          </table:customData>
+          <table:label>
+            <Label text="{pch>D_SUPPLIER}"/>
+          </table:label>
+          <table:template>
+            <Text text="{SUPPLIER}"/>
+          </table:template>
+        </table:Column>
+
+        <table:Column id="colBPName1" width="10rem" sortProperty="BP_NAME1" filterProperty="BP_NAME1">
+          <table:customData>
+            <core:CustomData key="p13nData"
+                value='\{"columnKey":"BP_NAME1", "leadingProperty":"BP_NAME1", "sortProperty":"BP_NAME1", "filterProperty":"BP_NAME1"}'/>
+          </table:customData>
+          <table:label>
+            <Label text="{pch>D_BP_NAME1}"/>
+          </table:label>
+          <table:template>
+            <Text text="{BP_NAME1}"/>
+          </table:template>
+        </table:Column>
+
+        <table:Column id="colPONo" width="10rem" sortProperty="PO_NO" filterProperty="PO_NO">
+          <table:customData>
+            <core:CustomData key="p13nData"
+                value='\{"columnKey":"PO_NO", "leadingProperty":"PO_NO", "sortProperty":"PO_NO", "filterProperty":"PO_NO"}'/>
+          </table:customData>
+          <table:label>
+            <Label text="{pch>D_PO_NO}"/>
+          </table:label>
+          <table:template>
+            <Text text="{PO_NO}"/>
+          </table:template>
+        </table:Column>
+
+        <table:Column id="colMatId" width="10rem" sortProperty="MAT_ID" filterProperty="MAT_ID">
+          <table:customData>
+            <core:CustomData key="p13nData"
+                value='\{"columnKey":"MAT_ID", "leadingProperty":"MAT_ID", "sortProperty":"MAT_ID", "filterProperty":"MAT_ID"}'/>
+          </table:customData>
+          <table:label>
+            <Label text="{pch>D_MAT_ID}"/>
+          </table:label>
+          <table:template>
+            <Text text="{MAT_ID}"/>
+          </table:template>
+        </table:Column>
+
+        <table:Column id="colPOType" width="10rem" sortProperty="PO_TYPE" filterProperty="PO_TYPE">
+          <table:customData>
+            <core:CustomData key="p13nData"
+                value='\{"columnKey":"PO_TYPE", "leadingProperty":"PO_TYPE", "sortProperty":"PO_TYPE", "filterProperty":"PO_TYPE"}'/>
+          </table:customData>
+          <table:label>
+            <Label text="{pch>D_PO_TYPE}"/>
+          </table:label>
+          <table:template>
+            <Text text="{PO_TYPE}"/>
+          </table:template>
+        </table:Column>
+			</table:columns>     -->
+    </table:Table>
+  </smartTable:SmartTable>
+</mvc:View>

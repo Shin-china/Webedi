@@ -113,6 +113,12 @@
           "bundleName": "umc.app.i18n.sys"
         }
       },
+      "pch": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "umc.app.i18n.pch"
+        }
+      },
       "localModel": {
         "type": "sap.ui.model.json.JSONModel"
       }

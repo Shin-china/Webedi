@@ -1,0 +1,115 @@
+<mvc:View 
+controllerName="umc.app.controller.pch.pch01_pocf_u" 
+displayBlock="true" 
+xmlns:core="sap.ui.core" 
+xmlns="sap.m"	
+xmlns:f="sap.f" 
+xmlns:unified="sap.ui.unified" 
+xmlns:layout="sap.ui.layout" 
+xmlns:t="sap.ui.table" 
+xmlns:mvc="sap.ui.core.mvc">
+
+	<!--上传文件-->
+	<Panel id="fileUpload" expandable="true" expanded="true" headerText="{pch>tUploadText}" width="auto" class="sapUiResponsiveMargin">
+		<layout:VerticalLayout id="idverticallayout1">
+			<layout:HorizontalLayout id="idhorizontallayout1" >
+				<unified:FileUploader id="fileUploader" buttonText="{pch>bSelectFile}" fileType="xlsx,xls" change="onFileChange" width="20%"
+					class="sapUiSmallMarginBegin" sameFilenameAllowed="true"/>
+			</layout:HorizontalLayout>
+		</layout:VerticalLayout>
+	</Panel>
+	<Panel id="idpanel1" expandable="true" expanded="true" headerText="{pch>tResult}" width="auto" class="sapUiResponsiveMargin">
+		<t:Table id="wasteshippingUpload" rows="{local>/excelSet}" class="sapUiSizeCompact" threshold="20" 
+			selectionBehavior="RowOnly">
+			<t:extension>
+				<OverflowToolbar id="idoverflowtooblar1">
+					<Text id="idtext1" text="{/logInfo}"/>
+					<ToolbarSpacer id="idtoolbarspacer1"/>
+				    <Button id="Check" icon="sap-icon://activity-2" type="Transparent" press="onCheck" tooltip="{pch>bCheck}" enabled="false" text="{pch>bCheck}"/>
+					<Button id="Run" icon="sap-icon://accept" type="Transparent" press="onrun" tooltip="{pch>bRun}" enabled="false" text="{pch>bRun}"/>	
+					<Button id="Export" icon="sap-icon://excel-attachment" type="Transparent" press="onExport" enabled="{=${local>/excelSet}.length > 0}" text="{pch>bExportExcel}" tooltip="{pch>bExportExcel}"/>
+				</OverflowToolbar>
+			</t:extension>
+				<t:columns>
+					<t:Column id="idcolumn1" width="6rem" sortProperty="Type" hAlign="Center">
+						<Label id="idlabel1" text="{pch>Status}"/>
+						<t:template>
+							<ObjectStatus id="idobjectstatus1" state="{path:'local>Type', formatter:'.formatter.setState'}" icon="sap-icon://status-negative"/>
+						</t:template>
+					</t:Column>
+					<t:Column id="idcolumn2" width="6rem" sortProperty="Type" hAlign="Center">
+						<Label id="idlabel2" text="{pch>Result}"/>
+						<t:template>
+							<ObjectStatus id="idresult" state="{path:'local>Type'}" />
+						</t:template>
+					</t:Column>					
+					<t:Column id="idcolumn3" width="6rem" sortProperty="Type" hAlign="Center">
+						<Label id="idlabel3" text="{pch>ResultText}"/>
+						<t:template>
+							<ObjectStatus id="idResultText" state="{path:'local>Type'}" />
+						</t:template>
+					</t:Column>
+					<t:Column id="idcolumn4" width="6rem" sortProperty="Type" hAlign="Center">
+						<Label id="idlabel4" text="{pch>PO_TYPE}"/>
+						<t:template>
+							<ObjectStatus id="idPO_TYPE" state="{path:'local>Type'}" />
+						</t:template>
+					</t:Column>
+					<t:Column id="idcolumn5" width="6rem" sortProperty="Type" hAlign="Center">
+						<Label id="idlabel5" text="{pch>D_NO}"/>
+						<t:template>
+							<ObjectStatus id="idD_NO" state="{path:'local>Type'}" />
+						</t:template>
+					</t:Column>
+					<t:Column id="idcolumn6" width="6rem" sortProperty="Type" hAlign="Center">
+						<Label id="idlabel6" text="{pch>MAT_ID}"/>
+						<t:template>
+							<ObjectStatus id="idMAT_ID" state="{path:'local>Type'}" />
+						</t:template>
+					</t:Column>
+					<t:Column id="idcolumn7" width="6rem" sortProperty="Type" hAlign="Center">
+						<Label id="idlabel7" text="{pch>PO_D_TXZ01}"/>
+						<t:template>
+							<ObjectStatus id="idPO_D_TXZ01" state="{path:'local>Type'}" />
+						</t:template>
+					</t:Column>
+					<t:Column id="idcolumn8" width="6rem" sortProperty="Type" hAlign="Center">
+						<Label id="idlabel8" text="{pch>PO_PUR_QTY}"/>
+						<t:template>
+							<ObjectStatus id="idPO_PUR_QTY" state="{path:'local>Type'}" />
+						</t:template>
+					</t:Column>
+					<t:Column id="idcolumn9" width="6rem" sortProperty="Type" hAlign="Center">
+						<Label id="idlabel9" text="{pch>PO_PUR_UNIT}"/>
+						<t:template>
+							<ObjectStatus id="idPO_PUR_UNIT" state="{path:'local>Type'}" />
+						</t:template>
+					</t:Column>
+					<t:Column id="idcolumn10" width="6rem" sortProperty="Type" hAlign="Center">
+						<Label id="idlabel10" text="{pch>DELIVERY_DATE}"/>
+						<t:template>
+							<ObjectStatus id="idDELIVERY_DATE" state="{path:'local>Type'}" />
+						</t:template>
+					</t:Column>
+					<t:Column id="idcolumn11" width="6rem" sortProperty="Type" hAlign="Center">
+						<Label id="idlabel11" text="{pch>QUANTITY}"/>
+						<t:template>
+							<ObjectStatus id="idQUANTITY" state="{path:'local>Type'}" />
+						</t:template>
+					</t:Column>
+					<t:Column id="idcolumn12" width="6rem" sortProperty="Type" hAlign="Center">
+						<Label id="idlabel12" text="{pch>CUSTOMER_MAT}"/>
+						<t:template>
+							<ObjectStatus id="idCUSTOMER_MAT" state="{path:'local>Type'}" />
+						</t:template>
+					</t:Column>
+					<t:Column id="idcolumn13" width="6rem" sortProperty="Type" hAlign="Center">
+						<Label id="idlabel13" text="{pch>SUPPLIER_MAT}"/>
+						<t:template>
+							<ObjectStatus id="idSUPPLIER_MAT" state="{path:'local>Type'}" />
+						</t:template>
+					</t:Column>
+				</t:columns>
+			</t:Table>
+		</Panel>
+	</mvc:View>
