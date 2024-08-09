@@ -1,0 +1,68 @@
+<mvc:View controllerName="umc.app.controller.pch.pch02_user_d"
+  xmlns:smartfield="sap.ui.comp.smartfield"
+  xmlns:smartform="sap.ui.comp.smartform"
+  xmlns:core="sap.ui.core"
+  xmlns="sap.m"
+  xmlns:m="sap.m"
+  xmlns:f="sap.f"
+  xmlns:l="sap.ui.layout"
+  xmlns:smartFilterBar="sap.ui.comp.smartfilterbar"
+  xmlns:smartTable="sap.ui.comp.smarttable"
+  xmlns:sv="sap.ui.comp.smartvariants"
+  xmlns:mvc="sap.ui.core.mvc"
+  xmlns:uxap="sap.uxap"
+  xmlns:table="sap.ui.table"
+  xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+  height="100%">
+
+  <f:DynamicPage id="dynamicPageId" headerExpanded="true" showFooter="true" busy="{localModel>/busy}" fitContent="true" preserveHeaderStateOnScroll="true">
+    <f:title>
+      <f:DynamicPageTitle id="DynamicPageTitle">
+        <f:heading>
+          <Title id="Title" text="{pch>pch02Title}"/>
+        </f:heading>
+        <f:navigationActions>
+          <Button id="_IDGenButton3" icon="sap-icon://nav-back" tooltip="nav-back" press="navTo('RouteMainView')"/>
+        </f:navigationActions>
+      </f:DynamicPageTitle>
+    </f:title>
+
+    <f:header>
+      <f:DynamicPageHeader id="DynamicPageHeader" pinnable="true">
+        <f:content>
+          <smartFilterBar:SmartFilterBar id="smartFilterBar" useToolbar="true" entitySet="PCH_T02_USER" persistencyKey="receiptprintFilterBar" showFilterConfiguration="true">
+            <smartFilterBar:controlConfiguration>
+              <smartFilterBar:ControlConfiguration id="pch_po_no" key="PO_NO" visibleInAdvancedArea="true" label="{i18n>PO_NO}" filterType="single" controlType="input" index="1"/>
+              <smartFilterBar:ControlConfiguration id="pch_supplier" key="SUPPLIER" visibleInAdvancedArea="true" label="{i18n>SUPPLIER}" filterType="single" controlType="input" index="2"/>
+              <smartFilterBar:ControlConfiguration id="pch_status" key="STATUS" visibleInAdvancedArea="true" label="{i18n>STATUS}" filterType="single" controlType="dropDownList" index="3"/>  
+            </smartFilterBar:controlConfiguration>
+          </smartFilterBar:SmartFilterBar>
+        </f:content>
+      </f:DynamicPageHeader>
+    </f:header>
+
+    <f:content>
+      <smartTable:SmartTable id="ID" enableAutoColumnWidth="true" entitySet="PCH_T02_USER" 
+        ignoredFields="" initiallyVisibleFields="STATUS,PO_NO,D_NO,MAT_ID,PO_D_TXZ01,PO_PUR_QTY,PO_PUR_UNIT,SUPPLIER_MAT,DELIVERY_DATE,QUANTITY,DEL_PRICE,DEL_AMOUNT,STORAGE_NAME" smartFilterId="smartFilterBar" enableExport="true" beforeExport="onBeforeExport" useVariantManagement="true" useTablePersonalisation="true" header="{com>TITLE_RESULT}" showRowCount="true" persistencyKey="pch02_SmartTableAnalytical_Explored" enableAutoBinding="false">
+        
+        <smartTable:customToolbar>
+          <OverflowToolbar id="myOverflowToolbar" design="Transparent">
+            <ToolbarSpacer id="myToolbarSpacer"/>
+            <OverflowToolbarButton id="resendButton" icon="sap-icon://accept" text="{pch>PCH02_BUTTON_RESEND}" tooltip="{pch>PCH02_BUTTON_RESEND}" press="onResend"/>
+          </OverflowToolbar>
+        </smartTable:customToolbar>
+
+        <table:Table id="detailTable" rowMode="Auto" rowActionCount="1" selectionMode="None" alternateRowColors="true" fixedColumnCount="0">
+          <!-- Add columns here as needed -->
+        </table:Table>
+      </smartTable:SmartTable>
+    </f:content>
+
+    <f:footer>
+      <OverflowToolbar id="otbFooter">
+        <Button icon="sap-icon://alert" text="{=${message>/}.length}" visible="{=${message>/}.length > 0}" type="Emphasized" press="onClickMessagePopover" id="messageButton"/>
+      </OverflowToolbar>
+    </f:footer>
+
+  </f:DynamicPage>
+</mvc:View>
