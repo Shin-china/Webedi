@@ -8,6 +8,9 @@ sap.ui.define([
 
         isExternalVendor:function(){
             return true;
+        },
+        getEditableCreateCommon: function (isHEditing, isJurisdiction, isCreate) {
+            return !isHEditing && isJurisdiction && isCreate;
         }
     }
 });

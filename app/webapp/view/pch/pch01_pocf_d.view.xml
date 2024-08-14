@@ -20,7 +20,7 @@
 
   <f:DynamicPageTitle id="DynamicPageTitle">
     <f:heading>
-      <Title id="Title" text="{pch>pch01Title}"/>
+      <Title id="Title" text="{pch>PCH01_TITLE}"/>
     </f:heading>
     <f:navigationActions>
       <Button id="_IDGenButton3" icon="sap-icon://nav-back" tooltip="nav-back" press="navTo('RouteMainView')"/>
@@ -56,7 +56,7 @@
   </f:DynamicPageHeader>
 
   <smartTable:SmartTable  id="idSmartTable" smartFilterId="smartFilterBar" enableAutoColumnWidth="true" entitySet="PCH_01_DL" tableType="Table"
-          ignoredFields="" initiallyVisibleFields="SUPPLIER,BP_NAME1,PO_NO,MAT_ID,PO_TYPE,PO_DATE,PO_D_DATE,CUSTOMER_MAT,SUPPLIER_MAT,STATUS" enableExport="true" beforeExport="onBeforeExport" header="{pch>tResult}" enableAutoBinding="true" editable="false" >
+          ignoredFields="" initiallyVisibleFields="SUPPLIER,BP_NAME1,PO_NO,MAT_ID,PO_TYPE,PO_DATE,PO_D_DATE,CUSTOMER_MAT,SUPPLIER_MAT,STATUS" enableExport="true" beforeExport="onBeforeExport" header="{pch>D_RESULT}" enableAutoBinding="true" editable="false" >
     <t:Table id="detailTable" rowMode="Auto" rowActionCount="1" selectionMode="None" alternateRowColors="true" fixedColumnCount="0">
       <t:columns>
         <t:Column id="colSupplier" width="10rem" sortProperty="SUPPLIER" filterProperty="SUPPLIER">

@@ -3,10 +3,10 @@
 		<content>
 			<IconTabBar id="idIconTabBarNoIcons" expanded="{device>/isNoPhone}" class="sapUiResponsiveContentPadding">
 				<items>
-					<IconTabFilter id="idIconTabFilter1" text="{pch>tabUPLOAD}" key="result2">
+					<IconTabFilter id="idIconTabFilter1" text="{pch>PCH01_TAB_UOLOAD}" key="result2">
 						<mvc:XMLView id="idXMLView1" viewName="umc.app.view.pch.pch01_pocf_u"/>
 					</IconTabFilter>
-                	<IconTabFilter  id="idIconTabFilter2" text="{pch>tabDOWNLOAD}" key="result1">
+                	<IconTabFilter  id="idIconTabFilter2" text="{pch>PCH01_TAB_DISPLAY}" key="result1">
 						<mvc:XMLView id="idXMLView2" viewName="umc.app.view.pch.pch01_pocf_d"/>
 					</IconTabFilter>
 				</items>
