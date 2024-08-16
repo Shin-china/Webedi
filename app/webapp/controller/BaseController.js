@@ -153,6 +153,9 @@ sap.ui.define([
         // Message 弹出框
         onClickMessagePopover:function(oEvent){
             this.MessageTools._onClickMessagePopover(oEvent,this.getView());
+        },
+        _setBusy: function (isBusy) {
+            this.getView().setBusy(isBusy);
         }
 	});
 });
