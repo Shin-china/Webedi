@@ -24,4 +24,10 @@ service TableService {
       TO_PLANT : redirected to MST_T02_SAP_PLANT
     };
 
+
+
+ //画面
+  action PCH01_CHECK_DATA(shelfJson : String)         returns String; //棚番一括アップロード画面：对于上传数据check
+  action PCH01_SAVE_DATA(shelfJson : String)          returns String; //棚番一括アップロード画面：对于上传数据保存
+
 }
