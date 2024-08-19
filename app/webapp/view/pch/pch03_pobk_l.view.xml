@@ -1,0 +1,88 @@
+<mvc:View controllerName="root.controller.mst.pch03_pobk_l"
+	xmlns:smartfield="sap.ui.comp.smartfield"
+	xmlns:smartform="sap.ui.comp.smartform"
+	xmlns:core="sap.ui.core"
+	xmlns="sap.m"
+	xmlns:f="sap.f"
+	xmlns:l="sap.ui.layout"
+	xmlns:smartFilterBar="sap.ui.comp.smartfilterbar"
+	xmlns:smartTable="sap.ui.comp.smarttable"
+	xmlns:sv="sap.ui.comp.smartvariants"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:uxap="sap.uxap"
+	xmlns:table="sap.ui.table"
+	xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+
+
+
+	<f:DynamicPage id="dynamicPageId" headerExpanded="true" showFooter="true" busy="{localModel>/isBusy}">
+		<f:title>
+			<f:DynamicPageTitle id="DynamicPageTitle">
+				<f:heading>
+					<Title id="Title" text="{mst>MST02_TITLE}"/>
+
+				</f:heading>
+				<f:navigationActions>
+					<Button id="_IDGenButto" icon="sap-icon://home" tooltip="nav-back" press="navToHome"/>
+				</f:navigationActions>
+			</f:DynamicPageTitle>
+		</f:title>
+
+
+
+		<f:header>
+			<f:DynamicPageHeader id="DynamicPageHeader" pinnable="true">
+				<f:content>
+
+					<smartFilterBar:SmartFilterBar id="smartFilterBar" useToolbar="true" entitySet="MST02_LOCAL_VIEW" persistencyKey="mst02_receiptprintFilterBar" showFilterConfiguration="true">
+						<smartFilterBar:controlConfiguration>
+							<smartFilterBar:ControlConfiguration id="_IDGenControlConfiguration1" index="1" key="PLANT_ID"  visibleInAdvancedArea="true" controlType="dropDownList" displayBehaviour="idAndDescription" filterType="single"/>
+							<smartFilterBar:ControlConfiguration id="_IDGenControlConfiguration2" index="2" key="PLANT_NAME"  visibleInAdvancedArea="true" />
+							<smartFilterBar:ControlConfiguration id="_IDGenControlConfiguration3" index="3" key="LOC_ID"  visibleInAdvancedArea="true" controlType="dropDownList" displayBehaviour="idAndDescription" filterType="single" />
+							<smartFilterBar:ControlConfiguration id="_IDGenControlConfiguration4" index="4" key="LOC_NAME"  visibleInAdvancedArea="true" />
+
+
+						</smartFilterBar:controlConfiguration>
+					</smartFilterBar:SmartFilterBar>
+				</f:content>
+			</f:DynamicPageHeader>
+		</f:header>
+
+		<f:content>
+
+
+			<smartTable:SmartTable id="smartTable" enableAutoColumnWidth="true" showFullScreenButton="true" persistencyKey="mst02_receiptprintTable" entitySet="MST02_LOCAL_VIEW" requestAtLeastFields="LOC_ID,PLANT_ID" smartFilterId="smartFilterBar" beforeExport="onBeforeExport" enableExport="true" useVariantManagement="true" useTablePersonalisation="true" initiallyVisibleFields="PLANT_ID,PLANT_NAME,LOC_ID,LOC_NAME,LOC_IS_UPN,LOC_BP_ID,BP_NAME,UP_BY,UP_TIME" tableType="Table" showRowCount="true" beforeRebindTable="onRebind" placeToolbarInTable="true" header="{com>TITLE_RESULT}" enableAutoBinding="false">
+
+				<smartTable:customToolbar>
+					<OverflowToolbar id="ID_header">
+						<content>
+						<ToolbarSpacer id="ID_ToolbarSpacer" />
+						<Button id="_IDGenButton2" text="{mst>MST02_BUTTON_RES}" press="onRes" enabled="true" width="10em"/>
+						</content>
+					</OverflowToolbar>
+				</smartTable:customToolbar>
+
+				<table:Table id="detailTable" rowMode="Auto" selectionMode="None" rowActionCount="1">
+
+					<table:rowActionTemplate>
+						<table:RowAction id="RowAction">
+							<table:items>
+								<table:RowActionItem id="RowActionItem" type="Navigation" press="onPress"  icon="sap-icon://edit"/>
+							</table:items>
+						</table:RowAction>
+					</table:rowActionTemplate>
+
+				</table:Table>
+
+
+			</smartTable:SmartTable>
+		</f:content>
+	<f:footer>
+      <OverflowToolbar id="otbFooter" visible="{=${message>/}.length > 0}">
+        <Button icon="sap-icon://alert" text="{=${message>/}.length}" visible="{=${message>/}.length > 0}" type="Emphasized" press="onClickMessagePopover" id="messageButton">
+        </Button>
+      </OverflowToolbar>
+    </f:footer>
+	</f:DynamicPage>
+
+</mvc:View>
