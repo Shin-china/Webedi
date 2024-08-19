@@ -14,6 +14,8 @@
 
 	<!-- ACTUAL DEPENDENCIES -->
 	<dependencies>
+
+
 		<!-- CDS SPRING BOOT STARTER -->
 		<dependency>
 			<groupId>com.sap.cds</groupId>
@@ -72,13 +74,23 @@
 			<scope>runtime</scope>
 		</dependency>
 
-		<!-- MAIL Server -->
 
+		<!-- MAIL Server -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-mail</artifactId>
 			<version>3.2.5</version>
 		</dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>4.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.mail</groupId>
+            <artifactId>javax.mail</artifactId>
+            <version>1.6.2</version>
+        </dependency>
 
 		<!-- pg数据库 -->
 		<dependency>

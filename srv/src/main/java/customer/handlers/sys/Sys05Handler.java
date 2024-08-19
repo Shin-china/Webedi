@@ -4,17 +4,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSON;
+import com.sap.cds.services.handler.EventHandler;
 import com.sap.cds.services.handler.annotations.On;
 import com.sap.cds.services.handler.annotations.ServiceName;
 
 import cds.gen.tableservice.SYS05MailtempAddContext;
+import cds.gen.tableservice.SYS05MailtempDelContext;
 import cds.gen.tableservice.TableService_;
 import customer.bean.sys.Sys005Mail;
 import customer.service.sys.SysMailService;
 
 @Component
 @ServiceName(TableService_.CDS_NAME)
-public class Sys05Handler {
+public class Sys05Handler implements EventHandler {
     @Autowired
     SysMailService sysMailService;
 
@@ -22,6 +24,7 @@ public class Sys05Handler {
     @On(event = "SYS05_MAILTEMP_add")
     public void addMailTemp(SYS05MailtempAddContext context) {
         String content = context.getUserJson();
+        System.out.println(content);
         Sys005Mail mail = JSON.parseObject(content, Sys005Mail.class);
         if (sysMailService.tempIsExist(mail.getTEMPLATE_ID())) {
             sysMailService.updateMailTemp(mail);
@@ -33,8 +36,8 @@ public class Sys05Handler {
     }
 
     // 删除邮箱模板
-    @On(event = "SYS05_MAILTEMP_delete")
-    public void deleteMailTemp(SYS05MailtempAddContext context) {
+    @On(event = "SYS05_MAILTEMP_del")
+    public void deleteMailTemp(SYS05MailtempDelContext context) {
         String content = context.getUserJson();
         Sys005Mail mail = JSON.parseObject(content, Sys005Mail.class);
         sysMailService.deleteMailTemp(mail.getTEMPLATE_ID());

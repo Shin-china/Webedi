@@ -145,7 +145,14 @@ entity T10_MENU {
 
 entity T11_MAIL_TEMPLATE{
     @title: '{i18n>TEMPLATE_ID}' key TEMPLATE_ID : String(36); //邮件ID
-    @title: '{i18n>MAIL_NAME}' MAIL_NAME : localized String(200); //邮件名称
-    @title: '{i18n>MAIL_TITLE}' MAIL_TITLE : localized String(50); //邮件标题
-    @title: '{i18n>MAIL_CONTENT}' MAIL_CONTENT : localized String(2000); //邮件内容
+    @title: '{i18n>MAIL_NAME}' MAIL_NAME :  String(200); //邮件名称
+    @title: '{i18n>MAIL_TITLE}' MAIL_TITLE : String(50); //邮件标题
+    @title: '{i18n>MAIL_CONTENT}' MAIL_CONTENT :  String(2000); //邮件内容
+}
+
+entity T12_CONFIG {
+  @title: '{i18n>CON_CODE}' key CON_CODE                             : String(50); //   系统配置
+                                @title: '{i18n>CON_VALUE}' CON_VALUE : String(200); //   系统配置值
+                                @title: '{i18n>CON_DESC}' CON_DESC   : String(500); //  系统配置描述
+                                @title: '{i18n>CON_SORT}' CON_SORT   : Integer; //   排序
 }

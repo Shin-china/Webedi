@@ -9,7 +9,7 @@
 	height="100%"
 	busyIndicatorDelay="0"
 >
-<f:DynamicPage id="idDynamicPage" showFooter="true">
+<f:DynamicPage id="idDynamicPage" headerExpanded="true" fitContent="true" preserveHeaderStateOnScroll="true" showFooter="true">
     <!-- Title -->
     <f:title>
         <f:DynamicPageTitle id="idDynamicPageTitle">
@@ -36,17 +36,17 @@
                         <!--Temlate ID  -->
                         <l:VerticalLayout id="idVerticalLayout1">
                             <Label id="idLabel1" labelFor="LAB_TEMPLATE_ID" text="TEMPLATE_ID"/>
-                            <Input id="idInput1" value="{TEMPLATE_ID}" editable="true" width="18em"/>
+                            <Input id="TEMPLATE_ID" value="{TEMPLATE_ID}" editable="true" width="18em"/>
                         </l:VerticalLayout>
                         <!--Temlate ID  -->
                         <l:VerticalLayout id="idVerticalLayout2" >
                             <Label id="idLabel2" labelFor="LAB_MAIL_NAME" text="MAIL_NAME"/>
-                            <Input id="idInput2" value="{MAIL_NAME}"/>
+                            <Input id="TEMPLATE_NAME" value="{MAIL_NAME}"/>
                         </l:VerticalLayout>
                         <!--Temlate ID  -->
                         <l:VerticalLayout id="idVerticalLayout3">
                             <Label id="idLabel3" labelFor="LAB_MAIL_TITLE" text="MAIL_TITLE"/>
-                            <Input id="idInput3" value="{MAIL_TITLE}"/>
+                            <Input id="TEMPLATE_TITLE" value="{MAIL_TITLE}"/>
                         </l:VerticalLayout>
                     </FlexBox>
 
@@ -57,7 +57,7 @@
      </f:header>
      <!-- Item -->
      <f:content>
-                <TextArea width="1540px"  height="600px" id="idTextArea" value="{MAIL_CONTENT}"/>
+                <TextArea width="1540px"  height="600px" id="TEMPLATE_CONTENT" value="{MAIL_CONTENT}"/>
      </f:content>
 </f:DynamicPage>
 </mvc:View>

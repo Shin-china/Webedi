@@ -153,6 +153,7 @@
         {"pattern": "RouteCre_sys01","name": "RouteCre_sys01","target": "sys01_user_d"},
         {"pattern": "RouteList_sys05","name": "RouteList_sys05","target": "sys05_mail_l"},
         {"pattern": "RouteEdit_sys05/{headID}","name": "RouteEdit_sys05","target": "sys05_mail_d"},
+        {"pattern": "RouteCre_sys05","name": "RouteCre_sys05","target": "sys05_mail_d"},
         {"pattern": "RouteCre_pch01","name": "RouteCre_pch01","target": "pch01_pocf_h"},
         {"pattern": "RouteCre_pch02","name": "RouteCre_pch02","target": "pch02_user_d"}
 

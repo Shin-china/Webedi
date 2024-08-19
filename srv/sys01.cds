@@ -7,4 +7,5 @@ extend service TableService with {
   action SYS01_USER_editUser(userJson : String) returns String;//Edit User
   action SYS01_USER_deleteUser(userJson : String) returns String;//Delete User
 
+  action test(userJson : String) returns String;//Delete User
 }

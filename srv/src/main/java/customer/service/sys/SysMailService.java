@@ -8,12 +8,12 @@ import com.sap.cds.services.messages.Messages;
 
 import cds.gen.sys.T11MailTemplate;
 import customer.bean.sys.Sys005Mail;
-import customer.dao.sys.MailTempDao;
+import customer.dao.sys.T11MailTempDao;
 
 @Component
 public class SysMailService {
     @Autowired
-    private MailTempDao mailTempDao;
+    private T11MailTempDao mailTempDao;
 
     @Autowired
     Messages messages;
