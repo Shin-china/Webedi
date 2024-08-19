@@ -35,6 +35,41 @@ sap.ui.define([
                 // 设置文件名为当前日期和时间
                 oSettings.fileName = `仕入先コード_納期回答照会_${sDate}_${sTime}.xlsx`;
             }
+        },
+
+        onResend: function() {
+            var oSelectedContexts = this.byId("smartTable").getTable().getSelectedContexts();
+
+            if (oSelectedContexts.length === 0) {
+                sap.m.MessageToast.show(this._ResourceBundle.getText("pchNoSelectionMessage"));
+                return;
+            }
+
+            var aSelectedPOs = oSelectedContexts.map(function(oContext) {
+                return oContext.getObject();
+            });
+
+            var that = this;
+            var oActionParams = {
+                "PurchaseOrders": aSelectedPOs.map(function(po) {
+                    return po.PO_NO;  // 假设 PO_NO 是采购订单号
+                })
+            };
+
+            this.setBusy(true);
+
+            this._oDataModel.callFunction("/PCH02_CONFIRMATION_REQUEST", { 
+                method: "POST",
+                urlParameters: oActionParams,
+                success: function(oData, response) {
+                    that.setBusy(false);
+                    sap.m.MessageToast.show(that._ResourceBundle.getText("pchResendSuccessMessage"));
+                },
+                error: function(oError) {
+                    that.setBusy(false);
+                    sap.m.MessageBox.error(that._ResourceBundle.getText("pchResendErrorMessage"));
+                }
+            });
         }
     });
 });

@@ -20,7 +20,7 @@ extend service TableService {
                 on  $user         =  T04.USER_ID
                 and T04.USER_TYPE in ('1')
 
-            inner join view.SYS_T09_USER_2_PLANT T05
+            inner join view.SYS_T09_USER_2_PLANT as T05
                 on  T05.USER_ID  = $user
                 and T02.PLANT_ID = T05.PLANT_ID
 
@@ -76,6 +76,6 @@ extend service TableService {
                     T02.STORAGE_LOC || '' || T02.STORAGE_TXT as STORAGE_NAME : String(255) // 納品先名
             }
 
- action PCH02_CONFIRMATION_RESQUEST(parms : String) returns String;
+ action PCH02_CONFIRMATION_REQUEST(parms : String) returns String;
 
 }
