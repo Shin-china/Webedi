@@ -3,7 +3,17 @@ namespace MST;
 using {COMM.IF_CUID_FILED as IF_CUID_FILED} from './model-common';
 using {COMM.CUID_FILED as CUID_FILED} from './model-common';
 using {cuid} from '@sap/cds/common';
+entity MST_T01_SAP_MAT : IF_CUID_FILED { //物料基本信息
+  @title: '{i18n>MAT_ID}' key MAT_ID                               : String(18) not null; //物料编号
+  @title: '{i18n>MAT_UNIT}' MAT_UNIT                               : String(3); //物料基本单位
+  @title: '{i18n>MAT_TYPE}' MAT_TYPE                               : String(4); //物料类型区别字符MTART
+  @title: '{i18n>MAT_GROUP}' MAT_GROUP                               : String(9); //物料组MATKL
+  @title: '{i18n>MAT_STATUS}' MAT_STATUS                               : String(1); //状态LVORM
+  @title: '{i18n>MAT_NAME}' MAT_NAME                               : String(40); //物料名称
 
+
+                      
+}
 entity T02_SAP_PLANT : IF_CUID_FILED { //工厂表
   @title: '{i18n>PLANT_ID}' key PLANT_ID                               : String(4) not null; //工厂code
   @title: '{i18n>PLANT_NAME}' PLANT_NAME                               : String(40); //工厂名称
