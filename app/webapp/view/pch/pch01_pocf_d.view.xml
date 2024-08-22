@@ -37,15 +37,8 @@
           <smartFilterBar:ControlConfiguration id="idControlConfiguration4" key="MAT_ID"       visibleInAdvancedArea="true" label="{pch>D_MAT_ID}"       filterType='single' controlType="auto" index="3"/>
           <smartFilterBar:ControlConfiguration id="idControlConfiguration5" key="PO_TYPE"      visibleInAdvancedArea="true" label="{pch>D_PO_TYPE}"      filterType='single' controlType="dropDownList" index="4"/> 
           
-          <smartFilterBar:ControlConfiguration index="5" id="idControlConfiguration6" key="STATUS" label="{pch>D_STATUS}" visibleInAdvancedArea="true">
-            <smartFilterBar:customControl>
-              <MultiComboBox id="idmulticomboboxSTASUT">
-                <core:ListItem id="idListItem1" key="1" text="未回答(発注)"/>
-                <core:ListItem id="idListItem2" key="2" text="一部回答(発注)"/>
-                <core:ListItem id="idListItem3" key="3" text="回答済(発注)"/>
-              </MultiComboBox>
-            </smartFilterBar:customControl>
-          </smartFilterBar:ControlConfiguration>
+          <smartFilterBar:ControlConfiguration index="5" id="idControlConfiguration6" key="STATUS" label="{pch>D_STATUS}"  visibleInAdvancedArea="true" filterType='single' controlType="dropDownList"/>
+          
           <smartFilterBar:ControlConfiguration id="idControlConfiguration7" key="PO_DATE"      visibleInAdvancedArea="true" label="{pch>D_PO_DATE}"      filterType='single' controlType="date" index="6"/> 
           <smartFilterBar:ControlConfiguration id="idControlConfiguration8" key="PO_D_DATE"    visibleInAdvancedArea="true" label="{pch>D_PO_D_DATE}"    filterType='single' controlType="date" index="7"/> 
           <smartFilterBar:ControlConfiguration id="idControlConfiguration9" key="CUSTOMER_MAT" visibleInAdvancedArea="true" label="{pch>D_CUSTOMER_MAT}" filterType='single' controlType="auto" index="8"/> 
