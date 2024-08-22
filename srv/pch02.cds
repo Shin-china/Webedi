@@ -79,3 +79,9 @@ extend service TableService {
  action PCH02_CONFIRMATION_REQUEST(parms : String) returns String;
 
 }
+
+annotate TableService.PCH_T02_USER with {
+  
+  STATUS @(Common: {ValueList: {entity: 'PCH02_STATUS_POP', }});
+
+};
