@@ -1,4 +1,4 @@
-<mvc:View controllerName="root.controller.mst.pch03_pobk_l"
+<mvc:View controllerName="umc.app.controller.pch.pch03_pobk_l"
 	xmlns:smartfield="sap.ui.comp.smartfield"
 	xmlns:smartform="sap.ui.comp.smartform"
 	xmlns:core="sap.ui.core"
@@ -19,7 +19,7 @@
 		<f:title>
 			<f:DynamicPageTitle id="DynamicPageTitle">
 				<f:heading>
-					<Title id="Title" text="{mst>MST02_TITLE}"/>
+					<Title id="Title" text="{mst>PCH03_TITLE}"/>
 
 				</f:heading>
 				<f:navigationActions>
@@ -34,13 +34,19 @@
 			<f:DynamicPageHeader id="DynamicPageHeader" pinnable="true">
 				<f:content>
 
-					<smartFilterBar:SmartFilterBar id="smartFilterBar" useToolbar="true" entitySet="MST02_LOCAL_VIEW" persistencyKey="mst02_receiptprintFilterBar" showFilterConfiguration="true">
+					<smartFilterBar:SmartFilterBar id="smartFilterBar" useToolbar="true" entitySet="PCH_T03_PO_ITEM" persistencyKey="mst02_receiptprintFilterBar" showFilterConfiguration="true">
 						<smartFilterBar:controlConfiguration>
-							<smartFilterBar:ControlConfiguration id="_IDGenControlConfiguration1" index="1" key="PLANT_ID"  visibleInAdvancedArea="true" controlType="dropDownList" displayBehaviour="idAndDescription" filterType="single"/>
-							<smartFilterBar:ControlConfiguration id="_IDGenControlConfiguration2" index="2" key="PLANT_NAME"  visibleInAdvancedArea="true" />
-							<smartFilterBar:ControlConfiguration id="_IDGenControlConfiguration3" index="3" key="LOC_ID"  visibleInAdvancedArea="true" controlType="dropDownList" displayBehaviour="idAndDescription" filterType="single" />
-							<smartFilterBar:ControlConfiguration id="_IDGenControlConfiguration4" index="4" key="LOC_NAME"  visibleInAdvancedArea="true" />
-
+						<smartFilterBar:ControlConfiguration id="SUPPLIER" index="1" key="SUPPLIER"  visibleInAdvancedArea="true" />
+						<smartFilterBar:ControlConfiguration id="SUPPLIER_MAT" index="2" key="SUPPLIER_MAT"  visibleInAdvancedArea="true" />	
+						<smartFilterBar:ControlConfiguration id="PO_NO" index="3" key="PO_NO"  visibleInAdvancedArea="true" />	
+						<smartFilterBar:ControlConfiguration id="D_NO" index="4" key="D_NO"  visibleInAdvancedArea="true" />	
+						<smartFilterBar:ControlConfiguration id="PO_TYPE" index="5" key="PO_TYPE"  visibleInAdvancedArea="true" />	
+						<smartFilterBar:ControlConfiguration id="MAT_ID" index="6" key="MAT_ID"  visibleInAdvancedArea="true" />	
+						<smartFilterBar:ControlConfiguration id="PO_DATE" index="7" key="PO_DATE"  visibleInAdvancedArea="true" />	
+						<smartFilterBar:ControlConfiguration id="STATUS" index="8" key="STATUS"  visibleInAdvancedArea="true" />	
+						<smartFilterBar:ControlConfiguration id="CD_BY" index="9" key="CD_BY"  visibleInAdvancedArea="true" />	
+						<smartFilterBar:ControlConfiguration id="PO_D_DATE" index="10" key="PO_D_DATE"  visibleInAdvancedArea="true" />	
+						<smartFilterBar:ControlConfiguration id="ZABC" index="11" key="ZABC"  visibleInAdvancedArea="true" />	
 
 						</smartFilterBar:controlConfiguration>
 					</smartFilterBar:SmartFilterBar>
@@ -51,7 +57,7 @@
 		<f:content>
 
 
-			<smartTable:SmartTable id="smartTable" enableAutoColumnWidth="true" showFullScreenButton="true" persistencyKey="mst02_receiptprintTable" entitySet="MST02_LOCAL_VIEW" requestAtLeastFields="LOC_ID,PLANT_ID" smartFilterId="smartFilterBar" beforeExport="onBeforeExport" enableExport="true" useVariantManagement="true" useTablePersonalisation="true" initiallyVisibleFields="PLANT_ID,PLANT_NAME,LOC_ID,LOC_NAME,LOC_IS_UPN,LOC_BP_ID,BP_NAME,UP_BY,UP_TIME" tableType="Table" showRowCount="true" beforeRebindTable="onRebind" placeToolbarInTable="true" header="{com>TITLE_RESULT}" enableAutoBinding="false">
+			<smartTable:SmartTable id="smartTable" enableAutoColumnWidth="true" showFullScreenButton="true" persistencyKey="mst02_receiptprintTable" entitySet="PCH_T03_PO_ITEM" requestAtLeastFields="" smartFilterId="smartFilterBar" beforeExport="onBeforeExport" enableExport="true" useVariantManagement="true" useTablePersonalisation="true" initiallyVisibleFields="PO_TYPE,PO_NO,D_NO,MAT_ID,PO_D_TXZ01,PO_PUR_QTY,PO_PUR_UNIT,STATUS,SUPPLIER,SUPPLIER_MAT,CD_BY,CURRENCY,DEL_PRICE,UNIT_PRICE,DEL_AMOUNT,PO_DATE,PO_D_DATE,MEMO," tableType="Table" showRowCount="true" beforeRebindTable="onRebind" placeToolbarInTable="true" header="{com>TITLE_RESULT}" enableAutoBinding="false">
 
 				<smartTable:customToolbar>
 					<OverflowToolbar id="ID_header">
