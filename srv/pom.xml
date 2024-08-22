@@ -33,10 +33,6 @@
 			<artifactId>odata-core</artifactId>
 		</dependency>
 
-		<dependency>
-			<groupId>com.sap.cloud.sdk.datamodel</groupId>
-			<artifactId>odata-generator</artifactId>
-		</dependency>
 
 
 
