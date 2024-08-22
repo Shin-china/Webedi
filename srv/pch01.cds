@@ -17,7 +17,19 @@ extend service TableService {
             T02.PO_TYPE,                                        
             T01.PO_DATE,                    
             T02.PO_D_DATE,                  
-            T02.CUSTOMER_MAT,                   
+            T02.CUSTOMER_MAT, 
+            T02.STATUS ,                 
             T02.SUPPLIER_MAT                    
         }
+
+
+
+
 }
+
+
+annotate TableService.PCH_01_DL with {
+  
+  STATUS @(Common: {ValueList: {entity: 'PCH01_STATUS_POP', }});
+
+};
