@@ -30,6 +30,6 @@ extend service TableService {
 
 annotate TableService.PCH_01_DL with {
   
-  STATUS @(Common: {ValueList: {entity: 'PCH01_STATUS_POP', }});
+  STATUS @(Common: {ValueList: {entity: 'PCH01_STATUS_POP_1', }});
 
 };

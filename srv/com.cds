@@ -5,7 +5,7 @@ using {SYS} from '../db/model-sys';
 
 extend service TableService with {
   //
-  entity PCH01_STATUS_POP      as
+  entity PCH01_STATUS_POP_1      as
     select from SYS.T07_COM_OP_H T01
     inner join SYS.T08_COM_OP_D T02
     ON T01.H_CODE=T02.H_CODE
@@ -32,7 +32,7 @@ extend service TableService with {
 }
 
 
-annotate TableService.PCH01_STATUS_POP with {
+annotate TableService.PCH01_STATUS_POP_1 with {
   VALUE @Common.Text: {$value: NAME}
 };
 
