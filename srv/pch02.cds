@@ -17,11 +17,11 @@ extend service TableService {
                     and T02.D_NO  = T03.D_NO
                 )
             inner join view.SYS_T01_USER as T04
-                on  $user         =  T04.USER_ID
+                on  ifnull($user,'anonymous')   =  T04.USER_ID
                 and T04.USER_TYPE in ('1')
 
             inner join view.SYS_T09_USER_2_PLANT as T05
-                on  T05.USER_ID  = $user
+                on  T05.USER_ID  = ifnull($user,'anonymous') 
                 and T02.PLANT_ID = T05.PLANT_ID
 
             distinct {
@@ -82,6 +82,6 @@ extend service TableService {
 
 annotate TableService.PCH_T02_USER with {
   
-  STATUS @(Common: {ValueList: {entity: 'PCH02_STATUS_POP', }});
+  STATUS @(Common: {ValueList: {entity: 'PCH02_STATUS_POP', }}); 
 
 };
