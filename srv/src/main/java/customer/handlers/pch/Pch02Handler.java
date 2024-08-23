@@ -1,25 +1,75 @@
-package customer.handlers.pch;
+// package customer.odata;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.support.ResourceBundleMessageSource;
-import org.springframework.stereotype.Component;
-import com.sap.cds.services.handler.annotations.On;
-import com.sap.cds.services.handler.annotations.ServiceName;
+// import java.io.IOException;
+// import java.util.HashMap;
 
-import cds.gen.tableservice.TableService_;
+// import com.alibaba.fastjson.JSON;
+// import com.alibaba.fastjson.JSONObject;
+// import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
+// import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
+// import com.sap.cloud.sdk.cloudplatform.connectivity.DestinationAccessor;
+// import com.sap.cloud.sdk.cloudplatform.connectivity.Header;
+// import com.sap.cloud.sdk.cloudplatform.connectivity.HttpClientAccessor;
+// import com.sap.cloud.sdk.datamodel.odata.client.ODataProtocol;
+// import com.sap.cloud.sdk.datamodel.odata.client.request.ODataRequestResultGeneric;
 
-import cds.gen.tableservice.PCH02ConfirmationREQUESTContext;
-import com.sap.cds.services.handler.EventHandler;
+// import org.apache.http.client.HttpClient;
+// import org.apache.logging.log4j.util.Base64Util;
+// import org.slf4j.Logger;
+// import org.slf4j.LoggerFactory;
+// import org.springframework.beans.factory.annotation.Autowired;
+// import org.springframework.stereotype.Component;
 
-@Component
-@ServiceName(TableService_.CDS_NAME)
-public class Pch02Handler implements EventHandler {
+// import cds.gen.sys.T11IfManager;
+// import cds.gen.tableservice.TableService_;
+// import customer.tool.Eenvironment;
+// import com.sap.cds.services.handler.EventHandler;
+// @Component
+// @ServiceName(TableService_.CDS_NAME)
+// public class Pch02Handler implements EventHandler {
 
-    // 监听 `PCH02_CONFIRMATION_REQUEST` 事件
-    @On(event = "PCH02_CONFIRMATION_REQUEST")
-    public void handleConfirmationRequest(PCH02ConfirmationREQUESTContext context) {
-        // 返回成功消息
-        System.out.println("aabb");
-        context.setResult("Success");
-    }
-}
+//     private static final Logger logger = LoggerFactory.getLogger(Pch02Handler.class);
+
+//     @Autowired
+//     private IFSManageDao ifsManageDao;
+
+//     @On(entity = TableService_.PCH02ConfirmationREQUEST, event = CdsService.EVENT_CREATE)
+//     public void onPCH02ConfirmationREQUEST(PCH02ConfirmationREQUESTContext context) {
+//         try {
+//             // 从前端参数中获取字符串
+//             String parms = context.getParms();
+            
+//             // 解析前台传入的参数，将JSON字符串解析为HashMap
+//             HashMap<String, String> parameters = parseParameters(parms);
+
+//             // 获取 Web Service 配置信息
+//             T11IfManager webServiceConfig = ifsManageDao.getByCode("MM028");
+
+//             if (webServiceConfig != null) {
+//                 // 调用 Web Service 的 get 方法
+//                 String response = S4OdataTools.get(webServiceConfig, 0, parameters, null);
+
+//                 // 将 Web Service 的响应结果返回给前台
+//                 context.setResult(response);
+//             } else {
+//                 // 如果没有找到配置，返回错误信息
+//                 context.setResult("Web Service configuration not found.");
+//             }
+//         } catch (Exception e) {
+//             logger.error("Error occurred during PCH02ConfirmationREQUEST handling.", e);
+//             context.setResult("Error occurred: " + e.getMessage());
+//         }
+//     }
+
+//     // 解析前台传入的参数（假设为 JSON 格式字符串）
+//     private HashMap<String, String> parseParameters(String parms) {
+//         HashMap<String, String> parameters = new HashMap<>();
+//         if (parms != null && !parms.isEmpty()) {
+//             JSONObject jsonObject = JSON.parseObject(parms);
+//             for (String key : jsonObject.keySet()) {
+//                 parameters.put(key, jsonObject.getString(key));
+//             }
+//         }
+//         return parameters;
+//     }
+// }

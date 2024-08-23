@@ -16,13 +16,7 @@ extend service TableService {
                         T02.PO_NO = T03.PO_NO
                     and T02.D_NO  = T03.D_NO
                 )
-            inner join view.SYS_T01_USER as T04
-                on  ifnull($user,'anonymous')   =  T04.USER_ID
-                and T04.USER_TYPE in ('1')
-
-            inner join view.SYS_T09_USER_2_PLANT as T05
-                on  T05.USER_ID  = ifnull($user,'anonymous') 
-                and T02.PLANT_ID = T05.PLANT_ID
+  
 
             distinct {
                 key T02.PO_NO,              // 発注番号
@@ -53,10 +47,7 @@ extend service TableService {
                         T02.PO_NO = T03.PO_NO
                     and T02.D_NO  = T03.D_NO
                 )
-            inner join view.SYS_T01_USER as T04
-                on  $user         =  T04.USER_ID
-                and T04.USER_TYPE in ('2')
-                and T01.SUPPLIER  =  T04.BP_NUMBER
+         
 
             distinct {
                 key T02.PO_NO,            // 発注番号

@@ -83,19 +83,57 @@ sap.ui.define([
         },
 
         onResend: function () {
-            // 这里的 `this` 指向当前的 Controller 实例
+            var oTable = this.getView().byId("detailTable");
+            var aSelectedIndices = oTable.getSelectedIndices();
+            
+            if (aSelectedIndices.length === 0) {
+                sap.m.MessageToast.show(this._ResourceBundle.getText("選択されたデータがありません、データを選択してください")); // 提示未选择数据
+                return;
+            }
+
+            var aSelectedData = aSelectedIndices.map(function (iIndex) {
+                return oTable.getContextByIndex(iIndex).getObject();
+            });
+
+            // 检查是否有 STATUS 为 "2.反映済" 的数据
+            var bHasReflected = aSelectedData.some(function (oData) {
+                return oData.STATUS === "2";
+            });
+
+            if (bHasReflected) {
+                sap.m.MessageToast.show("反映済された情報なので、再送信できません。"); // 显示错误消息
+                return; // 终止后续操作
+            }
+
+            // 构造请求参数
+            var oParams = this._buildParams(aSelectedData);
+
+            // 调用后台Action
             this.getModel().callFunction("/PCH02_CONFIRMATION_REQUEST", {
                 method: "POST",
-                urlParameters: this.getData(),
-                // urlParameters: {
-                //     parms: "your_parameters_here" // 替换为实际参数
-                // },
+                urlParameters: {
+                    parms: JSON.stringify(oParams)  // 将参数序列化为JSON字符串
+                },
                 success: function (result) {
                     sap.m.MessageToast.show("Action executed successfully.");
                 },
                 error: function (oError) {
                     sap.m.MessageToast.show("Error executing action.");
                 }
+            });
+        },
+
+        _buildParams: function(aSelectedData) {
+            // 根据选中的数据构建参数
+            return aSelectedData.map(function(oData) {
+                return {
+                    PONO: oData.PO_NO,                    // 采购订单号
+                    DNO: oData.D_NO,                      // 明细行号
+                    SEQ: oData.SEQ,                       // 序号
+                    DELIVERYDATE: oData.DELIVERY_DATE,    // 交货日期
+                    QUANTITY: oData.QUANTITY,             // 交货数量
+                    DELFLAG: oData.DELFLAG || ""          // 删除标识（如果为空则传递空字符串）
+                };
             });
         }
     });
