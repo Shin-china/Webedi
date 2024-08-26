@@ -23,7 +23,7 @@ extend service TableService {
             T02.SUPPLIER_MAT                    
         };
 
-    entity PCH_01_AUTH  as
+    entity PCH_01_AUTH1  as
         select from view.SYS_T01_USER as T01
         {
             key T01.USER_ID,
@@ -39,7 +39,6 @@ extend service TableService {
                            $user
                        end;
 
-        }
    entity PCH_01_PLANT_CHECK  as 
         select from SYS.T09_USER_2_PLANT as T09
         inner join PCH.PCH_T02_PO_D as T02
@@ -47,7 +46,15 @@ extend service TableService {
         {
             T09.PLANT_ID
         }
-        where T09.USER_ID = $user;
+        where T09.USER_ID = case
+                         when
+                           $user is null
+                         then
+                           'anonymous'
+                         else
+                           $user
+                       end;
+};
 
 
 annotate TableService.PCH_01_DL with {
