@@ -13,7 +13,7 @@ sap.ui.define([
             this._oDataModel = this.getOwnerComponent().getModel();
             this._ResourceBundle = this.getOwnerComponent().getModel("i18n").getResourceBundle();
 
-            this._oDataModel.attachBatchRequestCompleted(function(oEvent) {
+            this._oDataModel.attachBatchRequestCompleted(function (oEvent) {
                 this.setBusy(false);
                 var errors = this._LocalData.getProperty("/errors");
                 if (errors) {
@@ -23,7 +23,7 @@ sap.ui.define([
             }.bind(this));
         },
 
-        setBusy: function(busy){
+        setBusy: function (busy) {
             this._LocalData.setProperty("/busy", busy);
         },
 
@@ -60,7 +60,7 @@ sap.ui.define([
             }.bind(this));
         },
 
-        onBeforeExport: function(oEvent) {
+        onBeforeExport: function (oEvent) {
             var oTable = this.getView().byId("detailTable");
             var aSelectedIndices = oTable.getSelectedIndices();
 
@@ -85,7 +85,7 @@ sap.ui.define([
         onResend: function () {
             var oTable = this.getView().byId("detailTable");
             var aSelectedIndices = oTable.getSelectedIndices();
-            
+
             if (aSelectedIndices.length === 0) {
                 sap.m.MessageToast.show(this._ResourceBundle.getText("選択されたデータがありません、データを選択してください")); // 提示未选择数据
                 return;
@@ -123,16 +123,16 @@ sap.ui.define([
             });
         },
 
-        _buildParams: function(aSelectedData) {
+        _buildParams: function (aSelectedData) {
             // 根据选中的数据构建参数
-            return aSelectedData.map(function(oData) {
+            return aSelectedData.map(function (oData) {
                 return {
-                    PONO: oData.PO_NO,                    // 采购订单号
-                    DNO: oData.D_NO,                      // 明细行号
-                    SEQ: oData.SEQ,                       // 序号
-                    DELIVERYDATE: oData.DELIVERY_DATE,    // 交货日期
-                    QUANTITY: oData.QUANTITY,             // 交货数量
-                    DELFLAG: oData.DELFLAG || ""          // 删除标识（如果为空则传递空字符串）
+                    PONO: oData.PO_NO,                                   // 采购订单号
+                    DNO: String(oData.D_NO).padStart(5, '0'),            // 明细行号，转换为字符串并补足 5 位
+                    SEQ: String(oData.SEQ).padStart(4, '0'),             // 序号，转换为字符串并补足 4 位
+                    DELIVERYDATE: oData.DELIVERY_DATE,                   // 交货日期，格式为 YYYY-MM-DD
+                    QUANTITY: String(oData.QUANTITY).padStart(13, '0'),  // 交货数量，转换为字符串并补足 13 位
+                    DELFLAG: oData.DELFLAG || ""                         // 删除标识，确保为字符串
                 };
             });
         }
