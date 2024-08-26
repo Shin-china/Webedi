@@ -39,7 +39,15 @@ extend service TableService {
                            $user
                        end;
 
-}
+        }
+   entity PCH_01_PLANT_CHECK  as 
+        select from SYS.T09_USER_2_PLANT as T09
+        inner join PCH.PCH_T02_PO_D as T02
+            on T09.PLANT_ID = T02.PLANT_ID  
+        {
+            T09.PLANT_ID
+        }
+        where T09.USER_ID = $user;
 
 
 annotate TableService.PCH_01_DL with {
