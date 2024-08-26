@@ -33,7 +33,9 @@ extend service TableService {
                     T02.DEL_PRICE,          // 発注単価
                     T02.DEL_AMOUNT,         // 発注金額
                     T02.MEMO,               // 備考
-                    T02.STORAGE_LOC || '' || T02.STORAGE_TXT as STORAGE_NAME : String(255) // 納品先名
+                    T02.STORAGE_LOC || '' || T02.STORAGE_TXT as STORAGE_NAME : String(255), // 納品先名
+                    T03.SEQ,                //連続番号
+                    T03.DEL_FLAG            //削除フラグ
             }
 
         union all
@@ -64,7 +66,9 @@ extend service TableService {
                     T02.DEL_PRICE,        // 発注単価
                     T02.DEL_AMOUNT,       // 発注金額
                     T02.MEMO,             // 備考
-                    T02.STORAGE_LOC || '' || T02.STORAGE_TXT as STORAGE_NAME : String(255) // 納品先名
+                    T02.STORAGE_LOC || '' || T02.STORAGE_TXT as STORAGE_NAME : String(255), // 納品先名
+                    T03.SEQ,              //連続番号
+                    T03.DEL_FLAG          //削除フラグ
             }
 
  action PCH02_CONFIRMATION_REQUEST(parms : String) returns String;
