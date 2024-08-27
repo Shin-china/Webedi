@@ -29,7 +29,41 @@ extend service TableService with {
     where
       T03.H_CODE = 'PCH02_STATUS';
       
-
+  entity MST_BP_ZABC_POP      as
+    select from SYS.T07_COM_OP_H T03
+    inner join SYS.T08_COM_OP_D T04
+    ON T03.H_CODE=T04.H_CODE 
+    
+    {
+      key D_NAME as NAME,
+          VALUE01 as VALUE
+    }
+    where
+      T03.H_CODE = 'MST_BP_ZABC';
+      
+  entity PCH03_STATUS_POP      as
+    select from SYS.T07_COM_OP_H T03
+    inner join SYS.T08_COM_OP_D T04
+    ON T03.H_CODE=T04.H_CODE 
+    
+    {
+      key D_NAME as NAME,
+          VALUE01 as VALUE
+    }
+    where
+      T03.H_CODE = 'PCH03_STATUS';
+  entity PO_TYPE_POP      as
+    select from SYS.T07_COM_OP_H T03
+    inner join SYS.T08_COM_OP_D T04
+    ON T03.H_CODE=T04.H_CODE 
+    
+    {
+      key D_NAME as NAME,
+          VALUE01 as VALUE
+    }
+    where
+      T03.H_CODE = 'PO_TYPE';
+      
 }
 
 
@@ -43,3 +77,12 @@ annotate TableService.PCH02_STATUS_POP with {
   VALUE @Common.Text: {$value: NAME}
 };
 
+annotate TableService.MST_BP_ZABC_POP with {
+  VALUE @Common.Text: {$value: NAME}
+};
+annotate TableService.PCH03_STATUS_POP with {
+  VALUE @Common.Text: {$value: NAME}
+};
+annotate TableService.PO_TYPE_POP with {
+  VALUE @Common.Text: {$value: NAME}
+};

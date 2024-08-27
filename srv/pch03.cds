@@ -38,3 +38,10 @@ extend service TableService {
 
         }
 }
+annotate TableService.PCH_T03_PO_ITEM with {
+  
+  PO_TYPE @(Common: {ValueList: {entity: 'PO_TYPE_POP', }}); 
+
+  STATUS @(Common: {ValueList: {entity: 'PCH03_STATUS_POP', }}); 
+ ZABC @(Common: {ValueList: {entity: 'MST_BP_ZABC_POP', }}); 
+};
