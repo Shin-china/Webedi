@@ -44,7 +44,7 @@ extend service TableService {
         inner join PCH.PCH_T02_PO_D as T02
             on T09.PLANT_ID = T02.PLANT_ID  
         {
-            T09.PLANT_ID
+           key T09.PLANT_ID
         }
         where T09.USER_ID = case
                          when
