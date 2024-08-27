@@ -16,10 +16,10 @@
 
 		<!-- DEPENDENCIES VERSION -->
 		<jdk.version>17</jdk.version>
-		<cds.services.version>2.10.1</cds.services.version>
+		<cds.services.version>2.4.1</cds.services.version>
 		<spring.boot.version>3.2.6</spring.boot.version>
 		<cds.install-cdsdk.version>7.9.3</cds.install-cdsdk.version>
-
+        <sap.cloud.sdk.version>5.7.0</sap.cloud.sdk.version>
 		<cds.install-node.downloadUrl>https://nodejs.org/dist/</cds.install-node.downloadUrl>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
@@ -38,11 +38,6 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
-			<!-- MAIL TEMPLATE -->
-			<dependency>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-starter-thymeleaf</artifactId>
-			</dependency>
 
 			<dependency>
 				<groupId>org.postgresql</groupId>
@@ -54,12 +49,6 @@
 				<groupId>org.projectlombok</groupId>
 				<artifactId>lombok</artifactId>
 			  </dependency>
-			<!-- MAIL Server -->
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-mail</artifactId>
-				<version>5.3.10</version>
-			</dependency>
 			<!-- SPRING BOOT -->
 			<dependency>
 				<groupId>org.springframework.boot</groupId>

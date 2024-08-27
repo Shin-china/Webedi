@@ -1,6 +1,6 @@
 {
   "odata": {
-    "version": "v2"
+    "version": "v4"
   },
   "cdsc": {
     "betterSqliteSessionVariables": true
