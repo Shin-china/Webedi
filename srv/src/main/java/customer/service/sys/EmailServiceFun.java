@@ -7,7 +7,6 @@ import java.util.Properties;
 import javax.mail.PasswordAuthentication;
 import javax.mail.internet.MimeMessage;
 
-import org.apache.tomcat.util.openssl.pem_password_cb;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.mail.*;
 import org.springframework.mail.javamail.JavaMailSender;

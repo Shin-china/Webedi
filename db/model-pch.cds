@@ -6,8 +6,8 @@ using {MST} from './model-mst';
 entity PCH_T01_PO_H : IF_CUID_FILED { //采购订单抬头
   @title: '{i18n>PO_NO}' key PO_NO                               : String(10) not null; //采购订单编号
   @title: '{i18n>PO_DATE}' PO_DATE                               : String(10); //発注日
-  @title: '{i18n>PO_DATE}' SUPPLIER                              : String(10); //供应商
-  @title: '{i18n>PO_DATE}' PO_BUKRS                              : String(4); //供应商
+  @title: '{i18n>SUPPLIER}' SUPPLIER                              : String(10); //供应商
+  @title: '{i18n>PO_BUKRS}' PO_BUKRS                              : String(4); //供应商
   @title: '{i18n>PO_ORG}' PO_ORG                                 : String(4); //供应商
   @title: '{i18n>PO_GROUP}' PO_GROUP                             : String(3); //供应商
   @title: '{i18n>PO_BSTYP}' PO_BSTYP                             : String(1); //PO Status

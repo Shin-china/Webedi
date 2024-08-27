@@ -88,7 +88,10 @@ sap.ui.define(["sap/base/i18n/ResourceBundle", "sap/ui/model/resource/ResourceMo
             successfun(data);
           }
         },
-        error: function () {
+        error: function (error) {
+          if(error.status=="502"){
+            that.MessageTools._addMessage(that.MessageTools._getI18nText("MSG_ERR_SERVER_EXCEPTION", that.getView()), null, 1, that.getView());
+          }
           that._setBusy(false);
           //MaskUtil.unmask();
         },

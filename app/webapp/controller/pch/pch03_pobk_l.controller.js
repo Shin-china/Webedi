@@ -10,13 +10,9 @@ sap.ui.define([
 		formatter : formatter,
 
 		onInit: function () {
-		// 设置自己的 OData模型为默认模型
-		this._setDefaultDataModel("TableService");
-		//  设置版本号
-		this._setOnInitNo("PCH01", ".20240812.01");
-		// 设置选中框 无
-		// this._setSelectionNone("detailTable");
-		// this._setEditableAuth(true);
+
+		this._setOnInitNo("PCH03", ".20240812.01");
+
 		},
 	
 		// onPress: function (oEvent) {

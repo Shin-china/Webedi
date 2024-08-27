@@ -36,17 +36,17 @@
 
 					<smartFilterBar:SmartFilterBar id="smartFilterBar" useToolbar="true" entitySet="PCH_T03_PO_ITEM" persistencyKey="mst02_receiptprintFilterBar" showFilterConfiguration="true">
 						<smartFilterBar:controlConfiguration>
-						<smartFilterBar:ControlConfiguration id="SUPPLIER" index="1" key="SUPPLIER"  visibleInAdvancedArea="true" />
-						<smartFilterBar:ControlConfiguration id="SUPPLIER_MAT" index="2" key="SUPPLIER_MAT"  visibleInAdvancedArea="true" />	
-						<smartFilterBar:ControlConfiguration id="PO_NO" index="3" key="PO_NO"  visibleInAdvancedArea="true" />	
+						<smartFilterBar:ControlConfiguration id="SUPPLIER" index="1" key="SUPPLIER"  visibleInAdvancedArea="true"   />
+						<smartFilterBar:ControlConfiguration id="SUPPLIER_MAT" index="2" key="SUPPLIER_MAT"  visibleInAdvancedArea="true"   />	
+						<smartFilterBar:ControlConfiguration id="PO_NO" index="3" key="PO_NO"  visibleInAdvancedArea="true"  />	
 						<smartFilterBar:ControlConfiguration id="D_NO" index="4" key="D_NO"  visibleInAdvancedArea="true" />	
-						<smartFilterBar:ControlConfiguration id="PO_TYPE" index="5" key="PO_TYPE"  visibleInAdvancedArea="true" />	
+						<smartFilterBar:ControlConfiguration id="PO_TYPE" index="5" key="PO_TYPE"  visibleInAdvancedArea="true"  filterType='single' controlType="dropDownList"/>	
 						<smartFilterBar:ControlConfiguration id="MAT_ID" index="6" key="MAT_ID"  visibleInAdvancedArea="true" />	
 						<smartFilterBar:ControlConfiguration id="PO_DATE" index="7" key="PO_DATE"  visibleInAdvancedArea="true" />	
-						<smartFilterBar:ControlConfiguration id="STATUS" index="8" key="STATUS"  visibleInAdvancedArea="true" />	
+						<smartFilterBar:ControlConfiguration id="STATUS" index="8" key="STATUS"  visibleInAdvancedArea="true"  filterType='single' controlType="dropDownList"/>	
 						<smartFilterBar:ControlConfiguration id="CD_BY" index="9" key="CD_BY"  visibleInAdvancedArea="true" />	
 						<smartFilterBar:ControlConfiguration id="PO_D_DATE" index="10" key="PO_D_DATE"  visibleInAdvancedArea="true" />	
-						<smartFilterBar:ControlConfiguration id="ZABC" index="11" key="ZABC"  visibleInAdvancedArea="true" />	
+						<smartFilterBar:ControlConfiguration id="ZABC" index="11" key="ZABC"  visibleInAdvancedArea="true"  filterType='single' controlType="dropDownList"/>	
 
 						</smartFilterBar:controlConfiguration>
 					</smartFilterBar:SmartFilterBar>
