@@ -9,8 +9,7 @@
 	<packaging>pom</packaging>
 
 	<name>umc-webedi parent</name>
-
-	<properties>
+<properties>
 		<!-- OUR VERSION -->
 		<revision>1.0.0-SNAPSHOT</revision>
 
@@ -22,7 +21,9 @@
         <sap.cloud.sdk.version>5.7.0</sap.cloud.sdk.version>
 		<cds.install-node.downloadUrl>https://nodejs.org/dist/</cds.install-node.downloadUrl>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
 	</properties>
+
 
 	<modules>
 		<module>srv</module>
@@ -31,12 +32,26 @@
 	<dependencyManagement>
 		<dependencies>
 			<!-- CDS SERVICES -->
+	          <dependency>
+                <groupId>com.sap.cds</groupId>
+                <artifactId>cds-services-bom</artifactId>
+                <version>${cds.services.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+           <dependency>
+                <groupId>com.sap.cloud.sdk</groupId>
+                <artifactId>sdk-bom</artifactId>
+                <version>5.7.0</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+		
+			<!-- MAIL TEMPLATE -->
 			<dependency>
-				<groupId>com.sap.cds</groupId>
-				<artifactId>cds-services-bom</artifactId>
-				<version>${cds.services.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-thymeleaf</artifactId>
 			</dependency>
 
 			<dependency>

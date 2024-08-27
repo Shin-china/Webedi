@@ -1,13 +1,13 @@
 namespace PCH;
 
 using {COMM.IF_CUID_FILED as IF_CUID_FILED} from './model-common';
-
+using {MST} from './model-mst';
 
 entity PCH_T01_PO_H : IF_CUID_FILED { //采购订单抬头
   @title: '{i18n>PO_NO}' key PO_NO                               : String(10) not null; //采购订单编号
   @title: '{i18n>PO_DATE}' PO_DATE                               : String(10); //発注日
-  @title: '{i18n>PO_DATE}' SUPPLIER                              : String(10); //供应商
-  @title: '{i18n>PO_DATE}' PO_BUKRS                              : String(4); //供应商
+  @title: '{i18n>SUPPLIER}' SUPPLIER                              : String(10); //供应商
+  @title: '{i18n>PO_BUKRS}' PO_BUKRS                              : String(4); //供应商
   @title: '{i18n>PO_ORG}' PO_ORG                                 : String(4); //供应商
   @title: '{i18n>PO_GROUP}' PO_GROUP                             : String(3); //供应商
   @title: '{i18n>PO_BSTYP}' PO_BSTYP                             : String(1); //PO Status
@@ -44,6 +44,8 @@ entity PCH_T02_PO_D : IF_CUID_FILED { //采购订单行
   @title: '{i18n>MEMO}' MEMO                                     : String(1000);        //Remark(Header)
   TO_HEAD                                                        : Association to one PCH_T01_PO_H //采购订单抬头表
                                                                      ON  TO_HEAD.PO_NO = PO_NO;
+  TO_MAT                                                         : Association to one MST.MST_T01_SAP_MAT //品目
+                                                                     ON  TO_MAT.MAT_ID = MAT_ID;
 }
 
 entity PCH_T03_PO_C : IF_CUID_FILED { //采购订单确认表

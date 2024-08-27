@@ -171,8 +171,8 @@
         {"pattern": "RouteEdit_sys05/{headID}","name": "RouteEdit_sys05","target": "sys05_mail_d"},
         {"pattern": "RouteCre_sys05","name": "RouteCre_sys05","target": "sys05_mail_d"},
         {"pattern": "RouteCre_pch01","name": "RouteCre_pch01","target": "pch01_pocf_h"},
-        {"pattern": "RouteCre_pch02","name": "RouteCre_pch02","target": "pch02_user_d"}
-
+        {"pattern": "RouteCre_pch02","name": "RouteCre_pch02","target": "pch02_user_d"},
+        {"pattern": "RouteCre_pch03","name": "RouteCre_pch03","target": "pch03_pobk_l"}
       ],
       "targets": {
         "TargetMainView": {
@@ -187,7 +187,8 @@
         "sys05_mail_l": {"viewName": "sys/sys05_mail_l","viewId": "sys05_mail_l"},
         "sys05_mail_d": {"viewName": "sys/sys05_mail_d","viewId": "sys05_mail_d"},
         "pch01_pocf_h": {"viewName": "pch/pch01_pocf_h","viewId": "pch01_pocf_h"},
-        "pch02_user_d": {"viewName": "pch/pch02_user_d","viewId": "pch02_user_d"}
+        "pch02_user_d": {"viewName": "pch/pch02_user_d","viewId": "pch02_user_d"},
+        "pch03_pobk_l": {"viewName": "pch/pch03_pobk_l","viewId": "pch03_pobk_l"}
         
       }
     },

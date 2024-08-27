@@ -150,6 +150,31 @@ entity T11_MAIL_TEMPLATE{
     @title: '{i18n>MAIL_CONTENT}' MAIL_CONTENT :  String(2000); //邮件内容
 }
 
+entity T11_IF_MANAGER { //接口管理表
+  @title: '{i18n>IF_CODE}' key IF_CODE                                      : String(10); //接口编号
+                               @title: '{i18n>IF_NAME}' IF_NAME             : String(100); //接口名称
+                               @title: '{i18n>SYSTEM_FROM}' SYSTEM_FROM     : String(15); //系统(FROM)
+                               @title: '{i18n>SYSTEM_TO}' SYSTEM_TO         : String(15); //系统(TO)
+                               @title: '{i18n>LANG_CODE}' LANG_CODE         : String(10); //语言编码
+                               @title: '{i18n>URL}' URL                     : String(500); //URL
+                               @title: '{i18n>SAPCLIENT}' SAPCLIENT         : String(5); //SAPCLIENT
+                               @title: '{i18n>SERVICEPATH}' SERVICEPATH     : String(200); //SERVICEPATH
+                               @title: '{i18n>ENTITYNAME}' ENTITYNAME       : String(50); //ENTITYNAME
+                               @title: '{i18n>SAPUSER}' SAPUSER             : String(100); //SAPUSER
+                               @title: '{i18n>EXPAND}' EXPAND               : String(500); //EXPAND参数
+                               @title: '{i18n>FILTER}' FILTER               : String(500); //FILTER参数
+                               @title: '{i18n>FORMAT}' FORMAT               : String(10); //  结果格式
+                               @title: '{i18n>PAGE_RECORD}' PAGE_RECORD     : Integer default 0; //  是否翻页获取
+                               @title: '{i18n>ORDER_BY}' ORDER_BY           : String(200); //  结果排序
+                               @title: '{i18n>NEXT_PARA}' NEXT_PARA         : String(500); //下次的参数
+                               @title: '{i18n>LAST_RUN_TIME}' LAST_RUN_TIME : DateTime; //最后运行时间
+
+                               @title: '{i18n>MAIL_TO}' MAIL_TO             : String(500); //
+                               @title: '{i18n>MAIL_CC}' MAIL_CC             : String(500); //
+                               @title: '{i18n>MAIL_TEMPLATE}' MAIL_TEMPLATE : String(10); //
+                               @title: '{i18n>MAIL_TEMPLATE}' MAIL_TYPE     : String(2); //    01：运行一次就1封邮件。   02:有错误记录才有邮件（错误件数>0的时候）
+
+}
 entity T12_CONFIG {
   @title: '{i18n>CON_CODE}' key CON_CODE                             : String(50); //   系统配置
                                 @title: '{i18n>CON_VALUE}' CON_VALUE : String(200); //   系统配置值
