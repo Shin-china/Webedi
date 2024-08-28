@@ -5,7 +5,7 @@ using {MST} from './model-mst';
 
 entity PCH_T01_PO_H : IF_CUID_FILED { //采购订单抬头
   @title: '{i18n>PO_NO}' key PO_NO                               : String(10) not null; //采购订单编号
-  @title: '{i18n>PO_DATE}' PO_DATE                               : String(10); //発注日
+  @title: '{i18n>PO_DATE}' PO_DATE                               : Date; //発注日
   @title: '{i18n>SUPPLIER}' SUPPLIER                              : String(10); //供应商
   @title: '{i18n>PO_BUKRS}' PO_BUKRS                              : String(4); //供应商
   @title: '{i18n>PO_ORG}' PO_ORG                                 : String(4); //供应商
@@ -35,7 +35,7 @@ entity PCH_T02_PO_D : IF_CUID_FILED { //采购订单行
   @title: '{i18n>SUPPLIER_MAT}' SUPPLIER_MAT                     : String(40);          //供应商品番
   @title: '{i18n>CUSTOMER_MAT}' CUSTOMER_MAT                     : String(40);          //顾客品番
   @title: '{i18n>STATUS}' STATUS                                 : String(1);           //状态
-  @title: '{i18n>PO_D_DATE}'  PO_D_DATE                          : String(10);          //指定纳期
+  @title: '{i18n>PO_D_DATE}'  PO_D_DATE                          : Date;          //指定纳期
   @title: '{i18n>PO_D_BUKRS}' PO_D_BUKRS                         : String(4);           //公司代码
   @title: '{i18n>PO_D_RETPO}' PO_D_RETPO                         : String(1);           //退货标识
   @title: '{i18n>PO_D_ELIKZ}' PO_D_ELIKZ                         : String(1);           //交货已完成标识
@@ -52,7 +52,7 @@ entity PCH_T03_PO_C : IF_CUID_FILED { //采购订单确认表
   @title: '{i18n>PO_NO}' key PO_NO                               : String(10) not null; //采购订单编号
   @title: '{i18n>D_NO}'  key D_NO                                : Integer;             //采购订单明细行号
   @title: '{i18n>D_NO}'      SEQ                                 : Integer;             //序号
-  @title: '{i18n>D_NO}'      DELIVERY_DATE                       : String(10);          //交货日期
+  @title: '{i18n>D_NO}'      DELIVERY_DATE                       : Date;          //交货日期
   @title: '{i18n>D_NO}'      QUANTITY                            : Decimal(18,3);       //交货数量
   @title: '{i18n>D_NO}'      STATUS                              : String(1);           //状态
 }
@@ -62,9 +62,9 @@ entity PCH_T04_PAYMENT_H : IF_CUID_FILED { //付款申请表抬头表
   @title: '{i18n>GL_YEAR}'             key GL_YEAR                : Integer;             //采购订单明细行号
   @title: '{i18n>SUPPLIER}'                SUPPLIER               : String(10);          //采购订单明细行号
   @title: '{i18n>SUPPLIER_DESCRIPTION}'    SUPPLIER_DESCRIPTION   : String(100);         //采购订单明细行号
-  @title: '{i18n>INV_DATE}'                INV_DATE               : String(10);          //采购订单明细行号
-  @title: '{i18n>INV_BASE_DATE}'           INV_BASE_DATE          : String(10);          //采购订单明细行号
-  @title: '{i18n>INV_POST_DATE}'           INV_POST_DATE          : String(10);          //采购订单明细行号
+  @title: '{i18n>INV_DATE}'                INV_DATE               : Date;          //采购订单明细行号
+  @title: '{i18n>INV_BASE_DATE}'           INV_BASE_DATE          : Date;          //采购订单明细行号
+  @title: '{i18n>INV_POST_DATE}'           INV_POST_DATE          : Date;          //采购订单明细行号
   @title: '{i18n>SEND_FLAG}'               SEND_FLAG              : String(1);           //采购订单明细行号
   TO_ITEMS                                                        : Association to many PCH_T05_PAYMENT_D //付款申请表行表
                                                                     ON  TO_ITEMS.INV_NO = INV_NO AND TO_ITEMS.GL_YEAR = GL_YEAR;
