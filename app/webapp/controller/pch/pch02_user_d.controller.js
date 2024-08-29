@@ -107,7 +107,7 @@ sap.ui.define([
 
             // 构造请求参数
             var oParams = this._buildParams(aSelectedData);
-
+            var par = {items:oParams};
             // 调用后台Action
             this.getModel().callFunction("/PCH02_CONFIRMATION_REQUEST", {
                 method: "POST",

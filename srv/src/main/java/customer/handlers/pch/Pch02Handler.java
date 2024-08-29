@@ -2,8 +2,11 @@ package customer.handlers.pch;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 
 import com.alibaba.fastjson.JSON;
+
+
 import com.alibaba.fastjson.JSONObject;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
@@ -15,6 +18,8 @@ import com.sap.cloud.sdk.datamodel.odata.client.request.ODataRequestResultGeneri
 
 import org.apache.http.client.HttpClient;
 import org.apache.logging.log4j.util.Base64Util;
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +28,8 @@ import org.springframework.stereotype.Component;
 import cds.gen.sys.T11IfManager;
 import cds.gen.tableservice.PCH02ConfirmationREQUESTContext;
 import cds.gen.tableservice.TableService_;
+import customer.bean.sys.DeliveryInfo;
+import customer.bean.sys.DeliveryInfoList;
 import customer.dao.sys.IFSManageDao;
 import customer.odata.S4OdataTools;
 import customer.tool.Eenvironment;
@@ -41,7 +48,7 @@ public class Pch02Handler implements EventHandler {
     @Autowired
     private IFSManageDao ifsManageDao;
 
-    @On(entity = PCH02ConfirmationREQUESTContext.CDS_NAME)
+    @On(event = PCH02ConfirmationREQUESTContext.CDS_NAME)
     public void onPCH02ConfirmationREQUEST(PCH02ConfirmationREQUESTContext context) {
         try {
             // 从前端参数中获取字符串
@@ -73,11 +80,25 @@ public class Pch02Handler implements EventHandler {
     private HashMap<String, String> parseParameters(String parms) {
         HashMap<String, String> parameters = new HashMap<>();
         if (parms != null && !parms.isEmpty()) {
-            JSONObject jsonObject = JSON.parseObject(parms);
-            for (String key : jsonObject.keySet()) {
-                parameters.put(key, jsonObject.getString(key));
-            }
+            DeliveryInfoList object = JSON.parseObject(parms,DeliveryInfoList.class);
+            List<DeliveryInfo> items = object.getItems();
+            JSONArray stringToJsonArray = stringToJsonArray(parms);
+            stringToJsonArray.toString();
+            System.out.println();
+            
+                parameters.put("items", stringToJsonArray.toString());
+            
         }
         return parameters;
     }
+    // 定义一个方法来将String类型的JSON数组转换成JSONArray
+    public JSONArray stringToJsonArray(String jsonString) {
+        JSONArray jsonArray = null;
+        try {
+        jsonArray = new JSONArray(jsonString);
+        } catch (JSONException e) {
+        e.printStackTrace();
+        }
+        return jsonArray;
+        }
 }
