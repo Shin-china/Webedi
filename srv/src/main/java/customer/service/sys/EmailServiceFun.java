@@ -1,22 +1,21 @@
 package customer.service.sys;
 
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import javax.mail.PasswordAuthentication;
-import javax.mail.internet.MimeMessage;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.mail.*;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
 
+import cds.gen.MailBody;
+import cds.gen.MailJson;
 import cds.gen.sys.T11MailTemplate;
 import cds.gen.sys.T12Config;
+import customer.bean.sys.InnerEmailEntity;
 import customer.dao.sys.T11MailTempDao;
 import customer.dao.sys.T12ConfigDao;
-import java.util.Properties;
 import javax.mail.*;
 import javax.mail.internet.*;
 
@@ -28,24 +27,48 @@ public class EmailServiceFun {
     @Autowired
     private T11MailTempDao mailTempDao;
 
-    public void sendEmailFun() {
+    public void sendEmailFun(Collection<MailJson> mailJsons) {
         // 1.Get Mail Server Information
-        String mailHost = Config.get("MAIL_HOST").getConValue();
-        String mailPassword = Config.get("MAIL_PASSWORD").getConValue();
-        String mailUser = Config.get("MAIL_USER").getConValue();
+        String to = "";
+        String mailPassword = "";
+        String mailUser = "";
+        String mailHost = "";
+        String TemplateID = "";
 
+        // Get Mail information
+        for (MailJson mailinfo : mailJsons) {
+            to = mailinfo.getMailTo();
+            TemplateID = mailinfo.getTemplateId();
+        }
+        List<T12Config> mailConfig = Config.get("MAIL");
+        for (T12Config config : mailConfig) {
+            String test = config.getConCode();
+            if (config.getConCode().equals("MAIL_HOST")) {
+                mailHost = config.getConValue();
+            }
+            if (config.getConCode().equals("MAIL_PASSWORD")) {
+                mailPassword = config.getConValue();
+            }
+            if (config.getConCode().equals("MAIL_USERNAME")) {
+                mailUser = config.getConValue();
+            }
+        }
+        final String user = mailUser;
+        final String password = mailPassword;
         // 2.Get Mail Template
-        T11MailTemplate o = mailTempDao.getTemplate("test");
-
+        T11MailTemplate o = mailTempDao.getTemplate(TemplateID);
         // 3.replace dynmic content
         Map<String, String> map = new HashMap<>();
-        map.put("recipient", "发发");
-        map.put("content", "Hello");
+        for (MailJson mailinfo : mailJsons) {
+            Collection<MailBody> body = mailinfo.getMailBody();
+            for (MailBody b : body) {
+                map.put(b.getObject(), b.getValue());
+            }
+        }
         String body = replaceString(o.getMailContent(), map);
 
         // 4.send email
-        String to = "stanley.shi@sh.shin-china.com";
-        String from = "sap@umc.co.jp";
+        String from = "uweb-sender@umc.co.jp";
         Properties props = new Properties();
         props.put("mail.smtp.host", mailHost);
         props.put("mail.smtp.auth", "true");
@@ -55,7 +78,7 @@ public class EmailServiceFun {
         Session session = Session.getInstance(props,
                 new javax.mail.Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication(mailUser, mailPassword);
+                        return new PasswordAuthentication(user, password);
                     }
                 });
 
@@ -65,11 +88,22 @@ public class EmailServiceFun {
             message.setRecipients(Message.RecipientType.TO,
                     InternetAddress.parse(to));
             message.setSubject(o.getMailTitle());
-            message.setText(body);
+
+            // Set Body
+            BodyPart textBodyPart = new MimeBodyPart();
+            textBodyPart.setContent(body, "text/html;charset=UTF-8");
+
+            // Set Attachment
+
+            //
+            Multipart multipart = new MimeMultipart();
+            multipart.addBodyPart(textBodyPart);
+
+            // Set Body to message
+            message.setContent(multipart);
 
             Transport.send(message);
 
-            System.out.println("邮件发送成功！");
         } catch (MessagingException e) {
             throw new RuntimeException(e);
         }
@@ -77,10 +111,10 @@ public class EmailServiceFun {
     }
 
     public String replaceString(String Content, Map<String, String> map) {
-        String result = "";
+        String result = Content;
 
         for (Map.Entry<String, String> entry : map.entrySet()) {
-            result = Content.replace("${" + entry.getKey() + "}", entry.getValue());
+            result = result.replace("{" + entry.getKey() + "}", entry.getValue());
         }
 
         return result;

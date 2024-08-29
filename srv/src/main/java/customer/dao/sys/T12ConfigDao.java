@@ -1,5 +1,7 @@
 package customer.dao.sys;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
@@ -13,12 +15,8 @@ import customer.dao.common.Dao;
 @Repository
 public class T12ConfigDao extends Dao {
     // Get SYSTEM Configuration
-    public T12Config get(String Code) {
-        Optional<T12Config> op = db.run(Select.from(Sys_.T12_CONFIG).where(O -> O.CON_CODE().eq(Code)))
-                .first(T12Config.class);
-        if (op.isPresent()) {
-            return op.get();
-        }
-        return null;
+    public List<T12Config> get(String Code) {
+        return db.run(Select.from(Sys_.T12_CONFIG).where(O -> O.CON_CODE().contains(Code))).listOf(T12Config.class);
+
     }
 }

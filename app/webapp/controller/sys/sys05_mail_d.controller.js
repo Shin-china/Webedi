@@ -75,6 +75,8 @@ sap.ui.define([
             }
 
             var resStr = { userJson: JSON.stringify(itemobj) };
+
+			noErrorFlag = false;
             if (noErrorFlag) {
                 //Crate or Update
                 this.getModel().callFunction("/SYS05_MAILTEMP_add", {

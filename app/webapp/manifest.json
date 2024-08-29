@@ -16,6 +16,13 @@
         "settings": {
           "odataVersion": "2.0"
         }
+      },
+      "Common":{
+        "uri": "/srv/odata/v4/Common/",
+        "type": "OData",
+        "settings": {
+          "odataVersion": "4.0"
+        }
       }
     },
     "crossNavigation": {
@@ -94,6 +101,15 @@
           "useBatch": true
         },
         "dataSource": "TableService"
+      },
+      "Common": {
+        "type": "sap.ui.model.odata.v4.ODataModel",
+        "settings": {
+					"autoExpandSelect": true,
+					"earlyRequests": true,
+					"operationMode": "Server"
+        },
+        "dataSource": "Common"
       },
       "i18n": {
         "type": "sap.ui.model.resource.ResourceModel",
