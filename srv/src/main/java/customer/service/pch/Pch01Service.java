@@ -1,5 +1,8 @@
 package customer.service.pch;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 import org.checkerframework.checker.units.qual.t;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ResourceBundleMessageSource;
@@ -59,7 +62,7 @@ public class Pch01Service extends Service {
             // 遍历上传文件 检查相应字段
             for (Pch01 s : list.getList()) {
 
-                ckd.check_auth(s);
+                // ckd.check_auth(s);
 
                 // 检查po号
                 if (s.getPO_NO() != null && s.getPO_NO() != "") {
@@ -67,12 +70,12 @@ public class Pch01Service extends Service {
                 }
 
                 // 检查
-                if (s.getPO_NO() != null && s.getPO_NO() != "" && s.getD_NO() != null) {
+                if (s.getSUCCESS() && s.getPO_NO() != null && s.getPO_NO() != "" && s.getD_NO() != null) {
                     ckd.checkD_NO(s);
                 }
 
                 // 根据区分，检查时间
-                if (s.getPO_TYPE() != null && s.getPO_TYPE() != "") {
+                if (s.getSUCCESS()) {
                     ckd.checkPO_TYPE(s);
                 }
 
@@ -88,7 +91,7 @@ public class Pch01Service extends Service {
                     s.setI_CON("sap-icon://error");
                     s.setSTATUS("Error");
                     errC++;
-                    // list.setErr(getUserId());
+                    list.setErr(true);
                 }
 
                 list.setReTxt(
@@ -104,11 +107,14 @@ public class Pch01Service extends Service {
         for (Pch01 s : list.getList()) {
             int dNO = s.getD_NO();
             PchT02PoD byID = savaDao.getByID(s.getPO_NO(), dNO);
+            DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
             if (byID == null && s.getPO_TYPE().equals("1")) {
                 // 如果是1 则是新规
                 PchT02PoD t02 = PchT02PoD.create();
                 PchT03PoC t03 = PchT03PoC.create();
+
+                LocalDate date1 = s.getDELIVERY_DATE();
 
                 t02.setDNo(s.getD_NO());
                 t02.setPoNo(s.getPO_NO());
@@ -120,7 +126,7 @@ public class Pch01Service extends Service {
 
                 t03.setDNo(s.getD_NO());
                 t03.setPoNo(s.getPO_NO());
-                // t03.setDeliveryDate(s.getDELIVERY_DATE());
+                // t03.setDeliveryDate(date1);
                 t03.setQuantity(s.getQUANTITY());
 
                 savaDao.insert(t02, t03);
@@ -139,6 +145,11 @@ public class Pch01Service extends Service {
 
                 PchT02PoD t02 = PchT02PoD.create();
                 PchT03PoC t03 = PchT03PoC.create();
+
+                t03.setDNo(s.getD_NO());
+                t03.setPoNo(s.getPO_NO());
+                // t03.setDeliveryDate(date1);
+                t03.setQuantity(s.getQUANTITY());
 
                 // 通过id修改
                 savaDao.update(t02, t03);

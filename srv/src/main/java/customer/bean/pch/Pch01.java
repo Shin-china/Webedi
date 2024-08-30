@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.deser.std.StringArrayDeserializer;
 
 import lombok.Data;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 
 public class Pch01 {
@@ -41,7 +42,7 @@ public class Pch01 {
     private String PO_PUR_UNIT;
 
     @JSONField(name = "DELIVERY_DATE")
-    private String DELIVERY_DATE;
+    private LocalDate DELIVERY_DATE;
 
     @JSONField(name = "QUANTITY")
     private BigDecimal QUANTITY;
@@ -139,11 +140,11 @@ public class Pch01 {
         PO_PUR_UNIT = pO_PUR_UNIT;
     }
 
-    public String getDELIVERY_DATE() {
+    public LocalDate getDELIVERY_DATE() {
         return DELIVERY_DATE;
     }
 
-    public void setDELIVERY_DATE(String dELIVERY_DATE) {
+    public void setDELIVERY_DATE(LocalDate dELIVERY_DATE) {
         DELIVERY_DATE = dELIVERY_DATE;
     }
 

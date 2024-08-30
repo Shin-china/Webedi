@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,11 +26,12 @@ public class DeliverydateDao extends Dao {
 
     private static final Logger logger = LoggerFactory.getLogger(DeliverydateDao.class);
 
-    public PchT03PoC getByID(String PO_NO , Integer D_NO) {
+    public PchT03PoC getByID(String PO_NO , Integer D_NO , LocalDate deleDate) {
         Optional<PchT03PoC> result = db.run(
             Select.from(Pch_.PCH_T03_PO_C)
                   .where(o -> o.PO_NO().eq(PO_NO)
-                  .and(o.D_NO().eq(D_NO)))
+                  .and(o.D_NO().eq(D_NO))
+                  .and(o.DELIVERY_DATE().eq(deleDate)))
         ).first(PchT03PoC.class);
         
         if (result.isPresent()) {

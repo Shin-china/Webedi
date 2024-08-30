@@ -9,7 +9,7 @@ public class Pch01List {
     //返回成功失败件数
     private String reTxt;
     //返回是否有错误:有值指有错误
-    private String err;
+    private boolean err;
      
 
     /**
@@ -34,11 +34,11 @@ public class Pch01List {
         this.reTxt = reTxt;
     }
 
-    public String getErr() {
+    public Boolean getErr() {
         return err;
     }
 
-    public void setErr(String err) {
+    public void setErr(Boolean err) {
         this.err = err;
     }
 

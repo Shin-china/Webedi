@@ -4,11 +4,9 @@ sap.ui.define([
 	"umc/app/model/formatter",
 	"sap/ui/export/Spreadsheet",
 	"umc/app/util/xlsx",
-	"sap/ui/export/Spreadsheet",
 	"sap/m/MessageToast",
 	'sap/ui/comp/library',
 	'sap/ui/model/type/String',
-	"sap/ui/core/mvc/Controller"
 
 ], function (Controller, Filter, xlsx, formatter, 
 	 Spreadsheet) {
@@ -22,8 +20,14 @@ sap.ui.define([
 			var oMessageManager = sap.ui.getCore().getMessageManager();
 			this.getView().setModel(oMessageManager.getMessageModel(), "message");
 			oMessageManager.registerObject(this.getView(), true);
-	
+
 			this.getRouter().getRoute("RouteCre_pch01").attachPatternMatched(this._onRouteMatched, this);
+
+			var oViewModel = new sap.ui.model.json.JSONModel({
+				isButtonEnabled: true // 默认值为 true
+			});
+			this.getView().setModel(oViewModel, "viewModel");
+			
 
 			//  设置版本号
 			this._setOnInitNo("PCH01", ".20240812.01");
@@ -113,18 +117,26 @@ sap.ui.define([
 						var myArray = JSON.parse(arr);
 		
 						// 设置画面上总结
-						that._setCnt(myArray.reTxt);
+						//that._setCnt(myArray.reTxt);
 		
 						// 更新画面上的model
 						jsonModel.setData(myArray.list);
 		
-						if (!myArray.err) {
-							that._setEditable(false);
+						if (myArray.err) {
+							// that._setEditable(false);
+							that.getView().getModel("viewModel").setProperty("/isButtonEnabled", false);
+						}else{
+							that.getView().getModel("viewModel").setProperty("/isButtonEnabled", true);
 						}
+
 						that._setBusy(false);
+
 					},
+
 					error: function (oError) {
+
 						that._setBusy(false);
+						
 					}
 				});
 			}
