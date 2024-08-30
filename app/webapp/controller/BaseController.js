@@ -69,6 +69,9 @@ sap.ui.define([
         navTo: function (psTarget, pmParameters, pbReplace) {
           this.getRouter().navTo(psTarget, pmParameters, pbReplace);
         },
+        _setCreateAble:function(isCreateAble){
+          this.setGlobProperty("createable",isCreateAble )
+        },
         /**
          * 默认跳转到菜单页面
          */

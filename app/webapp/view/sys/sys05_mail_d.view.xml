@@ -57,7 +57,12 @@
      </f:header>
      <!-- Item -->
      <f:content>
-                <TextArea width="1540px"  height="600px" id="TEMPLATE_CONTENT" value="{MAIL_CONTENT}"/>
+                <!-- <TextArea width="1540px"  height="600px" id="TEMPLATE_CONTENT" value="{MAIL_CONTENT}"/> -->
+                <UploadCollection id="idUploadCollection" uploadUrl="https://10.10.10.10:8080/upload" uploadEnabled="true" multiple="true" change="onUploadChange" >
+                    <items>
+                        <ObjectListItem id="idObjectListItem" title="{fileName}" type="Active" />
+                    </items>
+                </UploadCollection>
      </f:content>
 </f:DynamicPage>
 </mvc:View>

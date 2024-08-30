@@ -34,6 +34,7 @@ public class EmailServiceFun {
         String mailUser = "";
         String mailHost = "";
         String TemplateID = "";
+        String mailFrom = "";
 
         // Get Mail information
         for (MailJson mailinfo : mailJsons) {
@@ -42,7 +43,6 @@ public class EmailServiceFun {
         }
         List<T12Config> mailConfig = Config.get("MAIL");
         for (T12Config config : mailConfig) {
-            String test = config.getConCode();
             if (config.getConCode().equals("MAIL_HOST")) {
                 mailHost = config.getConValue();
             }
@@ -51,6 +51,9 @@ public class EmailServiceFun {
             }
             if (config.getConCode().equals("MAIL_USERNAME")) {
                 mailUser = config.getConValue();
+            }
+            if (config.getConCode().equals("MAIL_FROM")) {
+                mailFrom = config.getConValue();
             }
         }
         final String user = mailUser;
@@ -68,7 +71,6 @@ public class EmailServiceFun {
         String body = replaceString(o.getMailContent(), map);
 
         // 4.send email
-        String from = "uweb-sender@umc.co.jp";
         Properties props = new Properties();
         props.put("mail.smtp.host", mailHost);
         props.put("mail.smtp.auth", "true");
@@ -84,7 +86,7 @@ public class EmailServiceFun {
 
         try {
             Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(from));
+            message.setFrom(new InternetAddress(mailFrom));
             message.setRecipients(Message.RecipientType.TO,
                     InternetAddress.parse(to));
             message.setSubject(o.getMailTitle());
