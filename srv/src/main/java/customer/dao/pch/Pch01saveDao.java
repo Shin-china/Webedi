@@ -67,7 +67,7 @@ public class Pch01saveDao extends Dao {
     };
 
     public void  insert(PchT02PoD o ,PchT03PoC o2){
-        o.setCdTime(getNow());
+        //o.setCdTime(getNow());
         //o.setCdBy(getUserId());
         db.run(Insert.into(Pch_.PCH_T02_PO_D).entry(o));
         db.run(Insert.into(Pch_.PCH_T03_PO_C).entry(o2));
@@ -78,8 +78,8 @@ public class Pch01saveDao extends Dao {
 	}
 
     public void update(PchT02PoD t02, PchT03PoC t03) {
-        t02.setUpTime(getNow());
-        t03.setUpTime(getNow());     
+        //t02.setUpTime(getNow());
+        //t03.setUpTime(getNow());     
             // o.setUpBy(getUserId());
             db.run(Update.entity(Pch_.PCH_T02_PO_D).entry(t02));
             db.run(Update.entity(Pch_.PCH_T03_PO_C).entry(t03));

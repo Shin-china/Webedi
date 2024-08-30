@@ -23,7 +23,7 @@ xmlns:fb="sap.ui.comp.filterbar">
 					<Text id="idtext1" text="{/logInfo}"/>
 					<ToolbarSpacer id="idtoolbarspacer1"/>
 					<Button id="_IDGenButton2" text="{pch>U_B_CHECK}" press="onCheck" enabled="true"/>
-					<Button id="_IDGenButton3" text="{pch>U_B_RUN}" press="onRun" enabled="true"/>	
+					<Button id="_IDGenButton3" text="{pch>U_B_RUN}" press="onSave" enabled="{viewModel>/isButtonEnabled}"/>	
 					<Button id="Export" icon="sap-icon://excel-attachment" type="Transparent" press="onExport" enabled="{=${local>/excelSet}.length > 0}" text="{pch>U_B_EXPORTEXCEL}" tooltip="{pch>U_B_EXPORTEXCEL}"/>
 				</OverflowToolbar>
 			</t:extension>
