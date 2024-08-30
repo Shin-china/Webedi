@@ -17,6 +17,7 @@ import com.sap.cloud.sdk.datamodel.odata.client.request.ODataRequestRead;
 import com.sap.cloud.sdk.datamodel.odata.client.request.ODataRequestResultGeneric;
 
 import org.apache.http.client.HttpClient;
+import org.apache.http.entity.StringEntity;
 import org.apache.logging.log4j.util.Base64Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -89,7 +90,7 @@ public class S4OdataTools {
         // 这是get方法
         ODataRequestRead requestRead = new ODataRequestRead(info.getServicepath(), info.getEntityname(), null,
                 ODataProtocol.V2);
-
+        StringEntity s = new StringEntity(headMap.get("key"), "utf-8");
         String userInfo = Base64Util.encode(info.getSapuser());// 用户名,密码
         requestRead.addHeader("Authorization", "Basic " + userInfo);
         requestRead.addHeader("x-csrf-token", "fetch");
@@ -97,6 +98,7 @@ public class S4OdataTools {
         requestRead.addHeader("Content-Type", "application/json");
         requestRead.addHeader("Accept", "application/json");
 
+        // requestRead.addListener(null);
         if (headMap != null) {
             for (String key : headMap.keySet()) {
                 requestRead.addHeader(key, headMap.get(key)); // 设定追加的head
