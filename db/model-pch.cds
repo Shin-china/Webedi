@@ -12,6 +12,7 @@ entity PCH_T01_PO_H : IF_CUID_FILED { //采购订单抬头
   @title: '{i18n>PO_GROUP}' PO_GROUP                             : String(3); //供应商
   @title: '{i18n>PO_BSTYP}' PO_BSTYP                             : String(1); //PO Status
   @title: '{i18n>REMARK}' REMARK                                 : String(1000); //Remark(Header)
+
   TO_ITEMS                                                       : Association to many PCH_T02_PO_D //采购订单行
                                                                      ON  TO_ITEMS.PO_NO = PO_NO;
 
@@ -51,7 +52,7 @@ entity PCH_T02_PO_D : IF_CUID_FILED { //采购订单行
 entity PCH_T03_PO_C : IF_CUID_FILED { //采购订单确认表
   @title: '{i18n>PO_NO}' key PO_NO                               : String(10) not null; //采购订单编号
   @title: '{i18n>D_NO}'  key D_NO                                : Integer;             //采购订单明细行号
-  @title: '{i18n>D_NO}'  key    SEQ                                 : Integer;             //序号
+  @title: '{i18n>D_NO}'  key SEQ                                 : Integer;             //序号
   @title: '{i18n>D_NO}'      DELIVERY_DATE                       : Date;          //交货日期
   @title: '{i18n>D_NO}'      QUANTITY                            : Decimal(18,3);       //交货数量
   @title: '{i18n>D_NO}'      STATUS                              : String(1);           //状态
