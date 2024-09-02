@@ -51,7 +51,7 @@ entity PCH_T02_PO_D : IF_CUID_FILED { //采购订单行
 entity PCH_T03_PO_C : IF_CUID_FILED { //采购订单确认表
   @title: '{i18n>PO_NO}' key PO_NO                               : String(10) not null; //采购订单编号
   @title: '{i18n>D_NO}'  key D_NO                                : Integer;             //采购订单明细行号
-  @title: '{i18n>D_NO}'      SEQ                                 : Integer;             //序号
+  @title: '{i18n>D_NO}'  key    SEQ                                 : Integer;             //序号
   @title: '{i18n>D_NO}'      DELIVERY_DATE                       : Date;          //交货日期
   @title: '{i18n>D_NO}'      QUANTITY                            : Decimal(18,3);       //交货数量
   @title: '{i18n>D_NO}'      STATUS                              : String(1);           //状态
@@ -66,6 +66,7 @@ entity PCH_T04_PAYMENT_H : IF_CUID_FILED { //付款申请表抬头表
   @title: '{i18n>INV_BASE_DATE}'           INV_BASE_DATE          : Date;          //采购订单明细行号
   @title: '{i18n>INV_POST_DATE}'           INV_POST_DATE          : Date;          //采购订单明细行号
   @title: '{i18n>SEND_FLAG}'               SEND_FLAG              : String(1);           //采购订单明细行号
+  @title: '{i18n>EXCHANGE}'               EXCHANGE              : String(10);           //换算レ-ト
   TO_ITEMS                                                        : Association to many PCH_T05_PAYMENT_D //付款申请表行表
                                                                     ON  TO_ITEMS.INV_NO = INV_NO AND TO_ITEMS.GL_YEAR = GL_YEAR;
 }
