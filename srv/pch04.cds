@@ -18,7 +18,6 @@ extend service TableService {
                     T02.PO_NO = T05.PO_NO
                  and T02.D_NO = T05.D_NO
                 )  
-
         {
         KEY T05.PO_NO,                     // UMC発注番号
         KEY T05.D_NO,                      // 明細番号                       
@@ -33,12 +32,12 @@ extend service TableService {
             T05.QUANTITY,                  // 仕入単位数
             T05.UNIT_PRICE,                // 取引通貨単価
             T05.CURRENCY,                  // INV通貨コード
-            T04.EXCHANGE,                  // 換算レート
+            cast(T04.EXCHANGE as Decimal(15, 2)) as EXCHANGE_DECIMAL, // 換算レート（转换为Decimal类型）
             T05.PO_TRACK_NO,               // 備考
             T05.TAX_RATE,                  // INV税率
             T04.INV_BASE_DATE,             // 支払日
-            T05.UNIT_PRICE * T04.EXCHANGE AS UNIT_PRICE_IN_YEN : Decimal(15, 2), // 円換算後単価(PO)
-            (T05.UNIT_PRICE * T04.EXCHANGE) * (T05.QUANTITY * (1 + T05.TAX_RATE / 100)) AS TOTAL_AMOUNT_IN_YEN : Decimal(20, 2), // 円換算後税込金額(検収)
+            T05.UNIT_PRICE * cast(T04.EXCHANGE as Decimal(15, 2)) AS UNIT_PRICE_IN_YEN : Decimal(15, 2), // 円換算後単価(PO)
+            (T05.UNIT_PRICE * cast(T04.EXCHANGE as Decimal(15, 2))) * (T05.QUANTITY * (1 + T05.TAX_RATE / 100)) AS TOTAL_AMOUNT_IN_YEN : Decimal(20, 2), // 円換算後税込金額(検収)
             T02.SUPPLIER_MAT               // 仕入先品目コード
         };
 

@@ -1,0 +1,397 @@
+<mvc:View 
+    controllerName="umc.app.controller.pch.pch05_account_d" 
+    xmlns:core="sap.ui.core" 
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:layout="sap.ui.layout" 
+    xmlns:table="sap.ui.table" 
+    xmlns:smartFilterBar="sap.ui.comp.smartfilterbar" 
+    xmlns:smartTable="sap.ui.comp.smarttable" 
+    xmlns:smartField="sap.ui.comp.smartfield" 
+    xmlns:smartform="sap.ui.comp.smartform" 
+    xmlns:mvc="sap.ui.core.mvc" 
+    xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+    xmlns:uxap="sap.uxap">
+
+    <f:DynamicPageHeader id="DynamicPageHeader" pinnable="true">
+        <f:content>
+            <smartFilterBar:SmartFilterBar id="smartFilterBar" entitySet="PCH_T05_ACCOUNT_DETAIL" persistencyKey="PCH_T05_ACCOUNT_DETAIL" showFilterConfiguration="true">
+                <smartFilterBar:controlConfiguration>
+
+                <smartFilterBar:ControlConfiguration id="PCH_PO_BUKRS"      key="PO_BUKRS"             visibleInAdvancedArea="true" label="{pch>PO_BUKRS}"             filterType="single"  controlType="auto"      index="1"/>
+                <smartFilterBar:ControlConfiguration id="PCH_INV_POST_DATE" key="INV_POST_DATE"        visibleInAdvancedArea="true" label="{pch>INV_POST_DATE}"        filterType="single"  controlType="auto"      index="2"/>
+                <smartFilterBar:ControlConfiguration id="PCH_SUPPLIER"      key="SUPPLIER"             visibleInAdvancedArea="true" label="{pch>SUPPLIER}"             filterType="single"  controlType="auto"      index="3"/>
+                <smartFilterBar:ControlConfiguration id="PCH_PO_NO"         key="PO_NO"                visibleInAdvancedArea="true" label="{pch>PO_NO}"                filterType="single"  controlType="auto"      index="4"/>
+                
+                </smartFilterBar:controlConfiguration>
+            </smartFilterBar:SmartFilterBar>
+        </f:content>
+    </f:DynamicPageHeader>
+
+    <smartTable:SmartTable id="ID" enableAutoColumnWidth="true" entitySet="PCH_T04_PAYMENT" 
+        ignoredFields=""  initiallyVisibleFields="GL_YEAR,ITEM_NO,PO_NO,D_NO,SUPPLIER,SUPPLIER_DESCRIPTION,INV_DATE,PO_TRACK_NO,PR_BY,GL_ACCOUNT,COST_CENTER,PURCHASE_GROUP,PURCHASE_GROUP_DESC,CURRENCY,MAT_ID,QUANTITY,UNIT,MAT_DESC,TAX_CODE,TAX_RATE,INV_POST_DATE,SEND_FLAG,UNIT_PRICE,PRICE_AMOUNT,TAX_AMOUNT,TOTAL_AMOUNT,INV_BASE_DATE,GR_DATE,LOG_NO" 
+        smartFilterId="smartFilterBar" enableExport="true" beforeExport="onBeforeExport" 
+        useVariantManagement="true" useTablePersonalisation="true" header="{pch>TITLE_RESULT}" showRowCount="true" persistencyKey="pch05_SmartTableAnalytical_Explored" enableAutoBinding="true">
+        
+      <smartTable:customToolbar>
+            <OverflowToolbar id="myOverflowToolbar" design="Transparent">
+                <ToolbarSpacer id="myToolbarSpacer"/>
+                <OverflowToolbarButton id="resendButton"   icon="sap-icon://email"          text="{pch>PCH05_BUTTON_RESEND}" tooltip="{pch>PCH05_BUTTON_RESEND}" press="onResend"/>
+                <OverflowToolbarButton id="downloadPdfBtn" icon="sap-icon://pdf-attachment" text="{pch>PCH05_BUTTON_PDF}"    tooltip="{pch>PCH05_BUTTON_PDF}"    press="onExportToPDF"/>
+            </OverflowToolbar>
+        </smartTable:customToolbar>
+    
+    <table:Table id="detailTable" rowMode="Auto" rowActionCount="1" selectionMode="MultiToggle" alternateRowColors="true" fixedColumnCount="0" threshold="20">
+        <table:columns>
+   <table:Column id="colGlYear" width="10rem" sortProperty="GL_YEAR" filterProperty="GL_YEAR">
+    <table:customData>
+        <core:CustomData key="p13nData" value='{"columnKey":"GL_YEAR", "leadingProperty":"GL_YEAR", "sortProperty":"GL_YEAR", "filterProperty":"GL_YEAR"}'/>
+    </table:customData>
+    <table:label>
+        <Label id="labelGlYear" text="{pch>GL_YEAR}"/>
+    </table:label>
+    <table:template>
+        <Text id="textGlYear" text="{GL_YEAR}"/>
+    </table:template>
+</table:Column>
+
+<table:Column id="colItemNo" width="10rem" sortProperty="ITEM_NO" filterProperty="ITEM_NO">
+    <table:customData>
+        <core:CustomData key="p13nData" value='{"columnKey":"ITEM_NO", "leadingProperty":"ITEM_NO", "sortProperty":"ITEM_NO", "filterProperty":"ITEM_NO"}'/>
+    </table:customData>
+    <table:label>
+        <Label id="labelItemNo" text="{pch>ITEM_NO}"/>
+    </table:label>
+    <table:template>
+        <Text id="textItemNo" text="{ITEM_NO}"/>
+    </table:template>
+</table:Column>
+
+<table:Column id="colPoNo" width="10rem" sortProperty="PO_NO" filterProperty="PO_NO">
+    <table:customData>
+        <core:CustomData key="p13nData" value='{"columnKey":"PO_NO", "leadingProperty":"PO_NO", "sortProperty":"PO_NO", "filterProperty":"PO_NO"}'/>
+    </table:customData>
+    <table:label>
+        <Label id="labelPoNo" text="{pch>PO_NO}"/>
+    </table:label>
+    <table:template>
+        <Text id="textPoNo" text="{PO_NO}"/>
+    </table:template>
+</table:Column>
+
+<table:Column id="colDNo" width="10rem" sortProperty="D_NO" filterProperty="D_NO">
+    <table:customData>
+        <core:CustomData key="p13nData" value='{"columnKey":"D_NO", "leadingProperty":"D_NO", "sortProperty":"D_NO", "filterProperty":"D_NO"}'/>
+    </table:customData>
+    <table:label>
+        <Label id="labelDNo" text="{pch>D_NO}"/>
+    </table:label>
+    <table:template>
+        <Text id="textDNo" text="{D_NO}"/>
+    </table:template>
+</table:Column>
+
+<table:Column id="colSupplier" width="10rem" sortProperty="SUPPLIER" filterProperty="SUPPLIER">
+    <table:customData>
+        <core:CustomData key="p13nData" value='{"columnKey":"SUPPLIER", "leadingProperty":"SUPPLIER", "sortProperty":"SUPPLIER", "filterProperty":"SUPPLIER"}'/>
+    </table:customData>
+    <table:label>
+        <Label id="labelSupplier" text="{pch>SUPPLIER}"/>
+    </table:label>
+    <table:template>
+        <Text id="textSupplier" text="{SUPPLIER}"/>
+    </table:template>
+</table:Column>
+
+<table:Column id="colSupplierDesc" width="10rem" sortProperty="SUPPLIER_DESCRIPTION" filterProperty="SUPPLIER_DESCRIPTION">
+    <table:customData>
+        <core:CustomData key="p13nData" value='{"columnKey":"SUPPLIER_DESCRIPTION", "leadingProperty":"SUPPLIER_DESCRIPTION", "sortProperty":"SUPPLIER_DESCRIPTION", "filterProperty":"SUPPLIER_DESCRIPTION"}'/>
+    </table:customData>
+    <table:label>
+        <Label id="labelSupplierDesc" text="{pch>SUPPLIER_DESCRIPTION}"/>
+    </table:label>
+    <table:template>
+        <Text id="textSupplierDesc" text="{SUPPLIER_DESCRIPTION}"/>
+    </table:template>
+</table:Column>
+
+<table:Column id="colInvDate" width="10rem" sortProperty="INV_DATE" filterProperty="INV_DATE">
+    <table:customData>
+        <core:CustomData key="p13nData" value='{"columnKey":"INV_DATE", "leadingProperty":"INV_DATE", "sortProperty":"INV_DATE", "filterProperty":"INV_DATE"}'/>
+    </table:customData>
+    <table:label>
+        <Label id="labelInvDate" text="{pch>INV_DATE}"/>
+    </table:label>
+    <table:template>
+        <Text id="textInvDate" text="{INV_DATE}"/>
+    </table:template>
+</table:Column>
+
+<table:Column id="colPoTrackNo" width="10rem" sortProperty="PO_TRACK_NO" filterProperty="PO_TRACK_NO">
+    <table:customData>
+        <core:CustomData key="p13nData" value='{"columnKey":"PO_TRACK_NO", "leadingProperty":"PO_TRACK_NO", "sortProperty":"PO_TRACK_NO", "filterProperty":"PO_TRACK_NO"}'/>
+    </table:customData>
+    <table:label>
+        <Label id="labelPoTrackNo" text="{pch>PO_TRACK_NO}"/>
+    </table:label>
+    <table:template>
+        <Text id="textPoTrackNo" text="{PO_TRACK_NO}"/>
+    </table:template>
+</table:Column>
+
+<table:Column id="colPrBy" width="10rem" sortProperty="PR_BY" filterProperty="PR_BY">
+    <table:customData>
+        <core:CustomData key="p13nData" value='{"columnKey":"PR_BY", "leadingProperty":"PR_BY", "sortProperty":"PR_BY", "filterProperty":"PR_BY"}'/>
+    </table:customData>
+    <table:label>
+        <Label id="labelPrBy" text="{pch>PR_BY}"/>
+    </table:label>
+    <table:template>
+        <Text id="textPrBy" text="{PR_BY}"/>
+    </table:template>
+</table:Column>
+
+<table:Column id="colGlAccount" width="10rem" sortProperty="GL_ACCOUNT" filterProperty="GL_ACCOUNT">
+    <table:customData>
+        <core:CustomData key="p13nData" value='{"columnKey":"GL_ACCOUNT", "leadingProperty":"GL_ACCOUNT", "sortProperty":"GL_ACCOUNT", "filterProperty":"GL_ACCOUNT"}'/>
+    </table:customData>
+    <table:label>
+        <Label id="labelGlAccount" text="{pch>GL_ACCOUNT}"/>
+    </table:label>
+    <table:template>
+        <Text id="textGlAccount" text="{GL_ACCOUNT}"/>
+    </table:template>
+</table:Column>
+
+<table:Column id="colCostCenter" width="10rem" sortProperty="COST_CENTER" filterProperty="COST_CENTER">
+    <table:customData>
+        <core:CustomData key="p13nData" value='{"columnKey":"COST_CENTER", "leadingProperty":"COST_CENTER", "sortProperty":"COST_CENTER", "filterProperty":"COST_CENTER"}'/>
+    </table:customData>
+    <table:label>
+        <Label id="labelCostCenter" text="{pch>COST_CENTER}"/>
+    </table:label>
+    <table:template>
+        <Text id="textCostCenter" text="{COST_CENTER}"/>
+    </table:template>
+</table:Column>
+
+<table:Column id="colPurchaseGroup" width="10rem" sortProperty="PURCHASE_GROUP" filterProperty="PURCHASE_GROUP">
+    <table:customData>
+        <core:CustomData key="p13nData" value='{"columnKey":"PURCHASE_GROUP", "leadingProperty":"PURCHASE_GROUP", "sortProperty":"PURCHASE_GROUP", "filterProperty":"PURCHASE_GROUP"}'/>
+    </table:customData>
+    <table:label>
+        <Label id="labelPurchaseGroup" text="{pch>PURCHASE_GROUP}"/>
+    </table:label>
+    <table:template>
+        <Text id="textPurchaseGroup" text="{PURCHASE_GROUP}"/>
+    </table:template>
+</table:Column>
+
+<table:Column id="colPurchaseGroupDesc" width="10rem" sortProperty="PURCHASE_GROUP_DESC" filterProperty="PURCHASE_GROUP_DESC">
+    <table:customData>
+        <core:CustomData key="p13nData" value='{"columnKey":"PURCHASE_GROUP_DESC", "leadingProperty":"PURCHASE_GROUP_DESC", "sortProperty":"PURCHASE_GROUP_DESC", "filterProperty":"PURCHASE_GROUP_DESC"}'/>
+    </table:customData>
+    <table:label>
+        <Label id="labelPurchaseGroupDesc" text="{pch>PURCHASE_GROUP_DESC}"/>
+    </table:label>
+    <table:template>
+        <Text id="textPurchaseGroupDesc" text="{PURCHASE_GROUP_DESC}"/>
+    </table:template>
+</table:Column>
+
+<table:Column id="colCurrency" width="10rem" sortProperty="CURRENCY" filterProperty="CURRENCY">
+    <table:customData>
+        <core:CustomData key="p13nData" value='{"columnKey":"CURRENCY", "leadingProperty":"CURRENCY", "sortProperty":"CURRENCY", "filterProperty":"CURRENCY"}'/>
+    </table:customData>
+    <table:label>
+        <Label id="labelCurrency" text="{pch>CURRENCY}"/>
+    </table:label>
+    <table:template>
+        <Text id="textCurrency" text="{CURRENCY}"/>
+    </table:template>
+</table:Column>
+
+<table:Column id="colMatId" width="10rem" sortProperty="MAT_ID" filterProperty="MAT_ID">
+    <table:customData>
+        <core:CustomData key="p13nData" value='{"columnKey":"MAT_ID", "leadingProperty":"MAT_ID", "sortProperty":"MAT_ID", "filterProperty":"MAT_ID"}'/>
+    </table:customData>
+    <table:label>
+        <Label id="labelMatId" text="{pch>MAT_ID}"/>
+    </table:label>
+    <table:template>
+        <Text id="textMatId" text="{MAT_ID}"/>
+    </table:template>
+</table:Column>
+
+<table:Column id="colQuantity" width="10rem" sortProperty="QUANTITY" filterProperty="QUANTITY">
+    <table:customData>
+        <core:CustomData key="p13nData" value='{"columnKey":"QUANTITY", "leadingProperty":"QUANTITY", "sortProperty":"QUANTITY", "filterProperty":"QUANTITY"}'/>
+    </table:customData>
+    <table:label>
+        <Label id="labelQuantity" text="{pch>QUANTITY}"/>
+    </table:label>
+    <table:template>
+        <Text id="textQuantity" text="{QUANTITY}"/>
+    </table:template>
+</table:Column>
+
+<table:Column id="colUnit" width="10rem" sortProperty="UNIT" filterProperty="UNIT">
+    <table:customData>
+        <core:CustomData key="p13nData" value='{"columnKey":"UNIT", "leadingProperty":"UNIT", "sortProperty":"UNIT", "filterProperty":"UNIT"}'/>
+    </table:customData>
+    <table:label>
+        <Label id="labelUnit" text="{pch>UNIT}"/>
+    </table:label>
+    <table:template>
+        <Text id="textUnit" text="{UNIT}"/>
+    </table:template>
+</table:Column>
+
+<table:Column id="colMatDesc" width="10rem" sortProperty="MAT_DESC" filterProperty="MAT_DESC">
+    <table:customData>
+        <core:CustomData key="p13nData" value='{"columnKey":"MAT_DESC", "leadingProperty":"MAT_DESC", "sortProperty":"MAT_DESC", "filterProperty":"MAT_DESC"}'/>
+    </table:customData>
+    <table:label>
+        <Label id="labelMatDesc" text="{pch>MAT_DESC}"/>
+    </table:label>
+    <table:template>
+        <Text id="textMatDesc" text="{MAT_DESC}"/>
+    </table:template>
+</table:Column>
+
+<table:Column id="colTaxCode" width="10rem" sortProperty="TAX_CODE" filterProperty="TAX_CODE">
+    <table:customData>
+        <core:CustomData key="p13nData" value='{"columnKey":"TAX_CODE", "leadingProperty":"TAX_CODE", "sortProperty":"TAX_CODE", "filterProperty":"TAX_CODE"}'/>
+    </table:customData>
+    <table:label>
+        <Label id="labelTaxCode" text="{pch>TAX_CODE}"/>
+    </table:label>
+    <table:template>
+        <Text id="textTaxCode" text="{TAX_CODE}"/>
+    </table:template>
+</table:Column>
+
+<table:Column id="colTaxRate" width="10rem" sortProperty="TAX_RATE" filterProperty="TAX_RATE">
+    <table:customData>
+        <core:CustomData key="p13nData" value='{"columnKey":"TAX_RATE", "leadingProperty":"TAX_RATE", "sortProperty":"TAX_RATE", "filterProperty":"TAX_RATE"}'/>
+    </table:customData>
+    <table:label>
+        <Label id="labelTaxRate" text="{pch>TAX_RATE}"/>
+    </table:label>
+    <table:template>
+        <Text id="textTaxRate" text="{TAX_RATE}"/>
+    </table:template>
+</table:Column>
+
+<table:Column id="colInvPostDate" width="10rem" sortProperty="INV_POST_DATE" filterProperty="INV_POST_DATE">
+    <table:customData>
+        <core:CustomData key="p13nData" value='{"columnKey":"INV_POST_DATE", "leadingProperty":"INV_POST_DATE", "sortProperty":"INV_POST_DATE", "filterProperty":"INV_POST_DATE"}'/>
+    </table:customData>
+    <table:label>
+        <Label id="labelInvPostDate" text="{pch>INV_POST_DATE}"/>
+    </table:label>
+    <table:template>
+        <Text id="textInvPostDate" text="{INV_POST_DATE}"/>
+    </table:template>
+</table:Column>
+
+<table:Column id="colSendFlag" width="10rem" sortProperty="SEND_FLAG" filterProperty="SEND_FLAG">
+    <table:customData>
+        <core:CustomData key="p13nData" value='{"columnKey":"SEND_FLAG", "leadingProperty":"SEND_FLAG", "sortProperty":"SEND_FLAG", "filterProperty":"SEND_FLAG"}'/>
+    </table:customData>
+    <table:label>
+        <Label id="labelSendFlag" text="{pch>SEND_FLAG}"/>
+    </table:label>
+    <table:template>
+        <Text id="textSendFlag" text="{SEND_FLAG}"/>
+    </table:template>
+</table:Column>
+
+<table:Column id="colUnitPrice" width="10rem" sortProperty="UNIT_PRICE" filterProperty="UNIT_PRICE">
+    <table:customData>
+        <core:CustomData key="p13nData" value='{"columnKey":"UNIT_PRICE", "leadingProperty":"UNIT_PRICE", "sortProperty":"UNIT_PRICE", "filterProperty":"UNIT_PRICE"}'/>
+    </table:customData>
+    <table:label>
+        <Label id="labelUnitPrice" text="{pch>UNIT_PRICE}"/>
+    </table:label>
+    <table:template>
+        <Text id="textUnitPrice" text="{UNIT_PRICE}"/>
+    </table:template>
+</table:Column>
+
+<table:Column id="colPriceAmount" width="10rem" sortProperty="PRICE_AMOUNT" filterProperty="PRICE_AMOUNT">
+    <table:customData>
+        <core:CustomData key="p13nData" value='{"columnKey":"PRICE_AMOUNT", "leadingProperty":"PRICE_AMOUNT", "sortProperty":"PRICE_AMOUNT", "filterProperty":"PRICE_AMOUNT"}'/>
+    </table:customData>
+    <table:label>
+        <Label id="labelPriceAmount" text="{pch>PRICE_AMOUNT}"/>
+    </table:label>
+    <table:template>
+        <Text id="textPriceAmount" text="{PRICE_AMOUNT}"/>
+    </table:template>
+</table:Column>
+
+<table:Column id="colTaxAmount" width="10rem" sortProperty="TAX_AMOUNT" filterProperty="TAX_AMOUNT">
+    <table:customData>
+        <core:CustomData key="p13nData" value='{"columnKey":"TAX_AMOUNT", "leadingProperty":"TAX_AMOUNT", "sortProperty":"TAX_AMOUNT", "filterProperty":"TAX_AMOUNT"}'/>
+    </table:customData>
+    <table:label>
+        <Label id="labelTaxAmount" text="{pch>TAX_AMOUNT}"/>
+    </table:label>
+    <table:template>
+        <Text id="textTaxAmount" text="{TAX_AMOUNT}"/>
+    </table:template>
+</table:Column>
+
+<table:Column id="colTotalAmount" width="10rem" sortProperty="TOTAL_AMOUNT" filterProperty="TOTAL_AMOUNT">
+    <table:customData>
+        <core:CustomData key="p13nData" value='{"columnKey":"TOTAL_AMOUNT", "leadingProperty":"TOTAL_AMOUNT", "sortProperty":"TOTAL_AMOUNT", "filterProperty":"TOTAL_AMOUNT"}'/>
+    </table:customData>
+    <table:label>
+        <Label id="labelTotalAmount" text="{pch>TOTAL_AMOUNT}"/>
+    </table:label>
+    <table:template>
+        <Text id="textTotalAmount" text="{TOTAL_AMOUNT}"/>
+    </table:template>
+</table:Column>
+
+<table:Column id="colInvBaseDate" width="10rem" sortProperty="INV_BASE_DATE" filterProperty="INV_BASE_DATE">
+    <table:customData>
+        <core:CustomData key="p13nData" value='{"columnKey":"INV_BASE_DATE", "leadingProperty":"INV_BASE_DATE", "sortProperty":"INV_BASE_DATE", "filterProperty":"INV_BASE_DATE"}'/>
+    </table:customData>
+    <table:label>
+        <Label id="labelInvBaseDate" text="{pch>INV_BASE_DATE}"/>
+    </table:label>
+    <table:template>
+        <Text id="textInvBaseDate" text="{INV_BASE_DATE}"/>
+    </table:template>
+</table:Column>
+
+<table:Column id="colGrDate" width="10rem" sortProperty="GR_DATE" filterProperty="GR_DATE">
+    <table:customData>
+        <core:CustomData key="p13nData" value='{"columnKey":"GR_DATE", "leadingProperty":"GR_DATE", "sortProperty":"GR_DATE", "filterProperty":"GR_DATE"}'/>
+    </table:customData>
+    <table:label>
+        <Label id="labelGrDate" text="{pch>GR_DATE}"/>
+    </table:label>
+    <table:template>
+        <Text id="textGrDate" text="{GR_DATE}"/>
+    </table:template>
+</table:Column>
+
+<table:Column id="colLogNo" width="10rem" sortProperty="LOG_NO" filterProperty="LOG_NO">
+    <table:customData>
+        <core:CustomData key="p13nData" value='{"columnKey":"LOG_NO", "leadingProperty":"LOG_NO", "sortProperty":"LOG_NO", "filterProperty":"LOG_NO"}'/>
+    </table:customData>
+    <table:label>
+        <Label id="labelLogNo" text="{pch>LOG_NO}"/>
+    </table:label>
+    <table:template>
+        <Text id="textLogNo" text="{LOG_NO}"/>
+    </table:template>
+
+</table:Column>
+</table:columns>
+        </table:Table>
+    </smartTable:SmartTable>
+</mvc:View>
