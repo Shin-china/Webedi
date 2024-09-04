@@ -11,8 +11,8 @@ extend service TableService with {
     ON T01.H_CODE=T02.H_CODE
     
     {
-      key D_NAME as NAME,
-          VALUE01 as VALUE
+       D_NAME as NAME,
+      key    VALUE01 as VALUE
     }
     where
       T01.H_CODE = 'PCH01_STATUS';
@@ -23,8 +23,8 @@ extend service TableService with {
     ON T03.H_CODE=T04.H_CODE 
     
     {
-      key D_NAME as NAME,
-          VALUE01 as VALUE
+       D_NAME as NAME,
+       key   VALUE01 as VALUE
     }
     where
       T03.H_CODE = 'PCH02_STATUS';
@@ -35,8 +35,8 @@ extend service TableService with {
     ON T03.H_CODE=T04.H_CODE 
     
     {
-      key D_NAME as NAME,
-          VALUE01 as VALUE
+       D_NAME as NAME,
+       key   VALUE01 as VALUE
     }
     where
       T03.H_CODE = 'MST_BP_ZABC';
@@ -47,8 +47,8 @@ extend service TableService with {
     ON T03.H_CODE=T04.H_CODE 
     
     {
-      key D_NAME as NAME,
-          VALUE01 as VALUE
+       D_NAME as NAME,
+       key   VALUE01 as VALUE
     }
     where
       T03.H_CODE = 'PCH03_STATUS';
@@ -58,8 +58,8 @@ extend service TableService with {
     ON T03.H_CODE=T04.H_CODE 
     
     {
-      key D_NAME as NAME,
-          VALUE01 as VALUE
+      key VALUE01 as VALUE,
+          D_NAME as NAME,
     }
     where
       T03.H_CODE = 'PO_TYPE';
