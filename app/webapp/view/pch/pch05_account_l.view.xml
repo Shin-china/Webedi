@@ -1,0 +1,169 @@
+<mvc:View 
+    controllerName="umc.app.controller.pch.pch05_account_l" 
+    xmlns:core="sap.ui.core" 
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:layout="sap.ui.layout" 
+    xmlns:table="sap.ui.table" 
+    xmlns:smartFilterBar="sap.ui.comp.smartfilterbar" 
+    xmlns:smartTable="sap.ui.comp.smarttable" 
+    xmlns:smartField="sap.ui.comp.smartfield" 
+    xmlns:smartform="sap.ui.comp.smartform" 
+    xmlns:mvc="sap.ui.core.mvc" 
+    xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+    xmlns:uxap="sap.uxap">
+
+        <f:DynamicPageHeader id="DynamicPageHeader" pinnable="true">
+            <f:content>
+                <smartFilterBar:SmartFilterBar id="smartFilterBar" entitySet="PCH_T05_ACCOUNT_DETAIL" persistencyKey="PCH_T05_ACCOUNT_DETAIL" showFilterConfiguration="true">
+                    <smartFilterBar:controlConfiguration>
+
+                    <smartFilterBar:ControlConfiguration id="PCH_PO_BUKRS"      key="PO_BUKRS"             visibleInAdvancedArea="true" label="{pch>PO_BUKRS}"             filterType="single"  controlType="auto"      index="1"/>
+                    <smartFilterBar:ControlConfiguration id="PCH_INV_POST_DATE" key="INV_POST_DATE"        visibleInAdvancedArea="true" label="{pch>INV_POST_DATE}"        filterType="single"  controlType="auto"      index="2"/>
+                    <smartFilterBar:ControlConfiguration id="PCH_SUPPLIER"      key="SUPPLIER"             visibleInAdvancedArea="true" label="{pch>SUPPLIER}"             filterType="single"  controlType="auto"      index="3"/>
+                  
+                    </smartFilterBar:controlConfiguration>
+                </smartFilterBar:SmartFilterBar>
+            </f:content>
+        </f:DynamicPageHeader>
+        
+  <!-- </f:DynamicPageHeader> -->
+
+    <smartTable:SmartTable id="ID" enableAutoColumnWidth="true" entitySet="PCH_T05_ACCOUNT_DETAIL" 
+        ignoredFields=""  initiallyVisibleFields="PO_BUKRS,INV_POST_DATE,SUPPLIER,CALC_10_TAX_AMOUNT,CALC_8_TAX_AMOUNT,RECALC_TAX_AMOUNT_10,RECALC_TAX_AMOUNT_8,DIFF_10_TAX_AMOUNT,DIFF_8_TAX_AMOUNT,TOTAL_10_TAX_AMOUNT,TOTAL_8_TAX_AMOUNT" 
+        smartFilterId="smartFilterBar" enableExport="true" beforeExport="onBeforeExport" 
+        useVariantManagement="true" useTablePersonalisation="true" header="{pch>TITLE_RESULT}" showRowCount="true" persistencyKey="pch05_SmartTableAnalytical_Explored" enableAutoBinding="true">
+        
+      <!-- <smartTable:customToolbar>
+            <OverflowToolbar id="myOverflowToolbar" design="Transparent">
+                <ToolbarSpacer id="myToolbarSpacer"/>
+                <OverflowToolbarButton id="resendButton"   icon="sap-icon://email"          text="{pch>PCH05_BUTTON_RESEND}" tooltip="{pch>PCH05_BUTTON_RESEND}" press="onResend"/>
+                <OverflowToolbarButton id="downloadPdfBtn" icon="sap-icon://pdf-attachment" text="{pch>PCH05_BUTTON_PDF}"    tooltip="{pch>PCH05_BUTTON_PDF}"    press="onExportToPDF"/>
+            </OverflowToolbar>
+        </smartTable:customToolbar> -->
+    
+    <table:Table id="detailTable" rowMode="Auto" rowActionCount="1" selectionMode="MultiToggle" alternateRowColors="true" fixedColumnCount="0" threshold="20">
+        <table:columns>
+  <table:Column id="colInvPostDate" width="10rem" sortProperty="INV_POST_DATE" filterProperty="INV_POST_DATE">
+    <table:customData>
+        <core:CustomData key="p13nData" value='{"columnKey":"INV_POST_DATE", "leadingProperty":"INV_POST_DATE", "sortProperty":"INV_POST_DATE", "filterProperty":"INV_POST_DATE"}'/>
+    </table:customData>
+    <table:label>
+        <Label id="labelInvPostDate" text="{pch>INV_POST_DATE}"/>
+    </table:label>
+    <table:template>
+        <Text id="textInvPostDate" text="{INV_POST_DATE}"/>
+    </table:template>
+</table:Column>
+
+<table:Column id="colSupplier" width="10rem" sortProperty="SUPPLIER" filterProperty="SUPPLIER">
+    <table:customData>
+        <core:CustomData key="p13nData" value='{"columnKey":"SUPPLIER", "leadingProperty":"SUPPLIER", "sortProperty":"SUPPLIER", "filterProperty":"SUPPLIER"}'/>
+    </table:customData>
+    <table:label>
+        <Label id="labelSupplier" text="{pch>SUPPLIER}"/>
+    </table:label>
+    <table:template>
+        <Text id="textSupplier" text="{SUPPLIER}"/>
+    </table:template>
+</table:Column>
+
+<table:Column id="colCalc10TaxAmount" width="10rem" sortProperty="CALC_10_TAX_AMOUNT" filterProperty="CALC_10_TAX_AMOUNT">
+    <table:customData>
+        <core:CustomData key="p13nData" value='{"columnKey":"CALC_10_TAX_AMOUNT", "leadingProperty":"CALC_10_TAX_AMOUNT", "sortProperty":"CALC_10_TAX_AMOUNT", "filterProperty":"CALC_10_TAX_AMOUNT"}'/>
+    </table:customData>
+    <table:label>
+        <Label id="labelCalc10TaxAmount" text="{pch>CALC_10_TAX_AMOUNT}"/>
+    </table:label>
+    <table:template>
+        <Text id="textCalc10TaxAmount" text="{CALC_10_TAX_AMOUNT}"/>
+    </table:template>
+</table:Column>
+
+<table:Column id="colCalc8TaxAmount" width="10rem" sortProperty="CALC_8_TAX_AMOUNT" filterProperty="CALC_8_TAX_AMOUNT">
+    <table:customData>
+        <core:CustomData key="p13nData" value='{"columnKey":"CALC_8_TAX_AMOUNT", "leadingProperty":"CALC_8_TAX_AMOUNT", "sortProperty":"CALC_8_TAX_AMOUNT", "filterProperty":"CALC_8_TAX_AMOUNT"}'/>
+    </table:customData>
+    <table:label>
+        <Label id="labelCalc8TaxAmount" text="{pch>CALC_8_TAX_AMOUNT}"/>
+    </table:label>
+    <table:template>
+        <Text id="textCalc8TaxAmount" text="{CALC_8_TAX_AMOUNT}"/>
+    </table:template>
+</table:Column>
+
+<table:Column id="colRecalcTaxAmount10" width="10rem" sortProperty="RECALC_TAX_AMOUNT_10" filterProperty="RECALC_TAX_AMOUNT_10">
+    <table:customData>
+        <core:CustomData key="p13nData" value='{"columnKey":"RECALC_TAX_AMOUNT_10", "leadingProperty":"RECALC_TAX_AMOUNT_10", "sortProperty":"RECALC_TAX_AMOUNT_10", "filterProperty":"RECALC_TAX_AMOUNT_10"}'/>
+    </table:customData>
+    <table:label>
+        <Label id="labelRecalcTaxAmount10" text="{pch>RECALC_TAX_AMOUNT_10}"/>
+    </table:label>
+    <table:template>
+        <Text id="textRecalcTaxAmount10" text="{RECALC_TAX_AMOUNT_10}"/>
+    </table:template>
+</table:Column>
+
+<table:Column id="colRecalcTaxAmount8" width="10rem" sortProperty="RECALC_TAX_AMOUNT_8" filterProperty="RECALC_TAX_AMOUNT_8">
+    <table:customData>
+        <core:CustomData key="p13nData" value='{"columnKey":"RECALC_TAX_AMOUNT_8", "leadingProperty":"RECALC_TAX_AMOUNT_8", "sortProperty":"RECALC_TAX_AMOUNT_8", "filterProperty":"RECALC_TAX_AMOUNT_8"}'/>
+    </table:customData>
+    <table:label>
+        <Label id="labelRecalcTaxAmount8" text="{pch>RECALC_TAX_AMOUNT_8}"/>
+    </table:label>
+    <table:template>
+        <Text id="textRecalcTaxAmount8" text="{RECALC_TAX_AMOUNT_8}"/>
+    </table:template>
+</table:Column>
+
+<table:Column id="colDiff10TaxAmount" width="10rem" sortProperty="DIFF_10_TAX_AMOUNT" filterProperty="DIFF_10_TAX_AMOUNT">
+    <table:customData>
+        <core:CustomData key="p13nData" value='{"columnKey":"DIFF_10_TAX_AMOUNT", "leadingProperty":"DIFF_10_TAX_AMOUNT", "sortProperty":"DIFF_10_TAX_AMOUNT", "filterProperty":"DIFF_10_TAX_AMOUNT"}'/>
+    </table:customData>
+    <table:label>
+        <Label id="labelDiff10TaxAmount" text="{pch>DIFF_10_TAX_AMOUNT}"/>
+    </table:label>
+    <table:template>
+        <Text id="textDiff10TaxAmount" text="{DIFF_10_TAX_AMOUNT}"/>
+    </table:template>
+</table:Column>
+
+<table:Column id="colDiff8TaxAmount" width="10rem" sortProperty="DIFF_8_TAX_AMOUNT" filterProperty="DIFF_8_TAX_AMOUNT">
+    <table:customData>
+        <core:CustomData key="p13nData" value='{"columnKey":"DIFF_8_TAX_AMOUNT", "leadingProperty":"DIFF_8_TAX_AMOUNT", "sortProperty":"DIFF_8_TAX_AMOUNT", "filterProperty":"DIFF_8_TAX_AMOUNT"}'/>
+    </table:customData>
+    <table:label>
+        <Label id="labelDiff8TaxAmount" text="{pch>DIFF_8_TAX_AMOUNT}"/>
+    </table:label>
+    <table:template>
+        <Text id="textDiff8TaxAmount" text="{DIFF_8_TAX_AMOUNT}"/>
+    </table:template>
+</table:Column>
+
+<table:Column id="colTotal10TaxAmount" width="10rem" sortProperty="TOTAL_10_TAX_AMOUNT" filterProperty="TOTAL_10_TAX_AMOUNT">
+    <table:customData>
+        <core:CustomData key="p13nData" value='{"columnKey":"TOTAL_10_TAX_AMOUNT", "leadingProperty":"TOTAL_10_TAX_AMOUNT", "sortProperty":"TOTAL_10_TAX_AMOUNT", "filterProperty":"TOTAL_10_TAX_AMOUNT"}'/>
+    </table:customData>
+    <table:label>
+        <Label id="labelTotal10TaxAmount" text="{pch>TOTAL_10_TAX_AMOUNT}"/>
+    </table:label>
+    <table:template>
+        <Text id="textTotal10TaxAmount" text="{TOTAL_10_TAX_AMOUNT}"/>
+    </table:template>
+</table:Column>
+
+<table:Column id="colTotal8TaxAmount" width="10rem" sortProperty="TOTAL_8_TAX_AMOUNT" filterProperty="TOTAL_8_TAX_AMOUNT">
+    <table:customData>
+        <core:CustomData key="p13nData" value='{"columnKey":"TOTAL_8_TAX_AMOUNT", "leadingProperty":"TOTAL_8_TAX_AMOUNT", "sortProperty":"TOTAL_8_TAX_AMOUNT", "filterProperty":"TOTAL_8_TAX_AMOUNT"}'/>
+    </table:customData>
+    <table:label>
+        <Label id="labelTotal8TaxAmount" text="{pch>TOTAL_8_TAX_AMOUNT}"/>
+    </table:label>
+    <table:template>
+        <Text id="textTotal8TaxAmount" text="{TOTAL_8_TAX_AMOUNT}"/>
+    </table:template>
+</table:Column>
+</table:columns>
+        </table:Table>
+    </smartTable:SmartTable>
+</mvc:View>
