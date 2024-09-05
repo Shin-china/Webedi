@@ -67,7 +67,7 @@ entity PCH_T04_PAYMENT_H : IF_CUID_FILED { //付款申请表抬头表
   @title: '{i18n>INV_BASE_DATE}'           INV_BASE_DATE          : Date;          //采购订单明细行号
   @title: '{i18n>INV_POST_DATE}'           INV_POST_DATE          : Date;          //采购订单明细行号
   @title: '{i18n>SEND_FLAG}'               SEND_FLAG              : String(1);           //采购订单明细行号
-  @title: '{i18n>EXCHANGE}'               EXCHANGE              : String(10);           //换算レ-ト
+  @title: '{i18n>EXCHANGE}'               EXCHANGE              : Decimal(18,3);           //换算レ-ト
   TO_ITEMS                                                        : Association to many PCH_T05_PAYMENT_D //付款申请表行表
                                                                     ON  TO_ITEMS.INV_NO = INV_NO AND TO_ITEMS.GL_YEAR = GL_YEAR;
 }
@@ -77,6 +77,7 @@ entity PCH_T05_PAYMENT_D : IF_CUID_FILED { //付款申请表行表
   @title: '{i18n>GL_YEAR}'             key GL_YEAR                           : Integer;             //发票年份
   @title: '{i18n>ITEM_NO}'             key ITEM_NO                           : Integer;             //发票明细
   @title: '{i18n>PO_NO}'                   PO_NO                             : String(10);          //采购订单号
+  @title: '{i18n>GR_DATE}'                 GR_DATE                             : Date;          //入荷日
   @title: '{i18n>PO_NO}'                   D_NO                              : Integer;             //采购订单明细行号
   @title: '{i18n>PO_TRACK_NO}'             PO_TRACK_NO                       : String(10);          //采购订单跟踪号
   @title: '{i18n>PR_BY}'                   PR_BY                             : String(20);          //采购订单明细行号
