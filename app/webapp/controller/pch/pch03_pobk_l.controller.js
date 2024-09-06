@@ -10,8 +10,13 @@ sap.ui.define([
 		formatter : formatter,
 
 		onInit: function () {
-
-		this._setOnInitNo("PCH03", ".20240812.01");
+			this.getView().unbindElement();
+			const oTable = this.byId("detailTable");
+			// oTable.setSelectionMode("None");
+			//  设置版本号
+			this._setOnInitNo("MST01");
+			this.MessageTools._clearMessage();
+			this.MessageTools._initoMessageManager(this);
 
 		},
 	
@@ -23,7 +28,7 @@ sap.ui.define([
 
 		onRebind: function (oEvent) {
 		// this._onListRebindDarft(oEvent);
-		this._onListRebindDarft(oEvent, true);
+		// this._onListRebindDarft(oEvent, true);
 		},
 	
 		onBeforeExport: function (oEvt) {
@@ -43,6 +48,24 @@ sap.ui.define([
 		// var oContext = oItem.getBindingContext();
 		// this._onPress(oEvent, "RouteCre_sys01");
 		// },
-	
+
+		onPrint: function () {
+			var that = this;
+			let options = { compact: true, ignoreComment: true, spaces: 4 };
+			var IdList = that._TableDataList("detailTable",'ID')
+			if(IdList){
+				that.PrintTool._getPrintDataInfo(that,IdList,"/PCH_T03_PO_ITEM","ID").then((oData)=>{
+					let sResponse = json2xml(oData, options);
+                    console.log(sResponse)
+                    that.setSysConFig().then(res => {
+                        
+                        that.PrintTool._detailSelectPrint(that,sResponse, "MMSS_REP10/MMSS_REP10"+ "_rep05/T",null,null,null,null)
+
+                    }); 
+				})
+			}
+
+
+        }
 	});
 });
