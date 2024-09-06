@@ -14,9 +14,10 @@ extend service TableService {
         
         
         distinct {
-           
+           KEY T01.PO_NO || T02.D_NO || T03.SEQ as ID : String(100),
             KEY T01.PO_NO,                    // 発注番号
             KEY T02.D_NO,                     // 明細番号
+            KEY T03.SEQ,                     // 明細番号
             T01.SUPPLIER,                     // 仕入先コード
             T02.SUPPLIER_MAT,                 // 仕入先品目コード
             T02.MAT_ID,                       // 品目コード
