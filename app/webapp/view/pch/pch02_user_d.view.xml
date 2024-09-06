@@ -33,8 +33,8 @@
                 <smartFilterBar:SmartFilterBar id="smartFilterBar" entitySet="PCH_T02_USER" persistencyKey="PCH02_TEMPLATE" showFilterConfiguration="true">
                     <smartFilterBar:controlConfiguration>
 
-                    <smartFilterBar:ControlConfiguration id="pch_po_no"    key="PO_NO"    visibleInAdvancedArea="true" label="{pch>PO_NO}"    filterType="single" controlType="auto"         index="1"/>
-                    <smartFilterBar:ControlConfiguration id="pch_supplier" key="SUPPLIER" visibleInAdvancedArea="true" label="{pch>SUPPLIER}" filterType="single" controlType="auto"         index="2"/>
+                    <smartFilterBar:ControlConfiguration id="pch_po_no"    key="PO_NO"    visibleInAdvancedArea="true" label="{pch>PO_NO}"          index="1"/>
+                    <smartFilterBar:ControlConfiguration id="pch_supplier" key="SUPPLIER" visibleInAdvancedArea="true" label="{pch>SUPPLIER}"       index="2"/>
                     <smartFilterBar:ControlConfiguration id="pch_status"   key="STATUS"   visibleInAdvancedArea="true" label="{pch>STATUS}"   filterType="single" controlType="dropDownList" index="3"/>
                   
                     </smartFilterBar:controlConfiguration>

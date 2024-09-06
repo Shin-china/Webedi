@@ -33,17 +33,22 @@
         ignoredFields=""  initiallyVisibleFields="PO_BUKRS,INV_POST_DATE,SUPPLIER,CALC_10_TAX_AMOUNT,CALC_8_TAX_AMOUNT,RECALC_TAX_AMOUNT_10,RECALC_TAX_AMOUNT_8,DIFF_10_TAX_AMOUNT,DIFF_8_TAX_AMOUNT,TOTAL_10_TAX_AMOUNT,TOTAL_8_TAX_AMOUNT" 
         smartFilterId="smartFilterBar" enableExport="true" beforeExport="onBeforeExport" 
         useVariantManagement="true" useTablePersonalisation="true" header="{pch>TITLE_RESULT}" showRowCount="true" persistencyKey="pch05_SmartTableAnalytical_Explored" enableAutoBinding="true">
-        
-      <!-- <smartTable:customToolbar>
-            <OverflowToolbar id="myOverflowToolbar" design="Transparent">
-                <ToolbarSpacer id="myToolbarSpacer"/>
-                <OverflowToolbarButton id="resendButton"   icon="sap-icon://email"          text="{pch>PCH05_BUTTON_RESEND}" tooltip="{pch>PCH05_BUTTON_RESEND}" press="onResend"/>
-                <OverflowToolbarButton id="downloadPdfBtn" icon="sap-icon://pdf-attachment" text="{pch>PCH05_BUTTON_PDF}"    tooltip="{pch>PCH05_BUTTON_PDF}"    press="onExportToPDF"/>
-            </OverflowToolbar>
-        </smartTable:customToolbar> -->
     
     <table:Table id="detailTable" rowMode="Auto" rowActionCount="1" selectionMode="MultiToggle" alternateRowColors="true" fixedColumnCount="0" threshold="20">
         <table:columns>
+
+<table:Column id="colBukrs" width="10rem" sortProperty="PO_BUKRS" filterProperty="PO_BUKRS">
+    <table:customData>
+        <core:CustomData key="p13nData" value='{"columnKey":"PO_BUKRS", "leadingProperty":"PO_BUKRS", "sortProperty":"PO_BUKRS", "filterProperty":"PO_BUKRS"}'/>
+    </table:customData>
+    <table:label>
+        <Label id="labelBukrs" text="{pch>PO_BUKRS}"/>
+    </table:label>
+    <table:template>
+        <Text id="textBukrs" text="{PO_BUKRS}"/>
+    </table:template>
+</table:Column>
+
   <table:Column id="colInvPostDate" width="10rem" sortProperty="INV_POST_DATE" filterProperty="INV_POST_DATE">
     <table:customData>
         <core:CustomData key="p13nData" value='{"columnKey":"INV_POST_DATE", "leadingProperty":"INV_POST_DATE", "sortProperty":"INV_POST_DATE", "filterProperty":"INV_POST_DATE"}'/>

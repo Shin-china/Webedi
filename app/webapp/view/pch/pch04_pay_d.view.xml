@@ -33,12 +33,12 @@
                 <smartFilterBar:SmartFilterBar id="smartFilterBar" entitySet="PCH_T04_PAYMENT" persistencyKey="PCH_T04_PAYMENT" showFilterConfiguration="true">
                     <smartFilterBar:controlConfiguration>
 
-                    <smartFilterBar:ControlConfiguration id="PCH_SUPPLIER"    key="SUPPLIER"             visibleInAdvancedArea="true" label="{pch>SUPPLIER}"             filterType="single"  controlType="auto"      index="1"/>
-                    <smartFilterBar:ControlConfiguration id="PCH_DESCRIPTION" key="SUPPLIER_DESCRIPTION" visibleInAdvancedArea="true" label="{pch>SUPPLIER_DESCRIPTION}" filterType="single"  controlType="auto"      index="2"/>
-                    <smartFilterBar:ControlConfiguration id="PCH_PO_NO"       key="PO_NO"                visibleInAdvancedArea="true" label="{pch>PO_NO}"                filterType="single"  controlType="auto"      index="3"/>
-                    <smartFilterBar:ControlConfiguration id="PCH_MAT_ID"      key="MAT_ID"               visibleInAdvancedArea="true" label="{pch>MAT_ID}"               filterType="single"  controlType="auto"      index="4"/>
-                    <smartFilterBar:ControlConfiguration id="PCH_POST_DATE"   key="INV_POST_DATE"        visibleInAdvancedArea="true" label="{pch>INV_POST_DATE}"        filterType="single"  controlType="auto"      index="5"/>
-                    <smartFilterBar:ControlConfiguration id="PCH_SEND_FLAG"   key="SEND_FLAG"            visibleInAdvancedArea="true" label="{pch>SEND_FLAG}"            filterType="single"  controlType="auto"      index="6"/>
+                    <smartFilterBar:ControlConfiguration id="PCH_SUPPLIER"    key="SUPPLIER"             visibleInAdvancedArea="true" label="{pch>SUPPLIER}"                  index="1"/>
+                    <smartFilterBar:ControlConfiguration id="PCH_DESCRIPTION" key="SUPPLIER_DESCRIPTION" visibleInAdvancedArea="true" label="{pch>SUPPLIER_DESCRIPTION}"      index="2"/>
+                    <smartFilterBar:ControlConfiguration id="PCH_PO_NO"       key="PO_NO"                visibleInAdvancedArea="true" label="{pch>PO_NO}"                     index="3"/>
+                    <smartFilterBar:ControlConfiguration id="PCH_MAT_ID"      key="MAT_ID"               visibleInAdvancedArea="true" label="{pch>MAT_ID}"                    index="4"/>
+                    <smartFilterBar:ControlConfiguration id="PCH_POST_DATE"   key="INV_POST_DATE"        visibleInAdvancedArea="true" label="{pch>INV_POST_DATE}"             index="5"/>
+                    <smartFilterBar:ControlConfiguration id="PCH_SEND_FLAG"   key="SEND_FLAG"            visibleInAdvancedArea="true" label="{pch>SEND_FLAG}"            filterType="single"  controlType="dropDownList"   index="6"/>
                   
                     </smartFilterBar:controlConfiguration>
                 </smartFilterBar:SmartFilterBar>
@@ -51,7 +51,7 @@
   <!-- </f:DynamicPageHeader> -->
 
     <smartTable:SmartTable id="ID" enableAutoColumnWidth="true" entitySet="PCH_T04_PAYMENT" 
-        ignoredFields=""  initiallyVisibleFields="SUPPLIER,NO_DETAILS,MAT_ID,MAT_DESC,INV_DATE,QUANTITY,UNIT_PRICE_IN_YEN,UNIT_PRICE,CURRENCY,EXCHANGE,TOTAL_AMOUNT_IN_YEN,,SUPPLIER_MAT,PO_TRACK_NO,TAX_RATE,INV_BASE_DATE,SEND_FLAG" 
+        ignoredFields=""  initiallyVisibleFields="SUPPLIER,NO_DETAILS,MAT_ID,MAT_DESC,GR_DATE,QUANTITY,UNIT_PRICE_IN_YEN,UNIT_PRICE,CURRENCY,EXCHANGE,TOTAL_AMOUNT_IN_YEN,SUPPLIER_MAT,PO_TRACK_NO,TAX_RATE,INV_BASE_DATE,SEND_FLAG" 
         smartFilterId="smartFilterBar" enableExport="true" beforeExport="onBeforeExport" 
         useVariantManagement="true" useTablePersonalisation="true" header="{pch>TITLE_RESULT}" showRowCount="true" persistencyKey="pch02_SmartTableAnalytical_Explored" enableAutoBinding="true">
         
@@ -77,7 +77,7 @@
         </table:template>
     </table:Column>
 
-    <table:Column id="colNoDetails" width="10rem" sortProperty="NO_DETAILS" filterProperty="NO_DETAILS">
+    <table:Column id="colNoDetails" width="5rem" sortProperty="NO_DETAILS" filterProperty="NO_DETAILS">
         <table:customData>
             <core:CustomData key="p13nData" value='{"columnKey":"NO_DETAILS", "leadingProperty":"NO_DETAILS", "sortProperty":"NO_DETAILS", "filterProperty":"NO_DETAILS"}'/>
         </table:customData>
@@ -113,15 +113,15 @@
         </table:template>
     </table:Column>
 
-    <table:Column id="colInvDate" width="10rem" sortProperty="INV_DATE" filterProperty="INV_DATE">
+    <table:Column id="colGrDate" width="10rem" sortProperty="GR_DATE" filterProperty="GR_DATE">
         <table:customData>
-            <core:CustomData key="p13nData" value='{"columnKey":"INV_DATE", "leadingProperty":"INV_DATE", "sortProperty":"INV_DATE", "filterProperty":"INV_DATE"}'/>
+            <core:CustomData key="p13nData" value='{"columnKey":"GR_DATE", "leadingProperty":"GR_DATE", "sortProperty":"GR_DATE", "filterProperty":"GR_DATE"}'/>
         </table:customData>
         <table:label>
-            <Label id="labelInvDate" text="{pch>INV_DATE}"/>
+            <Label id="labelGrDate" text="{pch>GR_DATE}"/>
         </table:label>
         <table:template>
-            <Text id="textInvDate" text="{INV_DATE}"/>
+            <Text id="textGrDate" text="{GR_DATE}"/>
         </table:template>
     </table:Column>
 
