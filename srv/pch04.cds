@@ -42,8 +42,8 @@ extend service TableService {
             T05.PO_TRACK_NO,               // 備考
             T05.TAX_RATE,                  // INV税率
             T04.INV_BASE_DATE,             // 支払日
-            T05.UNIT_PRICE * COALESCE(T04.EXCHANGE, 1) AS UNIT_PRICE_IN_YEN : Decimal(15, 3), 
-            T05.UNIT_PRICE * COALESCE(T04.EXCHANGE, 1) * (T05.QUANTITY * (1 + COALESCE(T05.TAX_RATE, 0) / 100)) AS TOTAL_AMOUNT_IN_YEN : Decimal(20, 3), 
+            T05.UNIT_PRICE * COALESCE(T04.EXCHANGE, 1) AS UNIT_PRICE_IN_YEN : Decimal(15, 6), 
+            T05.TOTAL_AMOUNT * COALESCE(T04.EXCHANGE, 1) AS TOTAL_AMOUNT_IN_YEN : Decimal(20, 6), 
             T02.SUPPLIER_MAT,              // 仕入先品目コード
             M03.LOG_NO                     // 登録番号    
         }
