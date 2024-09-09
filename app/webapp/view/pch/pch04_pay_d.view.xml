@@ -65,7 +65,7 @@
     
     <table:Table id="detailTable" rowMode="Auto" rowActionCount="1" selectionMode="MultiToggle" alternateRowColors="true" fixedColumnCount="0" threshold="20">
         <table:columns>
-    <table:Column id="colSupplier" width="10rem" sortProperty="SUPPLIER" filterProperty="SUPPLIER">
+    <table:Column id="colSupplier" width="5rem" sortProperty="SUPPLIER" filterProperty="SUPPLIER">
         <table:customData>
             <core:CustomData key="p13nData" value='{"columnKey":"SUPPLIER", "leadingProperty":"SUPPLIER", "sortProperty":"SUPPLIER", "filterProperty":"SUPPLIER"}'/>
         </table:customData>
@@ -77,7 +77,7 @@
         </table:template>
     </table:Column>
 
-    <table:Column id="colNoDetails" width="5rem" sortProperty="NO_DETAILS" filterProperty="NO_DETAILS">
+    <table:Column id="colNoDetails" width="15rem" sortProperty="NO_DETAILS" filterProperty="NO_DETAILS">
         <table:customData>
             <core:CustomData key="p13nData" value='{"columnKey":"NO_DETAILS", "leadingProperty":"NO_DETAILS", "sortProperty":"NO_DETAILS", "filterProperty":"NO_DETAILS"}'/>
         </table:customData>
@@ -89,7 +89,7 @@
         </table:template>
     </table:Column>
 
-    <table:Column id="colMatId" width="10rem" sortProperty="MAT_ID" filterProperty="MAT_ID">
+    <table:Column id="colMatId" width="5rem" sortProperty="MAT_ID" filterProperty="MAT_ID">
         <table:customData>
             <core:CustomData key="p13nData" value='{"columnKey":"MAT_ID", "leadingProperty":"MAT_ID", "sortProperty":"MAT_ID", "filterProperty":"MAT_ID"}'/>
         </table:customData>
@@ -149,7 +149,7 @@
         </table:template>
     </table:Column>
 
-    <table:Column id="colUnitPrice" width="10rem" sortProperty="UNIT_PRICE" filterProperty="UNIT_PRICE">
+    <table:Column id="colUnitPrice" width="7rem" sortProperty="UNIT_PRICE" filterProperty="UNIT_PRICE">
         <table:customData>
             <core:CustomData key="p13nData" value='{"columnKey":"UNIT_PRICE", "leadingProperty":"UNIT_PRICE", "sortProperty":"UNIT_PRICE", "filterProperty":"UNIT_PRICE"}'/>
         </table:customData>
@@ -173,7 +173,7 @@
         </table:template>
     </table:Column>
 
-    <table:Column id="colExchange" width="10rem" sortProperty="EXCHANGE" filterProperty="EXCHANGE">
+    <table:Column id="colExchange" width="7rem" sortProperty="EXCHANGE" filterProperty="EXCHANGE">
         <table:customData>
             <core:CustomData key="p13nData" value='{"columnKey":"EXCHANGE", "leadingProperty":"EXCHANGE", "sortProperty":"EXCHANGE", "filterProperty":"EXCHANGE"}'/>
         </table:customData>
@@ -185,7 +185,7 @@
         </table:template>
     </table:Column>
 
-    <table:Column id="colTotalAmountInYen" width="10rem" sortProperty="TOTAL_AMOUNT_IN_YEN" filterProperty="TOTAL_AMOUNT_IN_YEN">
+    <table:Column id="colTotalAmountInYen" width="15rem" sortProperty="TOTAL_AMOUNT_IN_YEN" filterProperty="TOTAL_AMOUNT_IN_YEN">
         <table:customData>
             <core:CustomData key="p13nData" value='{"columnKey":"TOTAL_AMOUNT_IN_YEN", "leadingProperty":"TOTAL_AMOUNT_IN_YEN", "sortProperty":"TOTAL_AMOUNT_IN_YEN", "filterProperty":"TOTAL_AMOUNT_IN_YEN"}'/>
         </table:customData>
@@ -221,7 +221,7 @@
         </table:template>
     </table:Column>
 
-    <table:Column id="colTaxRate" width="10rem" sortProperty="TAX_RATE" filterProperty="TAX_RATE">
+    <table:Column id="colTaxRate" width="7rem" sortProperty="TAX_RATE" filterProperty="TAX_RATE">
         <table:customData>
             <core:CustomData key="p13nData" value='{"columnKey":"TAX_RATE", "leadingProperty":"TAX_RATE", "sortProperty":"TAX_RATE", "filterProperty":"TAX_RATE"}'/>
         </table:customData>
