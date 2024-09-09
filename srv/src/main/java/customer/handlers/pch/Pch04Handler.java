@@ -5,12 +5,17 @@
 // import com.sap.cds.services.handler.EventHandler;
 // import com.sap.cds.services.handler.annotations.On;
 // import com.sap.cds.services.handler.annotations.ServiceName;
-// import cds.gen.common.Common_;
 // import cds.gen.tableservice.TableService_;
+// import cds.gen.MailBody; // 确保导入 MailBody
+// import cds.gen.MailJson; // 确保导入 MailJson
 // import customer.service.sys.EmailServiceFun;
+// import com.google.gson.Gson; // 使用Gson库进行JSON解析
+// import java.util.ArrayList;
+// import java.util.Collection;
+// import java.util.List;
 
 // @Component
-// @ServiceName(TableService_.CDS_NAME)  
+// @ServiceName(TableService_.CDS_NAME)
 // public class Pch04Handler implements EventHandler {
 
 //     @Autowired
@@ -18,39 +23,71 @@
 
 //     @On(event = "PCH04_SENDEMAIL")
 //     public String sendEmail(String parms) {
-//         // 解析传入的参数，这里假设参数是 JSON 格式的字符串
-//         // 您可以根据实际情况进行解析
-//         String recipient = extractRecipient(parms); // 从 parms 中提取收件人
-//         String subject = "支払通知書発行のお知らせ";
-//         String content = createEmailContent(recipient); // 创建邮件内容
+//         // 将 JSON 字符串解析为 List<MailParam> 对象
+//         List<MailParam> emailParams = parseParams(parms);
 
-//         // 调用邮件服务发送邮件
-//         emailServiceFun.sendEmailFun(recipient, subject, content);
+//         // 创建 MailJson 的集合
+//         Collection<MailJson> mailJsonList = new ArrayList<>();
 
-//         // 返回结果
-//         return "邮件已发送到: " + recipient;
+//         // 遍历每个邮件参数，并创建 MailJson 对象
+//         for (MailParam param : emailParams) {
+//             MailJson mailJson = MailJson.create(); // 使用静态方法创建 MailJson 对象
+
+//             // 确保使用正确的方法名和参数
+//             mailJson.setMailTo(param.getSupplierDescription()); // 设置收件人
+//             mailJson.setTemplateId(param.getTemplateId()); // 设置模板ID
+//             mailJson.setMailBody(createMailBody(param)); // 设置邮件内容（MailBody）
+
+//             // 添加到邮件列表
+//             mailJsonList.add(mailJson);
+//         }
+
+//         // 调用邮件发送服务
+//         emailServiceFun.sendEmailFun(mailJsonList);
+
+//         // 返回成功消息
+//         return "邮件已成功发送。";
 //     }
 
-//     private String extractRecipient(String parms) {
-//         // 假设 parms 是 JSON 字符串，解析它以提取收件人信息
-//         // 这里您可以使用 JSON 解析库，例如 Jackson 或 Gson
-//         // 示例（伪代码）:
-//         // JsonObject jsonObject = JsonParser.parseString(parms).getAsJsonObject();
-//         // return jsonObject.get("recipient").getAsString();
-        
-//         // 这里假设直接返回一个固定的地址，您需要根据实际情况实现
-//         return "xiaoyue.wang@sh.shin-china.com";
+//     // 创建 MailBody 的集合
+//     private Collection<MailBody> createMailBody(MailParam param) {
+//         Collection<MailBody> bodies = new ArrayList<>();
+//         // 根据需要构建 MailBody 对象并添加到集合中
+//         MailBody body = MailBody.create();
+//         body.setObject("相关内容"); // 根据具体需求设置
+//         body.setValue(param.getEmailContent()); // 使用参数内容
+//         bodies.add(body);
+//         return bodies;
 //     }
 
-//     private String createEmailContent(String recipient) {
-//         return String.format("（%s）御中\nいつも大変お世話になっております｡\n\n" +
-//             "○年△月度の支払通知書がアップロードされましたので、\n" +
-//             "以下のURLから、所定のID・Passwordでログインの上、ご確認の程、宜しくお願いいたします。\n\n" +
-//             "御社の金額と差異がある場合、○年×月△日までにご連絡ください。\n\n" +
-//             "尚､ダウンロード期限がございますので、\n" +
-//             "お早めにご確認及びダウンロード頂き、ファイルの保管をお願いいたします。\n\n" +
-//             "UWEB（WEB-EDI） URL：*****\n\n" +
-//             "以上\n\n" +
-//             "ユー・エム・シー・エレクトロニクス　株式会社　購買統括部", recipient);
+//     // 解析传入的 JSON 参数为 List<MailParam>
+//     private List<MailParam> parseParams(String parms) {
+//         Gson gson = new Gson();
+//         MailParam[] emailParamsArray = gson.fromJson(parms, MailParam[].class);
+//         return List.of(emailParamsArray);
+//     }
+
+//     // 定义一个内部类，用于接收 JSON 数据
+//     private static class MailParam {
+//         private String INV_NO;
+//         private String SUPPLIER_DESCRIPTION;
+//         private String EMAIL_CONTENT;
+//         private String TEMPLATE_ID; // 添加模板ID字段
+
+//         public String getInvNo() {
+//             return INV_NO;
+//         }
+
+//         public String getSupplierDescription() {
+//             return SUPPLIER_DESCRIPTION;
+//         }
+
+//         public String getEmailContent() {
+//             return EMAIL_CONTENT;
+//         }
+
+//         public String getTemplateId() { // 添加获取模板ID的方法
+//             return TEMPLATE_ID;
+//         }
 //     }
 // }

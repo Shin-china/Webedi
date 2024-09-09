@@ -14,6 +14,10 @@ extend service TableService {
                     T02.PO_NO = T05.PO_NO
                  and T02.D_NO = T05.D_NO
                 )
+            left join PCH.PCH_T01_PO_H AS T01
+               on (
+                    T01.PO_NO = T05.PO_NO
+                )
              left join PCH.PCH_T04_PAYMENT_H as T04
                 on (
                     T05.INV_NO = T04.INV_NO
@@ -23,10 +27,17 @@ extend service TableService {
                 on (
                     T04.SUPPLIER = M03.BP_ID
                 )
+             left join MST.MST_T04_SAP_BP_PURCHASE AS M04
+               on (
+                     M04.SUPPLIER     = T01.SUPPLIER
+                 and M04.PURCHASE_ORG = T01.PO_ORG
+                )
+
         {
         KEY T02.PO_NO,                     // UMC発注番号
         KEY T02.D_NO,                      // 明細番号 
-            T04.SUPPLIER,                  // 業者コード
+            T01.SUPPLIER,                  // 業者コード
+            T01.PO_ORG,                    // 購買組織
             T04.SUPPLIER_DESCRIPTION,      // 業者名
             T05.MAT_ID,                    // 品目コード
             T04.INV_NO,                    //发票号
@@ -45,7 +56,8 @@ extend service TableService {
             T05.UNIT_PRICE * COALESCE(T04.EXCHANGE, 1) AS UNIT_PRICE_IN_YEN : Decimal(15, 6), 
             T05.TOTAL_AMOUNT * COALESCE(T04.EXCHANGE, 1) AS TOTAL_AMOUNT_IN_YEN : Decimal(20, 6), 
             T02.SUPPLIER_MAT,              // 仕入先品目コード
-            M03.LOG_NO                     // 登録番号    
+            M03.LOG_NO,                    // 登録番号    
+            M04.ZABC                       // ABC区分
         }
 
          action PCH04_SENDEMAIL(parms : String) returns String;
