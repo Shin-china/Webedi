@@ -27,7 +27,7 @@ sap.ui.define(
           // check if running in localhost
           if (window.location.hostname === "localhost" || window.location.hostname === "211.144.197.139") {
             // 本地开发打印
-            that._getOAuthToken(_that).then(
+            that._getOAuthToken2(_that).then(
               function (token) {
                 //生成pdf
                 that
@@ -79,12 +79,33 @@ sap.ui.define(
           }
         });
       },
-
+		/*==============================
+		==============================*/
+		_getOAuthToken: function () {
+			return new Promise(function (resolve, reject) {
+				$.ajax({
+					url:
+						jQuery.sap.getModulePath("umc.app") + "/OAuth/api/v1/token?grant_type=client_credentials&scope=generate-ads-output",
+					type: "post",
+					headers: {
+						Authorization:
+							"Basic " +
+							btoa("646e42f6-d38b-3ca8-b309-74cecaffa21e" + ":" + "H-bpi2020"),
+					},
+					success: function (data, status, xhr) {
+						resolve(data.access_token);
+					},
+					error: function (xhr, status, error) {
+						reject(error);
+					},
+				});
+			});
+		},
       /**
        * 本地打印时，现获取token
        * @returns token
        */
-      _getOAuthToken: function (_that) {
+      _getOAuthToken2: function (_that) {
          
         return new Promise(function (resolve, reject) {
           $.ajax({
@@ -148,13 +169,7 @@ sap.ui.define(
           oModel.read(sPath, mParameter);
         });
       },
-
-      /*==============================
-     * call ADS Service to generate PDF
-     * @param {*} dataXML
-     * @param {*} accessToken
-    ==============================*/
-      _createPDF: function (_that, dataXML, xdpTemplateID, accessToken) {
+      _createPDF2: function (_that, dataXML, xdpTemplateID, accessToken) {
         var that = _that;
         return new Promise(
           function (resolve, reject) {
@@ -203,6 +218,70 @@ sap.ui.define(
           }.bind(this)
         );
       },
+      /*==============================
+     * call ADS Service to generate PDF
+     * @param {*} dataXML
+     * @param {*} accessToken
+    ==============================*/
+      _createPDF: function (_that, dataXML, xdpTemplateID, accessToken) {
+        return new Promise(
+          function (resolve, reject) {
+            dataXML =
+              "<?xml version=\"1.0\" encoding=\"UTF-8\"?><form>" +
+              dataXML +
+              "</form>";
+            var encdata = btoa(unescape(encodeURIComponent(dataXML)));
+            var jsonData =
+              "{	" +
+              "\"xdpTemplate\": \"" +
+              xdpTemplateID +
+              "\", " +
+              "\"xmlData\": \"" +
+              encdata +
+              "\"}";
+            if (accessToken) {
+              var headers = { Authorization: "Bearer " + accessToken };
+            } else {
+              var headers = {};
+            }
+  
+            $.ajax({
+              url:
+                _that.getGlobProperty("ADS_url"),
+              type: "post",
+              headers: headers,
+              contentType: "application/json",
+              data: jsonData,
+              success: function (data, textStatus, jqXHR) {
+                //once the API call is successfull, Display PDF on screen
+                var decodedPdfContent = atob(data.fileContent);
+                var byteArray = new Uint8Array(decodedPdfContent.length);
+                for (var i = 0; i < decodedPdfContent.length; i++) {
+                  byteArray[i] = decodedPdfContent.charCodeAt(i);
+                }
+                var blob = new Blob([byteArray.buffer], {
+                  type: "application/pdf",
+                });
+                var _pdfurl = URL.createObjectURL(blob);
+  
+                if (!this._PDFViewer) {
+                  this._PDFViewer = new sap.m.PDFViewer({
+                    width: "auto",
+                    source: _pdfurl,
+                  });
+                  jQuery.sap.addUrlWhitelist("blob"); // register blob url as whitelist
+                }
+                resolve(1);
+                this._PDFViewer.open();
+              },
+              error: function (xhr, status, error) {
+                reject(error);
+              },
+            });
+          }.bind(this)
+        );
+      },
+
       /**
        * 打印结束后 回写方法
        * @param {*打印的数据集合 key } _data

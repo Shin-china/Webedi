@@ -54,14 +54,13 @@ sap.ui.define([
 			let options = { compact: true, ignoreComment: true, spaces: 4 };
 			var IdList = that._TableDataList("detailTable",'ID')
 			if(IdList){
-				that.PrintTool._getPrintDataInfo(that,IdList,"/PCH_T03_PO_ITEM","ID").then((oData)=>{
+				that.PrintTool._getPrintDataInfo(that,IdList,"/PCH_T03_PO_ITEM_PRINT","ID").then((oData)=>{
 					let sResponse = json2xml(oData, options);
                     console.log(sResponse)
-                    that.setSysConFig().then(res => {
-                        
-                        that.PrintTool._detailSelectPrint(that,sResponse, "MMSS_REP10/MMSS_REP10"+ "_rep05/T",null,null,null,null)
+					that.setSysConFig().then(res => {
+						that.PrintTool._detailSelectPrint(that,sResponse, "test/test", oData,null,null,null,null)
 
-                    }); 
+					})
 				})
 			}
 
