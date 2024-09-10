@@ -36,40 +36,32 @@ extend service TableService {
     {
         KEY T02.PO_NO,                     // UMC発注番号
         KEY T02.D_NO,                      // 明細番号 
-        T01.SUPPLIER,                     // 業者コード
-        T01.PO_ORG,                       // 購買組織
-        T04.SUPPLIER_DESCRIPTION,        // 業者名
-        T05.MAT_ID,                       // 品目コード
-        T04.INV_NO,                       // 发票号
-        T04.SEND_FLAG,                    // ステータス
-        T04.INV_POST_DATE,               // 検収月
+        T01.SUPPLIER,                      // 業者コード
+        T01.PO_ORG,                        // 購買組織
+        T04.SUPPLIER_DESCRIPTION,          // 業者名
+        T05.MAT_ID,                        // 品目コード
+        T04.INV_NO,                        // 发票号
+        T04.SEND_FLAG,                     // ステータス
+        T04.INV_POST_DATE,                 // 検収月
         T02.PO_NO || '' || T02.D_NO AS NO_DETAILS : String(255), // 発注\明細NO
-        T05.MAT_DESC,                    // 品目名称
-        T05.GR_DATE,                     // 入荷日
-        T05.QUANTITY,                    // 仕入単位数
-        T05.UNIT_PRICE,                  // 取引通貨単価
-        T05.CURRENCY,                    // INV通貨コード
-        T04.EXCHANGE,                    // 換算レート
-        T05.PO_TRACK_NO,                 // 備考
-        T05.TAX_RATE,                    // INV税率
-        T04.INV_BASE_DATE,               // 支払日
+        T05.MAT_DESC,                      // 品目名称
+        T05.GR_DATE,                       // 入荷日
+        T05.QUANTITY,                      // 仕入単位数
+        T05.UNIT_PRICE,                    // 取引通貨単価
+        T05.CURRENCY,                      // INV通貨コード
+        T04.EXCHANGE,                      // 換算レート
+        T05.PO_TRACK_NO,                   // 備考
+        T05.TAX_RATE,                      // INV税率
+        T04.INV_BASE_DATE,                 // 支払日
         T05.UNIT_PRICE * COALESCE(T04.EXCHANGE, 1) AS UNIT_PRICE_IN_YEN : Decimal(15, 6), 
         T05.TOTAL_AMOUNT * COALESCE(T04.EXCHANGE, 1) AS TOTAL_AMOUNT_IN_YEN : Decimal(20, 6), 
-        T02.SUPPLIER_MAT,                // 仕入先品目コード
-        M03.LOG_NO,                      // 登録番号    
-        M04.ZABC                         // ABC区分
+        T02.SUPPLIER_MAT,                  // 仕入先品目コード
+        M03.LOG_NO,                        // 登録番号    
+        M04.ZABC                           // ABC区分
     }
 
     action PCH04_SENDEMAIL(parms : String) returns String;
 
-}
-
-// 定义 T11_MAIL_TEMPLATE 实体
-entity T11_MAIL_TEMPLATE {
-    @title: '{i18n>TEMPLATE_ID}' key TEMPLATE_ID : String(36); // 邮件ID
-    @title: '{i18n>MAIL_NAME}' MAIL_NAME : String(200); // 邮件名称
-    @title: '{i18n>MAIL_TITLE}' MAIL_TITLE : String(50); // 邮件标题
-    @title: '{i18n>MAIL_CONTENT}' MAIL_CONTENT : String(2000); // 邮件内容
 }
 
 annotate TableService.PCH_T04_PAYMENT with {

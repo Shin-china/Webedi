@@ -17,8 +17,7 @@ sap.ui.define([
                 return;
             }
 
-            var oModel = this.getView().getModel();
-            var oCommonModel = this.getView().getModel("Common"); // 获取公共模型
+            var oModel = this.getView().getModel(); // 默认模型指向 TableService
             var aEmailParams = [];
 
             // 获取选中行的 ZABC 值
@@ -31,84 +30,85 @@ sap.ui.define([
                 return;
             }
 
-            // 使用 OData V4 模型的绑定方法从 T11_MAIL_TEMPLATE 表中获取邮件模板
-            var sPath = "/T11_MAIL_TEMPLATE(TEMPLATE_ID='UWEB_M007')"; // 使用 OData V4 语法
+            // 使用 OData Model 从 SYS_T11_MAIL_TEMPLATE 实体中获取邮件模板
+            var sPath = "/SYS_T11_MAIL_TEMPLATE(TEMPLATE_ID='UWEB_M007')"; // 实体路径
 
-            oCommonModel.bindContext(sPath).getBoundContext().requestObject().then(function (oData) {
-                if (!oData) {
-                    MessageBox.error("邮件模板未找到。");
-                    return;
-                }
-
-                var sTemplateTitle = oData.MAIL_TITLE;
-                var sTemplateContent = oData.MAIL_CONTENT;
-
-                // 遍历选中的行，提取所需数据
-                var aSelectedData = aSelectedIndices.map(function (iIndex) {
-                    return oTable.getContextByIndex(iIndex).getObject();
-                });
-
-                aSelectedData.forEach(function (oData) {
-                    var invNo = oData.INV_NO; // 获取 INV_NO
-                    var supplierDescription = oData.SUPPLIER_DESCRIPTION; // 获取 SUPPLIER_DESCRIPTION
-                    var glYear = oData.GL_YEAR; // 获取 GL_YEAR
-
-                    // 调试日志，检查 glYear 是否为 undefined
-                    if (typeof glYear === "undefined") {
-                        console.error("glYear is undefined for data: ", oData);
-                        return; // 如果 glYear 为 undefined，则跳过当前数据
+            oModel.read(sPath, {
+                success: function (oData) {
+                    if (!oData) {
+                        MessageBox.error("邮件模板未找到。");
+                        return;
                     }
 
-                    // 提取年份和月份
-                    var year = glYear.substring(0, 4); // 前四个字符作为年份
-                    var month = glYear.substring(4, 6); // 后两个字符作为月份
+                    var sTemplateTitle = oData.MAIL_TITLE;
+                    var sTemplateContent = oData.MAIL_CONTENT;
 
-                    // 替换模板中的占位符
-                    var sEmailContent = sTemplateContent.replace("{仕入先名称}", supplierDescription)
-                        .replace(/{YEAR}/g, year)
-                        .replace(/{MONTH}/g, month);
-
-                    // 将提取的数据添加到参数数组中
-                    aEmailParams.push({
-                        TEMPLATE_ID: "UWEB_M007", // 邮件模板 ID
-                        MAIL_TO: "xiaoyue.wang@sh.shin-china.com", // 收件人邮箱
-                        MAIL_BODY: [{
-                            object: "content",
-                            value: sEmailContent // 邮件内容
-                        }]
+                    // 遍历选中的行，提取所需数据
+                    var aSelectedData = aSelectedIndices.map(function (iIndex) {
+                        return oTable.getContextByIndex(iIndex).getObject();
                     });
-                });
 
-                // 将参数转换为字符串或其他格式，以便传递给后端
-                var sParams = JSON.stringify(aEmailParams);
+                    aSelectedData.forEach(function (oData) {
+                        var invNo = oData.INV_NO; // 获取 INV_NO
+                        var supplierDescription = oData.SUPPLIER_DESCRIPTION; // 获取 SUPPLIER_DESCRIPTION
+                        var invPostDate = oData.INV_POST_DATE; // 获取 INV_POST_DATE
 
-                // 调用 CDS 中定义的 PCH04_SENDEMAIL 动作
-                oModel.callFunction("/PCH04_SENDEMAIL", {
-                    method: "POST",
-                    urlParameters: {
-                        "parms": sParams
-                    },
-                    success: function (oData, response) {
-                        console.log("Email sent successfully: ", oData); // 调试日志
-                        MessageToast.show("メール送信に成功しました: " + oData);
-                    },
-                    error: function (oError) {
-                        // 提取更多的错误信息进行调试
-                        var errorMessage = oError.message || "発生したエラー: 未知のエラー";
-                        if (oError.responseText) {
-                            try {
-                                var responseJSON = JSON.parse(oError.responseText);
-                                errorMessage = responseJSON.error.message.value || errorMessage;
-                            } catch (e) {
-                                console.error("Error parsing response text: ", oError.responseText);
-                            }
+                        // 调试日志，检查 invPostDate 是否为 undefined
+                        if (typeof invPostDate === "undefined" || !invPostDate) {
+                            console.error("INV_POST_DATE is undefined or empty for data: ", oData);
+                            return; // 如果 INV_POST_DATE 为 undefined 或空，则跳过当前数据
                         }
-                        // 在错误消息中包括 ZABC 值
-                        MessageBox.error("メール送信に失敗しました: " + errorMessage + ". ZABC値: " + zabcValue);
-                    }
-                });
-            }).catch(function (oError) {
-                MessageBox.error("メールテンプレートの取得に失敗しました: " + oError.message);
+
+                        // 将 INV_POST_DATE 解析为 Date 对象
+                        var date = new Date(invPostDate);
+                        var year = date.getFullYear(); // 提取年份
+                        var month = ("0" + (date.getMonth() + 1)).slice(-2); // 提取月份并确保是两位数
+
+                        // 替换模板中的占位符
+                        var sEmailContent = sTemplateContent.replace("{仕入先名称}", supplierDescription)
+                            .replace(/{YEAR}/g, year)
+                            .replace(/{MONTH}/g, month);
+
+                        // 将提取的数据添加到参数数组中
+                        aEmailParams.push({
+                            TEMPLATE_ID: "UWEB_M007", // 邮件模板 ID
+                            MAIL_TO: "xiaoyue.wang@sh.shin-china.com", // 收件人邮箱
+                            MAIL_BODY: [{
+                                object: "content",
+                                value: sEmailContent // 邮件内容
+                            }]
+                        });
+                    });
+
+                    // 将参数转换为字符串或其他格式，以便传递给后端
+                    var sParams = JSON.stringify(aEmailParams);
+
+                    // 调用 CDS 中定义的 PCH04_SENDEMAIL 动作
+                    oModel.callFunction("/PCH04_SENDEMAIL", {
+                        method: "POST",
+                        urlParameters: {
+                            "parms": sParams
+                        },
+                        success: function (oData) {
+                            MessageToast.show("メール送信に成功しました: " + oData);
+                        },
+                        error: function (oError) {
+                            var errorMessage = oError.message || "発生したエラー: 未知のエラー";
+                            if (oError.responseText) {
+                                try {
+                                    var responseJSON = JSON.parse(oError.responseText);
+                                    errorMessage = responseJSON.error.message.value || errorMessage;
+                                } catch (e) {
+                                    console.error("Error parsing response text: ", oError.responseText);
+                                }
+                            }
+                            MessageBox.error("メール送信に失敗しました: " + errorMessage + ". ZABC値: " + zabcValue);
+                        }
+                    });
+                },
+                error: function (oError) {
+                    MessageBox.error("メールテンプレートの取得に失敗しました: " + oError.message);
+                }
             });
         },
 
