@@ -10,8 +10,8 @@ extend service TableService {
         left join SYS.T03_AUTH as T03 on ( T03.MENU_ID = T10.MENU_ID )
         distinct{
             key T10.MENU_ID,
-            T10.localized.MENU_NAME,
-            T10.localized.MENU_SUB_NAME,
+            T10.MENU_NAME,
+            T10.MENU_SUB_NAME,
             T10.MENU_ICON,
             T10.MENU_MODULE,
             T10.MENU_ROUTE_ID,
