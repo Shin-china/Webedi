@@ -19,7 +19,7 @@
 		<f:title>
 			<f:DynamicPageTitle id="DynamicPageTitle">
 				<f:heading>
-					<Title id="Title" text="{sys>PCH03_TITLE}"/>
+					<Title id="Title" text="{pch>PCH03_TITLE}"/>
 
 				</f:heading>
 				<f:navigationActions>
@@ -63,9 +63,9 @@
 				<OverflowToolbar id="ID_header">
 					<content>
 					<ToolbarSpacer id="ID_ToolbarSpacer" />
-					<Button id="_IDGenButton22" text="{pch>PCH03_BUTTON_CSV}" press="onPrint" enabled="true" width="10em"/>
+					<Button id="_IDGenButton22" text="{pch>PCH03_BUTTON_CSV}" press="_csvdow" enabled="true" width="10em"/>
 					<Button id="_IDGenButton23" text="{pch>PCH03_BUTTON_FAX}" press="onPrint" enabled="true" width="10em"/>
-					<Button id="_IDGenButton24" text="{pch>PCH03_BUTTON_MAIL}" press="onPrint" enabled="true" width="10em"/>
+					<Button id="_IDGenButton24" text="{pch>PCH03_BUTTON_MAIL}" press="onEmail" enabled="true" width="10em"/>
 					<Button id="_IDGenButton25" text="{pch>PCH03_BUTTON_QR}" press="onPrint" enabled="true" width="10em"/>
 					<Button id="_IDGenButton26" text="{pch>PCH03_BUTTON_ZWS_NPS}" press="onPrint" enabled="true" width="10em"/>
 					<Button id="_IDGenButton27" text="{pch>PCH03_BUTTON_ZWS}" press="onPrint" enabled="true" width="10em"/>

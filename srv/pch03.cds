@@ -74,7 +74,11 @@ extend service TableService {
             T02.MEMO,                  // 備考
 
         }
+        action PCH03_SENDEMAIL(parms : String) returns String;
+
 }
+
+
 annotate TableService.PCH_T03_PO_ITEM with {
   
   PO_TYPE @(Common: {ValueList: {entity: 'PO_TYPE_POP', }}); 
