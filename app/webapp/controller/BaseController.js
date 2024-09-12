@@ -124,6 +124,10 @@ sap.ui.define([
         _setDefaultDataModel: function (_mName) {
           this.setModel(this._getOwnerModel(_mName));
         },
+
+        _onPressNav:function(oEvent,_navTo,_infoId){
+          this.getRouter().navTo(_navTo, { headID: _infoId });
+      },
   
         /**
          * 初始化画面时设置 画面中的按钮权限

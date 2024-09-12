@@ -10,15 +10,14 @@ type mailJson     :{
 }
 type mailBody     :{
   object            : String(20);
-  value             : String(100);
+  value             : String(5000);
 }
 
-type attachment   :{
-  OBJECT_TYPE     :
-}
+
 service Common {
 
     action sendEmail(emailJson : array of  mailJson) returns String;//Send Email
     action attachemnt(templateId : String) returns String;//Get Mail Template
+    action getS3List(key : String) returns String;//Get S3 List
 
 }

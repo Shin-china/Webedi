@@ -1,13 +1,16 @@
 package customer.service.sys;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Base64;
 
-import javax.mail.PasswordAuthentication;
-import javax.mail.internet.MimeMessage;
+import javax.mail.util.ByteArrayDataSource;
 
 // import org.apache.tomcat.util.openssl.pem_password_cb;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +20,13 @@ import cds.gen.MailBody;
 import cds.gen.MailJson;
 import cds.gen.sys.T11MailTemplate;
 import cds.gen.sys.T12Config;
-import customer.bean.sys.InnerEmailEntity;
 import customer.dao.sys.T11MailTempDao;
 import customer.dao.sys.T12ConfigDao;
 import javax.mail.*;
 import javax.mail.internet.*;
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.mail.util.ByteArrayDataSource;
 
 @Component
 public class EmailServiceFun {
@@ -31,7 +36,7 @@ public class EmailServiceFun {
     @Autowired
     private T11MailTempDao mailTempDao;
 
-    public void sendEmailFun(Collection<MailJson> mailJsons) {
+    public void sendEmailFun(Collection<MailJson> mailJsons) throws IOException {
         // 1.Get Mail Server Information
         String to = "";
         String mailPassword = "";
@@ -39,6 +44,8 @@ public class EmailServiceFun {
         String mailHost = "";
         String TemplateID = "";
         String mailFrom = "";
+        String filecontent = "";
+        String filename = "";
 
         // Get Mail information
         for (MailJson mailinfo : mailJsons) {
@@ -70,6 +77,15 @@ public class EmailServiceFun {
             Collection<MailBody> body = mailinfo.getMailBody();
             for (MailBody b : body) {
                 map.put(b.getObject(), b.getValue());
+                // file name
+                if (b.getObject().toString().equals("filename")) {
+                    filename = b.getValue();
+                }
+                if (b.getObject().toString().equals("filecontent")) {
+                    filecontent = b.getValue();
+                }
+
+                // file content
             }
         }
         String body = replaceString(o.getMailContent(), map);
@@ -100,10 +116,18 @@ public class EmailServiceFun {
             textBodyPart.setContent(body, "text/html;charset=UTF-8");
 
             // Set Attachment
+            BodyPart filBodyPart = new MimeBodyPart();
+            InputStream is = base2InputStream(filecontent);
+            DataSource source = new ByteArrayDataSource(is, "application/pdf");
+            filBodyPart.setDataHandler(new DataHandler(source));
+            filBodyPart.setFileName(filename);
 
             //
             Multipart multipart = new MimeMultipart();
             multipart.addBodyPart(textBodyPart);
+            if (source != null) {
+                multipart.addBodyPart(filBodyPart);
+            }
 
             // Set Body to message
             message.setContent(multipart);
@@ -124,6 +148,17 @@ public class EmailServiceFun {
         }
 
         return result;
+    }
+
+    public InputStream base2InputStream(String base64String) {
+        ByteArrayInputStream stream = null;
+        try {
+            byte[] bytes = Base64.getDecoder().decode(base64String);
+            stream = new ByteArrayInputStream(bytes);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return stream;
     }
 
 }

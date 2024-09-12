@@ -1,5 +1,6 @@
 package customer.handlers.sys;
 
+import java.io.IOException;
 import java.util.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -17,7 +18,7 @@ public class EmailSendHandler implements EventHandler {
     private EmailServiceFun emailServiceFun;
 
     @On(event = "sendEmail")
-    public void sendEmail(SendEmailContext context) {
+    public void sendEmail(SendEmailContext context) throws IOException {
         Collection<MailJson> mailJsons = context.getEmailJson();
         emailServiceFun.sendEmailFun(mailJsons);
 
