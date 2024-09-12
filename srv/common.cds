@@ -13,7 +13,6 @@ type mailBody     :{
   value             : String(5000);
 }
 
-
 service Common {
 
     action sendEmail(emailJson : array of  mailJson) returns String;//Send Email

@@ -6,7 +6,6 @@ import java.util.List;
 
 import com.alibaba.fastjson.JSON;
 
-
 import com.alibaba.fastjson.JSONObject;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
@@ -55,14 +54,14 @@ public class Pch02Handler implements EventHandler {
             String parms = context.getParms();
 
             // 解析前台传入的参数，将JSON字符串解析为HashMap
-            HashMap<String, String> parameters = parseParameters(parms);
+            String parameters = parseParameters2(parms);
 
             // 获取 Web Service 配置信息
             T11IfManager webServiceConfig = ifsManageDao.getByCode("MM028");
 
             if (webServiceConfig != null) {
                 // 调用 Web Service 的 get 方法
-                String response = S4OdataTools.get(webServiceConfig, 0, parameters, null);
+                String response = S4OdataTools.post(webServiceConfig, parameters, null);
 
                 // 将 Web Service 的响应结果返回给前台
                 context.setResult(response);
@@ -77,28 +76,46 @@ public class Pch02Handler implements EventHandler {
     }
 
     // 解析前台传入的参数（假设为 JSON 格式字符串）
+    private String parseParameters2(String parms) {
+        JSONArray stringToJsonArray = new JSONArray();
+        HashMap<String, String> parameters = new HashMap<>();
+        if (parms != null && !parms.isEmpty()) {
+            // DeliveryInfoList object = JSON.parseObject(parms,DeliveryInfoList.class);
+            // List<DeliveryInfo> items = object.getItems();
+            stringToJsonArray = stringToJsonArray(parms);
+            stringToJsonArray.toString();
+            System.out.println();
+
+            // parameters.put("items", );
+
+        }
+        return stringToJsonArray.toString();
+    }
+
+    // 解析前台传入的参数（假设为 JSON 格式字符串）
     private HashMap<String, String> parseParameters(String parms) {
         HashMap<String, String> parameters = new HashMap<>();
         if (parms != null && !parms.isEmpty()) {
-            DeliveryInfoList object = JSON.parseObject(parms,DeliveryInfoList.class);
-            List<DeliveryInfo> items = object.getItems();
+            // DeliveryInfoList object = JSON.parseObject(parms,DeliveryInfoList.class);
+            // List<DeliveryInfo> items = object.getItems();
             JSONArray stringToJsonArray = stringToJsonArray(parms);
             stringToJsonArray.toString();
             System.out.println();
-            
-                parameters.put("items", stringToJsonArray.toString());
-            
+
+            parameters.put("items", stringToJsonArray.toString());
+
         }
         return parameters;
     }
+
     // 定义一个方法来将String类型的JSON数组转换成JSONArray
     public JSONArray stringToJsonArray(String jsonString) {
         JSONArray jsonArray = null;
         try {
-        jsonArray = new JSONArray(jsonString);
+            jsonArray = new JSONArray(jsonString);
         } catch (JSONException e) {
-        e.printStackTrace();
+            e.printStackTrace();
         }
         return jsonArray;
-        }
+    }
 }

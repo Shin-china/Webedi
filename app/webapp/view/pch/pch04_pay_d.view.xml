@@ -1,0 +1,329 @@
+<mvc:View 
+    controllerName="umc.app.controller.pch.pch04_pay_d" 
+    xmlns:core="sap.ui.core" 
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:layout="sap.ui.layout" 
+    xmlns:table="sap.ui.table" 
+    xmlns:smartFilterBar="sap.ui.comp.smartfilterbar" 
+    xmlns:smartTable="sap.ui.comp.smarttable" 
+    xmlns:smartField="sap.ui.comp.smartfield" 
+    xmlns:smartform="sap.ui.comp.smartform" 
+    xmlns:mvc="sap.ui.core.mvc" 
+    xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+    xmlns:uxap="sap.uxap">
+
+<f:DynamicPage id="dynamicPageId" headerExpanded="true" showFooter="true" busy="{localModel>/busy}">
+    <f:title>
+        <f:DynamicPageTitle id="DynamicPageTitle">
+
+        <f:heading>
+          <Title id="Title" text="{pch>pch04Title}"/>
+        </f:heading>
+        <f:navigationActions>
+          <Button id="_IDGenButton3" icon="sap-icon://nav-back" tooltip="nav-back" press="navTo('RouteMainView')"/>
+        </f:navigationActions>
+        </f:DynamicPageTitle>
+    </f:title>
+
+    <f:header >
+
+        <f:DynamicPageHeader id="DynamicPageHeader" pinnable="true">
+            <f:content>
+                <smartFilterBar:SmartFilterBar id="smartFilterBar" entitySet="PCH_T04_PAYMENT" persistencyKey="PCH_T04_PAYMENT" showFilterConfiguration="true">
+                    <smartFilterBar:controlConfiguration>
+
+                    <smartFilterBar:ControlConfiguration id="PCH_SUPPLIER"    key="SUPPLIER"             visibleInAdvancedArea="true" label="{pch>SUPPLIER}"                  index="1"/>
+                    <smartFilterBar:ControlConfiguration id="PCH_DESCRIPTION" key="SUPPLIER_DESCRIPTION" visibleInAdvancedArea="true" label="{pch>SUPPLIER_DESCRIPTION}"      index="2"/>
+                    <smartFilterBar:ControlConfiguration id="PCH_PO_NO"       key="PO_NO"                visibleInAdvancedArea="true" label="{pch>PO_NO}"                     index="3"/>
+                    <smartFilterBar:ControlConfiguration id="PCH_MAT_ID"      key="MAT_ID"               visibleInAdvancedArea="true" label="{pch>MAT_ID}"                    index="4"/>
+                    <smartFilterBar:ControlConfiguration id="PCH_POST_DATE"   key="INV_POST_DATE"        visibleInAdvancedArea="true" label="{pch>INV_POST_DATE}"             index="5"/>
+                    <smartFilterBar:ControlConfiguration id="PCH_SEND_FLAG"   key="SEND_FLAG"            visibleInAdvancedArea="true" label="{pch>SEND_FLAG}"            filterType="single"  controlType="dropDownList"   index="6"/>
+                  
+                    </smartFilterBar:controlConfiguration>
+                </smartFilterBar:SmartFilterBar>
+            </f:content>
+        </f:DynamicPageHeader>
+        
+    </f:header>
+
+    <f:content>
+  <!-- </f:DynamicPageHeader> -->
+
+    <smartTable:SmartTable id="ID" enableAutoColumnWidth="true" entitySet="PCH_T04_PAYMENT" 
+        ignoredFields=""  requestAtLeastFields="ZABC,INV_POST_DATE" initiallyVisibleFields="SUPPLIER,NO_DETAILS,MAT_ID,MAT_DESC,GR_DATE,QUANTITY,UNIT_PRICE_IN_YEN,UNIT_PRICE,CURRENCY,EXCHANGE,TOTAL_AMOUNT_IN_YEN,SUPPLIER_MAT,PO_TRACK_NO,TAX_RATE,INV_BASE_DATE,SEND_FLAG,ZABC,INV_POST_DATE" 
+        smartFilterId="smartFilterBar" enableExport="true" beforeExport="onBeforeExport" 
+        useVariantManagement="true" useTablePersonalisation="true" header="{pch>TITLE_RESULT}" showRowCount="true" persistencyKey="pch02_SmartTableAnalytical_Explored" enableAutoBinding="true">
+        
+      <smartTable:customToolbar>
+            <OverflowToolbar id="myOverflowToolbar" design="Transparent">
+                <ToolbarSpacer id="myToolbarSpacer"/>
+                <OverflowToolbarButton id="resendButton"   icon="sap-icon://email"          text="{pch>PCH04_BUTTON_RESEND}" tooltip="{pch>PCH04_BUTTON_RESEND}" press="onResend"/>
+                <OverflowToolbarButton id="downloadPdfBtn" icon="sap-icon://pdf-attachment" text="{pch>PCH04_BUTTON_PDF}"    tooltip="{pch>PCH04_BUTTON_PDF}"    press="onExportToPDF"/>
+            </OverflowToolbar>
+        </smartTable:customToolbar>
+    
+    <table:Table id="detailTable" rowMode="Auto" rowActionCount="1" selectionMode="MultiToggle" alternateRowColors="true" fixedColumnCount="0" threshold="20">
+        <table:columns>
+    <table:Column id="colSupplier" width="5rem" sortProperty="SUPPLIER" filterProperty="SUPPLIER">
+        <table:customData>
+            <core:CustomData key="p13nData" value='{"columnKey":"SUPPLIER", "leadingProperty":"SUPPLIER", "sortProperty":"SUPPLIER", "filterProperty":"SUPPLIER"}'/>
+        </table:customData>
+        <table:label>
+            <Label id="labelSupplier" text="{pch>SUPPLIER}"/>
+        </table:label>
+        <table:template>
+            <Text id="textSupplier" text="{SUPPLIER}"/>
+        </table:template>
+    </table:Column>
+
+    <table:Column id="colNoDetails" width="15rem" sortProperty="NO_DETAILS" filterProperty="NO_DETAILS">
+        <table:customData>
+            <core:CustomData key="p13nData" value='{"columnKey":"NO_DETAILS", "leadingProperty":"NO_DETAILS", "sortProperty":"NO_DETAILS", "filterProperty":"NO_DETAILS"}'/>
+        </table:customData>
+        <table:label>
+            <Label id="labelNoDetails" text="{pch>NO_DETAILS}"/>
+        </table:label>
+        <table:template>
+            <Text id="textNoDetails" text="{NO_DETAILS}"/>
+        </table:template>
+    </table:Column>
+
+    <table:Column id="colMatId" width="5rem" sortProperty="MAT_ID" filterProperty="MAT_ID">
+        <table:customData>
+            <core:CustomData key="p13nData" value='{"columnKey":"MAT_ID", "leadingProperty":"MAT_ID", "sortProperty":"MAT_ID", "filterProperty":"MAT_ID"}'/>
+        </table:customData>
+        <table:label>
+            <Label id="labelMatId" text="{pch>MAT_ID}"/>
+        </table:label>
+        <table:template>
+            <Text id="textMatId" text="{MAT_ID}"/>
+        </table:template>
+    </table:Column>
+
+    <table:Column id="colMatDesc" width="10rem" sortProperty="MAT_DESC" filterProperty="MAT_DESC">
+        <table:customData>
+            <core:CustomData key="p13nData" value='{"columnKey":"MAT_DESC", "leadingProperty":"MAT_DESC", "sortProperty":"MAT_DESC", "filterProperty":"MAT_DESC"}'/>
+        </table:customData>
+        <table:label>
+            <Label id="labelMatDesc" text="{pch>MAT_DESC}"/>
+        </table:label>
+        <table:template>
+            <Text id="textMatDesc" text="{MAT_DESC}"/>
+        </table:template>
+    </table:Column>
+
+    <table:Column id="colGrDate" width="10rem" sortProperty="GR_DATE" filterProperty="GR_DATE">
+        <table:customData>
+            <core:CustomData key="p13nData" value='{"columnKey":"GR_DATE", "leadingProperty":"GR_DATE", "sortProperty":"GR_DATE", "filterProperty":"GR_DATE"}'/>
+        </table:customData>
+        <table:label>
+            <Label id="labelGrDate" text="{pch>GR_DATE}"/>
+        </table:label>
+        <table:template>
+            <Text id="textGrDate" text="{GR_DATE}"/>
+        </table:template>
+    </table:Column>
+
+    <table:Column id="colQuantity" width="10rem" sortProperty="QUANTITY" filterProperty="QUANTITY">
+        <table:customData>
+            <core:CustomData key="p13nData" value='{"columnKey":"QUANTITY", "leadingProperty":"QUANTITY", "sortProperty":"QUANTITY", "filterProperty":"QUANTITY"}'/>
+        </table:customData>
+        <table:label>
+            <Label id="labelQuantity" text="{pch>QUANTITY}"/>
+        </table:label>
+        <table:template>
+            <Text id="textQuantity" text="{QUANTITY}"/>
+        </table:template>
+    </table:Column>
+
+    <table:Column id="colUnitPriceInYen" width="10rem" sortProperty="UNIT_PRICE_IN_YEN" filterProperty="UNIT_PRICE_IN_YEN">
+        <table:customData>
+            <core:CustomData key="p13nData" value='{"columnKey":"UNIT_PRICE_IN_YEN", "leadingProperty":"UNIT_PRICE_IN_YEN", "sortProperty":"UNIT_PRICE_IN_YEN", "filterProperty":"UNIT_PRICE_IN_YEN"}'/>
+        </table:customData>
+        <table:label>
+            <Label id="labelUnitPriceInYen" text="{pch>UNIT_PRICE_IN_YEN}"/>
+        </table:label>
+        <table:template>
+            <Text id="textUnitPriceInYen" text="{UNIT_PRICE_IN_YEN}"/>
+        </table:template>
+    </table:Column>
+
+    <table:Column id="colUnitPrice" width="7rem" sortProperty="UNIT_PRICE" filterProperty="UNIT_PRICE">
+        <table:customData>
+            <core:CustomData key="p13nData" value='{"columnKey":"UNIT_PRICE", "leadingProperty":"UNIT_PRICE", "sortProperty":"UNIT_PRICE", "filterProperty":"UNIT_PRICE"}'/>
+        </table:customData>
+        <table:label>
+            <Label id="labelUnitPrice" text="{pch>UNIT_PRICE}"/>
+        </table:label>
+        <table:template>
+            <Text id="textUnitPrice" text="{UNIT_PRICE}"/>
+        </table:template>
+    </table:Column>
+
+    <table:Column id="colCurrency" width="10rem" sortProperty="CURRENCY" filterProperty="CURRENCY">
+        <table:customData>
+            <core:CustomData key="p13nData" value='{"columnKey":"CURRENCY", "leadingProperty":"CURRENCY", "sortProperty":"CURRENCY", "filterProperty":"CURRENCY"}'/>
+        </table:customData>
+        <table:label>
+            <Label id="labelCurrency" text="{pch>CURRENCY}"/>
+        </table:label>
+        <table:template>
+            <Text id="textCurrency" text="{CURRENCY}"/>
+        </table:template>
+    </table:Column>
+
+    <table:Column id="colExchange" width="7rem" sortProperty="EXCHANGE" filterProperty="EXCHANGE">
+        <table:customData>
+            <core:CustomData key="p13nData" value='{"columnKey":"EXCHANGE", "leadingProperty":"EXCHANGE", "sortProperty":"EXCHANGE", "filterProperty":"EXCHANGE"}'/>
+        </table:customData>
+        <table:label>
+            <Label id="labelExchange" text="{pch>EXCHANGE}"/>
+        </table:label>
+        <table:template>
+            <Text id="textExchange" text="{EXCHANGE}"/>
+        </table:template>
+    </table:Column>
+
+    <table:Column id="colTotalAmountInYen" width="15rem" sortProperty="TOTAL_AMOUNT_IN_YEN" filterProperty="TOTAL_AMOUNT_IN_YEN">
+        <table:customData>
+            <core:CustomData key="p13nData" value='{"columnKey":"TOTAL_AMOUNT_IN_YEN", "leadingProperty":"TOTAL_AMOUNT_IN_YEN", "sortProperty":"TOTAL_AMOUNT_IN_YEN", "filterProperty":"TOTAL_AMOUNT_IN_YEN"}'/>
+        </table:customData>
+        <table:label>
+            <Label id="labelTotalAmountInYen" text="{pch>TOTAL_AMOUNT_IN_YEN}"/>
+        </table:label>
+        <table:template>
+            <Text id="textTotalAmountInYen" text="{TOTAL_AMOUNT_IN_YEN}"/>
+        </table:template>
+    </table:Column>
+
+        <table:Column id="colSupplierMat" width="10rem" sortProperty="SUPPLIER_MAT" filterProperty="SUPPLIER_MAT">
+        <table:customData>
+            <core:CustomData key="p13nData" value='{"columnKey":"SUPPLIER_MAT", "leadingProperty":"SUPPLIER_MAT", "sortProperty":"SUPPLIER_MAT", "filterProperty":"SUPPLIER_MAT"}'/>
+        </table:customData>
+        <table:label>
+            <Label id="labelSupplierMat" text="{pch>SUPPLIER_MAT}"/>
+        </table:label>
+        <table:template>
+            <Text id="textSupplierMat" text="{SUPPLIER_MAT}"/>
+        </table:template>
+    </table:Column>
+
+    <table:Column id="colPoTrackNo" width="10rem" sortProperty="PO_TRACK_NO" filterProperty="PO_TRACK_NO">
+        <table:customData>
+            <core:CustomData key="p13nData" value='{"columnKey":"PO_TRACK_NO", "leadingProperty":"PO_TRACK_NO", "sortProperty":"PO_TRACK_NO", "filterProperty":"PO_TRACK_NO"}'/>
+        </table:customData>
+        <table:label>
+            <Label id="labelPoTrackNo" text="{pch>PO_TRACK_NO}"/>
+        </table:label>
+        <table:template>
+            <Text id="textPoTrackNo" text="{PO_TRACK_NO}"/>
+        </table:template>
+    </table:Column>
+
+    <table:Column id="colTaxRate" width="7rem" sortProperty="TAX_RATE" filterProperty="TAX_RATE">
+        <table:customData>
+            <core:CustomData key="p13nData" value='{"columnKey":"TAX_RATE", "leadingProperty":"TAX_RATE", "sortProperty":"TAX_RATE", "filterProperty":"TAX_RATE"}'/>
+        </table:customData>
+        <table:label>
+            <Label id="labelTaxRate" text="{pch>TAX_RATE}"/>
+        </table:label>
+        <table:template>
+            <Text id="textTaxRate" text="{TAX_RATE}"/>
+        </table:template>
+    </table:Column>
+
+    <table:Column id="colInvBaseDate" width="10rem" sortProperty="INV_BASE_DATE" filterProperty="INV_BASE_DATE">
+        <table:customData>
+            <core:CustomData key="p13nData" value='{"columnKey":"INV_BASE_DATE", "leadingProperty":"INV_BASE_DATE", "sortProperty":"INV_BASE_DATE", "filterProperty":"INV_BASE_DATE"}'/>
+        </table:customData>
+        <table:label>
+            <Label id="labelInvBaseDate" text="{pch>INV_BASE_DATE}"/>
+        </table:label>
+        <table:template>
+            <Text id="textInvBaseDate" text="{INV_BASE_DATE}"/>
+        </table:template>
+    </table:Column>
+
+    <table:Column id="colSendFlag" width="10rem" sortProperty="SEND_FLAG" filterProperty="SEND_FLAG">
+        <table:customData>
+            <core:CustomData key="p13nData" value='{"columnKey":"SEND_FLAG", "leadingProperty":"SEND_FLAG", "sortProperty":"SEND_FLAG", "filterProperty":"SEND_FLAG"}'/>
+        </table:customData>
+        <table:label>
+            <Label id="labelSendFlag" text="{pch>SEND_FLAG}"/>
+        </table:label>
+        <table:template>
+            <Text id="textSendFlag" text="{SEND_FLAG}"/>
+        </table:template>
+    </table:Column>
+
+<!-- <table:Column id="colInvNo" width="10rem" sortProperty="INV_NO" filterProperty="INV_NO" visible="false">
+    <table:customData>
+        <core:CustomData key="p13nData" value='{"columnKey":"INV_NO", "leadingProperty":"INV_NO", "sortProperty":"INV_NO", "filterProperty":"INV_NO"}'/>
+    </table:customData>
+    <table:label>
+        <Label id="labelInvNo" text="{pch>INV_NO}"/>
+    </table:label>
+    <table:template>
+        <Text id="textInvNo" text="{INV_NO}"/>
+    </table:template>
+</table:Column> -->
+
+<!-- <table:Column id="colLogNo" width="10rem" sortProperty="LOG_NO" filterProperty="LOG_NO" visible="false">
+    <table:customData>
+        <core:CustomData key="p13nData" value='{"columnKey":"LOG_NO", "leadingProperty":"LOG_NO", "sortProperty":"LOG_NO", "filterProperty":"LOG_NO"}'/>
+    </table:customData>
+    <table:label>
+        <Label id="labelLogNo" text="{pch>LOG_NO}"/>
+    </table:label>
+    <table:template>
+        <Text id="textLogNo" text="{LOG_NO}"/>
+    </table:template>
+</table:Column> -->
+
+<!-- <table:Column id="colPoOrg" width="10rem" sortProperty="PO_ORG" filterProperty="PO_ORG" visible="false">
+    <table:customData>
+        <core:CustomData key="p13nData" value='{"columnKey":"PO_ORG", "leadingProperty":"PO_ORG", "sortProperty":"PO_ORG", "filterProperty":"PO_ORG"}'/>
+    </table:customData>
+    <table:label>
+        <Label id="labelPoOrg" text="{pch>PO_ORG}"/>
+    </table:label>
+    <table:template>
+        <Text id="textPoOrg" text="{PO_ORG}"/>
+    </table:template>
+</table:Column> -->
+
+<table:Column id="colZabc" width="10rem" sortProperty="ZABC" filterProperty="ZABC" visible="false"> 
+    <table:customData>
+        <core:CustomData key="p13nData" value='{"columnKey":"ZABC", "leadingProperty":"ZABC", "sortProperty":"ZABC", "filterProperty":"ZABC"}'/>
+    </table:customData>
+    <table:label>
+        <Label id="labelZabc" text="{pch>ZABC}"/>
+    </table:label>
+    <table:template>
+        <Text id="textZabc" text="{ZABC}"/>
+    </table:template>
+</table:Column>
+
+<table:Column id="colDate" width="10rem" sortProperty="INV_POST_DATE" filterProperty="INV_POST_DATE" visible="false"> 
+    <table:customData>
+        <core:CustomData key="p13nData" value='{"columnKey":"INV_POST_DATE", "leadingProperty":"INV_POST_DATE", "sortProperty":"INV_POST_DATE", "filterProperty":"INV_POST_DATE"}'/>
+    </table:customData>
+    <table:label>
+        <Label id="labelDate" text="{pch>INV_POST_DATE}"/>
+    </table:label>
+    <table:template>
+        <Text id="textDate" text="{INV_POST_DATE}"/>
+    </table:template>
+</table:Column>
+
+</table:columns>
+
+
+        </table:Table>
+    </smartTable:SmartTable>
+      </f:content>
+
+      </f:DynamicPage>
+
+</mvc:View>

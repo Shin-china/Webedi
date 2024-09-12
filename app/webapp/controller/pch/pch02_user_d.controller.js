@@ -78,7 +78,7 @@ sap.ui.define([
                 var sDate = oDate.toISOString().slice(0, 10).replace(/-/g, '');
                 var sTime = oDate.toTimeString().slice(0, 8).replace(/:/g, '');
                 // 设置文件名为当前日期和时间
-                oSettings.fileName = `仕入先コード_納期回答照会_${sDate}_${sTime}.xlsx`;
+                oSettings.fileName = `納期回答照会_${sDate}${sTime}.xlsx`;
             }
         },
 
@@ -126,11 +126,17 @@ sap.ui.define([
         _buildParams: function (aSelectedData) {
             // 根据选中的数据构建参数
             return aSelectedData.map(function (oData) {
+                // 格式化交货日期为 YYYY-MM-DD
+        var oDate = new Date(oData.DELIVERY_DATE);
+        var sFormattedDate = oDate.getFullYear() + '-' + 
+                             String(oDate.getMonth() + 1).padStart(2, '0') + '-' + 
+                             String(oDate.getDate()).padStart(2, '0');
+
                 return {
                     PONO: oData.PO_NO,                                   // 采购订单号
                     DNO: String(oData.D_NO).padStart(5, '0'),            // 明细行号，转换为字符串并补足 5 位
                     SEQ: String(oData.SEQ).padStart(4, '0'),             // 序号，转换为字符串并补足 4 位
-                    DELIVERYDATE: oData.DELIVERY_DATE,                   // 交货日期，格式为 YYYY-MM-DD
+                    DELIVERYDATE: sFormattedDate,                        // 交货日期，格式为 YYYY-MM-DD
                     QUANTITY: String(oData.QUANTITY).padStart(13, '0'),  // 交货数量，转换为字符串并补足 13 位
                     DELFLAG: oData.DELFLAG || ""                         // 删除标识，确保为字符串
                 };

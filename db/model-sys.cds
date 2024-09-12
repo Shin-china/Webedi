@@ -188,4 +188,12 @@ entity T13_ATTACHMENT : cuid {
                                 @title: '{i18n>OBJECT_LINK}' OBJECT_LINK   : String(100); //  地址
                                 @title: '{i18n>FILE_TYPE}' FILE_TYPE       : String(10); //   文件类型
                                 @title: '{i18n>FILE_NAME}' FILE_NAME       : String(100); //  文件名
+
+
+}
+entity T20_CONFIG {
+  @title: '{i18n>CON_CODE}' key CON_CODE                             : String(50); //   系统配置
+                                @title: '{i18n>CON_VALUE}' CON_VALUE : String(200); //   系统配置值
+                                @title: '{i18n>CON_DESC}' CON_DESC   : String(500); //  系统配置描述
+                                @title: '{i18n>CON_SORT}' CON_SORT   : Integer; //   排序
 }

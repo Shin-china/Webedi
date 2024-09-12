@@ -24,7 +24,7 @@ entity T02_SAP_PLANT : IF_CUID_FILED { //工厂表
 }
 
 entity MST_T03_SAP_BP : IF_CUID_FILED { //工厂表
-  @title: '{i18n>SUPPLIER_CODE}' key BP_ID                             : String(4) not null; //BPcode
+  @title: '{i18n>SUPPLIER_CODE}' key BP_ID                             : String(10) not null; //BPcode
   @title: '{i18n>BP_TYPE}'           BP_TYPE                           : String(5); //BP类型
   @title: '{i18n>BP_NAME1}'          BP_NAME1                          : String(40); //BP Name 1
   @title: '{i18n>BP_NAME2}'          BP_NAME2                          : String(40); //BP Name 1

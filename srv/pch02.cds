@@ -2,6 +2,7 @@ using {TableService as view} from './table';
 using {SYS} from '../db/model-sys';
 using {PCH} from '../db/model-pch';
 
+// MM-028 納期回答照会
 
 extend service TableService {
 

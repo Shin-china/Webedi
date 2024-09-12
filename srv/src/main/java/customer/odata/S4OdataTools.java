@@ -90,20 +90,20 @@ public class S4OdataTools {
         // 这是get方法
         ODataRequestRead requestRead = new ODataRequestRead(info.getServicepath(), info.getEntityname(), null,
                 ODataProtocol.V2);
-        StringEntity s = new StringEntity(headMap.get("key"), "utf-8");
-        String userInfo = Base64Util.encode(info.getSapuser());// 用户名,密码
-        requestRead.addHeader("Authorization", "Basic " + userInfo);
+
         requestRead.addHeader("x-csrf-token", "fetch");
         requestRead.addHeader("Accept-Language", info.getLangCode());
         requestRead.addHeader("Content-Type", "application/json");
         requestRead.addHeader("Accept", "application/json");
 
+        String userInfo = Base64Util.encode(info.getSapuser());// 用户名,密码
+        requestRead.addHeader("Authorization", "Basic " + userInfo);
         // requestRead.addListener(null);
-        if (headMap != null) {
-            for (String key : headMap.keySet()) {
-                requestRead.addHeader(key, headMap.get(key)); // 设定追加的head
-            }
-        }
+        // if (headMap != null) {
+        // for (String key : headMap.keySet()) {
+        // requestRead.addHeader(key, headMap.get(key)); // 设定追加的head
+        // }
+        // }
 
         if (!StringTool.isNull(info.getExpand())) {
             requestRead.addQueryParameter("$expand", info.getExpand()); // 展开表结构
@@ -168,11 +168,11 @@ public class S4OdataTools {
         requestcreate.addHeader("Content-Type", "application/json");
         requestcreate.addHeader("Accept", "application/json");
 
-        if (headMap != null) {
-            for (String key : headMap.keySet()) {
-                requestcreate.addHeader(key, headMap.get(key)); // 设定追加的head
-            }
-        }
+        // if (headMap != null) {
+        // for (String key : headMap.keySet()) {
+        // requestcreate.addHeader(key, headMap.get(key)); // 设定追加的head
+        // }
+        // }
 
         ODataRequestResultGeneric resultGene = requestcreate.execute(client);
 

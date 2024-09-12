@@ -1307,5 +1307,53 @@ sap.ui.define([
             this.CommTools._setExcelFormatDateTime(mExcelSettings, i, "UP_TIME");
           }
         },
-      });
+      
+       /**
+         *获取选中表格的一个固定数据集
+         * @param {*表格名字} tableNmae
+         * @param {*数据明字} dataName
+         */
+       _TableDataList(tableNmae,dataName) {
+        var that = this;
+        var oTable = this.byId(tableNmae);
+        var IdList = [];
+        var selectedIndices = that._TableList(tableNmae);
+        selectedIndices.forEach((selectedIndex) => {
+          var a = dataName;
+          var cContext = oTable.getContextByIndex(selectedIndex);
+          if(cContext){
+            var data = cContext.getObject();
+            var ID =eval(data[a]);
+            IdList.push(ID)
+          }
+          
+        });
+        return IdList;
+      },
+       /**
+         *获取选中数据集
+         * @param {*表格名字} tableNmae
+         */
+         _TableList(tableNmae) {
+          var that = this;
+          var oTable = this.byId(tableNmae);
+          var dataList = [];
+          var selectedIndices = oTable.getSelectedIndices();
+          if (selectedIndices.length === 0) {
+            sap.m.MessageBox.alert(that.MessageTools._getI18nText("LABEL_NO_DATA_SELECTED", that.getView()));
+            return;
+          }
+          selectedIndices.forEach((selectedIndex) => {
+            var cContext = oTable.getContextByIndex(selectedIndex);
+            if(cContext){
+              var data = cContext.getObject();
+              
+              dataList.push(data)
+            }
+            
+          });
+          return dataList;
+        },
+
+    });
 });

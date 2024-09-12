@@ -148,7 +148,7 @@ sap.ui.define([
 	
 			this._callCdsAction("/PCH01_SAVE_DATA", this.getData(), this).then((oData) => {
 			  var myArray = JSON.parse(oData.PCH01_SAVE_DATA);
-			  that._setCnt(myArray.reTxt);
+			  //that._setCnt(myArray.reTxt);
 			  var jsonModel = that.getModel("workInfo");
 	
 			  jsonModel.setData(myArray.list);
