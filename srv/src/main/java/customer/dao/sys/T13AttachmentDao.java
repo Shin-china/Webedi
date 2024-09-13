@@ -14,8 +14,14 @@ import customer.dao.common.Dao;
 public class T13AttachmentDao extends Dao {
 
     // Get Attachment List
-    public List<T13Attachment> getAttachmentList() {
-        return db.run(Select.from(Sys_.T12_CONFIG).where(null))
+    public List<T13Attachment> getAttachmentList(String objectType) {
+        return db.run(Select.from(Sys_.T13_ATTACHMENT).where(o -> o.OBJECT_TYPE().eq(objectType)))
+                .listOf(T13Attachment.class);
+    }
+
+    //Insert Attachment
+    public void insertAttachment(T13Attachment attachment) {
+
     }
 
 }
