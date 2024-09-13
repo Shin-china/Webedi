@@ -30,6 +30,8 @@ entity MST_T03_SAP_BP : IF_CUID_FILED { //工厂表
   @title: '{i18n>BP_NAME2}'          BP_NAME2                          : String(40); //BP Name 1
   @title: '{i18n>BP_NAME3}'          BP_NAME3                          : String(20); //BP Name 1
   @title: '{i18n>BP_NAME4}'          BP_NAME4                          : String(70); //BP Name 1
+  @title: '{i18n>FAX}'               FAX                               : String(40); //FAX
+  @title: '{i18n>TEL}'               TEL                               : String(40); //TEL
   @title: '{i18n>LOG_NO}'            LOG_NO                            : String(18); //登録番号
 }
 
