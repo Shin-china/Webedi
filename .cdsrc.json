@@ -10,8 +10,8 @@
       "[pg]": {
         "kind": "postgres",
         "credentials": {
-          "host": "211.144.197.139",
-          "port": 15432,
+          "host": "220.248.121.53",
+          "port": 11232,
           "user": "postgres",
           "password": "sh1nCh1n@",
           "database": "UWEB"
