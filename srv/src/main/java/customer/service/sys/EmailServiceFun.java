@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Base64;
 
@@ -26,7 +27,6 @@ import javax.mail.*;
 import javax.mail.internet.*;
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
-import javax.mail.util.ByteArrayDataSource;
 
 @Component
 public class EmailServiceFun {
@@ -73,19 +73,28 @@ public class EmailServiceFun {
         T11MailTemplate o = mailTempDao.getTemplate(TemplateID);
         // 3.replace dynmic content
         Map<String, String> map = new HashMap<>();
+        Map<String, String> attachment = new HashMap<>();
         for (MailJson mailinfo : mailJsons) {
             Collection<MailBody> body = mailinfo.getMailBody();
             for (MailBody b : body) {
-                map.put(b.getObject(), b.getValue());
+                // filename & filecontent for attachment
+                if (!b.getObject().toString().contains("file")) {
+                    map.put(b.getObject(), b.getValue());
+                }
                 // file name
-                if (b.getObject().toString().equals("filename")) {
+                if (b.getObject().toString().contains("filename")) {
                     filename = b.getValue();
                 }
-                if (b.getObject().toString().equals("filecontent")) {
+                if (b.getObject().toString().contains("filecontent")) {
                     filecontent = b.getValue();
                 }
-
                 // file content
+                if (filename != "" && filecontent != "") {
+                    attachment.put(filename, filecontent);
+                    filename = "";
+                    filecontent = "";
+                }
+
             }
         }
         String body = replaceString(o.getMailContent(), map);
@@ -114,20 +123,27 @@ public class EmailServiceFun {
             // Set Body
             BodyPart textBodyPart = new MimeBodyPart();
             textBodyPart.setContent(body, "text/html;charset=UTF-8");
-
-            // Set Attachment
-            BodyPart filBodyPart = new MimeBodyPart();
-            InputStream is = base2InputStream(filecontent);
-            DataSource source = new ByteArrayDataSource(is, "application/pdf");
-            filBodyPart.setDataHandler(new DataHandler(source));
-            filBodyPart.setFileName(filename);
-
-            //
             Multipart multipart = new MimeMultipart();
-            multipart.addBodyPart(textBodyPart);
-            if (source != null) {
-                multipart.addBodyPart(filBodyPart);
+            // Set Attachment
+            for (Map.Entry<String, String> entry : attachment.entrySet()) {
+                BodyPart filBodyPart = new MimeBodyPart();
+                String get_filename = entry.getKey();
+                if (get_filename.contains("pdf")) {
+                    InputStream is = base2InputStream(entry.getValue());
+                    DataSource source = new ByteArrayDataSource(is, "application/pdf");
+                    filBodyPart.setDataHandler(new DataHandler(source));
+                    filBodyPart.setFileName(get_filename);
+                    if (source != null) {
+                        multipart.addBodyPart(filBodyPart);
+                    }
+                } else {
+                    filBodyPart.setDataHandler(new DataHandler(new ByteArrayDataSource(entry.getValue(), "text/csv")));
+                    filBodyPart.setFileName(get_filename);
+                    multipart.addBodyPart(filBodyPart);
+                }
             }
+            // Body Text
+            multipart.addBodyPart(textBodyPart);
 
             // Set Body to message
             message.setContent(multipart);
