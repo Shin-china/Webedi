@@ -20,7 +20,7 @@ spring:
     password: sh1nCh1n@
     embedded-database-connection: none
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://211.144.197.139:15432/UWEB
+    url: jdbc:postgresql://220.248.121.53:11232/UWEB
     username: postgres
     hikari:
       connection-timeout: 30000 # 等待连接池分配连接的最大时长（毫秒），超过这个时长还没可用的连接则发生SQLException， 默认:30秒
