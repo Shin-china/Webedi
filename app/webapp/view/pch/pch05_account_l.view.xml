@@ -18,16 +18,18 @@
                 <smartFilterBar:SmartFilterBar id="smartFilterBar" entitySet="PCH_T05_ACCOUNT_DETAIL" persistencyKey="PCH_T05_ACCOUNT_DETAIL" showFilterConfiguration="true">
                     <smartFilterBar:controlConfiguration>
 
-                    <smartFilterBar:ControlConfiguration id="PCH_PO_BUKRS"      key="PO_BUKRS"             visibleInAdvancedArea="true" label="{pch>PO_BUKRS}"             filterType="single"  controlType="auto"      index="1"/>
-                    <smartFilterBar:ControlConfiguration id="PCH_INV_POST_DATE" key="INV_POST_DATE"        visibleInAdvancedArea="true" label="{pch>INV_POST_DATE}"        filterType="single"  controlType="auto"      index="2"/>
-                    <smartFilterBar:ControlConfiguration id="PCH_SUPPLIER"      key="SUPPLIER"             visibleInAdvancedArea="true" label="{pch>SUPPLIER}"             filterType="single"  controlType="auto"      index="3"/>
+                    <smartFilterBar:ControlConfiguration id="PCH_PO_BUKRS"      key="PO_BUKRS"             visibleInAdvancedArea="true" label="{pch>PO_BUKRS}"                index="1"/>
+                    <smartFilterBar:ControlConfiguration id="PCH_INV_POST_DATE" key="INV_POST_DATE"        visibleInAdvancedArea="true" label="{pch>INV_POST_DATE}"  filterType='single' controlType="date"    index="2"/>
+                    <smartFilterBar:ControlConfiguration id="PCH_SUPPLIER"      key="SUPPLIER"             visibleInAdvancedArea="true" label="{pch>SUPPLIER}"                index="3"/>
                   
                     </smartFilterBar:controlConfiguration>
                 </smartFilterBar:SmartFilterBar>
             </f:content>
+            
         </f:DynamicPageHeader>
         
   <!-- </f:DynamicPageHeader> -->
+
 
     <smartTable:SmartTable id="ID" enableAutoColumnWidth="true" entitySet="PCH_T05_ACCOUNT_DETAIL" 
         ignoredFields=""  initiallyVisibleFields="PO_BUKRS,INV_POST_DATE,SUPPLIER,CALC_10_TAX_AMOUNT,CALC_8_TAX_AMOUNT,RECALC_TAX_AMOUNT_10,RECALC_TAX_AMOUNT_8,DIFF_10_TAX_AMOUNT,DIFF_8_TAX_AMOUNT,TOTAL_10_TAX_AMOUNT,TOTAL_8_TAX_AMOUNT" 
