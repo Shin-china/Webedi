@@ -46,15 +46,80 @@ extend service TableService {
                 T04.INV_BASE_DATE,                 // 支払い基準日
                 T05.GR_DATE,                       // 伝票日付
                 T03.LOG_NO,                        // 登録番号
-            // 新增的计算字段
-            cast(T05.PRICE_AMOUNT * 1.10 as Decimal(15,2)) as CALC_10_TAX_AMOUNT : Decimal(15, 2),  // 10％税抜き金額
-            cast(T05.PRICE_AMOUNT * 1.08 as Decimal(15,2)) as CALC_8_TAX_AMOUNT : Decimal(15, 2),   // 8％税抜き金額
-            (cast(T05.PRICE_AMOUNT * 0.10 as Decimal(15,2))) as RECALC_TAX_AMOUNT_10 : Decimal(15, 2),  // 再計算10％税額
-            (cast(T05.PRICE_AMOUNT * 0.08 as Decimal(15,2))) as RECALC_TAX_AMOUNT_8 : Decimal(15, 2),   // 再計算8％税額
-            (cast(T05.PRICE_AMOUNT * 0.10 as Decimal(15,2)) - T05.TAX_AMOUNT) as DIFF_10_TAX_AMOUNT : Decimal(15), // 10％消費税差額
-            (cast(T05.PRICE_AMOUNT * 0.08 as Decimal(15,2)) - T05.TAX_AMOUNT) as DIFF_8_TAX_AMOUNT : Decimal(15), // 8％消費税差額
-            (T05.PRICE_AMOUNT + cast(T05.PRICE_AMOUNT * 0.10 as Decimal(15,2))) as TOTAL_10_TAX_AMOUNT : Decimal(15, 2), // 合計10％税込金額
-            (T05.PRICE_AMOUNT + cast(T05.PRICE_AMOUNT * 0.08 as Decimal(15,2))) as TOTAL_8_TAX_AMOUNT : Decimal(15, 2)  // 合計8％税込金額
+
+            // 新增计算字段
+            case when T05.TAX_RATE = 10 then 
+                cast(T05.PRICE_AMOUNT as Decimal(15,2)) 
+            end as CALC_10_TAX_AMOUNT : Decimal(15, 2),  // 10% 税抜金额
+            
+            case when T05.TAX_RATE = 8 then 
+                cast(T05.PRICE_AMOUNT as Decimal(15,2)) 
+            end as CALC_8_TAX_AMOUNT : Decimal(15, 2),   // 8% 税抜金额
+
+            // SAP 税额
+            case when T05.TAX_RATE = 10 then 
+                cast(T05.TAX_AMOUNT as Decimal(15,2)) 
+            end as SAP_TAX_AMOUNT_10 : Decimal(15, 2),   // 10% SAP 税额
+            
+            case when T05.TAX_RATE = 8 then 
+                cast(T05.TAX_AMOUNT as Decimal(15,2)) 
+            end as SAP_TAX_AMOUNT_8 : Decimal(15, 2),    // 8% SAP 税额
+
+            // 再计算的税额（根据 CURRENCY 处理小数点后位数）
+            case 
+                when T05.CURRENCY = 'JPY' and T05.TAX_RATE = 10 then 
+                    cast(floor(CASE WHEN T05.TAX_RATE = 10 THEN T05.PRICE_AMOUNT END * 0.10) as Decimal(15,0))
+                when T05.CURRENCY in ('USD', 'EUR') and T05.TAX_RATE = 10 then 
+                    cast(floor(CASE WHEN T05.TAX_RATE = 10 THEN T05.PRICE_AMOUNT END * 0.10 * 100) / 100 as Decimal(15,2))
+            end as RECALC_TAX_AMOUNT_10 : Decimal(15, 2),  // 再计算 10% 税额
+            
+            case 
+                when T05.CURRENCY = 'JPY' and T05.TAX_RATE = 8 then 
+                    cast(floor(CASE WHEN T05.TAX_RATE = 8 THEN T05.PRICE_AMOUNT END * 0.08) as Decimal(15,0))
+                when T05.CURRENCY in ('USD', 'EUR') and T05.TAX_RATE = 8 then 
+                    cast(floor(CASE WHEN T05.TAX_RATE = 8 THEN T05.PRICE_AMOUNT END * 0.08 * 100) / 100 as Decimal(15,2))
+            end as RECALC_TAX_AMOUNT_8 : Decimal(15, 2),   // 再计算 8% 税额
+
+            // 消费税差额
+            case when T05.TAX_RATE = 10 then 
+                ( 
+                    (case 
+                        when T05.CURRENCY = 'JPY' then 
+                            cast(floor(T05.PRICE_AMOUNT * 0.10) as Decimal(15,0))
+                        when T05.CURRENCY in ('USD', 'EUR') then 
+                            cast(floor(T05.PRICE_AMOUNT * 0.10 * 100) / 100 as Decimal(15,2))
+                    end) - cast(T05.TAX_AMOUNT as Decimal(15,2))
+                ) 
+            end as DIFF_TAX_AMOUNT_10 : Decimal(15, 2),   // 10% 消費税差額
+            
+            case when T05.TAX_RATE = 8 then 
+                ( 
+                    (case 
+                        when T05.CURRENCY = 'JPY' then 
+                            cast(floor(T05.PRICE_AMOUNT * 0.08) as Decimal(15,0))
+                        when T05.CURRENCY in ('USD', 'EUR') then 
+                            cast(floor(T05.PRICE_AMOUNT * 0.08 * 100) / 100 as Decimal(15,2))
+                    end) - cast(T05.TAX_AMOUNT as Decimal(15,2))
+                ) 
+            end as DIFF_TAX_AMOUNT_8 : Decimal(15, 2),    // 8% 消費税差額
+
+            // 合计金额
+            case when T05.TAX_RATE = 10 then 
+                (cast(T05.PRICE_AMOUNT as Decimal(15,2)) + 
+                 case when T05.CURRENCY = 'JPY' then 
+                     cast(floor(T05.PRICE_AMOUNT * 0.10) as Decimal(15,0))
+                 when T05.CURRENCY in ('USD', 'EUR') then 
+                     cast(floor(T05.PRICE_AMOUNT * 0.10 * 100) / 100 as Decimal(15,2))
+                 end)
+            end as TOTAL_10_TAX_INCLUDED_AMOUNT : Decimal(15, 2),  // 合计 10% 税込金额
+            
+            case when T05.TAX_RATE = 8 then 
+                (cast(T05.PRICE_AMOUNT as Decimal(15,2)) + 
+                 case when T05.CURRENCY = 'JPY' then 
+                     cast(floor(T05.PRICE_AMOUNT * 0.08) as Decimal(15,0))
+                 when T05.CURRENCY in ('USD', 'EUR') then 
+                     cast(floor(T05.PRICE_AMOUNT * 0.08 * 100) / 100 as Decimal(15,2))
+                 end)
+            end as TOTAL_8_TAX_INCLUDED_AMOUNT : Decimal(15, 2)   // 合计 8% 税込金额
         }
-        where T05.TAX_RATE in (10, 8); // 仅选择税率为10%和8%的记录
 }
