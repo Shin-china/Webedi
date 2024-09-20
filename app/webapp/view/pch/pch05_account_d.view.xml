@@ -43,7 +43,7 @@
     
     <table:Table id="detailTable" rowMode="Auto" rowActionCount="1" selectionMode="MultiToggle" alternateRowColors="true" fixedColumnCount="0" threshold="20">
         <table:columns>
-   <table:Column id="colGlYear" width="10rem" sortProperty="GL_YEAR" filterProperty="GL_YEAR">
+   <table:Column id="colGlYear" width="6rem" sortProperty="GL_YEAR" filterProperty="GL_YEAR">
     <table:customData>
         <core:CustomData key="p13nData" value='{"columnKey":"GL_YEAR", "leadingProperty":"GL_YEAR", "sortProperty":"GL_YEAR", "filterProperty":"GL_YEAR"}'/>
     </table:customData>
@@ -55,7 +55,7 @@
     </table:template>
 </table:Column>
 
-<table:Column id="colItemNo" width="10rem" sortProperty="ITEM_NO" filterProperty="ITEM_NO">
+<table:Column id="colItemNo" width="6rem" sortProperty="ITEM_NO" filterProperty="ITEM_NO">
     <table:customData>
         <core:CustomData key="p13nData" value='{"columnKey":"ITEM_NO", "leadingProperty":"ITEM_NO", "sortProperty":"ITEM_NO", "filterProperty":"ITEM_NO"}'/>
     </table:customData>
@@ -79,7 +79,7 @@
     </table:template>
 </table:Column>
 
-<table:Column id="colDNo" width="10rem" sortProperty="D_NO" filterProperty="D_NO">
+<table:Column id="colDNo" width="5rem" sortProperty="D_NO" filterProperty="D_NO">
     <table:customData>
         <core:CustomData key="p13nData" value='{"columnKey":"D_NO", "leadingProperty":"D_NO", "sortProperty":"D_NO", "filterProperty":"D_NO"}'/>
     </table:customData>
@@ -91,7 +91,7 @@
     </table:template>
 </table:Column>
 
-<table:Column id="colSupplier" width="10rem" sortProperty="SUPPLIER" filterProperty="SUPPLIER">
+<table:Column id="colSupplier" width="6rem" sortProperty="SUPPLIER" filterProperty="SUPPLIER">
     <table:customData>
         <core:CustomData key="p13nData" value='{"columnKey":"SUPPLIER", "leadingProperty":"SUPPLIER", "sortProperty":"SUPPLIER", "filterProperty":"SUPPLIER"}'/>
     </table:customData>
