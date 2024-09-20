@@ -3,11 +3,11 @@ sap.ui.define([
 	"sap/ui/model/Filter",
 	"umc/app/model/formatter",
 	"sap/ui/export/Spreadsheet"
-], function (Controller, Filter, formatter,Spreadsheet) {
-	"use strict";	
+], function (Controller, Filter, formatter, Spreadsheet) {
+	"use strict";
 
 	return Controller.extend("umc.app.controller.pch.pch03_pobk_l", {
-		formatter : formatter,
+		formatter: formatter,
 
 		onInit: function () {
 			this.getView().unbindElement();
@@ -19,7 +19,7 @@ sap.ui.define([
 			this.MessageTools._initoMessageManager(this);
 
 		},
-	
+
 		// onPress: function (oEvent) {
 		// var oItem = oEvent.getSource();
 		// var oContext = oItem.getBindingContext();
@@ -27,47 +27,50 @@ sap.ui.define([
 		// },
 
 		onRebind: function (oEvent) {
-		// this._onListRebindDarft(oEvent);
-		// this._onListRebindDarft(oEvent, true);
+			// this._onListRebindDarft(oEvent);
+			// this._onListRebindDarft(oEvent, true);
 		},
-	
+
 		onBeforeExport: function (oEvt) {
-		var mExcelSettings = oEvt.getParameter("exportSettings");
-		for (var i = 0; i < mExcelSettings.workbook.columns.length; i++) {
-			// this.CommTools._setExcelFormatDate(mExcelSettings, i, "VALID_DATE_FROM");
-			// this.CommTools._setExcelFormatDate(mExcelSettings, i, "VALID_DATE_TO");
-			// this.CommTools._setExcelFormatDateTime(mExcelSettings, i, "CD_TIME");
-			// this.CommTools._setExcelFormatDateTime(mExcelSettings, i, "UP_TIME");
-			// this.CommTools._setExcelFormatDateTime(mExcelSettings, i, "LAST_LOGIN_TIME");
+			var mExcelSettings = oEvt.getParameter("exportSettings");
+			for (var i = 0; i < mExcelSettings.workbook.columns.length; i++) {
+				// this.CommTools._setExcelFormatDate(mExcelSettings, i, "VALID_DATE_FROM");
+				// this.CommTools._setExcelFormatDate(mExcelSettings, i, "VALID_DATE_TO");
+				// this.CommTools._setExcelFormatDateTime(mExcelSettings, i, "CD_TIME");
+				// this.CommTools._setExcelFormatDateTime(mExcelSettings, i, "UP_TIME");
+				// this.CommTools._setExcelFormatDateTime(mExcelSettings, i, "LAST_LOGIN_TIME");
 			}
-	
+
 		},
-		_csvdow:function(oEvt){
+		_csvdow: function (oEvt) {
 			// 假设你的数据模型是JSONModel，并且已经绑定到了SmartTable  
 			var selectedIndices = this._TableList("detailTable");
-			if(selectedIndices){
+			if (selectedIndices) {
 				// 构建CSV内容  
-				var csvContent = "data:text/csv;charset=utf-8,";  
+				var csvContent = "data:text/csv;charset=utf-8,";
 				var headers = Object.keys(selectedIndices[0]); // 假设所有条目的结构都相同，取第一条的键作为表头  
+				headers.shift();
 				// csvContent += headers.join(",") + "\n";  
-				
-				selectedIndices.forEach(function(row) {  
-					var values = headers.map(function(header) {
-						if(header == "__metadata")  {
-							return "__metadata";
-						}
-						return (row[header] === null || row[header] === undefined) ? "" : '"' + row[header] + '"';  
-					});  
-					if(values != "__metadata")
-					csvContent += values.join(",") + "\n";  
-				});  
-				
+
+				selectedIndices.forEach(function (row) {
+					var values = headers.map(function (header) {
+
+						return (row[header] === null || row[header] === undefined) ? "" : '"' + row[header] + '"';
+
+
+					});
+
+					csvContent += values.join(",") + "\n";
+
+
+				});
+
 				// 触发下载  
-				var encodedUri = encodeURI(csvContent);  
-				var link = document.createElement("a");  
-				link.setAttribute("href", encodedUri);  
-				link.setAttribute("download", "data.csv");  
-				document.body.appendChild(link);  
+				var encodedUri = encodeURI(csvContent);
+				var link = document.createElement("a");
+				link.setAttribute("href", encodedUri);
+				link.setAttribute("download", "data.csv");
+				document.body.appendChild(link);
 				link.click();
 			}
 
@@ -84,26 +87,108 @@ sap.ui.define([
 			mExcelSettings.worker = false;
 		},
 		onEmail: function (oEvt) {
-			this._callCdsAction("PCH03_SENDEMAIL","",this).then((oData)=>{
-				console.log(oData.PCH03_SENDEMAIL);
-			});
+			var that = this;
+			var selectedIndices = this._TableList("detailTable");
+				if (selectedIndices) {
+					// 构建CSV内容  
+					// var csvContent = "data:text/csv;charset=utf-8,";
+					var csvContent = "";
+					var headers = Object.keys(selectedIndices[0]); // 假设所有条目的结构都相同，取第一条的键作为表头  
+					headers.shift();
+					// csvContent += headers.join(",") + "\n";  
+
+					selectedIndices.forEach(function (row) {
+						var values = headers.map(function (header) {
+
+							return (row[header] === null || row[header] === undefined) ? "" : '"' + row[header] + '"';
+
+
+						});
+
+						csvContent += values.join(",") + "\n";
+
+
+					});
+				}
+
+				let options = { compact: true, ignoreComment: true, spaces: 4 };
+				var IdList = that._TableDataList("detailTable", 'ID')
+				if (IdList) {
+					that.PrintTool._getPrintDataInfo(that, IdList, "/PCH_T03_PO_ITEM_PRINT", "ID").then((oData) => {
+						let sResponse = json2xml(oData, options);
+						console.log(sResponse)
+						that.setSysConFig().then(res => {
+							that.PrintTool._detailSelectPrint(that, sResponse, "test/test", oData, null, null, null, null).then(()=>{
+								that.PrintTool.getImageBase64(that._blob).then((odata)=>{
+								//20240820
+								var mailobj = {
+									emailJson: {
+										TEMPLATE_ID: "test",
+										MAIL_TO: "2644715037@qq.com",
+										MAIL_BODY: [{
+											object: "content",
+											value: "hello"
+										},
+										{
+											object: "recipient",
+											value: "aa"
+										},
+										{
+											object: "filename_1",
+											value: "aa.pdf"
+										},
+										{
+											object: "filecontent_1",
+											value: odata.replace("data:application/pdf;base64,","")
+										},
+										
+										{
+											object: "filename_2",
+											value: "test.csv"
+										},
+										{
+											object: "filecontent_2",
+											value: csvContent
+										}
+									]
+									}
+								};
+
+
+
+
+								let newModel = this.getView().getModel("Common");
+								let oBind = newModel.bindList("/sendEmail");
+								oBind.create(mailobj);
+								})
+								
+							})
+							
+							
+							// that.PrintTool._detailSelectPrintDow(that, sResponse, "test/test", oData, null, null, null, null)
+						})
+					})
+				}
+			
+			
+		
 		},
 		onPrint: function () {
 			var that = this;
 			let options = { compact: true, ignoreComment: true, spaces: 4 };
-			var IdList = that._TableDataList("detailTable",'ID')
-			if(IdList){
-				that.PrintTool._getPrintDataInfo(that,IdList,"/PCH_T03_PO_ITEM_PRINT","ID").then((oData)=>{
+			var IdList = that._TableDataList("detailTable", 'ID')
+			if (IdList) {
+				that.PrintTool._getPrintDataInfo(that, IdList, "/PCH_T03_PO_ITEM_PRINT", "ID").then((oData) => {
 					let sResponse = json2xml(oData, options);
-                    console.log(sResponse)
+					console.log(sResponse)
 					that.setSysConFig().then(res => {
-						that.PrintTool._detailSelectPrint(that,sResponse, "test/test", oData,null,null,null,null)
-						that.PrintTool._detailSelectPrintDow(that,sResponse, "test/test", oData,null,null,null,null)
+						// that.PrintTool._detailSelectPrint(that, sResponse, "test/test", oData, null, null, null, null)
+						that.PrintTool._detailSelectPrintDow(that, sResponse, "test/test", oData, null, null, null, null)
 					})
 				})
 			}
 
 
-        }
+		}
 	});
 });
