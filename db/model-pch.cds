@@ -101,6 +101,8 @@ entity PCH_T05_PAYMENT_D : IF_CUID_FILED { //付款申请表行表
   @title: '{i18n>PRICE_AMOUNT}'            PRICE_AMOUNT                      : Decimal(18,3);       //采购订单明细行号
   @title: '{i18n>TAX_AMOUNT}'              TAX_AMOUNT                        : Decimal(18,3);       //采购订单明细行号
   @title: '{i18n>TOTAL_AMOUNT}'            TOTAL_AMOUNT                      : Decimal(18,3);       //采购订单明细行号
+  @title: '{i18n>SHKZG}'                    SHKZG                             :String(1);         //借方/貨方フ5グ
+  
   TO_HEAD                                                                    : Association to one PCH_T04_PAYMENT_H //付款申请表头表
                                                                     ON  TO_HEAD.INV_NO = INV_NO AND TO_HEAD.GL_YEAR = GL_YEAR;
 }
