@@ -10,7 +10,7 @@ type mailJson     :{
 }
 type mailBody     :{
   object            : String(20);
-  value             : String(50000);
+  value             : LargeString;
 }
 
 service Common {
