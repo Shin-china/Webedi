@@ -36,7 +36,7 @@ extend service TableService {
     {
         KEY T02.PO_NO,                     // UMC発注番号
         KEY T02.D_NO,                      // 明細番号 
-        T01.SUPPLIER,                      // 業者コード
+        T01.SUPPLIER,                      // 仕入先
         T01.PO_ORG,                        // 購買組織
         T04.SUPPLIER_DESCRIPTION,          // 業者名
         T05.MAT_ID,                        // 品目コード
@@ -65,36 +65,37 @@ extend service TableService {
         M04.ZABC,                          // ABC区分
         T05.UNIT_PRICE,                    // 取引通貨単価
 
-       // 基準通貨金額税抜
-        CASE 
-            WHEN T05.CURRENCY = 'JPY' THEN T05.PRICE_AMOUNT
-            WHEN T05.CURRENCY = 'USD' THEN FLOOR(T05.PRICE_AMOUNT * T04.EXCHANGE)
-            WHEN T05.CURRENCY = 'EUR' THEN FLOOR(T05.PRICE_AMOUNT * T04.EXCHANGE)
-            ELSE T05.PRICE_AMOUNT
-        END AS PRICE_AMOUNT_TAX_EXCLUDED : Decimal(20, 0), // 统一在这里指定类型
+    //    // 基準通貨金額税抜
+    //     CASE 
+    //         WHEN T05.CURRENCY = 'JPY' THEN T05.PRICE_AMOUNT
+    //         WHEN T05.CURRENCY = 'USD' THEN FLOOR(T05.PRICE_AMOUNT * T04.EXCHANGE)
+    //         WHEN T05.CURRENCY = 'EUR' THEN FLOOR(T05.PRICE_AMOUNT * T04.EXCHANGE)
+    //         ELSE T05.PRICE_AMOUNT
+    //     END AS PRICE_AMOUNT_TAX_EXCLUDED : Decimal(20, 0), // 统一在这里指定类型
 
-        // 计算字段
-        sum(case when T05.TAX_RATE = 8 then T05.TOTAL_AMOUNT else 0 end) AS TOTAL_AMOUNT_8 : Decimal(20, 6), // 仕入金額計(8%対象)
-        sum(case when T05.TAX_RATE = 8 then T05.TOTAL_AMOUNT * 0.08 else 0 end) AS TAX_AMOUNT_8 : Decimal(20, 6), // 消費税計(8%対象)
-        (sum(case when T05.TAX_RATE = 8 then T05.TOTAL_AMOUNT else 0 end) + sum(case when T05.TAX_RATE = 8 then T05.TOTAL_AMOUNT * 0.08 else 0 end)) AS TOTAL_PAYMENT_8 : Decimal(20, 6), // 税込支払金額(8%対象)
+    //     // 计算字段
+    //     sum(case when T05.TAX_RATE = 8 then T05.TOTAL_AMOUNT else 0 end) AS TOTAL_AMOUNT_8 : Decimal(20, 6), // 仕入金額計(8%対象)
+    //     sum(case when T05.TAX_RATE = 8 then T05.TOTAL_AMOUNT * 0.08 else 0 end) AS TAX_AMOUNT_8 : Decimal(20, 6), // 消費税計(8%対象)
+    //     (sum(case when T05.TAX_RATE = 8 then T05.TOTAL_AMOUNT else 0 end) + sum(case when T05.TAX_RATE = 8 then T05.TOTAL_AMOUNT * 0.08 else 0 end)) AS TOTAL_PAYMENT_8 : Decimal(20, 6), // 税込支払金額(8%対象)
 
-        sum(case when T05.TAX_RATE = 10 then T05.TOTAL_AMOUNT else 0 end) AS TOTAL_AMOUNT_10 : Decimal(20, 6), // 仕入金額計(10%対象)
-        sum(case when T05.TAX_RATE = 10 then T05.TOTAL_AMOUNT * 0.10 else 0 end) AS TAX_AMOUNT_10 : Decimal(20, 6), // 消費税計(10%対象)
-        (sum(case when T05.TAX_RATE = 10 then T05.TOTAL_AMOUNT else 0 end) + sum(case when T05.TAX_RATE = 10 then T05.TOTAL_AMOUNT * 0.10 else 0 end)) AS TOTAL_PAYMENT_10 : Decimal(20, 6), // 税込支払金額(10%対象)
+    //     sum(case when T05.TAX_RATE = 10 then T05.TOTAL_AMOUNT else 0 end) AS TOTAL_AMOUNT_10 : Decimal(20, 6), // 仕入金額計(10%対象)
+    //     sum(case when T05.TAX_RATE = 10 then T05.TOTAL_AMOUNT * 0.10 else 0 end) AS TAX_AMOUNT_10 : Decimal(20, 6), // 消費税計(10%対象)
+    //     (sum(case when T05.TAX_RATE = 10 then T05.TOTAL_AMOUNT else 0 end) + sum(case when T05.TAX_RATE = 10 then T05.TOTAL_AMOUNT * 0.10 else 0 end)) AS TOTAL_PAYMENT_10 : Decimal(20, 6), // 税込支払金額(10%対象)
 
-        sum(case when T05.TAX_RATE not in (8, 10) then T05.TOTAL_AMOUNT else 0 end) AS EXCLUDED_AMOUNT : Decimal(20, 6), // 対象外金額
+    //     sum(case when T05.TAX_RATE not in (8, 10) then T05.TOTAL_AMOUNT else 0 end) AS EXCLUDED_AMOUNT : Decimal(20, 6), // 対象外金額
         
-        // 总合计字段
-        (   
-            (sum(case when T05.TAX_RATE = 8 then T05.TOTAL_AMOUNT else 0 end) +
-            sum(case when T05.TAX_RATE = 8 then T05.TOTAL_AMOUNT * 0.08 else 0 end)) + // TOTAL_PAYMENT_8
+    //     // 总合计字段
+    //     (   
+    //         (sum(case when T05.TAX_RATE = 8 then T05.TOTAL_AMOUNT else 0 end) +
+    //         sum(case when T05.TAX_RATE = 8 then T05.TOTAL_AMOUNT * 0.08 else 0 end)) + // TOTAL_PAYMENT_8
             
-            (sum(case when T05.TAX_RATE = 10 then T05.TOTAL_AMOUNT else 0 end) +
-            sum(case when T05.TAX_RATE = 10 then T05.TOTAL_AMOUNT * 0.10 else 0 end)) + // TOTAL_PAYMENT_10
+    //         (sum(case when T05.TAX_RATE = 10 then T05.TOTAL_AMOUNT else 0 end) +
+    //         sum(case when T05.TAX_RATE = 10 then T05.TOTAL_AMOUNT * 0.10 else 0 end)) + // TOTAL_PAYMENT_10
             
-            sum(case when T05.TAX_RATE not in (8, 10) then T05.TOTAL_AMOUNT else 0 end) // EXCLUDED_AMOUNT
-        ) AS TOTAL_SUM : Decimal(20, 6) // 総合計
+    //         sum(case when T05.TAX_RATE not in (8, 10) then T05.TOTAL_AMOUNT else 0 end) // EXCLUDED_AMOUNT
+    //     ) AS TOTAL_SUM : Decimal(20, 6) // 総合計
     }
+    //  group by T02.PO_NO,T02.D_NO,T01.PO_ORG,T01.SUPPLIER;
 
     action PCH04_SENDEMAIL(parms : String) returns String;
 
