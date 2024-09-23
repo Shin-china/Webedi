@@ -24,6 +24,24 @@ sap.ui.define([
             }.bind(this));
         },
 
+        onDataLoad: function () {
+            const oData = this._oDataModel.getData();
+            oData.results.forEach(item => {
+                if (item.SHKZG === 'H') {
+                    item.PRICE_AMOUNT_DISPLAY = (-Math.abs(item.PRICE_AMOUNT)).toString();
+                    item.TOTAL_AMOUNT_DISPLAY = (-Math.abs(item.TOTAL_AMOUNT)).toString();
+                } else {
+                    item.PRICE_AMOUNT_DISPLAY = item.PRICE_AMOUNT.toString();
+                    item.TOTAL_AMOUNT_DISPLAY = item.TOTAL_AMOUNT.toString();
+                }
+            });
+        
+            // 不调用 refresh()，让视图根据模型的变化自动更新
+            this.getView().getModel().setData(oData); // 重新设置数据
+        },
+        
+        
+
         setBusy: function (busy) {
             this._LocalData.setProperty("/busy", busy);
         },

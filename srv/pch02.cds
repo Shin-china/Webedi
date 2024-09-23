@@ -36,7 +36,8 @@ extend service TableService {
                     T02.MEMO,               // 備考
                     T02.STORAGE_LOC || '' || T02.STORAGE_TXT as STORAGE_NAME : String(255), // 納品先名
                     T03.SEQ,                //連続番号
-                    T03.DEL_FLAG            //削除フラグ
+                    T03.DEL_FLAG,           //削除フラグ
+                    T03.ExtNumber           //参照
             }
 
         // union all

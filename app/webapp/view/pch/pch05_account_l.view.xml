@@ -15,7 +15,7 @@
 
         <f:DynamicPageHeader id="DynamicPageHeader" pinnable="true">
             <f:content>
-                <smartFilterBar:SmartFilterBar id="smartFilterBar" entitySet="PCH_T05_ACCOUNT_DETAIL_SUM" persistencyKey="PCH_T05_ACCOUNT_DETAIL_SUM" showFilterConfiguration="true">
+                <smartFilterBar:SmartFilterBar id="smartFilterBar" entitySet="PCH_T05_ACCOUNT_DETAIL" persistencyKey="PCH_T05_ACCOUNT_DETAIL" showFilterConfiguration="true">
                     <smartFilterBar:controlConfiguration>
 
                     <smartFilterBar:ControlConfiguration id="PCH_PO_BUKRS"      key="PO_BUKRS"             visibleInAdvancedArea="true" label="{pch>PO_BUKRS}"                index="1"/>
@@ -31,7 +31,7 @@
   <!-- </f:DynamicPageHeader> -->
 
 
-    <smartTable:SmartTable id="ID" enableAutoColumnWidth="true" entitySet="PCH_T05_ACCOUNT_DETAIL_SUM" 
+    <smartTable:SmartTable id="ID" enableAutoColumnWidth="true" entitySet="PCH_T05_ACCOUNT_DETAIL" 
         ignoredFields=""  initiallyVisibleFields="PO_BUKRS,INV_MONTH,SUPPLIER,CALC_10_TAX_AMOUNT,CALC_8_TAX_AMOUNT,SAP_TAX_AMOUNT_10,SAP_TAX_AMOUNT_8,RECALC_TAX_AMOUNT_10,RECALC_TAX_AMOUNT_8,DIFF_TAX_AMOUNT_10,DIFF_TAX_AMOUNT_8,TOTAL_10_TAX_INCLUDED_AMOUNT,TOTAL_8_TAX_INCLUDED_AMOUNT" 
         smartFilterId="smartFilterBar" enableExport="true" beforeExport="onBeforeExport" 
         useVariantManagement="true" useTablePersonalisation="true" header="{pch>TITLE_RESULT}" showRowCount="true" persistencyKey="pch05_SmartTableAnalytical_Explored" enableAutoBinding="true">
@@ -56,7 +56,7 @@
         <core:CustomData key="p13nData" value='{"columnKey":"INV_MONTH", "leadingProperty":"INV_MONTH", "sortProperty":"INV_MONTH", "filterProperty":"INV_MONTH"}'/>
     </table:customData>
     <table:label>
-        <Label id="labelInvMonth" text="INV_MONTH"/>
+        <Label id="labelInvMonth" text="{pch>INV_MONTH}"/>
     </table:label>
     <table:template>
        <smartField:SmartField id="textInvMonth" value="{INV_MONTH}" editable="false"/>

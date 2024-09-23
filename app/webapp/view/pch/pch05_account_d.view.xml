@@ -332,26 +332,20 @@
 </table:Column>
 
 <table:Column id="colTaxAmount" width="10rem" sortProperty="TAX_AMOUNT" filterProperty="TAX_AMOUNT">
-    <table:customData>
-        <core:CustomData key="p13nData" value='{"columnKey":"TAX_AMOUNT", "leadingProperty":"TAX_AMOUNT", "sortProperty":"TAX_AMOUNT", "filterProperty":"TAX_AMOUNT"}'/>
-    </table:customData>
     <table:label>
         <Label id="labelTaxAmount" text="{pch>TAX_AMOUNT}"/>
     </table:label>
     <table:template>
-        <Text id="textTaxAmount" text="{TAX_AMOUNT}"/>
+        <Text id="textTaxAmount" text="{PRICE_AMOUNT}"/> <!-- 绑定到计算字段 -->
     </table:template>
 </table:Column>
 
 <table:Column id="colTotalAmount" width="10rem" sortProperty="TOTAL_AMOUNT" filterProperty="TOTAL_AMOUNT">
-    <table:customData>
-        <core:CustomData key="p13nData" value='{"columnKey":"TOTAL_AMOUNT", "leadingProperty":"TOTAL_AMOUNT", "sortProperty":"TOTAL_AMOUNT", "filterProperty":"TOTAL_AMOUNT"}'/>
-    </table:customData>
     <table:label>
         <Label id="labelTotalAmount" text="{pch>TOTAL_AMOUNT}"/>
     </table:label>
     <table:template>
-        <Text id="textTotalAmount" text="{TOTAL_AMOUNT}"/>
+        <Text id="textTotalAmount" text="{TOTAL_AMOUNT}"/> <!-- 绑定到计算字段 -->
     </table:template>
 </table:Column>
 
@@ -391,6 +385,7 @@
     <table:template>
         <Text id="textLogNo" text="{LOG_NO}"/>
     </table:template>
+    </table:Column>
 
     <table:Column id="colShkzg" width="10rem" sortProperty="SHKZG" filterProperty="SHKZG" visible="false">
     <table:customData>
@@ -402,8 +397,8 @@
     <table:template>
         <Text id="textShkzg" text="{SHKZG}"/>
     </table:template>
+    </table:Column>
 
-</table:Column>
 </table:columns>
         </table:Table>
     </smartTable:SmartTable>
