@@ -107,47 +107,6 @@ extend service TableService {
                 cast(T05.TAX_AMOUNT as Decimal(15,2)) 
             end as SAP_TAX_AMOUNT_8 : Decimal(15, 2),    // 8% SAP 税额
 
-            // 消费税差额
-            case when T05.TAX_RATE = 10 then 
-                ( 
-                    (case 
-                        when T05.CURRENCY = 'JPY' then 
-                            cast(floor(T05.PRICE_AMOUNT * 0.10) as Decimal(15,0))
-                        when T05.CURRENCY in ('USD', 'EUR') then 
-                            cast(floor(T05.PRICE_AMOUNT * 0.10 * 100) / 100 as Decimal(15,2))
-                    end) - cast(T05.TAX_AMOUNT as Decimal(15,2))
-                ) 
-            end as DIFF_TAX_AMOUNT_10 : Decimal(15, 2),   // 10% 消費税差額
-            
-            case when T05.TAX_RATE = 8 then 
-                ( 
-                    (case 
-                        when T05.CURRENCY = 'JPY' then 
-                            cast(floor(T05.PRICE_AMOUNT * 0.08) as Decimal(15,0))
-                        when T05.CURRENCY in ('USD', 'EUR') then 
-                            cast(floor(T05.PRICE_AMOUNT * 0.08 * 100) / 100 as Decimal(15,2))
-                    end) - cast(T05.TAX_AMOUNT as Decimal(15,2))
-                ) 
-            end as DIFF_TAX_AMOUNT_8 : Decimal(15, 2),    // 8% 消費税差額
-
-            // 合计金额
-            case when T05.TAX_RATE = 10 then 
-                (cast(T05.PRICE_AMOUNT as Decimal(15,2)) + 
-                 case when T05.CURRENCY = 'JPY' then 
-                     cast(floor(T05.PRICE_AMOUNT * 0.10) as Decimal(15,0))
-                 when T05.CURRENCY in ('USD', 'EUR') then 
-                     cast(floor(T05.PRICE_AMOUNT * 0.10 * 100) / 100 as Decimal(15,2))
-                 end)
-            end as TOTAL_10_TAX_INCLUDED_AMOUNT : Decimal(15, 2),  // 合计 10% 税込金额
-            
-            case when T05.TAX_RATE = 8 then 
-                (cast(T05.PRICE_AMOUNT as Decimal(15,2)) + 
-                 case when T05.CURRENCY = 'JPY' then 
-                     cast(floor(T05.PRICE_AMOUNT * 0.08) as Decimal(15,0))
-                 when T05.CURRENCY in ('USD', 'EUR') then 
-                     cast(floor(T05.PRICE_AMOUNT * 0.08 * 100) / 100 as Decimal(15,2))
-                 end)
-            end as TOTAL_8_TAX_INCLUDED_AMOUNT : Decimal(15, 2)   // 合计 8% 税込金额
         }
     
     entity PCH_T05_ACCOUNT_DETAIL_SUM_GRO as
@@ -162,10 +121,6 @@ extend service TableService {
             SUM(CALC_8_TAX_AMOUNT) as CALC_8_TAX_AMOUNT: Decimal(15, 2),                        // 8%  税抜金额
             SUM(SAP_TAX_AMOUNT_10) as SAP_TAX_AMOUNT_10: Decimal(15, 2),                        // 10% SAP税额
             SUM(SAP_TAX_AMOUNT_8) as SAP_TAX_AMOUNT_8: Decimal(15, 2),                          // 8%  SAP税额
-            SUM(DIFF_TAX_AMOUNT_10) as DIFF_TAX_AMOUNT_10: Decimal(15, 2),                      // 10% 消費税差额
-            SUM(DIFF_TAX_AMOUNT_8) as DIFF_TAX_AMOUNT_8: Decimal(15, 2),                        // 8%  消費税差额
-            SUM(TOTAL_10_TAX_INCLUDED_AMOUNT) as TOTAL_10_TAX_INCLUDED_AMOUNT: Decimal(15, 2),  // 合计 10% 税込金额
-            SUM(TOTAL_8_TAX_INCLUDED_AMOUNT) as TOTAL_8_TAX_INCLUDED_AMOUNT: Decimal(15, 2),    // 合计 8%  税込金额
             CURRENCY,
             TAX_RATE,
 
@@ -190,11 +145,7 @@ extend service TableService {
             CALC_10_TAX_AMOUNT,  
             CALC_8_TAX_AMOUNT,   
             SAP_TAX_AMOUNT_10,
-            SAP_TAX_AMOUNT_8,  
-            DIFF_TAX_AMOUNT_10,
-            DIFF_TAX_AMOUNT_8,
-            TOTAL_10_TAX_INCLUDED_AMOUNT, 
-            TOTAL_8_TAX_INCLUDED_AMOUNT,            
+            SAP_TAX_AMOUNT_8,        
 
             // 再计算的税额（根据 CURRENCY 处理小数点后位数）
             case 
@@ -210,7 +161,61 @@ extend service TableService {
                 when T02.CURRENCY in ('USD', 'EUR') and T02.TAX_RATE = 8 then 
                     cast(floor(CASE WHEN T02.TAX_RATE = 8 THEN T02.CALC_8_TAX_AMOUNT END * 0.08 * 100) / 100 as Decimal(15,2))
             end as RECALC_TAX_AMOUNT_8 : Decimal(15, 2),   // 再计算 8% 税额
+
         }
+
+         entity PCH_T05_ACCOUNT_DETAIL_SUM_FINAL as
+
+        select from   PCH_T05_ACCOUNT_DETAIL_SUM_END  as T03
+
+        distinct {
+            key T03.PO_BUKRS,                       
+            key T03.SUPPLIER,                       
+            key T03.INV_MONTH,
+            key T03.CURRENCY,
+            key T03.TAX_RATE,
+            CALC_10_TAX_AMOUNT,  
+            CALC_8_TAX_AMOUNT,   
+            SAP_TAX_AMOUNT_10,
+            SAP_TAX_AMOUNT_8,        
+
+            // 再计算的税额（根据 CURRENCY 处理小数点后位数）
+            case 
+                when T03.CURRENCY = 'JPY' and T03.TAX_RATE = 10 then 
+                    cast(floor(CASE WHEN T03.TAX_RATE = 10 THEN T03.CALC_10_TAX_AMOUNT END * 0.10) as Decimal(15,0))
+                when T03.CURRENCY in ('USD', 'EUR') and T03.TAX_RATE = 10 then 
+                    cast(floor(CASE WHEN T03.TAX_RATE = 10 THEN T03.CALC_10_TAX_AMOUNT END * 0.10 * 100) / 100 as Decimal(15,2))
+            end as RECALC_TAX_AMOUNT_10 : Decimal(15, 2),  // 再计算 10% 税额
+            
+            case 
+                when T03.CURRENCY = 'JPY' and T03.TAX_RATE = 8 then 
+                    cast(floor(CASE WHEN T03.TAX_RATE = 8 THEN T03.CALC_8_TAX_AMOUNT END * 0.08) as Decimal(15,0))
+                when T03.CURRENCY in ('USD', 'EUR') and T03.TAX_RATE = 8 then 
+                    cast(floor(CASE WHEN T03.TAX_RATE = 8 THEN T03.CALC_8_TAX_AMOUNT END * 0.08 * 100) / 100 as Decimal(15,2))
+            end as RECALC_TAX_AMOUNT_8 : Decimal(15, 2),   // 再计算 8% 税额
+
+          // 消费税差额
+            case 
+                when T03.TAX_RATE = 10 then 
+                    (RECALC_TAX_AMOUNT_10 - T03.SAP_TAX_AMOUNT_10)
+            end as DIFF_TAX_AMOUNT_10 : Decimal(15, 2), 
+
+            case 
+                when T03.TAX_RATE = 8 then 
+                    (RECALC_TAX_AMOUNT_8 - T03.SAP_TAX_AMOUNT_8)
+            end as DIFF_TAX_AMOUNT_8 : Decimal(15, 2),
+            // 合计金额
+            case 
+                when T03.TAX_RATE = 10 then 
+                    (T03.CALC_10_TAX_AMOUNT + RECALC_TAX_AMOUNT_10)
+            end as TOTAL_10_TAX_INCLUDED_AMOUNT : Decimal(15, 2), 
+            
+            case 
+                when T03.TAX_RATE = 8 then 
+                    (T03.CALC_8_TAX_AMOUNT + RECALC_TAX_AMOUNT_8)
+            end as TOTAL_8_TAX_INCLUDED_AMOUNT : Decimal(15, 2)  
+        }
+
 
 }
 
