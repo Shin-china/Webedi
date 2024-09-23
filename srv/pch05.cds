@@ -173,7 +173,9 @@ extend service TableService {
         group by
             T01.PO_BUKRS,           // 会社コード (聚合维度)
             T01.SUPPLIER,           // 仕入先 (聚合维度)
-            T01.INV_MONTH;          // 月度      
+            T01.INV_MONTH,          // 月度
+            T01.CURRENCY,
+            T01.TAX_RATE;
 
     entity PCH_T05_ACCOUNT_DETAIL_SUM_END as
 
@@ -184,21 +186,29 @@ extend service TableService {
             key T02.SUPPLIER,                       
             key T02.INV_MONTH,
             key T02.CURRENCY,
-            key T02.TAX_RATE,                    
+            key T02.TAX_RATE,
+            CALC_10_TAX_AMOUNT,  
+            CALC_8_TAX_AMOUNT,   
+            SAP_TAX_AMOUNT_10,
+            SAP_TAX_AMOUNT_8,  
+            DIFF_TAX_AMOUNT_10,
+            DIFF_TAX_AMOUNT_8,
+            TOTAL_10_TAX_INCLUDED_AMOUNT, 
+            TOTAL_8_TAX_INCLUDED_AMOUNT,            
 
             // 再计算的税额（根据 CURRENCY 处理小数点后位数）
             case 
                 when T02.CURRENCY = 'JPY' and T02.TAX_RATE = 10 then 
-                    cast(floor(CASE WHEN T02.TAX_RATE = 10 THEN T02.TOTAL_10_TAX_INCLUDED_AMOUNT END * 0.10) as Decimal(15,0))
+                    cast(floor(CASE WHEN T02.TAX_RATE = 10 THEN T02.CALC_10_TAX_AMOUNT END * 0.10) as Decimal(15,0))
                 when T02.CURRENCY in ('USD', 'EUR') and T02.TAX_RATE = 10 then 
-                    cast(floor(CASE WHEN T02.TAX_RATE = 10 THEN T02.TOTAL_10_TAX_INCLUDED_AMOUNT END * 0.10 * 100) / 100 as Decimal(15,2))
+                    cast(floor(CASE WHEN T02.TAX_RATE = 10 THEN T02.CALC_10_TAX_AMOUNT END * 0.10 * 100) / 100 as Decimal(15,2))
             end as RECALC_TAX_AMOUNT_10 : Decimal(15, 2),  // 再计算 10% 税额
             
             case 
                 when T02.CURRENCY = 'JPY' and T02.TAX_RATE = 8 then 
-                    cast(floor(CASE WHEN T02.TAX_RATE = 8 THEN T02.TOTAL_8_TAX_INCLUDED_AMOUNT END * 0.08) as Decimal(15,0))
+                    cast(floor(CASE WHEN T02.TAX_RATE = 8 THEN T02.CALC_8_TAX_AMOUNT END * 0.08) as Decimal(15,0))
                 when T02.CURRENCY in ('USD', 'EUR') and T02.TAX_RATE = 8 then 
-                    cast(floor(CASE WHEN T02.TAX_RATE = 8 THEN T02.TOTAL_8_TAX_INCLUDED_AMOUNT END * 0.08 * 100) / 100 as Decimal(15,2))
+                    cast(floor(CASE WHEN T02.TAX_RATE = 8 THEN T02.CALC_8_TAX_AMOUNT END * 0.08 * 100) / 100 as Decimal(15,2))
             end as RECALC_TAX_AMOUNT_8 : Decimal(15, 2),   // 再计算 8% 税额
         }
 
