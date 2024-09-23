@@ -53,11 +53,9 @@ extend service TableService {
 
             
          }         
-          
-    entity PCH_T05_ACCOUNT_DETAIL_SUM as
-        select from   PCH_T05_ACCOUNT_DETAIL  as T05
+          entity PCH_T05_ACCOUNT_DETAIL_SUM as
+        select from PCH_T05_ACCOUNT_DETAIL as T05
 
-            
         distinct {
             key T05.INV_NO,                        // 伝票番号
             key T05.GL_YEAR,                       // 会計年度
@@ -90,9 +88,7 @@ extend service TableService {
                 T05.INV_BASE_DATE,                 // 支払い基準日
                 T05.GR_DATE,                       // 伝票日付
                 T05.LOG_NO,                        // 登録番号
-                T05.SHKZG,                         // 借方/貸方フラグ
                 T05.INV_MONTH,                     // 提取年月，作为月度字段
-
             // 新增计算字段
             case when T05.TAX_RATE = 10 then 
                 cast(T05.PRICE_AMOUNT as Decimal(15,2)) 
@@ -102,36 +98,27 @@ extend service TableService {
                 cast(T05.PRICE_AMOUNT as Decimal(15,2)) 
             end as CALC_8_TAX_AMOUNT : Decimal(15, 2),   // 8% 税抜金额
 
-            // SAP 税额（按公司代码、月份、供应商代码总计）
-            sum(case when T05.TAX_RATE = 10 then 
+            // SAP 税额
+            case when T05.TAX_RATE = 10 then 
                 cast(T05.TAX_AMOUNT as Decimal(15,2)) 
-            end) as SAP_TAX_AMOUNT_10 : Decimal(15, 2),   // 10% SAP 税额
+            end as SAP_TAX_AMOUNT_10 : Decimal(15, 2),   // 10% SAP 税额
             
-            sum(case when T05.TAX_RATE = 8 then 
+            case when T05.TAX_RATE = 8 then 
                 cast(T05.TAX_AMOUNT as Decimal(15,2)) 
-            end) as SAP_TAX_AMOUNT_8 : Decimal(15, 2),    // 8% SAP 税额
-
-            // 新增计算字段（按公司代码、月份、供应商代码总计）
-            sum(case when T05.TAX_RATE = 10 then 
-                cast(T05.PRICE_AMOUNT as Decimal(15,2)) 
-            end) as TOTAL_CALC_10_TAX_AMOUNT : Decimal(15, 2),  // 10% 税抜金额总计
-            
-            sum(case when T05.TAX_RATE = 8 then 
-                cast(T05.PRICE_AMOUNT as Decimal(15,2)) 
-            end) as TOTAL_CALC_8_TAX_AMOUNT : Decimal(15, 2),   // 8% 税抜金额总计
+            end as SAP_TAX_AMOUNT_8 : Decimal(15, 2),    // 8% SAP 税额
 
             // 再计算的税额（根据 CURRENCY 处理小数点后位数）
             case 
                 when T05.CURRENCY = 'JPY' and T05.TAX_RATE = 10 then 
-                    cast(floor(CASE WHEN T05.TAX_RATE = 8 THEN T05.PRICE_AMOUNT END * 0.10) as Decimal(15,0))
-                when T05.CURRENCY in ('USD', 'EUR') and T05.TAX_RATE = 0.1 then 
-                    cast(floor(CASE WHEN T05.TAX_RATE = 8 THEN T05.PRICE_AMOUNT END * 0.10 * 100) / 100 as Decimal(15,2))
+                    cast(floor(CASE WHEN T05.TAX_RATE = 10 THEN T05.PRICE_AMOUNT END * 0.10) as Decimal(15,0))
+                when T05.CURRENCY in ('USD', 'EUR') and T05.TAX_RATE = 10 then 
+                    cast(floor(CASE WHEN T05.TAX_RATE = 10 THEN T05.PRICE_AMOUNT END * 0.10 * 100) / 100 as Decimal(15,2))
             end as RECALC_TAX_AMOUNT_10 : Decimal(15, 2),  // 再计算 10% 税额
             
             case 
                 when T05.CURRENCY = 'JPY' and T05.TAX_RATE = 8 then 
                     cast(floor(CASE WHEN T05.TAX_RATE = 8 THEN T05.PRICE_AMOUNT END * 0.08) as Decimal(15,0))
-                when T05.CURRENCY in ('USD', 'EUR') and T05.TAX_RATE = 0.08 then 
+                when T05.CURRENCY in ('USD', 'EUR') and T05.TAX_RATE = 8 then 
                     cast(floor(CASE WHEN T05.TAX_RATE = 8 THEN T05.PRICE_AMOUNT END * 0.08 * 100) / 100 as Decimal(15,2))
             end as RECALC_TAX_AMOUNT_8 : Decimal(15, 2),   // 再计算 8% 税额
 
@@ -145,7 +132,7 @@ extend service TableService {
                             cast(floor(T05.PRICE_AMOUNT * 0.10 * 100) / 100 as Decimal(15,2))
                     end) - cast(T05.TAX_AMOUNT as Decimal(15,2))
                 ) 
-            end as DIFF_TAX_AMOUNT_10 : Decimal(15, 2),   // 10% 消費税差额
+            end as DIFF_TAX_AMOUNT_10 : Decimal(15, 2),   // 10% 消費税差額
             
             case when T05.TAX_RATE = 8 then 
                 ( 
@@ -156,7 +143,7 @@ extend service TableService {
                             cast(floor(T05.PRICE_AMOUNT * 0.08 * 100) / 100 as Decimal(15,2))
                     end) - cast(T05.TAX_AMOUNT as Decimal(15,2))
                 ) 
-            end as DIFF_TAX_AMOUNT_8 : Decimal(15, 2),    // 8% 消費税差额
+            end as DIFF_TAX_AMOUNT_8 : Decimal(15, 2),    // 8% 消費税差額
 
             // 合计金额
             case when T05.TAX_RATE = 10 then 
@@ -177,6 +164,7 @@ extend service TableService {
                  end)
             end as TOTAL_8_TAX_INCLUDED_AMOUNT : Decimal(15, 2)   // 合计 8% 税込金额
         }
+    
 
 
     entity PCH_T05_ACCOUNT_DETAIL_SUM_GRO as
@@ -191,8 +179,6 @@ extend service TableService {
             SUM(CALC_8_TAX_AMOUNT) as CALC_8_TAX_AMOUNT: Decimal(15, 2),    // 8% 税抜金额
             SUM(SAP_TAX_AMOUNT_10) as SAP_TAX_AMOUNT_10: Decimal(15, 2),    // 10% 税抜金额
             SUM(SAP_TAX_AMOUNT_8) as SAP_TAX_AMOUNT_8: Decimal(15, 2),      // 10% SAP 税额
-            SUM(TOTAL_CALC_10_TAX_AMOUNT) as TOTAL_CALC_10_TAX_AMOUNT: Decimal(15, 2),  // 10% 税抜金额总计
-            SUM(TOTAL_CALC_8_TAX_AMOUNT) as TOTAL_CALC_8_TAX_AMOUNT: Decimal(15, 2),    // 8% 税抜金额总计
             SUM(RECALC_TAX_AMOUNT_10) as RECALC_TAX_AMOUNT_10: Decimal(15, 2),          // 再计算 10% 税额
             SUM(RECALC_TAX_AMOUNT_8) as RECALC_TAX_AMOUNT_8: Decimal(15, 2),            // 再计算 8% 税额
             SUM(DIFF_TAX_AMOUNT_10) as DIFF_TAX_AMOUNT_10: Decimal(15, 2),              // 10% 消費税差额
