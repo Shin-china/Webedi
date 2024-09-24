@@ -1,0 +1,99 @@
+<mvc:View controllerName="umc.app.controller.pch.pch03_pobk_l"
+	xmlns:smartfield="sap.ui.comp.smartfield"
+	xmlns:smartform="sap.ui.comp.smartform"
+	xmlns:core="sap.ui.core"
+	xmlns="sap.m"
+	xmlns:f="sap.f"
+	xmlns:l="sap.ui.layout"
+	xmlns:smartFilterBar="sap.ui.comp.smartfilterbar"
+	xmlns:smartTable="sap.ui.comp.smarttable"
+	xmlns:sv="sap.ui.comp.smartvariants"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:uxap="sap.uxap"
+	xmlns:table="sap.ui.table"
+	xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+
+
+
+	<f:DynamicPage id="dynamicPageId" headerExpanded="true" showFooter="true" busy="{localModel>/isBusy}">
+		<f:title>
+			<f:DynamicPageTitle id="DynamicPageTitle">
+				<f:heading>
+					<Title id="Title" text="{pch>PCH03_TITLE}"/>
+
+				</f:heading>
+				<f:navigationActions>
+					<Button id="_IDGenButto" icon="sap-icon://home" tooltip="nav-back" press="navToHome"/>
+				</f:navigationActions>
+			</f:DynamicPageTitle>
+		</f:title>
+
+
+
+		<f:header>
+			<f:DynamicPageHeader id="DynamicPageHeader" pinnable="true">
+				<f:content>
+
+					<smartFilterBar:SmartFilterBar id="smartFilterBar" useToolbar="true" entitySet="PCH_T03_PO_ITEM" persistencyKey="mst02_receiptprintFilterBar" showFilterConfiguration="true">
+						<smartFilterBar:controlConfiguration>
+						<smartFilterBar:ControlConfiguration id="SUPPLIER" index="1" key="SUPPLIER"  visibleInAdvancedArea="true"   />
+						<smartFilterBar:ControlConfiguration id="SUPPLIER_MAT" index="2" key="SUPPLIER_MAT"  visibleInAdvancedArea="true"   />	
+						<smartFilterBar:ControlConfiguration id="PO_NO" index="3" key="PO_NO"  visibleInAdvancedArea="true"  />	
+						<smartFilterBar:ControlConfiguration id="D_NO" index="4" key="D_NO"  visibleInAdvancedArea="true" />	
+						<smartFilterBar:ControlConfiguration id="PO_TYPE" index="5" key="PO_TYPE"  visibleInAdvancedArea="true"  filterType='single' controlType="dropDownList"/>	
+						<smartFilterBar:ControlConfiguration id="MAT_ID" index="6" key="MAT_ID"  visibleInAdvancedArea="true" />	
+						<smartFilterBar:ControlConfiguration id="PO_DATE" index="7" key="PO_DATE"  visibleInAdvancedArea="true" />	
+						<smartFilterBar:ControlConfiguration id="STATUS" index="8" key="STATUS"  visibleInAdvancedArea="true"  filterType='single' controlType="dropDownList"/>	
+						<smartFilterBar:ControlConfiguration id="CD_BY" index="9" key="CD_BY"  visibleInAdvancedArea="true" />	
+						<smartFilterBar:ControlConfiguration id="PO_D_DATE" index="10" key="PO_D_DATE"  visibleInAdvancedArea="true" />	
+						<smartFilterBar:ControlConfiguration id="ZABC" index="11" key="ZABC"  visibleInAdvancedArea="true"  filterType='single' controlType="dropDownList"/>	
+
+						</smartFilterBar:controlConfiguration>
+					</smartFilterBar:SmartFilterBar>
+				</f:content>
+			</f:DynamicPageHeader>
+		</f:header>
+
+		<f:content>
+
+
+			<smartTable:SmartTable id="smartTable" enableAutoColumnWidth="true" showFullScreenButton="true" persistencyKey="mst02_receiptprintTable" entitySet="PCH_T03_PO_ITEM" requestAtLeastFields="ID" smartFilterId="smartFilterBar" beforeExport="onBeforeExport" enableExport="true" useVariantManagement="true" useTablePersonalisation="true" initiallyVisibleFields="PO_TYPE,PO_NO,D_NO,MAT_ID,PO_D_TXZ01,PO_PUR_QTY,PO_PUR_UNIT,STATUS,SUPPLIER,SUPPLIER_MAT,CD_BY,CURRENCY,DEL_PRICE,UNIT_PRICE,DEL_AMOUNT,PO_DATE,PO_D_DATE,MEMO," tableType="Table" showRowCount="true" beforeRebindTable="onRebind" placeToolbarInTable="true" header="{com>TITLE_RESULT}" enableAutoBinding="false">
+
+				<smartTable:customToolbar>
+				<OverflowToolbar id="ID_header">
+					<content>
+					<ToolbarSpacer id="ID_ToolbarSpacer" />
+					<Button id="_IDGenButton22" text="{pch>PCH03_BUTTON_CSV}" press="_csvdow" enabled="true" width="10em"/>
+					<Button id="_IDGenButton23" text="{pch>PCH03_BUTTON_FAX}" press="onPrint" enabled="true" width="10em"/>
+					<Button id="_IDGenButton24" text="{pch>PCH03_BUTTON_MAIL}" press="onEmail" enabled="true" width="10em"/>
+					<Button id="_IDGenButton25" text="{pch>PCH03_BUTTON_QR}" press="onPrint" enabled="true" width="10em"/>
+					<Button id="_IDGenButton26" text="{pch>PCH03_BUTTON_ZWS_NPS}" press="onPrint" enabled="true" width="10em"/>
+					<Button id="_IDGenButton27" text="{pch>PCH03_BUTTON_ZWS}" press="onPrint" enabled="true" width="10em"/>
+					<Button id="_IDGenButton28" text="{pch>PCH03_BUTTON_NPS}" press="onPrint" enabled="true" width="10em"/>
+					</content>
+				</OverflowToolbar>
+				</smartTable:customToolbar>
+				<table:Table id="detailTable" rowMode="Auto"  rowActionCount="1">
+
+					<table:rowActionTemplate>
+						<table:RowAction id="RowAction">
+							<table:items>
+								<table:RowActionItem id="RowActionItem" type="Navigation" press="onPress"  icon="sap-icon://edit"/>
+							</table:items>
+						</table:RowAction>
+					</table:rowActionTemplate>
+
+				</table:Table>
+
+
+			</smartTable:SmartTable>
+		</f:content>
+	<f:footer>
+      <OverflowToolbar id="otbFooter" visible="{=${message>/}.length > 0}">
+        <Button icon="sap-icon://alert" text="{=${message>/}.length}" visible="{=${message>/}.length > 0}" type="Emphasized" press="onClickMessagePopover" id="messageButton">
+        </Button>
+      </OverflowToolbar>
+    </f:footer>
+	</f:DynamicPage>
+
+</mvc:View>
