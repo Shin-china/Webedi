@@ -69,6 +69,16 @@ sap.ui.define([
                 oEvent.preventDefault(); // 取消导出操作
                 return;
             }
+            // var mExcelSettings = oEvt.getParameter("exportSettings");
+            // for (var i = 0; i < mExcelSettings.workbook.columns.length; i++) {
+            //     // this.CommTools._setExcelFormatDate(mExcelSettings, i, "VALID_DATE_FROM");
+            //     // this.CommTools._setExcelFormatDate(mExcelSettings, i, "VALID_DATE_TO");
+            //     // this.CommTools._setExcelFormatDateTime(mExcelSettings, i, "CD_TIME");
+            //     // this.CommTools._setExcelFormatDateTime(mExcelSettings, i, "UP_TIME");
+            //     // this.CommTools._setExcelFormatDateTime(mExcelSettings, i, "LAST_LOGIN_TIME");
+            //     }
+        
+            
 
             var oSettings = oEvent.getParameter("exportSettings");
             if (oSettings) {
