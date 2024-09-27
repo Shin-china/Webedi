@@ -47,11 +47,9 @@ extend service TableService {
                 T04.INV_BASE_DATE,                 // 支払い基準日
                 T05.GR_DATE,                       // 伝票日付
                 T03.LOG_NO,                        // 登録番号
-                T05.SHKZG,                         // 借方/貸方フラグ
-                // replace(substring(cast(T04.INV_POST_DATE as varchar), 1, 7), '-', '') as INV_MONTH : String // 提取年月，作为月度字段 
+                T05.SHKZG,                         // 借方/貸方フラグ 
                 TO_CHAR(T04.INV_POST_DATE, 'YYYYMM') as INV_MONTH : String
-
-            
+      
          }         
           entity PCH_T05_ACCOUNT_DETAIL_SUM as
         select from PCH_T05_ACCOUNT_DETAIL as T05
