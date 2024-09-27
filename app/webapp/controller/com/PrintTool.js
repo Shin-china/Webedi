@@ -1,3 +1,4 @@
+jQuery.sap.require("umc/app/util/jszip");
 sap.ui.define(
   [
     "sap/base/i18n/ResourceBundle",
@@ -27,7 +28,7 @@ sap.ui.define(
           // check if running in localhost
           if (window.location.hostname === "localhost" || window.location.hostname === "211.144.197.139") {
             // 本地开发打印
-            that._getOAuthToken2(_that).then(
+            that._getOAuthToken(_that).then(
               function (token) {
                 //生成pdf
                 that
@@ -87,18 +88,28 @@ sap.ui.define(
        * @param {* 打印参数} _data
        * @param {* 打印回写处理方法} _printBackFuncation
        */
-           _detailSelectPrint: function (_that, _sResponse, _xdpTemplateID, _data, _printBackFuncation, _smartTableId, entityInModelID) {
+      _detailSelectPrintDow: function (_that, _sResponse, _xdpTemplateID, _data, _printBackFuncation, _smartTableId, entityInModelID) {
             var that = this;
-    
+            var zip = new JSZipSync();
+    				that.printTaskPdf = {
+              completedCount: 0,
+              count: 0,
+              progress : 0,
+              pdfUrl: [],
+              zip : zip,
+              zipFolder : zip.folder("現品票PDF"),
+              zipFile : [],
+              
+            };
             return new Promise(function (resolve, reject) {
               // check if running in localhost
               if (window.location.hostname === "localhost" || window.location.hostname === "211.144.197.139") {
                 // 本地开发打印
-                that._getOAuthToken2(_that).then(
+                that._getOAuthToken(_that).then(
                   function (token) {
                     //生成pdf
                     that
-                      ._createPDF(_that, _sResponse, _xdpTemplateID, token)
+                      ._createPDFDow(_that, _sResponse, _xdpTemplateID, token)
                       .then(
                         function () {
                           //打印回写处理
@@ -114,6 +125,7 @@ sap.ui.define(
                         }
                       )
                       .finally(function () {
+                        that._checkPrintTaskPdf(_that);
                         resolve(true);
                       });
                   },
@@ -141,38 +153,18 @@ sap.ui.define(
                     }
                   )
                   .finally(function () {
+                    that._checkPrintTaskPdf();
                     resolve(true);
                   });
               }
             });
           },
-		/*==============================
-		==============================*/
-		_getOAuthToken: function () {
-			return new Promise(function (resolve, reject) {
-				$.ajax({
-					url:
-						jQuery.sap.getModulePath("umc.app") + "/OAuth/api/v1/token?grant_type=client_credentials&scope=generate-ads-output",
-					type: "post",
-					headers: {
-						Authorization:
-							"Basic " +
-							btoa("646e42f6-d38b-3ca8-b309-74cecaffa21e" + ":" + "H-bpi2020"),
-					},
-					success: function (data, status, xhr) {
-						resolve(data.access_token);
-					},
-					error: function (xhr, status, error) {
-						reject(error);
-					},
-				});
-			});
-		},
+
       /**
        * 本地打印时，现获取token
        * @returns token
        */
-      _getOAuthToken2: function (_that) {
+      _getOAuthToken: function (_that) {
          
         return new Promise(function (resolve, reject) {
           $.ajax({
@@ -191,6 +183,40 @@ sap.ui.define(
           });
         });
       },
+      
+		/* 全部pdf取得后打包 */
+		_checkPrintTaskPdf: function () {
+			if (this.printTaskPdf) {
+
+				
+					this._saveFileZip();
+      }
+		},
+
+		_saveFileZip: function () {
+			this.printTaskPdf.pdfUrl.forEach(pdf => {
+				var xhr = new XMLHttpRequest();
+				xhr.open("GET", pdf.url, true)
+				xhr.responseType = "arraybuffer";
+				xhr.onload = () => {
+					this.printTaskPdf.zipFile.push({ name: pdf.name, content: xhr.response });
+					if (this.printTaskPdf.zipFile.length == this.printTaskPdf.pdfUrl.length) {
+						this.printTaskPdf.zipFile.forEach(file => {
+							this.printTaskPdf.zipFolder.file(file.name, file.content, { binary: true });
+						});
+						var blob = this.printTaskPdf.zip.generate({ type: 'blob' });
+						var aLabel = document.createElement('a');
+						aLabel.href = URL.createObjectURL(blob);
+						aLabel.download = "現品票PDF.rar";
+						aLabel.click();
+					
+						this.printTaskPdf = undefined;
+					}
+				}
+				xhr.send();
+			});
+		},
+
       /**
        *
        * @param {* 打印数据源表格 }
@@ -236,61 +262,77 @@ sap.ui.define(
           oModel.read(sPath, mParameter);
         });
       },
-      _createPDF2: function (_that, dataXML, xdpTemplateID, accessToken) {
-        var that = _that;
-        return new Promise(
-          function (resolve, reject) {
-            dataXML = '<?xml version="1.0" encoding="UTF-8"?><form>' + dataXML + "</form>";
-            var encdata = btoa(unescape(encodeURIComponent(dataXML)));
-            var jsonData = "{	" + '"xdpTemplate": "' + xdpTemplateID + '", ' + '"xmlData": "' + encdata + '"}';
-            if (accessToken) {
-              var headers = { Authorization: "Bearer " + accessToken };
-            } else {
-              var headers = {};
-            }
-
-            $.ajax({
-              url: "ADS/v1/adsRender/pdf?templateSource=storageName",
-              type: "post",
-              headers: headers,
-              contentType: "application/json",
-              data: jsonData,
-              success: function (data, textStatus, jqXHR) {
-                //once the API call is successfull, Display PDF on screen
-                var decodedPdfContent = atob(data.fileContent);
-                var byteArray = new Uint8Array(decodedPdfContent.length);
-                for (var i = 0; i < decodedPdfContent.length; i++) {
-                  byteArray[i] = decodedPdfContent.charCodeAt(i);
-                }
-                var blob = new Blob([byteArray.buffer], {
-                  type: "application/pdf",
-                });
-                var _pdfurl = URL.createObjectURL(blob);
-
-                if (!this._PDFViewer) {
-                  this._PDFViewer = new sap.m.PDFViewer({
-                    width: "auto",
-                    source: _pdfurl,
-                  });
-                  jQuery.sap.addUrlWhitelist("blob"); // register blob url as whitelist
-                }
-                resolve(1);
-                this._PDFViewer.open();
-              },
-              error: function (xhr, status, error) {
-                _that._setBusy(false);
-                reject(error);
-              },
-            });
-          }.bind(this)
-        );
-      },
-      /*==============================
+    /*==============================
      * call ADS Service to generate PDF
      * @param {*} dataXML
      * @param {*} accessToken
     ==============================*/
-      _createPDF: function (_that, dataXML, xdpTemplateID, accessToken) {
+    _createPDF: function (_that, dataXML, xdpTemplateID, accessToken) {
+      return new Promise(
+        function (resolve, reject) {
+          dataXML =
+            "<?xml version=\"1.0\" encoding=\"UTF-8\"?><form>" +
+            dataXML +
+            "</form>";
+          var encdata = btoa(unescape(encodeURIComponent(dataXML)));
+          var jsonData =
+            "{	" +
+            "\"xdpTemplate\": \"" +
+            xdpTemplateID +
+            "\", " +
+            "\"xmlData\": \"" +
+            encdata +
+            "\"}";
+          if (accessToken) {
+            var headers = { Authorization: "Bearer " + accessToken };
+          } else {
+            var headers = {};
+          }
+
+          $.ajax({
+            url:
+              _that.getGlobProperty("ADS_url"),
+            type: "post",
+            headers: headers,
+            contentType: "application/json",
+            data: jsonData,
+            success: function (data, textStatus, jqXHR) {
+              //once the API call is successfull, Display PDF on screen
+              var decodedPdfContent = atob(data.fileContent);
+              var byteArray = new Uint8Array(decodedPdfContent.length);
+              for (var i = 0; i < decodedPdfContent.length; i++) {
+                byteArray[i] = decodedPdfContent.charCodeAt(i);
+              }
+              var blob = new Blob([byteArray.buffer], {
+                type: "application/pdf",
+              });
+              _that._blob =blob;
+              var _pdfurl = URL.createObjectURL(blob);
+
+              if (!this._PDFViewer) {
+                this._PDFViewer = new sap.m.PDFViewer({
+                  width: "auto",
+                  source: _pdfurl,
+                });
+                jQuery.sap.addUrlWhitelist("blob"); // register blob url as whitelist
+              }
+              resolve(1);
+              this._PDFViewer.open();
+            },
+            error: function (xhr, status, error) {
+              reject(error);
+            },
+          });
+        }.bind(this)
+      );
+    },
+      /*==============================
+     * call ADS Service to generate PDF
+      email专用
+     * @param {*} dataXML
+     * @param {*} accessToken
+    ==============================*/
+      _createPDFEml: function (_that, dataXML, xdpTemplateID, accessToken) {
         return new Promise(
           function (resolve, reject) {
             dataXML =
@@ -329,17 +371,9 @@ sap.ui.define(
                 var blob = new Blob([byteArray.buffer], {
                   type: "application/pdf",
                 });
-                var _pdfurl = URL.createObjectURL(blob);
-  
-                if (!this._PDFViewer) {
-                  this._PDFViewer = new sap.m.PDFViewer({
-                    width: "auto",
-                    source: _pdfurl,
-                  });
-                  jQuery.sap.addUrlWhitelist("blob"); // register blob url as whitelist
-                }
+                _that._blob =blob;
                 resolve(1);
-                this._PDFViewer.open();
+
               },
               error: function (xhr, status, error) {
                 reject(error);
@@ -348,7 +382,91 @@ sap.ui.define(
           }.bind(this)
         );
       },
+      /*==============================
+     * call ADS Service to generate PDF
+      只下载不打印
+     * @param {*} dataXML
+     * @param {*} accessToken
+    ==============================*/
+    _createPDFDow: function (_that, dataXML, xdpTemplateID, accessToken) {
+      var that = this;
+      return new Promise(
+        function (resolve, reject) {
+          dataXML =
+            "<?xml version=\"1.0\" encoding=\"UTF-8\"?><form>" +
+            dataXML +
+            "</form>";
+          var encdata = btoa(unescape(encodeURIComponent(dataXML)));
+          var jsonData =
+            "{	" +
+            "\"xdpTemplate\": \"" +
+            xdpTemplateID +
+            "\", " +
+            "\"xmlData\": \"" +
+            encdata +
+            "\"}";
+          if (accessToken) {
+            var headers = { Authorization: "Bearer " + accessToken };
+          } else {
+            var headers = {};
+          }
 
+          $.ajax({
+            url:
+              _that.getGlobProperty("ADS_url"),
+            type: "post",
+            headers: headers,
+            contentType: "application/json",
+            data: jsonData,
+            success: function (data, textStatus, jqXHR) {
+              //once the API call is successfull, Display PDF on screen
+              var decodedPdfContent = atob(data.fileContent);
+              var byteArray = new Uint8Array(decodedPdfContent.length);
+              for (var i = 0; i < decodedPdfContent.length; i++) {
+                byteArray[i] = decodedPdfContent.charCodeAt(i);
+              }
+              var blob = new Blob([byteArray.buffer], {
+                type: "application/pdf",
+              });
+              _that._blob =blob;
+              var _pdfurl = URL.createObjectURL(blob);
+              if (that.printTaskPdf) {
+								that.printTaskPdf.pdfUrl.push({ url: _pdfurl, name: that._getDownloadName(xdpTemplateID) });
+								resolve(1);
+								return;
+							}
+          
+            },
+            error: function (xhr, status, error) {
+              reject(error);
+            },
+          });
+        }.bind(this)
+      );
+    },
+    // test1--
+		_getDownloadName: function (templateId) {
+			var downloadName = "";
+			switch (templateId) {
+				case "test/test":
+					downloadName = "購入現品票";
+					break;
+				case "MMSS_REP02/MMSS_REP02":
+					downloadName = "内製現品票";
+					break;
+				case "MMSS_REP03/MMSS_REP03":
+					downloadName = "不良現品票";
+					break;
+				case "MMSS_REP09/MMSS_REP09":
+					downloadName = "原反欠点返却票";
+					break;
+				case "MMSS_REP10/MMSS_REP10":
+					downloadName = "在庫管理票";
+					break;
+			}
+			var date = new Date();
+			return downloadName + date.toJSON().replaceAll("-", "").replaceAll("T", "").replaceAll(":", "").replaceAll(".", "").replaceAll("Z", "") + ".pdf";
+		},
       /**
        * 打印结束后 回写方法
        * @param {*打印的数据集合 key } _data
@@ -435,6 +553,19 @@ sap.ui.define(
           );
         });
       },
+      //将pdf转换为base64传到后台打印
+      getImageBase64(blob) {
+        return new Promise((resolve,reject) => {
+          const reader = new FileReader();
+          reader.readAsDataURL(blob);
+          reader.onload = () => {
+            const base64 = reader.result;
+            resolve(base64);
+          }
+          reader.onerror = error => reject(error);
+        });
+      }
+
     };
   }
 );
