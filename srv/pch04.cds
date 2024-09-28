@@ -91,8 +91,9 @@ extend service TableService {
         PRICE_AMOUNT,
         TOTAL_AMOUNT,
         INV_MONTH,                     //检收月
-
-        FLOOR(UNIT_PRICE * COALESCE(EXCHANGE, 1) * 1000) / 1000 AS UNIT_PRICE_IN_YEN : Decimal(15, 3), // 円換算後単価(PO)      
+ 
+        // UNIT_PRICE * COALESCE(EXCHANGE, 1) AS UNIT_PRICE_IN_YEN : Decimal(15, 3),
+        CAST(UNIT_PRICE * COALESCE(EXCHANGE, 1) AS Decimal(15, 3)) AS UNIT_PRICE_IN_YEN : Decimal(15, 3),
         FLOOR(TOTAL_AMOUNT * COALESCE(EXCHANGE, 1)) AS TOTAL_AMOUNT_IN_YEN : Decimal(20, 0), // 円換算後税込金額（檢収）
         
             case when TAX_RATE = 8 then 
@@ -212,9 +213,9 @@ extend service TableService {
         select from PCH_T04_PAYMENT_END as 
 
     ![distinct] {
+        KEY SUPPLIER,
         KEY PO_NO,                     // UMC発注番号
         KEY D_NO,                      // 明細番号 
-        KEY SUPPLIER,
         UNIT_PRICE,
         SUPPLIER_DESCRIPTION,
         MAT_ID,                        // 品目コード

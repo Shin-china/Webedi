@@ -1,9 +1,9 @@
 sap.ui.define([
+    "umc/app/Controller/BaseController",
     "sap/ui/core/mvc/Controller",
     "sap/m/MessageToast",
-    "sap/m/MessageBox",
-    "sap/ui/export/Spreadsheet"
-], function (Controller, MessageToast, MessageBox, Spreadsheet) {
+    "sap/m/MessageBox"
+], function (Controller,A, MessageToast, MessageBox) {
     "use strict";
 
     return Controller.extend("umc.app.controller.pch.pch04_pay_d", {
@@ -11,209 +11,127 @@ sap.ui.define([
         onResend: function () {
             var oTable = this.getView().byId("detailTable");
             var aSelectedIndices = oTable.getSelectedIndices();
-
+   
             // 检查是否有选中的数据
             if (aSelectedIndices.length === 0) {
                 MessageToast.show("選択されたデータがありません、データを選択してください。");
                 return;
             }
 
-            var oModel = this.getView().getModel(); // 默认模型指向 TableService
+            var oModel = this.getView().getModel();
+            var oCommonModel = this.getView().getModel("Common"); // 获取公共模型
+            var aEmailParams = [];
 
-            // 获取选中行的数据
-            var aSelectedData = aSelectedIndices.map(function (iIndex) {
-                return oTable.getContextByIndex(iIndex).getObject();
-            });
-
-            // 按 SUPPLIER 分组
-            var oGroupedData = this.groupBySupplier(aSelectedData);
-
-            // 遍历分组数据并发送邮件和生成文件
-            Object.keys(oGroupedData).forEach(function (sSupplier) {
-                var aGroupData = oGroupedData[sSupplier];
-                var oFirstData = aGroupData[0];
-                var supplierCode = oFirstData.SUPPLIER; // 获取 SUPPLIER 字段
-                var invPostDate = oFirstData.INV_POST_DATE; // 获取 INV_POST_DATE
-
-                // 将 INV_POST_DATE 转换为格式化字符串
-                var formattedDate = this.formatDate(invPostDate);
-
-                // 使用 OData Model 从 SYS_T11_MAIL_TEMPLATE 实体中获取邮件模板
-                var sPath = "/SYS_T11_MAIL_TEMPLATE(TEMPLATE_ID='UWEB_M007')"; // 实体路径
-
-                oModel.read(sPath, {
-                    success: function (oData) {
-                        if (!oData) {
-                            MessageBox.error("邮件模板未找到。");
-                            return;
-                        }
-
-                        var sTemplateContent = oData.MAIL_CONTENT;
-                        var aEmailParams = [];
-
-                        aGroupData.forEach(function (oData) {
-                            var invNo = oData.INV_NO; // 获取 INV_NO
-                            var supplierDescription = oData.SUPPLIER_DESCRIPTION; // 获取 SUPPLIER_DESCRIPTION
-
-                            // 替换模板中的占位符
-                            var sEmailContent = sTemplateContent.replace("{仕入先名称}", supplierDescription)
-                                .replace(/{YEAR}/g, formattedDate.year)
-                                .replace(/{MONTH}/g, formattedDate.month);
-
-                            // 将提取的数据添加到参数数组中
-                            aEmailParams.push({
-                                TEMPLATE_ID: "UWEB_M007", // 邮件模板 ID
-                                MAIL_TO: "xiaoyue.wang@sh.shin-china.com", // 收件人邮箱
-                                MAIL_BODY: [{
-                                    object: "content",
-                                    value: sEmailContent // 邮件内容
-                                }]
-                            });
-                        });
-
-                        // 将参数转换为字符串或其他格式，以便传递给后端
-                        var sParams = JSON.stringify(aEmailParams);
-
-                        // 调用 CDS 中定义的 PCH04_SENDEMAIL 动作
-                        oModel.callFunction("/PCH04_SENDEMAIL", {
-                            method: "POST",
-                            urlParameters: {
-                                "parms": sParams
-                            },
-                            success: function (oData) {
-                                MessageToast.show("メール送信に成功しました: " + oData);
-
-                                // 创建 Excel 文件并下载
-                                new Spreadsheet({
-                                    dataSource: aGroupData.map(this.convertDateFields), // 转换日期字段
-                                    columns: oTable.getColumns().map(function (oColumn) {
-                                        return {
-                                            label: oColumn.getLabel().getText(),
-                                            type: "string",
-                                            property: oColumn.getTemplate().getBindingPath("text"),
-                                            width: parseFloat(oColumn.getWidth())
-                                        };
-                                    }),
-                                    fileName: supplierCode + "_" + formattedDate.year + "年" + formattedDate.month + "月度UMC支払通知書.xlsx", // 保持文件名为分组数据的特定名称
-                                    worker: false // Disable web worker for simplicity
-                                }).build().finally(function () {
-                                    MessageToast.show("ファイルのダウンロードが完了しました");
-                                });
-                            },
-                            error: function (oError) {
-                                var errorMessage = oError.message || "発生したエラー: 未知のエラー";
-                                if (oError.responseText) {
-                                    try {
-                                        var responseJSON = JSON.parse(oError.responseText);
-                                        errorMessage = responseJSON.error.message.value || errorMessage;
-                                    } catch (e) {
-                                        console.error("Error parsing response text: ", oError.responseText);
-                                    }
-                                }
-                                MessageBox.error("メール送信に失敗しました: " + errorMessage);
-                            }
-                        });
-                    },
-                    error: function (oError) {
-                        MessageBox.error("邮件模板的获取失败: " + oError.message);
-                    }
-                });
-            }.bind(this)); // Ensure `this` context is preserved
-        },
-
-        onBeforeExport: function (oEvent) {
-            var oTable = this.getView().byId("detailTable");
-            var aSelectedIndices = oTable.getSelectedIndices();
-
-            if (aSelectedIndices.length === 0) {
-                MessageToast.show("選択されたデータがありません、データを選択してください。");
-                oEvent.preventDefault(); // 取消导出操作
+            // 获取选中行的 ZABC 值
+            var zabcValue = this.getZABCFromSelection(oTable, aSelectedIndices);
+            console.log("ZABC Value from selection: ", zabcValue); // 调试日志
+            
+            // 验证 ZABC 值
+            if (!this.isZABCValid(zabcValue)) {
+                MessageBox.error("WEB EDI対象ではないので、支払通知送信できません。ZABC値: " + zabcValue);
                 return;
             }
 
-            var aSelectedData = aSelectedIndices.map(function (iIndex) {
-                return oTable.getContextByIndex(iIndex).getObject();
+                // 遍历选中的行，提取所需数据
+                var aSelectedData = aSelectedIndices.map(function (iIndex) {
+                    return oTable.getContextByIndex(iIndex).getObject();
+                });    
+
+                 // 检查 SUPPLIER 是否相同
+                var supplierSet = new Set(aSelectedData.map(data => data.SUPPLIER_DESCRIPTION));
+                if (supplierSet.size > 1) {
+                    MessageBox.error("複数の仕入先がまとめて配信することができませんので、1社の仕入先を選択してください。");
+                    return;
+                }
+
+                // 假设您在这里定义邮件内容模板
+             
+                var supplierName =""
+                var year =""
+                var month ="" 
+                aSelectedData.map(function (data) {
+                            supplierName = data.SUPPLIER_DESCRIPTION || "未指定"; // 默认值
+                            year = data.INV_MONTH ? data.INV_MONTH.substring(0, 4) : "年"; // 默认值
+                            month = data.INV_MONTH ? data.INV_MONTH.substring(4, 6) : "月"; // 默认值
+            
+
+                        })
+
+                var mailobj = {
+                    emailJson: {
+                        TEMPLATE_ID: "UWEB_M007",
+                        MAIL_TO: "xiaoyue.wang@sh.shin-china.com",
+                        MAIL_BODY: [{
+                            object: "仕入先名称",
+                            value: supplierName // 使用替换后的邮件内容
+                        },
+                        {
+                            object: "YEAR",
+                            value: year
+                        },
+                        {
+                            object: "MONTH",
+                            value: month
+                        }]
+                    }
+                };
+
+      
+            let newModel = this.getView().getModel("Common");
+            let oBind = newModel.bindList("/sendEmail");
+            // oBind.create(mailobj);
+            let a =oBind.create(mailobj, {
+                success: function (oData) {
+                    console.log(oData)
+                    // 确保oData不为null并且有返回的结果
+                    if (oData && oData.result && oData.result === "sucess") {
+                        MessageToast.show("メールが正常に送信されました。");
+                    } else {
+                        MessageBox.error("メール送信に失敗しました。エラー: " + (oData.result || "不明なエラー"));
+                    }
+                },
+                error: function (oError) {
+                    console.log(oError)
+                    MessageBox.error("メール送信に失敗しました。エラー: " + oError.message);
+                }
             });
-
-            // 按 SUPPLIER 分组
-            var oGroupedData = this.groupBySupplier(aSelectedData);
-
-            // 遍历分组数据
-            Object.keys(oGroupedData).forEach(function (sSupplier) {
-                var aGroupData = oGroupedData[sSupplier];
-                var oFirstData = aGroupData[0];
-                var supplierCode = oFirstData.SUPPLIER; // 获取 SUPPLIER 字段
-                var invPostDate = oFirstData.INV_POST_DATE; // 获取 INV_POST_DATE
-
-                // 确保 INV_POST_DATE 是 Date 对象并进行格式转换
-                var formattedDate = this.formatDate(invPostDate);
-
-                // 设置文件名
-                var sFileName = supplierCode + "_" + formattedDate.year + "年" + formattedDate.month + "月度UMC支払通知書.xlsx";
-
-                // 更新 exportSettings
-                var oSettings = oEvent.getParameter("exportSettings");
-                if (oSettings) {
-                    oSettings.fileName = sFileName; // 设置文件名
-                }
-            }.bind(this)); // Ensure `this` context is preserved
+            console.log(a)
+            
         },
 
-        // 按 SUPPLIER 字段分组数据
-        groupBySupplier: function (aData) {
-            return aData.reduce(function (oGrouped, oItem) {
-                var key = oItem.SUPPLIER;
-                if (!oGrouped[key]) {
-                    oGrouped[key] = [];
-                }
-                oGrouped[key].push(oItem);
-                return oGrouped;
-            }, {});
+        // 从选中的行中获取 ZABC 的值
+        getZABCFromSelection: function (oTable, aSelectedIndices) {
+            if (aSelectedIndices.length > 0) {
+                var oData = oTable.getContextByIndex(aSelectedIndices[0]).getObject();
+                console.log("Retrieved ZABC value from selection: ", oData.ZABC); // 调试日志
+                return oData.ZABC; // 根据实际字段名替换 ZABC
+            }
+            return null;
         },
 
-        // 格式化日期为用户友好的字符串
-        formatDate: function (invPostDate) {
-            if (typeof invPostDate === 'string' && invPostDate.startsWith('/Date(')) {
-                invPostDate = this.parseODataTimestamp(invPostDate);
-            }
-
-            if (invPostDate instanceof Date && !isNaN(invPostDate.getTime())) {
-                var year = invPostDate.getFullYear(); // 提取年份
-                var month = ("0" + (invPostDate.getMonth() + 1)).slice(-2); // 提取月份并确保是两位数
-                return { year: year, month: month };
-            } else {
-                MessageBox.error("INV_POST_DATE 的格式不正确: " + invPostDate);
-                return { year: "", month: "" };
-            }
+        // 检查 ZABC 值是否合法的方法
+        isZABCValid: function (zabcValue) {
+            console.log("Validating ZABC value: ", zabcValue); // 调试日志
+            return zabcValue === "W";
         },
 
-        // 解析 OData 时间戳格式
-        parseODataTimestamp: function (odataTimestamp) {
-            if (typeof odataTimestamp === 'string' && odataTimestamp.startsWith('/Date(') && odataTimestamp.endsWith(')/')) {
-                var timestampStr = odataTimestamp.substring(6, odataTimestamp.length - 2);
-                var timestamp = parseInt(timestampStr, 10);
-                return new Date(timestamp);
-            } else {
-                throw new Error("Invalid OData timestamp format");
-            }
-        },
+        onExportToPDF: function () {
+			var that = this;
+			let options = { compact: true, ignoreComment: true, spaces: 4 };
+			var IdList = that._TableDataList("detailTable", 'SUPPLIER')
+			if (IdList) {
+				that.PrintTool._getPrintDataInfo(that, IdList, "/PCH_T04_PAYMENT_FINAL", "SUPPLIER").then((oData) => {
+					let sResponse = json2xml(oData, options);
+					console.log(sResponse)
+					that.setSysConFig().then(res => {
+						// that.PrintTool._detailSelectPrint(that, sResponse, "test/test", oData, null, null, null, null)
+						that.PrintTool._detailSelectPrintDow(that, sResponse, "test2/test2", oData, null, null, null, null)
+					})
+				})
+			}
 
-        // 转换日期字段以确保正确显示
-        convertDateFields: function (oData) {
-            if (typeof oData.INV_POST_DATE === 'string' && oData.INV_POST_DATE.startsWith('/Date(')) {
-                // 处理 OData 时间戳格式
-                var timestamp = this.parseODataTimestamp(oData.INV_POST_DATE);
-                oData.INV_POST_DATE = this.formatDate(timestamp).year + "-" + this.formatDate(timestamp).month;
-            } else if (oData.INV_POST_DATE instanceof Date) {
-                oData.INV_POST_DATE = this.formatDate(oData.INV_POST_DATE).year + "-" + this.formatDate(oData.INV_POST_DATE).month;
-            } else {
-                // 处理其他日期格式
-                var date = new Date(oData.INV_POST_DATE);
-                if (!isNaN(date.getTime())) {
-                    oData.INV_POST_DATE = this.formatDate(date).year + "-" + this.formatDate(date).month;
-                }
-            }
-            return oData;
-        }
+
+		}
+
     });
 });
