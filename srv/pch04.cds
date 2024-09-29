@@ -27,7 +27,7 @@ extend service TableService {
             on (
                 T04.SUPPLIER = M03.BP_ID
             )
-        left join MST.MST_T04_SAP_BP_PURCHASE AS M04
+        left join MST.MST_T05_SAP_BP_PURCHASE AS M04
             on (
                 M04.SUPPLIER = T01.SUPPLIER
                 and M04.PURCHASE_ORG = T01.PO_ORG

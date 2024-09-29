@@ -1,5 +1,5 @@
 namespace PCH;
-
+using {cuid} from '@sap/cds/common';
 using {COMM.IF_CUID_FILED as IF_CUID_FILED} from './model-common';
 using {MST} from './model-mst';
 
@@ -105,4 +105,85 @@ entity PCH_T05_PAYMENT_D : IF_CUID_FILED { //付款申请表行表
   
   TO_HEAD                                                                    : Association to one PCH_T04_PAYMENT_H //付款申请表头表
                                                                     ON  TO_HEAD.INV_NO = INV_NO AND TO_HEAD.GL_YEAR = GL_YEAR;
+}
+
+
+entity PCH_T06_QUOTATION_H : cuid, IF_CUID_FILED { //
+  @title: '{i18n>CUSTOMER}' CUSTOMER             : String(50); //客先
+  @title: '{i18n>MACHINE_TYPE}' MACHINE_TYPE     : String(50); //機種
+  @title: '{i18n>Item}' Item                     : String(50); //アイテム
+  @title: '{i18n>QUANTITY}' QUANTITY             : Decimal(18, 3); //数量
+  @title: '{i18n>TIME}' TIME                     : Date; //時期
+  @title: '{i18n>LOCATION}' LOCATION             : String(50); //量産場所
+  @title: '{i18n>VALIDATE_START}' VALIDATE_START : Date; //見積有効開始日
+  @title: '{i18n>VALIDATE_END}' VALIDATE_END     : Date; //見積有効終了日
+  @title: '{i18n>SALES_NUMBER}' SALES_NUMBER     : String(50); //販売見積番号
+  @title: '{i18n>QUO_NUMBER}' QUO_NUMBER         : String(50); //販売見積バージョン
+  @title: '{i18n>STATUS}' STATUS                 : String(50); //ステータス
+  @title: '{i18n>TOTAL_JPY}' TOTAL_JPY           : Decimal(18, 3); //合計金額（日本円）
+  @title: '{i18n>TOTAL_USD}' TOTAL_USD           : Decimal(18, 3); //合計金額（米ドル）
+  @title: '{i18n>TOTAL_CNY}' TOTAL_CNY           : Decimal(18, 3); //合計金額（中国元）
+  @title: '{i18n>TOTAL_HKD}' TOTAL_HKD           : Decimal(18, 3); //合計金額（香港ドル）
+  @title: '{i18n>TOTAL_THB}' TOTAL_THB           : Decimal(18, 3); //合計金額（タイバーツ）
+
+}
+entity PCH_T07_QUOTATION_D : cuid, IF_CUID_FILED { //
+  @title: '{i18n>QUO_NUMBER}' QUO_NUMBER                 : String(10); //項目
+  @title: '{i18n>QUO_ITEM}' QUO_ITEM                     : Integer; //購買見積番号
+  @title: '{i18n>NO}' NO                                 : Integer; //管理No
+  @title: '{i18n>REFRENCE_NO}' REFRENCE_NO               : String(50); //No.
+  @title: '{i18n>MATERIAL_NUMBER}' MATERIAL_NUMBER       : String(40); //併記有無リファレンスNo
+  @title: '{i18n>CUST_MATERIAL}' CUST_MATERIAL           : String(40); //SAP品番（任意）
+  @title: '{i18n>MANUFACT_MATERIAL}' MANUFACT_MATERIAL   : String(40); //メーカー品番
+  @title: '{i18n>Attachment}' Attachment                 : String(50); //カスタム品図面 仕様添付
+  @title: '{i18n>Material}' Material                     : String(40); //品名
+  @title: '{i18n>MAKER}' MAKER                           : String(15); //メーカ
+  @title: '{i18n>UWEB_USER}' UWEB_USER                   : String(50); //仕入先連絡先（WEB EDIの担当）（必須）
+  @title: '{i18n>PERSON_NO1}' BP_NUMBER                 : Integer; //SAP BP（任意）
+
+  @title: '{i18n>PERSON_NO1}' PERSON_NO1                 : Integer;    //員数1
+  @title: '{i18n>PERSON_NO2}' PERSON_NO2                 : Integer;    //員数2
+  @title: '{i18n>PERSON_NO3}' PERSON_NO3                 : Integer;    //員数3
+  @title: '{i18n>PERSON_NO4}' PERSON_NO4                 : Integer;    //員数4
+  @title: '{i18n>PERSON_NO5}' PERSON_NO5                 : Integer;    //員数5
+  @title: '{i18n>YLP}' YLP                               : String(50); //依頼品判定
+  @title: '{i18n>MANUL}' MANUL                           : String(50); //正式メーカ品番
+  @title: '{i18n>MANUFACT_CODE}' MANUFACT_CODE           : String(50); //Manfact. Code name
+  @title: '{i18n>CUSTOMER_MMODEL}' CUSTOMER_MMODEL       : String(50); //客先型番
+  @title: '{i18n>MID_QF}' MID_QF                         : String(50); //中区分
+  @title: '{i18n>SMALL_QF}' SMALL_QF                     : String(50); //小区分
+  @title: '{i18n>OTHER_QF}' OTHER_QF                     : String(50); //その他区分
+
+  @title: '{i18n>CURRENCY}' CURRENCY                     : String(3); //通貨
+  @title: '{i18n>PRICE}' PRICE                           : Decimal(18, 3); //単価
+  @title: '{i18n>PRICE_CONTROL}' PRICE_CONTROL           : String(1); //Date of pricing control(価格有効日：発注時or納入時)
+  @title: '{i18n>LEAD_TIME}' LEAD_TIME                   : Date; //LT（日数）
+  @title: '{i18n>MOQ}' MOQ                               : String(50); //MOQ
+  @title: '{i18n>UNIT}' UNIT                             : String(50); //Base Unit of Measure(単位：pc or kgなど)
+  @title: '{i18n>SPQ}' SPQ                               : String(50); //SPQ(Rounding：MOQの次の発注単位)
+  @title: '{i18n>KBXT}' KBXT                             : String(50); //梱包形態
+  @title: '{i18n>PRODUCT_WEIGHT}' PRODUCT_WEIGHT         : String(10); //製品重量（g）
+  @title: '{i18n>ORIGINAL_COU}' ORIGINAL_COU             : String(2); //原産国
+  @title: '{i18n>EOL}' EOL                               : String(50); //EOL予定
+  @title: '{i18n>ISBOI}' ISBOI                           : Boolean; //投資促進制度（BOI or Non BOI）
+  @title: '{i18n>Incoterms}' Incoterms                   : String(10); //Incoterms 1（インコタームズ）
+  @title: '{i18n>Incoterms_Text}' Incoterms_Text         : String(40); //Incoterms 1（納入場所）
+  @title: '{i18n>MEMO1}' MEMO1                           : String(200); //備考１
+  @title: '{i18n>MEMO2}' MEMO2                           : String(200); //備考２
+  @title: '{i18n>MEMO3}' MEMO3                           : String(200); //備考３
+  @title: '{i18n>SL}' SL                                 : String(50); //商流
+  @title: '{i18n>TZ}' TZ                                 : String(50); //同値
+  @title: '{i18n>RMATERIAL}' RMATERIAL                   : String(40); //代替品番
+  @title: '{i18n>RMATERIAL_CURRENCY}' RMATERIAL_CURRENCY : String(3); //代替品番の通貨
+  @title: '{i18n>RMATERIAL_PRICE}' RMATERIAL_PRICE       : Decimal(18, 3); //代替品番の単価
+  @title: '{i18n>RMATERIAL_LT}' RMATERIAL_LT             : String(50); //代替品番のLT（日数）
+  @title: '{i18n>RMATERIAL_MOQ}' RMATERIAL_MOQ           : String(50); //代替品番のMOQ
+  @title: '{i18n>RMATERIAL_KBXT}' RMATERIAL_KBXT         : String(50); //代替品番の梱包形態
+  @title: '{i18n>UMC_SELECTION}' UMC_SELECTION           : String(50); //UMC購買選択
+  @title: '{i18n>UMC_COMMENT_1}' UMC_COMMENT_1           : String(200); //UMC購買コメント１
+  @title: '{i18n>UMC_COMMENT_2}' UMC_COMMENT_2           : String(200); //UMC購買コメント２
+  @title: '{i18n>FINAL_CHOICE}' FINAL_CHOICE             : String(50); //最終決定
+  @title: '{i18n>STATUS}' STATUS                         : String(50); //ステータス
+
+
 }
