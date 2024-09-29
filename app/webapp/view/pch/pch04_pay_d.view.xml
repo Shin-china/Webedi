@@ -30,14 +30,14 @@
 
         <f:DynamicPageHeader id="DynamicPageHeader" pinnable="true">
             <f:content>
-                <smartFilterBar:SmartFilterBar id="smartFilterBar" entitySet="PCH_T04_PAYMENT" persistencyKey="PCH_T04_PAYMENT" showFilterConfiguration="true">
+                <smartFilterBar:SmartFilterBar id="smartFilterBar" entitySet="PCH_T04_PAYMENT_UNIT" persistencyKey="PCH_T04_PAYMENT" showFilterConfiguration="true">
                     <smartFilterBar:controlConfiguration>
 
                     <smartFilterBar:ControlConfiguration id="PCH_SUPPLIER"    key="SUPPLIER"             visibleInAdvancedArea="true" label="{pch>SUPPLIER}"                  index="1"/>
                     <smartFilterBar:ControlConfiguration id="PCH_DESCRIPTION" key="SUPPLIER_DESCRIPTION" visibleInAdvancedArea="true" label="{pch>SUPPLIER_DESCRIPTION}"      index="2"/>
                     <smartFilterBar:ControlConfiguration id="PCH_PO_NO"       key="PO_NO"                visibleInAdvancedArea="true" label="{pch>PO_NO}"                     index="3"/>
                     <smartFilterBar:ControlConfiguration id="PCH_MAT_ID"      key="MAT_ID"               visibleInAdvancedArea="true" label="{pch>MAT_ID}"                    index="4"/>
-                    <smartFilterBar:ControlConfiguration id="PCH_POST_DATE"   key="INV_POST_DATE"        visibleInAdvancedArea="true" label="{pch>INV_POST_DATE}"        filterType='single'  controlType="date"           index="5"/>
+                    <smartFilterBar:ControlConfiguration id="INV_MONTH"       key="INV_MONTH"            visibleInAdvancedArea="true" label="{pch>INV_MONTH1}"           filterType='single'    index="5"/>
                     <smartFilterBar:ControlConfiguration id="PCH_SEND_FLAG"   key="SEND_FLAG"            visibleInAdvancedArea="true" label="{pch>SEND_FLAG}"            filterType="single"  controlType="dropDownList"   index="6"/>
                   
                     </smartFilterBar:controlConfiguration>
@@ -50,8 +50,8 @@
     <f:content>
   <!-- </f:DynamicPageHeader> -->
 
-    <smartTable:SmartTable id="ID" enableAutoColumnWidth="true" entitySet="PCH_T04_PAYMENT" 
-        ignoredFields=""  requestAtLeastFields="ZABC,INV_POST_DATE,SUPPLIER_DESCRIPTION" initiallyVisibleFields="SUPPLIER,NO_DETAILS,MAT_ID,MAT_DESC,GR_DATE,QUANTITY,UNIT_PRICE_IN_YEN,UNIT_PRICE,CURRENCY,EXCHANGE,TOTAL_AMOUNT_IN_YEN,SUPPLIER_MAT,PO_TRACK_NO,TAX_RATE,INV_BASE_DATE,SEND_FLAG,ZABC,INV_POST_DATE,SUPPLIER_DESCRIPTION" 
+    <smartTable:SmartTable id="ID" enableAutoColumnWidth="true" entitySet="PCH_T04_PAYMENT_UNIT" 
+        ignoredFields=""  requestAtLeastFields="ZABC,INV_POST_DATE,SUPPLIER_DESCRIPTION,INV_MONTH" initiallyVisibleFields="SUPPLIER,NO_DETAILS,MAT_ID,MAT_DESC,GR_DATE,QUANTITY,UNIT_PRICE,CURRENCY,EXCHANGE,SUPPLIER_MAT,PO_TRACK_NO,TAX_RATE,INV_BASE_DATE,SEND_FLAG,ZABC,INV_POST_DATE,SUPPLIER_DESCRIPTION,TOTAL_AMOUNT_IN_YEN,UNIT_PRICE_IN_YEN,INV_MONTH"
         smartFilterId="smartFilterBar" enableExport="true" beforeExport="onBeforeExport" 
         useVariantManagement="true" useTablePersonalisation="true" header="{pch>TITLE_RESULT}" showRowCount="true" persistencyKey="pch02_SmartTableAnalytical_Explored" enableAutoBinding="true">
         
@@ -257,42 +257,6 @@
         </table:template>
     </table:Column>
 
-<!-- <table:Column id="colInvNo" width="10rem" sortProperty="INV_NO" filterProperty="INV_NO" visible="false">
-    <table:customData>
-        <core:CustomData key="p13nData" value='{"columnKey":"INV_NO", "leadingProperty":"INV_NO", "sortProperty":"INV_NO", "filterProperty":"INV_NO"}'/>
-    </table:customData>
-    <table:label>
-        <Label id="labelInvNo" text="{pch>INV_NO}"/>
-    </table:label>
-    <table:template>
-        <Text id="textInvNo" text="{INV_NO}"/>
-    </table:template>
-</table:Column> -->
-
-<!-- <table:Column id="colLogNo" width="10rem" sortProperty="LOG_NO" filterProperty="LOG_NO" visible="false">
-    <table:customData>
-        <core:CustomData key="p13nData" value='{"columnKey":"LOG_NO", "leadingProperty":"LOG_NO", "sortProperty":"LOG_NO", "filterProperty":"LOG_NO"}'/>
-    </table:customData>
-    <table:label>
-        <Label id="labelLogNo" text="{pch>LOG_NO}"/>
-    </table:label>
-    <table:template>
-        <Text id="textLogNo" text="{LOG_NO}"/>
-    </table:template>
-</table:Column> -->
-
-<!-- <table:Column id="colPoOrg" width="10rem" sortProperty="PO_ORG" filterProperty="PO_ORG" visible="false">
-    <table:customData>
-        <core:CustomData key="p13nData" value='{"columnKey":"PO_ORG", "leadingProperty":"PO_ORG", "sortProperty":"PO_ORG", "filterProperty":"PO_ORG"}'/>
-    </table:customData>
-    <table:label>
-        <Label id="labelPoOrg" text="{pch>PO_ORG}"/>
-    </table:label>
-    <table:template>
-        <Text id="textPoOrg" text="{PO_ORG}"/>
-    </table:template>
-</table:Column> -->
-
 <table:Column id="colZabc" width="10rem" sortProperty="ZABC" filterProperty="ZABC" visible="false"> 
     <table:customData>
         <core:CustomData key="p13nData" value='{"columnKey":"ZABC", "leadingProperty":"ZABC", "sortProperty":"ZABC", "filterProperty":"ZABC"}'/>
@@ -317,7 +281,7 @@
     </table:template>
 </table:Column>
 
-<table:Column id="colSupplierDescription" width="15rem" sortProperty="SUPPLIER_DESCRIPTION" filterProperty="SUPPLIER_DESCRIPTION">
+<table:Column id="colSupplierDescription" width="15rem" sortProperty="SUPPLIER_DESCRIPTION" filterProperty="SUPPLIER_DESCRIPTION" visible="false">
     <table:customData>
         <core:CustomData key="p13nData" value='{"columnKey":"SUPPLIER_DESCRIPTION", "leadingProperty":"SUPPLIER_DESCRIPTION", "sortProperty":"SUPPLIER_DESCRIPTION", "filterProperty":"SUPPLIER_DESCRIPTION"}'/>
     </table:customData>
@@ -326,6 +290,18 @@
     </table:label>
     <table:template>
         <Text id="textSupplierDescription" text="{SUPPLIER_DESCRIPTION}"/>
+    </table:template>
+</table:Column>
+
+<table:Column id="colinvmonth" width="15rem" sortProperty="INV_MONTH" filterProperty="INV_MONTH" visible="false">
+    <table:customData>
+        <core:CustomData key="p13nData" value='{"columnKey":"INV_MONTH", "leadingProperty":"INV_MONTH", "sortProperty":"INV_MONTH", "filterProperty":"INV_MONTH"}'/>
+    </table:customData>
+    <table:label>
+        <Label id="labelinvmonth" text="{pch>INV_MONTH1}"/>
+    </table:label>
+    <table:template>
+        <Text id="textinvmonth" text="{INV_MONTH}"/>
     </table:template>
 </table:Column>
 
