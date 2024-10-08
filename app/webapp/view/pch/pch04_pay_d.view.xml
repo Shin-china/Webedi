@@ -51,7 +51,7 @@
   <!-- </f:DynamicPageHeader> -->
 
     <smartTable:SmartTable id="ID" enableAutoColumnWidth="true" entitySet="PCH_T04_PAYMENT_UNIT" 
-        ignoredFields=""  requestAtLeastFields="ZABC,INV_POST_DATE,SUPPLIER_DESCRIPTION,INV_MONTH" initiallyVisibleFields="SUPPLIER,NO_DETAILS,MAT_ID,MAT_DESC,GR_DATE,QUANTITY,UNIT_PRICE,CURRENCY,EXCHANGE,SUPPLIER_MAT,PO_TRACK_NO,TAX_RATE,INV_BASE_DATE,SEND_FLAG,ZABC,INV_POST_DATE,SUPPLIER_DESCRIPTION,TOTAL_AMOUNT_IN_YEN,UNIT_PRICE_IN_YEN,INV_MONTH"
+        ignoredFields=""  requestAtLeastFields="ZABC,INV_POST_DATE,SUPPLIER_DESCRIPTION,INV_MONTH,INV_NO" initiallyVisibleFields="SUPPLIER,NO_DETAILS,MAT_ID,MAT_DESC,GR_DATE,QUANTITY,UNIT_PRICE,CURRENCY,EXCHANGE,SUPPLIER_MAT,PO_TRACK_NO,TAX_RATE,INV_BASE_DATE,SEND_FLAG,ZABC,INV_POST_DATE,SUPPLIER_DESCRIPTION,TOTAL_AMOUNT_IN_YEN,UNIT_PRICE_IN_YEN,INV_MONTH,INV_NO"
         smartFilterId="smartFilterBar" enableExport="true" beforeExport="onBeforeExport" 
         useVariantManagement="true" useTablePersonalisation="true" header="{pch>TITLE_RESULT}" showRowCount="true" persistencyKey="pch02_SmartTableAnalytical_Explored" enableAutoBinding="true">
         
@@ -118,7 +118,7 @@
             <core:CustomData key="p13nData" value='{"columnKey":"GR_DATE", "leadingProperty":"GR_DATE", "sortProperty":"GR_DATE", "filterProperty":"GR_DATE"}'/>
         </table:customData>
         <table:label>
-            <Label id="labelGrDate" text="{pch>GR_DATE}"/>
+            <Label id="labelGrDate" text="{pch>GR_DATE1}"/>
         </table:label>
         <table:template>
             <Text id="textGrDate" text="{GR_DATE}"/>
@@ -302,6 +302,18 @@
     </table:label>
     <table:template>
         <Text id="textinvmonth" text="{INV_MONTH}"/>
+    </table:template>
+</table:Column>
+
+<table:Column id="colinvno" width="15rem" sortProperty="INV_NO" filterProperty="INV_NO" visible="false">
+    <table:customData>
+        <core:CustomData key="p13nData" value='{"columnKey":"INV_NO", "leadingProperty":"INV_NO", "sortProperty":"INV_NO", "filterProperty":"INV_NO"}'/>
+    </table:customData>
+    <table:label>
+        <Label id="labelinvno" text="{pch>INV_NO}"/>
+    </table:label>
+    <table:template>
+        <Text id="textinvno" text="{INV_NO}"/>
     </table:template>
 </table:Column>
 
