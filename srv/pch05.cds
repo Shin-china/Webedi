@@ -114,13 +114,15 @@ extend service TableService {
         distinct {
             key T01.PO_BUKRS,                       
             key T01.SUPPLIER,                       
-            key T01.INV_MONTH,                
+            key T01.INV_MONTH,            
             SUM(CALC_10_TAX_AMOUNT) as CALC_10_TAX_AMOUNT: Decimal(15, 2),                      // 10% 税抜金额
             SUM(CALC_8_TAX_AMOUNT) as CALC_8_TAX_AMOUNT: Decimal(15, 2),                        // 8%  税抜金额
             SUM(SAP_TAX_AMOUNT_10) as SAP_TAX_AMOUNT_10: Decimal(15, 2),                        // 10% SAP税额
             SUM(SAP_TAX_AMOUNT_8) as SAP_TAX_AMOUNT_8: Decimal(15, 2),                          // 8%  SAP税额
             CURRENCY,
             TAX_RATE,
+            TAX_CODE,
+            GR_DATE,
 
         }
         group by
@@ -140,6 +142,8 @@ extend service TableService {
             key T02.INV_MONTH,
             key T02.CURRENCY,
             key T02.TAX_RATE,
+            TAX_CODE,
+            GR_DATE,
             CALC_10_TAX_AMOUNT,  
             CALC_8_TAX_AMOUNT,   
             SAP_TAX_AMOUNT_10,
@@ -172,6 +176,8 @@ extend service TableService {
             key T03.INV_MONTH,
             key T03.CURRENCY,
             key T03.TAX_RATE,
+            TAX_CODE,
+            GR_DATE,
             CALC_10_TAX_AMOUNT,  
             CALC_8_TAX_AMOUNT,   
             SAP_TAX_AMOUNT_10,
@@ -214,6 +220,57 @@ extend service TableService {
             end as TOTAL_8_TAX_INCLUDED_AMOUNT : Decimal(15, 2)  
         }
 
+         entity PCH_T05_ACCOUNT_DETAIL_EXCEL as
+
+        select from   PCH_T05_ACCOUNT_DETAIL_SUM_FINAL
+
+        distinct {
+            key PO_BUKRS,                       
+            key SUPPLIER,                       
+            key INV_MONTH,
+            key CURRENCY,
+            key TAX_RATE,
+            TAX_CODE,  
+            GR_DATE,
+            DIFF_TAX_AMOUNT_10,
+            DIFF_TAX_AMOUNT_8,
+            // 计算借方/贷方标志
+            case 
+                when DIFF_TAX_AMOUNT_10 is null and DIFF_TAX_AMOUNT_8 is null then null 
+                when DIFF_TAX_AMOUNT_10 >= 0 or DIFF_TAX_AMOUNT_8 >= 0 then 'S' 
+                else 'H' 
+            end as SHKZG : String,                      // 借方/贷方标志
+
+            // 计算取引
+            case 
+                when DIFF_TAX_AMOUNT_10 is null and DIFF_TAX_AMOUNT_8 is null then null 
+                when DIFF_TAX_AMOUNT_10 >= 0 or DIFF_TAX_AMOUNT_8 >= 0 then 1 
+                else 2 
+            end as TRANSACTION : String,                 // 取引类型
+
+            case 
+                when DIFF_TAX_AMOUNT_10 is not null then cast(floor(DIFF_TAX_AMOUNT_10 / 0.1) as Decimal(15,0)) 
+                when DIFF_TAX_AMOUNT_8 is not null then cast(floor(DIFF_TAX_AMOUNT_8 / 0.08) as Decimal(15,0)) 
+                else null 
+            end as TAX_BASE_AMOUNT : Decimal(15,0), // 税基金额
+
+
+            // 计算当月最后一天
+                case 
+                    when GR_DATE is not null then 
+                        last_day(GR_DATE) 
+                    else null 
+                end as lastDate : Date,  // 当月最后一天
+
+            // 使用 lastDate 设置各日期字段
+                last_day(GR_DATE) as documentDate : Date,   // 伝票日付
+                last_day(GR_DATE) as postingDate  : Date,   // 転記日付
+                last_day(GR_DATE) as taxRateDate  : Date,   // 税率定義の日付
+
+                // 生成递增的 invoiceId
+                row_number() over (partition by PO_BUKRS,SUPPLIER,INV_MONTH,CURRENCY,TAX_RATE order by GR_DATE) as invoiceId : String  // *請求書ID
+                
+                }
 
 }
 
