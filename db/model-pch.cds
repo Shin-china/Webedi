@@ -187,3 +187,17 @@ entity PCH_T07_QUOTATION_D : cuid, IF_CUID_FILED { //
 
 
 }
+entity PCH_T08_UPLOAD : cuid, IF_CUID_FILED { //
+  @title: '{i18n>PO_NO}' key PO_NO                                    : String(10) not null; //采购订单编号
+  @title: '{i18n>D_NO}' key  D_NO                                     : Integer; //采购订单明细行号
+                             @title: '{i18n>MAT_ID}' MAT_ID           : String(40); //品目
+                             @title: '{i18n>MAT_NAME}' MAT_NAME       : String(40); //物料名称
+                             @title: '{i18n>QUANTITY}' QUANTITY       : Decimal(18, 3); //発注数
+                             @title: '{i18n>PLANT_ID}' PLANT_ID       : String(4); //工厂
+                             @title: '{i18n>STORAGE_LOC}' LOCATION_ID : String(4); //库存地点
+                             @title: '{i18n>INPUT_DATE}' INPUT_DATE   : Date; //納入日付
+                             @title: '{i18n>INPUT_QTY}' INPUT_QTY     : Decimal(18, 3); //納入数
+                             @title: '{i18n>ExtNumber}' ExtNumber     : String(35); //参照
+
+
+}

@@ -10,42 +10,65 @@ sap.ui.define([
 		formatter : formatter,
 
 		onInit: function () {
-		// 设置自己的 OData模型为默认模型
-		this._setDefaultDataModel("TableService");
-		//  设置版本号
-		this._setOnInitNo("PCH01", ".20240812.01");
-		this.MessageTools._clearMessage();
-		this.MessageTools._initoMessageManager(this);
-		},
-	
-		// onPress: function (oEvent) {
-		// var oItem = oEvent.getSource();
-		// var oContext = oItem.getBindingContext();
-		// this._onPress(oEvent, "RouteEdit_sys01", oContext.getObject().ID);
-		// },
+			// 设置自己的 OData模型为默认模型
+			this._setDefaultDataModel("TableService");
+			//  设置版本号
+			this._setOnInitNo("PCH01", ".20240812.01");
+			this.MessageTools._clearMessage();
+			this.MessageTools._initoMessageManager(this);
 
+			this.getRouter().getRoute("RouteCre_pch06").attachPatternMatched(this._onRouteMatched, this);
+		},
+		/*==============================
+		删除
+		==============================*/
+		onDelete: function (oEvent) {
+			
+			this._setEditable(true);
+		},	
+		/*==============================
+		复制
+		==============================*/
+		onCop: function (oEvent) {
+			var that = this;
+			var selectedIndices = this._TableList("detailTable"); // 获取选中行
+			
+
+			
+			this._setEditable(true);
+		},
+		/*==============================
+		编辑
+		==============================*/
+		onEdi: function (oEvent) {
+			
+			this._setEditable(true);
+		},
+		/*==============================
+		保存
+		==============================*/
+		onSav: function (oEvent) {
+			
+			this._setEditable(false);
+		},
+		/*==============================
+		==============================*/
+		_onRouteMatched: function (oEvent) {
+			this._setEditableAuth(true);
+			this._setEditable(false);
+		},
 		onRebind: function (oEvent) {
-		// this._onListRebindDarft(oEvent);
-		this._onListRebindDarft(oEvent, true);
+
+		// this._onListRebindDarft(oEvent, true);
 		},
 	
 		onBeforeExport: function (oEvt) {
 		var mExcelSettings = oEvt.getParameter("exportSettings");
 		for (var i = 0; i < mExcelSettings.workbook.columns.length; i++) {
-			// this.CommTools._setExcelFormatDate(mExcelSettings, i, "VALID_DATE_FROM");
-			// this.CommTools._setExcelFormatDate(mExcelSettings, i, "VALID_DATE_TO");
-			// this.CommTools._setExcelFormatDateTime(mExcelSettings, i, "CD_TIME");
-			// this.CommTools._setExcelFormatDateTime(mExcelSettings, i, "UP_TIME");
-			// this.CommTools._setExcelFormatDateTime(mExcelSettings, i, "LAST_LOGIN_TIME");
+
 			}
 	
 		},
-		
-		// onCreate: function (oEvent) {
-		// var oItem = oEvent.getSource();
-		// var oContext = oItem.getBindingContext();
-		// this._onPress(oEvent, "RouteCre_sys01");
-		// },
 	
 	});
 });

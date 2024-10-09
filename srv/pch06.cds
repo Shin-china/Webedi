@@ -30,7 +30,7 @@ extend service TableService {
             T02.SUPPLIER_MAT as BP_NAME1,     // 業者名
             T02.STORAGE_LOC || T02.STORAGE_TXT as LOCNAME : String(100),     // 納品先
             T02.CURRENCY,                  // 通貨
-            T02.DEL_PRICE/T02.UNIT_PRICE as PRICE: Decimal(18, 3),  ///発注単価PO明細の単価/価格単位
+            ROUND(T02.DEL_PRICE/T02.UNIT_PRICE,3) as PRICE: Decimal(13, 3),  ///発注単価PO明細の単価/価格単位
             T02.DEL_AMOUNT,                  // 発注金額（値）
             T01.PO_DATE,                       //発注日
             T02.CUSTOMER_MAT,                       //顧客品番
