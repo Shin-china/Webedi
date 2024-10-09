@@ -66,6 +66,7 @@ extend service TableService {
         select from PCH_T04_PAYMENT as 
 
     ![distinct] {
+        KEY INV_NO,                    // 发票号
         KEY PO_NO,                     // UMC発注番号
         KEY D_NO,                      // 明細番号 
         KEY TAX_RATE,                  // INV税率
@@ -80,7 +81,6 @@ extend service TableService {
         QUANTITY,                      // 仕入単位数
         PO_TRACK_NO,                   // 備考
         INV_BASE_DATE,                 // 支払日
-        INV_NO,                        // 发票号
         SEND_FLAG,                     // ステータス
         INV_POST_DATE,                 // 検収月
         CURRENCY,                      // INV通貨コード
@@ -92,7 +92,6 @@ extend service TableService {
         TOTAL_AMOUNT,
         INV_MONTH,                     //检收月
  
-        // UNIT_PRICE * COALESCE(EXCHANGE, 1) AS UNIT_PRICE_IN_YEN : Decimal(15, 3),
         CAST(UNIT_PRICE * COALESCE(EXCHANGE, 1) AS Decimal(15, 3)) AS UNIT_PRICE_IN_YEN : Decimal(15, 3),
         FLOOR(TOTAL_AMOUNT * COALESCE(EXCHANGE, 1)) AS TOTAL_AMOUNT_IN_YEN : Decimal(20, 0), // 円換算後税込金額（檢収）
         
@@ -106,153 +105,175 @@ extend service TableService {
 
     }
 
-     entity PCH_T04_PAYMENT_SUM as
+ entity PCH_T04_PAYMENT_SUM as
         select from PCH_T04_PAYMENT_UNIT as 
 
     ![distinct] {
         KEY TAX_RATE,                  // INV税率
         KEY SUPPLIER,
-        PO_NO,                     // UMC発注番号
-        D_NO,                      // 明細番号 
-        UNIT_PRICE,
-        SUPPLIER_DESCRIPTION,
-        MAT_ID,                        // 品目コード
-        MAT_DESC,                      // 品目名称
-        GR_DATE,                       // 入荷日
-        QUANTITY,                      // 仕入単位数
-        PO_TRACK_NO,                   // 備考
-        INV_BASE_DATE,                 // 支払日
-        LOG_NO,
-        INV_NO,
-        NO_DETAILS,
+        KEY NO_DETAILS,                // UMC発注番号
+        KEY MAT_ID,                    // 品目コード
+        KEY GR_DATE,                   // 入荷日
+        KEY QUANTITY,                  // 仕入単位数
+        KEY UNIT_PRICE,                // 单价
+        KEY INV_BASE_DATE,             // 支払日
+        PRICE_AMOUNT,                  //要合计值
         EXCHANGE,                      // 換算レート
-        CURRENCY,                      // INV通貨コード
-        PRICE_AMOUNT,
-        TOTAL_AMOUNT,
-        UNIT_PRICE_IN_YEN,
-        TOTAL_AMOUNT_IN_YEN,
-        PRICE_AMOUNT_8,
-        PRICE_AMOUNT_10, 
-        SUM(PRICE_AMOUNT_8)  as TOTAL_PRICE_AMOUNT_8: Decimal(18, 3),       // 仕入金額計(8%対象)
-        SUM(PRICE_AMOUNT_10) as TOTAL_PRICE_AMOUNT_10: Decimal(18, 3),      // 仕入金額計(8%対象)
-        SUM(case when TAX_RATE not in (8, 10) then TOTAL_AMOUNT_IN_YEN else 0 end) as NON_APPLICABLE_AMOUNT: Decimal(18, 3), // 计算対象外金額
-    }
-    group by PO_NO,D_NO,SUPPLIER,TAX_RATE,UNIT_PRICE,SUPPLIER_DESCRIPTION,MAT_ID,MAT_DESC,GR_DATE,QUANTITY,PO_TRACK_NO,INV_BASE_DATE,LOG_NO,INV_NO,NO_DETAILS,EXCHANGE,CURRENCY,PRICE_AMOUNT,TOTAL_AMOUNT,UNIT_PRICE_IN_YEN,TOTAL_AMOUNT_IN_YEN,PRICE_AMOUNT_8,PRICE_AMOUNT_10;
-
-     entity PCH_T04_PAYMENT_GRO as
-        select from PCH_T04_PAYMENT_SUM as 
-
-    ![distinct] {
-        KEY PO_NO,                     // UMC発注番号
-        KEY D_NO,                      // 明細番号 
-        KEY SUPPLIER,
-        UNIT_PRICE,
-        SUPPLIER_DESCRIPTION,
-        MAT_ID,                        // 品目コード
         MAT_DESC,                      // 品目名称
-        GR_DATE,                       // 入荷日
-        QUANTITY,                      // 仕入単位数
-        TAX_RATE,                      // INV税率
         PO_TRACK_NO,                   // 備考
-        INV_BASE_DATE,                 // 支払日
-        INV_NO,
-        LOG_NO,
-        NO_DETAILS,
-        EXCHANGE,                      // 換算レート
-        CURRENCY,                      // INV通貨コード 
-        PRICE_AMOUNT,
-        TOTAL_AMOUNT,
-        UNIT_PRICE_IN_YEN,
         TOTAL_AMOUNT_IN_YEN,
-        PRICE_AMOUNT_8,
-        PRICE_AMOUNT_10, 
-        TOTAL_PRICE_AMOUNT_8,
-        TOTAL_PRICE_AMOUNT_10,
-        NON_APPLICABLE_AMOUNT,
-        TOTAL_PRICE_AMOUNT_8 * 0.08 as CONSUMPTION_TAX_8 : Decimal(15, 0),     // 计算消費税計(8%対象)
-        TOTAL_PRICE_AMOUNT_10 * 0.10 as CONSUMPTION_TAX_10 : Decimal(15, 0),   // 计算消費税計(10%対象)
-    }
-
-       entity PCH_T04_PAYMENT_END as
-        select from PCH_T04_PAYMENT_GRO as 
-
-    ![distinct] {
-        KEY PO_NO,                     // UMC発注番号
-        KEY D_NO,                      // 明細番号 
-        KEY SUPPLIER,
-        UNIT_PRICE,
-        SUPPLIER_DESCRIPTION,
-        MAT_ID,                        // 品目コード
-        MAT_DESC,                      // 品目名称
-        GR_DATE,                       // 入荷日
-        QUANTITY,                      // 仕入単位数
-        TAX_RATE,                      // INV税率
-        PO_TRACK_NO,                   // 備考
-        INV_BASE_DATE,                 // 支払日
-        INV_NO,
-        LOG_NO,
-        NO_DETAILS,
-        EXCHANGE,                      // 換算レート
-        CURRENCY,                      // INV通貨コード 
-        PRICE_AMOUNT,
-        TOTAL_AMOUNT,
-        UNIT_PRICE_IN_YEN,
-        TOTAL_AMOUNT_IN_YEN,
-        PRICE_AMOUNT_8,
-        PRICE_AMOUNT_10, 
-        TOTAL_PRICE_AMOUNT_8,
-        TOTAL_PRICE_AMOUNT_10,
-        NON_APPLICABLE_AMOUNT,
-        CONSUMPTION_TAX_8,
-        CONSUMPTION_TAX_10,   
-        // CONSUMPTION_TAX_8 + TOTAL_PRICE_AMOUNT_8 as TOTAL_PAYMENT_AMOUNT_8_END : Decimal(18, 3),     // 计算税込支払金額(8%対象)
-        // CONSUMPTION_TAX_10 + TOTAL_PRICE_AMOUNT_10 as TOTAL_PAYMENT_AMOUNT_10_END : Decimal(18, 3),   // 计算税込支払金額(10%対象)
-        SUM(CONSUMPTION_TAX_8 + TOTAL_PRICE_AMOUNT_8)  as TOTAL_PAYMENT_AMOUNT_8_END: Decimal(18, 3),       // 计算税込支払金額(8%対象)
-        SUM(CONSUMPTION_TAX_10 + TOTAL_PRICE_AMOUNT_10) as TOTAL_PAYMENT_AMOUNT_10_END: Decimal(18, 3),      // 计算税込支払金額(10%対象)
-    }
-    group by PO_NO,D_NO,SUPPLIER,TAX_RATE,UNIT_PRICE,SUPPLIER_DESCRIPTION,MAT_ID,MAT_DESC,GR_DATE,QUANTITY,PO_TRACK_NO,INV_BASE_DATE,LOG_NO,INV_NO,NO_DETAILS,EXCHANGE,CURRENCY,PRICE_AMOUNT,TOTAL_AMOUNT,UNIT_PRICE_IN_YEN,TOTAL_AMOUNT_IN_YEN,PRICE_AMOUNT_8,PRICE_AMOUNT_10,TOTAL_PRICE_AMOUNT_8,TOTAL_PRICE_AMOUNT_10,NON_APPLICABLE_AMOUNT,CONSUMPTION_TAX_8,CONSUMPTION_TAX_10;
-
-    entity PCH_T04_PAYMENT_FINAL as
-        select from PCH_T04_PAYMENT_END as 
-
-    ![distinct] {
-        KEY SUPPLIER,
-        KEY PO_NO,                     // UMC発注番号
-        KEY D_NO,                      // 明細番号 
-        UNIT_PRICE,
-        SUPPLIER_DESCRIPTION,
-        MAT_ID,                        // 品目コード
-        MAT_DESC,                      // 品目名称
-        GR_DATE,                       // 入荷日
-        QUANTITY,                      // 仕入単位数
-        TAX_RATE,                      // INV税率AWER
-        PO_TRACK_NO,                   // 備考
-        INV_BASE_DATE,                 // 支払日
-        INV_NO,
-        LOG_NO,
-        NO_DETAILS,
-        EXCHANGE,                      // 換算レート
-        CURRENCY,                      // INV通貨コード 
-        PRICE_AMOUNT,
-        TOTAL_AMOUNT,
-        UNIT_PRICE_IN_YEN,
-        TOTAL_AMOUNT_IN_YEN,
-        PRICE_AMOUNT_8,
-        PRICE_AMOUNT_10, 
-        TOTAL_PRICE_AMOUNT_8,
-        TOTAL_PRICE_AMOUNT_10,
-        NON_APPLICABLE_AMOUNT,
-        CONSUMPTION_TAX_8,
-        CONSUMPTION_TAX_10,   
-        TOTAL_PAYMENT_AMOUNT_8_END,     // 计算税込支払金額(8%対象)
-        TOTAL_PAYMENT_AMOUNT_10_END,    // 计算税込支払金額(10%対象)
-        SUM(TOTAL_PAYMENT_AMOUNT_8_END + TOTAL_PAYMENT_AMOUNT_10_END + NON_APPLICABLE_AMOUNT)as TOTAL_PAYMENT_AMOUNT_FINAL : Decimal(18, 3),     // 総合計
+        CURRENCY,
         case 
             when CURRENCY = 'JPY' then cast(PRICE_AMOUNT as Decimal(18,3))
             when CURRENCY in ('USD', 'EUR') then cast(floor(PRICE_AMOUNT * EXCHANGE) as Decimal(18,0))
         end as BASE_AMOUNT_EXCLUDING_TAX : Decimal(18,0),   //基準通貨金額税抜
     }
-    group by PO_NO,D_NO,SUPPLIER,TAX_RATE,UNIT_PRICE,SUPPLIER_DESCRIPTION,MAT_ID,MAT_DESC,GR_DATE,QUANTITY,PO_TRACK_NO,INV_BASE_DATE,LOG_NO,INV_NO,NO_DETAILS,EXCHANGE,CURRENCY,PRICE_AMOUNT,TOTAL_AMOUNT,UNIT_PRICE_IN_YEN,TOTAL_AMOUNT_IN_YEN,PRICE_AMOUNT_8,PRICE_AMOUNT_10,TOTAL_PRICE_AMOUNT_8,TOTAL_PRICE_AMOUNT_10,NON_APPLICABLE_AMOUNT,CONSUMPTION_TAX_8,CONSUMPTION_TAX_10,TOTAL_PAYMENT_AMOUNT_8_END,TOTAL_PAYMENT_AMOUNT_10_END;
+
+ entity PCH_T04_PAYMENT_SUM_FZ1 as
+        select from PCH_T04_PAYMENT_UNIT as 
+
+    ![distinct] {
+        KEY SUPPLIER,
+       SUM(PRICE_AMOUNT)  as TOTAL_PRICE_AMOUNT_8: Decimal(18, 3),       // 仕入金額計(8%対象)
+    }
+    where TAX_RATE= 8
+    group BY SUPPLIER
+;
+ entity PCH_T04_PAYMENT_SUM_FZ2 as
+        select from PCH_T04_PAYMENT_SUM as 
+
+    ![distinct] {
+         KEY SUPPLIER,
+       SUM(PRICE_AMOUNT)  as TOTAL_PRICE_AMOUNT_10: Decimal(18, 3),       // 仕入金額計(10%対象)
+    }
+    where TAX_RATE= 10
+    group BY SUPPLIER;
+
+ entity PCH_T04_PAYMENT_SUM_FZ3_1 as
+        select from PCH_T04_PAYMENT_SUM as 
+
+    ![distinct] {
+         KEY SUPPLIER,
+         key TAX_RATE,
+         SUM(PRICE_AMOUNT)  as TOTAL_PRICE_AMOUNT_NOT: Decimal(18, 3) ,    // 非810
+    }
+    where TAX_RATE != 10 AND TAX_RATE != 8 
+    group BY SUPPLIER,TAX_RATE;
+
+ entity PCH_T04_PAYMENT_SUM_FZ3 as
+        select from PCH_T04_PAYMENT_SUM_FZ3_1 as 
+
+    ![distinct] {
+         KEY SUPPLIER,
+        SUM(TOTAL_PRICE_AMOUNT_NOT * TAX_RATE)  as TOTAL_PRICE_AMOUNT_NOT: Decimal(18, 3),       // 非810
+    }
+    where TAX_RATE != 10 AND TAX_RATE != 8 
+    group BY SUPPLIER;
+
+ entity PCH_T04_PAYMENT_SUM_HJ1 as
+        select from PCH_T04_PAYMENT_SUM t1
+        left join PCH_T04_PAYMENT_SUM_FZ1 t2
+        on t1.SUPPLIER = t2.SUPPLIER
+        left join PCH_T04_PAYMENT_SUM_FZ2 t3
+        on t1.SUPPLIER = t3.SUPPLIER
+        left join PCH_T04_PAYMENT_SUM_FZ3 t4
+        on t1.SUPPLIER = t4.SUPPLIER
+                                
+    distinct {
+        KEY t1.SUPPLIER,
+        COALESCE(t2.TOTAL_PRICE_AMOUNT_8, 0)   as TOTAL_PRICE_AMOUNT_8: Decimal(18, 3),
+        COALESCE(t3.TOTAL_PRICE_AMOUNT_10, 0)  as TOTAL_PRICE_AMOUNT_10: Decimal(18, 3),
+        COALESCE(t4.TOTAL_PRICE_AMOUNT_NOT, 0) as TOTAL_PRICE_AMOUNT_NOT: Decimal(18, 3),
+ 
+    }
+    entity PCH_T04_PAYMENT_SUM_HJ2 as
+        select from PCH_T04_PAYMENT_SUM_HJ1 t1
+      
+                                
+    distinct {
+        KEY t1.SUPPLIER,
+        TOTAL_PRICE_AMOUNT_8,
+        FLOOR(TOTAL_PRICE_AMOUNT_8 * 0.08) AS CONSUMPTION_TAX_8: Decimal(15, 0),  // 计算消費税計(8%対象)
+        TOTAL_PRICE_AMOUNT_10,
+        FLOOR(TOTAL_PRICE_AMOUNT_10 * 0.10) AS CONSUMPTION_TAX_10: Decimal(15, 0),  // 计算消費税計(10%対象)
+        TOTAL_PRICE_AMOUNT_NOT,
+    }
+    entity PCH_T04_PAYMENT_SUM_HJ3 as
+        select from PCH_T04_PAYMENT_SUM_HJ2 t1
+                                      
+    distinct {
+        KEY t1.SUPPLIER,
+        TOTAL_PRICE_AMOUNT_8,
+        CONSUMPTION_TAX_8 ,     // 计算消費税計(8%対象)
+        TOTAL_PRICE_AMOUNT_10,
+        CONSUMPTION_TAX_10 ,    // 计算消費税計(10%対象)
+        TOTAL_PRICE_AMOUNT_NOT,
+
+    }
+
+    entity PCH_T04_PAYMENT_SUM_HJ4 as
+        select from PCH_T04_PAYMENT_SUM_HJ3 t1     
+                                
+    distinct {
+        KEY t1.SUPPLIER,
+        TOTAL_PRICE_AMOUNT_8,
+        CONSUMPTION_TAX_8 ,     // 计算消費税計(8%対象)
+        TOTAL_PRICE_AMOUNT_10,
+        CONSUMPTION_TAX_10 ,    // 计算消費税計(10%対象)
+        TOTAL_PRICE_AMOUNT_NOT,
+        CONSUMPTION_TAX_8 + TOTAL_PRICE_AMOUNT_8  as TOTAL_PAYMENT_AMOUNT_8_END: Decimal(18, 3),       // 计算税込支払金額(8%対象)
+        CONSUMPTION_TAX_10 + TOTAL_PRICE_AMOUNT_10 as TOTAL_PAYMENT_AMOUNT_10_END: Decimal(18, 3),      // 计算税込支払金額(10%対象)
+    }
+
+        entity PCH_T04_PAYMENT_SUM_HJ5 as
+        select from PCH_T04_PAYMENT_SUM_HJ4 t1   
+                                
+    distinct {
+        KEY t1.SUPPLIER,
+        TOTAL_PRICE_AMOUNT_8,
+        CONSUMPTION_TAX_8 ,               // 计算消費税計(8%対象)
+        TOTAL_PRICE_AMOUNT_10,
+        CONSUMPTION_TAX_10 ,              // 计算消費税計(10%対象)
+        TOTAL_PRICE_AMOUNT_NOT,
+        TOTAL_PAYMENT_AMOUNT_8_END,       // 计算税込支払金額(8%対象)
+        TOTAL_PAYMENT_AMOUNT_10_END,      // 计算税込支払金額(10%対象)
+        TOTAL_PAYMENT_AMOUNT_8_END + TOTAL_PAYMENT_AMOUNT_10_END + TOTAL_PRICE_AMOUNT_NOT as TOTAL_PAYMENT_AMOUNT_FINAL : Decimal(18, 3),     // 総合計
+
+    }
+     entity PCH_T04_PAYMENT_SUM_HJ6 as
+        select from PCH_T04_PAYMENT_SUM_HJ5 t1
+        left join PCH_T04_PAYMENT_SUM t2
+        on t1.SUPPLIER = t2.SUPPLIER
+        left join PCH_T04_PAYMENT_UNIT t3
+        on t1.SUPPLIER = t3.SUPPLIER
+                                
+    distinct {
+        KEY t1.SUPPLIER,
+        TOTAL_PRICE_AMOUNT_8,             // 仕入金額計(8%対象)
+        CONSUMPTION_TAX_8 ,               // 计算消費税計(8%対象)
+        TOTAL_PAYMENT_AMOUNT_8_END,       // 计算税込支払金額(8%対象)
+        TOTAL_PRICE_AMOUNT_10,            // 仕入金額計(10%対象)
+        CONSUMPTION_TAX_10 ,              // 计算消費税計(10%対象)
+        TOTAL_PAYMENT_AMOUNT_10_END,      // 计算税込支払金額(10%対象)
+        TOTAL_PRICE_AMOUNT_NOT,           // 対象外金額
+        TOTAL_PAYMENT_AMOUNT_FINAL,       // 総合計
+
+        t2.NO_DETAILS,                       // 発注\明細NO
+        t2.MAT_ID,                           // 品目コード
+        t2.MAT_DESC,                         // 品目名称
+        t2.GR_DATE,                          // 入荷日
+        t2.QUANTITY,                         // 仕入単位数
+        t2.UNIT_PRICE,                       // 基準通貨単価
+        t2.BASE_AMOUNT_EXCLUDING_TAX,        // 基準通貨金額税抜
+        t2.TAX_RATE,                         // INV税率
+
+        t2.PO_TRACK_NO,                      // 備考
+        t2.INV_BASE_DATE,                    // 支払日
+        t3.LOG_NO,                           // 登録番号
+        t3.INV_MONTH,                        // 検収月
+        t3.SUPPLIER_DESCRIPTION,             // 仕入先名称
+
+    }
 
     action PCH04_SENDEMAIL(parms : String) returns String;
 

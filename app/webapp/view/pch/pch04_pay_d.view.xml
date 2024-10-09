@@ -121,7 +121,7 @@
             <Label id="labelGrDate" text="{pch>GR_DATE1}"/>
         </table:label>
         <table:template>
-            <Text id="textGrDate" text="{GR_DATE}"/>
+         <smartField:SmartField id="textGrDate" value="{GR_DATE}" editable="false"/>
         </table:template>
     </table:Column>
 
@@ -241,7 +241,7 @@
             <Label id="labelInvBaseDate" text="{pch>INV_BASE_DATE}"/>
         </table:label>
         <table:template>
-            <Text id="textInvBaseDate" text="{INV_BASE_DATE}"/>
+        <smartField:SmartField id="textInvBaseDate" value="{INV_BASE_DATE}" editable="false"/>
         </table:template>
     </table:Column>
 

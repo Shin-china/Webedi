@@ -46,35 +46,89 @@ sap.ui.define([
 
                 // 假设您在这里定义邮件内容模板
              
-                var supplierName =""
-                var year =""
-                var month ="" 
+                var supplierName = "";
+                var year = "";
+                var month = "";
+                var nextMonthDate = ""; // 用于存储下个月的第二个工作日
+                var finalYear = "";     // 用于存储最终年份
+                var finalMonth = "";    // 用于存储最终月份
+                var finalDay = "";      // 用于存储最终日期
+                
                 aSelectedData.map(function (data) {
-                            supplierName = data.SUPPLIER_DESCRIPTION || "未指定"; // 默认值
-                            year = data.INV_MONTH ? data.INV_MONTH.substring(0, 4) : "年"; // 默认值
-                            month = data.INV_MONTH ? data.INV_MONTH.substring(4, 6) : "月"; // 默认值
-            
-
-                        })
-
+                    supplierName = data.SUPPLIER_DESCRIPTION || "未指定"; // 默认值
+                    year = data.INV_MONTH ? data.INV_MONTH.substring(0, 4) : "年"; // 默认值
+                    month = data.INV_MONTH ? data.INV_MONTH.substring(4, 6) : "月"; // 默认值
+                
+                    // 将提取的 year 和 month 转换为数值类型
+                    var invYear = parseInt(year, 10);
+                    var invMonth = parseInt(month, 10);
+                
+                    // 计算下一个月的年和月
+                    var nextMonth = invMonth === 12 ? 1 : invMonth + 1;
+                    var nextYear = invMonth === 12 ? invYear + 1 : invYear;
+                
+                    // 获取下个月的第一天
+                    var nextMonthFirstDay = new Date(nextYear, nextMonth - 1, 1);
+                
+                    // 查找第二个工作日（非周末）
+                    var workDayCount = 0;
+                    for (var i = 0; i < 7; i++) {
+                        var tempDate = new Date(nextMonthFirstDay);
+                        tempDate.setDate(nextMonthFirstDay.getDate() + i);
+                        var dayOfWeek = tempDate.getDay();
+                        if (dayOfWeek !== 0 && dayOfWeek !== 6) { // 0: Sunday, 6: Saturday
+                            workDayCount++;
+                            if (workDayCount === 2) {
+                                nextMonthDate = tempDate; // 第二个工作日
+                                break;
+                            }
+                        }
+                    }
+                
+                    // 在第二个工作日的基础上加 7 天
+                    var finalDateObj = new Date(nextMonthDate);
+                    finalDateObj.setDate(nextMonthDate.getDate() + 7);
+                
+                    // 处理跨年和跨月，格式化最终日期
+                    finalYear = finalDateObj.getFullYear();
+                    finalMonth = ("0" + (finalDateObj.getMonth() + 1)).slice(-2); // 月份补零
+                    finalDay = ("0" + finalDateObj.getDate()).slice(-2);          // 日期补零
+                });
+                
+                // 构建邮件内容对象
                 var mailobj = {
                     emailJson: {
                         TEMPLATE_ID: "UWEB_M007",
                         MAIL_TO: "xiaoyue.wang@sh.shin-china.com",
-                        MAIL_BODY: [{
-                            object: "仕入先名称",
-                            value: supplierName // 使用替换后的邮件内容
-                        },
-                        {
-                            object: "YEAR",
-                            value: year
-                        },
-                        {
-                            object: "MONTH",
-                            value: month
-                        }]
+                        MAIL_BODY: [
+                            {
+                                object: "仕入先名称",
+                                value: supplierName // 使用替换后的邮件内容
+                            },
+                            {
+                                object: "YEAR",
+                                value: year
+                            },
+                            {
+                                object: "MONTH",
+                                value: month
+                            },
+                            {
+                                object: "YEAR1",
+                                value: finalYear+'' // 替换后的年
+                            },
+                            {
+                                object: "MONTH1",
+                                value: finalMonth // 替换后的月
+                            },
+                            {
+                                object: "DAY1",
+                                value: finalDay // 替换后的日
+                            }
+                        ]
                     }
                 };
+                
 
       
             let newModel = this.getView().getModel("Common");
