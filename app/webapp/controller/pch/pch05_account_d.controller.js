@@ -8,115 +8,100 @@ sap.ui.define([
 
     return Controller.extend("umc.app.controller.pch.pch05_pay_d", {
 
-        // onResend: function () {
-        //     var oTable = this.getView().byId("detailTable");
-        //     var aSelectedIndices = oTable.getSelectedIndices();
+        onResend: function () {
+			var that = this;
+            var oTable = this.getView().byId("detailTable");
+            var aSelectedIndices = oTable.getSelectedIndices();
    
-        //     // 检查是否有选中的数据
-        //     if (aSelectedIndices.length === 0) {
-        //         MessageToast.show("選択されたデータがありません、データを選択してください。");
-        //         return;
-        //     }
+            // 检查是否有选中的数据
+            if (aSelectedIndices.length === 0) {
+                MessageToast.show("選択されたデータがありません、データを選択してください。");
+                return;
+            }
 
-        //     var oModel = this.getView().getModel();
-        //     var oCommonModel = this.getView().getModel("Common"); // 获取公共模型
-        //     var aEmailParams = [];
+            var oModel = this.getView().getModel();
+            var oCommonModel = this.getView().getModel("Common"); // 获取公共模型
+            var aEmailParams = [];
 
-        //         // 遍历选中的行，提取所需数据
-        //         var aSelectedData = aSelectedIndices.map(function (iIndex) {
-        //             return oTable.getContextByIndex(iIndex).getObject();
-        //         });    
+                // 遍历选中的行，提取所需数据
+                var aSelectedData = aSelectedIndices.map(function (iIndex) {
+                    return oTable.getContextByIndex(iIndex).getObject();
+                });    
 
-        //          // 检查 SUPPLIER 是否相同
-        //         var supplierSet = new Set(aSelectedData.map(data => data.SUPPLIER_DESCRIPTION));
-        //         if (supplierSet.size > 1) {
-        //             MessageBox.error("複数の取引先がまとめて配信することができませんので、1社の取引先を選択してください。");
-        //             return;
-        //         }
+                 // 检查 SUPPLIER 是否相同
+                var supplierSet = new Set(aSelectedData.map(data => data.SUPPLIER_DESCRIPTION));
+                if (supplierSet.size > 1) {
+                    MessageBox.error("複数の取引先がまとめて配信することができませんので、1社の取引先を選択してください。");
+                    return;
+                }
        
-        //         // 检查是否有选中的数据
-        //         if (aSelectedIndices.length === 0) {
-        //             MessageToast.show("選択されたデータがありません、データを選択してください。");
-        //             return;
-        //         }
+                // 检查是否有选中的数据
+                if (aSelectedIndices.length === 0) {
+                    MessageToast.show("選択されたデータがありません、データを選択してください。");
+                    return;
+                }
     
-        //                 // 检查 SUPPLIER 是否相同
-        //                 var supplierSet = new Set(aSelectedData.map(data => data.SUPPLIER_DESCRIPTION));
-        //                 if (supplierSet.size > 1) {
-        //                     MessageBox.error("複数の取引先がまとめて配信することができませんので、1社の取引先を選択してください。");
-        //                     return;
-        //                 }
+                        // 检查 SUPPLIER 是否相同
+                        var supplierSet = new Set(aSelectedData.map(data => data.SUPPLIER_DESCRIPTION));
+                        if (supplierSet.size > 1) {
+                            MessageBox.error("複数の取引先がまとめて配信することができませんので、1社の取引先を選択してください。");
+                            return;
+                        }
 
-		// 		if (selectedIndices) {
-		// 			// 构建CSV内容  
-		// 			// var csvContent = "data:text/csv;charset=utf-8,";
-		// 			var csvContent = "";
-		// 			var headers = Object.keys(selectedIndices[0]); // 假设所有条目的结构都相同，取第一条的键作为表头  
-		// 			headers.shift();
-		// 			// csvContent += headers.join(",") + "\n";  
+						aSelectedData.forEach(function (oData) {
+							if (oData.SHKZG === 'H') { // 如果是贷方
+								oData.PRICE_AMOUNT = -Math.abs(oData.PRICE_AMOUNT); // 添加负号
+								oData.TOTAL_AMOUNT = -Math.abs(oData.TOTAL_AMOUNT); // 添加负号
+							}
+							// 如果是借方（SHKZG === 'S'），不做任何改变
+						});
+						
+					
 
-		// 			selectedIndices.forEach(function (row) {
-		// 				var values = headers.map(function (header) {
+				let options = { compact: true, ignoreComment: true, spaces: 4 };
+				var IdList = that._TableDataList("detailTable", 'SUPPLIER')
+				if (IdList) {
+					that.PrintTool._getPrintDataInfo(that, IdList, "/PCH_T05_ACCOUNT_DETAIL_SUM_FINAL", "SUPPLIER").then((oData) => {
+						let sResponse = json2xml(oData, options);
+						console.log(sResponse)
+						that.setSysConFig().then(res => {
+							that.PrintTool._detailSelectPrint(that, sResponse, "test2/test3", oData, null, null, null, null).then(()=>{
+								that.PrintTool.getImageBase64(that._blob).then((odata)=>{
 
-		// 					return (row[header] === null || row[header] === undefined) ? "" : '"' + row[header] + '"';
-		// 				});
+								var mailobj = {
+									emailJson: {
+										TEMPLATE_ID: "UWEB_M008",
+										MAIL_TO: "xiaoyue.wang@sh.shin-china.com",
+										MAIL_BODY: [{
+											object: "content",
+											value: "hello"
+										},
+										{
+											object: "recipient",
+											value: "aa"
+										},
+										{
+											object: "filename_1",
+											value: "aa.pdf"
+										},
+										{
+											object: "filecontent_1",
+											value: odata.replace("data:application/pdf;base64,","")
+										},
+				
+									]
+									}
+								};
 
-		// 				csvContent += values.join(",") + "\n";
-		// 			});
-		// 		}
-
-		// 		let options = { compact: true, ignoreComment: true, spaces: 4 };
-		// 		var IdList = that._TableDataList("detailTable", 'SUPPLIER')
-		// 		if (IdList) {
-		// 			that.PrintTool._getPrintDataInfo(that, IdList, "/PCH_T05_ACCOUNT_DETAIL_SUM_FINAL", "SUPPLIER").then((oData) => {
-		// 				let sResponse = json2xml(oData, options);
-		// 				console.log(sResponse)
-		// 				that.setSysConFig().then(res => {
-		// 					that.PrintTool._detailSelectPrint(that, sResponse, "test2/test3", oData, null, null, null, null).then(()=>{
-		// 						that.PrintTool.getImageBase64(that._blob).then((odata)=>{
-
-		// 						var mailobj = {
-		// 							emailJson: {
-		// 								TEMPLATE_ID: "UWEB_M008",
-		// 								MAIL_TO: "xiaoyue.wang@sh.shin-china.com",
-		// 								MAIL_BODY: [{
-		// 									object: "content",
-		// 									value: "hello"
-		// 								},
-		// 								{
-		// 									object: "recipient",
-		// 									value: "aa"
-		// 								},
-		// 								{
-		// 									object: "filename_1",
-		// 									value: "aa.pdf"
-		// 								},
-		// 								{
-		// 									object: "filecontent_1",
-		// 									value: odata.replace("data:application/pdf;base64,","")
-		// 								},
-										
-		// 								{
-		// 									object: "filename_2",
-		// 									value: "test.csv"
-		// 								},
-		// 								{
-		// 									object: "filecontent_2",
-		// 									value: csvContent
-		// 								}
-		// 							]
-		// 							}
-		// 						};
-
-		// 						let newModel = this.getView().getModel("Common");
-		// 						let oBind = newModel.bindList("/sendEmail");
-		// 						oBind.create(mailobj);
-		// 						})								
-		// 					})						
-		// 				})
-		// 			})
-		// 		}				
-        //     },
+								let newModel = this.getView().getModel("Common");
+								let oBind = newModel.bindList("/sendEmail");
+								oBind.create(mailobj);
+								})								
+							})						
+						})
+					})
+				}				
+            },
 
             onBeforeExport: function (oEvent) {
                 var oTable = this.getView().byId("detailTable");
