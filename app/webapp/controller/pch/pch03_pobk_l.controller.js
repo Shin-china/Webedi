@@ -18,6 +18,8 @@ sap.ui.define([
 			this.MessageTools._clearMessage();
 			this.MessageTools._initoMessageManager(this);
 
+			this.getRouter().getRoute("RouteMain").attachPatternMatched(this._onRouteMatched, this);
+
 		},
 
 		// onPress: function (oEvent) {

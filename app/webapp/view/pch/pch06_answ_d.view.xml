@@ -1,0 +1,123 @@
+<mvc:View controllerName="umc.app.controller.pch.pch06_answ_d"
+	xmlns:smartfield="sap.ui.comp.smartfield"
+	xmlns:smartform="sap.ui.comp.smartform"
+	xmlns:core="sap.ui.core"
+	xmlns="sap.m"
+	xmlns:f="sap.f"
+	xmlns:l="sap.ui.layout"
+	xmlns:smartFilterBar="sap.ui.comp.smartfilterbar"
+	xmlns:smartTable="sap.ui.comp.smarttable"
+	xmlns:sv="sap.ui.comp.smartvariants"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:uxap="sap.uxap"
+	xmlns:table="sap.ui.table"
+	xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+
+
+
+	<f:DynamicPage id="dynamicPageId" headerExpanded="true" showFooter="true" busy="{localModel>/isBusy}">
+		<f:title>
+			<f:DynamicPageTitle id="DynamicPageTitle">
+				<f:heading>
+					<Title id="Title" text="{pch>PCH06_TITLE}"/>
+
+				</f:heading>
+				<f:navigationActions>
+					<Button id="_IDGenButto" icon="sap-icon://home" tooltip="nav-back" press="navToHome"/>
+				</f:navigationActions>
+			</f:DynamicPageTitle>
+		</f:title>
+
+
+
+		<f:header>
+			<f:DynamicPageHeader id="DynamicPageHeader" pinnable="true">
+				<f:content>
+
+					<smartFilterBar:SmartFilterBar id="smartFilterBar" useToolbar="false" entitySet="PCH_T06_PO_ITEM" showGoOnFB="true" persistencyKey="mst02_receiptprintFilterBar"  showFilterConfiguration="false">
+						<smartFilterBar:controlConfiguration>
+						<smartFilterBar:ControlConfiguration id="PO_NO" key="PO_NO"  visibleInAdvancedArea="true"   />
+
+
+						</smartFilterBar:controlConfiguration>
+					</smartFilterBar:SmartFilterBar>
+
+				</f:content>
+				<OverflowToolbar id="OverflowToolbarId">
+					<content>
+						<ToolbarSpacer id="ToolbarSpacerId"/>
+						<Button id="_IDGenButton22" text="{pch>PCH03_BUTTON_SAV}" press="onSav" enabled="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'}], formatter: '.formatter.getEditableSaveCommon'}" width="8em"/>
+						<Button id="_IDGenButton23" text="{pch>PCH03_BUTTON_EDI}" press="onEdi" enabled="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'}], formatter: '.formatter.getEditableDCommon'}" width="8em"/>
+						<Button id="ButtonId3" text="{pch>BUTTON_H__TONGQI}"  press="onTongQi" />
+						</content>
+				</OverflowToolbar>
+			</f:DynamicPageHeader>
+		</f:header>
+
+		<f:content>
+
+
+			<smartTable:SmartTable id="smartTable" enableAutoColumnWidth="true" showFullScreenButton="true" persistencyKey="mst02_receiptprintTable" entitySet="PCH_T06_PO_ITEM" requestAtLeastFields="ID" smartFilterId="smartFilterBar" beforeExport="onBeforeExport" enableExport="true" useVariantManagement="true" useTablePersonalisation="true" initiallyVisibleFields="PO_NO,D_NO,MAT_ID,PO_D_TXZ01,DELIVERY_DATE,QUANTITY,STATUS,PO_PUR_QTY,SUPPLIER,BP_NAME1,LOCNAME,CURRENCY,PRICE,DEL_AMOUNT,PO_DATE,CUSTOMER_MAT,SUPPLIER_MAT,PO_D_DATE,PO_TYPE,MEMO,ExtNumber" tableType="Table" showRowCount="true" beforeRebindTable="onRebind" placeToolbarInTable="true" header="{com>TITLE_RESULT}" enableAutoBinding="false">
+
+				<smartTable:customToolbar>
+				<OverflowToolbar id="ID_header">
+					<content>
+						<ToolbarSpacer id="ID_ToolbarSpacer" />
+						<Button id="ButtonId1" text="{com>BUTTON_COP}" enabled="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'}], formatter: '.formatter.getEditableSaveCommon'}" icon="sap-icon://copy" press="onCop" />
+						<Button id="ButtonId2" text="{com>BUTTON_DELETE}" enabled="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'}], formatter: '.formatter.getEditableSaveCommon'}" icon="sap-icon://delete" press="onDelete" />
+						<Button id="_IDGenButton24" text="{pch>PCH03_BUTTON_QUE}" press="onQue" enabled="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'}], formatter: '.formatter.getEditableDCommon'}" width="8em"/>
+					</content>
+				</OverflowToolbar>
+				</smartTable:customToolbar>
+				<table:Table id="detailTable" rowMode="Auto"  rowActionCount="1">
+
+					<!-- 納品日 -->
+					<table:Column visible="true" autoResizable="true" sortProperty="DELIVERY_DATE" filterProperty="DELIVERY_DATE" width="12em">
+						<table:customData>
+							<core:CustomData key="p13nData" value='\{"columnKey":"DELIVERY_DATE", "leadingProperty":"DELIVERY_DATE"}'/>
+						</table:customData>
+						<table:label>
+							<Label text="{pch>LABEL_D__DELIVERY_DATE}"/>
+						</table:label>
+						<table:template>
+							<smartfield:SmartField value="{DELIVERY_DATE}" editable="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'}], formatter: '.formatter.getEditableSaveCommon'}"/>
+						</table:template>
+					</table:Column>
+					<!-- 納品数量 -->
+					<table:Column visible="true" autoResizable="true" sortProperty="QUANTITY" filterProperty="QUANTITY" width="12em">
+						<table:customData>
+							<core:CustomData key="p13nData" value='\{"columnKey":"QUANTITY", "leadingProperty":"QUANTITY"}'/>
+						</table:customData>
+						<table:label>
+							<Label text="{pch>LABEL_D__QUANTITY}"/>
+						</table:label>
+						<table:template>
+							<smartfield:SmartField value="{QUANTITY}" editable="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'}], formatter: '.formatter.getEditableSaveCommon'}"/>
+						</table:template>
+					</table:Column>
+					<!-- 参照 -->
+					<table:Column visible="true" autoResizable="true" sortProperty="ExtNumber" filterProperty="ExtNumber" width="12em">
+						<table:customData>
+							<core:CustomData key="p13nData" value='\{"columnKey":"ExtNumber", "leadingProperty":"ExtNumber"}'/>
+						</table:customData>
+						<table:label>
+							<Label text="{pch>LABEL_D__ExtNumber}"/>
+						</table:label>
+						<table:template>
+							<smartfield:SmartField value="{ExtNumber}" editable="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'}], formatter: '.formatter.getEditableSaveCommon'}"/>
+						</table:template>
+					</table:Column>
+				</table:Table>
+
+
+			</smartTable:SmartTable>
+		</f:content>
+	<f:footer>
+      <OverflowToolbar id="otbFooter" visible="{=${message>/}.length > 0}">
+        <Button icon="sap-icon://alert" text="{=${message>/}.length}" visible="{=${message>/}.length > 0}" type="Emphasized" press="onClickMessagePopover" id="messageButton">
+        </Button>
+      </OverflowToolbar>
+    </f:footer>
+	</f:DynamicPage>
+
+</mvc:View>
