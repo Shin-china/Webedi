@@ -128,12 +128,12 @@ entity PCH_T06_QUOTATION_H : cuid, IF_CUID_FILED { //
 
 }
 entity PCH_T07_QUOTATION_D : cuid, IF_CUID_FILED { //
-  @title: '{i18n>QUO_NUMBER}' QUO_NUMBER                 : String(10); //項目
-  @title: '{i18n>QUO_ITEM}' QUO_ITEM                     : Integer; //購買見積番号
-  @title: '{i18n>NO}' NO                                 : Integer; //管理No
-  @title: '{i18n>REFRENCE_NO}' REFRENCE_NO               : String(50); //No.
-  @title: '{i18n>MATERIAL_NUMBER}' MATERIAL_NUMBER       : String(40); //併記有無リファレンスNo
-  @title: '{i18n>CUST_MATERIAL}' CUST_MATERIAL           : String(40); //SAP品番（任意）
+  @title: '{i18n>QUO_NUMBER}' QUO_NUMBER                 : String(10); //購買見積番号
+  @title: '{i18n>QUO_ITEM}' QUO_ITEM                     : Integer; //管理No
+  @title: '{i18n>NO}' NO                                 : Integer; //No.
+  @title: '{i18n>REFRENCE_NO}' REFRENCE_NO               : String(50); //併記有無リファレンスNo
+  @title: '{i18n>MATERIAL_NUMBER}' MATERIAL_NUMBER       : String(40); //SAP品番（任意）
+  @title: '{i18n>CUST_MATERIAL}' CUST_MATERIAL           : String(40); //顧客品番
   @title: '{i18n>MANUFACT_MATERIAL}' MANUFACT_MATERIAL   : String(40); //メーカー品番
   @title: '{i18n>Attachment}' Attachment                 : String(50); //カスタム品図面 仕様添付
   @title: '{i18n>Material}' Material                     : String(40); //品名
@@ -187,7 +187,7 @@ entity PCH_T07_QUOTATION_D : cuid, IF_CUID_FILED { //
 
 
 }
-entity PCH_T08_UPLOAD : cuid, IF_CUID_FILED { //
+entity PCH_T08_UPLOAD :  IF_CUID_FILED { //
   @title: '{i18n>PO_NO}' key PO_NO                                    : String(10) not null; //采购订单编号
   @title: '{i18n>D_NO}' key  D_NO                                     : Integer; //采购订单明细行号
                              @title: '{i18n>MAT_ID}' MAT_ID           : String(40); //品目
