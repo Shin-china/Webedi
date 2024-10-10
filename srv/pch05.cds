@@ -130,7 +130,9 @@ extend service TableService {
             T01.SUPPLIER,           // 仕入先 (聚合维度)
             T01.INV_MONTH,          // 月度
             T01.CURRENCY,
-            T01.TAX_RATE;
+            T01.TAX_RATE,
+            TAX_CODE,
+            GR_DATE;
 
     entity PCH_T05_ACCOUNT_DETAIL_SUM_END as
 
@@ -232,14 +234,22 @@ extend service TableService {
             key TAX_RATE,
             TAX_CODE,  
             GR_DATE,
+            CALC_10_TAX_AMOUNT,  
+            CALC_8_TAX_AMOUNT,   
+            SAP_TAX_AMOUNT_10,
+            SAP_TAX_AMOUNT_8,  
             DIFF_TAX_AMOUNT_10,
             DIFF_TAX_AMOUNT_8,
+            RECALC_TAX_AMOUNT_8,
+            RECALC_TAX_AMOUNT_10,
+            TOTAL_8_TAX_INCLUDED_AMOUNT,
+            TOTAL_10_TAX_INCLUDED_AMOUNT,
             // 计算借方/贷方标志
             case 
                 when DIFF_TAX_AMOUNT_10 is null and DIFF_TAX_AMOUNT_8 is null then null 
                 when DIFF_TAX_AMOUNT_10 >= 0 or DIFF_TAX_AMOUNT_8 >= 0 then 'S' 
                 else 'H' 
-            end as SHKZG : String,                      // 借方/贷方标志
+            end as SHKZG_FLAG : String,                      // 借方/贷方标志
 
             // 计算取引
             case 
@@ -260,12 +270,7 @@ extend service TableService {
                     when GR_DATE is not null then 
                         last_day(GR_DATE) 
                     else null 
-                end as lastDate : Date,  // 当月最后一天
-
-            // 使用 lastDate 设置各日期字段
-                last_day(GR_DATE) as documentDate : Date,   // 伝票日付
-                last_day(GR_DATE) as postingDate  : Date,   // 転記日付
-                last_day(GR_DATE) as taxRateDate  : Date,   // 税率定義の日付
+                end as LASTDATE : Date,  // 当月最后一天
 
                 // 生成递增的 invoiceId
                 row_number() over (partition by PO_BUKRS,SUPPLIER,INV_MONTH,CURRENCY,TAX_RATE order by GR_DATE) as invoiceId : String  // *請求書ID
