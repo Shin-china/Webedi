@@ -22,10 +22,18 @@ sap.ui.define([
                 this._LocalData.setProperty("/errors", "");
             }.bind(this));
         },
-
+        
         setBusy: function (busy) {
-            this._LocalData.setProperty("/busy", busy);
-        },
+            if (this._LocalData) { // 检查 _LocalData 是否已初始化
+                this._LocalData.setProperty("/busy", busy);
+            } else {
+                console.error("Local data model is not initialized.");
+            }
+        },        
+
+        // setBusy: function (busy) {
+        //     this._LocalData.setProperty("/busy", busy);
+        // },
 
         onExport: function () {
             var oTable = this.getView().byId("detailTable");
@@ -69,16 +77,6 @@ sap.ui.define([
                 oEvent.preventDefault(); // 取消导出操作
                 return;
             }
-            // var mExcelSettings = oEvt.getParameter("exportSettings");
-            // for (var i = 0; i < mExcelSettings.workbook.columns.length; i++) {
-            //     // this.CommTools._setExcelFormatDate(mExcelSettings, i, "VALID_DATE_FROM");
-            //     // this.CommTools._setExcelFormatDate(mExcelSettings, i, "VALID_DATE_TO");
-            //     // this.CommTools._setExcelFormatDateTime(mExcelSettings, i, "CD_TIME");
-            //     // this.CommTools._setExcelFormatDateTime(mExcelSettings, i, "UP_TIME");
-            //     // this.CommTools._setExcelFormatDateTime(mExcelSettings, i, "LAST_LOGIN_TIME");
-            //     }
-        
-            
 
             var oSettings = oEvent.getParameter("exportSettings");
             if (oSettings) {
@@ -124,14 +122,43 @@ sap.ui.define([
                 urlParameters: {
                     parms: JSON.stringify(oParams)  // 将参数序列化为JSON字符串
                 },
+
                 success: function (result) {
-                    sap.m.MessageToast.show("Action executed successfully.");
+                    // 获取选中行的 PO_NO 和 D_NO
+                    var message = aSelectedData.map(function (oData) {
+                        return `${oData.PO_NO}${oData.D_NO}`; // 组合 PO_NO 和 D_NO
+                    }).join(" ; "); // 用 " & " 连接多个行的信息
+                
+                    sap.m.MessageToast.show(`購買発注伝票 ${message} はSAPに反映されました.`);
                 },
+                
                 error: function (oError) {
                     sap.m.MessageToast.show("Error executing action.");
                 }
             });
-        },
+        //     success: function (result) {
+        //         // 确保 result 是一个有效的对象
+        //         if (result && result.status && result.message) {
+        //             var status = result.status;
+        //             var message = result.message;
+                    
+        //             // 根据接口返回的状态判断成功或错误
+        //             if (status === "success") {
+        //                 sap.m.MessageToast.show(message); // 成功消息
+        //             } else {
+        //                 sap.m.MessageToast.show(message); // 错误消息
+        //             }
+        //         } else {
+        //             sap.m.MessageToast.show("返回数据格式不正确。");
+        //         }
+        //     },
+        //     error: function (oError) {
+        //         // 尝试获取具体的错误消息
+        //         var errorMessage = oError.responseText || "发生了一个未知错误。";
+        //         sap.m.MessageToast.show(errorMessage);
+        //     }
+        // });
+    },
 
         _buildParams: function (aSelectedData) {
             // 根据选中的数据构建参数

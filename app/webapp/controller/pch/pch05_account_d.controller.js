@@ -72,17 +72,10 @@ sap.ui.define([
 									emailJson: {
 										TEMPLATE_ID: "UWEB_M008",
 										MAIL_TO: "xiaoyue.wang@sh.shin-china.com",
-										MAIL_BODY: [{
-											object: "content",
-											value: "hello"
-										},
-										{
-											object: "recipient",
-											value: "aa"
-										},
+										MAIL_BODY: [
 										{
 											object: "filename_1",
-											value: "aa.pdf"
+											value: "買掛金明細.pdf"
 										},
 										{
 											object: "filecontent_1",

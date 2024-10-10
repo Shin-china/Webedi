@@ -272,8 +272,8 @@ extend service TableService {
             end as TAX_BASE_AMOUNT : Decimal(15,0), // 税基金额
 
             ROW_NUMBER() OVER () as INVOICEID: Integer,
-            LAST_DAY(GR_DATE) as LASTDATE : Date,
 
+           null as LASTDATE: Date,
 
             '' as REFERENCE: String,                         // REFERENCE 字段赋值为 null
             '' as DETAILTEXT: String,                        // DETAILTEXT 字段赋值为 null
