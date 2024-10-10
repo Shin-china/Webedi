@@ -60,6 +60,11 @@ entity PCH_T03_PO_C : IF_CUID_FILED { //采购订单确认表
                              @title: '{i18n>STATUS}' STATUS                     : String(1); //状态
                              @title: '{i18n>ExtNumber}' ExtNumber               : String(35); //参照
                              @title: '{i18n>RelevantQuantity}' RelevantQuantity : Decimal(18, 3); //減少数量
+                             TO_PCH_T01                                    : Association to one PCH_T01_PO_H //采购订单抬头表
+                                                                            on TO_PCH_T01.PO_NO = PO_NO;
+                             TO_PCH_T02                                    : Association to one PCH_T02_PO_D //采购订单抬头表
+                                                                            on TO_PCH_T02.PO_NO = PO_NO 
+                                                                            and TO_PCH_T02.D_NO = D_NO
 }
 
 entity PCH_T04_PAYMENT_H : IF_CUID_FILED { //付款申请表抬头表
@@ -120,6 +125,7 @@ entity PCH_T06_QUOTATION_H : cuid, IF_CUID_FILED { //
   @title: '{i18n>LOCATION}' LOCATION             : String(50); //量産場所
   @title: '{i18n>VALIDATE_START}' VALIDATE_START : Date; //見積有効開始日
   @title: '{i18n>VALIDATE_END}' VALIDATE_END     : Date; //見積有効終了日
+  @title: '{i18n>PLANT_ID}' PLANT_ID             : String(4); //工厂
   @title: '{i18n>SALES_NUMBER}' SALES_NUMBER     : String(50); //販売見積番号
   @title: '{i18n>QUO_NUMBER}' QUO_NUMBER         : String(50); //販売見積バージョン
   @title: '{i18n>STATUS}' STATUS                 : String(50); //ステータス
