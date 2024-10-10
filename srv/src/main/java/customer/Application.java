@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 import java.net.URL;
 
@@ -13,10 +14,12 @@ import java.net.URL;
 @ComponentScan({ "com.sap.cloud.sdk", "customer" })
 @ServletComponentScan({ "com.sap.cloud.sdk", "customer" })
 @EnableAutoConfiguration(exclude = { SecurityAutoConfiguration.class })
+@EnableScheduling
 public class Application {
 
 	public static void main(String[] args) {
 		URL url = Application.class.getResource("datasource.properties");
+
 		if (url != null) {
 			String path = url.getPath();
 			System.setProperty("hikaricp.configurationFile", path);
