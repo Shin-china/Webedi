@@ -244,6 +244,13 @@ extend service TableService {
             RECALC_TAX_AMOUNT_10,
             TOTAL_8_TAX_INCLUDED_AMOUNT,
             TOTAL_10_TAX_INCLUDED_AMOUNT,
+
+            case 
+                when DIFF_TAX_AMOUNT_10 IS NOT NULL THEN DIFF_TAX_AMOUNT_10
+                when DIFF_TAX_AMOUNT_8 IS NOT NULL THEN DIFF_TAX_AMOUNT_8
+                else NULL
+            end AS DIFF_TAX_AMOUNT :Decimal(15, 2),
+
             // 计算借方/贷方标志
             case 
                 when DIFF_TAX_AMOUNT_10 is null and DIFF_TAX_AMOUNT_8 is null then null 
@@ -264,8 +271,13 @@ extend service TableService {
                 else null 
             end as TAX_BASE_AMOUNT : Decimal(15,0), // 税基金额
 
-                // 生成递增的 invoiceId
-                row_number() over (partition by PO_BUKRS,SUPPLIER,INV_MONTH,CURRENCY,TAX_RATE order by GR_DATE) as invoiceId : String  // *請求書ID
+            ROW_NUMBER() OVER () as INVOICEID: Integer,
+
+            '' as REFERENCE: String,                         // REFERENCE 字段赋值为 null
+            '' as DETAILTEXT: String,                        // DETAILTEXT 字段赋值为 null
+            12600000 as ACCOUNT: String,                     // account 字段赋值为 12600000
+            'RE' as DOCUMENTTYPE: String,                    // documentType 字段固定值为 'RE'
+            'TAX' as HEADERTEXT: String                      // headertext 字段固定值为 'TAX'
                 
                 }
 

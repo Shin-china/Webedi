@@ -15,7 +15,7 @@
 
         <f:DynamicPageHeader id="DynamicPageHeader" pinnable="true">
             <f:content>
-                <smartFilterBar:SmartFilterBar id="smartFilterBar" entitySet="PCH_T05_ACCOUNT_DETAIL_SUM_FINAL" persistencyKey="PCH_T05_ACCOUNT_DETAIL" showFilterConfiguration="true">
+                <smartFilterBar:SmartFilterBar id="smartFilterBar" entitySet="PCH_T05_ACCOUNT_DETAIL_EXCEL" persistencyKey="PCH_T05_ACCOUNT_DETAIL" showFilterConfiguration="true">
                     <smartFilterBar:controlConfiguration>
 
                     <smartFilterBar:ControlConfiguration id="PCH_PO_BUKRS"      key="PO_BUKRS"             visibleInAdvancedArea="true" label="{pch>PO_BUKRS}"                index="1"/>
@@ -31,8 +31,10 @@
   <!-- </f:DynamicPageHeader> -->
 
 
-    <smartTable:SmartTable id="ID" enableAutoColumnWidth="true" entitySet="PCH_T05_ACCOUNT_DETAIL_SUM_FINAL" 
-        ignoredFields=""  initiallyVisibleFields="PO_BUKRS,INV_MONTH,SUPPLIER,CALC_10_TAX_AMOUNT,CALC_8_TAX_AMOUNT,SAP_TAX_AMOUNT_10,SAP_TAX_AMOUNT_8,RECALC_TAX_AMOUNT_10,RECALC_TAX_AMOUNT_8,DIFF_TAX_AMOUNT_10,DIFF_TAX_AMOUNT_8,TOTAL_10_TAX_INCLUDED_AMOUNT,TOTAL_8_TAX_INCLUDED_AMOUNT" 
+    <smartTable:SmartTable id="ID" enableAutoColumnWidth="true" entitySet="PCH_T05_ACCOUNT_DETAIL_EXCEL" 
+        ignoredFields=""   
+        requestAtLeastFields="TAX_CODE,SHKZG_FLAG,TRANSACTION,TAX_BASE_AMOUNT,REFERENCE, DETAILTEXT, ACCOUNT, DOCUMENTTYPE, HEADERTEXT, DIFF_TAX_AMOUNT, INVOICEID" 
+        initiallyVisibleFields="PO_BUKRS,INV_MONTH,SUPPLIER,CALC_10_TAX_AMOUNT,CALC_8_TAX_AMOUNT,SAP_TAX_AMOUNT_10,SAP_TAX_AMOUNT_8,RECALC_TAX_AMOUNT_10,RECALC_TAX_AMOUNT_8,DIFF_TAX_AMOUNT_10,DIFF_TAX_AMOUNT_8,TOTAL_10_TAX_INCLUDED_AMOUNT,TOTAL_8_TAX_INCLUDED_AMOUNT,TAX_CODE,SHKZG_FLAG,TRANSACTION,TAX_BASE_AMOUNT,REFERENCE, DETAILTEXT, ACCOUNT, DOCUMENTTYPE, HEADERTEXT, DIFF_TAX_AMOUNT, INVOICEID" 
         smartFilterId="smartFilterBar" enableExport="true" beforeExport="onBeforeExport" 
         useVariantManagement="true" useTablePersonalisation="true" header="{pch>TITLE_RESULT}" showRowCount="true" persistencyKey="pch05_SmartTableAnalytical_Explored" enableAutoBinding="true">
     
@@ -194,6 +196,140 @@
         <Text id="textTotal8TaxAmount" text="{TOTAL_8_TAX_INCLUDED_AMOUNT}"/>
     </table:template>
 </table:Column>
+
+<table:Column id="colTaxCode" width="10rem" sortProperty="TAX_CODE" filterProperty="TAX_CODE" visible="false">
+    <table:customData>
+        <core:CustomData key="p13nData" value='{"columnKey":"TAX_CODE", "leadingProperty":"TAX_CODE", "sortProperty":"TAX_CODE", "filterProperty":"TAX_CODE"}'/>
+    </table:customData>
+    <table:label>
+        <Label id="labelTaxCode" text="{pch>TAX_CODE}"/>
+    </table:label>
+    <table:template>
+        <Text id="textTaxCode" text="{TAX_CODE}"/>
+    </table:template>
+</table:Column>
+
+<table:Column id="colTaxamount" width="10rem" sortProperty="TAX_BASE_AMOUNT" filterProperty="TAX_BASE_AMOUNT" visible="false">
+    <table:customData>
+        <core:CustomData key="p13nData" value='{"columnKey":"TAX_BASE_AMOUNT", "leadingProperty":"TAX_BASE_AMOUNT", "sortProperty":"TAX_BASE_AMOUNT", "filterProperty":"TAX_BASE_AMOUNT"}'/>
+    </table:customData>
+    <table:label>
+        <Label id="labelTaxamount" text="{pch>TAX_BASE_AMOUNT}"/>
+    </table:label>
+    <table:template>
+        <Text id="textTaxamount" text="{TAX_BASE_AMOUNT}"/>
+    </table:template>
+</table:Column>
+
+<table:Column id="colshkzg" width="10rem" sortProperty="SHKZG_FLAG" filterProperty="SHKZG_FLAG" visible="false">
+    <table:customData>
+        <core:CustomData key="p13nData" value='{"columnKey":"SHKZG_FLAG", "leadingProperty":"SHKZG_FLAG", "sortProperty":"SHKZG_FLAG", "filterProperty":"SHKZG_FLAG"}'/>
+    </table:customData>
+    <table:label>
+        <Label id="labelshkzg" text="{pch>SHKZG_FLAG}"/>
+    </table:label>
+    <table:template>
+        <Text id="textshkzg" text="{SHKZG_FLAG}"/>
+    </table:template>
+</table:Column>
+
+<table:Column id="colTransaction" width="10rem" sortProperty="TRANSACTION" filterProperty="TRANSACTION" visible="false">
+    <table:customData>
+        <core:CustomData key="p13nData" value='{"columnKey":"TRANSACTION", "leadingProperty":"TRANSACTION", "sortProperty":"TRANSACTION", "filterProperty":"TRANSACTION"}'/>
+    </table:customData>
+    <table:label>
+        <Label id="labelTransaction" text="{pch>TRANSACTION}"/>
+    </table:label>
+    <table:template>
+        <Text id="textTransaction" text="{TRANSACTION}"/>
+    </table:template>
+</table:Column>
+
+<table:Column id="colReference" width="10rem" sortProperty="REFERENCE" filterProperty="REFERENCE" visible="false">
+    <table:customData>
+        <core:CustomData key="p13nData" value='{"columnKey":"REFERENCE", "leadingProperty":"REFERENCE", "sortProperty":"REFERENCE", "filterProperty":"REFERENCE"}'/>
+    </table:customData>
+    <table:label>
+        <Label id="labelReference" text="{pch>REFERENCE}"/>
+    </table:label>
+    <table:template>
+        <Text id="textReference" text="{REFERENCE}"/>
+    </table:template>
+</table:Column>
+
+<table:Column id="colDetailText" width="10rem" sortProperty="DETAILTEXT" filterProperty="DETAILTEXT" visible="false">
+    <table:customData>
+        <core:CustomData key="p13nData" value='{"columnKey":"DETAILTEXT", "leadingProperty":"DETAILTEXT", "sortProperty":"DETAILTEXT", "filterProperty":"DETAILTEXT"}'/>
+    </table:customData>
+    <table:label>
+        <Label id="labelDetailText" text="{pch>DETAILTEXT}"/>
+    </table:label>
+    <table:template>
+        <Text id="textDetailText" text="{DETAILTEXT}"/>
+    </table:template>
+</table:Column>
+
+<table:Column id="colAccount" width="10rem" sortProperty="ACCOUNT" filterProperty="ACCOUNT" visible="false">
+    <table:customData>
+        <core:CustomData key="p13nData" value='{"columnKey":"ACCOUNT", "leadingProperty":"ACCOUNT", "sortProperty":"ACCOUNT", "filterProperty":"ACCOUNT"}'/>
+    </table:customData>
+    <table:label>
+        <Label id="labelAccount" text="{pch>ACCOUNT}"/>
+    </table:label>
+    <table:template>
+        <Text id="textAccount" text="{ACCOUNT}"/>
+    </table:template>
+</table:Column>
+
+<table:Column id="colDocumentType" width="10rem" sortProperty="DOCUMENTTYPE" filterProperty="DOCUMENTTYPE" visible="false">
+    <table:customData>
+        <core:CustomData key="p13nData" value='{"columnKey":"DOCUMENTTYPE", "leadingProperty":"DOCUMENTTYPE", "sortProperty":"DOCUMENTTYPE", "filterProperty":"DOCUMENTTYPE"}'/>
+    </table:customData>
+    <table:label>
+        <Label id="labelDocumentType" text="{pch>DOCUMENTTYPE}"/>
+    </table:label>
+    <table:template>
+        <Text id="textDocumentType" text="{DOCUMENTTYPE}"/>
+    </table:template>
+</table:Column>
+
+<table:Column id="colHeaderText" width="10rem" sortProperty="HEADERTEXT" filterProperty="HEADERTEXT" visible="false">
+    <table:customData>
+        <core:CustomData key="p13nData" value='{"columnKey":"HEADERTEXT", "leadingProperty":"HEADERTEXT", "sortProperty":"HEADERTEXT", "filterProperty":"HEADERTEXT"}'/>
+    </table:customData>
+    <table:label>
+        <Label id="labelHeaderText" text="{pch>HEADERTEXT}"/>
+    </table:label>
+    <table:template>
+        <Text id="textHeaderText" text="{HEADERTEXT}"/>
+    </table:template>
+</table:Column>
+
+<table:Column id="colDiffTaxAmount" width="10rem" sortProperty="DIFF_TAX_AMOUNT" filterProperty="DIFF_TAX_AMOUNT" visible="false">
+    <table:customData>
+        <core:CustomData key="p13nData" value='{"columnKey":"DIFF_TAX_AMOUNT", "leadingProperty":"DIFF_TAX_AMOUNT", "sortProperty":"DIFF_TAX_AMOUNT", "filterProperty":"DIFF_TAX_AMOUNT"}'/>
+    </table:customData>
+    <table:label>
+        <Label id="labelDiffTaxAmount" text="{pch>DIFF_TAX_AMOUNT}"/>
+    </table:label>
+    <table:template>
+        <Text id="textDiffTaxAmount" text="{DIFF_TAX_AMOUNT}"/>
+    </table:template>
+</table:Column>
+
+<table:Column id="colInvoiceId" width="10rem" sortProperty="INVOICEID" filterProperty="INVOICEID" visible="false">
+    <table:customData>
+        <core:CustomData key="p13nData" value='{"columnKey":"INVOICEID", "leadingProperty":"INVOICEID", "sortProperty":"INVOICEID", "filterProperty":"INVOICEID"}'/>
+    </table:customData>
+    <table:label>
+        <Label id="labelInvoiceId" text="{pch>INVOICEID}"/>
+    </table:label>
+    <table:template>
+        <Text id="textInvoiceId" text="{INVOICEID}"/>
+    </table:template>
+</table:Column>
+
+
 </table:columns>
         </table:Table>
     </smartTable:SmartTable>
