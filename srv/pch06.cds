@@ -50,7 +50,7 @@ extend service TableService {
 
 }
 
-
+annotate TableService.PCH_T03_PO_C with @odata.draft.enabled;
 annotate TableService.PCH_T06_PO_ITEM with {
     PO_NO @(Common : {ValueList : {
         entity     : 'PCH_T03_PO_ITEM',
