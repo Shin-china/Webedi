@@ -264,14 +264,6 @@ extend service TableService {
                 else null 
             end as TAX_BASE_AMOUNT : Decimal(15,0), // 税基金额
 
-
-            // 计算当月最后一天
-                case 
-                    when GR_DATE is not null then 
-                        last_day(GR_DATE) 
-                    else null 
-                end as LASTDATE : Date,  // 当月最后一天
-
                 // 生成递增的 invoiceId
                 row_number() over (partition by PO_BUKRS,SUPPLIER,INV_MONTH,CURRENCY,TAX_RATE order by GR_DATE) as invoiceId : String  // *請求書ID
                 
