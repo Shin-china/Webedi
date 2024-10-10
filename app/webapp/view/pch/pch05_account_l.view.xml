@@ -33,8 +33,8 @@
 
     <smartTable:SmartTable id="ID" enableAutoColumnWidth="true" entitySet="PCH_T05_ACCOUNT_DETAIL_EXCEL" 
         ignoredFields=""   
-        requestAtLeastFields="TAX_CODE,SHKZG_FLAG,TRANSACTION,TAX_BASE_AMOUNT,REFERENCE, DETAILTEXT, ACCOUNT, DOCUMENTTYPE, HEADERTEXT, DIFF_TAX_AMOUNT, INVOICEID" 
-        initiallyVisibleFields="PO_BUKRS,INV_MONTH,SUPPLIER,CALC_10_TAX_AMOUNT,CALC_8_TAX_AMOUNT,SAP_TAX_AMOUNT_10,SAP_TAX_AMOUNT_8,RECALC_TAX_AMOUNT_10,RECALC_TAX_AMOUNT_8,DIFF_TAX_AMOUNT_10,DIFF_TAX_AMOUNT_8,TOTAL_10_TAX_INCLUDED_AMOUNT,TOTAL_8_TAX_INCLUDED_AMOUNT,TAX_CODE,SHKZG_FLAG,TRANSACTION,TAX_BASE_AMOUNT,REFERENCE, DETAILTEXT, ACCOUNT, DOCUMENTTYPE, HEADERTEXT, DIFF_TAX_AMOUNT, INVOICEID" 
+        requestAtLeastFields="TAX_CODE,SHKZG_FLAG,TRANSACTION,TAX_BASE_AMOUNT,REFERENCE, DETAILTEXT, ACCOUNT, DOCUMENTTYPE, HEADERTEXT, DIFF_TAX_AMOUNT, INVOICEID,CURRENCY,LASTDATE" 
+        initiallyVisibleFields="PO_BUKRS,INV_MONTH,SUPPLIER,CALC_10_TAX_AMOUNT,CALC_8_TAX_AMOUNT,SAP_TAX_AMOUNT_10,SAP_TAX_AMOUNT_8,RECALC_TAX_AMOUNT_10,RECALC_TAX_AMOUNT_8,DIFF_TAX_AMOUNT_10,DIFF_TAX_AMOUNT_8,TOTAL_10_TAX_INCLUDED_AMOUNT,TOTAL_8_TAX_INCLUDED_AMOUNT,TAX_CODE,SHKZG_FLAG,TRANSACTION,TAX_BASE_AMOUNT,REFERENCE, DETAILTEXT, ACCOUNT, DOCUMENTTYPE, HEADERTEXT, DIFF_TAX_AMOUNT, INVOICEID,CURRENCY,LASTDATE" 
         smartFilterId="smartFilterBar" enableExport="true" beforeExport="onBeforeExport" 
         useVariantManagement="true" useTablePersonalisation="true" header="{pch>TITLE_RESULT}" showRowCount="true" persistencyKey="pch05_SmartTableAnalytical_Explored" enableAutoBinding="true">
     
@@ -326,6 +326,30 @@
     </table:label>
     <table:template>
         <Text id="textInvoiceId" text="{INVOICEID}"/>
+    </table:template>
+</table:Column>
+
+<table:Column id="colcurrency" width="10rem" sortProperty="CURRECNY" filterProperty="CURRECNY" visible="false">
+    <table:customData>
+        <core:CustomData key="p13nData" value='{"columnKey":"CURRECNY", "leadingProperty":"CURRECNY", "sortProperty":"CURRECNY", "filterProperty":"CURRECNY"}'/>
+    </table:customData>
+    <table:label>
+        <Label id="labelcurrency" text="{pch>CURRECNY}"/>
+    </table:label>
+    <table:template>
+        <Text id="textcurrency" text="{CURRECNY}"/>
+    </table:template>
+</table:Column>
+
+<table:Column id="collastdate" width="10rem" sortProperty="LASTDATE" filterProperty="LASTDATE" visible="false">
+    <table:customData>
+        <core:CustomData key="p13nData" value='{"columnKey":"LASTDATE", "leadingProperty":"LASTDATE", "sortProperty":"LASTDATE", "filterProperty":"LASTDATE"}'/>
+    </table:customData>
+    <table:label>
+        <Label id="labellastdate" text="{pch>LASTDATE}"/>
+    </table:label>
+    <table:template>
+        <Text id="textlastdate" text="{LASTDATE}"/>
     </table:template>
 </table:Column>
 
