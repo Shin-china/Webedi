@@ -56,20 +56,10 @@ annotate TableService.PCH_T06_PO_ITEM with {
         entity     : 'PCH_T03_PO_ITEM',
         Parameters : [
             {
-                $Type             : 'Common.ValueListParameterInOut',
-                LocalDataProperty : 'PLANT_ID_FROM',
-                ValueListProperty : 'PLANT_ID'
-            },
-            {
                 $Type             : 'Common.ValueListParameterOut',
-                LocalDataProperty : 'LOCATION_FROM',
-                ValueListProperty : 'LOCATION_ID'
+                LocalDataProperty : 'PO_NO',
+                ValueListProperty : 'PO_NO'
             },
-            {
-                $Type             : 'Common.ValueListParameterOut',
-                LocalDataProperty : 'TO_LOCATION_FROM/LOCATION_NAME',
-                ValueListProperty : 'LOCATION_NAME'
-            }
         ]
     }});
    
