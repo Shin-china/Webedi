@@ -66,12 +66,12 @@ extend service TableService {
         select from PCH_T04_PAYMENT as 
 
     ![distinct] {
-        KEY INV_NO,                    // 发票号
         KEY PO_NO,                     // UMC発注番号
         KEY D_NO,                      // 明細番号 
-        KEY TAX_RATE,                  // INV税率
-        KEY UNIT_PRICE,
-        KEY EXCHANGE,                  // 換算レート
+        TAX_RATE,                      // INV税率
+        UNIT_PRICE,
+        EXCHANGE,                      // 換算レート
+        INV_NO,                        // 发票号
         SUPPLIER,                      // 仕入先
         PO_ORG,                        // 購買組織
         SUPPLIER_DESCRIPTION,          // 業者名
@@ -126,7 +126,7 @@ extend service TableService {
         case 
             when CURRENCY = 'JPY' then cast(PRICE_AMOUNT as Decimal(18,3))
             when CURRENCY in ('USD', 'EUR') then cast(floor(PRICE_AMOUNT * EXCHANGE) as Decimal(18,0))
-        end as BASE_AMOUNT_EXCLUDING_TAX : Decimal(18,0),   //基準通貨金額税抜
+        end as BASE_AMOUNT_EXCLUDING_TAX : Decimal(18,3),   //基準通貨金額税抜
     }
 
  entity PCH_T04_PAYMENT_SUM_FZ1 as

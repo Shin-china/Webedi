@@ -1,6 +1,5 @@
 package customer.service.sys;
 
-import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +29,11 @@ public class ObjectStoreService {
     @Autowired
     private T12ConfigDao Config;
 
+    // Consu
+
     // Initialization S3 Client
     public void initS3Client() {
+
         // Get S3 Information
         List<T12Config> S3Config = Config.get("S3");
         for (T12Config config : S3Config) {
@@ -42,7 +44,7 @@ public class ObjectStoreService {
                 case "S3_ACCESS_SECRET":
                     S3_SECRET_ACCESS_KEY = config.getConValue();
                     break;
-                case "S3_URI":
+                case "S3_HOST":
                     S3_URL = config.getConValue();
                     break;
                 case "S3_BUCKET":
@@ -50,6 +52,7 @@ public class ObjectStoreService {
                     break;
                 case "S3_REGION":
                     S3_REGION = config.getConValue();
+                    break;
                 default:
                     break;
             }
@@ -65,8 +68,6 @@ public class ObjectStoreService {
                     .credentialsProvider(
                             StaticCredentialsProvider
                                     .create(AwsBasicCredentials.create(S3_ACCESS_KEY_ID, S3_SECRET_ACCESS_KEY)))
-                    // .endpointOverride(URI.create(S3_URL))
-                    .serviceConfiguration(item -> item.pathStyleAccessEnabled(true).checksumValidationEnabled(false))
                     .region(Region.of(S3_REGION))
                     .build();
         }
@@ -75,8 +76,9 @@ public class ObjectStoreService {
 
     // Get S3 List
     public List<S3Object> getS3List() throws S3Exception {
+        S3Client s3Client = getS3Client();
         ListObjectsRequest listObjects = ListObjectsRequest.builder().bucket(S3_BUCKET).build();
-        ListObjectsResponse res = getS3Client().listObjects(listObjects);
+        ListObjectsResponse res = s3Client.listObjects(listObjects);
         return res.contents();
     }
 }

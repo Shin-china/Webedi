@@ -26,7 +26,7 @@ sap.ui.define(
 
         return new Promise(function (resolve, reject) {
           // check if running in localhost
-          if (window.location.hostname === "localhost" || window.location.hostname === "211.144.197.139") {
+          if (window.location.hostname === "localhost" || window.location.hostname === "220.248.121.53") {
             // 本地开发打印
             that._getOAuthToken(_that).then(
               function (token) {
@@ -103,7 +103,7 @@ sap.ui.define(
             };
             return new Promise(function (resolve, reject) {
               // check if running in localhost
-              if (window.location.hostname === "localhost" || window.location.hostname === "211.144.197.139") {
+              if (window.location.hostname === "localhost" || window.location.hostname === "220.248.121.53") {
                 // 本地开发打印
                 that._getOAuthToken(_that).then(
                   function (token) {
