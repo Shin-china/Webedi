@@ -111,7 +111,7 @@ public class Pch01saveDao extends Dao {
 
         try {
             db.run(Delete.from(Pch_.PCH_T03_PO_C)
-            .where(o -> o.PO_NO().eq(PO_NO).and(o.D_NO().eq(D_NO)).and(o.DELIVERY_DATE().eq(DELIVERY_DATE))));
+            .where(o -> o.PO_NO().eq(PO_NO).and(o.D_NO().eq(D_NO)).and(o.DELIVERY_DATE().gt(DELIVERY_DATE))));
             return true;
         } catch (Exception e) {
             return false;
