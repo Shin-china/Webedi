@@ -61,16 +61,12 @@ sap.ui.define([
 				return;
 			}
 		
-			//2. 必输字段检查   ・必須入力データは「区分」「発注番号」、「明細番号」、「納品日」、「納品数量」
+			//2. 必输字段检查   ・必須入力データは「発注番号」、「明細番号」、「納品日」、「納品数量」
 			var hasError = false;
 
 			data.forEach(function (item) {
 				var missingFields = [];
 
-				if (!item.PO_TYPE || item.PO_TYPE === "") {
-					//missingFields.push("区分"); // 区分
-					missingFields.push("区分");
-				}
 				if (!item.PO_NO || item.PO_NO === "") {
 					//missingFields.push("発注番号"); // 発注番号
 					missingFields.push("発注番号");
@@ -121,12 +117,17 @@ sap.ui.define([
 		
 						// 更新画面上的model
 						jsonModel.setData(myArray.list);
-		
-						if (myArray.err) {
+
+						myArray.list.forEach(function (item) {
+							if (item.SUCCESS == false) { // 根据实际数据结构判断是否存在错误字段
+								hasError = true; // 后台检查有错误
+							}
+						});
+
+						if (hasError) {
 							// that._setEditable(false);
 							that.getView().getModel("viewModel").setProperty("/isButtonEnabled", false);
-						}else{
-							that.getView().getModel("viewModel").setProperty("/isButtonEnabled", true);
+						
 						}
 
 						that._setBusy(false);
@@ -181,7 +182,7 @@ sap.ui.define([
 				//获得 sheet
 				var oSheet = oWB.Sheets[oWB.SheetNames[0]];
 				//设置头
-				var header = ["PO_TYPE","PO_NO","D_NO","MAT_ID","PO_D_TXZ01","PO_PUR_QTY","PO_PUR_UNIT","SUPPLIER_MAT","DELIVERY_DATE","QUANTITY"];   //,"CUSTOMER_MAT" 存疑
+				var header = ["PO_NO","D_NO","MAT_ID","PO_D_TXZ01","PO_PUR_QTY","PO_PUR_UNIT","SUPPLIER_MAT","DELIVERY_DATE","QUANTITY","REFERTO"];   //,"CUSTOMER_MAT" 存疑
 				// 通过 XLSX 将sheet转为json  要转的oSheet，header标题，range起始行（1：第二行开始）
 				var jsonS = XLSX.utils.sheet_to_json(oSheet,{header: header, range: 2});
 				jsonModel.setData(jsonS);
