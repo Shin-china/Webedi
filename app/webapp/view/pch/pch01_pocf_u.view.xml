@@ -53,17 +53,6 @@ xmlns:fb="sap.ui.comp.filterbar">
 					</t:template>
 				</t:Column>
 
-				<!-- 区分 -->
-				<t:Column id="_IDGenColumn3" width="10rem" sortProperty="PO_TYPE" filterProperty="PO_TYPE">
-					<t:customData>
-						<core:CustomData key="p13nData" value='\{"columnKey":"PO_TYPE", "leadingProperty":"PO_TYPE"}'/>
-					</t:customData>
-					<Label id="_IDGenLabel6" text="{pch>U_PO_TYPE}"/>
-					<t:template>
-						<Text id="_IDGenText7" text="{workInfo>PO_TYPE}"/>
-					</t:template>
-				</t:Column>
-
 				<!-- 発注番号 -->
 				<t:Column id="_IDGenColumn4" width="10rem" sortProperty="PO_NO" filterProperty="PO_NO">
 					<t:customData>
@@ -148,7 +137,7 @@ xmlns:fb="sap.ui.comp.filterbar">
 					</t:customData>
 					<Label id="_IDGenLabel14" text="{pch>U_QUANTITY}"/>
 					<t:template>
-						<Text id="_IDGenText15" text="{path: 'workInfo>QUANTITY',type: 'sap.ui.model.type.Date'}"/>
+						<Text id="_IDGenText15" text="{workInfo>QUANTITY}"/>
 					</t:template>
 				</t:Column>		
 
@@ -172,7 +161,21 @@ xmlns:fb="sap.ui.comp.filterbar">
 					<t:template>
 						<Text id="_IDGenText17" text="{workInfo>SUPPLIER_MAT}"/>
 					</t:template>
-				</t:Column>						
+				</t:Column>	
+
+				<!-- 参照 -->
+				<t:Column id="_IDGenColumn14" width="10rem" sortProperty="REFERTO" filterProperty="REFERTO">
+					<t:customData>
+						<core:CustomData key="p13nData" value='\{"columnKey":"REFERTO", "leadingProperty":"REFERTO"}'/>
+					</t:customData>
+					<Label id="_IDGenLabel17" text="{pch>U_REFERTO}"/>
+					<t:template>
+						<Text id="_IDGenText18" text="{workInfo>REFERTO}"/>
+					</t:template>
+				</t:Column>	
+
+
+
 			</t:columns>
 		</t:Table>
 	</Panel>

@@ -1,5 +1,9 @@
 package customer.service.pch;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.stereotype.Component;
@@ -130,5 +134,25 @@ public class CheckDataService extends Service {
         }
 
     }
+
+    public BigDecimal checkQUANTITY( String lastpo,int lastdn) {
+
+        BigDecimal relevantquantityData = podataDao.getByID2(lastdn,lastpo);
+
+        return relevantquantityData;
+    }
+
+    public LocalDate RelevantQuantitydate(Integer d_NO ,String po_NO ) {
+
+        LocalDate lastdeliverydateData = podataDao.getLastDeliveryDate(d_NO,po_NO);
+        return lastdeliverydateData;  
             
+    }
+
+    public BigDecimal getT02POquantity(String PO_NO, Integer D_NO) {
+
+        BigDecimal PoQuantity = podndataDao.getQuantity(PO_NO, D_NO);
+        return PoQuantity;
+
+    }
 }

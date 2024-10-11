@@ -110,7 +110,7 @@ public class S4OdataTools {
         }
 
         if (!StringTool.isNull(info.getFilter())) {
-            requestRead.addQueryParameter("$filter", info.getFilter()); // 过滤条件
+            requestRead.addQueryParameter("$filter", StringTool.encodeURIComponent(info.getFilter())); // 过滤条件
         }
         if (!StringTool.isNull(info.getFormat())) {
             requestRead.addQueryParameter("$format", info.getFormat()); // 返回结果的格式 一般为 json

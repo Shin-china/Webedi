@@ -61,7 +61,6 @@ public class Pch01 {
     @JSONField(name = "DELETE")
     private String DELETE;
 
-
     /**
      * @return the sUCCESS
      */
@@ -176,8 +175,8 @@ public class Pch01 {
         return MSG_TEXT;
     }
 
-    public void setMSG_TEXT(String mSG_TEXT) {
-        MSG_TEXT = mSG_TEXT;
+    public String setMSG_TEXT(String mSG_TEXT) {
+        return MSG_TEXT = mSG_TEXT;
     }
 
     public String getMAT_ID() {
