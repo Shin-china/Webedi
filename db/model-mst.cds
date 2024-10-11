@@ -39,7 +39,6 @@ entity MST_T03_SAP_BP : IF_CUID_FILED { //工厂表
                                      @title: '{i18n>REGIONS}' REGIONS       : String(40); //地域(都道府県)
                                      @title: '{i18n>PLACE_NAME}' PLACE_NAME : String(40); //地名/番地-号
 
-                                     @title: '{i18n>TITLE}' TITLE           : String(18); //タイトル (敬称)
 }
 
 
