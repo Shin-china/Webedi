@@ -30,7 +30,7 @@
 
         <f:DynamicPageHeader id="DynamicPageHeader" pinnable="true">
             <f:content>
-                <smartFilterBar:SmartFilterBar id="smartFilterBar" entitySet="PCH_T04_PAYMENT_UNIT" persistencyKey="PCH_T04_PAYMENT" showFilterConfiguration="true">
+                <smartFilterBar:SmartFilterBar id="smartFilterBar" entitySet="PCH_T04_PAYMENT_UNIT" persistencyKey="PCH_T04_PAYMENT_UNIT" showFilterConfiguration="true">
                     <smartFilterBar:controlConfiguration>
 
                     <smartFilterBar:ControlConfiguration id="PCH_SUPPLIER"    key="SUPPLIER"             visibleInAdvancedArea="true" label="{pch>SUPPLIER}"                  index="1"/>

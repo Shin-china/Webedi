@@ -71,7 +71,11 @@ sap.ui.define([
 								var mailobj = {
 									emailJson: {
 										TEMPLATE_ID: "UWEB_M008",
-										MAIL_TO: "xiaoyue.wang@sh.shin-china.com",
+										// MAIL_TO: "xiaoyue.wang@sh.shin-china.com",
+                                        MAIL_TO: [
+                                            "xiaoyue.wang@sh.shin-china.com",
+                                            "huifang.ji@sh.shin-china.com"
+                                        ].join(", "), // 使用逗号和空格连接
 										MAIL_BODY: [
 										{
 											object: "filename_1",

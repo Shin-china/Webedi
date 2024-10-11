@@ -99,7 +99,10 @@ sap.ui.define([
                 var mailobj = {
                     emailJson: {
                         TEMPLATE_ID: "UWEB_M007",
-                        MAIL_TO: "xiaoyue.wang@sh.shin-china.com",
+                        MAIL_TO: [
+                            "xiaoyue.wang@sh.shin-china.com",
+                            "huifang.ji@sh.shin-china.com"
+                        ].join(", "), // 使用逗号和空格连接
                         MAIL_BODY: [
                             {
                                 object: "仕入先名称",
@@ -174,7 +177,7 @@ sap.ui.define([
 			let options = { compact: true, ignoreComment: true, spaces: 4 };
 			var IdList = that._TableDataList("detailTable", 'SUPPLIER')
 			if (IdList) {
-				that.PrintTool._getPrintDataInfo(that, IdList, "/PCH_T04_PAYMENT_FINAL", "SUPPLIER").then((oData) => {
+				that.PrintTool._getPrintDataInfo(that, IdList, "/PCH_T04_PAYMENT_SUM_HJ6", "SUPPLIER").then((oData) => {
 					let sResponse = json2xml(oData, options);
 					console.log(sResponse)
 					that.setSysConFig().then(res => {
