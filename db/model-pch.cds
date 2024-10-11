@@ -60,11 +60,12 @@ entity PCH_T03_PO_C : IF_CUID_FILED { //采购订单确认表
                              @title: '{i18n>STATUS}' STATUS                     : String(1); //状态
                              @title: '{i18n>ExtNumber}' ExtNumber               : String(35); //参照
                              @title: '{i18n>RelevantQuantity}' RelevantQuantity : Decimal(18, 3); //減少数量
-                             TO_PCH_T01                                    : Association to one PCH_T01_PO_H //采购订单抬头表
-                                                                            on TO_PCH_T01.PO_NO = PO_NO;
-                             TO_PCH_T02                                    : Association to one PCH_T02_PO_D //采购订单抬头表
-                                                                            on TO_PCH_T02.PO_NO = PO_NO 
-                                                                            and TO_PCH_T02.D_NO = D_NO
+                             TO_PCH_T01                                         : Association to one PCH_T01_PO_H //采购订单抬头表
+                                                                                    on TO_PCH_T01.PO_NO = PO_NO;
+                             TO_PCH_T02                                         : Association to one PCH_T02_PO_D //采购订单抬头表
+                                                                                    on  TO_PCH_T02.PO_NO = PO_NO
+                                                                                    and TO_PCH_T02.D_NO  = D_NO
+
 }
 
 entity PCH_T04_PAYMENT_H : IF_CUID_FILED { //付款申请表抬头表
@@ -135,6 +136,9 @@ entity PCH_T06_QUOTATION_H : cuid, IF_CUID_FILED { //
   @title: '{i18n>TOTAL_HKD}' TOTAL_HKD           : Decimal(18, 3); //合計金額（香港ドル）
   @title: '{i18n>TOTAL_THB}' TOTAL_THB           : Decimal(18, 3); //合計金額（タイバーツ）
 
+  @title: '{i18n>CD_DATE}' CD_DATE               : Date; //创建日
+  @title: '{i18n>CD_DATE_TIME}' CD_DATE_TIME     : String(10); //创建日时
+
 }
 entity PCH_T07_QUOTATION_D : cuid, IF_CUID_FILED { //
   @title: '{i18n>QUO_NUMBER}' QUO_NUMBER                 : String(10); //購買見積番号
@@ -149,6 +153,8 @@ entity PCH_T07_QUOTATION_D : cuid, IF_CUID_FILED { //
   @title: '{i18n>MAKER}' MAKER                           : String(15); //メーカ
   @title: '{i18n>UWEB_USER}' UWEB_USER                   : String(50); //仕入先連絡先（WEB EDIの担当）（必須）
   @title: '{i18n>PERSON_NO1}' BP_NUMBER                  : Integer; //SAP BP（任意）
+  @title: '{i18n>INITIAL_OBJ}' INITIAL_OBJ               : String(1); //イ二シ儿費用対象
+  @title: '{i18n>QTY}' QTY                               : Decimal(18, 3); //数量
 
   @title: '{i18n>PERSON_NO1}' PERSON_NO1                 : Integer; //員数1
   @title: '{i18n>PERSON_NO2}' PERSON_NO2                 : Integer; //員数2
@@ -193,21 +199,25 @@ entity PCH_T07_QUOTATION_D : cuid, IF_CUID_FILED { //
   @title: '{i18n>UMC_COMMENT_2}' UMC_COMMENT_2           : String(200); //UMC購買コメント２
   @title: '{i18n>FINAL_CHOICE}' FINAL_CHOICE             : String(50); //最終決定
   @title: '{i18n>STATUS}' STATUS                         : String(50); //ステータス
+  @title: '{i18n>CD_DATE}' CD_DATE                       : Date; //创建日
+  @title: '{i18n>CD_DATE_TIME}' CD_DATE_TIME             : String(10); //创建日时
 
 
 }
 entity PCH_T08_UPLOAD : IF_CUID_FILED { //
-  @title: '{i18n>PO_NO}' key PO_NO                                    : String(10) not null; //采购订单编号
-  @title: '{i18n>D_NO}' key  D_NO                                     : Integer; //采购订单明细行号
-                            @title: '{i18n>TYPE}' TYPE                : String(1); //種類
-                             @title: '{i18n>MAT_ID}' MAT_ID           : String(40); //品目
-                             @title: '{i18n>MAT_NAME}' MAT_NAME       : String(40); //物料名称
-                             @title: '{i18n>QUANTITY}' QUANTITY       : Decimal(18, 3); //発注数
-                             @title: '{i18n>PLANT_ID}' PLANT_ID       : String(4); //工厂
-                             @title: '{i18n>STORAGE_LOC}' LOCATION_ID : String(4); //库存地点
-                             @title: '{i18n>INPUT_DATE}' INPUT_DATE   : Date; //納入日付
-                             @title: '{i18n>INPUT_QTY}' INPUT_QTY     : Decimal(18, 3); //納入数
-                             @title: '{i18n>ExtNumber}' ExtNumber     : String(35); //参照
+  @title: '{i18n>PO_NO}' key PO_NO                                      : String(10) not null; //采购订单编号
+  @title: '{i18n>D_NO}' key  D_NO                                       : Integer; //采购订单明细行号
+                             @title: '{i18n>TYPE}' TYPE                 : String(1); //種類
+                             @title: '{i18n>MAT_ID}' MAT_ID             : String(40); //品目
+                             @title: '{i18n>MAT_NAME}' MAT_NAME         : String(40); //物料名称
+                             @title: '{i18n>QUANTITY}' QUANTITY         : Decimal(18, 3); //発注数
+                             @title: '{i18n>PLANT_ID}' PLANT_ID         : String(4); //工厂
+                             @title: '{i18n>STORAGE_LOC}' LOCATION_ID   : String(4); //库存地点
+                             @title: '{i18n>INPUT_DATE}' INPUT_DATE     : Date; //納入日付
+                             @title: '{i18n>INPUT_QTY}' INPUT_QTY       : Decimal(18, 3); //納入数
+                             @title: '{i18n>ExtNumber}' ExtNumber       : String(35); //参照
+                             @title: '{i18n>CD_DATE}' CD_DATE           : Date; //创建日
+                             @title: '{i18n>CD_DATE_TIME}' CD_DATE_TIME : String(10); //创建日时
 
 
 }
