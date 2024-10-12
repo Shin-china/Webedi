@@ -207,7 +207,40 @@ sap.ui.define([], function () {
           return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`; 
         }
        
+      },
+  
+      /**
+       * 组合2个参数
+       * @param {*} date1 
+       * @param {*} date2 
+       * @returns 
+       */
+      combination: function (date1,date2) {
+        var re = ""
+        if (date1 ) {
+          re =re+date1;
+        }
+        if (date2 ) {
+          re =re+date2;
+        }
+        return re;
+      },
+
+      /**
+       * 进行单价计算 除法
+       * @param {*} date1  除数
+       * @param {*} date2  被除数
+       * @returns 
+       */
+      getPrice: function (date1,date2) {
+        var re = 0.000
+        if(date1 &&  date2){
+          var qty = date1/date2
+          return qty.toFixed(3);
+        }
+        return re;
       }
+      
     };
   });
   
