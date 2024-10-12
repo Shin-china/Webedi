@@ -154,7 +154,7 @@ sap.ui.define([
          */
         setSysConFig: function () {
           var that = this;
-          let _entity = "/SYS_T20_CONFIG";
+          let _entity = "/SYS_T12_CONFIG";
           let filters = [];
           return new Promise(function (resolve, reject) {
             that._readEntryByServiceAndEntity(_entity, filters, null).then((oData) => {
