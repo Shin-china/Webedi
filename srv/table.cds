@@ -20,7 +20,7 @@ service TableService {
     entity PCH_T02_PO_D as projection on PCH.T02_PO_D;
     entity PCH_T03_PO_C as projection on PCH.T03_PO_C;
    entity MST_T05_SAP_BP_PURCHASE as projection on MST.T05_SAP_BP_PURCHASE;
-   entity SYS_T20_CONFIG as projection on SYS.T20_CONFIG;
+  //  entity SYS_T20_CONFIG as projection on SYS.T20_CONFIG;
    entity SYS_T12_CONFIG as projection on SYS.T12_CONFIG;
   entity SYS_T09_USER_2_PLANT as 
     projection on SYS.T09_USER_2_PLANT{
