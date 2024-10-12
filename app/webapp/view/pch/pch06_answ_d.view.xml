@@ -14,334 +14,328 @@
 	xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
 
 
-	<uxap:ObjectPageLayout busy="{localModel>/isBusy}" showFooter="true">
-	
-	
-		<uxap:headerTitle>
-			<uxap:ObjectPageHeader objectTitle="{pch>PCH06_TITLE}">
-				<Button id="_IDGenButto" icon="sap-icon://home" tooltip="nav-back" press="navToHome"/>
-			</uxap:ObjectPageHeader>
-		</uxap:headerTitle>
-		<uxap:sections>
-			<uxap:ObjectPageSection title="{pch>SECTION__HEAD}">
-				<uxap:subSections>
-					<uxap:ObjectPageSubSection>
-						<uxap:blocks>
 
-							<l:VerticalLayout class="sapUiSmallMarginEnd">
+	<f:DynamicPage id="dynamicPageId" headerExpanded="true" showFooter="true" busy="{localModel>/isBusy}">
+		<f:title>
+			<f:DynamicPageTitle id="DynamicPageTitle">
+				<f:heading>
+					<Title id="Title" text="{pch>PCH06_TITLE}"/>
 
-								<FlexBox wrap="Wrap" fitContainer="true">
-									<!-- po -->
-									<l:VerticalLayout class="sapUiSmallMarginEnd" visible="true">
-										<smartfield:SmartLabel labelFor="H__PO_NO" text="{pch>LABEL_H__PO_NO}"/>
-										<smartfield:SmartField id="H__PO_NO" value="{PO_NO}" showLabel="false" width="15em" editable="true"/>
-									</l:VerticalLayout>
-
-								</FlexBox>
-								
-							</l:VerticalLayout>
-							<OverflowToolbar id="OverflowToolbarId">
-								<content>
-									<ToolbarSpacer id="ToolbarSpacerId"/>
-									<Button id="_IDGenButton22" text="{pch>PCH03_BUTTON_SAV}" press="onSav" enabled="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'}], formatter: '.formatter.getEditableSaveCommon'}" width="4em"/>
-									<Button id="_IDGenButton23" text="{pch>PCH03_BUTTON_EDI}" press="onEdi" enabled="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'}], formatter: '.formatter.getEditableDCommon'}" width="4em"/>
-									<Button id="ButtonId3" text="{pch>BUTTON_H__TONGQI}"  press="onTongQi" />
-									<Button id="ButtonId4" text="{pch>BUTTON_H__JS}"  press="onJS" />
-								</content>
-							</OverflowToolbar>
-						</uxap:blocks>
-					</uxap:ObjectPageSubSection>
-				</uxap:subSections>
-			</uxap:ObjectPageSection>
-			<uxap:ObjectPageSection>
-				<uxap:subSections>
-					<uxap:ObjectPageSubSection title="{pch>SECTION__DETAILS}">
-						<uxap:blocks>
-
-							<smartTable:SmartTable id="smartTable" enableAutoColumnWidth="true" showFullScreenButton="true" persistencyKey="mst06_receiptprintTable" entitySet="PCH_T03_PO_C" requestAtLeastFields="" smartFilterId="smartFilterBar" beforeExport="onBeforeExport" enableExport="true" useVariantManagement="true" useTablePersonalisation="true" initiallyVisibleFields="" tableType="Table" showRowCount="true" beforeRebindTable="onRebind" placeToolbarInTable="true"  enableAutoBinding="false">
-      						
-								<smartTable:customToolbar>
-								<OverflowToolbar id="ID_header">
-									<content>
-										<ToolbarSpacer id="ID_ToolbarSpacer" />
-										<Button id="ButtonId1" text="{com>BUTTON_COP}" enabled="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'}], formatter: '.formatter.getEditableSaveCommon'}" icon="sap-icon://copy" press="onCop" />
-										<Button id="ButtonId2" text="{com>BUTTON_DELETE}" enabled="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'}], formatter: '.formatter.getEditableSaveCommon'}" icon="sap-icon://delete" press="onDelete" />
-										<Button id="_IDGenButton24" text="{pch>PCH03_BUTTON_QUE}" press="onQue" enabled="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'}], formatter: '.formatter.getEditableDCommon'}" width="8em"/>
-									</content>
-								</OverflowToolbar>
-								</smartTable:customToolbar>
-								<table:Table id="detailTable" rowMode="Auto"  rowActionCount="1">
-
-									<!-- UMC発注番号 -->
-									<table:Column visible="true" autoResizable="true" sortProperty="TO_PCH_T01/PO_NO" filterProperty="TO_PCH_T01/PO_NO" width="12em">
-										<table:customData>
-											<core:CustomData key="p13nData" value='\{"columnKey":"TO_PCH_T01/PO_NO", "leadingProperty":"TO_PCH_T01/PO_NO"}'/>
-										</table:customData>
-										<table:label>
-											<Label text="{pch>LABEL_D__PO_NO}"/>
-										</table:label>
-										<table:template>
-											<Text text="{TO_PCH_T01/PO_NO}" editable="false"/>
-										</table:template>
-									</table:Column>
-									<!-- 明細番号 -->
-									<table:Column visible="true" autoResizable="true" sortProperty="TO_PCH_T02/D_NO" filterProperty="TO_PCH_T02/D_NO" width="12em">
-										<table:customData>
-											<core:CustomData key="p13nData" value='\{"columnKey":"TO_PCH_T02/D_NO", "leadingProperty":"TO_PCH_T02/D_NO"}'/>
-										</table:customData>
-										<table:label>
-											<Label text="{pch>LABEL_D__D_NO}"/>
-										</table:label>
-										<table:template>
-											<Text text="{TO_PCH_T02/D_NO}" editable="false"/>
-										</table:template>
-									</table:Column>
-									<!-- 品目コード -->
-									<table:Column visible="true" autoResizable="true" sortProperty="TO_PCH_T02/MAT_ID" filterProperty="TO_PCH_T02/MAT_ID" width="12em">
-										<table:customData>
-											<core:CustomData key="p13nData" value='\{"columnKey":"TO_PCH_T02/MAT_ID", "leadingProperty":"TO_PCH_T02/MAT_ID"}'/>
-										</table:customData>
-										<table:label>
-											<Label text="{pch>LABEL_D__MAT_ID}"/>
-										</table:label>
-										<table:template>
-											<Text text="{TO_PCH_T02/MAT_ID}" editable="false"/>
-										</table:template>
-									</table:Column>
-									<!-- 品目テキスト -->
-									<table:Column visible="true" autoResizable="true" sortProperty="TO_PCH_T02/PO_D_TXZ01" filterProperty="TO_PCH_T02/PO_D_TXZ01" width="12em">
-										<table:customData>
-											<core:CustomData key="p13nData" value='\{"columnKey":"TO_PCH_T02/PO_D_TXZ01", "leadingProperty":"TO_PCH_T02/PO_D_TXZ01"}'/>
-										</table:customData>
-										<table:label>
-											<Label text="{pch>LABEL_D__PO_D_TXZ01}"/>
-										</table:label>
-										<table:template>
-											<Text text="{TO_PCH_T02/PO_D_TXZ01}" editable="false"/>
-										</table:template>
-									</table:Column>
-									<!-- 納品日 -->
-									<table:Column visible="true" autoResizable="true" sortProperty="DELIVERY_DATE" filterProperty="DELIVERY_DATE" width="12em">
-										<table:customData>
-											<core:CustomData key="p13nData" value='\{"columnKey":"DELIVERY_DATE", "leadingProperty":"DELIVERY_DATE"}'/>
-										</table:customData>
-										<table:label>
-											<Label text="{pch>LABEL_D__DELIVERY_DATE}"/>
-										</table:label>
-										<table:template>
-											<smartfield:SmartField value="{DELIVERY_DATE}" editable="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'}], formatter: '.formatter.getEditableSaveCommon'}"/>
-										</table:template>
-									</table:Column>
-									<!-- 納品数量 -->
-									<table:Column visible="true" autoResizable="true" sortProperty="QUANTITY" filterProperty="QUANTITY" width="12em">
-										<table:customData>
-											<core:CustomData key="p13nData" value='\{"columnKey":"QUANTITY", "leadingProperty":"QUANTITY"}'/>
-										</table:customData>
-										<table:label>
-											<Label text="{pch>LABEL_D__QUANTITY}"/>
-										</table:label>
-										<table:template>
-											<smartfield:SmartField value="{QUANTITY}" editable="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'}], formatter: '.formatter.getEditableSaveCommon'}"/>
-										</table:template>
-									</table:Column>
-									<!-- ステータス -->
-									<table:Column visible="true" autoResizable="true" sortProperty="TO_PCH_T02/STATUS" filterProperty="TO_PCH_T02/STATUS" width="12em">
-										<table:customData>
-											<core:CustomData key="p13nData" value='\{"columnKey":"TO_PCH_T02/STATUS", "leadingProperty":"TO_PCH_T02/STATUS"}'/>
-										</table:customData>
-										<table:label>
-											<Label text="{pch>LABEL_D__STATUS}"/>
-										</table:label>
-										<table:template>
-											<Text text="{TO_PCH_T02/STATUS}" editable="false"/>
-										</table:template>
-									</table:Column>
-									<!-- 発注数 -->
-									<table:Column visible="true" autoResizable="true" sortProperty="TO_PCH_T02/PO_PUR_QTY" filterProperty="TO_PCH_T02/PO_PUR_QTY" width="12em">
-										<table:customData>
-											<core:CustomData key="p13nData" value='\{"columnKey":"TO_PCH_T02/PO_PUR_QTY", "leadingProperty":"TO_PCH_T02/PO_PUR_QTY"}'/>
-										</table:customData>
-										<table:label>
-											<Label text="{pch>LABEL_D__PO_PUR_QTY}"/>
-										</table:label>
-										<table:template>
-											<Text text="{TO_PCH_T02/PO_PUR_QTY}" editable="false"/>
-										</table:template>
-									</table:Column>
-									<!-- 単位 -->
-									<table:Column visible="true" autoResizable="true" sortProperty="TO_PCH_T02/PO_PUR_UNIT" filterProperty="TO_PCH_T02/PO_PUR_UNIT" width="12em">
-										<table:customData>
-											<core:CustomData key="p13nData" value='\{"columnKey":"TO_PCH_T02/PO_PUR_UNIT", "leadingProperty":"TO_PCH_T02/PO_PUR_UNIT"}'/>
-										</table:customData>
-										<table:label>
-											<Label text="{pch>LABEL_D__PO_PUR_UNIT}"/>
-										</table:label>
-										<table:template>
-											<Text text="{TO_PCH_T02/PO_PUR_UNIT}" editable="false"/>
-										</table:template>
-									</table:Column>
-									<!-- 業者コード -->
-									<table:Column visible="true" autoResizable="true" sortProperty="TO_PCH_T01/SUPPLIER" filterProperty="TO_PCH_T01/SUPPLIER" width="12em">
-										<table:customData>
-											<core:CustomData key="p13nData" value='\{"columnKey":"TO_PCH_T01/SUPPLIER", "leadingProperty":"TO_PCH_T01/SUPPLIER"}'/>
-										</table:customData>
-										<table:label>
-											<Label text="{pch>LABEL_D__SUPPLIER}"/>
-										</table:label>
-										<table:template>
-											<Text text="{TO_PCH_T01/SUPPLIER}" editable="false"/>
-										</table:template>
-									</table:Column>
-									<!-- 業者名 -->
-									<!-- <table:Column visible="true" autoResizable="true" sortProperty="BP_NAME1" filterProperty="BP_NAME1" width="12em">
-										<table:customData>
-											<core:CustomData key="p13nData" value='\{"columnKey":"BP_NAME1", "leadingProperty":"BP_NAME1"}'/>
-										</table:customData>
-										<table:label>
-											<Label text="{pch>LABEL_D__BP_NAME1}"/>
-										</table:label>
-										<table:template>
-											<Text text="{BP_NAME1}" editable="false"/>
-										</table:template>
-									</table:Column> -->
-									<!-- todo納品先 -->
-									<table:Column visible="true" autoResizable="true" sortProperty="TO_PCH_T02/STORAGE_LOC" filterProperty="TO_PCH_T02/STORAGE_LOC" width="12em">
-										<table:customData>
-											<core:CustomData key="p13nData" value='\{"columnKey":"TO_PCH_T02/STORAGE_LOC", "leadingProperty":"TO_PCH_T02/STORAGE_LOC"}'/>
-										</table:customData>
-										<table:label>
-											<Label text="{pch>LABEL_D__STORAGE_LOC}"/>
-										</table:label>
-										<table:template>
-											<Text text="{parts:[{path:'TO_PCH_T02/STORAGE_LOC'},{path:'TO_PCH_T02/STORAGE_TXT'}], formatter: '.formatter.combination'}" editable="false"/>
-										</table:template>
-									</table:Column>
-									<!-- 通貨 -->
-									<table:Column visible="true" autoResizable="true" sortProperty="TO_PCH_T02/CURRENCY" filterProperty="TO_PCH_T02/CURRENCY" width="12em">
-										<table:customData>
-											<core:CustomData key="p13nData" value='\{"columnKey":"TO_PCH_T02/CURRENCY", "leadingProperty":"TO_PCH_T02/CURRENCY"}'/>
-										</table:customData>
-										<table:label>
-											<Label text="{pch>LABEL_D__CURRENCY}"/>
-										</table:label>
-										<table:template>
-											<Text text="{TO_PCH_T02/CURRENCY}" editable="false"/>
-										</table:template>
-									</table:Column>
-									<!-- todo価格単位 -->
-									<table:Column visible="true" autoResizable="true" sortProperty="TO_PCH_T02/DEL_PRICE" filterProperty="TO_PCH_T02/DEL_PRICE" width="12em">
-										<table:customData>
-											<core:CustomData key="p13nData" value='\{"columnKey":"TO_PCH_T02/DEL_PRICE", "leadingProperty":"TO_PCH_T02/DEL_PRICE"}'/>
-										</table:customData>
-										<table:label>
-											<Label text="{pch>LABEL_D__DEL_PRICE}"/>
-										</table:label>
-										<table:template>
-											<Text text="{parts:[{path:'TO_PCH_T02/DEL_PRICE'},{path:'TO_PCH_T02/UNIT_PRICE'}], formatter: '.formatter.getPrice'}" editable="false"/>
-										</table:template>
-									</table:Column>
-									<!-- 発注金額 -->
-									<table:Column visible="true" autoResizable="true" sortProperty="TO_PCH_T02/DEL_AMOUNT" filterProperty="TO_PCH_T02/DEL_AMOUNT" width="12em">
-										<table:customData>
-											<core:CustomData key="p13nData" value='\{"columnKey":"TO_PCH_T02/DEL_AMOUNT", "leadingProperty":"TO_PCH_T02/DEL_AMOUNT"}'/>
-										</table:customData>
-										<table:label>
-											<Label text="{pch>LABEL_D__DEL_AMOUNT}"/>
-										</table:label>
-										<table:template>
-											<Text text="{TO_PCH_T02/DEL_AMOUNT}" editable="false"/>
-										</table:template>
-									</table:Column>
-									<!-- 発注日 -->
-									<table:Column visible="true" autoResizable="true" sortProperty="TO_PCH_T01/PO_DATE" filterProperty="TO_PCH_T01/PO_DATE" width="12em">
-										<table:customData>
-											<core:CustomData key="p13nData" value='\{"columnKey":"TO_PCH_T01/PO_DATE", "leadingProperty":"TO_PCH_T01/PO_DATE"}'/>
-										</table:customData>
-										<table:label>
-											<Label text="{pch>LABEL_D__PO_DATE}"/>
-										</table:label>
-										<table:template>
-											<smartfield:SmartField value="{TO_PCH_T01/PO_DATE}" contextEditable="false"/>
-										</table:template>
-									</table:Column>
-									<!-- 顧客品番 -->
-									<table:Column visible="true" autoResizable="true" sortProperty="TO_PCH_T02/CUSTOMER_MAT" filterProperty="TO_PCH_T02/CUSTOMER_MAT" width="12em">
-										<table:customData>
-											<core:CustomData key="p13nData" value='\{"columnKey":"TO_PCH_T02/CUSTOMER_MAT", "leadingProperty":"TO_PCH_T02/CUSTOMER_MAT"}'/>
-										</table:customData>
-										<table:label>
-											<Label text="{pch>LABEL_D__CUSTOMER_MAT}"/>
-										</table:label>
-										<table:template>
-											<Text text="{TO_PCH_T02/CUSTOMER_MAT}" editable="false"/>
-										</table:template>
-									</table:Column>
-									<!-- 仕入先品目コード -->
-									<table:Column visible="true" autoResizable="true" sortProperty="TO_PCH_T02/SUPPLIER_MAT" filterProperty="TO_PCH_T02/SUPPLIER_MAT" width="12em">
-										<table:customData>
-											<core:CustomData key="p13nData" value='\{"columnKey":"TO_PCH_T02/SUPPLIER_MAT", "leadingProperty":"TO_PCH_T02/SUPPLIER_MAT"}'/>
-										</table:customData>
-										<table:label>
-											<Label text="{pch>LABEL_D__SUPPLIER_MAT}"/>
-										</table:label>
-										<table:template>
-											<Text text="{TO_PCH_T02/SUPPLIER_MAT}" editable="false"/>
-										</table:template>
-									</table:Column>
-									<!-- 所要日付 -->
-									<table:Column visible="true" autoResizable="true" sortProperty="TO_PCH_T02/PO_D_DATE" filterProperty="TO_PCH_T02/PO_D_DATE" width="12em">
-										<table:customData>
-											<core:CustomData key="p13nData" value='\{"columnKey":"TO_PCH_T02/PO_D_DATE", "leadingProperty":"TO_PCH_T02/PO_D_DATE"}'/>
-										</table:customData>
-										<table:label>
-											<Label text="{pch>LABEL_D__PO_D_DATE}"/>
-										</table:label>
-										<table:template>
-											<smartfield:SmartField value="{TO_PCH_T02/PO_D_DATE}" contextEditable="false"/>
-										</table:template>
-									</table:Column>
-									<!-- 備考 -->
-									<table:Column visible="true" autoResizable="true" sortProperty="TO_PCH_T02/MEMO" filterProperty="TO_PCH_T02/MEMO" width="12em">
-										<table:customData>
-											<core:CustomData key="p13nData" value='\{"columnKey":"TO_PCH_T02/MEMO", "leadingProperty":"TO_PCH_T02/MEMO"}'/>
-										</table:customData>
-										<table:label>
-											<Label text="{pch>LABEL_D__MEMO}"/>
-										</table:label>
-										<table:template>
-											<Text text="{TO_PCH_T02/MEMO}" editable="false"/>
-										</table:template>
-									</table:Column>
-									
-									<!-- 参照 -->
-									<table:Column visible="true" autoResizable="true" sortProperty="ExtNumber" filterProperty="ExtNumber" width="12em">
-										<table:customData>
-											<core:CustomData key="p13nData" value='\{"columnKey":"ExtNumber", "leadingProperty":"ExtNumber"}'/>
-										</table:customData>
-										<table:label>
-											<Label text="{pch>LABEL_D__ExtNumber}"/>
-										</table:label>
-										<table:template>
-											<smartfield:SmartField value="{ExtNumber}" editable="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'}], formatter: '.formatter.getEditableSaveCommon'}"/>
-										</table:template>
-									</table:Column>
-								</table:Table>
+				</f:heading>
+				<f:navigationActions>
+					<Button id="_IDGenButto" icon="sap-icon://home" tooltip="nav-back" press="navToHome"/>
+				</f:navigationActions>
+			</f:DynamicPageTitle>
+		</f:title>
 
 
-							</smartTable:SmartTable>
 
-						</uxap:blocks>
-					</uxap:ObjectPageSubSection>
-				</uxap:subSections>
-			</uxap:ObjectPageSection>
+		<f:header>
+			<f:DynamicPageHeader id="DynamicPageHeader" pinnable="true">
+				<f:content>
 
-		</uxap:sections>
-		<uxap:footer>
-			<OverflowToolbar id="otbFooter">
-				<Button icon="sap-icon://alert" text="{=${message>/}.length}" visible="{=${message>/}.length > 0}" type="Emphasized" press="onClickMessagePopover" id="messageButton">
-				</Button>
-			</OverflowToolbar>
-		</uxap:footer>
-	</uxap:ObjectPageLayout>
+					<smartFilterBar:SmartFilterBar id="smartFilterBar" useToolbar="false" entitySet="PCH_T03_PO_C" showGoOnFB="false" persistencyKey="mst02_receiptprintFilterBar"  showFilterConfiguration="false">
+						<smartFilterBar:controlConfiguration>
+						<smartFilterBar:ControlConfiguration id="PO_NO" key="PO_NO"  visibleInAdvancedArea="true"   />
+
+
+						</smartFilterBar:controlConfiguration>
+					</smartFilterBar:SmartFilterBar>
+
+				</f:content>
+				<OverflowToolbar id="OverflowToolbarId">
+					<content>
+						<ToolbarSpacer id="ToolbarSpacerId"/>
+						<Button id="_IDGenButton22" text="{pch>PCH03_BUTTON_SAV}" press="onSav" enabled="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'}], formatter: '.formatter.getEditableSaveCommon'}" width="8em"/>
+						<Button id="_IDGenButton23" text="{pch>PCH03_BUTTON_EDI}" press="onEdi" enabled="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'}], formatter: '.formatter.getEditableDCommon'}" width="8em"/>
+						<Button id="ButtonId3" text="{pch>BUTTON_H__TONGQI}"  press="onTongQi" />
+						<Button id="ButtonId4" text="{pch>BUTTON_H__JS}"  press="onJS" />
+						</content>
+				</OverflowToolbar>
+			</f:DynamicPageHeader>
+		</f:header>
+
+		<f:content>
+
+
+			<smartTable:SmartTable id="smartTable" enableAutoColumnWidth="true" showFullScreenButton="true" persistencyKey="mst02_receiptprintTable" entitySet="PCH_T03_PO_C" requestAtLeastFields="" smartFilterId="smartFilterBar" beforeExport="onBeforeExport" enableExport="true" useVariantManagement="true" useTablePersonalisation="true" initiallyVisibleFields="" tableType="Table" showRowCount="true" beforeRebindTable="onRebind" placeToolbarInTable="true" header="{com>TITLE_RESULT}" enableAutoBinding="false">
+
+				<smartTable:customToolbar>
+				<OverflowToolbar id="ID_header">
+					<content>
+						<ToolbarSpacer id="ID_ToolbarSpacer" />
+						<Button id="ButtonId1" text="{com>BUTTON_COP}" enabled="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'}], formatter: '.formatter.getEditableSaveCommon'}" icon="sap-icon://copy" press="onCop" />
+						<Button id="ButtonId2" text="{com>BUTTON_DELETE}" enabled="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'}], formatter: '.formatter.getEditableSaveCommon'}" icon="sap-icon://delete" press="onDelete" />
+						<Button id="_IDGenButton24" text="{pch>PCH03_BUTTON_QUE}" press="onQue" enabled="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'}], formatter: '.formatter.getEditableDCommon'}" width="8em"/>
+					</content>
+				</OverflowToolbar>
+				</smartTable:customToolbar>
+				<table:Table id="detailTable" rowMode="Auto"  rowActionCount="1">
+
+					<!-- UMC発注番号 -->
+					<table:Column visible="true" autoResizable="true" sortProperty="TO_PCH_T01/PO_NO" filterProperty="TO_PCH_T01/PO_NO" width="12em">
+						<table:customData>
+							<core:CustomData key="p13nData" value='\{"columnKey":"TO_PCH_T01/PO_NO", "leadingProperty":"TO_PCH_T01/PO_NO"}'/>
+						</table:customData>
+						<table:label>
+							<Label text="{pch>LABEL_D__PO_NO}"/>
+						</table:label>
+						<table:template>
+							<Text text="{TO_PCH_T01/PO_NO}" editable="false"/>
+						</table:template>
+					</table:Column>
+					<!-- 明細番号 -->
+					<table:Column visible="true" autoResizable="true" sortProperty="TO_PCH_T02/D_NO" filterProperty="TO_PCH_T02/D_NO" width="12em">
+						<table:customData>
+							<core:CustomData key="p13nData" value='\{"columnKey":"TO_PCH_T02/D_NO", "leadingProperty":"TO_PCH_T02/D_NO"}'/>
+						</table:customData>
+						<table:label>
+							<Label text="{pch>LABEL_D__D_NO}"/>
+						</table:label>
+						<table:template>
+							<Text text="{TO_PCH_T02/D_NO}" editable="false"/>
+						</table:template>
+					</table:Column>
+					<!-- 品目コード -->
+					<table:Column visible="true" autoResizable="true" sortProperty="TO_PCH_T02/MAT_ID" filterProperty="TO_PCH_T02/MAT_ID" width="12em">
+						<table:customData>
+							<core:CustomData key="p13nData" value='\{"columnKey":"TO_PCH_T02/MAT_ID", "leadingProperty":"TO_PCH_T02/MAT_ID"}'/>
+						</table:customData>
+						<table:label>
+							<Label text="{pch>LABEL_D__MAT_ID}"/>
+						</table:label>
+						<table:template>
+							<Text text="{TO_PCH_T02/MAT_ID}" editable="false"/>
+						</table:template>
+					</table:Column>
+					<!-- 品目テキスト -->
+					<table:Column visible="true" autoResizable="true" sortProperty="TO_PCH_T02/PO_D_TXZ01" filterProperty="TO_PCH_T02/PO_D_TXZ01" width="12em">
+						<table:customData>
+							<core:CustomData key="p13nData" value='\{"columnKey":"TO_PCH_T02/PO_D_TXZ01", "leadingProperty":"TO_PCH_T02/PO_D_TXZ01"}'/>
+						</table:customData>
+						<table:label>
+							<Label text="{pch>LABEL_D__PO_D_TXZ01}"/>
+						</table:label>
+						<table:template>
+							<Text text="{TO_PCH_T02/PO_D_TXZ01}" editable="false"/>
+						</table:template>
+					</table:Column>
+					<!-- 納品日 -->
+					<table:Column visible="true" autoResizable="true" sortProperty="DELIVERY_DATE" filterProperty="DELIVERY_DATE" width="12em">
+						<table:customData>
+							<core:CustomData key="p13nData" value='\{"columnKey":"DELIVERY_DATE", "leadingProperty":"DELIVERY_DATE"}'/>
+						</table:customData>
+						<table:label>
+							<Label text="{pch>LABEL_D__DELIVERY_DATE}"/>
+						</table:label>
+						<table:template>
+							<smartfield:SmartField value="{DELIVERY_DATE}" editable="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'}], formatter: '.formatter.getEditableSaveCommon'}"/>
+						</table:template>
+					</table:Column>
+					<!-- 納品数量 -->
+					<table:Column visible="true" autoResizable="true" sortProperty="QUANTITY" filterProperty="QUANTITY" width="12em">
+						<table:customData>
+							<core:CustomData key="p13nData" value='\{"columnKey":"QUANTITY", "leadingProperty":"QUANTITY"}'/>
+						</table:customData>
+						<table:label>
+							<Label text="{pch>LABEL_D__QUANTITY}"/>
+						</table:label>
+						<table:template>
+							<smartfield:SmartField value="{QUANTITY}" editable="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'}], formatter: '.formatter.getEditableSaveCommon'}"/>
+						</table:template>
+					</table:Column>
+					<!-- ステータス -->
+					<table:Column visible="true" autoResizable="true" sortProperty="TO_PCH_T02/STATUS" filterProperty="TO_PCH_T02/STATUS" width="12em">
+						<table:customData>
+							<core:CustomData key="p13nData" value='\{"columnKey":"TO_PCH_T02/STATUS", "leadingProperty":"TO_PCH_T02/STATUS"}'/>
+						</table:customData>
+						<table:label>
+							<Label text="{pch>LABEL_D__STATUS}"/>
+						</table:label>
+						<table:template>
+							<Text text="{TO_PCH_T02/STATUS}" editable="false"/>
+						</table:template>
+					</table:Column>
+					<!-- 発注数 -->
+					<table:Column visible="true" autoResizable="true" sortProperty="TO_PCH_T02/PO_PUR_QTY" filterProperty="TO_PCH_T02/PO_PUR_QTY" width="12em">
+						<table:customData>
+							<core:CustomData key="p13nData" value='\{"columnKey":"TO_PCH_T02/PO_PUR_QTY", "leadingProperty":"TO_PCH_T02/PO_PUR_QTY"}'/>
+						</table:customData>
+						<table:label>
+							<Label text="{pch>LABEL_D__PO_PUR_QTY}"/>
+						</table:label>
+						<table:template>
+							<Text text="{TO_PCH_T02/PO_PUR_QTY}" editable="false"/>
+						</table:template>
+					</table:Column>
+					<!-- 単位 -->
+					<table:Column visible="true" autoResizable="true" sortProperty="TO_PCH_T02/PO_PUR_UNIT" filterProperty="TO_PCH_T02/PO_PUR_UNIT" width="12em">
+						<table:customData>
+							<core:CustomData key="p13nData" value='\{"columnKey":"TO_PCH_T02/PO_PUR_UNIT", "leadingProperty":"TO_PCH_T02/PO_PUR_UNIT"}'/>
+						</table:customData>
+						<table:label>
+							<Label text="{pch>LABEL_D__PO_PUR_UNIT}"/>
+						</table:label>
+						<table:template>
+							<Text text="{TO_PCH_T02/PO_PUR_UNIT}" editable="false"/>
+						</table:template>
+					</table:Column>
+					<!-- 業者コード -->
+					<table:Column visible="true" autoResizable="true" sortProperty="TO_PCH_T01/SUPPLIER" filterProperty="TO_PCH_T01/SUPPLIER" width="12em">
+						<table:customData>
+							<core:CustomData key="p13nData" value='\{"columnKey":"TO_PCH_T01/SUPPLIER", "leadingProperty":"TO_PCH_T01/SUPPLIER"}'/>
+						</table:customData>
+						<table:label>
+							<Label text="{pch>LABEL_D__SUPPLIER}"/>
+						</table:label>
+						<table:template>
+							<Text text="{TO_PCH_T01/SUPPLIER}" editable="false"/>
+						</table:template>
+					</table:Column>
+					<!-- 業者名 -->
+					<!-- <table:Column visible="true" autoResizable="true" sortProperty="BP_NAME1" filterProperty="BP_NAME1" width="12em">
+						<table:customData>
+							<core:CustomData key="p13nData" value='\{"columnKey":"BP_NAME1", "leadingProperty":"BP_NAME1"}'/>
+						</table:customData>
+						<table:label>
+							<Label text="{pch>LABEL_D__BP_NAME1}"/>
+						</table:label>
+						<table:template>
+							<Text text="{BP_NAME1}" editable="false"/>
+						</table:template>
+					</table:Column> -->
+					<!-- todo納品先 -->
+					<table:Column visible="true" autoResizable="true" sortProperty="TO_PCH_T02/STORAGE_LOC" filterProperty="TO_PCH_T02/STORAGE_LOC" width="12em">
+						<table:customData>
+							<core:CustomData key="p13nData" value='\{"columnKey":"TO_PCH_T02/STORAGE_LOC", "leadingProperty":"TO_PCH_T02/STORAGE_LOC"}'/>
+						</table:customData>
+						<table:label>
+							<Label text="{pch>LABEL_D__STORAGE_LOC}"/>
+						</table:label>
+						<table:template>
+							<Text text="{parts:[{path:'TO_PCH_T02/STORAGE_LOC'},{path:'TO_PCH_T02/STORAGE_TXT'}], formatter: '.formatter.combination'}" editable="false"/>
+						</table:template>
+					</table:Column>
+					<!-- 通貨 -->
+					<table:Column visible="true" autoResizable="true" sortProperty="TO_PCH_T02/CURRENCY" filterProperty="TO_PCH_T02/CURRENCY" width="12em">
+						<table:customData>
+							<core:CustomData key="p13nData" value='\{"columnKey":"TO_PCH_T02/CURRENCY", "leadingProperty":"TO_PCH_T02/CURRENCY"}'/>
+						</table:customData>
+						<table:label>
+							<Label text="{pch>LABEL_D__CURRENCY}"/>
+						</table:label>
+						<table:template>
+							<Text text="{TO_PCH_T02/CURRENCY}" editable="false"/>
+						</table:template>
+					</table:Column>
+					<!-- todo価格単位 -->
+					<table:Column visible="true" autoResizable="true" sortProperty="TO_PCH_T02/DEL_PRICE" filterProperty="TO_PCH_T02/DEL_PRICE" width="12em">
+						<table:customData>
+							<core:CustomData key="p13nData" value='\{"columnKey":"TO_PCH_T02/DEL_PRICE", "leadingProperty":"TO_PCH_T02/DEL_PRICE"}'/>
+						</table:customData>
+						<table:label>
+							<Label text="{pch>LABEL_D__DEL_PRICE}"/>
+						</table:label>
+						<table:template>
+							<Text text="{parts:[{path:'TO_PCH_T02/DEL_PRICE'},{path:'TO_PCH_T02/UNIT_PRICE'}], formatter: '.formatter.getPrice'}" editable="false"/>
+						</table:template>
+					</table:Column>
+					<!-- 発注金額 -->
+					<table:Column visible="true" autoResizable="true" sortProperty="TO_PCH_T02/DEL_AMOUNT" filterProperty="TO_PCH_T02/DEL_AMOUNT" width="12em">
+						<table:customData>
+							<core:CustomData key="p13nData" value='\{"columnKey":"TO_PCH_T02/DEL_AMOUNT", "leadingProperty":"TO_PCH_T02/DEL_AMOUNT"}'/>
+						</table:customData>
+						<table:label>
+							<Label text="{pch>LABEL_D__DEL_AMOUNT}"/>
+						</table:label>
+						<table:template>
+							<Text text="{TO_PCH_T02/DEL_AMOUNT}" editable="false"/>
+						</table:template>
+					</table:Column>
+					<!-- 発注日 -->
+					<table:Column visible="true" autoResizable="true" sortProperty="TO_PCH_T01/PO_DATE" filterProperty="TO_PCH_T01/PO_DATE" width="12em">
+						<table:customData>
+							<core:CustomData key="p13nData" value='\{"columnKey":"TO_PCH_T01/PO_DATE", "leadingProperty":"TO_PCH_T01/PO_DATE"}'/>
+						</table:customData>
+						<table:label>
+							<Label text="{pch>LABEL_D__PO_DATE}"/>
+						</table:label>
+						<table:template>
+							<smartfield:SmartField value="{TO_PCH_T01/PO_DATE}" contextEditable="false"/>
+						</table:template>
+					</table:Column>
+					<!-- 顧客品番 -->
+					<table:Column visible="true" autoResizable="true" sortProperty="TO_PCH_T02/CUSTOMER_MAT" filterProperty="TO_PCH_T02/CUSTOMER_MAT" width="12em">
+						<table:customData>
+							<core:CustomData key="p13nData" value='\{"columnKey":"TO_PCH_T02/CUSTOMER_MAT", "leadingProperty":"TO_PCH_T02/CUSTOMER_MAT"}'/>
+						</table:customData>
+						<table:label>
+							<Label text="{pch>LABEL_D__CUSTOMER_MAT}"/>
+						</table:label>
+						<table:template>
+							<Text text="{TO_PCH_T02/CUSTOMER_MAT}" editable="false"/>
+						</table:template>
+					</table:Column>
+					<!-- 仕入先品目コード -->
+					<table:Column visible="true" autoResizable="true" sortProperty="TO_PCH_T02/SUPPLIER_MAT" filterProperty="TO_PCH_T02/SUPPLIER_MAT" width="12em">
+						<table:customData>
+							<core:CustomData key="p13nData" value='\{"columnKey":"TO_PCH_T02/SUPPLIER_MAT", "leadingProperty":"TO_PCH_T02/SUPPLIER_MAT"}'/>
+						</table:customData>
+						<table:label>
+							<Label text="{pch>LABEL_D__SUPPLIER_MAT}"/>
+						</table:label>
+						<table:template>
+							<Text text="{TO_PCH_T02/SUPPLIER_MAT}" editable="false"/>
+						</table:template>
+					</table:Column>
+					<!-- 所要日付 -->
+					<table:Column visible="true" autoResizable="true" sortProperty="TO_PCH_T02/PO_D_DATE" filterProperty="TO_PCH_T02/PO_D_DATE" width="12em">
+						<table:customData>
+							<core:CustomData key="p13nData" value='\{"columnKey":"TO_PCH_T02/PO_D_DATE", "leadingProperty":"TO_PCH_T02/PO_D_DATE"}'/>
+						</table:customData>
+						<table:label>
+							<Label text="{pch>LABEL_D__PO_D_DATE}"/>
+						</table:label>
+						<table:template>
+							<smartfield:SmartField value="{TO_PCH_T02/PO_D_DATE}" contextEditable="false"/>
+						</table:template>
+					</table:Column>
+					<!-- 備考 -->
+					<table:Column visible="true" autoResizable="true" sortProperty="TO_PCH_T02/MEMO" filterProperty="TO_PCH_T02/MEMO" width="12em">
+						<table:customData>
+							<core:CustomData key="p13nData" value='\{"columnKey":"TO_PCH_T02/MEMO", "leadingProperty":"TO_PCH_T02/MEMO"}'/>
+						</table:customData>
+						<table:label>
+							<Label text="{pch>LABEL_D__MEMO}"/>
+						</table:label>
+						<table:template>
+							<Text text="{TO_PCH_T02/MEMO}" editable="false"/>
+						</table:template>
+					</table:Column>
+					
+					<!-- 参照 -->
+					<table:Column visible="true" autoResizable="true" sortProperty="ExtNumber" filterProperty="ExtNumber" width="12em">
+						<table:customData>
+							<core:CustomData key="p13nData" value='\{"columnKey":"ExtNumber", "leadingProperty":"ExtNumber"}'/>
+						</table:customData>
+						<table:label>
+							<Label text="{pch>LABEL_D__ExtNumber}"/>
+						</table:label>
+						<table:template>
+							<smartfield:SmartField value="{ExtNumber}" editable="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'}], formatter: '.formatter.getEditableSaveCommon'}"/>
+						</table:template>
+					</table:Column>
+				</table:Table>
+
+
+			</smartTable:SmartTable>
+		</f:content>
+	<f:footer>
+      <OverflowToolbar id="otbFooter" visible="{=${message>/}.length > 0}">
+        <Button icon="sap-icon://alert" text="{=${message>/}.length}" visible="{=${message>/}.length > 0}" type="Emphasized" press="onClickMessagePopover" id="messageButton">
+        </Button>
+      </OverflowToolbar>
+    </f:footer>
+	</f:DynamicPage>
 
 </mvc:View>

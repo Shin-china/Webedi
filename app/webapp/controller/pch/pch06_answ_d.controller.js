@@ -24,6 +24,7 @@ sap.ui.define([
 		==============================*/
 		onJS: function (oEvent) {
 			var that = this;
+			var aFilters = this.getView().byId("smartFilterBar").getFilters();
 			
 			var oHeaderContext = this.getView().getBindingContext();
 			var oHeaderObject = oHeaderContext.getObject();
