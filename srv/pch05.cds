@@ -7,12 +7,12 @@ using {MST} from '../db/model-mst';
 extend service TableService {
 
     entity PCH_T05_ACCOUNT_DETAIL as
-        select from PCH.PCH_T05_PAYMENT_D as T05
-        left join PCH.PCH_T04_PAYMENT_H as T04
+        select from PCH.T05_PAYMENT_D as T05
+        left join PCH.T04_PAYMENT_H as T04
             on T05.INV_NO = T04.INV_NO
-        left join PCH.PCH_T01_PO_H as T01
+        left join PCH.T01_PO_H as T01
             on T05.PO_NO = T01.PO_NO
-        left join MST.MST_T03_SAP_BP as T03
+        left join MST.T03_SAP_BP as T03
             on T04.SUPPLIER = T03.LOG_NO
             
         distinct {

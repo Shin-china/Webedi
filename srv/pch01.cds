@@ -7,9 +7,9 @@ using {SYS} from '../db/model-sys';
 extend service TableService {
     //得到主页的菜单
     entity PCH_01_DL as
-        select  from PCH.PCH_T01_PO_H as T01
-        left join PCH.PCH_T02_PO_D as T02 on ( T02.PO_NO = T01.PO_NO )
-        left join MST.MST_T03_SAP_BP     as T03 on ( T03.BP_ID = T01.SUPPLIER)
+        select  from PCH.T01_PO_H as T01
+        left join PCH.T02_PO_D as T02 on ( T02.PO_NO = T01.PO_NO )
+        left join MST.T03_SAP_BP     as T03 on ( T03.BP_ID = T01.SUPPLIER)
         distinct{
             key T01.SUPPLIER,       
             T03.BP_NAME1,                   
@@ -41,7 +41,7 @@ extend service TableService {
 
    entity PCH_01_PLANT_CHECK  as 
         select from SYS.T09_USER_2_PLANT as T09
-        inner join PCH.PCH_T02_PO_D as T02
+        inner join PCH.T02_PO_D as T02
             on T09.PLANT_ID = T02.PLANT_ID  
         {
            key T09.PLANT_ID

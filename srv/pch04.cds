@@ -8,26 +8,26 @@ using { MST } from '../db/model-mst';
 extend service TableService {
 
     entity PCH_T04_PAYMENT as
-        select from PCH.PCH_T02_PO_D as T02
-        left join PCH.PCH_T05_PAYMENT_D as T05
+        select from PCH.T02_PO_D as T02
+        left join PCH.T05_PAYMENT_D as T05
             on (
                 T02.PO_NO = T05.PO_NO
                 and T02.D_NO = T05.D_NO
             )
-        left join PCH.PCH_T01_PO_H AS T01
+        left join PCH.T01_PO_H AS T01
             on (
                 T01.PO_NO = T05.PO_NO
             )
-        left join PCH.PCH_T04_PAYMENT_H as T04
+        left join PCH.T04_PAYMENT_H as T04
             on (
                 T05.INV_NO = T04.INV_NO
                 and T05.GL_YEAR = T04.GL_YEAR
             )
-        left join MST.MST_T03_SAP_BP as M03
+        left join MST.T03_SAP_BP as M03
             on (
                 T04.SUPPLIER = M03.BP_ID
             )
-        left join MST.MST_T05_SAP_BP_PURCHASE AS M04
+        left join MST.T05_SAP_BP_PURCHASE AS M04
             on (
                 M04.SUPPLIER = T01.SUPPLIER
                 and M04.PURCHASE_ORG = T01.PO_ORG

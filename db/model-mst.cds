@@ -4,7 +4,7 @@ using {COMM.IF_CUID_FILED as IF_CUID_FILED} from './model-common';
 using {COMM.CUID_FILED as CUID_FILED} from './model-common';
 using {cuid} from '@sap/cds/common';
 
-entity MST_T01_SAP_MAT : IF_CUID_FILED { //物料基本信息
+entity T01_SAP_MAT : IF_CUID_FILED { //物料基本信息
   @title: '{i18n>MAT_ID}' key MAT_ID                                 : String(18) not null; //物料编号
                               @title: '{i18n>MAT_UNIT}' MAT_UNIT     : String(3); //物料基本单位
                               @title: '{i18n>MAT_TYPE}' MAT_TYPE     : String(4); //物料类型区别字符MTART
@@ -24,7 +24,7 @@ entity T02_SAP_PLANT : IF_CUID_FILED { //工厂表
                                                                            on TO_LOCATIONS.PLANT_ID = PLANT_ID
 }
 
-entity MST_T03_SAP_BP : IF_CUID_FILED { //工厂表
+entity T03_SAP_BP : IF_CUID_FILED { //工厂表
   @title: '{i18n>SUPPLIER_CODE}' key BP_ID                                  : String(10) not null; //BPcode
                                      @title: '{i18n>BP_TYPE}' BP_TYPE       : String(5); //BP类型
                                      @title: '{i18n>BP_NAME1}' BP_NAME1     : String(40); //BP Name 1
@@ -53,7 +53,7 @@ entity T04_SAP_LOC : IF_CUID_FILED { //保管场所表
 }
 
 
-entity MST_T05_SAP_BP_PURCHASE : IF_CUID_FILED { //BP采购视图
+entity T05_SAP_BP_PURCHASE : IF_CUID_FILED { //BP采购视图
   @title: '{i18n>PURCHASE_ORG}' key PURCHASE_ORG                       : String(4) not null; //購買組織
                                     @title: '{i18n>SUPPLIER}' SUPPLIER : String(10) not null; //仕入先
                                     @title: '{i18n>ZABC}' ZABC         : String(1); //ABC区分

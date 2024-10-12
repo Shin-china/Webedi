@@ -4,7 +4,7 @@ using {cuid} from '@sap/cds/common';
 using {COMM.IF_CUID_FILED as IF_CUID_FILED} from './model-common';
 using {MST} from './model-mst';
 
-entity PCH_T01_PO_H : IF_CUID_FILED { //采购订单抬头
+entity T01_PO_H : IF_CUID_FILED { //采购订单抬头
   @title: '{i18n>PO_NO}' key PO_NO                                    : String(10) not null; //采购订单编号
                              @title: '{i18n>PO_DATE}' PO_DATE         : Date; //発注日
                              @title: '{i18n>SUPPLIER}' SUPPLIER       : String(10); //供应商
@@ -15,12 +15,12 @@ entity PCH_T01_PO_H : IF_CUID_FILED { //采购订单抬头
                              @title: '{i18n>PO_BSTYP}' PO_BSTYP       : String(1); //PO Status
                              @title: '{i18n>REMARK}' REMARK           : String(1000); //Remark(Header)
 
-                             TO_ITEMS                                 : Association to many PCH_T02_PO_D //采购订单行
+                             TO_ITEMS                                 : Association to many T02_PO_D //采购订单行
                                                                           on TO_ITEMS.PO_NO = PO_NO;
 
 }
 
-entity PCH_T02_PO_D : IF_CUID_FILED { //采购订单行
+entity T02_PO_D : IF_CUID_FILED { //采购订单行
   @title: '{i18n>PO_NO}' key PO_NO                                      : String(10) not null; //采购订单编号
   @title: '{i18n>D_NO}' key  D_NO                                       : Integer; //采购订单明细行号
                              @title: '{i18n>PLANT_ID}' PLANT_ID         : String(4); //工厂
@@ -45,30 +45,30 @@ entity PCH_T02_PO_D : IF_CUID_FILED { //采购订单行
                              @title: '{i18n>PO_D_KNTTP}' PO_D_KNTTP     : String(1); //科目分配カテゴリ
                              @title: '{i18n>PO_D_PSTYP}' PO_D_PSTYP     : String(4); //項目カテゴリ
                              @title: '{i18n>MEMO}' MEMO                 : String(1000); //Remark(Header)
-                             TO_HEAD                                    : Association to one PCH_T01_PO_H //采购订单抬头表
+                             TO_HEAD                                    : Association to one T01_PO_H //采购订单抬头表
                                                                             on TO_HEAD.PO_NO = PO_NO;
-                             TO_MAT                                     : Association to one MST.MST_T01_SAP_MAT //品目
+                             TO_MAT                                     : Association to one MST.T01_SAP_MAT //品目
                                                                             on TO_MAT.MAT_ID = MAT_ID;
 }
 
-entity PCH_T03_PO_C : cuid,IF_CUID_FILED { //采购订单确认表
-  @title: '{i18n>PO_NO}'  PO_NO                                              : String(10) not null; //采购订单编号
-  @title: '{i18n>D_NO}'   D_NO                                               : Integer; //采购订单明细行号
-  @title: '{i18n>SEQ}'    SEQ                                                : Integer; //序号
+entity T03_PO_C : IF_CUID_FILED { //采购订单确认表
+  @title: '{i18n>PO_NO}'  KEY PO_NO                                              : String(10) not null; //采购订单编号
+  @title: '{i18n>D_NO}'   KEY D_NO                                               : Integer; //采购订单明细行号
+  @title: '{i18n>SEQ}'    KEY SEQ                                                : Integer; //序号
                              @title: '{i18n>DELIVERY_DATE}' DELIVERY_DATE       : Date; //交货日期
                              @title: '{i18n>QUANTITY}' QUANTITY                 : Decimal(18, 3); //交货数量
                              @title: '{i18n>STATUS}' STATUS                     : String(1); //状态
                              @title: '{i18n>ExtNumber}' ExtNumber               : String(35); //参照
                              @title: '{i18n>RelevantQuantity}' RelevantQuantity : Decimal(18, 3); //減少数量
-                             TO_PCH_T01                                         : Association to one PCH_T01_PO_H //采购订单抬头表
+                             TO_PCH_T01                                         : Association to one T01_PO_H //采购订单抬头表
                                                                                     on TO_PCH_T01.PO_NO = PO_NO;
-                             TO_PCH_T02                                         : Association to one PCH_T02_PO_D //采购订单抬头表
+                             TO_PCH_T02                                         : Association to one T02_PO_D //采购订单抬头表
                                                                                     on  TO_PCH_T02.PO_NO = PO_NO
                                                                                     and TO_PCH_T02.D_NO  = D_NO
 
 }
 
-entity PCH_T04_PAYMENT_H : IF_CUID_FILED { //付款申请表抬头表
+entity T04_PAYMENT_H : IF_CUID_FILED { //付款申请表抬头表
   @title: '{i18n>INV_NO}' key  INV_NO                                                     : String(10) not null; //采购订单编号
   @title: '{i18n>GL_YEAR}' key GL_YEAR                                                    : Integer; //采购订单明细行号
                                @title: '{i18n>SUPPLIER}' SUPPLIER                         : String(10); //采购订单明细行号
@@ -78,12 +78,12 @@ entity PCH_T04_PAYMENT_H : IF_CUID_FILED { //付款申请表抬头表
                                @title: '{i18n>INV_POST_DATE}' INV_POST_DATE               : Date; //采购订单明细行号
                                @title: '{i18n>SEND_FLAG}' SEND_FLAG                       : String(1); //采购订单明细行号
                                @title: '{i18n>EXCHANGE}' EXCHANGE                         : Decimal(18, 3); //换算レ-ト
-                               TO_ITEMS                                                   : Association to many PCH_T05_PAYMENT_D //付款申请表行表
+                               TO_ITEMS                                                   : Association to many T05_PAYMENT_D //付款申请表行表
                                                                                               on  TO_ITEMS.INV_NO  = INV_NO
                                                                                               and TO_ITEMS.GL_YEAR = GL_YEAR;
 }
 
-entity PCH_T05_PAYMENT_D : IF_CUID_FILED { //付款申请表行表
+entity T05_PAYMENT_D : IF_CUID_FILED { //付款申请表行表
   @title: '{i18n>INV_NO}' key  INV_NO                                                   : String(10) not null; //发票号
   @title: '{i18n>GL_YEAR}' key GL_YEAR                                                  : Integer; //发票年份
   @title: '{i18n>ITEM_NO}' key ITEM_NO                                                  : Integer; //发票明细
@@ -111,13 +111,13 @@ entity PCH_T05_PAYMENT_D : IF_CUID_FILED { //付款申请表行表
                                @title: '{i18n>TOTAL_AMOUNT}' TOTAL_AMOUNT               : Decimal(18, 3); //采购订单明细行号
                                @title: '{i18n>SHKZG}' SHKZG                             : String(1); //借方/貨方フ5グ
 
-                               TO_HEAD                                                  : Association to one PCH_T04_PAYMENT_H //付款申请表头表
+                               TO_HEAD                                                  : Association to one T04_PAYMENT_H //付款申请表头表
                                                                                             on  TO_HEAD.INV_NO  = INV_NO
                                                                                             and TO_HEAD.GL_YEAR = GL_YEAR;
 }
 
 
-entity PCH_T06_QUOTATION_H : cuid, IF_CUID_FILED { //
+entity T06_QUOTATION_H : cuid, IF_CUID_FILED { //
   @title: '{i18n>CUSTOMER}' CUSTOMER             : String(50); //客先
   @title: '{i18n>MACHINE_TYPE}' MACHINE_TYPE     : String(50); //機種
   @title: '{i18n>Item}' Item                     : String(50); //アイテム
@@ -140,7 +140,7 @@ entity PCH_T06_QUOTATION_H : cuid, IF_CUID_FILED { //
   @title: '{i18n>CD_DATE_TIME}' CD_DATE_TIME     : String(10); //创建日时
 
 }
-entity PCH_T07_QUOTATION_D : cuid, IF_CUID_FILED { //
+entity T07_QUOTATION_D : cuid, IF_CUID_FILED { //
   @title: '{i18n>QUO_NUMBER}' QUO_NUMBER                 : String(10); //購買見積番号
   @title: '{i18n>QUO_ITEM}' QUO_ITEM                     : Integer; //管理No
   @title: '{i18n>NO}' NO                                 : Integer; //No.
@@ -204,7 +204,7 @@ entity PCH_T07_QUOTATION_D : cuid, IF_CUID_FILED { //
 
 
 }
-entity PCH_T08_UPLOAD : IF_CUID_FILED { //
+entity T08_UPLOAD : IF_CUID_FILED { //
   @title: '{i18n>PO_NO}' key PO_NO                                      : String(10) not null; //采购订单编号
   @title: '{i18n>D_NO}' key  D_NO                                       : Integer; //采购订单明细行号
                              @title: '{i18n>TYPE}' TYPE                 : String(1); //種類
@@ -221,7 +221,7 @@ entity PCH_T08_UPLOAD : IF_CUID_FILED { //
 
 
 }
-entity PCH_T09_FORCAST : IF_CUID_FILED { //
+entity T09_FORCAST : IF_CUID_FILED { //
   @title: '{i18n>PR_NUMBER}' key PR_NUMBER                                              : String(10) not null; //購買依頼番号
   @title: '{i18n>D_NO}' key      D_NO                                                   : Integer; //購買依頼明細番号
                                  @title: '{i18n>PUR_GROUP}' PUR_GROUP                   : String(3); //購買 Group
