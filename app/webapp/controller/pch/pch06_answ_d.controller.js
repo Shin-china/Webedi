@@ -5,7 +5,13 @@ sap.ui.define([
 	"sap/ui/export/Spreadsheet"
 ], function (Controller, Filter, formatter,Spreadsheet) {
 	"use strict";	
-
+	/**
+	 * 共通用对象 全局
+	 */
+	var _objectCommData = {
+		_entity: "/PCH_T06_PO_ITEM", //此本页面操作的对象//绑定的数据源视图
+		
+	};
 	return Controller.extend("umc.app.controller.pch.pch06_answ_d", {
 		formatter : formatter,
 
@@ -26,11 +32,23 @@ sap.ui.define([
 			var that = this;
 			var aFilters = this.getView().byId("smartFilterBar").getFilters();
 			
-			var oHeaderContext = this.getView().getBindingContext();
-			var oHeaderObject = oHeaderContext.getObject();
-			this._poNO = oHeaderObject.PO_NO;
-			this._setEditable(false);
-			that.byId("smartTable").rebindTable();
+			this._readEntryByServiceAndEntity(_objectCommData._entity,aFilters, null).then((oData) => {
+				var view = this.getView();
+				var jsonModel = view.getModel("workInfo");
+				if (!jsonModel) {
+				  jsonModel = new sap.ui.model.json.JSONModel();
+				  view.setModel(jsonModel, "workInfo");
+				}
+				jsonModel.setData(oData.results);
+				console.log(oData.results)
+			  });
+			
+			
+			// var oHeaderContext = this.getView().getBindingContext();
+			// var oHeaderObject = oHeaderContext.getObject();
+			// this._poNO = oHeaderObject.PO_NO;
+			// this._setEditable(false);
+			// that.byId("smartTable").rebindTable();
 			
 		},	
 		/*==============================
@@ -55,29 +73,31 @@ sap.ui.define([
 		编辑
 		==============================*/
 		onEdi: function (oEvent) {
-			if(this._poNO){
+			var that = this;
+			that._setEditable(true);
+			// if(this._poNO){
 
 			
-			      //消除更改记录
-				  var that = this;
-				  this.getModel().resetChanges();
-				  this._setBusy(true);
-				  var sHeaderObject = this.getView().getBindingContext().getObject();
-				  that._editDraft2("/PCH_T03_PO_C_draftEdit",this._poNO,true).then((oData) => {
-					var sPath = that.getModel().createKey("/PCH_T03_PO_C", {
-					  PO_NO: sHeaderObject.PO_NO,
-					  IsActiveEntity: oData.IsActiveEntity,
-					});
-					that._bindViewData(sPath);
-					that._setEditable(true);
-					that.getModel().refresh(true);
-					that.byId("smdetailTable").rebindTable();
-				  }).catch((oError) => {
-					that._addMessage(that._getI18nText("MSG_EDIT"), null);
-				  }).finally(() => {
-					that._setBusy(false);
-				  });
-				}
+			//       //消除更改记录
+			// 	  var that = this;
+			// 	  this.getModel().resetChanges();
+			// 	  this._setBusy(true);
+			// 	  var sHeaderObject = this.getView().getBindingContext().getObject();
+			// 	  that._editDraft2("/PCH_T03_PO_C_draftEdit",this._poNO,true).then((oData) => {
+			// 		var sPath = that.getModel().createKey("/PCH_T03_PO_C", {
+			// 		  PO_NO: sHeaderObject.PO_NO,
+			// 		  IsActiveEntity: oData.IsActiveEntity,
+			// 		});
+			// 		that._bindViewData(sPath);
+			// 		that._setEditable(true);
+			// 		that.getModel().refresh(true);
+			// 		that.byId("smdetailTable").rebindTable();
+			// 	  }).catch((oError) => {
+			// 		that._addMessage(that._getI18nText("MSG_EDIT"), null);
+			// 	  }).finally(() => {
+			// 		that._setBusy(false);
+			// 	  });
+			// 	}
 		},
 		/*==============================
 		保存
