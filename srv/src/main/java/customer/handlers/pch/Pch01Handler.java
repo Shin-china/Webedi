@@ -1,8 +1,13 @@
 package customer.handlers.pch;
 
+import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.stereotype.Component;
+
+import com.alibaba.fastjson.JSON;
+import com.sap.cds.services.handler.EventHandler;
 import com.sap.cds.services.handler.annotations.On;
 import com.sap.cds.services.handler.annotations.ServiceName;
 
@@ -10,10 +15,9 @@ import cds.gen.tableservice.PCH01CheckDATAContext;
 import cds.gen.tableservice.PCH01SaveDATAContext;
 import cds.gen.tableservice.TableService_;
 import customer.bean.pch.Pch01List;
+import customer.service.ifm.Ifm02MstService;
 import customer.service.pch.Pch01Service;
-
-import com.alibaba.fastjson.JSON;
-import com.sap.cds.services.handler.EventHandler;
+import customer.task.JobMonotor;
 
 @Component
 @ServiceName(TableService_.CDS_NAME)
@@ -25,12 +29,12 @@ public class Pch01Handler implements EventHandler {
     @Autowired
     private Pch01Service Pch01Service;
 
-  
     // check数据
     @On(event = "PCH01_CHECK_DATA")
-    public void checkData(PCH01CheckDATAContext context) {
+    public void checkData(PCH01CheckDATAContext context) throws IOException{
     Pch01List list = JSON.parseObject(context.getShelfJson(), Pch01List.class);
-    Pch01Service.detailsCheck(list);
+    JobMonotor a = new JobMonotor();
+    a.poolMonitor1();
     context.setResult(JSON.toJSONString(list));
     }
 
@@ -41,5 +45,7 @@ public class Pch01Handler implements EventHandler {
     Pch01Service.detailsSave(list);
     context.setResult(JSON.toJSONString(list));
   }
+
+
 
 }

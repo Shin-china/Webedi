@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSON;
 
-import cds.gen.mst.T03SapBp;
+import cds.gen.mst.MstT03SapBp;
 import cds.gen.sys.T11IfManager;
 import customer.bean.bp.Results;
 import customer.bean.bp.SapBpRoot;
@@ -35,7 +35,7 @@ public class Ifm01BpService {
             String response = S4OdataTools.get(interfaceConfig, null, null, null);
             SapBpRoot sapBpRoot = JSON.parseObject(response, SapBpRoot.class);
             for (Results results : sapBpRoot.getD().getResults()) {
-                T03SapBp o = T03SapBp.create();
+                MstT03SapBp o = MstT03SapBp.create();
                 o.setBpId(results.getSupplier());
                 o.setBpName1(results.getOrganizationBPName1());
                 o.setBpName2(results.getOrganizationBPName2());

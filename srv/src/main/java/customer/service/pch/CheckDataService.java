@@ -8,9 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.stereotype.Component;
 
-import cds.gen.pch.T01PoH;
-import cds.gen.pch.T02PoD;
-import cds.gen.pch.T03PoC;
+import cds.gen.pch.PchT01PoH;
+import cds.gen.pch.PchT02PoD;
+import cds.gen.pch.PchT03PoC;
 import cds.gen.tableservice.Pch01Auth1;
 import cds.gen.tableservice.SysT09User2Plant;
 import customer.bean.pch.Pch01;
@@ -42,7 +42,7 @@ public class CheckDataService extends Service {
         int dNO = s.getD_NO();
         // Define a formatter to parse the date strings
 
-        T03PoC deliverydateData = deliverydateDao.getByID(s.getPO_NO(), dNO, s.getDELIVERY_DATE());
+        PchT03PoC deliverydateData = deliverydateDao.getByID(s.getPO_NO(), dNO, s.getDELIVERY_DATE());
         // 納期回答ファイルの区分=1:新規、
         // かつ納品日はDBにすでに存在する場合に、下記のエラーメッセージを表示する
         if ("1".equals(s.getPO_TYPE())) {
@@ -75,7 +75,7 @@ public class CheckDataService extends Service {
     public void checkPO_NO(Pch01 s) {
         // PCH_T01_PO_H
 
-        T01PoH poData = podataDao.getByID(s.getPO_NO());
+        PchT01PoH poData = podataDao.getByID(s.getPO_NO());
         // 如果能取到poData 则值正确，为null 则无
 
         if (poData != null) {
@@ -89,7 +89,7 @@ public class CheckDataService extends Service {
     public void checkD_NO(Pch01 s) {
 
         int dNO = s.getD_NO();
-        T02PoD podnData = podndataDao.getByID(s.getPO_NO(), dNO);
+        PchT02PoD podnData = podndataDao.getByID(s.getPO_NO(), dNO);
 
         if (podnData != null) {
             s.setSUCCESS(true);
@@ -108,7 +108,7 @@ public class CheckDataService extends Service {
         if ("1".equals(userData.getUserType())) {
 
             int dNO = s.getD_NO();
-            T02PoD podnData = podndataDao.getByID(s.getPO_NO(), dNO);// 取得PCH_T02_PO_D中的plant id
+            PchT02PoD podnData = podndataDao.getByID(s.getPO_NO(), dNO);// 取得PCH_T02_PO_D中的plant id
 
             // 两个相等则有权限。
             if (podnData.getPlantId().equals(plantData.getPlantId())) {
@@ -119,7 +119,7 @@ public class CheckDataService extends Service {
             }
 
         } else if ("2".equals(userData.getUserType())) {
-            T01PoH poData = podataDao.getByID(s.getPO_NO());
+            PchT01PoH poData = podataDao.getByID(s.getPO_NO());
 
             if (userData.getBpNumber().equals(poData.getSupplier())) {
                 s.setSUCCESS(true);
