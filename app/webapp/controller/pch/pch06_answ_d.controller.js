@@ -12,6 +12,7 @@ sap.ui.define([
 		_entity: "/PCH_T06_PO_ITEM", //此本页面操作的对象//绑定的数据源视图
 		
 	};
+	var  myMap = new Map(); 
 	return Controller.extend("umc.app.controller.pch.pch06_answ_d", {
 		formatter : formatter,
 
@@ -22,7 +23,8 @@ sap.ui.define([
 			this._setOnInitNo("PCH01", ".20240812.01");
 			this.MessageTools._clearMessage();
 			this.MessageTools._initoMessageManager(this);
-
+			//	进入画面则刷新
+			myMap = new Map(); 
 			this.getRouter().getRoute("RouteCre_pch06").attachPatternMatched(this._onRouteMatched, this);
 		},
 		/*==============================
@@ -36,10 +38,12 @@ sap.ui.define([
 				var view = this.getView();
 				var jsonModel = view.getModel("workInfo");
 				if (!jsonModel) {
-				  jsonModel = new sap.ui.model.json.JSONModel();
-				  view.setModel(jsonModel, "workInfo");
-				}
+					jsonModel = new sap.ui.model.json.JSONModel();
+					view.setModel(jsonModel, "workInfo");
+				  }
 				jsonModel.setData(oData.results);
+				//更新seq数据
+				that._getSeq();
 				console.log(oData.results)
 			  });
 			
@@ -48,8 +52,23 @@ sap.ui.define([
 		删除
 		==============================*/
 		onDelete: function (oEvent) {
-			
-			this._setEditable(true);
+			var that = this;
+			var view = this.getView();
+			var selectedIndices = this._TableList("tableUploadData"); // 获取选中行
+			var jsonModel = view.getModel("workInfo");
+
+			var datas = jsonModel.getData();
+			if(selectedIndices){
+				selectedIndices.forEach((selectedIndex) => {
+					var id = selectedIndex.ID
+					//根据id删除list
+					datas = datas.filter(odata=>
+						odata.ID !== id
+					)
+
+				  });
+				  jsonModel.setData(datas);
+			}
 		},	
 		/*==============================
 		复制
@@ -59,23 +78,25 @@ sap.ui.define([
 			var view = this.getView();
 			var selectedIndices = this._TableList("tableUploadData"); // 获取选中行
 			var jsonModel = view.getModel("workInfo");
-			if (!jsonModel) {
-				jsonModel = new sap.ui.model.json.JSONModel();
-				view.setModel(jsonModel, "workInfo");
-			  }
+
 			var datas = jsonModel.getData();
 			if(selectedIndices){
-
 				selectedIndices.forEach((selectedIndex) => {
+					let copiedIndex = JSON.parse(JSON.stringify(selectedIndex)); 
+					copiedIndex.DELIVERY_DATE= selectedIndex.DELIVERY_DATE;
+					copiedIndex.PO_DATE= selectedIndex.PO_DATE;
+					copiedIndex.PO_D_DATE= selectedIndex.PO_D_DATE;
 					
-					datas.push(selectedIndex);
-					
+					copiedIndex.CD_BY = null;
+					copiedIndex.CD_TIME = null;
+					copiedIndex.SEQ=myMap.get(selectedIndex.PO_NO+selectedIndex.D_NO) + 1;
+					copiedIndex.ID=selectedIndex.PO_NO+selectedIndex.D_NO+copiedIndex.SEQ
+					datas.push(copiedIndex);
 				  });
 				  jsonModel.setData(datas);
+				//更新seq数据
+				that._getSeq();
 			}
-			
-
-		
 		},
 		/*==============================
 		编辑
@@ -83,29 +104,6 @@ sap.ui.define([
 		onEdi: function (oEvent) {
 			var that = this;
 			that._setEditable(true);
-			// if(this._poNO){
-
-			
-			//       //消除更改记录
-			// 	  var that = this;
-			// 	  this.getModel().resetChanges();
-			// 	  this._setBusy(true);
-			// 	  var sHeaderObject = this.getView().getBindingContext().getObject();
-			// 	  that._editDraft2("/PCH_T03_PO_C_draftEdit",this._poNO,true).then((oData) => {
-			// 		var sPath = that.getModel().createKey("/PCH_T03_PO_C", {
-			// 		  PO_NO: sHeaderObject.PO_NO,
-			// 		  IsActiveEntity: oData.IsActiveEntity,
-			// 		});
-			// 		that._bindViewData(sPath);
-			// 		that._setEditable(true);
-			// 		that.getModel().refresh(true);
-			// 		that.byId("smdetailTable").rebindTable();
-			// 	  }).catch((oError) => {
-			// 		that._addMessage(that._getI18nText("MSG_EDIT"), null);
-			// 	  }).finally(() => {
-			// 		that._setBusy(false);
-			// 	  });
-			// 	}
 		},
 		/*==============================
 		保存
@@ -114,7 +112,7 @@ sap.ui.define([
 			var that = this;
 			that._setBusy(true);
 	
-			this._callCdsAction("/PCH06_SAVE_DATA", this.getData(), this).then((oData) => {
+			this._callCdsAction("/PCH06_SAVE_DATA", this._getData(), this).then((oData) => {
 
 				oData.PCH06_SAVE_DATA
 			  var myArray = JSON.parse(oData.PCH06_SAVE_DATA);
@@ -129,9 +127,12 @@ sap.ui.define([
 			});
 			this._setEditable(false);
 		},
-
-
-		getData: function () {
+		
+		/**
+		 * 
+		 * @returns 
+		 */
+		_getData: function () {
 			var jsondata = this.getModel("workInfo").getData();
 			var a = JSON.stringify({ list: jsondata });
 			var oPrams = {
@@ -139,6 +140,29 @@ sap.ui.define([
 			};
 			return oPrams;
 		  },
+
+		/**
+		 * 
+		 * @returns 
+		 */
+		_deleteDatas: function (datas,id) {
+			let list = new Array();
+
+			datas.forEach(odata=>{
+				if(odata.ID != id){
+					list
+				}
+			})
+
+		},
+		  /*++++++++++++++++++++++++++++++
+			  保存棚帆
+			  ++++++++++++++++++++++++++++++*/
+		  onSave: function () {
+			
+		},
+
+
 		  /*++++++++++++++++++++++++++++++
 			  保存棚帆
 			  ++++++++++++++++++++++++++++++*/
@@ -179,10 +203,10 @@ sap.ui.define([
 		},
 	
 		onBeforeExport: function (oEvt) {
-		var mExcelSettings = oEvt.getParameter("exportSettings");
-		for (var i = 0; i < mExcelSettings.workbook.columns.length; i++) {
+			var mExcelSettings = oEvt.getParameter("exportSettings");
+			for (var i = 0; i < mExcelSettings.workbook.columns.length; i++) {
 
-			}
+				}
 	
 		},
 	        /*==============================
@@ -255,5 +279,39 @@ sap.ui.define([
 			});
 	
 		},
+		
+		/**
+		 * 获得并设置sql
+		 * @param {*} data 
+		 */
+		_getSeq(data){
+			var view = this.getView();
+			var jsonModel = view.getModel("workInfo");
+			if (!jsonModel) {
+				jsonModel = new sap.ui.model.json.JSONModel();
+				view.setModel(jsonModel, "workInfo");
+			  }
+			var datas = jsonModel.getData();
+
+			datas.forEach(data=>{
+				let PO_NO =data.PO_NO;
+				let D_NO =data.D_NO;
+				let SQL = data.SEQ;
+				let podno =PO_NO+D_NO;
+				let hasName = myMap.has(podno);
+				if(hasName){
+					let locSql = myMap.get(podno);
+					
+					//如果存下locSql没有行里面Sql的大，则于以替换
+					if(locSql < SQL){
+						myMap.set(podno,SQL)
+					}
+				}else{
+					myMap.set(podno,SQL)
+				}
+			})
+
+
+		}
 	});
 });

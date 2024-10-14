@@ -1,5 +1,6 @@
 package customer.bean.pch;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Date;
 
@@ -20,9 +21,9 @@ public class Pch06 {
     @JSONField(name = "SHELF")
     private String SHELF;
     @JSONField(name = "DELIVERY_DATE")
-    private LocalDate DELIVERY_DATE;
+    private String DELIVERY_DATE;
     @JSONField(name = "QUANTITY")
-    private String QUANTITY;
+    private BigDecimal QUANTITY;
     @JSONField(name = "STATUS")
     private String STATUS;
     @JSONField(name = "PO_PUR_QTY")
@@ -42,17 +43,41 @@ public class Pch06 {
     @JSONField(name = "DEL_AMOUNT")
     private String DEL_AMOUNT;
     @JSONField(name = "PO_DATE")
-    private LocalDate PO_DATE;
+    private String PO_DATE;
     @JSONField(name = "CUSTOMER_MAT")
     private String CUSTOMER_MAT;
     @JSONField(name = "SUPPLIER_MAT")
     private String SUPPLIER_MAT;
     @JSONField(name = "PO_D_DATE")
-    private LocalDate PO_D_DATE;
+    private String PO_D_DATE;
     @JSONField(name = "MEMO")
     private String MEMO;
     @JSONField(name = "ExtNumber")
     private String ExtNumber;
+
+    public String getDELIVERY_DATE() {
+        return DELIVERY_DATE;
+    }
+
+    public void setDELIVERY_DATE(String dELIVERY_DATE) {
+        DELIVERY_DATE = dELIVERY_DATE;
+    }
+
+    public String getPO_DATE() {
+        return PO_DATE;
+    }
+
+    public void setPO_DATE(String pO_DATE) {
+        PO_DATE = pO_DATE;
+    }
+
+    public String getPO_D_DATE() {
+        return PO_D_DATE;
+    }
+
+    public void setPO_D_DATE(String pO_D_DATE) {
+        PO_D_DATE = pO_D_DATE;
+    }
 
     public String getPO_NO() {
         return PO_NO;
@@ -92,22 +117,6 @@ public class Pch06 {
 
     public void setSHELF(String sHELF) {
         SHELF = sHELF;
-    }
-
-    public LocalDate getDELIVERY_DATE() {
-        return DELIVERY_DATE;
-    }
-
-    public void setDELIVERY_DATE(LocalDate dELIVERY_DATE) {
-        DELIVERY_DATE = dELIVERY_DATE;
-    }
-
-    public String getQUANTITY() {
-        return QUANTITY;
-    }
-
-    public void setQUANTITY(String qUANTITY) {
-        QUANTITY = qUANTITY;
     }
 
     public String getSTATUS() {
@@ -182,14 +191,6 @@ public class Pch06 {
         DEL_AMOUNT = dEL_AMOUNT;
     }
 
-    public LocalDate getPO_DATE() {
-        return PO_DATE;
-    }
-
-    public void setPO_DATE(LocalDate pO_DATE) {
-        PO_DATE = pO_DATE;
-    }
-
     public String getCUSTOMER_MAT() {
         return CUSTOMER_MAT;
     }
@@ -206,14 +207,6 @@ public class Pch06 {
         SUPPLIER_MAT = sUPPLIER_MAT;
     }
 
-    public LocalDate getPO_D_DATE() {
-        return PO_D_DATE;
-    }
-
-    public void setPO_D_DATE(LocalDate pO_D_DATE) {
-        PO_D_DATE = pO_D_DATE;
-    }
-
     public String getMEMO() {
         return MEMO;
     }
@@ -228,6 +221,14 @@ public class Pch06 {
 
     public void setExtNumber(String extNumber) {
         ExtNumber = extNumber;
+    }
+
+    public BigDecimal getQUANTITY() {
+        return QUANTITY;
+    }
+
+    public void setQUANTITY(BigDecimal qUANTITY) {
+        QUANTITY = qUANTITY;
     }
 
 }
