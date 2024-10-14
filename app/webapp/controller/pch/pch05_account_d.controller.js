@@ -2,12 +2,20 @@ sap.ui.define([
 	"umc/app/Controller/BaseController",
     "sap/ui/core/mvc/Controller",
     "sap/m/MessageToast",
-    "sap/m/MessageBox"
-], function (Controller,A, MessageToast, MessageBox) {
+    "sap/m/MessageBox",
+    "umc/app/model/formatter" ,
+], function (Controller,A, MessageToast, MessageBox,formatter) {
     "use strict";
 
     return Controller.extend("umc.app.controller.pch.pch05_pay_d", {
+        formatter: formatter, // 将格式化器分配给控制器
 
+        onInit: function () {
+            // 初始化代码
+            // 这里可以添加其他初始化逻辑，比如绑定数据等
+            console.log("Controller initialized.");
+        },
+        
         onResend: function () {
 			var that = this;
             var oTable = this.getView().byId("detailTable");
@@ -47,16 +55,6 @@ sap.ui.define([
                             MessageBox.error("複数の取引先がまとめて配信することができませんので、1社の取引先を選択してください。");
                             return;
                         }
-
-						aSelectedData.forEach(function (oData) {
-							if (oData.SHKZG === 'H') { // 如果是贷方
-								oData.PRICE_AMOUNT = -Math.abs(oData.PRICE_AMOUNT); // 添加负号
-								oData.TOTAL_AMOUNT = -Math.abs(oData.TOTAL_AMOUNT); // 添加负号
-							}
-							// 如果是借方（SHKZG === 'S'），不做任何改变
-						});
-						
-					
 
 				let options = { compact: true, ignoreComment: true, spaces: 4 };
 				var IdList = that._TableDataList("detailTable", 'SUPPLIER')

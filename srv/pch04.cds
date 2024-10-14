@@ -46,7 +46,7 @@ extend service TableService {
         T05.TAX_RATE,                      // INV税率
         T05.PO_TRACK_NO,                   // 備考
         T04.INV_BASE_DATE,                 // 支払日
-        T05.PRICE_AMOUNT,
+        T05.SHKZG,
         T04.INV_NO,                        // 发票号
         T04.SEND_FLAG,                     // ステータス
         T04.INV_POST_DATE,                 // 検収月
@@ -55,10 +55,24 @@ extend service TableService {
         T02.SUPPLIER_MAT,                  // 仕入先品目コード
         M03.LOG_NO,                        // 登録番号    
         M04.ZABC,                          // ABC区分
-        T05.TOTAL_AMOUNT,
+        // T05.PRICE_AMOUNT,
+        // T05.TOTAL_AMOUNT,
         T05.UNIT_PRICE,
         T02.PO_NO || '' || T02.D_NO AS NO_DETAILS : String(255), // 発注\明細NO
+
         TO_CHAR(T04.INV_POST_DATE, 'YYYYMM') as INV_MONTH : String,  //检收月
+
+        CASE 
+            WHEN T05.SHKZG = 'S' THEN T05.PRICE_AMOUNT    // 借方为正
+            WHEN T05.SHKZG = 'H' THEN -T05.PRICE_AMOUNT   // 贷方为负
+            ELSE T05.PRICE_AMOUNT                         // 默认情况
+        END as PRICE_AMOUNT : Decimal(18, 3),             // 本体金額
+
+        CASE 
+            WHEN T05.SHKZG = 'S' THEN T05.TOTAL_AMOUNT    // 借方为正
+            WHEN T05.SHKZG = 'H' THEN -T05.TOTAL_AMOUNT   // 贷方为负
+            ELSE T05.TOTAL_AMOUNT                         // 默认情况
+        END as TOTAL_AMOUNT : Decimal(18, 3)   
 
          }
 
@@ -87,6 +101,7 @@ extend service TableService {
         SUPPLIER_MAT,                  // 仕入先品目コード
         LOG_NO,                        // 登録番号    
         ZABC,                          // ABC区分
+        SHKZG,
         NO_DETAILS,
         PRICE_AMOUNT,
         TOTAL_AMOUNT,

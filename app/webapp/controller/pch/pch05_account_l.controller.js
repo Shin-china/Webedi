@@ -12,16 +12,13 @@ sap.ui.define([
             this._oDataModel = this.getOwnerComponent().getModel();
             this._ResourceBundle = this.getOwnerComponent().getModel("i18n").getResourceBundle();
             this._oDataModel.attachBatchRequestCompleted(function (oEvent) {
-                this.setBusy(false);
+                this._setBusy(false);
                 var errors = this._LocalData.getProperty("/errors");
                 if (errors) {
                     // 处理错误
                 }
                 this._LocalData.setProperty("/errors", "");
             }.bind(this));
-        },
-        setBusy: function (busy) {
-            this._LocalData.setProperty("/busy", busy);
         },
         onExport: function () {
             var oTable = this.getView().byId("detailTable");

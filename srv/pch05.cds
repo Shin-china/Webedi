@@ -41,13 +41,26 @@ extend service TableService {
                 T04.INV_POST_DATE,                 // 転記日付
                 T04.SEND_FLAG,                     // 送信ステータス
                 T05.UNIT_PRICE,                    // 単価
-                T05.PRICE_AMOUNT,                  // 本体金額
                 T05.TAX_AMOUNT,                    // 消費税額
-                T05.TOTAL_AMOUNT,                  // 計上金額
+                // T05.PRICE_AMOUNT,                  // 本体金額
+                // T05.TOTAL_AMOUNT,                  // 計上金額
                 T04.INV_BASE_DATE,                 // 支払い基準日
                 T05.GR_DATE,                       // 伝票日付
                 T03.LOG_NO,                        // 登録番号
-                T05.SHKZG,                         // 借方/貸方フラグ 
+                T05.SHKZG,                         // 借方/貸方フラグ
+
+                CASE 
+                    WHEN T05.SHKZG = 'S' THEN T05.PRICE_AMOUNT    // 借方为正
+                    WHEN T05.SHKZG = 'H' THEN -T05.PRICE_AMOUNT   // 贷方为负
+                    ELSE T05.PRICE_AMOUNT                         // 默认情况
+                END as PRICE_AMOUNT : Decimal(18, 3),             // 本体金額
+
+                CASE 
+                    WHEN T05.SHKZG = 'S' THEN T05.TOTAL_AMOUNT    // 借方为正
+                    WHEN T05.SHKZG = 'H' THEN -T05.TOTAL_AMOUNT   // 贷方为负
+                    ELSE T05.TOTAL_AMOUNT                         // 默认情况
+                END as TOTAL_AMOUNT : Decimal(18, 3),             // 計上金額
+
                 TO_CHAR(T04.INV_POST_DATE, 'YYYYMM') as INV_MONTH : String
       
          }         
