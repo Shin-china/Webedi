@@ -43,13 +43,6 @@ sap.ui.define([
 				console.log(oData.results)
 			  });
 			
-			
-			// var oHeaderContext = this.getView().getBindingContext();
-			// var oHeaderObject = oHeaderContext.getObject();
-			// this._poNO = oHeaderObject.PO_NO;
-			// this._setEditable(false);
-			// that.byId("smartTable").rebindTable();
-			
 		},	
 		/*==============================
 		删除
@@ -63,11 +56,26 @@ sap.ui.define([
 		==============================*/
 		onCop: function (oEvent) {
 			var that = this;
-			var selectedIndices = this._TableList("detailTable"); // 获取选中行
+			var view = this.getView();
+			var selectedIndices = this._TableList("tableUploadData"); // 获取选中行
+			var jsonModel = view.getModel("workInfo");
+			if (!jsonModel) {
+				jsonModel = new sap.ui.model.json.JSONModel();
+				view.setModel(jsonModel, "workInfo");
+			  }
+			var datas = jsonModel.getData();
+			if(selectedIndices){
+
+				selectedIndices.forEach((selectedIndex) => {
+					
+					datas.push(selectedIndex);
+					
+				  });
+				  jsonModel.setData(datas);
+			}
 			
 
-			
-			this._setEditable(true);
+		
 		},
 		/*==============================
 		编辑
@@ -103,9 +111,40 @@ sap.ui.define([
 		保存
 		==============================*/
 		onSav: function (oEvent) {
+			var that = this;
+			that._setBusy(true);
+	
+			this._callCdsAction("/PCH06_SAVE_DATA", this.getData(), this).then((oData) => {
+
+				oData.PCH06_SAVE_DATA
+			  var myArray = JSON.parse(oData.PCH06_SAVE_DATA);
 			
+			  var jsonModel = that.getModel("workInfo");
+	
+			  jsonModel.setData(myArray.list);
+			  //设置为非创建
+			  that._setIsCreate(false);
+	
+			  that._setBusy(false);
+			});
 			this._setEditable(false);
 		},
+
+
+		getData: function () {
+			var jsondata = this.getModel("workInfo").getData();
+			var a = JSON.stringify({ list: jsondata });
+			var oPrams = {
+			  str: a,
+			};
+			return oPrams;
+		  },
+		  /*++++++++++++++++++++++++++++++
+			  保存棚帆
+			  ++++++++++++++++++++++++++++++*/
+		  onSave: function () {
+			
+		  },
 		/*==============================
 		==============================*/
 		_onRouteMatched: function (oEvent) {

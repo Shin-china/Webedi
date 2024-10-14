@@ -191,9 +191,3 @@ entity T13_ATTACHMENT : cuid {
 
 
 }
-entity T20_CONFIG {
-  @title: '{i18n>CON_CODE}' key CON_CODE                             : String(50); //   系统配置
-                                @title: '{i18n>CON_VALUE}' CON_VALUE : String(200); //   系统配置值
-                                @title: '{i18n>CON_DESC}' CON_DESC   : String(500); //  系统配置描述
-                                @title: '{i18n>CON_SORT}' CON_SORT   : Integer; //   排序
-}

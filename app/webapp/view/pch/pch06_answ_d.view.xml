@@ -85,7 +85,7 @@
 							</table:customData>
 							<Label id="_IDGenLabel2" text="{pch>LABEL_D__D_NO}"/>
 							<table:template>
-								<Text value="{workInfo>D_NO}" editable="true"></Text>				
+								<Text text="{workInfo>D_NO}" editable="true"></Text>				
 							</table:template>
 						</table:Column>	
 						<!-- 品目コード -->
@@ -95,7 +95,7 @@
 							</table:customData>
 							<Label id="_IDGenLabel6" text="{pch>LABEL_D__MAT_ID}"/>
 							<table:template>
-								<Text value="{workInfo>MAT_ID}" editable="true"></Text>	
+								<Text text="{workInfo>MAT_ID}" editable="true"></Text>	
 							</table:template>
 						</table:Column>	
 						<!-- 品目テキスト -->
@@ -105,7 +105,7 @@
 							</table:customData>
 							<Label id="_IDGenLabel7" text="{pch>LABEL_D__PO_D_TXZ01}"/>
 							<table:template>
-								<Input value="{workInfo>PO_D_TXZ01}" editable="true"></Input>
+								<Text text="{workInfo>PO_D_TXZ01}" editable="true"/>
 								
 							</table:template>
 						</table:Column>	
@@ -116,7 +116,8 @@
 							</table:customData>
 							<Label  text="{pch>LABEL_D__DELIVERY_DATE}"/>
 							<table:template>
-								<Input value="{workInfo>DELIVERY_DATE}" editable="true"></Input>
+								<DatePicker id="H__DOC_DATE2" value="{parts: [{path: 'workInfo>DELIVERY_DATE'}], formatter: '.formatter.dateFormatDateTime'}" valueFormat="yyyy-MM-dd-HH-mm-ss" displayFormat="{com>DATE_H__DOC_DATE}" editable="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'}], formatter: '.formatter.getEditableSaveCommon'}"/>
+	
 							
 							</table:template>
 						</table:Column>	
@@ -127,7 +128,7 @@
 							</table:customData>
 							<Label  text="{pch>LABEL_D__QUANTITY}"/>
 							<table:template>
-								<Input value="{workInfo>QUANTITY}" editable="true"></Input>
+								<Input value="{workInfo>QUANTITY}" editable="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'}], formatter: '.formatter.getEditableSaveCommon'}"/>
 							
 							</table:template>
 						</table:Column>	
@@ -138,7 +139,7 @@
 							</table:customData>
 							<Label  text="{pch>LABEL_D__STATUS}"/>
 							<table:template>
-								<Input value="{workInfo>STATUS}" editable="true"></Input>
+								<Text text="{workInfo>STATUS}" editable="true"/>
 							
 							</table:template>
 						</table:Column>	
@@ -149,7 +150,7 @@
 							</table:customData>
 							<Label  text="{pch>LABEL_D__PO_PUR_QTY}"/>
 							<table:template>
-								<Input value="{workInfo>PO_PUR_QTY}" editable="true"></Input>
+								<Text text="{workInfo>PO_PUR_QTY}" editable="true"/>
 							
 							</table:template>
 						</table:Column>	
@@ -160,7 +161,7 @@
 							</table:customData>
 							<Label  text="{pch>LABEL_D__PO_PUR_UNIT}"/>
 							<table:template>
-								<Input value="{workInfo>PO_PUR_UNIT}" editable="true"></Input>
+								<Text text="{workInfo>PO_PUR_UNIT}" editable="true"/>
 							
 							</table:template>
 						</table:Column>	
@@ -171,7 +172,7 @@
 							</table:customData>
 							<Label  text="{pch>LABEL_D__SUPPLIER}"/>
 							<table:template>
-								<Input value="{workInfo>SUPPLIER}" editable="true"></Input>
+								<Text text="{workInfo>SUPPLIER}" editable="true"/>
 							
 							</table:template>
 						</table:Column>	
@@ -182,7 +183,7 @@
 							</table:customData>
 							<Label  text="{pch>LABEL_D__BP_NAME1}"/>
 							<table:template>
-								<Input value="{workInfo>BP_NAME1}" editable="true"></Input>
+								<Text text="{workInfo>BP_NAME1}" editable="true"/>
 							
 							</table:template>
 						</table:Column>	
@@ -193,7 +194,7 @@
 							</table:customData>
 							<Label  text="{pch>LABEL_D__LOCNAME}"/>
 							<table:template>
-								<Input value="{workInfo>LOCNAME}" editable="true"></Input>
+								<Text text="{workInfo>LOCNAME}" editable="true"/>
 							
 							</table:template>
 						</table:Column>	
@@ -204,7 +205,7 @@
 							</table:customData>
 							<Label  text="{pch>LABEL_D__CURRENCY}"/>
 							<table:template>
-								<Input value="{workInfo>CURRENCY}" editable="true"></Input>
+								<Text text="{workInfo>CURRENCY}" editable="true"/>
 							
 							</table:template>
 						</table:Column>	
@@ -215,7 +216,7 @@
 							</table:customData>
 							<Label  text="{pch>LABEL_D__PRICE}"/>
 							<table:template>
-								<Input value="{workInfo>PRICE}" editable="true"></Input>
+								<Text text="{workInfo>PRICE}" editable="true"/>
 							
 							</table:template>
 						</table:Column>	
@@ -226,7 +227,7 @@
 							</table:customData>
 							<Label  text="{pch>LABEL_D__DEL_AMOUNT}"/>
 							<table:template>
-								<Input value="{workInfo>DEL_AMOUNT}" editable="true"></Input>
+								<Text text="{workInfo>DEL_AMOUNT}" editable="true"/>
 							
 							</table:template>
 						</table:Column>	
@@ -237,8 +238,9 @@
 							</table:customData>
 							<Label  text="{pch>LABEL_D__PO_DATE}"/>
 							<table:template>
-								<Input value="{workInfo>PO_DATE}" editable="true"></Input>
-							
+		
+							<DatePicker  value="{parts: [{path: 'workInfo>PO_DATE'}], formatter: '.formatter.dateFormatDateTime'}" valueFormat="yyyy-MM-dd-HH-mm-ss" displayFormat="{com>DATE_H__DOC_DATE}" editable="false"/>
+	
 							</table:template>
 						</table:Column>	
 						<!-- 顧客品番 -->
@@ -248,7 +250,7 @@
 							</table:customData>
 							<Label  text="{pch>LABEL_D__CUSTOMER_MAT}"/>
 							<table:template>
-								<Input value="{workInfo>CUSTOMER_MAT}" editable="true"></Input>
+								<Text text="{workInfo>CUSTOMER_MAT}" editable="true"/>
 							
 							</table:template>
 						</table:Column>	
@@ -259,7 +261,7 @@
 							</table:customData>
 							<Label  text="{pch>LABEL_D__SUPPLIER_MAT}"/>
 							<table:template>
-								<Input value="{workInfo>SUPPLIER_MAT}" editable="true"></Input>
+								<Text text="{workInfo>SUPPLIER_MAT}" editable="true"/>
 							
 							</table:template>
 						</table:Column>	
@@ -270,8 +272,9 @@
 							</table:customData>
 							<Label  text="{pch>LABEL_D__PO_D_DATE}"/>
 							<table:template>
-								<Input value="{workInfo>PO_D_DATE}" editable="true"></Input>
 							
+								<DatePicker value="{parts: [{path: 'workInfo>PO_D_DATE'}], formatter: '.formatter.dateFormatDateTime'}" valueFormat="yyyy-MM-dd-HH-mm-ss" displayFormat="{com>DATE_H__DOC_DATE}" editable="false"/>
+	
 							</table:template>
 						</table:Column>	
 						
@@ -281,7 +284,7 @@
 							</table:customData>
 							<Label  text="{pch>LABEL_D__PO_TYPE}"/>
 							<table:template>
-								<Input value="{workInfo>PO_TYPE}" editable="true"></Input>
+								<Text text="{workInfo>PO_TYPE}" editable="true"/>
 							
 							</table:template>
 						</table:Column>	 -->
@@ -292,22 +295,10 @@
 							</table:customData>
 							<Label  text="{pch>LABEL_D__MEMO}"/>
 							<table:template>
-								<Input value="{workInfo>MEMO}" editable="true"></Input>
+								<Text text="{workInfo>MEMO}" editable="true"/>
 							
 							</table:template>
 						</table:Column>	
-
-
-
-
-
-
-
-
-
-
-
-
 
 						<!-- 参照 -->
 						<table:Column id="_IDGenColumn26" width="8rem" sortProperty="ExtNumber" filterProperty="ExtNumber"  >
@@ -316,7 +307,7 @@
 							</table:customData>
 							<Label id="_IDGenLabel4" text="{pch>LABEL_D__ExtNumber}"/>
 							<table:template>
-								<Input value="{workInfo>ExtNumber}" editable="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'}], formatter: '.formatter.getEditableSaveCommon'}"></Input>
+								<Input value="{workInfo>ExtNumber}" editable="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'}], formatter: '.formatter.getEditableSaveCommon'}"/>
 	
 							</table:template>
 						</table:Column>			
