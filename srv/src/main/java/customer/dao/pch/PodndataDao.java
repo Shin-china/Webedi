@@ -7,9 +7,9 @@ import com.sap.cds.ql.Select;
 import com.sap.cds.ql.Update;
 import com.sap.cloud.sdk.datamodel.odata.client.adapter.BigDecimalAdapter;
 
-import cds.gen.pch.PchT01PoH;
-import cds.gen.pch.PchT02PoD;
-import cds.gen.pch.PchT03PoC;
+import cds.gen.pch.T01PoH;
+import cds.gen.pch.T02PoD;
+import cds.gen.pch.T03PoC;
 import cds.gen.pch.Pch_;
 import cds.gen.sys.T01User;
 import customer.bean.pch.Pch01;
@@ -30,11 +30,11 @@ public class PodndataDao extends Dao {
 
     private static final Logger logger = LoggerFactory.getLogger(PodndataDao.class);
 
-    public PchT02PoD getByID(String PO_NO, Integer D_NO) {
-        Optional<PchT02PoD> result = db.run(
-                Select.from(Pch_.PCH_T02_PO_D)
+    public T02PoD getByID(String PO_NO, Integer D_NO) {
+        Optional<T02PoD> result = db.run(
+                Select.from(Pch_.T02_PO_D)
                         .where(o -> o.PO_NO().eq(PO_NO).and(o.D_NO().eq(D_NO))))
-                .first(PchT02PoD.class);
+                .first(T02PoD.class);
 
         if (result.isPresent()) {
             return result.get();
@@ -45,10 +45,10 @@ public class PodndataDao extends Dao {
     // 获取 t02 表 po dn
     public BigDecimal getQuantity(String PO_NO, Integer D_NO) {
 
-        Optional<PchT02PoD> result = db.run(
-                Select.from(Pch_.PCH_T02_PO_D)
+        Optional<T02PoD> result = db.run(
+                Select.from(Pch_.T02_PO_D)
                         .where(o -> o.PO_NO().eq(PO_NO).and(o.D_NO().eq(D_NO))))
-                .first(PchT02PoD.class);
+                .first(T02PoD.class);
 
         if (result.isPresent()) {
 
@@ -62,25 +62,25 @@ public class PodndataDao extends Dao {
 
     }
 
-    public List<PchT03PoC> getAll() {
-        return db.run(Select.from(Pch_.PCH_T03_PO_C)).listOf(PchT03PoC.class);
+    public List<T03PoC> getAll() {
+        return db.run(Select.from(Pch_.T03_PO_C)).listOf(T03PoC.class);
 
     }
 
-    public void insert(PchT03PoC o) {
+    public void insert(T03PoC o) {
         // o.setCdTime(getNow());
         // o.setCdBy(user.getUserId());
-        db.run(Insert.into(Pch_.PCH_T03_PO_C).entry(o));
+        db.run(Insert.into(Pch_.T03_PO_C).entry(o));
     }
 
-    public void update(PchT03PoC o) {
+    public void update(T03PoC o) {
         // o.setUpTime(getNow());
         // o.setUpBy(getUserId());
-        db.run(Update.entity(Pch_.PCH_T03_PO_C).entry(o));
+        db.run(Update.entity(Pch_.T03_PO_C).entry(o));
     }
 
     public void deleteAll() {
-        db.run(Delete.from(Pch_.PCH_T03_PO_C));
+        db.run(Delete.from(Pch_.T03_PO_C));
     }
 
 }

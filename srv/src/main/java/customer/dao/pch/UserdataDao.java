@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import cds.gen.pch.PchT02PoD;
+import cds.gen.pch.T02PoD;
 import cds.gen.sys.Sys_;
 import cds.gen.tableservice.Pch01Auth1;
 import cds.gen.tableservice.Pch01Auth1_;

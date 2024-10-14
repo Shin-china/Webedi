@@ -16,8 +16,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 
-import cds.gen.pch.PchT02PoD;
-import cds.gen.pch.PchT03PoC;
+import cds.gen.pch.T02PoD;
+import cds.gen.pch.T03PoC;
 import cds.gen.pch.Pch_;
 
 import java.time.Instant;
@@ -26,13 +26,13 @@ import java.time.Instant;
 public class Pch01saveDao extends Dao {
 
     // 从采购订单明细表中取 一条 po dn
-    public PchT02PoD getByID(String PO_NO, Integer D_NO) {
+    public T02PoD getByID(String PO_NO, Integer D_NO) {
 
-        Optional<PchT02PoD> result = db.run(
-                Select.from(Pch_.PCH_T02_PO_D)
+        Optional<T02PoD> result = db.run(
+                Select.from(Pch_.T02_PO_D)
                         .where(o -> o.PO_NO().eq(PO_NO)
                                 .and(o.D_NO().eq(D_NO))))
-                .first(PchT02PoD.class);
+                .first(T02PoD.class);
         if (result.isPresent()) {
             return result.get();
         }
@@ -40,14 +40,14 @@ public class Pch01saveDao extends Dao {
     };
 
     // 从采购订单确认表 取 po dn delivery date
-    public PchT03PoC getByIDsave(String PO_NO, Integer D_NO, LocalDate DELIVERY_DATE) {
+    public T03PoC getByIDsave(String PO_NO, Integer D_NO, LocalDate DELIVERY_DATE) {
 
-        Optional<PchT03PoC> result = db.run(
-                Select.from(Pch_.PCH_T03_PO_C)
+        Optional<T03PoC> result = db.run(
+                Select.from(Pch_.T03_PO_C)
                         .where(o -> o.PO_NO().eq(PO_NO)
                                 .and(o.D_NO().eq(D_NO))
                                 .and(o.DELIVERY_DATE().eq(DELIVERY_DATE))))
-                .first(PchT03PoC.class);
+                .first(T03PoC.class);
         if (result.isPresent()) {
             return result.get();
         }
@@ -56,10 +56,10 @@ public class Pch01saveDao extends Dao {
 
     @Transactional
     // 向确认表03 添加数据。
-    public boolean insertt03(PchT03PoC o) {
+    public boolean insertt03(T03PoC o) {
 
         try {
-            db.run(Insert.into(Pch_.PCH_T03_PO_C).entry(o));
+            db.run(Insert.into(Pch_.T03_PO_C).entry(o));
             return true;
         } catch (DataAccessException e) {
             return false;
@@ -73,10 +73,10 @@ public class Pch01saveDao extends Dao {
     };
 
     // 更新确认表03
-    public boolean update(PchT03PoC t03) {
+    public boolean update(T03PoC t03) {
 
         try {
-            db.run(Update.entity(Pch_.PCH_T03_PO_C).entry(t03));
+            db.run(Update.entity(Pch_.T03_PO_C).entry(t03));
             return true;
         } catch (Exception e) {
             return false;
@@ -86,13 +86,13 @@ public class Pch01saveDao extends Dao {
     // 从03表中，获取最大的连番
     public int getSeq(String PO_NO, Integer D_NO) {
 
-        Optional<PchT03PoC> result = db.run(
-                Select.from(Pch_.PCH_T03_PO_C)
+        Optional<T03PoC> result = db.run(
+                Select.from(Pch_.T03_PO_C)
                         .where(o -> o.PO_NO().eq(PO_NO)
                                 .and(o.D_NO().eq(D_NO)))
                         .orderBy(o -> o.SEQ().desc())
                         .limit(1))
-                .first(PchT03PoC.class);
+                .first(T03PoC.class);
         if (result.isPresent()) {
             return result.get().getSeq();
         } else {
@@ -100,7 +100,7 @@ public class Pch01saveDao extends Dao {
         }
     };
 
-    public PchT03PoC getByIDchange(String PO_NO, Integer D_NO) {
+    public T03PoC getByIDchange(String PO_NO, Integer D_NO) {
 
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getByIDchange'");
@@ -110,7 +110,7 @@ public class Pch01saveDao extends Dao {
     public Boolean delete(String PO_NO, Integer D_NO, LocalDate DELIVERY_DATE) {
 
         try {
-            db.run(Delete.from(Pch_.PCH_T03_PO_C)
+            db.run(Delete.from(Pch_.T03_PO_C)
                     .where(o -> o.PO_NO().eq(PO_NO).and(o.D_NO().eq(D_NO)).and(o.DELIVERY_DATE().gt(DELIVERY_DATE))));
             return true;
         } catch (Exception e) {

@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 import com.alibaba.fastjson.JSONObject;
 import com.sap.cds.services.messages.Messages;
 
-import cds.gen.pch.PchT03PoC;
+import cds.gen.pch.T03PoC;
 import cds.gen.tableservice.PoTypePop;
 import customer.bean.pch.Pch01List;
 import customer.service.Service;
@@ -276,7 +276,7 @@ public class Pch01Service extends Service {
 
                 if (delsuccess) {
 
-                    PchT03PoC t03 = PchT03PoC.create();
+                    T03PoC t03 = T03PoC.create();
                     t03.setDNo(s.getD_NO()); // 设置采购订单编号
                     t03.setPoNo(s.getPO_NO()); // 采购订单明细行号
                     t03.setSeq(3); // 序号
