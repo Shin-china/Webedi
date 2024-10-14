@@ -239,8 +239,32 @@ sap.ui.define([], function () {
           return qty.toFixed(3);
         }
         return re;
-      }
-      
+      },
+      		/*++++++++++++++++++++++++++++++
+		日期格式转换
+		参数：
+		1、datetime：编辑日期
+		++++++++++++++++++++++++++++++*/
+		dateFormatDateTime: function (datetime) {
+			var dateStr = "";
+			if (datetime == null || datetime == "") {
+
+				dateStr = datetime;
+
+			} else {
+
+				var y = datetime.getFullYear();
+				var mon = datetime.getMonth() + 1;
+				var d = datetime.getDate();
+				var h = datetime.getHours();
+				var min = datetime.getMinutes();
+				var s = datetime.getSeconds();
+				dateStr = y + '-' + mon + '-' + d + '-' + h + '-' + min + '-' + s;
+			}
+
+			return dateStr;
+
+		},
     };
   });
   

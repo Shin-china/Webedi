@@ -40,13 +40,13 @@ extend service TableService {
             T02.MEMO,                           // 備考
             
             T03.ExtNumber,                          //参照
-            
-          
+            T03.CD_BY,                          //R
+            T03.CD_TIME,                          //参照
             
             
 
         }
-        
+        action PCH06_SAVE_DATA(str : String) returns String;//Send Email
 
 }
 
@@ -60,6 +60,83 @@ annotate TableService.PCH_T03_PO_C with {
                 LocalDataProperty : 'PO_NO',
                 ValueListProperty : 'PO_NO'
             },
+            {
+                $Type             : 'Common.ValueListParameterDisplayOnly',
+                ValueListProperty : 'D_NO'
+            },
+            {
+                $Type             : 'Common.ValueListParameterDisplayOnly',
+                ValueListProperty : 'STORAGE'
+            },
+            {
+                $Type             : 'Common.ValueListParameterDisplayOnly',
+                ValueListProperty : 'SUPPLIER'
+            },
+            {
+                $Type             : 'Common.ValueListParameterDisplayOnly',
+                ValueListProperty : 'SUPPLIER_MAT'
+            },
+            {
+                $Type             : 'Common.ValueListParameterDisplayOnly',
+                ValueListProperty : 'MAT_ID'
+            },
+            {
+                $Type             : 'Common.ValueListParameterDisplayOnly',
+                ValueListProperty : 'PO_TYPE'
+            },
+            {
+                $Type             : 'Common.ValueListParameterDisplayOnly',
+                ValueListProperty : 'PO_DATE'
+            },
+            {
+                $Type             : 'Common.ValueListParameterDisplayOnly',
+                ValueListProperty : 'STATUS'
+            },
+            {
+                $Type             : 'Common.ValueListParameterDisplayOnly',
+                ValueListProperty : 'CD_BY'
+            },
+            {
+                $Type             : 'Common.ValueListParameterDisplayOnly',
+                ValueListProperty : 'PO_D_DATE'
+            },
+            {
+                $Type             : 'Common.ValueListParameterDisplayOnly',
+                ValueListProperty : 'ZABC'
+            },
+            {
+                $Type             : 'Common.ValueListParameterDisplayOnly',
+                ValueListProperty : 'PO_D_TXZ01'
+            },
+            {
+                $Type             : 'Common.ValueListParameterDisplayOnly',
+                ValueListProperty : 'PO_PUR_QTY'
+            },
+            {
+                $Type             : 'Common.ValueListParameterDisplayOnly',
+                ValueListProperty : 'PO_PUR_UNIT'
+            },
+            {
+                $Type             : 'Common.ValueListParameterDisplayOnly',
+                ValueListProperty : 'CURRENCY'
+            },
+            {
+                $Type             : 'Common.ValueListParameterDisplayOnly',
+                ValueListProperty : 'DEL_PRICE'
+            },
+            {
+                $Type             : 'Common.ValueListParameterDisplayOnly',
+                ValueListProperty : 'UNIT_PRICE'
+            },
+            {
+                $Type             : 'Common.ValueListParameterDisplayOnly',
+                ValueListProperty : 'DEL_AMOUNT'
+            },
+            {
+                $Type             : 'Common.ValueListParameterDisplayOnly',
+                ValueListProperty : 'MEMO'
+            },
+
         ]
     }});
    
