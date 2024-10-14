@@ -25,9 +25,6 @@ public class ObjectStoreHandler implements EventHandler {
 
     @On(event = "getS3List")
     public void getObjects(GetS3ListContext context) {
-        // Test
-        ifm01BpService.syncBP();
-        // End
         List<S3Object> s3Objects = objectStoreService.getS3List();
         context.setResult("sucess");
     }

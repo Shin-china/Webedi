@@ -1,0 +1,220 @@
+<mvc:View controllerName="umc.app.controller.sys.sys02_role_d"
+	xmlns:smartfield="sap.ui.comp.smartfield"
+	xmlns:smartform="sap.ui.comp.smartform"
+	xmlns:core="sap.ui.core"
+	xmlns="sap.m"
+	xmlns:m="sap.m"
+	xmlns:f="sap.f"
+	xmlns:l="sap.ui.layout"
+	xmlns:smartFilterBar="sap.ui.comp.smartfilterbar"
+	xmlns:smartTable="sap.ui.comp.smarttable"
+	xmlns:sv="sap.ui.comp.smartvariants"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:uxap="sap.uxap"
+	xmlns:table="sap.ui.table"
+	xmlns:mc="sap.suite.ui.microchart"
+	xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+	<f:DynamicPage id="dynamicPageId" headerExpanded="true" showFooter="true" busy="{localModel>/isBusy}">
+		<f:title>
+			<f:DynamicPageTitle id="_IDGenDynamicPageTitle1">
+				<f:heading>
+					<m:Title id="_IDGenTitle1" text="{sys>SYS02_MAINTITLE}" />
+				</f:heading>
+				<f:navigationActions>
+					<Button id="_IDGenButton1" icon="sap-icon://nav-back" tooltip="nav-back" press="navTo('RouteList_sys02')"/>
+				</f:navigationActions>
+			</f:DynamicPageTitle>
+		</f:title>
+
+
+		<!-- <m:IconTabFilter id="_IDGenIconTabFilter1" text="{sys>SYS02_TAB_TITLE_ROLE}"> -->
+		<f:header>
+			<f:DynamicPageHeader id="_IDGenDynamicPageHeader1" pinnable="true">
+				<f:content>
+					<!-- 按钮 -->
+					<m:OverflowToolbar id="_IDGenOverflowToolbar1">
+						<m:content>
+							<m:ToolbarSpacer id="_IDGenToolbarSpacer1"/>
+
+							<m:Button id="_IDGenButton2" icon="sap-icon://save" text="{sys>SYS02_LABEL_B__SAVE}" press="onRoleSave" enabled="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'}],formatter: '.formatter.getEditableSaveCommon'}"/>
+							<m:Button id="_IDGenButton3" icon="sap-icon://edit" text="{sys>SYS02_LABEL_B__UPDATE}" press="onRoleUpdate" enabled="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'}],formatter: '.formatter.getEditableDCommon'}"/>
+						</m:content>
+					</m:OverflowToolbar>
+
+					<l:VerticalLayout id="_IDGenVerticalLayout1" class="sapUiSmallMarginEnd">
+
+						<m:FlexBox id="_IDGenFlexBox1" wrap="Wrap" fitContainer="true">
+
+
+							<l:VerticalLayout id="_IDGenVerticalLayout2" class="sapUiSmallMarginEnd">
+								<m:Label id="_IDGenLabel1" labelFor="ROLE_CODE" text="{sys>SYS02_LABEL_D__ROLE_CODE}"/>
+								<m:Input id="ROLE_CODE" required="true" value="{ROLE_CODE}" enabled="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'},{path: 'localModel>/isCreate'}],formatter: '.formatter.getEditableSaveCreateCommon'}" width="15em"/>
+							</l:VerticalLayout>
+
+
+							<l:VerticalLayout id="_IDGenVerticalLayout3" class="sapUiSmallMarginEnd">
+								<m:Label id="_IDGenLabel2" labelFor="ROLE_NAME" text="{sys>SYS02_LABEL_D__ROLE_NAME}"/>
+								<m:Input id="ROLE_NAME" required="true" value="{ROLE_NAME}" enabled="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'}],formatter: '.formatter.getEditableSaveCommon'}" width="15em"/>
+							</l:VerticalLayout>
+
+
+						</m:FlexBox>
+					</l:VerticalLayout>
+					<!-- </m:IconTabFilter> -->
+				</f:content>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<m:IconTabBar id="_IDGenIconTabBar1" expanded="true" expandable="false" class="sapUiSmallMarginBottom sapUiResponsiveContentPadding" backgroundDesign="Translucent">
+				<m:items>
+					<m:IconTabFilter id="_IDGenIconTabFilter2" text="{sys>SYS02_TABLE_TITLE_AUTH}" visible="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'}],formatter: '.formatter.getEditableSaveCommon'}">
+						<smartTable:SmartTable id="smartTable" persistencyKey="receiptprintTable" entitySet="SYS_T03_AUTH" smartFilterId="smartFilterBar" useExportToExcel="false" useVariantManagement="false" useTablePersonalisation="false" tableType="Table" beforeRebindTable="onRebindAuth2" showRowCount="true" placeToolbarInTable="true" header="{sys>SYS02_TABLE_TITLE_AUTH}" enableAutoBinding="true">
+							<!-- <smartTable:customToolbar>
+                                <m:OverflowToolbar id="_IDGenOverflowToolbar2">
+                                  <m:content>
+                                    <m:ToolbarSpacer id="_IDGenToolbarSpacer2"/>
+                                                <m:Button id="_IDGenButton4" text="{sys>SYS02_LABEL_B__UPDATE}" press="onUpdateAuth('add')" />                                            
+                                  </m:content>
+                                </m:OverflowToolbar>
+                              </smartTable:customToolbar> -->
+
+
+
+							<table:Table id="detailTable" rowActionCount="1">
+								<table:columns>
+									<!-- 機能権限ID -->
+
+									<table:Column id="_IDGenColumn" visible="true" autoResizable="true" sortProperty="ID" filterProperty="ID" minWidth="20" width="15em">
+										<table:customData>
+											<core:CustomData key="p13nData" value='\{"columnKey":"ID", "leadingProperty":"ID"}'/>
+										</table:customData>
+										<table:label>
+											<m:Label id="_IDGenLabel" text="{sys>SYS02_LABEL_D__AUTH_ID}"/>
+										</table:label>
+										<table:template>
+											<m:Text id="_IDGenText" text="{ID}"></m:Text>
+										</table:template>
+									</table:Column>
+
+									<table:Column id="_IDGenColumn2" visible="true" autoResizable="true" sortProperty="AUTH_NAME" filterProperty="AUTH_NAME" minWidth="20" width="20em">
+										<table:customData>
+											<core:CustomData key="p13nData" value='\{"columnKey":"AUTH_NAME", "leadingProperty":"AUTH_NAME"}'/>
+										</table:customData>
+										<table:label>
+											<m:Label id="_IDGenLabel4" text="{sys>SYS02_LABEL_D__AUTH_NAME}"/>
+										</table:label>
+										<table:template>
+											<m:Text id="_IDGenText2" text="{AUTH_NAME}"></m:Text>
+										</table:template>
+									</table:Column>
+									<!-- 機能ID -->
+									<table:Column id="_IDGenColumn3" visible="true" autoResizable="true" sortProperty="MENU_ID" filterProperty="MENU_ID" minWidth="20" width="8em">
+										<table:customData>
+											<core:CustomData key="p13nData" value='\{"columnKey":"MENU_ID", "leadingProperty":"MENU_ID"}'/>
+										</table:customData>
+										<table:label>
+											<m:Label id="_IDGenLabel5" text="{sys>SYS02_LABEL_D__MENU_ID}"/>
+										</table:label>
+										<table:template>
+											<m:Text id="_IDGenText3" text="{MENU_ID}"></m:Text>
+										</table:template>
+									</table:Column>
+
+									<table:Column id="_IDGenColumn7" visible="true" autoResizable="true" sortProperty="TO_MENU/MENU_NAME" filterProperty="TO_MENU/MENU_NAME" minWidth="20" width="15em">
+										<table:customData>
+											<core:CustomData key="p13nData" value='\{"columnKey":"TO_MENU/MENU_NAME", "leadingProperty":"TO_MENU/MENU_NAME"}'/>
+										</table:customData>
+										<table:label>
+											<m:Label id="_IDGenLabel8" text="{sys>SYS02_LABEL_D__MENU_NAME}"/>
+										</table:label>
+										<table:template>
+											<m:Text id="_IDGenText9" text="{TO_MENU/MENU_NAME}"></m:Text>
+										</table:template>
+									</table:Column>
+
+								</table:columns>
+
+							</table:Table>
+						</smartTable:SmartTable>
+					</m:IconTabFilter>
+
+					<m:IconTabFilter id="_IDGenIconTabFilter3" text="{sys>SYS02_TABLE_TITLE_AUTH}" visible="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'}],formatter: '.formatter.getEditableDCommon'}">
+						<smartTable:SmartTable id="smartTable2" persistencyKey="receiptprintTable" entitySet="SYS_T05_ROLE_2_AUTH" smartFilterId="smartFilterBar" useExportToExcel="false" useVariantManagement="false" useTablePersonalisation="false" tableType="Table" beforeRebindTable="onRebindAuth" showRowCount="true" placeToolbarInTable="true" header="{sys>SYS02_TABLE_TITLE_AUTH}" enableAutoBinding="true">
+							<!-- <smartTable:customToolbar>
+                                <m:OverflowToolbar id="_IDGenOverflowToolbar3">
+                                  <m:content>
+                                    <m:ToolbarSpacer id="_IDGenToolbarSpacer3"/>
+                                                <m:Button id="_IDGenButton5" text="{sys>SYS02_LABEL_B__UPDATE}" press="onUpdateAuth('update')" />                                            
+                                  </m:content>
+                                </m:OverflowToolbar>
+                              </smartTable:customToolbar> -->
+
+
+
+							<table:Table id="detailTable2" selectionMode="None" rowActionCount="1">
+								<table:columns>
+									<!-- 機能権限ID -->
+
+									<table:Column id="_IDGenColumn4" visible="true" autoResizable="true" sortProperty="TO_AUTH/ID" filterProperty="TO_AUTH/ID" minWidth="20" width="15em">
+										<table:customData>
+											<core:CustomData key="p13nData" value='\{"columnKey":"TO_AUTH/ID", "leadingProperty":"TO_AUTH/ID"}'/>
+										</table:customData>
+										<table:label>
+											<m:Label id="_IDGenLabe2" text="{sys>SYS02_LABEL_D__AUTH_ID}"/>
+										</table:label>
+										<table:template>
+											<m:Text id="_IDGenText4" text="{TO_AUTH/ID}"></m:Text>
+										</table:template>
+									</table:Column>
+
+									<table:Column id="_IDGenColumn5" visible="true" autoResizable="true" sortProperty="TO_AUTH/AUTH_NAME" filterProperty="TO_AUTH/AUTH_NAME" minWidth="20" width="20em">
+										<table:customData>
+											<core:CustomData key="p13nData" value='\{"columnKey":"TO_AUTH/AUTH_NAME", "leadingProperty":"TO_AUTH/AUTH_NAME"}'/>
+										</table:customData>
+										<table:label>
+											<m:Label id="_IDGenLabel6" text="{sys>SYS02_LABEL_D__AUTH_NAME}"/>
+										</table:label>
+										<table:template>
+											<m:Text id="_IDGenText5" text="{TO_AUTH/AUTH_NAME}"></m:Text>
+										</table:template>
+									</table:Column>
+									<!-- 機能ID -->
+									<table:Column id="_IDGenColumn6" visible="true" autoResizable="true" sortProperty="TO_AUTH/MENU_ID" filterProperty="TO_AUTH/MENU_ID" minWidth="20" width="8em">
+										<table:customData>
+											<core:CustomData key="p13nData" value='\{"columnKey":"TO_AUTH/MENU_ID", "leadingProperty":"TO_AUTH/MENU_ID"}'/>
+										</table:customData>
+										<table:label>
+											<m:Label id="_IDGenLabel7" text="{sys>SYS02_LABEL_D__MENU_ID}"/>
+										</table:label>
+										<table:template>
+											<m:Text id="_IDGenText6" text="{TO_AUTH/MENU_ID}"></m:Text>
+										</table:template>
+									</table:Column>
+									<!-- TO_AUTH/TO_MENU/MENU_NAME -->
+									<table:Column id="_IDGenColumn9" visible="true" autoResizable="true" sortProperty="TO_AUTH/TO_MENU/MENU_NAME" filterProperty="TO_AUTH/TO_MENU/MENU_NAME" minWidth="20" width="15em">
+										<table:customData>
+											<core:CustomData key="p13nData" value='\{"columnKey":"TO_AUTH/TO_MENU/MENU_NAME", "leadingProperty":"TO_AUTH/TO_MENU/MENU_NAME"}'/>
+										</table:customData>
+										<table:label>
+											<m:Label id="_IDGenLabel9" text="{sys>SYS02_LABEL_D__MENU_NAME}"/>
+										</table:label>
+										<table:template>
+											<m:Text id="_IDGenText8" text="{TO_AUTH/TO_MENU/MENU_NAME}"></m:Text>
+										</table:template>
+									</table:Column>
+								</table:columns>
+
+							</table:Table>
+						</smartTable:SmartTable>
+					</m:IconTabFilter>
+				</m:items>
+			</m:IconTabBar>
+		</f:content>
+		<f:footer>
+			<m:OverflowToolbar id="otbFooter">
+				<m:Button icon="sap-icon://alert" text="{=${message>/}.length}" visible="{=${message>/}.length > 0}" type="Emphasized" press="onMessagePopoverPress" id="messageButton">
+				</m:Button>
+			</m:OverflowToolbar>
+		</f:footer>
+	</f:DynamicPage>
+</mvc:View>

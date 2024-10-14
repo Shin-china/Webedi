@@ -58,11 +58,6 @@
 								<c:Item id="USER_TYPE" key="{path:'list>Type'}" text="{list>Name}"   />
 							</Select>
 						</l:VerticalLayout>
-						<!-- BP Number-->
-						<l:VerticalLayout id="_IDGenVerticalLayout3" class="sapUiSmallMarginEnd">
-							<Label id="_IDGenLabel3" labelFor="BP_NUMBER_ID" text="{sys>SYS01_LABEL_BP_NUMBER}" width="12em"/>
-							<Input id="BP_NUMBER" value="{BP_NUMBER}" editable="{localModel>/editable}"  width="12em"/>
-						</l:VerticalLayout>
 						<l:VerticalLayout id="idVerticalLayout4" class="sapUiSmallMarginEnd">
 							<Label id="_IDGenLabel4" labelFor="USER_NAME" text="{sys>SYS01_LABEL_USER_NAME}" />
 							<Input id="USER_NAME" value="{USER_NAME}" editable="{localModel>/editable}" width="8em"/>
@@ -92,7 +87,7 @@
 
 				<IconTabFilter  id="idIconTabFilter" text="{sys>SYS01_TAB_PLANT}" icon="sap-icon://folder"  >
 				   <!-- 编辑状态下显示所有表中的工厂作为选择 -->
-					<smarttable:SmartTable id="smartTable1" persistencyKey="Table1" visible="{localModel>/showall}" entitySet="MST_T02_SAP_PLANT" useVariantManagement="false" header="{sys>SYS01_TAB_TITLE_PLANT}" enableAutoBinding="true">
+					<smarttable:SmartTable id="smartTable1" persistencyKey="Table1" visible="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'}],formatter: '.formatter.getEditableSaveCommon'}" entitySet="MST_T02_SAP_PLANT" useVariantManagement="false" header="{sys>SYS01_TAB_TITLE_PLANT}" enableAutoBinding="true">
 						<t:Table id="idTable1" rowActionCount="1" >
 							<t:columns>
 								<!--Plant ID-->
@@ -125,7 +120,8 @@
 					</smarttable:SmartTable>
 
 				   <!-- 显示状态显示保重存的数据 -->
-				   <smarttable:SmartTable id="smartTable2" persistencyKey="Table1" visible="{localModel>/showresult}" entitySet="SYS_T09_USER_2_PLANT"  beforeRebindTable=".onRebindPlant" useVariantManagement="false" header="{sys>SYS01_TAB_TITLE_PLANT}" enableAutoBinding="true" >
+				   <smarttable:SmartTable id="smartTable2" persistencyKey="Table1" visible="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'}],formatter: '.formatter.getEditableDCommon'}"
+					 entitySet="SYS_T09_USER_2_PLANT"  beforeRebindTable=".onRebindPlant" useVariantManagement="false" header="{sys>SYS01_TAB_TITLE_PLANT}" enableAutoBinding="true" >
 					<t:Table id="idTable2" rowActionCount="1" selectionMode="None">
 						<t:columns>
 							<!--Plant ID-->

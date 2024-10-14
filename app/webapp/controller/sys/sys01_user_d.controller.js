@@ -138,7 +138,6 @@ sap.ui.define([
 				userStatus:userStatus,
 				validDateFrom:dateF,
 				validDateTo:dateT,
-				bpNumber:context.BP_NUMBER,
 				plants:plantIdList,
 			};
 
@@ -183,7 +182,6 @@ sap.ui.define([
 
 			var checkResult = true;
 			var UserCode = that.byId("USER_ID").getValue();
-			var BpNumber = that.byId("BP_NUMBER").getValue();
 			var UserName = that.byId("USER_NAME").getValue();
 			var ValidFrom = that.byId("VALID_FROM").getValue();
 			var ValidTo = that.byId("VALID_TO").getValue();
@@ -195,11 +193,6 @@ sap.ui.define([
 				checkResult = false;
 			}
 
-			if(BpNumber === "" || BpNumber === null){
-				const sPath = that.getView().getBindingContext().getPath() + "/BP_NUMBER";
-				that.MessageTools._addMessage(this.MessageTools._getI18nTextInModel("sys", "MSG_BP_NUMBER", this.getView()), sPath, 1, that.getView());
-				checkResult = false;
-			}
 
 			if(UserName === "" || UserName === null){
 				const sPath = that.getView().getBindingContext().getPath() + "/USER_NAME";
@@ -242,6 +235,23 @@ sap.ui.define([
 			oEvent.getParameter("bindingParams").parameters.expand = "TO_PLANT";
 
 		},
+    /**
+     * 获取字段的某一个id集合
+     * @param {画面id} viewId
+     * @param {要取的字段ID} filedId
+     * @returns
+     */
+    _getRootId(viewId, filedId) {
+		// 获取明细权限数据
+		var dataList = this._getByIdObject(viewId);
+		var dataID = new Array();
+		//设值
+		for (var j = 0; j < dataList.length; j++) {
+		  var data = dataList[j];
+		  dataID.push(eval("data." + filedId));
+		}
+		return dataID;
+	  },
 		//默认选上已保存的数据
 		_addSelection:function(headID){
 

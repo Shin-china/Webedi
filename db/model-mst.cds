@@ -11,6 +11,8 @@ entity T01_SAP_MAT : IF_CUID_FILED { //物料基本信息
                               @title: '{i18n>MAT_GROUP}' MAT_GROUP   : String(9); //物料组MATKL
                               @title: '{i18n>MAT_STATUS}' MAT_STATUS : String(1); //状态LVORM
                               @title: '{i18n>MAT_NAME}' MAT_NAME     : String(40); //物料名称
+                              @title: '{i18n>MANU_CODE}' MANU_CODE   : String(10); //製造業者
+                              @title: '{i18n>MANU_MATERIAL}' MANU_MATERIAL     : String(40); //制造商物料编号
 
 
 }
