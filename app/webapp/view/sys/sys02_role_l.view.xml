@@ -1,0 +1,151 @@
+<mvc:View controllerName="umc.app.controller.sys.sys02_role_l"
+	xmlns:smartfield="sap.ui.comp.smartfield"
+	xmlns:smartform="sap.ui.comp.smartform"
+	xmlns:core="sap.ui.core"
+	xmlns="sap.m"
+	xmlns:m="sap.m"
+	xmlns:f="sap.f"
+	xmlns:smartFilterBar="sap.ui.comp.smartfilterbar"
+	xmlns:smartTable="sap.ui.comp.smarttable"
+	xmlns:sv="sap.ui.comp.smartvariants"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:uxap="sap.uxap"
+	xmlns:table="sap.ui.table"
+	xmlns:mc="sap.suite.ui.microchart"
+	xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+
+
+
+	<f:DynamicPage id="dynamicPageId" headerExpanded="true" showFooter="true" busy="{localModel>/isBusy}">
+		<f:title>
+			<f:DynamicPageTitle id="DynamicPageTitle">
+				<f:heading>
+					<Title id="Title" text="{sys>SYS02TITLE}"/>
+
+				</f:heading>
+				<f:navigationActions>
+					<Button id="_IDGenButton3" icon="sap-icon://nav-back" tooltip="nav-back" press="navToHome"/>
+				</f:navigationActions>
+			</f:DynamicPageTitle>
+		</f:title>
+
+
+
+		<f:header>
+			<f:DynamicPageHeader id="DynamicPageHeader" pinnable="true">
+				<f:content>
+					<OverflowToolbar id="_IDGenOverflowToolbar1">
+						<content>
+							<ToolbarSpacer id="_IDGenToolbarSpacer1"/>
+
+							<Button id="_IDGenButton2" icon="sap-icon://edit" text="{sys>SYS02_BUTTON_CREAT}" press="onCreateRole" enabled="true" width="10em"/>
+						</content>
+					</OverflowToolbar>
+					<smartFilterBar:SmartFilterBar id="smartFilterBar" useToolbar="false" entitySet="SYS_T02_ROLE" persistencyKey="receiptprintFilterBar" showFilterConfiguration="true">
+						<smartFilterBar:controlConfiguration>
+							<smartFilterBar:ControlConfiguration id="_IDGenControlConfiguration1" key="ROLE_CODE" label="{sys>SYS02_LABEL_D__ROLE_CODE}" visibleInAdvancedArea="true" filterType="single">
+
+
+							</smartFilterBar:ControlConfiguration>
+
+							<smartFilterBar:ControlConfiguration id="_IDGenControlConfiguration2" key="ROLE_NAME" label="{sys>SYS02_LABEL_D__ROLE_NAME}" visibleInAdvancedArea="true" filterType="single">
+
+							</smartFilterBar:ControlConfiguration>
+
+						</smartFilterBar:controlConfiguration>
+					</smartFilterBar:SmartFilterBar>
+				</f:content>
+			</f:DynamicPageHeader>
+		</f:header>
+
+		<f:content>
+
+
+			<smartTable:SmartTable id="smartTable" smartVariant="__SVM01" persistencyKey="receiptprintTable" entitySet="SYS_T02_ROLE" requestAtLeastFields="ID,ROLE_CODE,ROLE_NAME,UP_BY,UP_TIME" smartFilterId="smartFilterBar" useExportToExcel="true" useVariantManagement="false" useTablePersonalisation="false" tableType="Table" showRowCount="true" beforeRebindTable="onRebind" placeToolbarInTable="true" header="{i8>tableHeaderTitle}" enableAutoBinding="false">
+
+				<smartTable:customToolbar>
+
+				</smartTable:customToolbar>
+				<table:Table id="detailTable" rowActionCount="1" rowMode="Auto">
+
+					<table:columns>
+						<table:Column id="_IDGenColumn1" visible="true" autoResizable="true" width="5em">
+							<table:label>
+								<Label id="_IDGenLabel1" text="No"/>
+							</table:label>
+							<table:template>
+								<m:Text id="_IDGenText1" text="{parts:[{path:'ID'}],formatter:'.formatter.getRowNo'}"></m:Text>
+							</table:template>
+						</table:Column>
+
+
+
+						<table:Column id="ROLE_CODE" visible="true" autoResizable="true" sortProperty="ROLE_CODE" filterProperty="ROLE_CODE" width="10em">
+							<table:customData>
+								<core:CustomData key="p13nData" value='\{"columnKey":"ROLE_CODE", "leadingProperty":"ROLE_CODE"}'/>
+							</table:customData>
+							<table:label>
+								<Label id="LABEL_D__ROLE_CODE" text="{sys>SYS02_LABEL_D__ROLE_CODE}"/>
+							</table:label>
+							<table:template>
+								<Text id="TEMP_ROLE_CODE" text="{ROLE_CODE}"></Text>
+							</table:template>
+						</table:Column>
+
+						<table:Column id="ROLE_NAME" visible="true" autoResizable="true" sortProperty="ROLE_NAME" filterProperty="ROLE_NAME" width="10em">
+							<table:customData>
+								<core:CustomData key="p13nData" value='\{"columnKey":"ROLE_NAME", "leadingProperty":"ROLE_NAME"}'/>
+							</table:customData>
+							<table:label>
+								<Label id="LABEL_ROLE_NAME" text="{sys>SYS02_LABEL_D__ROLE_NAME}"/>
+							</table:label>
+							<table:template>
+								<Text id="TEMP_ROLE_NAME" text="{ROLE_NAME}"></Text>
+							</table:template>
+						</table:Column>
+
+						<!-- 更新者-->
+						<table:Column id="_IDGenColumn2" visible="true" autoResizable="true" sortProperty="UP_BY" filterProperty="UP_BY" width="10em">
+							<table:customData>
+								<core:CustomData key="p13nData" value='\{"columnKey":"UP_BY", "leadingProperty":"UP_BY"}'/>
+							</table:customData>
+							<table:label>
+								<Label id="_IDGenLabel2" text="{sys>SYS01_LABEL_D__MODIFIEDBY}"/>
+							</table:label>
+							<table:template>
+								<Text id="_IDGenText2" text="{UP_BY}"></Text>
+							</table:template>
+						</table:Column>
+						<!-- 更新日-->
+						<table:Column id="_IDGenColumn3" visible="true" autoResizable="true" sortProperty="UP_TIME" filterProperty="UP_TIME" width="10em">
+							<table:customData>
+								<core:CustomData key="p13nData" value='\{"columnKey":"UP_TIME", "leadingProperty":"UP_TIME"}'/>
+							</table:customData>
+							<table:label>
+								<Label id="_IDGenLabel3" text="{sys>SYS01_LABEL_D__MODIFIEDAT}"/>
+							</table:label>
+							<table:template>
+								<Text id="_IDGenText3" text="{parts:[{path:'UP_TIME'}],formatter:'.formatter.getFommatDateHMS'}"></Text>
+							</table:template>
+						</table:Column>
+
+
+
+					</table:columns>
+					<table:rowActionTemplate>
+						<table:RowAction id="RowAction">
+							<table:items>
+								<table:RowActionItem id="RowActionItem" type="Navigation" press="onPress"/>
+							</table:items>
+						</table:RowAction>
+					</table:rowActionTemplate>
+
+				</table:Table>
+
+
+			</smartTable:SmartTable>
+		</f:content>
+
+	</f:DynamicPage>
+
+</mvc:View>
