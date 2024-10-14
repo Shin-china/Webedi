@@ -13,9 +13,9 @@ public class Pch06 {
     @JSONField(name = "PO_NO")
     private String PO_NO;
     @JSONField(name = "D_NO")
-    private String D_NO;
+    private Integer D_NO;
     @JSONField(name = "SEQ")
-    private String SEQ;
+    private Integer SEQ;
     @JSONField(name = "MAT_ID")
     private String MAT_ID;
     @JSONField(name = "SHELF")
@@ -55,6 +55,22 @@ public class Pch06 {
     @JSONField(name = "ExtNumber")
     private String ExtNumber;
 
+    public Integer getD_NO() {
+        return D_NO;
+    }
+
+    public void setD_NO(Integer d_NO) {
+        D_NO = d_NO;
+    }
+
+    public Integer getSEQ() {
+        return SEQ;
+    }
+
+    public void setSEQ(Integer sEQ) {
+        SEQ = sEQ;
+    }
+
     public String getDELIVERY_DATE() {
         return DELIVERY_DATE;
     }
@@ -85,22 +101,6 @@ public class Pch06 {
 
     public void setPO_NO(String pO_NO) {
         PO_NO = pO_NO;
-    }
-
-    public String getD_NO() {
-        return D_NO;
-    }
-
-    public void setD_NO(String d_NO) {
-        D_NO = d_NO;
-    }
-
-    public String getSEQ() {
-        return SEQ;
-    }
-
-    public void setSEQ(String sEQ) {
-        SEQ = sEQ;
     }
 
     public String getMAT_ID() {

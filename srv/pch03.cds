@@ -2,10 +2,10 @@ using {TableService as view} from './table';
 
 extend service TableService {
   entity PCH_T03_PO_ITEM_PRINT as
-        select from view.PCH_T01_PO_H as T01
-        left join view.PCH_T02_PO_D as T02 
+        select from view.T01_PO_H as T01
+        left join view.T02_PO_D as T02 
             ON (T01.PO_NO = T02.PO_NO)
-        // left join view.PCH_T03_PO_C as T03 
+        // left join view.T03_PO_C as T03 
         //     on (T01.PO_NO = T03.PO_NO and T02.D_NO = T03.D_NO)
 
         left join view.MST_T05_SAP_BP_PURCHASE T04
@@ -40,8 +40,8 @@ extend service TableService {
         }
 
     entity PCH_T03_PO_ITEM as
-        select from view.PCH_T01_PO_H as T01
-         join view.PCH_T02_PO_D as T02 
+        select from view.T01_PO_H as T01
+         join view.T02_PO_D as T02 
             ON (T01.PO_NO = T02.PO_NO)
         left join view.MST_T05_SAP_BP_PURCHASE T04
             on T01.SUPPLIER = T04.SUPPLIER

@@ -4,10 +4,10 @@ extend service TableService {
  
 
     entity PCH_T06_PO_ITEM as
-        select from view.PCH_T01_PO_H as T01
-         join view.PCH_T02_PO_D as T02 
+        select from view.T01_PO_H as T01
+         join view.T02_PO_D as T02 
             ON (T01.PO_NO = T02.PO_NO)
-         join view.PCH_T03_PO_C as T03 
+         join view.T03_PO_C as T03 
             on (T01.PO_NO = T03.PO_NO and T02.D_NO = T03.D_NO)
 
    
@@ -50,8 +50,8 @@ extend service TableService {
 
 }
 
-// annotate TableService.PCH_T03_PO_C with @odata.draft.enabled;
-annotate TableService.PCH_T03_PO_C with {
+// annotate TableService.T03_PO_C with @odata.draft.enabled;
+annotate TableService.T03_PO_C with {
     PO_NO @(Common : {ValueList : {
         entity     : 'PCH_T03_PO_ITEM',
         Parameters : [

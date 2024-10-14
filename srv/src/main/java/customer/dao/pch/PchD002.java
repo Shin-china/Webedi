@@ -20,7 +20,9 @@ import java.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import cds.gen.pch.T02PoD;
+import cds.gen.pch.T02PoD_;
 import cds.gen.pch.T03PoC;
+import cds.gen.pch.T03PoC_;
 import cds.gen.pch.Pch_;
 
 import java.time.Instant;
@@ -40,5 +42,6 @@ public class PchD002 extends Dao {
         logger.info("修改PCHD002" + o.getPoNo() + o.getDNo());
         db.run(Update.entity(Pch_.T02_PO_D).data(o));
     }
+
     // db.run(Update.entity(Inv_.D001_T).entries(tnoList));
 }

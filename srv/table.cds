@@ -16,9 +16,9 @@ service TableService {
     entity SYS_T06_DOC_NO as projection on SYS.T06_DOC_NO;
     entity MST_T02_SAP_PLANT as projection on MST.T02_SAP_PLANT;
     entity SYS_T11_MAIL_TEMPLATE as projection on SYS.T11_MAIL_TEMPLATE;
-    entity PCH_T01_PO_H as projection on PCH.T01_PO_H;
-    entity PCH_T02_PO_D as projection on PCH.T02_PO_D;
-    entity PCH_T03_PO_C as projection on PCH.T03_PO_C;
+    entity T01_PO_H as projection on PCH.T01_PO_H;
+    entity T02_PO_D as projection on PCH.T02_PO_D;
+    entity T03_PO_C as projection on PCH.T03_PO_C;
    entity MST_T05_SAP_BP_PURCHASE as projection on MST.T05_SAP_BP_PURCHASE;
   //  entity SYS_T20_CONFIG as projection on SYS.T20_CONFIG;
    entity SYS_T12_CONFIG as projection on SYS.T12_CONFIG;

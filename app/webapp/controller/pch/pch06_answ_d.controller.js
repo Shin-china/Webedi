@@ -33,10 +33,12 @@ sap.ui.define([
 		onJS: function (oEvent) {
 			var that = this;
 			var aFilters = this.getView().byId("smartFilterBar").getFilters();
-			
+			var view = this.getView();
+			var jsonModel = view.getModel("workInfo");
+			view.setModel(jsonModel, undefined);
 			this._readEntryByServiceAndEntity(_objectCommData._entity,aFilters, null).then((oData) => {
-				var view = this.getView();
-				var jsonModel = view.getModel("workInfo");
+				
+				
 				if (!jsonModel) {
 					jsonModel = new sap.ui.model.json.JSONModel();
 					view.setModel(jsonModel, "workInfo");
@@ -177,7 +179,7 @@ sap.ui.define([
 			this._setEditable(false);
 
 			            //新建
-						var newHeaderContext = this.getModel().createEntry("/PCH_T03_PO_C", {
+						var newHeaderContext = this.getModel().createEntry("/T03_PO_C", {
 
 							properties: {
 							  
@@ -255,7 +257,7 @@ sap.ui.define([
 				jsonModel = new sap.ui.model.json.JSONModel();
 				view.setModel(jsonModel, "pch03Data");
 				}
-				that.getModel().read("/PCH_T03_PO_C",{
+				that.getModel().read("/T03_PO_C",{
 					filters:[
 						new sap.ui.model.Filter({
 							path:"PO_NO",

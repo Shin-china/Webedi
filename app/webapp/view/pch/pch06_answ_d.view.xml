@@ -34,7 +34,7 @@
 			<f:DynamicPageHeader id="DynamicPageHeader" pinnable="true">
 				<f:content>
 
-					<smartFilterBar:SmartFilterBar id="smartFilterBar" useToolbar="false" entitySet="PCH_T03_PO_C" showGoOnFB="false" persistencyKey="mst02_receiptprintFilterBar"  showFilterConfiguration="false">
+					<smartFilterBar:SmartFilterBar id="smartFilterBar" useToolbar="false" entitySet="T03_PO_C" showGoOnFB="false" persistencyKey="mst02_receiptprintFilterBar"  showFilterConfiguration="false">
 						<smartFilterBar:controlConfiguration>
 						<smartFilterBar:ControlConfiguration id="PO_NO" key="PO_NO"  visibleInAdvancedArea="true"   />
 
