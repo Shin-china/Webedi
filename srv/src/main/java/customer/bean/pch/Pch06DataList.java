@@ -4,10 +4,10 @@ import java.util.ArrayList;
 
 public class Pch06DataList {
     private ArrayList<Pch06> list = new ArrayList<Pch06>();
-    // 返回成功失败件数
+    // 返回成功失败msg
     private String reTxt;
     // 返回是否有错误:有值指有错误
-    private String err;
+    private Boolean err = false;
 
     /**
      * @return the list
@@ -31,11 +31,12 @@ public class Pch06DataList {
         this.reTxt = reTxt;
     }
 
-    public String getErr() {
+    public Boolean getErr() {
         return err;
     }
 
-    public void setErr(String err) {
+    public void setErr(Boolean err) {
         this.err = err;
     }
+
 }

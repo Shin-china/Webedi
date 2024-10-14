@@ -18,7 +18,7 @@ sap.ui.define([
 			this.MessageTools._clearMessage();
 			this.MessageTools._initoMessageManager(this);
 
-			this.getRouter().getRoute("RouteMain").attachPatternMatched(this._onRouteMatched, this);
+			this.getRouter().getRoute("RouteCre_pch07").attachPatternMatched(this._onRouteMatched, this);
 
 		},
 
