@@ -21,8 +21,10 @@ import cds.gen.MailBody;
 import cds.gen.MailJson;
 import cds.gen.sys.T11MailTemplate;
 import cds.gen.sys.T12Config;
+import customer.comm.tool.StringTool;
 import customer.dao.sys.T11MailTempDao;
 import customer.dao.sys.T12ConfigDao;
+import customer.tool.*;
 import javax.mail.*;
 import javax.mail.internet.*;
 import javax.activation.DataHandler;
@@ -129,7 +131,7 @@ public class EmailServiceFun {
                 BodyPart filBodyPart = new MimeBodyPart();
                 String get_filename = entry.getKey();
                 if (get_filename.contains("pdf")) {
-                    InputStream is = base2InputStream(entry.getValue());
+                    InputStream is = StringTool.base2InputStream(entry.getValue());
                     DataSource source = new ByteArrayDataSource(is, "application/pdf");
                     filBodyPart.setDataHandler(new DataHandler(source));
                     filBodyPart.setFileName(get_filename);
@@ -166,15 +168,15 @@ public class EmailServiceFun {
         return result;
     }
 
-    public InputStream base2InputStream(String base64String) {
-        ByteArrayInputStream stream = null;
-        try {
-            byte[] bytes = Base64.getDecoder().decode(base64String);
-            stream = new ByteArrayInputStream(bytes);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return stream;
-    }
+    // public InputStream base2InputStream(String base64String) {
+    // ByteArrayInputStream stream = null;
+    // try {
+    // byte[] bytes = Base64.getDecoder().decode(base64String);
+    // stream = new ByteArrayInputStream(bytes);
+    // } catch (Exception e) {
+    // e.printStackTrace();
+    // }
+    // return stream;
+    // }
 
 }

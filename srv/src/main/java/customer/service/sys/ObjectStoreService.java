@@ -1,18 +1,24 @@
 package customer.service.sys;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 // import software.amazon.awssdk.services.s3.model.*;
 import org.springframework.stereotype.Service;
 
 import cds.gen.sys.T12Config;
+import customer.bean.com.CommMsg;
+import customer.bean.com.UmcConstants;
 import customer.dao.sys.T12ConfigDao;
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
+import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.ListObjectsRequest;
 import software.amazon.awssdk.services.s3.model.ListObjectsResponse;
+import software.amazon.awssdk.services.s3.model.PutObjectRequest;
+import software.amazon.awssdk.services.s3.model.PutObjectResponse;
 import software.amazon.awssdk.services.s3.model.S3Exception;
 import software.amazon.awssdk.services.s3.model.S3Object;
 import software.amazon.awssdk.regions.Region;
@@ -80,5 +86,30 @@ public class ObjectStoreService {
         ListObjectsRequest listObjects = ListObjectsRequest.builder().bucket(S3_BUCKET).build();
         ListObjectsResponse res = s3Client.listObjects(listObjects);
         return res.contents();
+    }
+
+    // Upload attachment
+    public CommMsg uploadFile(String key, RequestBody fileBody) throws S3Exception {
+
+        S3Client s3Client = getS3Client();
+        CommMsg msg = new CommMsg();
+        PutObjectRequest request = PutObjectRequest.builder()
+                .bucket(S3_BUCKET)
+                .key(key)
+                .build();
+        PutObjectResponse por = s3Client.putObject(request, fileBody);
+        if (por != null && por.sdkHttpResponse() != null) {
+            if (por.sdkHttpResponse().isSuccessful()) {
+                msg.setMsgType(UmcConstants.IF_STATUS_S);
+            } else {
+                if (por.sdkHttpResponse().statusText().isPresent()) {
+                    msg.setMsgTxt(por.sdkHttpResponse().statusText().get());
+                }
+            }
+        } else {
+            msg.setMsgTxt("S3 Have no return ");
+        }
+
+        return msg;
     }
 }

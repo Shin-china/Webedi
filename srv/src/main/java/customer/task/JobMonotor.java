@@ -26,7 +26,7 @@ public class JobMonotor {
 
     private Ifm02MstService ifm02MstService;
 
-    @Scheduled(cron = "0 0 2 * * ?")
+    @Scheduled(cron = "0 0/5 * * * ?")
     public void poolMonitor() throws IOException {
 
         // IMFS01
@@ -37,10 +37,10 @@ public class JobMonotor {
     }
 
     @Scheduled(cron = "0 0/5 * * * ?")
-    public void poolMonitor1() throws IOException{
-        //IF039
+    public void poolMonitor1() throws IOException {
+        // IF039
         System.out.println("MST Sync run");
-        Ifm02MstService i = new Ifm02MstService() ;
+        Ifm02MstService i = new Ifm02MstService();
         i.syncMst();
         System.out.println("JobMonotor  run");
     }

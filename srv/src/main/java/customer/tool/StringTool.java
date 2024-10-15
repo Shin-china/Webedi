@@ -1,11 +1,13 @@
 package customer.tool;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
+import java.util.Base64;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -288,4 +290,6 @@ public class StringTool {
 		return String.format("%10s", "abc");
 	}
 
+
+	}
 }

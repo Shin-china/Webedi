@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
+import com.sap.cds.ql.Insert;
 import com.sap.cds.ql.Select;
 
 import cds.gen.sys.Sys_;
@@ -19,9 +20,9 @@ public class T13AttachmentDao extends Dao {
                 .listOf(T13Attachment.class);
     }
 
-    //Insert Attachment
+    // Insert Attachment
     public void insertAttachment(T13Attachment attachment) {
-
+        db.run(Insert.into(Sys_.T13_ATTACHMENT).entry(attachment));
     }
 
 }
