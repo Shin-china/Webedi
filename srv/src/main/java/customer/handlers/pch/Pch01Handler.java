@@ -40,6 +40,7 @@ public class Pch01Handler implements EventHandler {
     // job测试使用
     // JobMonotor a = new JobMonotor();
     // JobMonotor.poolMonitor();
+    Pch01Service.detailsCheck(list);
     context.setResult(JSON.toJSONString(list));
   }
 
