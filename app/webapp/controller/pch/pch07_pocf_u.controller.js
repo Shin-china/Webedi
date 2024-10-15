@@ -67,27 +67,35 @@ sap.ui.define([
 				return;
 			}
 		
-			//2. 必输字段检查   ・必須入力データは「発注番号」、「明細番号」、「納品日」、「納品数量」
+			//2. 必输字段检查   ・必須入力データは「SAP品目コード」、「仕入先」、「プラント」、「数量」、「有効開始日付」、「有効終了日付」
 			var hasError = false;
 
 			data.forEach(function (item) {
 				var missingFields = [];
 
-				if (!item.PO_NO || item.PO_NO === "") {
-					//missingFields.push("発注番号"); // 発注番号
-					missingFields.push("発注番号");
+				if (!item.MATERIAL_NUMBER || item.MATERIAL_NUMBER === "") {
+					//missingFields.push("SAP品目コード"); // SAP品目コード
+					missingFields.push("SAP品目コード");
 				}
-				if (!item.D_NO || item.D_NO === "") {
-					//missingFields.push("明細番号"); // 明細番号
-					missingFields.push("明細番号");
+				if (!item.BP_NUMBER || item.BP_NUMBER === "") {
+					//missingFields.push("仕入先"); // 仕入先
+					missingFields.push("仕入先");
 				}
-				if (!item.DELIVERY_DATE || item.DELIVERY_DATE === "") {
-					//missingFields.push("納品日"); // 納品日
-					missingFields.push("納品日");
+				if (!item.PLANT_ID || item.PLANT_ID === "") {
+					//missingFields.push("プラント"); // プラント
+					missingFields.push("プラント");
 				}
-				if (!item.QUANTITY || item.QUANTITY === "") {
-					//missingFields.push("納品数量"); // 納品数量
-					missingFields.push("納品数量");
+				if (!item.QTY || item.QTY === "") {
+					//missingFields.push("数量"); // 数量
+					missingFields.push("数量");
+				}
+				if (!item.VALIDATE_START || item.VALIDATE_START === "") {
+					//missingFields.push("有効開始日付"); // 有効開始日付
+					missingFields.push("有効開始日付");
+				}
+				if (!item.VALIDATE_END || item.VALIDATE_END === "") {
+					//missingFields.push("有効終了日付"); // 有効終了日付
+					missingFields.push("有効終了日付");
 				}
 
 				if (missingFields.length > 0) {
@@ -110,12 +118,12 @@ sap.ui.define([
 		
 			// 3. 如果所有检查都通过，调用服务
 			if (checkResult && flgHeand) {
-				this.getModel().callFunction("/PCH01_CHECK_DATA", {
+				this.getModel().callFunction("/PCH07_CHECK_DATA", {
 					method: "POST",
 					urlParameters: this.getData(),
 					success: function (result) {
 						// 取数据
-						var arr = result.PCH01_CHECK_DATA;
+						var arr = result.PCH07_CHECK_DATA;
 						var myArray = JSON.parse(arr);
 		
 						// 设置画面上总结
@@ -153,7 +161,7 @@ sap.ui.define([
 			var that = this;
 			that._setBusy(true);
 	
-			this._callCdsAction("/PCH01_SAVE_DATA", this.getData(), this).then((oData) => {
+			this._callCdsAction("/PCH07_SAVE_DATA", this.getData(), this).then((oData) => {
 			  var myArray = JSON.parse(oData.PCH01_SAVE_DATA);
 			  //that._setCnt(myArray.reTxt);
 			  var jsonModel = that.getModel("workInfo");
@@ -188,9 +196,9 @@ sap.ui.define([
 				//获得 sheet
 				var oSheet = oWB.Sheets[oWB.SheetNames[0]];
 				//设置头
-				var header = ["PO_NO","D_NO","MAT_ID","PO_D_TXZ01","PO_PUR_QTY","PO_PUR_UNIT","SUPPLIER_MAT","DELIVERY_DATE","QUANTITY","REFERTO"];   //,"CUSTOMER_MAT" 存疑
+				var header = ["MATERIAL_NUMBER","PLANT_ID","BP_NUMBER","QTY","VALIDATE_START","VALIDATE_END","UMC_COMMENT_1","UMC_COMMENT_2","INITIAL_OBJ"];
 				// 通过 XLSX 将sheet转为json  要转的oSheet，header标题，range起始行（1：第二行开始）
-				var jsonS = XLSX.utils.sheet_to_json(oSheet,{header: header, range: 2});
+				var jsonS = XLSX.utils.sheet_to_json(oSheet,{header: header, range: 1});
 				jsonModel.setData(jsonS);
 			};
 			oReader.readAsBinaryString(oFile);

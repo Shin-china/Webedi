@@ -30,7 +30,7 @@
 
         <f:DynamicPageHeader id="DynamicPageHeader" pinnable="true">
             <f:content>
-                <smartFilterBar:SmartFilterBar id="smartFilterBar" entitySet="PCH_T02_USER" persistencyKey="PCH02_TEMPLATE" showFilterConfiguration="true">
+                <smartFilterBar:SmartFilterBar id="smartFilterBar" entitySet="PCH_T02_USER" persistencyKey="PCH_T02_USER" showFilterConfiguration="true">
                     <smartFilterBar:controlConfiguration>
 
                     <smartFilterBar:ControlConfiguration id="pch_po_no"    key="PO_NO"    visibleInAdvancedArea="true" label="{pch>PO_NO}"          index="1"/>
@@ -159,7 +159,7 @@
                         <Label id="labelDeliveryDate" text="{pch>DELIVERY_DATE}"/>
                     </table:label>
                     <table:template>
-                        <Text id="textDeliveryDate" text="{DELIVERY_DATE}"/>
+                        <smartField:SmartField id="textDeliveryDate" value="{DELIVERY_DATE}" editable="false"/>
                     </table:template>
                 </table:Column>
                 <table:Column id="colQuantity" width="10rem" sortProperty="QUANTITY" filterProperty="QUANTITY">
