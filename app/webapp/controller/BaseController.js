@@ -953,7 +953,7 @@ sap.ui.define([
         onPostLogPopPress: function (oEvent) {
           var oView = this.getView();
           var that = this;
-          let popView = "root.view.PostLogPopover";
+          let popView = "umc.app.view.PostLogPopover";
           var oItem = oEvent.getSource();
           var oContext = oItem.getBindingContext();
           let id = oContext.getObject().ID;
