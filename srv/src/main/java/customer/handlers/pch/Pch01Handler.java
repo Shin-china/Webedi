@@ -23,29 +23,33 @@ import customer.task.JobMonotor;
 @ServiceName(TableService_.CDS_NAME)
 public class Pch01Handler implements EventHandler {
 
-    @Autowired
-    ResourceBundleMessageSource rbms;
+  @Autowired
+  ResourceBundleMessageSource rbms;
 
-    @Autowired
-    private Pch01Service Pch01Service;
+  @Autowired
+  private Pch01Service Pch01Service;
 
-    // check数据
-    @On(event = "PCH01_CHECK_DATA")
-    public void checkData(PCH01CheckDATAContext context) throws IOException{
+  // 测试使用的
+  // @Autowired
+  // private JobMonotor JobMonotor;
+
+  // check数据
+  @On(event = "PCH01_CHECK_DATA")
+  public void checkData(PCH01CheckDATAContext context) throws IOException {
     Pch01List list = JSON.parseObject(context.getShelfJson(), Pch01List.class);
-    JobMonotor a = new JobMonotor();
-    a.poolMonitor1();
+    // job测试使用
+    // JobMonotor a = new JobMonotor();
+    // JobMonotor.poolMonitor();
+    Pch01Service.detailsCheck(list);
     context.setResult(JSON.toJSONString(list));
-    }
+  }
 
-      // 保存数据
+  // 保存数据
   @On(event = "PCH01_SAVE_DATA")
-    public void saveData(PCH01SaveDATAContext context) {
+  public void saveData(PCH01SaveDATAContext context) {
     Pch01List list = JSON.parseObject(context.getShelfJson(), Pch01List.class);
     Pch01Service.detailsSave(list);
     context.setResult(JSON.toJSONString(list));
   }
-
-
 
 }

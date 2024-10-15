@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import customer.comm.tool.DateTools;
 import customer.dao.common.Dao;
+import io.vavr.collection.Seq;
 
 import com.sap.cds.ql.Delete;
 import com.sap.cds.ql.Insert;
@@ -48,7 +49,37 @@ public class PchD003 extends Dao {
      */
     public void deleteD002ByPoDno(String po, int dno) {
         Delete<T03PoC_> delete = Delete.from(Pch_.T03_PO_C);
+        // delete.where(o ->
+        // o.PO_NO().eq(po).and(o.D_NO().eq(dno).and(o.RelevantQuantity().isNull())));
         delete.where(o -> o.PO_NO().eq(po).and(o.D_NO().eq(dno).and(o.RelevantQuantity().isNull())));
         db.run(delete);
+    }
+
+    /**
+     * 根据删除po和dno删除03表
+     * 
+     * @param po
+     * @param dno
+     */
+    public T03PoC getByID(String po, int dno, int seq) {
+        Optional<T03PoC> result = db.run(
+                Select.from(Pch_.T03_PO_C)
+                        .where(o -> o.PO_NO().eq(po)
+                                .and(o.D_NO().eq(dno)).and(o.SEQ().eq(seq))))
+                .first(T03PoC.class);
+        if (result.isPresent()) {
+            return result.get();
+        }
+        return null;
+    }
+
+    // 修改PCHD003
+    public void updateD003(T03PoC o) {
+
+        o.setUpTime(getNow());
+        o.setUpBy(this.getUserId());
+
+        logger.info("修改PCHD003" + o.getPoNo() + o.getDNo() + o.getSeq());
+        db.run(Update.entity(Pch_.T03_PO_C).data(o));
     }
 }
