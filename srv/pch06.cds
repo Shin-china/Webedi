@@ -38,6 +38,7 @@ extend service TableService {
             T02.PO_D_DATE,                     //所要日付 
             T02.PO_TYPE,                       // 発注区分  C：新規 U：変更 D：削除
             T02.MEMO,                           // 備考
+            T03.RelevantQuantity as RQ,                           // 備考
             
             T03.ExtNumber,                          //参照
             T03.CD_BY,                          //R
@@ -56,7 +57,7 @@ annotate TableService.T03_PO_C with {
         entity     : 'PCH_T03_PO_ITEM',
         Parameters : [
             {
-                $Type             : 'Common.ValueListParameterOut',
+                $Type             : 'Common.ValueListParameterInOut',
                 LocalDataProperty : 'PO_NO',
                 ValueListProperty : 'PO_NO'
             },

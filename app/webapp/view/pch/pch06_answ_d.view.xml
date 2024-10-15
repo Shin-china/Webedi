@@ -132,6 +132,17 @@
 							
 							</table:template>
 						</table:Column>	
+						<!-- 納品数量 -->
+						<table:Column id="_IDGenColumn110" width="8rem" sortProperty="RQ" filterProperty="RQ"  >
+							<table:customData>
+								<core:CustomData key="p13nData" value='\{"columnKey":"RQ", "leadingProperty":"RQ"}'/>
+							</table:customData>
+							<Label  text="{pch>LABEL_D__RQ}"/>
+							<table:template>
+								<Text text="{workInfo>RQ}" editable="false"/>
+							
+							</table:template>
+						</table:Column>	
 						<!-- ステータス -->
 						<table:Column id="_IDGenColumn11" width="8rem" sortProperty="STATUS" filterProperty="STATUS"  >
 							<table:customData>
@@ -314,47 +325,13 @@
 					</table:columns>
 				</table:Table>
 	
-
-			<!-- <smartTable:SmartTable id="smartTable" enableAutoColumnWidth="true" showFullScreenButton="true" persistencyKey="mst02_receiptprintTable" entitySet="" requestAtLeastFields="" smartFilterId="smartFilterBar" beforeExport="onBeforeExport" enableExport="true" useVariantManagement="true" useTablePersonalisation="true" initiallyVisibleFields="" tableType="Table" showRowCount="true" beforeRebindTable="onRebind" placeToolbarInTable="true" header="{pch>TITLE_RESULT}" enableAutoBinding="false">
-
-				<smartTable:customToolbar>
-				<OverflowToolbar id="ID_header">
-					<content>
-						<ToolbarSpacer id="ID_ToolbarSpacer" />
-						<Button id="ButtonId1" text="{com>BUTTON_COP}" enabled="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'}], formatter: '.formatter.getEditableSaveCommon'}" icon="sap-icon://copy" press="onCop" />
-						<Button id="ButtonId2" text="{com>BUTTON_DELETE}" enabled="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'}], formatter: '.formatter.getEditableSaveCommon'}" icon="sap-icon://delete" press="onDelete" />
-						<Button id="_IDGenButton24" text="{pch>PCH03_BUTTON_QUE}" press="onQue" enabled="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'}], formatter: '.formatter.getEditableDCommon'}" width="8em"/>
-					</content>
-				</OverflowToolbar>
-				</smartTable:customToolbar>
-				<table:Table id="detailTable" rrows="{path: 'workInfo>/'}" class="sapUiSizeCompact" selectionMode='MultiToggle' threshold="20">
-
-
-						<table:Column id="_IDGenColumn1" width="8rem" sortProperty="ExtNumber" filterProperty="ExtNumber">
-							<table:customData>
-								<core:CustomData key="p13nData" value='\{"columnKey":"ExtNumber", "leadingProperty":"ExtNumber"}'/>
-							</table:customData>
-							<Label id="_IDGenLabel4" text="{pch>LABEL_D__ExtNumber}"/>
-							<table:template>
-							<smartfield:SmartField value="{workInfo>ExtNumber}" editable="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'}], formatter: '.formatter.getEditableSaveCommon'}"/>
-								
-							</table:template>
-						</table:Column>			
-
-
-					
-				
-				</table:Table>
-
-
-			</smartTable:SmartTable> -->
 		</f:content>
-	<f:footer>
-      <OverflowToolbar id="otbFooter" visible="{=${message>/}.length > 0}">
-        <Button icon="sap-icon://alert" text="{=${message>/}.length}" visible="{=${message>/}.length > 0}" type="Emphasized" press="onClickMessagePopover" id="messageButton">
-        </Button>
-      </OverflowToolbar>
-    </f:footer>
+		<f:footer>
+			<OverflowToolbar id="otbFooter" visible="{=${message>/}.length > 0}">
+				<Button icon="sap-icon://alert" text="{=${message>/}.length}" visible="{=${message>/}.length > 0}" type="Emphasized" press="onClickMessagePopover" id="messageButton">
+				</Button>
+			</OverflowToolbar>
+		</f:footer>
 	</f:DynamicPage>
 
 </mvc:View>

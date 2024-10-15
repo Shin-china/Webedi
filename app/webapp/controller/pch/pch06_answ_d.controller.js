@@ -32,6 +32,7 @@ sap.ui.define([
 		==============================*/
 		onJS: function (oEvent) {
 			var that = this;
+			that._setBusy(true);
 			var aFilters = this.getView().byId("smartFilterBar").getFilters();
 			var view = this.getView();
 			var jsonModel = view.getModel("workInfo");
@@ -46,6 +47,7 @@ sap.ui.define([
 				jsonModel.setData(oData.results);
 				//更新seq数据
 				that._getSeq();
+				that._setBusy(false);
 				console.log(oData.results)
 			  });
 			
@@ -62,11 +64,17 @@ sap.ui.define([
 			var datas = jsonModel.getData();
 			if(selectedIndices){
 				selectedIndices.forEach((selectedIndex) => {
-					var id = selectedIndex.ID
-					//根据id删除list
-					datas = datas.filter(odata=>
-						odata.ID !== id
-					)
+					//如果删除只能删除新追加的
+					if(selectedIndex.CD_BY){
+						var id = selectedIndex.ID
+						//根据id删除list
+						datas = datas.filter(odata=>
+							odata.ID !== id
+						)
+					}else{
+						that.MessageTools._addMessage(this.MessageTools._getI18nTextInModel("pch", "PCH_06_ERROR_MSG2", this.getView()), null, 1, this.getView());
+					}
+					
 
 				  });
 				  jsonModel.setData(datas);
@@ -88,6 +96,7 @@ sap.ui.define([
 					copiedIndex.DELIVERY_DATE= selectedIndex.DELIVERY_DATE;
 					copiedIndex.PO_DATE= selectedIndex.PO_DATE;
 					copiedIndex.PO_D_DATE= selectedIndex.PO_D_DATE;
+					copiedIndex.RQ= null;
 					
 					copiedIndex.CD_BY = null;
 					copiedIndex.CD_TIME = null;
@@ -116,16 +125,13 @@ sap.ui.define([
 	
 			this._callCdsAction("/PCH06_SAVE_DATA", this._getData(), this).then((oData) => {
 
-				oData.PCH06_SAVE_DATA
-			  var myArray = JSON.parse(oData.PCH06_SAVE_DATA);
 			
-			  var jsonModel = that.getModel("workInfo");
-	
-			  jsonModel.setData(myArray.list);
-			  //设置为非创建
-			  that._setIsCreate(false);
-	
+			  var myArray = JSON.parse(oData.PCH06_SAVE_DATA);
+			  if(myArray.err){
+				that.MessageTools._addMessage(this.MessageTools._getI18nTextInModel("pch", myArray.reTxt, this.getView()), null, 1, this.getView());
+			  }
 			  that._setBusy(false);
+
 			});
 			this._setEditable(false);
 		},
@@ -157,36 +163,16 @@ sap.ui.define([
 			})
 
 		},
-		  /*++++++++++++++++++++++++++++++
-			  保存棚帆
-			  ++++++++++++++++++++++++++++++*/
-		  onSave: function () {
-			
-		},
 
-
-		  /*++++++++++++++++++++++++++++++
-			  保存棚帆
-			  ++++++++++++++++++++++++++++++*/
-		  onSave: function () {
-			
-		  },
 		/*==============================
+		init
 		==============================*/
 		_onRouteMatched: function (oEvent) {
 			this._poNO = "";
 			this._setEditableAuth(true);
 			this._setEditable(false);
 
-			            //新建
-						var newHeaderContext = this.getModel().createEntry("/T03_PO_C", {
-
-							properties: {
-							  
-							},
-							groupId: "createEntry",
-						  });
-						  this.getView().setBindingContext(newHeaderContext);
+			;
 
 			
 		},

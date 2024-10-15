@@ -43,7 +43,7 @@ sap.ui.define(
 
         var aExistedMessages = Messaging.getMessageModel().getData();
         aExistedMessages.forEach((oExistedMessage) => {
-          if (oExistedMessage.getId().startsWith("usap_")) {
+          if (oExistedMessage.getId().startsWith("umc_")) {
             Messaging.removeMessages(oExistedMessage);
           } else if (oExistedMessage.getCode() === undefined) {
             isNPost = false;
@@ -93,7 +93,7 @@ sap.ui.define(
         this._messageIndex++;
         // 新規MessageをMessageManagerに登録
         let oMessage = new sap.ui.core.message.Message({
-          id: "usap_" + this._messageIndex,
+          id: "umc_" + this._messageIndex,
           message: sMessage,
           type: iType === 3 ? sap.ui.core.MessageType.Success : iType === 2 ? sap.ui.core.MessageType.Warning : sap.ui.core.MessageType.Error,
           target: sPath,
@@ -107,7 +107,7 @@ sap.ui.define(
         }
         this._messageIndex++;
         const oMessage = new Message({
-          id: "usap_" + this._messageIndex,
+          id: "umc_" + this._messageIndex,
           message: sMessage,
           type: iType === 3 ? sap.ui.core.MessageType.Success : iType === 2 ? sap.ui.core.MessageType.Warning : sap.ui.core.MessageType.Error,
           target: sPath,
@@ -144,7 +144,7 @@ sap.ui.define(
         //create popover lazily (singleton)
         if (!this._oMessagePopover) {
           //create popover lazily (singleton)
-          this._oMessagePopover = sap.ui.xmlfragment(_veiw.getId(), "root.view.MessagePopover", this);
+          this._oMessagePopover = sap.ui.xmlfragment(_veiw.getId(), "umc.app.view.MessagePopover", this);
           _veiw.addDependent(this._oMessagePopover);
         }
         return this._oMessagePopover;

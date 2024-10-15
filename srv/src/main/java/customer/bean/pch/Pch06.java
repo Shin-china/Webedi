@@ -24,6 +24,8 @@ public class Pch06 {
     private String DELIVERY_DATE;
     @JSONField(name = "QUANTITY")
     private BigDecimal QUANTITY;
+    @JSONField(name = "RQ")
+    private BigDecimal RQ;
     @JSONField(name = "STATUS")
     private String STATUS;
     @JSONField(name = "PO_PUR_QTY")
@@ -229,6 +231,14 @@ public class Pch06 {
 
     public void setQUANTITY(BigDecimal qUANTITY) {
         QUANTITY = qUANTITY;
+    }
+
+    public BigDecimal getRQ() {
+        return RQ;
+    }
+
+    public void setRQ(BigDecimal rQ) {
+        RQ = rQ;
     }
 
 }
