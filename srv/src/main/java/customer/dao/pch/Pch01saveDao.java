@@ -117,4 +117,17 @@ public class Pch01saveDao extends Dao {
             return false;
         }
     }
+
+    public Boolean delete_pono(String po_NO, Integer d_NO) {
+
+        try {
+            db.run(Delete.from(Pch_.T03_PO_C)
+                    .where(o -> o.PO_NO().eq(po_NO)
+                            .and(o.D_NO().eq(d_NO))
+                            .and(o.RelevantQuantity().isNull()))); // 检查A字段是否为空
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }
