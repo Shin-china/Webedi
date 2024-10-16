@@ -33,7 +33,7 @@
 
     <smartTable:SmartTable id="ID" enableAutoColumnWidth="true" entitySet="PCH_T05_ACCOUNT_DETAIL_EXCEL" 
         ignoredFields=""   
-        requestAtLeastFields="TAX_CODE,SHKZG_FLAG,TRANSACTION,TAX_BASE_AMOUNT,REFERENCE, DETAILTEXT, ACCOUNT, DOCUMENTTYPE, HEADERTEXT, DIFF_TAX_AMOUNT, INVOICEID,CURRENCY,LASTDATE" 
+        requestAtLeastFields="GR_DATE,TAX_CODE,SHKZG_FLAG,TRANSACTION,TAX_BASE_AMOUNT,REFERENCE, DETAILTEXT, ACCOUNT, DOCUMENTTYPE, HEADERTEXT, DIFF_TAX_AMOUNT, INVOICEID,CURRENCY,LASTDATE" 
         initiallyVisibleFields="GR_DATE,PO_BUKRS,INV_MONTH,SUPPLIER,CALC_10_TAX_AMOUNT,CALC_8_TAX_AMOUNT,SAP_TAX_AMOUNT_10,SAP_TAX_AMOUNT_8,RECALC_TAX_AMOUNT_10,RECALC_TAX_AMOUNT_8,DIFF_TAX_AMOUNT_10,DIFF_TAX_AMOUNT_8,TOTAL_10_TAX_INCLUDED_AMOUNT,TOTAL_8_TAX_INCLUDED_AMOUNT,TAX_CODE,SHKZG_FLAG,TRANSACTION,TAX_BASE_AMOUNT,REFERENCE, DETAILTEXT, ACCOUNT, DOCUMENTTYPE, HEADERTEXT, DIFF_TAX_AMOUNT, INVOICEID,CURRENCY,LASTDATE" 
         smartFilterId="smartFilterBar" enableExport="true" beforeExport="onBeforeExport" 
         useVariantManagement="true" useTablePersonalisation="true" header="{pch>TITLE_RESULT}" showRowCount="true" persistencyKey="pch05_SmartTableAnalytical_Explored" enableAutoBinding="true">
@@ -353,6 +353,17 @@
     </table:template>
 </table:Column>
 
+<table:Column id="colGrdate" width="10rem" sortProperty="GR_DATE" filterProperty="GR_DATE" visible="false">
+    <table:customData>
+        <core:CustomData key="p13nData" value='{"columnKey":"GR_DATE", "leadingProperty":"GR_DATE", "sortProperty":"GR_DATE", "filterProperty":"GR_DATE"}'/>
+    </table:customData>
+    <table:label>
+        <Label id="labelGrdate" text="{pch>GR_DATE}"/>
+    </table:label>
+    <table:template>
+        <Text id="textGrdate" text="{GR_DATE}"/>
+    </table:template>
+</table:Column>
 
 </table:columns>
         </table:Table>
