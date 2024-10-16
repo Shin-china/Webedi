@@ -57,8 +57,17 @@ entity T04_SAP_LOC : IF_CUID_FILED { //保管场所表
 
 entity T05_SAP_BP_PURCHASE : IF_CUID_FILED { //BP采购视图
   @title: '{i18n>PURCHASE_ORG}' key PURCHASE_ORG                       : String(4) not null; //購買組織
-                                    @title: '{i18n>SUPPLIER}' SUPPLIER : String(10) not null; //仕入先
+  @title: '{i18n>SUPPLIER}' key SUPPLIER : String(10) not null; //仕入先
                                     @title: '{i18n>ZABC}' ZABC         : String(1); //ABC区分
+
+
+}
+
+
+entity T06_MAT_PLANT : IF_CUID_FILED { //BP采购视图
+  @title: '{i18n>MAT_ID}' key MAT_ID                       : String(18) not null; //物料编号
+  @title: '{i18n>PLANT_ID}' key PLANT_ID : String(4) not null; //工厂code
+                                    @title: '{i18n>IMP_COMP}' IMP_COMP         : String(1); //重要组件
 
 
 }

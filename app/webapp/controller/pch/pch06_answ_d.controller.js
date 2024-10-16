@@ -65,7 +65,7 @@ sap.ui.define([
 			if(selectedIndices){
 				selectedIndices.forEach((selectedIndex) => {
 					//如果删除只能删除新追加的
-					if(selectedIndex.CD_BY){
+					if(!selectedIndex.CD_BY){
 						var id = selectedIndex.ID
 						//根据id删除list
 						datas = datas.filter(odata=>
@@ -127,13 +127,15 @@ sap.ui.define([
 
 			
 			  var myArray = JSON.parse(oData.PCH06_SAVE_DATA);
+			  this._setEditable(false);
 			  if(myArray.err){
+				this._setEditable(true);
 				that.MessageTools._addMessage(this.MessageTools._getI18nTextInModel("pch", myArray.reTxt, this.getView()), null, 1, this.getView());
 			  }
 			  that._setBusy(false);
 
 			});
-			this._setEditable(false);
+			
 		},
 		
 		/**

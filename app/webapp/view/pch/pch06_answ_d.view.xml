@@ -57,7 +57,7 @@
 
 		<f:content>
 
-				<table:Table id="tableUploadData" rows="{path: 'workInfo>/'}" class="sapUiSizeCompact" selectionMode='MultiToggle' threshold="20">
+				<table:Table  rows="{path: 'workInfo>/'}"   id="tableUploadData" rowMode="Auto" rowActionCount="1" selectionMode="MultiToggle" alternateRowColors="true" fixedColumnCount="0" threshold="20">
 					<table:extension>
 						<OverflowToolbar id="_IDGenOverflowToolbar1">
 							<ToolbarSpacer id="ID_ToolbarSpacer" />

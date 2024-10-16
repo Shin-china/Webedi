@@ -10,10 +10,6 @@ extend service TableService {
          join view.T03_PO_C as T03 
             on (T01.PO_NO = T03.PO_NO and T02.D_NO = T03.D_NO)
 
-   
-   
-   
-        
         distinct {
            KEY T01.PO_NO || T02.D_NO ||T03.SEQ  as ID : String(100),
             KEY T01.PO_NO,                    // 発注番号
