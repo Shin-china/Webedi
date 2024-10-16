@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSONObject;
 import com.sap.cds.services.messages.Messages;
+import com.sap.cloud.sdk.result.IntegerExtractor;
 
 import cds.gen.pch.T03PoC;
 import cds.gen.tableservice.PoTypePop;
@@ -250,6 +251,8 @@ public class Pch01Service extends Service {
         int incC = 0;
         int index = 0;
 
+        int seq = 0;
+
         int lastdn = 0;
         String lastpo = "0";
 
@@ -259,8 +262,6 @@ public class Pch01Service extends Service {
 
             index++;
 
-            LocalDate lastrelevantdate = ckd.RelevantQuantitydate(s.getD_NO(), s.getPO_NO());
-
             // 换po，或者是换dn了。 或者是第一条
             if ((!s.getPO_NO().equals(lastpo) && s.getD_NO() != lastdn) || index == 1) {
                 // 获取新dn
@@ -268,36 +269,36 @@ public class Pch01Service extends Service {
                 // 获取新po
                 lastpo = s.getPO_NO();
 
-                delsuccess = savaDao.delete(s.getPO_NO(), s.getD_NO(), lastrelevantdate);
+                // 当没有减少数量日期的时候
+                delsuccess = savaDao.delete_pono(s.getPO_NO(), s.getD_NO());
+
+                seq = savaDao.getSeq(lastpo, lastdn);
             }
-            ;
 
-            if (s.getDELIVERY_DATE().isAfter(lastrelevantdate)) {
+            if (delsuccess) {
 
-                if (delsuccess) {
+                seq++;
 
-                    T03PoC t03 = T03PoC.create();
-                    t03.setDNo(s.getD_NO()); // 设置采购订单编号
-                    t03.setPoNo(s.getPO_NO()); // 采购订单明细行号
-                    t03.setSeq(3); // 序号
-                    t03.setDeliveryDate(s.getDELIVERY_DATE()); // 交货日期
-                    t03.setQuantity(s.getQUANTITY()); // 交货数量
+                T03PoC t03 = T03PoC.create();
+                t03.setDNo(s.getD_NO()); // 设置采购订单编号
+                t03.setPoNo(s.getPO_NO()); // 采购订单明细行号
+                t03.setSeq(seq); // 序号
+                t03.setDeliveryDate(s.getDELIVERY_DATE()); // 交货日期
+                t03.setQuantity(s.getQUANTITY()); // 交货数量
 
-                    Boolean success = savaDao.insertt03(t03);
+                Boolean success = savaDao.insertt03(t03);
 
-                    if (success) {
+                if (success) {
 
-                        list.setErr(false);// 有无错误
-                        list.setReTxt("insert success");// 返回消息
-                        s.setTYPE("success");// 返回结果
+                    list.setErr(false);// 有无错误
+                    list.setReTxt("insert success");// 返回消息
+                    s.setTYPE("success");// 返回结果
 
-                    } else {
+                } else {
 
-                        list.setErr(true);
-                        list.setReTxt("insert faild");
-                        s.setTYPE("error");// 返回结果
-
-                    }
+                    list.setErr(true);
+                    list.setReTxt("insert faild");
+                    s.setTYPE("error");// 返回结果
 
                 }
 

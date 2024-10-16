@@ -32,7 +32,14 @@ sap.ui.define([
 			// this._onListRebindDarft(oEvent);
 			// this._onListRebindDarft(oEvent, true);
 		},
-
+		/**
+		 * 确认
+		 * @param {*} oEvent 
+		 */
+		onQr:function (oEvent) {
+			// this._onListRebindDarft(oEvent);
+			// this._onListRebindDarft(oEvent, true);
+		},
 		onBeforeExport: function (oEvt) {
 			var mExcelSettings = oEvt.getParameter("exportSettings");
 			for (var i = 0; i < mExcelSettings.workbook.columns.length; i++) {

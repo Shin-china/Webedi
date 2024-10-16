@@ -37,6 +37,10 @@ sap.ui.define([
 			var view = this.getView();
 			var jsonModel = view.getModel("workInfo");
 			view.setModel(jsonModel, undefined);
+			if(aFilters.length ==0){
+				
+				return 
+			}
 			this._readEntryByServiceAndEntity(_objectCommData._entity,aFilters, null).then((oData) => {
 				
 				
@@ -52,6 +56,36 @@ sap.ui.define([
 			  });
 			
 		},	
+		/**
+		 * 同期方法
+		 * @param {*} oEvent 
+		 */
+		onTongQi:function(oEvent){
+			var aFilters = this.getView().byId("smartFilterBar").getFilters();
+			if(aFilters.length ==0){
+				return 
+			}
+			var jsonModel = view.getModel("workInfo");
+
+			var datas = jsonModel.getData();
+			datas.forEach(data=>{
+				let PO_NO =data.PO_NO;
+				let D_NO =data.D_NO;
+				let SQL = data.SEQ;
+				let podno =PO_NO+D_NO;
+				let hasName = myMap.has(podno);
+				if(hasName){
+					let locSql = myMap.get(podno);
+					
+					//如果存下locSql没有行里面Sql的大，则于以替换
+					if(locSql < SQL){
+						myMap.set(podno,SQL)
+					}
+				}else{
+					myMap.set(podno,SQL)
+				}
+			})
+		},
 		/*==============================
 		删除
 		==============================*/
@@ -65,7 +99,7 @@ sap.ui.define([
 			if(selectedIndices){
 				selectedIndices.forEach((selectedIndex) => {
 					//如果删除只能删除新追加的
-					if(selectedIndex.CD_BY){
+					if(!selectedIndex.CD_BY){
 						var id = selectedIndex.ID
 						//根据id删除list
 						datas = datas.filter(odata=>
@@ -123,17 +157,24 @@ sap.ui.define([
 			var that = this;
 			that._setBusy(true);
 	
-			this._callCdsAction("/PCH06_SAVE_DATA", this._getData(), this).then((oData) => {
+			this._callCdsAction("/PCH06_SAVE_DATA", this._getData(), this).then(
+				
+				
+				
+				
+				(oData) => {
 
 			
 			  var myArray = JSON.parse(oData.PCH06_SAVE_DATA);
+			  this._setEditable(false);
 			  if(myArray.err){
+				this._setEditable(true);
 				that.MessageTools._addMessage(this.MessageTools._getI18nTextInModel("pch", myArray.reTxt, this.getView()), null, 1, this.getView());
 			  }
 			  that._setBusy(false);
 
 			});
-			this._setEditable(false);
+			
 		},
 		
 		/**

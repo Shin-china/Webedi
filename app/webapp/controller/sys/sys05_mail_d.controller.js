@@ -78,7 +78,6 @@ sap.ui.define([
 
 			//test
 		//test
-
 		var mailObj = { attachmentJson:{
 			object: "430000001",
 			object_type:"PCH03",

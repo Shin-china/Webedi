@@ -1,0 +1,65 @@
+<mvc:View 
+	controllerName="umc.app.controller.sys.sys04_doc_l"
+	xmlns="sap.m"
+	xmlns:m="sap.m"
+	xmlns:f="sap.f"
+	xmlns:l="sap.ui.layout"
+	xmlns:smartTable="sap.ui.comp.smarttable"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:table="sap.ui.table"
+	xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+>
+<f:DynamicPage id="idDynamicPage" headerExpanded="true" showFooter="true">
+    <f:title>
+        <f:DynamicPageTitle id="_IDGenDynamicPageTitle1">
+            <f:heading>
+                <m:Title id="_IDGenTitle1" text="{sys>SYS04_MAINTITLE}" />
+            </f:heading>
+        </f:DynamicPageTitle>
+    </f:title>
+
+    <f:header>
+        <f:DynamicPageHeader id="_IDGenDynamicPageHeader1" pinnable="true">
+            <f:content>
+
+                <l:VerticalLayout id="_IDGenVerticalLayout1" class="sapUiSmallMarginEnd">
+
+                    <m:FlexBox id="_IDGenFlexBox1" wrap="Wrap" fitContainer="true">
+                        <l:VerticalLayout id="_IDGenVerticalLayout2" class="sapUiSmallMarginEnd">
+                            <m:Label id="_IDGenLabel1" labelFor="ROLE_CODE" text="{sys>SYS02_LABEL_D__ROLE_CODE}"/>
+                            <m:Input id="ROLE_CODE" required="true" value="{OBJECT}" width="15em"/>
+                        </l:VerticalLayout>
+                    </m:FlexBox>
+                </l:VerticalLayout>
+                <!-- </m:IconTabFilter> -->
+            </f:content>
+        </f:DynamicPageHeader>
+    </f:header>
+
+    <f:content>
+    <smartTable:SmartTable id="ID" tableType="Table" enableAutoColumnWidth="true" entitySet="SYS_T13_ATTACHMENT" 
+    ignoredFields="ID"
+    requestAtLeastFields="OBJECT" 
+    initiallyVisibleFields="OBJECT_VERSION,FILE_NAME,CD_TIME,CD_BY" 
+    smartFilterId="smartFilterBar" enableExport="true" beforeExport="onBeforeExport" useVariantManagement="true" 
+    useTablePersonalisation="true" header="{com>TITLE_RESULT}" showRowCount="true" 
+    persistencyKey="sys01_SmartTableAnalytical_Explored" enableAutoBinding="false">
+    <!-- Add Button-->
+    <smartTable:customToolbar>
+        <OverflowToolbar design="Transparent">
+            <ToolbarSpacer />
+            <OverflowToolbarButton icon="sap-icon://add" text="{sys>SYS01_BUTTON_CREAT}" tooltip="{sys>SYS01_BUTTON_CREAT}" press="onCreate"></OverflowToolbarButton>
+        </OverflowToolbar>
+    </smartTable:customToolbar>
+    <!-- End-->
+
+    <table:Table id="detailTable" rowMode="Auto" rowActionCount="1" selectionMode="None" alternateRowColors="true" >
+        <table:columns>
+            
+        </table:columns>
+    </table:Table>
+    </smartTable:SmartTable>
+</f:content>
+</f:DynamicPage>
+
+</mvc:View>

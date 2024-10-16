@@ -125,24 +125,11 @@ public class ObjectStoreService {
 
     // 下载对象
     public CommMsg downLoadRes(String keyName) throws S3Exception {
+        S3Client s3Client = getS3Client();
         GetObjectRequest objectRequest = GetObjectRequest.builder().key(keyName).bucket(S3_BUCKET).build();
-        ResponseBytes<GetObjectResponse> por = getS3Client().getObjectAsBytes(objectRequest);
+        ResponseBytes<GetObjectResponse> por = s3Client.getObjectAsBytes(objectRequest);
 
         CommMsg msg = new CommMsg();
-
-        if (por != null && por.response().sdkHttpResponse() != null) {
-            if (por.response().sdkHttpResponse().isSuccessful()) {
-                msg.setMsgType(UmcConstants.IF_STATUS_S);
-                msg.setDataByte(por.asByteArray());
-
-            } else {
-                if (por.response().sdkHttpResponse().statusText().isPresent()) {
-                    msg.setMsgTxt(por.response().sdkHttpResponse().statusText().get());
-                }
-            }
-        } else {
-            msg.setMsgTxt("S3 Have no return ");
-        }
 
         return msg;
 
