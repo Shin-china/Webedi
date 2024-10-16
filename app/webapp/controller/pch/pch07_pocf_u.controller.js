@@ -204,13 +204,30 @@ sap.ui.define([
 			oReader.readAsBinaryString(oFile);
 			},
 
-			
-			
+			onExport: function (oEvent) {
+				var oTable = this.getView().byId("tableUploadData");
+				var aSelectedIndices = oTable.getSelectedIndices();
+	
+				if (aSelectedIndices.length === 0) {
+					sap.m.MessageToast.show("選択されたデータがありません、データを選択してください。"); // 提示未选择数据
+					oEvent.preventDefault(); // 取消导出操作
+					return;
+				}
+	
+				var oSettings = oEvent.getParameter("exportSettings");
+				if (oSettings) {
+					console.log("onBeforeExport called");
+					console.log("Export Settings:", oSettings);
+					oSettings.fileName = `購買見積登録.xlsx`;
+				}
+			},
+
+					
 			getData: function () {
 				var jsondata = this.getModel("workInfo").getData();
 				var a = JSON.stringify({ list: jsondata });
 				var oPrams = {
-				  shelfJson: a,
+				  ShelfJson: a,
 				};
 				return oPrams;
 			  },
