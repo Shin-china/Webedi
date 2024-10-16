@@ -66,7 +66,7 @@
 					<Button id="_IDGenButton22" text="{pch>PCH03_BUTTON_CSV}" press="_csvdow" enabled="true" width="10em"/>
 					<Button id="_IDGenButton23" text="{pch>PCH03_BUTTON_FAX}" press="onPrint" enabled="true" width="10em"/>
 					<Button id="_IDGenButton24" text="{pch>PCH03_BUTTON_MAIL}" press="onEmail" enabled="true" width="10em"/>
-					<Button id="_IDGenButton25" text="{pch>PCH03_BUTTON_QR}" press="onPrint" enabled="true" width="10em"/>
+					<Button id="_IDGenButton25" text="{pch>PCH03_BUTTON_QR}" press="onQr" enabled="true" width="10em"/>
 					<Button id="_IDGenButton26" text="{pch>PCH03_BUTTON_ZWS_NPS}" press="onPrint" enabled="true" width="10em"/>
 					<Button id="_IDGenButton27" text="{pch>PCH03_BUTTON_ZWS}" press="onPrint" enabled="true" width="10em"/>
 					<Button id="_IDGenButton28" text="{pch>PCH03_BUTTON_NPS}" press="onPrint" enabled="true" width="10em"/>
@@ -88,12 +88,12 @@
 
 			</smartTable:SmartTable>
 		</f:content>
-	<f:footer>
-      <OverflowToolbar id="otbFooter" visible="{=${message>/}.length > 0}">
-        <Button icon="sap-icon://alert" text="{=${message>/}.length}" visible="{=${message>/}.length > 0}" type="Emphasized" press="onClickMessagePopover" id="messageButton">
-        </Button>
-      </OverflowToolbar>
-    </f:footer>
+		<f:footer>
+		<OverflowToolbar id="otbFooter" visible="{=${message>/}.length > 0}">
+			<Button icon="sap-icon://alert" text="{=${message>/}.length}" visible="{=${message>/}.length > 0}" type="Emphasized" press="onClickMessagePopover" id="messageButton">
+			</Button>
+		</OverflowToolbar>
+		</f:footer>
 	</f:DynamicPage>
 
 </mvc:View>
