@@ -93,6 +93,8 @@ sap.ui.define([
 		let oBind = newModel.bindList("/s3uploadAttachment");
 		oBind.create(mailObj);
 
+
+
 			noErrorFlag = false;
             if (noErrorFlag) {
                 //Crate or Update

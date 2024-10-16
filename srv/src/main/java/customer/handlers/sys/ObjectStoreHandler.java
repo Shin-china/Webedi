@@ -60,7 +60,7 @@ public class ObjectStoreHandler implements EventHandler {
                     t13.setObjectType("PCH03");
                     t13.setId(uuidd);
                     t13.setObjectType(attachment.getObjectType());
-                    t13.setObjectLink(fieldId);
+                    t13.setObjectLink(msg.getMsgTxt());
                     t13AttachmentDao.insertAttachment(t13);
                 }
 

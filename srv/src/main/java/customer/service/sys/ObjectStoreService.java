@@ -13,8 +13,11 @@ import customer.bean.com.UmcConstants;
 import customer.dao.sys.T12ConfigDao;
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
+import software.amazon.awssdk.core.ResponseBytes;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.GetObjectRequest;
+import software.amazon.awssdk.services.s3.model.GetObjectResponse;
 import software.amazon.awssdk.services.s3.model.ListObjectsRequest;
 import software.amazon.awssdk.services.s3.model.ListObjectsResponse;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
@@ -93,7 +96,7 @@ public class ObjectStoreService {
         List<T12Config> getFolder = Config.get("OBJECT_STOTE_FLORD");
         for (T12Config folder : getFolder) {
             if (folder.getConCode().equals("OBJECT_STOTE_FLORD")) {
-                key = folder.getConValue() + "/" + key;
+                key = folder.getConValue() + key;
             }
         }
 
@@ -107,6 +110,7 @@ public class ObjectStoreService {
         if (por != null && por.sdkHttpResponse() != null) {
             if (por.sdkHttpResponse().isSuccessful()) {
                 msg.setMsgType(UmcConstants.IF_STATUS_S);
+                msg.setMsgTxt(key);
             } else {
                 if (por.sdkHttpResponse().statusText().isPresent()) {
                     msg.setMsgTxt(por.sdkHttpResponse().statusText().get());
@@ -117,5 +121,30 @@ public class ObjectStoreService {
         }
 
         return msg;
+    }
+
+    // 下载对象
+    public CommMsg downLoadRes(String keyName) throws S3Exception {
+        GetObjectRequest objectRequest = GetObjectRequest.builder().key(keyName).bucket(S3_BUCKET).build();
+        ResponseBytes<GetObjectResponse> por = getS3Client().getObjectAsBytes(objectRequest);
+
+        CommMsg msg = new CommMsg();
+
+        if (por != null && por.response().sdkHttpResponse() != null) {
+            if (por.response().sdkHttpResponse().isSuccessful()) {
+                msg.setMsgType(UmcConstants.IF_STATUS_S);
+                msg.setDataByte(por.asByteArray());
+
+            } else {
+                if (por.response().sdkHttpResponse().statusText().isPresent()) {
+                    msg.setMsgTxt(por.response().sdkHttpResponse().statusText().get());
+                }
+            }
+        } else {
+            msg.setMsgTxt("S3 Have no return ");
+        }
+
+        return msg;
+
     }
 }
