@@ -189,6 +189,8 @@ entity T13_ATTACHMENT : cuid {
                                 @title: '{i18n>OBJECT_VERSION}' OBJECT_VERSION : Integer; //  版本
                                 @title: '{i18n>FILE_TYPE}' FILE_TYPE       : String(10); //   文件类型
                                 @title: '{i18n>FILE_NAME}' FILE_NAME       : String(100); //  文件名
+                                @title: '{i18n>CD_TIME}' CD_TIME           : DateTime   @cds.on.insert: $now; //创建时间
+                                @title: '{i18n>CD_BY}' CD_BY               : String(36) @cds.on.insert: $user; //创建人
 
 
 }

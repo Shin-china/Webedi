@@ -290,6 +290,4 @@ public class StringTool {
 		return String.format("%10s", "abc");
 	}
 
-
-	}
 }

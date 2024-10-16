@@ -90,6 +90,12 @@ public class ObjectStoreService {
 
     // Upload attachment
     public CommMsg uploadFile(String key, RequestBody fileBody) throws S3Exception {
+        List<T12Config> getFolder = Config.get("OBJECT_STOTE_FLORD");
+        for (T12Config folder : getFolder) {
+            if (folder.getConCode().equals("OBJECT_STOTE_FLORD")) {
+                key = folder.getConValue() + "/" + key;
+            }
+        }
 
         S3Client s3Client = getS3Client();
         CommMsg msg = new CommMsg();
