@@ -37,7 +37,7 @@ sap.ui.define([
                 });    
 
                  // 检查 SUPPLIER 是否相同
-                var supplierSet = new Set(aSelectedData.map(data => data.SUPPLIER_DESCRIPTION));
+                var supplierSet = new Set(aSelectedData.map(data => data.SUPPLIER));
                 if (supplierSet.size > 1) {
                     MessageBox.error("複数の取引先がまとめて配信することができませんので、1社の取引先を選択してください。");
                     return;
@@ -50,7 +50,7 @@ sap.ui.define([
                 }
     
                         // 检查 SUPPLIER 是否相同
-                        var supplierSet = new Set(aSelectedData.map(data => data.SUPPLIER_DESCRIPTION));
+                        var supplierSet = new Set(aSelectedData.map(data => data.SUPPLIER));
                         if (supplierSet.size > 1) {
                             MessageBox.error("複数の取引先がまとめて配信することができませんので、1社の取引先を選択してください。");
                             return;
@@ -121,22 +121,54 @@ sap.ui.define([
             },
              
         onExportToPDF: function () {
-			var that = this;
-			let options = { compact: true, ignoreComment: true, spaces: 4 };
-			var IdList = that._TableDataList("detailTable", 'SUPPLIER')
-			if (IdList) {
-				that.PrintTool._getPrintDataInfo(that, IdList, "/PCH_T05_ACCOUNT_DETAIL_EXCEL", "SUPPLIER").then((oData) => {
-					let sResponse = json2xml(oData, options);
-					console.log(sResponse)
-					that.setSysConFig().then(res => {
-						// that.PrintTool._detailSelectPrint(that, sResponse, "test/test", oData, null, null, null, null)
-						that.PrintTool._detailSelectPrintDow(that, sResponse, "test2/test3", oData, null, null, null, null)
-					})
-				})
-			}
-
-
-		}
+            var that = this;
+            
+            // 调用检查逻辑
+            if (!this.checkSelectedSuppliers()) {
+                return; // 如果检查不通过，则终止执行
+            }
+        
+            let options = { compact: true, ignoreComment: true, spaces: 4 };
+            var IdList = that._TableDataList("detailTable", 'SUPPLIER');
+        
+            if (IdList) {
+                that.PrintTool._getPrintDataInfo(that, IdList, "/PCH_T05_ACCOUNT_DETAIL_EXCEL", "SUPPLIER").then((oData) => {
+                    let sResponse = json2xml(oData, options);
+                    console.log(sResponse);
+                    that.setSysConFig().then(res => {
+                        // 调用打印方法
+                        that.PrintTool._detailSelectPrintDow(that, sResponse, "test2/test3", oData, null, null, null, null);
+                    });
+                });
+            }
+        },
+        
+        checkSelectedSuppliers: function () {
+            var oTable = this.getView().byId("detailTable");
+            var aSelectedIndices = oTable.getSelectedIndices();
+        
+            // 检查是否有选中的数据
+            if (aSelectedIndices.length === 0) {
+                MessageToast.show("選択されたデータがありません、データを選択してください。");
+                return false;
+            }
+        
+            // 遍历选中的行，提取所需数据
+            var aSelectedData = aSelectedIndices.map(function (iIndex) {
+                return oTable.getContextByIndex(iIndex).getObject();
+            });
+        
+            // 检查 SUPPLIER 是否相同
+            var supplierSet = new Set(aSelectedData.map(data => data.SUPPLIER));
+            if (supplierSet.size > 1) {
+                MessageBox.error("複数の取引先がまとめて配信することができませんので、1社の取引先を選択してください。");
+                return false;
+            }
+        
+            return true; // 检查通过
+        }
+        
+        
 
     });
 });
