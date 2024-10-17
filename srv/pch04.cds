@@ -293,7 +293,9 @@ extend service TableService {
     action PCH04_SENDEMAIL(parms : String) returns String;
 
 }
-
+annotate TableService.PCH_T04_PAYMENT_UNIT with {
+  INV_MONTH @(Common : {FieldControl : #Mandatory});
+};
 annotate TableService.PCH_T04_PAYMENT with {
     SEND_FLAG @(Common: {ValueList: {entity: 'PCH04_STATUS_POP1', }}); 
 };

@@ -125,7 +125,7 @@ sap.ui.define([
 			let options = { compact: true, ignoreComment: true, spaces: 4 };
 			var IdList = that._TableDataList("detailTable", 'SUPPLIER')
 			if (IdList) {
-				that.PrintTool._getPrintDataInfo(that, IdList, "/PCH_T05_ACCOUNT_DETAIL_SUM_FINAL", "SUPPLIER").then((oData) => {
+				that.PrintTool._getPrintDataInfo(that, IdList, "/PCH_T05_ACCOUNT_DETAIL_EXCEL", "SUPPLIER").then((oData) => {
 					let sResponse = json2xml(oData, options);
 					console.log(sResponse)
 					that.setSysConFig().then(res => {
