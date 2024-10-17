@@ -116,29 +116,6 @@ sap.ui.define([
             //调用po接口
             this._invoPo(aSelectedData);
 
-         
-        //     success: function (result) {
-        //         // 确保 result 是一个有效的对象
-        //         if (result && result.status && result.message) {
-        //             var status = result.status;
-        //             var message = result.message;
-                    
-        //             // 根据接口返回的状态判断成功或错误
-        //             if (status === "success") {
-        //                 sap.m.MessageToast.show(message); // 成功消息
-        //             } else {
-        //                 sap.m.MessageToast.show(message); // 错误消息
-        //             }
-        //         } else {
-        //             sap.m.MessageToast.show("返回数据格式不正确。");
-        //         }
-        //     },
-        //     error: function (oError) {
-        //         // 尝试获取具体的错误消息
-        //         var errorMessage = oError.responseText || "发生了一个未知错误。";
-        //         sap.m.MessageToast.show(errorMessage);
-        //     }
-        // });
     },
 
 
