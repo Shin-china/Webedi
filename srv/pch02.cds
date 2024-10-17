@@ -42,7 +42,7 @@ extend service TableService {
                     T03.SEQ,                // 連続番号
                     T03.DEL_FLAG,           // 削除フラグ
                     T03.ExtNumber,          // 参照
-                    T04.PO_NO || REPEAT('0', 5 - LENGTH(CAST(T02.D_NO AS String))) || CAST(T02.D_NO AS String) as NO_DETAILS : String(15), // 購買伝票\明細NO				
+                    T02.PO_NO || REPEAT('0', 5 - LENGTH(CAST(T02.D_NO AS String))) || CAST(T02.D_NO AS String) as NO_DETAILS : String(15), // 購買伝票\明細NO				
                     // T04.MAT_ID,				// 品目						
                     T04.MAT_NAME,			// テキスト（短）						
                     // T04.QUANTITY,			// 発注数						

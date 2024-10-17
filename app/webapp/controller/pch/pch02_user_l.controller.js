@@ -24,17 +24,27 @@ sap.ui.define([
 		this._onListRebindDarft(oEvent, true);
 		},
 	
-		onBeforeExport: function (oEvt) {
-		var mExcelSettings = oEvt.getParameter("exportSettings");
-		for (var i = 0; i < mExcelSettings.workbook.columns.length; i++) {
-			// this.CommTools._setExcelFormatDate(mExcelSettings, i, "VALID_DATE_FROM");
-			// this.CommTools._setExcelFormatDate(mExcelSettings, i, "VALID_DATE_TO");
-			// this.CommTools._setExcelFormatDateTime(mExcelSettings, i, "CD_TIME");
-			// this.CommTools._setExcelFormatDateTime(mExcelSettings, i, "UP_TIME");
-			// this.CommTools._setExcelFormatDateTime(mExcelSettings, i, "LAST_LOGIN_TIME");
-			}
-	
-		},
+		onBeforeExport: function (oEvent) {
+            var oTable = this.getView().byId("detailTable");
+            var aSelectedIndices = oTable.getSelectedIndices();
+
+            if (aSelectedIndices.length === 0) {
+                sap.m.MessageToast.show(this._ResourceBundle.getText("選択されたデータがありません、データを選択してください。")); // 提示未选择数据
+                oEvent.preventDefault(); // 取消导出操作
+                return;
+            }
+
+            var oSettings = oEvent.getParameter("exportSettings");
+            if (oSettings) {
+                console.log("onBeforeExport called");
+                console.log("Export Settings:", oSettings);
+                var oDate = new Date();
+                var sDate = oDate.toISOString().slice(0, 10).replace(/-/g, '');
+                var sTime = oDate.toTimeString().slice(0, 8).replace(/:/g, '');
+                // 设置文件名为当前日期和时间
+                oSettings.fileName = `納期回答履歴_${sDate}${sTime}.xlsx`;
+            }
+        },
 		
 	});
 });
