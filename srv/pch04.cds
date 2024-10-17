@@ -58,7 +58,8 @@ extend service TableService {
         // T05.PRICE_AMOUNT,
         // T05.TOTAL_AMOUNT,
         T05.UNIT_PRICE,
-        T02.PO_NO || '' || T02.D_NO AS NO_DETAILS : String(255), // 発注\明細NO
+        // T02.PO_NO || '' || T02.D_NO AS NO_DETAILS : String(255), // 発注\明細NO
+        T02.PO_NO || REPEAT('0', 5 - LENGTH(CAST(T02.D_NO AS String))) || CAST(T02.D_NO AS String) as NO_DETAILS : String(15), // 発注\明細NO
 
         TO_CHAR(T04.INV_POST_DATE, 'YYYYMM') as INV_MONTH : String,  //检收月
 
@@ -108,7 +109,9 @@ extend service TableService {
         INV_MONTH,                     //检收月
  
         CAST(UNIT_PRICE * COALESCE(EXCHANGE, 1) AS Decimal(15, 3)) AS UNIT_PRICE_IN_YEN : Decimal(15, 3),
-        FLOOR(TOTAL_AMOUNT * COALESCE(EXCHANGE, 1)) AS TOTAL_AMOUNT_IN_YEN : Decimal(20, 0), // 円換算後税込金額（檢収）
+        // FLOOR(TOTAL_AMOUNT * COALESCE(EXCHANGE, 1)) AS TOTAL_AMOUNT_IN_YEN : Decimal(20, 0), // 円換算後税込金額（檢収）
+        ROUND(TOTAL_AMOUNT * COALESCE(EXCHANGE, 1), 0) AS TOTAL_AMOUNT_IN_YEN : Decimal(20, 0), // 円換算後税込金額（檢収）
+
         
             case when TAX_RATE = 8 then 
                 cast(PRICE_AMOUNT as Decimal(18,3)) 

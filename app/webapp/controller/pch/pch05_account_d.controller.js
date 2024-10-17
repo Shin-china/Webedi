@@ -77,7 +77,7 @@ sap.ui.define([
 										MAIL_BODY: [
 										{
 											object: "filename_1",
-											value: "買掛金明細.pdf"
+											value: "PO_買掛金計上高明細表.pdf"
 										},
 										{
 											object: "filecontent_1",
