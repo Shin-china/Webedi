@@ -23,6 +23,8 @@ extend service TableService {
           BP_NAME1,
           T01.SUPPLIER,
           T02.MAT_ID,
+          T02.PO_D_TXZ01,
+          T02.PO_PUR_QTY,
           T02.PO_TYPE,
           T01.PO_DATE,
           T02.PO_D_DATE,
