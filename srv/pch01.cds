@@ -25,6 +25,7 @@ extend service TableService {
           T02.MAT_ID,
           T02.PO_D_TXZ01,
           T02.PO_PUR_QTY,
+          T02.PO_PUR_UNIT,
           T02.PO_TYPE,
           T01.PO_DATE,
           T02.PO_D_DATE,
