@@ -19,7 +19,7 @@
                 <smartFilterBar:controlConfiguration>
 
                 <smartFilterBar:ControlConfiguration id="PCH_PO_BUKRS"      key="PO_BUKRS"             visibleInAdvancedArea="true" label="{pch>PO_BUKRS}"              index="1"/>
-                <smartFilterBar:ControlConfiguration id="PCH_INV_POST_DATE" key="INV_POST_DATE"        visibleInAdvancedArea="true" label="{pch>INV_POST_DATE}"    filterType='single' controlType="date"   index="2"/>
+                <smartFilterBar:ControlConfiguration id="PCH_INV_MONTH"     key="INV_MONTH"            visibleInAdvancedArea="true" label="{pch>INV_MONTH}"             index="2"/>
                 <smartFilterBar:ControlConfiguration id="PCH_SUPPLIER"      key="SUPPLIER"             visibleInAdvancedArea="true" label="{pch>SUPPLIER}"              index="3"/>
                 <smartFilterBar:ControlConfiguration id="PCH_PO_NO"         key="PO_NO"                visibleInAdvancedArea="true" label="{pch>PO_NO}"                 index="4"/>
                 
@@ -29,7 +29,7 @@
     </f:DynamicPageHeader>
 
     <smartTable:SmartTable id="ID" enableAutoColumnWidth="true" entitySet="PCH_T05_ACCOUNT_DETAIL" 
-        ignoredFields="" requestAtLeastFields="SHKZG,TAX_AMOUNT,TOTAL_AMOUNT"   initiallyVisibleFields="GL_YEAR,ITEM_NO,PO_NO,D_NO,SUPPLIER,SUPPLIER_DESCRIPTION,INV_DATE,PO_TRACK_NO,PR_BY,GL_ACCOUNT,COST_CENTER,PURCHASE_GROUP,PURCHASE_GROUP_DESC,CURRENCY,MAT_ID,QUANTITY,UNIT,MAT_DESC,TAX_CODE,TAX_RATE,INV_POST_DATE,SEND_FLAG,UNIT_PRICE,PRICE_AMOUNT,TAX_AMOUNT,TOTAL_AMOUNT,INV_BASE_DATE,GR_DATE,LOG_NO,SHKZG" 
+        ignoredFields="" requestAtLeastFields="SHKZG,TAX_AMOUNT,TOTAL_AMOUNT"   initiallyVisibleFields="INV_NO,GL_YEAR,ITEM_NO,PO_NO,D_NO,SUPPLIER,SUPPLIER_DESCRIPTION,INV_DATE,PO_TRACK_NO,PR_BY,GL_ACCOUNT,COST_CENTER,PURCHASE_GROUP,PURCHASE_GROUP_DESC,CURRENCY,MAT_ID,QUANTITY,UNIT,MAT_DESC,TAX_CODE,TAX_RATE,INV_POST_DATE,SEND_FLAG,UNIT_PRICE,PRICE_AMOUNT,TAX_AMOUNT,TOTAL_AMOUNT,INV_BASE_DATE,GR_DATE,LOG_NO" 
         smartFilterId="smartFilterBar" enableExport="true" beforeExport="onBeforeExport" 
         useVariantManagement="true" useTablePersonalisation="true" header="{pch>TITLE_RESULT}" showRowCount="true" persistencyKey="pch05_SmartTableAnalytical_Explored" enableAutoBinding="true">
         
@@ -43,6 +43,19 @@
     
     <table:Table id="detailTable" rowMode="Auto" rowActionCount="1" selectionMode="MultiToggle" alternateRowColors="true" fixedColumnCount="0" threshold="20">
         <table:columns>
+
+     <table:Column id="colInvNo" width="6rem" sortProperty="INV_NO" filterProperty="INV_NO">
+    <table:customData>
+        <core:CustomData key="p13nData" value='{"columnKey":"INV_NO", "leadingProperty":"INV_NO", "sortProperty":"INV_NO", "filterProperty":"INV_NO"}'/>
+    </table:customData>
+    <table:label>
+        <Label id="labelInvNo" text="{pch>INV_NO}"/>
+    </table:label>
+    <table:template>
+        <Text id="textInvNo" text="{INV_NO}"/>
+    </table:template>
+    </table:Column>
+
    <table:Column id="colGlYear" width="6rem" sortProperty="GL_YEAR" filterProperty="GL_YEAR">
     <table:customData>
         <core:CustomData key="p13nData" value='{"columnKey":"GL_YEAR", "leadingProperty":"GL_YEAR", "sortProperty":"GL_YEAR", "filterProperty":"GL_YEAR"}'/>
@@ -279,7 +292,8 @@
         <Label id="labelTaxRate" text="{pch>TAX_RATE}"/>
     </table:label>
     <table:template>
-        <Text id="textTaxRate" text="{TAX_RATE}"/>
+        <!-- <Text id="textTaxRate" text="{TAX_RATE}"/> -->
+         <Text id="textTaxRate" text="{path: 'TAX_RATE', formatter: '.formatter.formatTaxRate'}"/>
     </table:template>
 </table:Column>
 
@@ -291,7 +305,7 @@
         <Label id="labelInvPostDate" text="{pch>INV_POST_DATE}"/>
     </table:label>
     <table:template>
-         <smartField:SmartField id="textInvPostDate" value="{INV_POST_DATE}" editable="false"/>
+        <Text id="textInvPostDate" text="{path: 'INV_POST_DATE', type: 'sap.ui.model.type.Date', formatOptions: {pattern: 'yyyy/MM/dd'}}" />
     </table:template>
 </table:Column>
 
@@ -303,9 +317,10 @@
         <Label id="labelSendFlag" text="{pch>SEND_FLAG}"/>
     </table:label>
     <table:template>
-        <Text id="textSendFlag" text="{SEND_FLAG}"/>
+        <Text id="textSendFlag" text="{path: 'SEND_FLAG', formatter: '.formatter.formatSendFlag'}"/>
     </table:template>
 </table:Column>
+
 
 <table:Column id="colUnitPrice" width="10rem" sortProperty="UNIT_PRICE" filterProperty="UNIT_PRICE">
     <table:customData>
@@ -376,8 +391,7 @@
         <Label id="labelGrDate" text="{pch>GR_DATE}"/>
     </table:label>
     <table:template>
-        <!-- <Text id="textGrDate" text="{GR_DATE}"/> -->
-     <smartField:SmartField id="textGrDate" value="{GR_DATE}" editable="false"/>
+     <Text id="textGrDate" text="{path: 'GR_DATE', type: 'sap.ui.model.type.Date', formatOptions: {pattern: 'yyyy/MM/dd'}}" />
     </table:template>
 </table:Column>
 
@@ -395,7 +409,7 @@
 
 <table:Column id="colShkzg" width="10rem" sortProperty="SHKZG" filterProperty="SHKZG" visible="false">
     <table:customData>
-        <core:CustomData key="p13nData" value='{"columnKey":"SHKZG", "leadingProperty":"SHKZG", "sortProperty":"SHKZG", "filterProperty":"SHKZG"}'/>
+        <core:CustomData key="p13nData" value='{"columnKey":"SHKZG", "leadingProperty":"SHKZG", "sortProperty":"SHKZG", "filterProperty":"SHKZG", "visible":false}'/>
     </table:customData>
     <table:label>
         <Label id="labelShkzg" text="{pch>SHKZG}"/>
@@ -404,30 +418,6 @@
         <Text id="textShkzg" text="{SHKZG}"/>
     </table:template>
 </table:Column>
-
-<!-- <table:Column id="colPriceAmount" width="10rem" sortProperty="PRICE_AMOUNT" filterProperty="PRICE_AMOUNT">
-    <table:customData>
-        <core:CustomData key="p13nData" value='{"columnKey":"PRICE_AMOUNT", "leadingProperty":"PRICE_AMOUNT", "sortProperty":"PRICE_AMOUNT", "filterProperty":"PRICE_AMOUNT"}'/>
-    </table:customData>
-    <table:label>
-        <Label id="labelPriceAmount" text="{pch>PRICE_AMOUNT}"/>
-    </table:label>
-    <table:template>
-        <Text id="textPriceAmount" text="{parts: [ {path: 'PRICE_AMOUNT'},{path: 'SHKZG'}], formatter: '.formatter.formatPrice'}"/>
-    </table:template>
-</table:Column>
-
-<table:Column id="colTotalAmount" width="10rem" sortProperty="TOTAL_AMOUNT" filterProperty="TOTAL_AMOUNT">
-    <table:customData>
-        <core:CustomData key="p13nData" value='{"columnKey":"TOTAL_AMOUNT", "leadingProperty":"TOTAL_AMOUNT", "sortProperty":"TOTAL_AMOUNT", "filterProperty":"TOTAL_AMOUNT"}'/>
-    </table:customData>
-    <table:label>
-        <Label id="labelTotalAmount"  text="{pch>TOTAL_AMOUNT}"/> 
-    </table:label>
-    <table:template>
-        <Text id="textTotalAmount" text=" {parts: [ {path: 'TOTAL_AMOUNT'},{path: 'SHKZG'}], formatter: '.formatter.formatTotal'}"/>
-    </table:template>
-</table:Column> -->
 
 </table:columns>
         </table:Table>

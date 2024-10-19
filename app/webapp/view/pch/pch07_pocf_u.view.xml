@@ -49,9 +49,9 @@ xmlns:fb="sap.ui.comp.filterbar">
 
 				<!-- 結果内容 -->
 				<t:Column id="Message" width="15rem" sortProperty="MESSAGE" filterProperty="MESSAGE">
-					<Label id="_IDGenLabel3" text="{pch>U_MESSAGE}"/>
+					<Label id="_IDGenLabel3" text="{pch>U07_MESSAGE}"/>
 					<t:template>
-						<Text id="_IDGenText4" text="{workInfo>U07_MESSAGE}" width="12em" tooltip="{local>MESSAGE}"/>
+						<Text id="_IDGenText4" text="{workInfo>MESSAGE}" width="12em" tooltip="{local>MESSAGE}"/>
 					</t:template>
 				</t:Column>
 

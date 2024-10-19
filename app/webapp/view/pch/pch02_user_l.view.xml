@@ -1,0 +1,202 @@
+<mvc:View 
+    controllerName="umc.app.controller.pch.pch02_user_l" 
+    xmlns:core="sap.ui.core" 
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:layout="sap.ui.layout" 
+    xmlns:table="sap.ui.table" 
+    xmlns:smartFilterBar="sap.ui.comp.smartfilterbar" 
+    xmlns:smartTable="sap.ui.comp.smarttable" 
+    xmlns:smartField="sap.ui.comp.smartfield" 
+    xmlns:smartform="sap.ui.comp.smartform" 
+    xmlns:mvc="sap.ui.core.mvc" 
+    xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+    xmlns:uxap="sap.uxap">
+
+
+        <f:DynamicPageHeader id="DynamicPageHeader" pinnable="true">
+            <f:content>
+                <smartFilterBar:SmartFilterBar id="smartFilterBar" entitySet="PCH_T02_USER" persistencyKey="PCH_T02_USER" showFilterConfiguration="true">
+                    <smartFilterBar:controlConfiguration>
+
+                    <smartFilterBar:ControlConfiguration id="pch_po_no"    key="PO_NO"    visibleInAdvancedArea="true" label="{pch>PO_NO}"          index="1"/>
+                    <smartFilterBar:ControlConfiguration id="pch_d_no" key="D_NO" visibleInAdvancedArea="true" label="{pch>D_NO}"       index="2"/>
+                  
+                    </smartFilterBar:controlConfiguration>
+                </smartFilterBar:SmartFilterBar>
+            </f:content>
+  </f:DynamicPageHeader>
+
+    <smartTable:SmartTable id="ID" enableAutoColumnWidth="true" entitySet="PCH_T02_USER" 
+        ignoredFields=""  requestAtLeastFields=""  initiallyVisibleFields="PO_NO,D_NO,NO_DETAILS,MAT_ID,MAT_NAME,QUANTITY,PLANT_ID,LOCATION_ID,INPUT_DATE,INPUT_QTY,ExtNumber,CD_DATE,CD_TIME" 
+        smartFilterId="smartFilterBar" enableExport="true" beforeExport="onBeforeExport" 
+        useVariantManagement="true" useTablePersonalisation="true" header="{pch>TITLE_RESULT}" showRowCount="true" persistencyKey="pch02_SmartTableAnalytical_Explored" enableAutoBinding="true">
+        
+        
+        <table:Table id="detailTable" rowMode="Auto" rowActionCount="1" selectionMode="MultiToggle" alternateRowColors="true" fixedColumnCount="0" threshold="20">
+            <table:columns>
+
+            <table:Column id="colPONo" width="10rem" sortProperty="PO_NO" filterProperty="PO_NO">
+                <table:customData>
+                    <core:CustomData key="p13nData" value='{"columnKey":"PO_NO", "leadingProperty":"PO_NO", "sortProperty":"PO_NO", "filterProperty":"PO_NO"}'/>
+                </table:customData>
+                <table:label>
+                    <Label id="labelPONo" text="{pch>PO_NO}"/>
+                </table:label>
+                <table:template>
+                    <Text id="textPONo" text="{PO_NO}"/>
+                </table:template>
+            </table:Column>
+
+            <table:Column id="colDNo" width="10rem" sortProperty="D_NO" filterProperty="D_NO">
+                <table:customData>
+                    <core:CustomData key="p13nData" value='{"columnKey":"D_NO", "leadingProperty":"D_NO", "sortProperty":"D_NO", "filterProperty":"D_NO"}'/>
+                </table:customData>
+                <table:label>
+                    <Label id="labelDNo" text="{pch>D_NO}"/>
+                </table:label>
+                <table:template>
+                    <Text id="textDNo" text="{D_NO}"/>
+                </table:template>
+            </table:Column>
+
+            <table:Column id="colNoDetails" width="10rem" sortProperty="NO_DETAILS" filterProperty="NO_DETAILS">
+                <table:customData>
+                    <core:CustomData key="p13nData" value='{"columnKey":"NO_DETAILS", "leadingProperty":"NO_DETAILS", "sortProperty":"NO_DETAILS", "filterProperty":"NO_DETAILS"}'/>
+                </table:customData>
+                <table:label>
+                    <Label id="labelNoDetails" text="{pch>NO_DETAILS}"/>
+                </table:label>
+                <table:template>
+                    <Text id="textNoDetails" text="{NO_DETAILS}"/>
+                </table:template>
+            </table:Column>
+
+            <table:Column id="colMatId" width="10rem" sortProperty="MAT_ID" filterProperty="MAT_ID">
+                <table:customData>
+                    <core:CustomData key="p13nData" value='{"columnKey":"MAT_ID", "leadingProperty":"MAT_ID", "sortProperty":"MAT_ID", "filterProperty":"MAT_ID"}'/>
+                </table:customData>
+                <table:label>
+                    <Label id="labelMatId" text="{pch>MAT_ID}"/>
+                </table:label>
+                <table:template>
+                    <Text id="textMatId" text="{MAT_ID}"/>
+                </table:template>
+            </table:Column>
+
+            <table:Column id="colMatName" width="10rem" sortProperty="MAT_NAME" filterProperty="MAT_NAME">
+                <table:customData>
+                    <core:CustomData key="p13nData" value='{"columnKey":"MAT_NAME", "leadingProperty":"MAT_NAME", "sortProperty":"MAT_NAME", "filterProperty":"MAT_NAME"}'/>
+                </table:customData>
+                <table:label>
+                    <Label id="labelMatName" text="{pch>MAT_NAME}"/>
+                </table:label>
+                <table:template>
+                    <Text id="textMatName" text="{MAT_NAME}"/>
+                </table:template>
+            </table:Column>
+
+            <table:Column id="colQuantity" width="10rem" sortProperty="QUANTITY" filterProperty="QUANTITY">
+                <table:customData>
+                    <core:CustomData key="p13nData" value='{"columnKey":"QUANTITY", "leadingProperty":"QUANTITY", "sortProperty":"QUANTITY", "filterProperty":"QUANTITY"}'/>
+                </table:customData>
+                <table:label>
+                    <Label id="labelQuantity" text="{pch>QUANTITY}"/>
+                </table:label>
+                <table:template>
+                    <Text id="textQuantity" text="{QUANTITY}"/>
+                </table:template>
+            </table:Column>
+
+            <table:Column id="colPlantId" width="10rem" sortProperty="PLANT_ID" filterProperty="PLANT_ID">
+                <table:customData>
+                    <core:CustomData key="p13nData" value='{"columnKey":"PLANT_ID", "leadingProperty":"PLANT_ID", "sortProperty":"PLANT_ID", "filterProperty":"PLANT_ID"}'/>
+                </table:customData>
+                <table:label>
+                    <Label id="labelPlantId" text="{pch>PLANT_ID}"/>
+                </table:label>
+                <table:template>
+                    <Text id="textPlantId" text="{PLANT_ID}"/>
+                </table:template>
+            </table:Column>
+
+            <table:Column id="colLocationId" width="10rem" sortProperty="LOCATION_ID" filterProperty="LOCATION_ID">
+                <table:customData>
+                    <core:CustomData key="p13nData" value='{"columnKey":"LOCATION_ID", "leadingProperty":"LOCATION_ID", "sortProperty":"LOCATION_ID", "filterProperty":"LOCATION_ID"}'/>
+                </table:customData>
+                <table:label>
+                    <Label id="labelLocationId" text="{pch>LOCATION_ID}"/>
+                </table:label>
+                <table:template>
+                    <Text id="textLocationId" text="{LOCATION_ID}"/>
+                </table:template>
+            </table:Column>
+
+            <table:Column id="colInputDate" width="10rem" sortProperty="INPUT_DATE" filterProperty="INPUT_DATE">
+                <table:customData>
+                    <core:CustomData key="p13nData" value='{"columnKey":"INPUT_DATE", "leadingProperty":"INPUT_DATE", "sortProperty":"INPUT_DATE", "filterProperty":"INPUT_DATE"}'/>
+                </table:customData>
+                <table:label>
+                    <Label id="labelInputDate" text="{pch>INPUT_DATE}"/>
+                </table:label>
+                <table:template>
+                    <!-- <Text id="textInputDate" text="{INPUT_DATE}"/> -->
+                     <Text id="textInputDate" text="{path: 'INPUT_DATE', type: 'sap.ui.model.type.Date', formatOptions: {pattern: 'yyyy/MM/dd'}}" />
+                </table:template>
+            </table:Column>
+
+            <table:Column id="colInputQty" width="10rem" sortProperty="INPUT_QTY" filterProperty="INPUT_QTY">
+                <table:customData>
+                    <core:CustomData key="p13nData" value='{"columnKey":"INPUT_QTY", "leadingProperty":"INPUT_QTY", "sortProperty":"INPUT_QTY", "filterProperty":"INPUT_QTY"}'/>
+                </table:customData>
+                <table:label>
+                    <Label id="labelInputQty" text="{pch>INPUT_QTY}"/>
+                </table:label>
+                <table:template>
+                    <Text id="textInputQty" text="{INPUT_QTY}"/>
+                </table:template>
+            </table:Column>
+
+            <table:Column id="colExtNumber" width="10rem" sortProperty="ExtNumber" filterProperty="ExtNumber">
+                <table:customData>
+                    <core:CustomData key="p13nData" value='{"columnKey":"ExtNumber", "leadingProperty":"ExtNumber", "sortProperty":"ExtNumber", "filterProperty":"ExtNumber"}'/>
+                </table:customData>
+                <table:label>
+                    <Label id="labelExtNumber" text="{pch>ExtNumber}"/>
+                </table:label>
+                <table:template>
+                    <Text id="textExtNumber" text="{ExtNumber}"/>
+                </table:template>
+            </table:Column>
+
+            <table:Column id="colCdDate" width="10rem" sortProperty="CD_DATE" filterProperty="CD_DATE">
+                <table:customData>
+                    <core:CustomData key="p13nData" value='{"columnKey":"CD_DATE", "leadingProperty":"CD_DATE", "sortProperty":"CD_DATE", "filterProperty":"CD_DATE"}'/>
+                </table:customData>
+                <table:label>
+                    <Label id="labelCdDate" text="{pch>CD_DATE}"/>
+                </table:label>
+                <table:template>
+                    <!-- <Text id="textCdDate" text="{CD_DATE}"/> -->
+                     <Text id="textCdDate" text="{path: 'CD_DATE', type: 'sap.ui.model.type.Date', formatOptions: {pattern: 'yyyy/MM/dd'}}" />
+                </table:template>
+            </table:Column>
+
+            <table:Column id="colCdTime" width="10rem" sortProperty="CD_TIME" filterProperty="CD_TIME">
+                <table:customData>
+                    <core:CustomData key="p13nData" value='{"columnKey":"CD_TIME", "leadingProperty":"CD_TIME", "sortProperty":"CD_TIME", "filterProperty":"CD_TIME"}'/>
+                </table:customData>
+                <table:label>
+                    <Label id="labelCdTime" text="{pch>CD_TIME}"/>
+                </table:label>
+                <table:template>
+                    <Text id="textCdTime" text="{CD_TIME}"/>
+                </table:template>
+            </table:Column>
+
+     </table:columns>
+
+        </table:Table>
+    </smartTable:SmartTable>
+
+</mvc:View>

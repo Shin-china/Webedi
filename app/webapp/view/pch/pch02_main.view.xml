@@ -1,0 +1,16 @@
+<mvc:View controllerName="umc.app.controller.pch.pch02_main" xmlns:mvc="sap.ui.core.mvc" displayBlock="true" xmlns="sap.m">
+    <Page id="idPage" title="納期回答照会" showHeader="true" showFooter="false" titleAlignment="Center" titleLeve="H1">
+        <content>
+            <IconTabBar id="idIconTabBar" expanded="{device>/isNoPhone}" class="sapUiResponsiveContentPadding">
+                <items>
+                    <IconTabFilter id="idIconTabFilterDetailView" text="納期回答照会" key="detailView">
+                        <mvc:XMLView id="idXMLViewDetail" viewName="umc.app.view.pch.pch02_user_d"/>
+                    </IconTabFilter>
+                    <IconTabFilter id="idIconTabFilterListView" text="納期回答履歴" key="listView">            
+                        <mvc:XMLView id="idXMLViewList" viewName="umc.app.view.pch.pch02_user_l"/>
+                    </IconTabFilter>
+                </items>
+            </IconTabBar>
+        </content>
+    </Page>
+</mvc:View>

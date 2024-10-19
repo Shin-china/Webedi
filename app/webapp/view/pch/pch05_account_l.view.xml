@@ -19,7 +19,7 @@
                     <smartFilterBar:controlConfiguration>
 
                     <smartFilterBar:ControlConfiguration id="PCH_PO_BUKRS"      key="PO_BUKRS"             visibleInAdvancedArea="true" label="{pch>PO_BUKRS}"                index="1"/>
-                    <smartFilterBar:ControlConfiguration id="PCH_INV_POST_DATE" key="INV_POST_DATE"        visibleInAdvancedArea="true" label="{pch>INV_POST_DATE}"  filterType='single' controlType="date"    index="2"/>
+                    <smartFilterBar:ControlConfiguration id="PCH_INV_MONTH"     key="INV_MONTH"            visibleInAdvancedArea="true" label="{pch>INV_MONTH}"               index="2"/>
                     <smartFilterBar:ControlConfiguration id="PCH_SUPPLIER"      key="SUPPLIER"             visibleInAdvancedArea="true" label="{pch>SUPPLIER}"                index="3"/>
                   
                     </smartFilterBar:controlConfiguration>
@@ -29,7 +29,6 @@
         </f:DynamicPageHeader>
         
   <!-- </f:DynamicPageHeader> -->
-
 
     <smartTable:SmartTable id="ID" enableAutoColumnWidth="true" entitySet="PCH_T05_ACCOUNT_DETAIL_EXCEL" 
         ignoredFields=""   
@@ -223,7 +222,7 @@
 
 <table:Column id="colshkzg" width="10rem" sortProperty="SHKZG_FLAG" filterProperty="SHKZG_FLAG" visible="false">
     <table:customData>
-        <core:CustomData key="p13nData" value='{"columnKey":"SHKZG_FLAG", "leadingProperty":"SHKZG_FLAG", "sortProperty":"SHKZG_FLAG", "filterProperty":"SHKZG_FLAG"}'/>
+        <core:CustomData key="p13nData" value='{"columnKey":"SHKZG_FLAG", "leadingProperty":"SHKZG_FLAG", "sortProperty":"SHKZG_FLAG", "filterProperty":"SHKZG_FLAG", "visible":false}'/>
     </table:customData>
     <table:label>
         <Label id="labelshkzg" text="{pch>SHKZG_FLAG}"/>
@@ -317,18 +316,6 @@
     </table:template>
 </table:Column>
 
-<table:Column id="colInvoiceId" width="10rem" sortProperty="INVOICEID" filterProperty="INVOICEID" visible="false">
-    <table:customData>
-        <core:CustomData key="p13nData" value='{"columnKey":"INVOICEID", "leadingProperty":"INVOICEID", "sortProperty":"INVOICEID", "filterProperty":"INVOICEID"}'/>
-    </table:customData>
-    <table:label>
-        <Label id="labelInvoiceId" text="{pch>INVOICEID}"/>
-    </table:label>
-    <table:template>
-        <Text id="textInvoiceId" text="{INVOICEID}"/>
-    </table:template>
-</table:Column>
-
 <table:Column id="colcurrency" width="10rem" sortProperty="CURRENCY" filterProperty="CURRENCY" visible="false">
     <table:customData>
         <core:CustomData key="p13nData" value='{"columnKey":"CURRENCY", "leadingProperty":"CURRENCY", "sortProperty":"CURRENCY", "filterProperty":"CURRENCY"}'/>
@@ -362,6 +349,18 @@
     </table:label>
     <table:template>
         <Text id="textGrdate" text="{GR_DATE}"/>
+    </table:template>
+</table:Column>
+
+<table:Column id="colvalue01" width="10rem" sortProperty="VALUE01" filterProperty="VALUE01" visible="false">
+    <table:customData>
+        <core:CustomData key="p13nData" value='{"columnKey":"VALUE01", "leadingProperty":"VALUE01", "sortProperty":"VALUE01", "filterProperty":"VALUE01"}'/>
+    </table:customData>
+    <table:label>
+        <Label id="labelvalue01" text="{pch>VALUE01}"/>
+    </table:label>
+    <table:template>
+        <Text id="textvalue01" text="{VALUE01}"/>
     </table:template>
 </table:Column>
 

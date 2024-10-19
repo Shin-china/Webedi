@@ -62,7 +62,7 @@ extend service TableService {
                 // T02.CD_BY,                      // 登録者
 
             }
-                action PCH07_CHECK_DATA(ShelfJson : String) returns String;
-                action PCH07_SAVE_DATA(ShelfJson : String) returns String;
+                action PCH07_CHECK_DATA(shelfJson : String) returns String;
+                action PCH07_SAVE_DATA(shelfJson : String) returns String;
 
 };

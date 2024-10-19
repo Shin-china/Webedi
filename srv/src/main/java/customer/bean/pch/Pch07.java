@@ -6,6 +6,11 @@ import java.time.LocalDate;
 import com.alibaba.fastjson.annotation.JSONField;
 
 public class Pch07 {
+
+    @JSONField(name = "SUCCESS")
+    private Boolean SUCCESS = true;
+    @JSONField(name = "I_CON")
+    private String I_CON;
     
     @JSONField(name = "STATUS")
     private String STATUS;
@@ -18,7 +23,7 @@ public class Pch07 {
     @JSONField(name = "QUO_ITEM")
     private String QUO_ITEM;
     @JSONField(name = "MATERIAL_NUMBER")
-    private Integer MATERIAL_NUMBER;
+    private String MATERIAL_NUMBER;
     @JSONField(name = "BP_NUMBER")
     private String BP_NUMBER;
     @JSONField(name = "PLANT_ID")
@@ -26,15 +31,36 @@ public class Pch07 {
     @JSONField(name = "QTY")
     private BigDecimal QTY;
     @JSONField(name = "VALIDATE_START")
-    private LocalDate VALIDATE_START;
+    private String VALIDATE_START;
     @JSONField(name = "VALIDATE_END")
-    private LocalDate VALIDATE_END;
+    private String VALIDATE_END;
     @JSONField(name = "UMC_COMMENT_1")
     private String UMC_COMMENT_1;
     @JSONField(name = "UMC_COMMENT_2")
     private String UMC_COMMENT_2;
     @JSONField(name = "INITIAL_OBJ")
     private String INITIAL_OBJ;
+    /**
+     * @return the sUCCESS
+     */
+    public Boolean getSUCCESS() {
+        return SUCCESS;
+    }
+
+    /**
+     * @param sUCCESS the sUCCESS to set
+     */
+    public void setSUCCESS(Boolean sUCCESS) {
+        SUCCESS = sUCCESS;
+    }
+
+    public String getI_CON() {
+        return I_CON;
+    }
+
+    public void setI_CON(String i_CON) {
+        I_CON = i_CON;
+    }
     public String getSTATUS() {
         return STATUS;
     }
@@ -65,10 +91,10 @@ public class Pch07 {
     public void setQUO_ITEM(String qUO_ITEM) {
         QUO_ITEM = qUO_ITEM;
     }
-    public Integer getMATERIAL_NUMBER() {
+    public String getMATERIAL_NUMBER() {
         return MATERIAL_NUMBER;
     }
-    public void setMATERIAL_NUMBER(Integer mATERIAL_NUMBER) {
+    public void setMATERIAL_NUMBER(String mATERIAL_NUMBER) {
         MATERIAL_NUMBER = mATERIAL_NUMBER;
     }
     public String getBP_NUMBER() {
@@ -89,16 +115,16 @@ public class Pch07 {
     public void setQTY(BigDecimal qTY) {
         QTY = qTY;
     }
-    public LocalDate getVALIDATE_START() {
+    public String getVALIDATE_START() {
         return VALIDATE_START;
     }
-    public void setVALIDATE_START(LocalDate vALIDATE_START) {
+    public void setVALIDATE_START(String vALIDATE_START) {
         VALIDATE_START = vALIDATE_START;
     }
-    public LocalDate getVALIDATE_END() {
+    public String getVALIDATE_END() {
         return VALIDATE_END;
     }
-    public void setVALIDATE_END(LocalDate vALIDATE_END) {
+    public void setVALIDATE_END(String vALIDATE_END) {
         VALIDATE_END = vALIDATE_END;
     }
     public String getUMC_COMMENT_1() {

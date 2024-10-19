@@ -68,27 +68,81 @@ sap.ui.define([
             }.bind(this));
         },
 
+        // onBeforeExport: function (oEvent) {
+        //     var oTable = this.getView().byId("detailTable");
+        //     var aSelectedIndices = oTable.getSelectedIndices();
+
+        //     if (aSelectedIndices.length === 0) {
+        //         sap.m.MessageToast.show(this._ResourceBundle.getText("選択されたデータがありません、データを選択してください。")); // 提示未选择数据
+        //         oEvent.preventDefault(); // 取消导出操作
+        //         return;
+        //     }
+
+        //     var oSettings = oEvent.getParameter("exportSettings");
+        //     if (oSettings) {
+        //         console.log("onBeforeExport called");
+        //         console.log("Export Settings:", oSettings);
+        //         var oDate = new Date();
+        //         var sDate = oDate.toISOString().slice(0, 10).replace(/-/g, '');
+        //         var sTime = oDate.toTimeString().slice(0, 8).replace(/:/g, '');
+        //         // 设置文件名为当前日期和时间
+        //         oSettings.fileName = `納期回答照会_${sDate}${sTime}.xlsx`;
+        //     }
+        // },
+
         onBeforeExport: function (oEvent) {
             var oTable = this.getView().byId("detailTable");
             var aSelectedIndices = oTable.getSelectedIndices();
-
+        
             if (aSelectedIndices.length === 0) {
                 sap.m.MessageToast.show(this._ResourceBundle.getText("選択されたデータがありません、データを選択してください。")); // 提示未选择数据
                 oEvent.preventDefault(); // 取消导出操作
                 return;
             }
-
+        
             var oSettings = oEvent.getParameter("exportSettings");
             if (oSettings) {
                 console.log("onBeforeExport called");
                 console.log("Export Settings:", oSettings);
+        
+                // 设置文件名为当前日期和时间
                 var oDate = new Date();
                 var sDate = oDate.toISOString().slice(0, 10).replace(/-/g, '');
                 var sTime = oDate.toTimeString().slice(0, 8).replace(/:/g, '');
-                // 设置文件名为当前日期和时间
                 oSettings.fileName = `納期回答照会_${sDate}${sTime}.xlsx`;
+        
+                // 获取选中的行数据
+                var aSelectedRows = aSelectedIndices.map(function(index) {
+                    return oTable.getContextByIndex(index).getObject();
+                });
+        
+                console.log("Selected Rows:", aSelectedRows); // 调试输出
+        
+                // 确保 aSelectedRows 是有效的数组
+                if (Array.isArray(aSelectedRows)) {
+                    // 直接遍历并格式化 DELIVERY_DATE 字段
+                    aSelectedRows.forEach(function(row) {
+                        if (row.DELIVERY_DATE) {
+                            var date = new Date(row.DELIVERY_DATE);
+                            row.DELIVERY_DATE = this.formatDate(date); // 格式化日期为 'yyyy/MM/dd'
+                        }
+                    }, this);
+        
+                    // 将处理后的数据直接赋值给 oSettings.data
+                    oSettings.data = aSelectedRows; // 设置导出的数据
+                } else {
+                    console.error("No selected rows found.");
+                }
             }
+        },        
+        
+        formatDate: function(date) {
+            var year = date.getFullYear();
+            var month = (date.getMonth() + 1).toString().padStart(2, '0'); // 月份从0开始
+            var day = date.getDate().toString().padStart(2, '0');
+            return year + '/' + month + '/' + day; // 返回格式为 'yyyy/MM/dd'
         },
+        
 
         onResend: function () {
             var oTable = this.getView().byId("detailTable");
@@ -113,71 +167,11 @@ sap.ui.define([
                 return; // 终止后续操作
             }
 
-            // 构造请求参数
-            var oParams = this._buildParams(aSelectedData);
-            var par = {items:oParams};
-            // 调用后台Action
-            this.getModel().callFunction("/PCH02_CONFIRMATION_REQUEST", {
-                method: "POST",
-                urlParameters: {
-                    parms: JSON.stringify(oParams)  // 将参数序列化为JSON字符串
-                },
+            //调用po接口
+            this._invoPo(aSelectedData);
 
-                success: function (result) {
-                    // 获取选中行的 PO_NO 和 D_NO
-                    var message = aSelectedData.map(function (oData) {
-                        return `${oData.PO_NO}${oData.D_NO}`; // 组合 PO_NO 和 D_NO
-                    }).join(" ; "); // 用 " & " 连接多个行的信息
-                
-                    sap.m.MessageToast.show(`購買発注伝票 ${message} はSAPに反映されました.`);
-                },
-                
-                error: function (oError) {
-                    sap.m.MessageToast.show("Error executing action.");
-                }
-            });
-        //     success: function (result) {
-        //         // 确保 result 是一个有效的对象
-        //         if (result && result.status && result.message) {
-        //             var status = result.status;
-        //             var message = result.message;
-                    
-        //             // 根据接口返回的状态判断成功或错误
-        //             if (status === "success") {
-        //                 sap.m.MessageToast.show(message); // 成功消息
-        //             } else {
-        //                 sap.m.MessageToast.show(message); // 错误消息
-        //             }
-        //         } else {
-        //             sap.m.MessageToast.show("返回数据格式不正确。");
-        //         }
-        //     },
-        //     error: function (oError) {
-        //         // 尝试获取具体的错误消息
-        //         var errorMessage = oError.responseText || "发生了一个未知错误。";
-        //         sap.m.MessageToast.show(errorMessage);
-        //     }
-        // });
     },
 
-        _buildParams: function (aSelectedData) {
-            // 根据选中的数据构建参数
-            return aSelectedData.map(function (oData) {
-                // 格式化交货日期为 YYYY-MM-DD
-        var oDate = new Date(oData.DELIVERY_DATE);
-        var sFormattedDate = oDate.getFullYear() + '-' + 
-                             String(oDate.getMonth() + 1).padStart(2, '0') + '-' + 
-                             String(oDate.getDate()).padStart(2, '0');
 
-                return {
-                    PONO: oData.PO_NO,                                   // 采购订单号
-                    DNO: String(oData.D_NO).padStart(5, '0'),            // 明细行号，转换为字符串并补足 5 位
-                    SEQ: String(oData.SEQ).padStart(4, '0'),             // 序号，转换为字符串并补足 4 位
-                    DELIVERYDATE: sFormattedDate,                        // 交货日期，格式为 YYYY-MM-DD
-                    QUANTITY: String(oData.QUANTITY).padStart(13, '0'),  // 交货数量，转换为字符串并补足 13 位
-                    DELFLAG: oData.DELFLAG || ""                         // 删除标识，确保为字符串
-                };
-            });
-        }
     });
 });

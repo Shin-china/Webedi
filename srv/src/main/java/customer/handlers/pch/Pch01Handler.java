@@ -37,8 +37,6 @@ public class Pch01Handler implements EventHandler {
   @On(event = "PCH01_CHECK_DATA")
   public void checkData(PCH01CheckDATAContext context) throws IOException {
     Pch01List list = JSON.parseObject(context.getShelfJson(), Pch01List.class);
-    // job测试使用
-    // JobMonotor a = new JobMonotor();
     // JobMonotor.poolMonitor();
     Pch01Service.detailsCheck(list);
     context.setResult(JSON.toJSONString(list));

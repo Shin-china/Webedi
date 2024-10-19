@@ -195,6 +195,29 @@ sap.ui.define([], function () {
         }
         return this._rowNoMap[key];
       },
+
+      //買掛金明細,支付通知判断SHKZG逻辑
+        formatPrice: function (price, shkzg) {
+            if (price === undefined || shkzg === undefined) {
+                return price; // 如果没有值，返回原值
+            }
+
+            price = Number(price); // 确保是数字
+            
+            // 根据 SHKZG 值决定正负
+            return shkzg === 'H' ? -Math.abs(price) : Math.abs(price);
+        },
+
+        formatTotal: function (total, shkzg) {
+            if (total === undefined || shkzg === undefined) {
+                return total; // 如果没有值，返回原值
+            }
+
+            total = Number(total); // 确保是数字
+            
+            // 根据 SHKZG 值决定正负
+            return shkzg === 'H' ? -Math.abs(total) : Math.abs(total);
+        },
   
       formatDate: function (date) {
         if (date != null) {
@@ -208,7 +231,26 @@ sap.ui.define([], function () {
         }
        
       },
-  
+
+      formatTaxRate: function(rate) {
+        if (!rate && rate !== 0) return "";  // 如果值为 null 或 undefined 返回空字符串
+        return rate + "%";  // 在税率后加上 % 符号
+    },
+
+    formatSendFlag: function(value) {
+      if (value === '1') {
+          return '1: 送信済';
+      } else if (value === '2') {
+          return '2: 照会済';
+      } else {
+          return ''; // 默认返回空字符串
+      }
+  },
+
+  formatIndex: function(index) {
+    return (index + 1).toString(); // 返回行号
+},
+
       /**
        * 组合2个参数
        * @param {*} date1 

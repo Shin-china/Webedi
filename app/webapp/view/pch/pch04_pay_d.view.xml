@@ -37,7 +37,7 @@
                     <smartFilterBar:ControlConfiguration id="PCH_DESCRIPTION" key="SUPPLIER_DESCRIPTION" visibleInAdvancedArea="true" label="{pch>SUPPLIER_DESCRIPTION}"      index="2"/>
                     <smartFilterBar:ControlConfiguration id="PCH_PO_NO"       key="PO_NO"                visibleInAdvancedArea="true" label="{pch>PO_NO}"                     index="3"/>
                     <smartFilterBar:ControlConfiguration id="PCH_MAT_ID"      key="MAT_ID"               visibleInAdvancedArea="true" label="{pch>MAT_ID}"                    index="4"/>
-                    <smartFilterBar:ControlConfiguration id="INV_MONTH"       key="INV_MONTH"            visibleInAdvancedArea="true" label="{pch>INV_MONTH1}"           filterType='single'    index="5"/>
+                    <smartFilterBar:ControlConfiguration id="INV_MONTH"       key="INV_MONTH"            visibleInAdvancedArea="true" label="{pch>INV_MONTH1}"           filterType='single'    index="5" />
                     <smartFilterBar:ControlConfiguration id="PCH_SEND_FLAG"   key="SEND_FLAG"            visibleInAdvancedArea="true" label="{pch>SEND_FLAG}"            filterType="single"  controlType="dropDownList"   index="6"/>
                   
                     </smartFilterBar:controlConfiguration>

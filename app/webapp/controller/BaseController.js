@@ -1361,5 +1361,50 @@ sap.ui.define([
           return dataList;
         },
 
+          /**
+         *调用po接口
+         * @param {*Odata}tableOdata
+         */
+         _invoPo(aSelectedData) {
+            var oParams = this._buildParams(aSelectedData);
+            var par = {parms:JSON.stringify(oParams)};
+            this._callCdsAction("/PCH02_CONFIRMATION_REQUEST", par, this).then(
+              function (oData) {
+                var str = oData.PCH02_CONFIRMATION_REQUEST;
+                sap.m.MessageToast.show(str);
+              },
+              function (error) {
+                sap.m.MessageToast.show("Error executing action.");
+              }
+            );
+
+          },
+
+          /**
+           * po接口辅助方法
+           * @param {} aSelectedData 
+           * @returns 
+           */
+          _buildParams: function (aSelectedData) {
+            // 根据选中的数据构建参数
+            return aSelectedData.map(function (oData) {
+                // 格式化交货日期为 YYYY-MM-DD
+              var oDate = new Date(oData.DELIVERY_DATE);
+              var sFormattedDate = oDate.getFullYear() + '-' + 
+                                  String(oDate.getMonth() + 1).padStart(2, '0') + '-' + 
+                                  String(oDate.getDate()).padStart(2, '0');
+
+                return {
+                    PONO: oData.PO_NO,                                   // 采购订单号
+                    DNO: String(oData.D_NO).padStart(5, '0'),            // 明细行号，转换为字符串并补足 5 位
+                    SEQ: String(oData.SEQ).padStart(4, '0'),             // 序号，转换为字符串并补足 4 位
+                    DELIVERYDATE: sFormattedDate,                        // 交货日期，格式为 YYYY-MM-DD
+                    QUANTITY: String(oData.QUANTITY).padStart(13, '0'),  // 交货数量，转换为字符串并补足 13 位
+                    DELFLAG: oData.DELFLAG || ""                         // 删除标识，确保为字符串
+                };
+            });
+        }
+
+
     });
 });

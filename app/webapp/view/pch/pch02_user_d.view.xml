@@ -13,21 +13,6 @@
     xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
     xmlns:uxap="sap.uxap">
 
-<f:DynamicPage id="dynamicPageId" headerExpanded="true" showFooter="true" busy="{localModel>/busy}">
-    <f:title>
-        <f:DynamicPageTitle id="DynamicPageTitle">
-
-        <f:heading>
-          <Title id="Title" text="{pch>pch02Title}"/>
-        </f:heading>
-        <f:navigationActions>
-          <Button id="_IDGenButton3" icon="sap-icon://nav-back" tooltip="nav-back" press="navTo('RouteMainView')"/>
-        </f:navigationActions>
-        </f:DynamicPageTitle>
-    </f:title>
-
-    <f:header >
-
         <f:DynamicPageHeader id="DynamicPageHeader" pinnable="true">
             <f:content>
                 <smartFilterBar:SmartFilterBar id="smartFilterBar" entitySet="PCH_T02_USER" persistencyKey="PCH_T02_USER" showFilterConfiguration="true">
@@ -41,11 +26,7 @@
                 </smartFilterBar:SmartFilterBar>
             </f:content>
         </f:DynamicPageHeader>
-        
-    </f:header>
-
-    <f:content>
-  <!-- </f:DynamicPageHeader> -->
+    
 
     <smartTable:SmartTable id="ID" enableAutoColumnWidth="true" entitySet="PCH_T02_USER" 
         ignoredFields=""  requestAtLeastFields="SEQ,DEL_FLAG"  initiallyVisibleFields="STATUS,PO_NO,D_NO,MAT_ID,PO_D_TXZ01,PO_PUR_QTY,PO_PUR_UNIT,SUPPLIER_MAT,DELIVERY_DATE,QUANTITY,DEL_PRICE,DEL_AMOUNT,MEMO,STORAGE_NAME,SEQ,DEL_FLAG,ExtNumber" 
@@ -61,6 +42,22 @@
         
         <table:Table id="detailTable" rowMode="Auto" rowActionCount="1" selectionMode="MultiToggle" alternateRowColors="true" fixedColumnCount="0" threshold="20">
             <table:columns>
+
+            <!-- <table:Column id="colLink" width="6rem">
+                <table:customData>
+                    <core:CustomData key="p13nData" value='{"columnKey":"LINK", "leadingProperty":"LINK_TEXT", "sortProperty":"LINK", "filterProperty":"LINK"}'/>
+                </table:customData>
+                <table:label>
+                    <Label id="labelLink" text="納期変更"/>
+                </table:label>
+                <table:template>
+                    <Link
+                        id="linkToApp"
+                        text="{pch>PCH06_TITLE}"  
+                        href="#/RouteToYourApp/pch06_answ_d"  
+                        target="_blank"/>
+                </table:template>
+            </table:Column> -->
 
                 <table:Column id="colStatus" width="6rem" sortProperty="STATUS" filterProperty="STATUS">
                     <table:customData>
@@ -85,6 +82,7 @@
                         <Text id="textPONo" text="{PO_NO}"/>
                     </table:template>
                 </table:Column>
+
                 <table:Column id="colDno" width="6rem" sortProperty="D_NO" filterProperty="D_NO">
                     <table:customData>
                         <core:CustomData key="p13nData" value='{"columnKey":"D_NO", "leadingProperty":"D_NO", "sortProperty":"D_NO", "filterProperty":"D_NO"}'/>
@@ -96,6 +94,7 @@
                         <Text id="textDno" text="{D_NO}"/>
                     </table:template>
                 </table:Column>
+
                 <table:Column id="colMatId" width="10rem" sortProperty="MAT_ID" filterProperty="MAT_ID">
                     <table:customData>
                         <core:CustomData key="p13nData" value='{"columnKey":"MAT_ID", "leadingProperty":"MAT_ID", "sortProperty":"MAT_ID", "filterProperty":"MAT_ID"}'/>
@@ -107,6 +106,7 @@
                         <Text id="textMatId" text="{MAT_ID}"/>
                     </table:template>
                 </table:Column>
+
                 <table:Column id="colPODtxz01" width="10rem" sortProperty="PO_D_TXZ01" filterProperty="PO_D_TXZ01">
                     <table:customData>
                         <core:CustomData key="p13nData" value='{"columnKey":"PO_D_TXZ01", "leadingProperty":"PO_D_TXZ01", "sortProperty":"PO_D_TXZ01", "filterProperty":"PO_D_TXZ01"}'/>
@@ -118,6 +118,7 @@
                         <Text id="textPODtxz01" text="{PO_D_TXZ01}"/>
                     </table:template>
                 </table:Column>
+
                 <table:Column id="colPOPURqty" width="10rem" sortProperty="PO_PUR_QTY" filterProperty="PO_PUR_QTY">
                     <table:customData>
                         <core:CustomData key="p13nData" value='{"columnKey":"PO_PUR_QTY", "leadingProperty":"PO_PUR_QTY", "sortProperty":"PO_PUR_QTY", "filterProperty":"PO_PUR_QTY"}'/>
@@ -129,6 +130,7 @@
                         <Text id="textPOPURqty" text="{PO_PUR_QTY}"/>
                     </table:template>
                 </table:Column>
+
                 <table:Column id="colPO_PUR_UNIT" width="6rem" sortProperty="PO_PUR_UNIT" filterProperty="PO_PUR_UNIT">
                     <table:customData>
                         <core:CustomData key="p13nData" value='{"columnKey":"PO_PUR_UNIT", "leadingProperty":"PO_PUR_UNIT", "sortProperty":"PO_PUR_UNIT", "filterProperty":"PO_PUR_UNIT"}'/>
@@ -140,6 +142,7 @@
                         <Text id="textPO_PUR_UNIT" text="{PO_PUR_UNIT}"/>
                     </table:template>
                 </table:Column>
+
                 <table:Column id="colSupplierMat" width="10rem" sortProperty="SUPPLIER_MAT" filterProperty="SUPPLIER_MAT">
                     <table:customData>
                         <core:CustomData key="p13nData" value='{"columnKey":"SUPPLIER_MAT", "leadingProperty":"SUPPLIER_MAT", "sortProperty":"SUPPLIER_MAT", "filterProperty":"SUPPLIER_MAT"}'/>
@@ -151,6 +154,7 @@
                         <Text id="textSupplierMat" text="{SUPPLIER_MAT}"/>
                     </table:template>
                 </table:Column>
+
                 <table:Column id="colDeliveryDate" width="10rem" sortProperty="DELIVERY_DATE" filterProperty="DELIVERY_DATE">
                     <table:customData>
                         <core:CustomData key="p13nData" value='{"columnKey":"DELIVERY_DATE", "leadingProperty":"DELIVERY_DATE", "sortProperty":"DELIVERY_DATE", "filterProperty":"DELIVERY_DATE"}'/>
@@ -159,9 +163,11 @@
                         <Label id="labelDeliveryDate" text="{pch>DELIVERY_DATE}"/>
                     </table:label>
                     <table:template>
-                        <smartField:SmartField id="textDeliveryDate" value="{DELIVERY_DATE}" editable="false"/>
+                        <!-- <smartField:SmartField id="textDeliveryDate" value="{DELIVERY_DATE}" editable="false"/> -->
+                        <Text id="textDeliveryDate" text="{path: 'DELIVERY_DATE', type: 'sap.ui.model.type.Date', formatOptions: {pattern: 'yyyy/MM/dd'}}" />
                     </table:template>
                 </table:Column>
+
                 <table:Column id="colQuantity" width="10rem" sortProperty="QUANTITY" filterProperty="QUANTITY">
                     <table:customData>
                         <core:CustomData key="p13nData" value='{"columnKey":"QUANTITY", "leadingProperty":"QUANTITY", "sortProperty":"QUANTITY", "filterProperty":"QUANTITY"}'/>
@@ -173,6 +179,7 @@
                         <Text id="textQuantity" text="{QUANTITY}"/>
                     </table:template>
                 </table:Column>
+
                 <table:Column id="colDelPrice" width="10rem" sortProperty="DEL_PRICE" filterProperty="DEL_PRICE">
                     <table:customData>
                         <core:CustomData key="p13nData" value='{"columnKey":"DEL_PRICE", "leadingProperty":"DEL_PRICE", "sortProperty":"DEL_PRICE", "filterProperty":"DEL_PRICE"}'/>
@@ -184,6 +191,7 @@
                         <Text id="textDelPrice" text="{DEL_PRICE}"/>
                     </table:template>
                 </table:Column>
+
                 <table:Column id="colDelAmount" width="10rem" sortProperty="DEL_AMOUNT" filterProperty="DEL_AMOUNT">
                     <table:customData>
                         <core:CustomData key="p13nData" value='{"columnKey":"DEL_AMOUNT", "leadingProperty":"DEL_AMOUNT", "sortProperty":"DEL_AMOUNT", "filterProperty":"DEL_AMOUNT"}'/>
@@ -219,7 +227,6 @@
                         <Text id="textStorageName" text="{STORAGE_NAME}"/>
                     </table:template>
                 </table:Column>
-            </table:columns>
            
              <table:Column id="colSeq" width="5rem" sortProperty="SEQ" filterProperty="SEQ" visible="false">
                     <table:customData>
@@ -257,10 +264,9 @@
                     </table:template>
                 </table:Column>
 
+            </table:columns>
+
         </table:Table>
     </smartTable:SmartTable>
-      </f:content>
-
-      </f:DynamicPage>
 
 </mvc:View>

@@ -16,9 +16,12 @@ import org.springframework.stereotype.Component;
 import com.alibaba.fastjson.JSONObject;
 import com.sap.cds.services.messages.Messages;
 
+import cds.gen.mst.T01SapMat;
+import cds.gen.mst.T03SapBp;
 import cds.gen.pch.T03PoC;
 import cds.gen.tableservice.PoTypePop;
-import customer.dao.mst.MstD007;
+import customer.dao.mst.MstD001;
+import customer.dao.mst.MstD003;
 import customer.bean.pch.Pch07;
 import customer.service.Service;
 
@@ -27,55 +30,69 @@ import customer.bean.pch.Pch07DataList;
 import customer.comm.tool.MessageTools;
 // import customer.usapbe.comm.tool.UniqueIDTool;
 // import customer.usapbe.service.Service;
-import customer.dao.pch.Pch01saveDao;
 import customer.dao.sys.IFSManageDao;
 
 @Component
 public class Pch07Service {
 
     @Autowired
-    private MstD007 mstD007;  // 注入 MstD007 DAO
+    private MstD001 mstD001;  
+    @Autowired
+    private MstD003 mstD003;
 
-    /**
-     * 验证上传的记录详情。
-     * 
-     * @param list 上传的记录列表
-     */
     public void detailsCheck(Pch07DataList list) {
         // 遍历上传的每条记录,
         for (Pch07 item : list.getList()) {
             // 1. 检查 SAP 品目代码 (MATERIAL_NUMBER -> MAT_ID)
-            // if (!mstD007.isSapMaterialValid(item.getMaterialNumber())) {
-            //     // 如果未能从表中获取数据，记录错误
-            //     item.setSuccess(false);
-            //     item.setMessage("SAP品目コード" + item.getMaterialNumber() + "が登録されていません。チェックしてください。");
-            // }
 
-            // // 2. 检查供应商 ID (BP_NUMBER -> BP_ID)
-            // if (!mstD007.isSapBpValid(item.getBpNumber())) {
-            //     // 如果未能从表中获取数据，记录错误
-            //     item.setSuccess(false);
-            //     item.setMessage("仕入先" + item.getBpNumber() + "が登録されていません。チェックしてください。");
-            // }
+            String matno =  item.getMATERIAL_NUMBER();
+            String bpno  =  item.getBP_NUMBER();
+            String valstart =  item.getVALIDATE_START();
+            String valend  =  item.getVALIDATE_END();
 
-            // // 3. 检查日期格式 (VALIDATE_START, VALIDATE_END)
-            // if (!isValidDateFormat(item.getValidateStart()) || !isValidDateFormat(item.getValidateEnd())) {
-            //     // 如果日期格式不符合要求
-            //     item.setSuccess(false);
-            //     item.setMessage("日付形式はYYYY/MM/DDではないので、調整してください。");
-            // }
+        // 1. 检查 SAP 品目代码 (MATERIAL_NUMBER -> MAT_ID)
+        T01SapMat matid = mstD001.getByID(matno);
+        if (matid == null || "Y".equals(matid.getDelFlag())) {
+            item.setSUCCESS(false);
+            item.setMESSAGE("SAP品目コード" + matno + "が未登録或已删除。チェックしてください。");
+            item.setRESULT("失敗");
+            item.setI_CON("sap-icon://error");
+            item.setSTATUS("Error");
+        }else {
+            item.setSUCCESS(true);
+            item.setRESULT("成功");
+            item.setI_CON("sap-icon://sys-enter-2");
+            item.setSTATUS("Success");
         }
+
+        if (!item.getSUCCESS()) {
+            // 如果前面已经失败，直接跳过后续检查
+            continue;
+        }
+
+        // 2. 检查供应商 ID (BP_NUMBER -> BP_ID)
+        T03SapBp bpid = mstD003.getByID(bpno);
+        if (bpid == null || "Y".equals(bpid.getDelFlag())) {
+            item.setSUCCESS(false);
+            item.setMESSAGE("仕入先" + bpno + "が未登録或已删除。チェックしてください。");
+            item.setRESULT("失敗");
+            item.setI_CON("sap-icon://error");
+            item.setSTATUS("Error");
+        }else {
+            item.setSUCCESS(true);
+            item.setRESULT("成功");
+            item.setI_CON("sap-icon://sys-enter-2");
+            item.setSTATUS("Success");
+        }
+
+        // // 3. 检查日期格式 (VALIDATE_START, VALIDATE_END)
+        // if (!isValidDateFormat(valstart) || !isValidDateFormat(valend)) {
+        //     item.setSUCCESS(false);
+        //     item.setMESSAGE("日付形式はYYYY/MM/DDではないので、調整してください。");
+        // }else {
+        //     item.setSUCCESS(true);
+        // }
+
     }
 
-    // 验证日期格式是否为 YYYY/MM/DD
-    private boolean isValidDateFormat(String dateStr) {
-        try {
-            // 使用正则表达式匹配 YYYY/MM/DD 格式
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-            LocalDate.parse(dateStr, formatter);
-            return true;
-        } catch (DateTimeParseException e) {
-            return false;
-        }
-    }
-}
+}}
