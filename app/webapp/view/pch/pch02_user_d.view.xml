@@ -43,6 +43,22 @@
         <table:Table id="detailTable" rowMode="Auto" rowActionCount="1" selectionMode="MultiToggle" alternateRowColors="true" fixedColumnCount="0" threshold="20">
             <table:columns>
 
+            <!-- <table:Column id="colLink" width="6rem">
+                <table:customData>
+                    <core:CustomData key="p13nData" value='{"columnKey":"LINK", "leadingProperty":"LINK_TEXT", "sortProperty":"LINK", "filterProperty":"LINK"}'/>
+                </table:customData>
+                <table:label>
+                    <Label id="labelLink" text="納期変更"/>
+                </table:label>
+                <table:template>
+                    <Link
+                        id="linkToApp"
+                        text="{pch>PCH06_TITLE}"  
+                        href="#/RouteToYourApp/pch06_answ_d"  
+                        target="_blank"/>
+                </table:template>
+            </table:Column> -->
+
                 <table:Column id="colStatus" width="6rem" sortProperty="STATUS" filterProperty="STATUS">
                     <table:customData>
                         <core:CustomData key="p13nData" value='{"columnKey":"STATUS", "leadingProperty":"STATUS", "sortProperty":"STATUS", "filterProperty":"STATUS"}'/>
@@ -147,7 +163,8 @@
                         <Label id="labelDeliveryDate" text="{pch>DELIVERY_DATE}"/>
                     </table:label>
                     <table:template>
-                        <smartField:SmartField id="textDeliveryDate" value="{DELIVERY_DATE}" editable="false"/>
+                        <!-- <smartField:SmartField id="textDeliveryDate" value="{DELIVERY_DATE}" editable="false"/> -->
+                        <Text id="textDeliveryDate" text="{path: 'DELIVERY_DATE', type: 'sap.ui.model.type.Date', formatOptions: {pattern: 'yyyy/MM/dd'}}" />
                     </table:template>
                 </table:Column>
 

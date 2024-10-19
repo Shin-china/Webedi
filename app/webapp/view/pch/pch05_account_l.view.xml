@@ -316,18 +316,6 @@
     </table:template>
 </table:Column>
 
-<table:Column id="colInvoiceId" width="10rem" sortProperty="INVOICEID" filterProperty="INVOICEID" visible="false">
-    <table:customData>
-        <core:CustomData key="p13nData" value='{"columnKey":"INVOICEID", "leadingProperty":"INVOICEID", "sortProperty":"INVOICEID", "filterProperty":"INVOICEID"}'/>
-    </table:customData>
-    <table:label>
-        <Label id="labelInvoiceId" text="{pch>INVOICEID}"/>
-    </table:label>
-    <table:template>
-        <Text id="textInvoiceId" text="{INVOICEID}"/>
-    </table:template>
-</table:Column>
-
 <table:Column id="colcurrency" width="10rem" sortProperty="CURRENCY" filterProperty="CURRENCY" visible="false">
     <table:customData>
         <core:CustomData key="p13nData" value='{"columnKey":"CURRENCY", "leadingProperty":"CURRENCY", "sortProperty":"CURRENCY", "filterProperty":"CURRENCY"}'/>

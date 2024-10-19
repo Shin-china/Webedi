@@ -35,7 +35,6 @@
           <smartFilterBar:ControlConfiguration id="idControlConfiguration2" key="BP_NAME1"     visibleInAdvancedArea="true" label="{pch>D_BP_NAME1}" index="1"/>
           <smartFilterBar:ControlConfiguration id="idControlConfiguration3" key="PO_NO"        visibleInAdvancedArea="true" label="{pch>D_PO_NO}"        filterType='single' controlType="auto" index="2"/>
           <smartFilterBar:ControlConfiguration id="idControlConfiguration4" key="MAT_ID"       visibleInAdvancedArea="true" label="{pch>D_MAT_ID}"       filterType='single' controlType="auto" index="3"/>
-          <smartFilterBar:ControlConfiguration id="idControlConfiguration5" key="PO_TYPE"      visibleInAdvancedArea="true" label="{pch>D_PO_TYPE}"      filterType='single' controlType="dropDownList" index="4"/> 
           
           <smartFilterBar:ControlConfiguration index="5" id="idControlConfiguration6" key="STATUS" label="{pch>D_STATUS}"  visibleInAdvancedArea="true" filterType='single' controlType="dropDownList"/>
           
@@ -49,10 +48,11 @@
   </f:DynamicPageHeader>
 
   <smartTable:SmartTable  id="idSmartTable" smartFilterId="smartFilterBar" enableAutoColumnWidth="true" entitySet="PCH_01_DL" tableType="Table"
-          ignoredFields="" initiallyVisibleFields="SUPPLIER,BP_NAME1,PO_NO,MAT_ID,PO_TYPE,PO_DATE,PO_D_DATE,CUSTOMER_MAT,SUPPLIER_MAT,STATUS" enableExport="true" beforeExport="onBeforeExport" header="{pch>D_RESULT}" enableAutoBinding="true" editable="false" >
-    <t:Table id="detailTable" rowMode="Auto" rowActionCount="1" selectionMode="None" alternateRowColors="true" fixedColumnCount="0">
+          ignoredFields="" initiallyVisibleFields="PO_NO,D_NO,MAT_ID,PO_D_TXZ01,PO_PUR_QTY,PO_PUR_UNIT,CUSTOMER_MAT" enableExport="true" beforeExport="onBeforeExport" header="{pch>D_RESULT}" enableAutoBinding="true" editable="false" >
+    <t:Table id="detailTable" rowMode="Auto"  rowActionCount="1" selectionMode="None" alternateRowColors="true" fixedColumnCount="0">
+     
       <t:columns>
-        <t:Column id="colSupplier" width="10rem" sortProperty="SUPPLIER" filterProperty="SUPPLIER">
+        <!-- <t:Column id="colSupplier" width="10rem" sortProperty="SUPPLIER" filterProperty="SUPPLIER">
           <t:customData>
             <core:CustomData key="p13nData"
                 value='\{"columnKey":"SUPPLIER", "leadingProperty":"SUPPLIER", "sortProperty":"SUPPLIER", "filterProperty":"SUPPLIER"}'/>
@@ -63,61 +63,103 @@
           <t:template>
             <Text id="text1" text="{SUPPLIER}"/>
           </t:template>
-        </t:Column>
+        </t:Column> -->
 
-        <t:Column id="colBPName1" width="10rem" sortProperty="BP_NAME1" filterProperty="BP_NAME1">
-          <t:customData>
-            <core:CustomData key="p13nData"
-                value='\{"columnKey":"BP_NAME1", "leadingProperty":"BP_NAME1", "sortProperty":"BP_NAME1", "filterProperty":"BP_NAME1"}'/>
-          </t:customData>
-          <t:label>
-            <Label id="label2" text="{pch>D_BP_NAME1}"/>
-          </t:label>
-          <t:template>
-            <Text id="text2" text="{BP_NAME1}"/>
-          </t:template>
-        </t:Column>
-
-        <t:Column id="colPONo" width="10rem" sortProperty="PO_NO" filterProperty="PO_NO">
+        <t:Column id="colPONO" width="10rem" sortProperty="PO_NO" filterProperty="PO_NO">
           <t:customData>
             <core:CustomData key="p13nData"
                 value='\{"columnKey":"PO_NO", "leadingProperty":"PO_NO", "sortProperty":"PO_NO", "filterProperty":"PO_NO"}'/>
           </t:customData>
           <t:label>
-            <Label id="label3"  text="{pch>D_PO_NO}"/>
+            <Label id="label1"  text="{pch>D_PO_NO}"/>
           </t:label>
           <t:template>
-            <Text id="text3" text="{PO_NO}"/>
+            <Text id="text1" text="{PO_NO}"/>
           </t:template>
         </t:Column>
 
-        <t:Column id="colMatId" width="10rem" sortProperty="MAT_ID" filterProperty="MAT_ID">
+        <t:Column id="colDNO" width="10rem" sortProperty="D_NO" filterProperty="D_NO">
+          <t:customData>
+            <core:CustomData key="p13nData"
+                value='\{"columnKey":"D_NO", "leadingProperty":"D_NO", "sortProperty":"D_NO", "filterProperty":"D_NO"}'/>
+          </t:customData>
+          <t:label>
+            <Label id="label2" text="{pch>D_NO}"/>
+          </t:label>
+          <t:template>
+            <Text id="text2" text="{D_NO}"/>
+          </t:template>
+        </t:Column>
+
+        <t:Column id="colMATID" width="10rem" sortProperty="MAT_ID" filterProperty="MAT_ID">
           <t:customData>
             <core:CustomData key="p13nData"
                 value='\{"columnKey":"MAT_ID", "leadingProperty":"MAT_ID", "sortProperty":"MAT_ID", "filterProperty":"MAT_ID"}'/>
           </t:customData>
           <t:label>
-            <Label id="label4" text="{pch>D_MAT_ID}"/>
+            <Label id="label3" text="{pch>D_MAT_ID}"/>
           </t:label>
           <t:template>
-            <Text id="text4" text="{MAT_ID}"/>
+            <Text id="text3" text="{MAT_ID}"/>
           </t:template>
         </t:Column>
 
-        <t:Column id="colPOType" width="10rem" sortProperty="PO_TYPE" filterProperty="PO_TYPE">
+        <t:Column id="colMATXT" width="10rem" sortProperty="PO_D_TXZ01" filterProperty="PO_D_TXZ01">
           <t:customData>
             <core:CustomData key="p13nData"
-                value='\{"columnKey":"PO_TYPE", "leadingProperty":"PO_TYPE", "sortProperty":"PO_TYPE", "filterProperty":"PO_TYPE"}'/>
+                value='\{"columnKey":"PO_D_TXZ01", "leadingProperty":"PO_D_TXZ01", "sortProperty":"PO_D_TXZ01", "filterProperty":"PO_D_TXZ01"}'/>
           </t:customData>
           <t:label>
-            <Label id="label5"  text="{pch>D_PO_TYPE}"/>
+            <Label id="label4" text="{pch>PO_D_TXZ01}"/>
           </t:label>
           <t:template>
-            <Text id="text5" text="{PO_TYPE}"/>
+            <Text id="text4" text="{PO_D_TXZ01}"/>
           </t:template>
         </t:Column>
 
-        <t:Column id="colPODate" width="10rem" sortProperty="PO_DATE" filterProperty="PO_DATE">
+        
+        <t:Column id="colPURQTY" width="10rem" sortProperty="PO_PUR_QTY" filterProperty="PO_PUR_QTY">
+          <t:customData>
+            <core:CustomData key="p13nData"
+                value='\{"columnKey":"PO_PUR_QTY", "leadingProperty":"PO_PUR_QTY", "sortProperty":"PO_PUR_QTY", "filterProperty":"PO_PUR_QTY"}'/>
+          </t:customData>
+          <t:label>
+            <Label id="label5" text="{pch>PO_PUR_QTY}"/>
+          </t:label>
+          <t:template>
+            <Text id="text5" text="{PO_PUR_QTY}"/>
+          </t:template>
+        </t:Column>
+
+        <t:Column id="colUNIT" width="10rem" sortProperty="PO_PUR_UNIT" filterProperty="PO_PUR_UNIT">
+          <t:customData>
+            <core:CustomData key="p13nData"
+                value='\{"columnKey":"PO_PUR_UNIT", "leadingProperty":"PO_PUR_UNIT", "sortProperty":"PO_PUR_UNIT", "filterProperty":"PO_PUR_UNIT"}'/>
+          </t:customData>
+          <t:label>
+            <Label id="label6" text="{pch>PO_PUR_UNIT}"/>
+          </t:label>
+          <t:template>
+            <Text id="text6" text="{PO_PUR_UNIT}"/>
+          </t:template>
+        </t:Column>
+
+        <t:Column id="colCUSMAT" width="10rem" sortProperty="CUSTOMER_MAT" filterProperty="CUSTOMER_MAT">
+          <t:customData>
+            <core:CustomData key="p13nData"
+                value='\{"columnKey":"CUSTOMER_MAT", "leadingProperty":"CUSTOMER_MAT", "sortProperty":"CUSTOMER_MAT", "filterProperty":"CUSTOMER_MAT"}'/>
+          </t:customData>
+          <t:label>
+            <Label id="label7" text="{pch>CUSTOMER_MAT}"/>
+          </t:label>
+          <t:template>
+            <Text id="text7" text="{CUSTOMER_MAT}"/>
+          </t:template>
+        </t:Column>
+
+
+
+        <!-- <t:Column id="colPODate" width="10rem" sortProperty="PO_DATE" filterProperty="PO_DATE">
           <t:customData>
             <core:CustomData key="p13nData"
                 value='\{"columnKey":"PO_DATE", "leadingProperty":"PO_DATE", "sortProperty":"PO_DATE", "filterProperty":"PO_DATE"}'/>
@@ -126,11 +168,11 @@
             <Label id="label6" text="{pch>D_PO_DATE}"/>
           </t:label>
           <t:template>
-            <Text id="text6" text="{PO_DATE}"/>
+            <smartField:SmartField id="text6" value="{PO_DATE}" editable="false"/>
           </t:template>
-        </t:Column>
+        </t:Column> -->
 
-        <t:Column id="colPODDate" width="10rem" sortProperty="PO_D_DATE" filterProperty="PO_D_DATE">
+        <!-- <t:Column id="colPODDate" width="10rem" sortProperty="PO_D_DATE" filterProperty="PO_D_DATE">
           <t:customData>
             <core:CustomData key="p13nData"
                 value='\{"columnKey":"PO_D_DATE", "leadingProperty":"PO_D_DATE", "sortProperty":"PO_D_DATE", "filterProperty":"PO_D_DATE"}'/>
@@ -139,11 +181,11 @@
             <Label id="label7"  text="{pch>D_PO_D_DATE}"/>
           </t:label>
           <t:template>
-            <Text id="text7" text="{PO_D_DATE}"/>
+            <smartField:SmartField id="text7" value="{PO_D_DATE}" editable="false"/>
           </t:template>
-        </t:Column>
+        </t:Column> -->
 
-        <t:Column id="colPOCustomermat" width="10rem" sortProperty="CUSTOMER_MAT" filterProperty="CUSTOMER_MAT">
+        <!-- <t:Column id="colPOCustomermat" width="10rem" sortProperty="CUSTOMER_MAT" filterProperty="CUSTOMER_MAT">
           <t:customData>
             <core:CustomData key="p13nData"
                 value='\{"columnKey":"CUSTOMER_MAT", "leadingProperty":"CUSTOMER_MAT", "sortProperty":"CUSTOMER_MAT", "filterProperty":"CUSTOMER_MAT"}'/>
@@ -154,9 +196,9 @@
           <t:template>
             <Text id="text8" text="{CUSTOMER_MAT}"/>
           </t:template>
-        </t:Column>
+        </t:Column> -->
 
-        <t:Column id="colSuppliermat" width="10rem" sortProperty="SUPPLIER_MAT" filterProperty="SUPPLIER_MAT">
+        <!-- <t:Column id="colSuppliermat" width="10rem" sortProperty="SUPPLIER_MAT" filterProperty="SUPPLIER_MAT">
           <t:customData>
             <core:CustomData key="p13nData"
                 value='\{"columnKey":"SUPPLIER_MAT", "leadingProperty":"SUPPLIER_MAT", "sortProperty":"SUPPLIER_MAT", "filterProperty":"SUPPLIER_MAT"}'/>
@@ -167,7 +209,7 @@
           <t:template>
             <Text id="text9" text="{SUPPLIER_MAT}"/>
           </t:template>
-        </t:Column>
+        </t:Column> -->
 			</t:columns>    
     </t:Table>
   </smartTable:SmartTable>

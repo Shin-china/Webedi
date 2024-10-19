@@ -305,7 +305,7 @@
         <Label id="labelInvPostDate" text="{pch>INV_POST_DATE}"/>
     </table:label>
     <table:template>
-         <smartField:SmartField id="textInvPostDate" value="{INV_POST_DATE}" editable="false"/>
+        <Text id="textInvPostDate" text="{path: 'INV_POST_DATE', type: 'sap.ui.model.type.Date', formatOptions: {pattern: 'yyyy/MM/dd'}}" />
     </table:template>
 </table:Column>
 
@@ -317,9 +317,10 @@
         <Label id="labelSendFlag" text="{pch>SEND_FLAG}"/>
     </table:label>
     <table:template>
-        <Text id="textSendFlag" text="{SEND_FLAG}"/>
+        <Text id="textSendFlag" text="{path: 'SEND_FLAG', formatter: '.formatter.formatSendFlag'}"/>
     </table:template>
 </table:Column>
+
 
 <table:Column id="colUnitPrice" width="10rem" sortProperty="UNIT_PRICE" filterProperty="UNIT_PRICE">
     <table:customData>
@@ -390,7 +391,7 @@
         <Label id="labelGrDate" text="{pch>GR_DATE}"/>
     </table:label>
     <table:template>
-     <smartField:SmartField id="textGrDate" value="{GR_DATE}" editable="false"/>
+     <Text id="textGrDate" text="{path: 'GR_DATE', type: 'sap.ui.model.type.Date', formatOptions: {pattern: 'yyyy/MM/dd'}}" />
     </table:template>
 </table:Column>
 

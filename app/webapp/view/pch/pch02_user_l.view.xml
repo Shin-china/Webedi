@@ -140,7 +140,8 @@
                     <Label id="labelInputDate" text="{pch>INPUT_DATE}"/>
                 </table:label>
                 <table:template>
-                    <Text id="textInputDate" text="{INPUT_DATE}"/>
+                    <!-- <Text id="textInputDate" text="{INPUT_DATE}"/> -->
+                     <Text id="textInputDate" text="{path: 'INPUT_DATE', type: 'sap.ui.model.type.Date', formatOptions: {pattern: 'yyyy/MM/dd'}}" />
                 </table:template>
             </table:Column>
 
@@ -176,7 +177,8 @@
                     <Label id="labelCdDate" text="{pch>CD_DATE}"/>
                 </table:label>
                 <table:template>
-                    <Text id="textCdDate" text="{CD_DATE}"/>
+                    <!-- <Text id="textCdDate" text="{CD_DATE}"/> -->
+                     <Text id="textCdDate" text="{path: 'CD_DATE', type: 'sap.ui.model.type.Date', formatOptions: {pattern: 'yyyy/MM/dd'}}" />
                 </table:template>
             </table:Column>
 

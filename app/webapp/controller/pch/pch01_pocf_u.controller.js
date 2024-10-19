@@ -66,6 +66,7 @@ sap.ui.define([
 
 			data.forEach(function (item) {
 				var missingFields = [];
+				var deliveryDateError;
 
 				if (!item.PO_NO || item.PO_NO === "") {
 					//missingFields.push("発注番号"); // 発注番号
@@ -75,18 +76,29 @@ sap.ui.define([
 					//missingFields.push("明細番号"); // 明細番号
 					missingFields.push("明細番号");
 				}
-				if (!item.DELIVERY_DATE || item.DELIVERY_DATE === "") {
+				if (!item.DELIVERY_DATE || item.DELIVERY_DATE === "" || isNaN(Date.parse(item.DELIVERY_DATE))) {
 					//missingFields.push("納品日"); // 納品日
 					missingFields.push("納品日");
 				}
+
+				var datePattern = /^\d{4}\/\d{2}\/\d{2}$/; // 正则表达式，确保日期格式为 YYYY/MM/DD
+				if (item.DELIVERY_DATE && (!datePattern.test(item.DELIVERY_DATE) || isNaN(Date.parse(item.DELIVERY_DATE)))) {
+					missingFields.push("納品日の形式が不正です"); // 推送日期格式错误
+					deliveryDateError = true; // 标记为纳品日有错
+				}
+
 				if (!item.QUANTITY || item.QUANTITY === "") {
 					//missingFields.push("納品数量"); // 納品数量
 					missingFields.push("納品数量");
 				}
 
 				if (missingFields.length > 0) {
-					item.MSG_TEXT = missingFields.join("\n"); // 将错误消息设置到对应行的MSG_TEXT字段
-
+					item.MSG_TEXT = "必須項目は入力していません。データをチェックしてください。"; // 将错误消息设置到对应行的MSG_TEXT字段
+					
+					if (deliveryDateError) {
+						item.MSG_TEXT = "日付形式はYYYY/MM/DDではないので、調整してください"
+					}
+						
 					item.STATE = "Error"; // 将状态设置为错误状态
         			item.I_CON = "sap-icon://error"; // 设置状态图标为错误图
 					jsonModel.refresh(); // 刷新模型以更新UI
@@ -95,12 +107,12 @@ sap.ui.define([
 					return;
 				}
 			});
-			//如果 任意一行message里有消息，则弹出消息。
-			if (hasError) {
-				sap.m.MessageBox.alert(that.MessageTools._getI18nTextInModel("pch", "PCH01_MSG_FILED_BLANK", this.getView()) );
-				that._setBusy(false);
-				return;
-			}
+			// //如果 任意一行message里有消息，则弹出消息。
+			// if (hasError) {
+			// 	sap.m.MessageBox.alert(that.MessageTools._getI18nTextInModel("pch", "PCH01_MSG_FILED_BLANK", this.getView()) );
+			// 	that._setBusy(false);
+			// 	return;
+			// }
 		
 			// 3. 如果所有检查都通过，调用服务
 			if (checkResult && flgHeand) {
