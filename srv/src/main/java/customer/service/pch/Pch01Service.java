@@ -99,129 +99,133 @@ public class Pch01Service extends Service {
                     ckd.checkD_NO(s);
                 }
 
-                LocalDate lastrelevantdate = ckd.RelevantQuantitydate(s.getD_NO(), s.getPO_NO());
+                // 没有错是后续检查的前提。
+                if (s.getSUCCESS()) {
+                    LocalDate lastrelevantdate = ckd.RelevantQuantitydate(s.getD_NO(), s.getPO_NO());
 
-                // 不是最后一条且，和上一条一样同属于同一个po dn
-                if (lastpo.equals(s.getPO_NO()) && lastdn == s.getD_NO() && index != list.getList().size()) {
+                    // 不是最后一条且，和上一条一样同属于同一个po dn
+                    if (lastpo.equals(s.getPO_NO()) && lastdn == s.getD_NO() && index != list.getList().size()) {
 
-                    // 合计有减少数量日期之后的 上传数量（未来纳期数量）
-                    if (lastrelevantdate != null) {
+                        // 合计有减少数量日期之后的 上传数量（未来纳期数量）
+                        if (lastrelevantdate != null) {
 
-                        if (s.getDELIVERY_DATE().isAfter(lastrelevantdate)) {
+                            if (s.getDELIVERY_DATE().isAfter(lastrelevantdate)) {
 
+                                afquantity = afquantity.add(s.getQUANTITY());
+
+                            }
+
+                        } else {
+                            // 如果为空，则全部都是 afquantity
                             afquantity = afquantity.add(s.getQUANTITY());
 
                         }
 
                     } else {
-                        // 如果为空，则全部都是 afquantity
-                        afquantity = afquantity.add(s.getQUANTITY());
+                        // 换po 或者dn
+                        // 如果不是最后一条，那就是换po 或者dn 了
+                        if (index != list.getList().size()) {
+                            // 先集计 上一条的结果。
+                            bequantity = ckd.checkQUANTITY(lastpo, lastdn);
+                            allquantity = afquantity.add(bequantity).setScale(3);
 
-                    }
+                            POquantity = ckd.getT02POquantity(lastpo, lastdn);
 
-                } else {
-                    // 换po 或者dn
-                    // 如果不是最后一条，那就是换po 或者dn 了
-                    if (index != list.getList().size()) {
-                        // 先集计 上一条的结果。
-                        bequantity = ckd.checkQUANTITY(lastpo, lastdn);
-                        allquantity = afquantity.add(bequantity).setScale(3);
+                            // 如果发注数量，等于 减少数量+未来回答数量 则没问题
+                            if (POquantity.equals(allquantity)) {
 
-                        POquantity = ckd.getT02POquantity(lastpo, lastdn);
+                                s.setSUCCESS(true);
 
-                        // 如果发注数量，等于 减少数量+未来回答数量 则没问题
-                        if (POquantity.equals(allquantity)) {
+                            } else {
 
-                            s.setSUCCESS(true);
+                                for (Pch01 s1 : list.getList()) {
 
-                        } else {
+                                    if (s1.getPO_NO().equals(lastpo) && s1.getD_NO().equals(lastdn)) {
 
-                            for (Pch01 s1 : list.getList()) {
+                                        s1.setSUCCESS(false);
+                                        s1.setI_CON("sap-icon://error");
+                                        s1.setSTATUS("Error");
+                                        String addmessages = ("購買発注" + s1.getPO_NO() + "明細" + s1.getD_NO()
+                                                + "の納期回答数プラス入庫済数は発注数と不一致です。チェックしてください");
+                                        s1.setMSG_TEXT(addmessages);
 
-                                if (s1.getPO_NO().equals(lastpo) && s1.getD_NO().equals(lastdn)) {
-
-                                    s1.setSUCCESS(false);
-                                    s1.setI_CON("sap-icon://error");
-                                    s1.setSTATUS("Error");
-                                    String addmessages = ("購買発注" + s1.getPO_NO() + "明細" + s1.getD_NO()
-                                            + "の納期回答数プラス入庫済数は発注数と不一致です。チェックしてください");
-                                    s1.setMSG_TEXT(addmessages);
-
+                                    }
                                 }
                             }
-                        }
-                        // 因为不是最后一天，因此 准备本条的信息，参考相等时候的做法
-                        // 因为换po dn了 更新一下
-                        lastpo = s.getPO_NO();
-                        lastdn = s.getD_NO();
-                        afquantity = BigDecimal.ZERO;
+                            // 因为不是最后一天，因此 准备本条的信息，参考相等时候的做法
+                            // 因为换po dn了 更新一下
+                            lastpo = s.getPO_NO();
+                            lastdn = s.getD_NO();
+                            afquantity = BigDecimal.ZERO;
 
-                        if (lastrelevantdate != null) {
+                            if (lastrelevantdate != null) {
 
-                            if (s.getDELIVERY_DATE().isAfter(lastrelevantdate)) {
+                                if (s.getDELIVERY_DATE().isAfter(lastrelevantdate)) {
 
+                                    afquantity = afquantity.add(s.getQUANTITY());
+
+                                }
+
+                            } else {
+                                // 如果为空，则全部都是 afquantity
                                 afquantity = afquantity.add(s.getQUANTITY());
 
                             }
 
+                            bequantity = BigDecimal.ZERO;
+
                         } else {
-                            // 如果为空，则全部都是 afquantity
-                            afquantity = afquantity.add(s.getQUANTITY());
 
-                        }
+                            // 最后一条、
+                            // 因为后续没有了，所以应该先集计本条
+                            lastpo = s.getPO_NO();
+                            lastdn = s.getD_NO();
 
-                        bequantity = BigDecimal.ZERO;
+                            if (lastrelevantdate != null) {
 
-                    } else {
+                                if (s.getDELIVERY_DATE().isAfter(lastrelevantdate)) {
 
-                        // 最后一条、
-                        // 因为后续没有了，所以应该先集计本条
-                        lastpo = s.getPO_NO();
-                        lastdn = s.getD_NO();
+                                    afquantity = afquantity.add(s.getQUANTITY());
 
-                        if (lastrelevantdate != null) {
-
-                            if (s.getDELIVERY_DATE().isAfter(lastrelevantdate)) {
-
+                                }
+                            } else {
+                                // 如果为空，则全部都是 afquantity
                                 afquantity = afquantity.add(s.getQUANTITY());
 
                             }
-                        } else {
-                            // 如果为空，则全部都是 afquantity
-                            afquantity = afquantity.add(s.getQUANTITY());
 
-                        }
+                            POquantity = ckd.getT02POquantity(lastpo, lastdn);
 
-                        POquantity = ckd.getT02POquantity(lastpo, lastdn);
+                            bequantity = ckd.checkQUANTITY(lastpo, lastdn);
+                            allquantity = afquantity.add(bequantity).setScale(3);
 
-                        bequantity = ckd.checkQUANTITY(lastpo, lastdn);
-                        allquantity = afquantity.add(bequantity).setScale(3);
+                            if (POquantity.equals(allquantity)) {
 
-                        if (POquantity.equals(allquantity)) {
+                                s.setSUCCESS(true);
 
-                            s.setSUCCESS(true);
+                            } else {
 
-                        } else {
+                                s.setSUCCESS(false);
 
-                            s.setSUCCESS(false);
+                                for (Pch01 s1 : list.getList()) {
 
-                            for (Pch01 s1 : list.getList()) {
+                                    if (s1.getPO_NO().equals(lastpo) && s1.getD_NO().equals(lastdn)) {
 
-                                if (s1.getPO_NO().equals(lastpo) && s1.getD_NO().equals(lastdn)) {
+                                        s1.setSUCCESS(false);
+                                        s1.setI_CON("sap-icon://error");
+                                        s1.setSTATUS("Error");
+                                        String addmessages = ("購買発注" + s1.getPO_NO() + "明細" + s1.getD_NO()
+                                                + "の納期回答数プラス入庫済数は発注数と不一致です。チェックしてください");
+                                        s1.setMSG_TEXT(addmessages);
+                                        addmessages = "";
 
-                                    s1.setSUCCESS(false);
-                                    s1.setI_CON("sap-icon://error");
-                                    s1.setSTATUS("Error");
-                                    String addmessages = ("購買発注" + s1.getPO_NO() + "明細" + s1.getD_NO()
-                                            + "の納期回答数プラス入庫済数は発注数と不一致です。チェックしてください");
-                                    s1.setMSG_TEXT(addmessages);
-                                    addmessages = "";
-
+                                    }
                                 }
                             }
                         }
                     }
                 }
+
                 if (s.getSUCCESS()) {
                     // 设置图标
                     s.setI_CON("sap-icon://sys-enter-2");
