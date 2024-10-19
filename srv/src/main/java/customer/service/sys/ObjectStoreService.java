@@ -124,14 +124,12 @@ public class ObjectStoreService {
     }
 
     // 下载对象
-    public CommMsg downLoadRes(String keyName) throws S3Exception {
+    public ResponseBytes downLoadRes(String keyName) throws S3Exception {
         S3Client s3Client = getS3Client();
         GetObjectRequest objectRequest = GetObjectRequest.builder().key(keyName).bucket(S3_BUCKET).build();
         ResponseBytes<GetObjectResponse> por = s3Client.getObjectAsBytes(objectRequest);
 
-        CommMsg msg = new CommMsg();
-
-        return msg;
+        return por;
 
     }
 }
