@@ -139,6 +139,7 @@ extend service TableService {
         EXCHANGE,                      // 換算レート
         MAT_DESC,                      // 品目名称
         PO_TRACK_NO,                   // 備考
+        UNIT_PRICE_IN_YEN,
         TOTAL_AMOUNT_IN_YEN,
         CURRENCY,
         case 
@@ -282,6 +283,7 @@ extend service TableService {
         t2.GR_DATE,                          // 入荷日
         t2.QUANTITY,                         // 仕入単位数
         t2.UNIT_PRICE,                       // 基準通貨単価
+        t2.UNIT_PRICE_IN_YEN,                // 基準通貨単価
         t2.BASE_AMOUNT_EXCLUDING_TAX,        // 基準通貨金額税抜
         t2.TAX_RATE,                         // INV税率
 
@@ -289,6 +291,22 @@ extend service TableService {
         t2.INV_BASE_DATE,                    // 支払日
         t3.LOG_NO,                           // 登録番号
         t3.INV_MONTH,                        // 検収月
+
+        CONCAT(
+            SUBSTRING(t3.INV_MONTH, 1, 4),  // 提取年份
+            '年', 
+            SUBSTRING(t3.INV_MONTH, 5, 2)   // 提取月份
+        ) as INV_MONTH_FORMATTED : String,
+
+        concat(
+            concat(
+                substring(cast(current_date as String), 1, 4), '/'
+            ),
+            concat(
+                substring(cast(current_date as String), 6, 2), '/'
+            )
+            ) || substring(cast(current_date as String), 9, 2) as CURRENT_DAY : String, // 発行日
+
         t3.SUPPLIER_DESCRIPTION,             // 仕入先名称
 
     }
