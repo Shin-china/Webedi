@@ -68,27 +68,81 @@ sap.ui.define([
             }.bind(this));
         },
 
+        // onBeforeExport: function (oEvent) {
+        //     var oTable = this.getView().byId("detailTable");
+        //     var aSelectedIndices = oTable.getSelectedIndices();
+
+        //     if (aSelectedIndices.length === 0) {
+        //         sap.m.MessageToast.show(this._ResourceBundle.getText("選択されたデータがありません、データを選択してください。")); // 提示未选择数据
+        //         oEvent.preventDefault(); // 取消导出操作
+        //         return;
+        //     }
+
+        //     var oSettings = oEvent.getParameter("exportSettings");
+        //     if (oSettings) {
+        //         console.log("onBeforeExport called");
+        //         console.log("Export Settings:", oSettings);
+        //         var oDate = new Date();
+        //         var sDate = oDate.toISOString().slice(0, 10).replace(/-/g, '');
+        //         var sTime = oDate.toTimeString().slice(0, 8).replace(/:/g, '');
+        //         // 设置文件名为当前日期和时间
+        //         oSettings.fileName = `納期回答照会_${sDate}${sTime}.xlsx`;
+        //     }
+        // },
+
         onBeforeExport: function (oEvent) {
             var oTable = this.getView().byId("detailTable");
             var aSelectedIndices = oTable.getSelectedIndices();
-
+        
             if (aSelectedIndices.length === 0) {
                 sap.m.MessageToast.show(this._ResourceBundle.getText("選択されたデータがありません、データを選択してください。")); // 提示未选择数据
                 oEvent.preventDefault(); // 取消导出操作
                 return;
             }
-
+        
             var oSettings = oEvent.getParameter("exportSettings");
             if (oSettings) {
                 console.log("onBeforeExport called");
                 console.log("Export Settings:", oSettings);
+        
+                // 设置文件名为当前日期和时间
                 var oDate = new Date();
                 var sDate = oDate.toISOString().slice(0, 10).replace(/-/g, '');
                 var sTime = oDate.toTimeString().slice(0, 8).replace(/:/g, '');
-                // 设置文件名为当前日期和时间
                 oSettings.fileName = `納期回答照会_${sDate}${sTime}.xlsx`;
+        
+                // 获取选中的行数据
+                var aSelectedRows = aSelectedIndices.map(function(index) {
+                    return oTable.getContextByIndex(index).getObject();
+                });
+        
+                console.log("Selected Rows:", aSelectedRows); // 调试输出
+        
+                // 确保 aSelectedRows 是有效的数组
+                if (Array.isArray(aSelectedRows)) {
+                    // 直接遍历并格式化 DELIVERY_DATE 字段
+                    aSelectedRows.forEach(function(row) {
+                        if (row.DELIVERY_DATE) {
+                            var date = new Date(row.DELIVERY_DATE);
+                            row.DELIVERY_DATE = this.formatDate(date); // 格式化日期为 'yyyy/MM/dd'
+                        }
+                    }, this);
+        
+                    // 将处理后的数据直接赋值给 oSettings.data
+                    oSettings.data = aSelectedRows; // 设置导出的数据
+                } else {
+                    console.error("No selected rows found.");
+                }
             }
+        },        
+        
+        formatDate: function(date) {
+            var year = date.getFullYear();
+            var month = (date.getMonth() + 1).toString().padStart(2, '0'); // 月份从0开始
+            var day = date.getDate().toString().padStart(2, '0');
+            return year + '/' + month + '/' + day; // 返回格式为 'yyyy/MM/dd'
         },
+        
 
         onResend: function () {
             var oTable = this.getView().byId("detailTable");

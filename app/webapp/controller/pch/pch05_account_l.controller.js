@@ -78,18 +78,25 @@ sap.ui.define([
                 return; // 终止导出流程
             }
 
-             // 生成递增的 invoiceId
-                aSelectedData.forEach(function (data, index) {
-                    data.invoiceId1 = (index + 1).toString(); // 根据顺序生成递增的 ID
+                // 生成递增的 invoiceId
+                aSelectedData = aSelectedData.map(function(data, index) {
+                    return {
+                        ...data, // 拷贝现有数据
+                        invoiceId1: (index + 1).toString() // 添加新的 ID
+                    };
                 });
-        
-            var oSettings = oEvent.getParameter("exportSettings");
+
+                // 获取导出设置
+                var oSettings = oEvent.getParameter("exportSettings");
+
+                // 确保设置数据源
+                // oSettings.dataSource = aSelectedData; // 设置数据源为选中的数据
         
             oSettings.workbook.columns = [
                 // 第一组字段的标题
                 // { label: "ヘッダデータ", property: "headerData", colspan: 11 }, // 合并的标题
                 // 第一组字段
-                { label: "*請求書ID", property: "INVOICEID" },
+                { label: "*請求書ID", property: "invoiceId1" },
                 { label: "*会社コード(4)", property: "PO_BUKRS" },
                 { label: "*取引(1)1=請求書、2=クレジットメモ", property: "TRANSACTION" },
                 { label: "*請求元(10)", property: "SUPPLIER" },

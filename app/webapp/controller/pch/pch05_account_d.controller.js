@@ -137,7 +137,7 @@ sap.ui.define([
                     console.log(sResponse);
                     that.setSysConFig().then(res => {
                         // 调用打印方法
-                        that.PrintTool._detailSelectPrintDow(that, sResponse, "test2/test3", oData, null, null, null, null);
+                        that.PrintTool._detailSelectPrintDow(that, sResponse, "test02/test03", oData, null, null, null, null);
                     });
                 });
             }
