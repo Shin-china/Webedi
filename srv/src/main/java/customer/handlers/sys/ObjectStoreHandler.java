@@ -6,7 +6,9 @@ import java.util.Collection;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import com.google.common.io.ByteStreams;
 import com.sap.cds.services.handler.EventHandler;
@@ -23,6 +25,7 @@ import customer.dao.sys.T13AttachmentDao;
 import customer.service.ifm.Ifm01BpService;
 import customer.service.sys.ObjectStoreService;
 import customer.tool.UniqueIDTool;
+import software.amazon.awssdk.core.ResponseBytes;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.model.S3Object;
 
@@ -72,10 +75,15 @@ public class ObjectStoreHandler implements EventHandler {
 
     @On(event = "s3DownloadAttachment")
     public void s3DownloadAttachment(S3DownloadAttachmentContext context) throws IOException {
-        Collection<AttachmentJson> attachments = context.getAttachmentJson();
-        for (AttachmentJson attachment : attachments) {
-            CommMsg msg = objectStoreService.downLoadRes(attachment.getValue());
-        }
+        // Collection<AttachmentJson> attachments = context.getAttachmentJson();
+        ResponseBytes msg = null;
+        String obj = context.getAttachmentJson();
+        msg = objectStoreService.downLoadRes("");
+        // for (AttachmentJson attachment : attachments) {
+        // msg = objectStoreService.downLoadRes(attachment.getValue());
+        // }
+        byte[] bytes = msg.asByteArray();
+        context.setResult(bytes);
     }
 
 }
