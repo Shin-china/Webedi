@@ -77,13 +77,13 @@ public class ObjectStoreHandler implements EventHandler {
     public void s3DownloadAttachment(S3DownloadAttachmentContext context) throws IOException {
         // Collection<AttachmentJson> attachments = context.getAttachmentJson();
         ResponseBytes msg = null;
-        String obj = context.getAttachmentJson();
+        //String obj = context.getAttachmentJson();
         msg = objectStoreService.downLoadRes("");
         // for (AttachmentJson attachment : attachments) {
         // msg = objectStoreService.downLoadRes(attachment.getValue());
         // }
         byte[] bytes = msg.asByteArray();
-        context.setResult(bytes);
+        //context.setResult(bytes);
     }
 
 }
