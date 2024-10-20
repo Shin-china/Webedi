@@ -22,40 +22,7 @@ sap.ui.define([
 		},
 
 		onExport: function () {
-            // var oTable = this.getView().byId("detailTable");
-			// var aSelectedIndices = oTable.getSelectedIndices();
 			
-
-
-			
-            // if (aSelectedIndices.length === 0) {
-            //     sap.m.MessageToast.show(this._ResourceBundle.getText("noSelection")); // 提示未选择数据
-            //     return;
-            // }
-            // var aSelectedData = aSelectedIndices.map(function (iIndex) {
-            //     return oTable.getContextByIndex(iIndex).getObject();
-            // });
-            // if (aSelectedData.length === 0) {
-            //     sap.m.MessageToast.show(this._ResourceBundle.getText("noSelection")); // 提示没有数据
-            //     return;
-            // }
-            // var aColumns = oTable.getColumns().map(function (oColumn) {
-            //     return {
-            //         label: oColumn.getLabel().getText(),
-            //         type: "string",
-            //         property: oColumn.getTemplate().getBindingPath("text"),
-            //         width: parseFloat(oColumn.getWidth())
-            //     };
-            // });
-            // new Spreadsheet({
-            //     dataSource: aSelectedData, // 仅传递选中的数据
-            //     columns: aColumns,
-            //     fileName: "Export.xlsx",
-            //     worker: false,  // Disable web worker for simplicity
-            //     beforeExport: this.onBeforeExport.bind(this)
-            // }).build().finally(function () {
-            //     sap.m.MessageToast.show(this._ResourceBundle.getText("exportFinished"));
-            // }.bind(this));
 		},
 				
 		onBeforeExport: function (oEvent) {

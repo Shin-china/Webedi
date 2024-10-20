@@ -1,6 +1,7 @@
 <mvc:View 
 	controllerName="umc.app.controller.sys.sys04_doc_l"
 	xmlns="sap.m"
+    xmlns:core="sap.ui.core"
 	xmlns:m="sap.m"
 	xmlns:f="sap.f"
 	xmlns:l="sap.ui.layout"
@@ -16,6 +17,9 @@
             <f:heading>
                 <m:Title id="_IDGenTitle1" text="{sys>SYS04_MAINTITLE}" />
             </f:heading>
+            <f:navigationActions>
+                <Button id="_IDGenButton3" icon="sap-icon://nav-back" tooltip="nav-back" press="navTo('RouteMainView')"/>
+            </f:navigationActions>
         </f:DynamicPageTitle>
     </f:title>
 
@@ -25,7 +29,7 @@
                 
                 <smartFilterBar:SmartFilterBar id="smartFilterBar" useToolbar="false" entitySet="SYS_T13_ATTACHMENT" persistencyKey="receiptprintFilterBar" showFilterConfiguration="true">
                     <smartFilterBar:controlConfiguration>
-                        <smartFilterBar:ControlConfiguration id="_IDGenControlConfiguration3" key="OBJECT" visibleInAdvancedArea="true" />
+                        <smartFilterBar:ControlConfiguration label="{sys>OBJECT}" id="_IDGenControlConfiguration3" key="OBJECT" visibleInAdvancedArea="true" />
                     </smartFilterBar:controlConfiguration>
                 </smartFilterBar:SmartFilterBar>
             </f:content>
@@ -35,8 +39,7 @@
     <f:content>
         <smartTable:SmartTable id="ID" tableType="Table" enableAutoColumnWidth="true" entitySet="SYS_T13_ATTACHMENT" 
         ignoredFields="ID"
-        requestAtLeastFields="OBJECT" 
-        initiallyVisibleFields="OBJECT,OBJECT_VERSION,FILE_NAME,CD_TIME,CD_BY,OBJECT_LINK" 
+        requestAtLeastFields="OBJECT,OBJECT_VERSION,FILE_NAME,CD_TIME,CD_BY,OBJECT_LINK,FILE_TYPE" 
         smartFilterId="smartFilterBar" enableExport="true" beforeExport="onBeforeExport" useVariantManagement="true" 
         useTablePersonalisation="true" header="{com>TITLE_RESULT}" showRowCount="true" 
         persistencyKey="sys01_SmartTableAnalytical_Explored" enableAutoBinding="false">
@@ -44,14 +47,74 @@
         <smartTable:customToolbar>
             <OverflowToolbar design="Transparent">
                 <ToolbarSpacer />
-                <OverflowToolbarButton icon="sap-icon://add" text="{sys>SYS01_BUTTON_CREAT}" tooltip="{sys>SYS01_BUTTON_CREAT}" press="onDownload"></OverflowToolbarButton>
+                <OverflowToolbarButton icon="sap-icon://download-from-cloud" text="{sys>SYS01_BUTTON_CREAT}" tooltip="{sys>SYS01_BUTTON_CREAT}" press="onDownload"></OverflowToolbarButton>
             </OverflowToolbar>
         </smartTable:customToolbar>
         <!-- End-->
 
         <table:Table id="detailTable" rowMode="Auto" rowActionCount="1" selectionMode="MultiToggle" alternateRowColors="true" >
             <table:columns>
-                
+                <!-- 下载Objet号 -->
+                <table:Column id="colObject" width="10rem" sortProperty="OBJECT" filterProperty="OBJECT">
+                    <table:customData>
+                        <core:CustomData key="p33nData" value='{"columnKey":"OBJECT", "leadingProperty":"OBJECT", "sortProperty":"OBJECT", "filterProperty":"OBJECT"}'/>
+                    </table:customData>
+                    <table:label>
+                        <Label id="labelObject" text="{sys>OBJECT}" />
+                    </table:label>
+                    <table:template>
+                        <Text id="textObject" text="{OBJECT}" />
+                    </table:template>
+                </table:Column>
+                <!-- 版本 -->
+                <table:Column id="colVersion" width="10rem" sortProperty="OBJECT_VERSION" filterProperty="OBJECT">
+                    <table:customData>
+                        <core:CustomData key="p34nData" value='{"columnKey":"OBJECT_VERSION", "leadingProperty":"OBJECT_VERSION", "sortProperty":"OBJECT_VERSION", "filterProperty":"OBJECT_VERSION"}'/>
+                    </table:customData>
+                    <table:label>
+                        <Label id="labelVersion" text="{sys>OBJECT_VERSION}" />
+                    </table:label>
+                    <table:template>
+                        <Text id="textVersion" text="{OBJECT_VERSION}" />
+                    </table:template>
+                </table:Column>
+                <!-- 文件名 -->
+                <table:Column id="colName" width="10rem" sortProperty="FILE_NAME" filterProperty="FILE_NAME">
+                    <table:customData>
+                        <core:CustomData key="p35nData" value='{"columnKey":"FILE_NAME", "leadingProperty":"FILE_NAME", "sortProperty":"FILE_NAME", "filterProperty":"FILE_NAME"}'/>
+                    </table:customData>
+                    <table:label>
+                        <Label id="labelName" text="{sys>FILE_NAME}" />
+                    </table:label>
+                    <table:template>
+                        <Text id="textName" text="{FILE_NAME}" />
+                    </table:template>
+                </table:Column>
+                <!-- 創建日期 -->
+                <table:Column id="colTime" width="10rem" sortProperty="CD_TIME" filterProperty="CD_TIME">
+                    <table:customData>
+                        <core:CustomData key="p36nData" value='{"columnKey":"CD_TIME", "leadingProperty":"CD_TIME", "sortProperty":"CD_TIME", "filterProperty":"CD_TIME"}'/>
+                    </table:customData>
+                    <table:label>
+                        <Label id="labelTime" text="{sys>CD_TIME}" />
+                    </table:label>
+                    <table:template>
+                        <Text id="textTime" text="{CD_TIME}" />
+                    </table:template>
+                </table:Column>
+                <!-- 創建人 -->
+                <table:Column id="colBy" width="10rem" sortProperty="CD_BY" filterProperty="CD_BY">
+                    <table:customData>
+                        <core:CustomData key="p38nData" value='{"columnKey":"CD_BY", "leadingProperty":"CD_BY", "sortProperty":"CD_BY", "filterProperty":"CD_BY"}'/>
+                    </table:customData>
+                    <table:label>
+                        <Label id="labelBy" text="{sys>CD_BY}" />
+                    </table:label>
+                    <table:template>
+                        <Text id="textBy" text="{CD_BY}" />
+                    </table:template>
+                </table:Column>
+
             </table:columns>
         </table:Table>
         </smartTable:SmartTable>
