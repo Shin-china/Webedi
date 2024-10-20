@@ -28,8 +28,8 @@ extend service TableService {
                 
 
             distinct {
-                key    T02.QUO_NUMBER,
-                key    T02.QUO_ITEM,
+                key T02.QUO_NUMBER,
+                key T02.QUO_ITEM,
                     T02.NO,
                     T02.REFRENCE_NO,
                     T01.CUSTOMER,
