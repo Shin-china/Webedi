@@ -38,12 +38,23 @@ sap.ui.define([
 	//  	newModel.execute("$auto").then(()=>{
 	//   	 	debugger;
 	//   });
-		var newModel = this.getView().getModel('Common').bindContext("/s3DownloadAttachment.Common(...)",JSON.stringify(mailObj))
-		.invoke("$auto",false,null,/*bReplaceWithRVC*/false);
+		// var newModel = this.getView().getModel('Common').bindContext("/s3DownloadAttachment.Common(...)",JSON.stringify(mailObj))
+		// .invoke("$auto",false,null,/*bReplaceWithRVC*/false);
 		//newModel.setParameter("attachmentJson", JSON.stringify(mailObj));
      	// newModel.execute("$auto",true,null,/*bReplaceWithRVC*/true).then(()=>{
 	    // 	 	debugger;
 	    // });
+		$.ajax({
+			url:"http://localhost:9000/odata/v4/Common/s3DownloadAttachment",
+			type:"POST",
+			contentType: "application/json; charset=utf-8",
+			dataType:"json",
+			crossDomain:true,
+			data:JSON.stringify(mailObj),
+			success:function(range){
+				debugger;
+			}
+		})
 
         }
 	});

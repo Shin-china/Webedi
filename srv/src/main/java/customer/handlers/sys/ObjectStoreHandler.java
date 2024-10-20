@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.google.common.io.ByteStreams;
@@ -75,15 +76,14 @@ public class ObjectStoreHandler implements EventHandler {
 
     @On(event = "s3DownloadAttachment")
     public void s3DownloadAttachment(S3DownloadAttachmentContext context) throws IOException {
-        // Collection<AttachmentJson> attachments = context.getAttachmentJson();
+        Collection<AttachmentJson> attachments = context.getAttachmentJson();
         ResponseBytes msg = null;
-        //String obj = context.getAttachmentJson();
-        msg = objectStoreService.downLoadRes("");
-        // for (AttachmentJson attachment : attachments) {
-        // msg = objectStoreService.downLoadRes(attachment.getValue());
-        // }
+        // String obj = context.getAttachmentJson();
+        for (AttachmentJson attachment : attachments) {
+            msg = objectStoreService.downLoadRes(attachment.getValue());
+        }
         byte[] bytes = msg.asByteArray();
-        //context.setResult(bytes);
+        // context.setResult(bytes);
     }
 
 }
