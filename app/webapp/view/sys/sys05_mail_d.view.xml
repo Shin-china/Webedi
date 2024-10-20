@@ -18,6 +18,9 @@
                     <Title id="idTitle" text="Mail Template"/>
                 </Toolbar>
             </f:heading>
+            <f:navigationActions>
+                <Button id="idButton" icon="sap-icon://nav-back" press="onNavBack()" tooltip="nav-back"/>
+            </f:navigationActions>
         </f:DynamicPageTitle>
     </f:title>
 

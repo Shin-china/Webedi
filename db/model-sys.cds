@@ -147,6 +147,7 @@ entity T11_MAIL_TEMPLATE{
     @title: '{i18n>TEMPLATE_ID}' key TEMPLATE_ID : String(36); //邮件ID
     @title: '{i18n>MAIL_NAME}' MAIL_NAME :  String(200); //邮件名称
     @title: '{i18n>MAIL_TITLE}' MAIL_TITLE : String(50); //邮件标题
+    @title: '{i18n>MAIL_CC}' MAIL_CC :  String(200); //邮件抄送
     @title: '{i18n>MAIL_CONTENT}' MAIL_CONTENT :  String(2000); //邮件内容
 }
 
