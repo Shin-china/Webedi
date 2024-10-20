@@ -31,7 +31,7 @@ public class JobMonotor {
 
         // IMFS01
         System.out.println("BP Sync run");
-        ifm01BpService.syncBP();
+        // ifm01BpService.syncBP();
         System.out.println("JobMonotor  run");
 
     }
@@ -40,8 +40,8 @@ public class JobMonotor {
     public void poolMonitor1() throws IOException {
         // IF039
         System.out.println("MST Sync run");
-        Ifm02MstService i = new Ifm02MstService();
-        i.syncMst();
+        // Ifm02MstService i = new Ifm02MstService();
+        // i.syncMst();
         System.out.println("JobMonotor  run");
     }
 }

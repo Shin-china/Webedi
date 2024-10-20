@@ -48,27 +48,27 @@ public class ObjectStoreHandler implements EventHandler {
     @On(event = "s3uploadAttachment")
     public void s3UploadAttachment(S3uploadAttachmentContext context) throws IOException {
 
-        Collection<AttachmentJson> attachments = context.getAttachmentJson();
-        for (AttachmentJson attachment : attachments) {
-            if (attachment.getFileName() != "" && attachment.getValue() != null) {
-                String uuidd = UniqueIDTool.getUUID();
-                String fieldId = uuidd + "." + attachment.getFileType();
-                CommMsg msg = objectStoreService.uploadFile(fieldId, RequestBody
-                        .fromBytes(ByteStreams.toByteArray(StringTool.base2InputStream(attachment.getValue()))));
-                if (msg.getMsgType().equals(UmcConstants.IF_STATUS_S)) {
-                    T13Attachment t13 = T13Attachment.create();
-                    t13.setObject(attachment.getObject());
-                    t13.setFileName(attachment.getFileName());
-                    t13.setFileType(attachment.getFileType());
-                    t13.setObjectType("PCH03");
-                    t13.setId(uuidd);
-                    t13.setObjectType(attachment.getObjectType());
-                    t13.setObjectLink(msg.getMsgTxt());
-                    t13AttachmentDao.insertAttachment(t13);
-                }
+        // Collection<AttachmentJson> attachments = context.getAttachmentJson();
+        // for (AttachmentJson attachment : attachments) {
+        // if (attachment.getFileName() != "" && attachment.getValue() != null) {
+        // String uuidd = UniqueIDTool.getUUID();
+        // String fieldId = uuidd + "." + attachment.getFileType();
+        // CommMsg msg = objectStoreService.uploadFile(fieldId, RequestBody
+        // .fromBytes(ByteStreams.toByteArray(StringTool.base2InputStream(attachment.getValue()))));
+        // if (msg.getMsgType().equals(UmcConstants.IF_STATUS_S)) {
+        // T13Attachment t13 = T13Attachment.create();
+        // t13.setObject(attachment.getObject());
+        // t13.setFileName(attachment.getFileName());
+        // t13.setFileType(attachment.getFileType());
+        // t13.setObjectType("PCH03");
+        // t13.setId(uuidd);
+        // t13.setObjectType(attachment.getObjectType());
+        // t13.setObjectLink(msg.getMsgTxt());
+        // t13AttachmentDao.insertAttachment(t13);
+        // }
 
-            }
-        }
+        // }
+        // }
 
         context.setResult("success");
     }
