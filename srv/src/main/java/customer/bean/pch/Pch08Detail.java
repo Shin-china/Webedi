@@ -6,7 +6,7 @@ import lombok.Data;
 import java.time.LocalDate;
 
 @Data
-public class Pch08 {
+public class Pch08Detail {
     @JSONField(name = "QUO_NUMBER")
     private String QUO_NUMBER;
 
@@ -18,21 +18,6 @@ public class Pch08 {
 
     @JSONField(name = "REFRENCE_NO")
     private String REFRENCE_NO;
-
-    @JSONField(name = "CUSTOMER")
-    private String CUSTOMER;
-
-    @JSONField(name = "MACHINE_TYPE")
-    private String  MACHINE_TYPE;
-
-    @JSONField(name = "QUANTITY")
-    private Double QUANTITY;
-
-    @JSONField(name = "VALIDATE_START")
-    private LocalDate VALIDATE_START;
-
-    @JSONField(name = "VALIDATE_END")
-    private LocalDate VALIDATE_END;
 
     @JSONField(name = "MATERIAL_NUMBER")
     private String MATERIAL_NUMBER;
@@ -161,7 +146,7 @@ public class Pch08 {
     private Double RMATERIAL_PRICE;
 
     @JSONField(name = "RMATERIAL_LT")
-    private LocalDate RMATERIAL_LT;
+    private String RMATERIAL_LT;
 
     @JSONField(name = "RMATERIAL_MOQ")
     private String RMATERIAL_MOQ;

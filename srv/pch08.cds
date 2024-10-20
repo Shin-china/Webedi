@@ -89,4 +89,6 @@ extend service TableService {
 //                 action PCH07_CHECK_DATA(shelfJson : String) returns String;
 //                 action PCH07_SAVE_DATA(shelfJson : String) returns String;
 
+    action PCH08_SAVE_DATA(str : String) returns String;
+
 };

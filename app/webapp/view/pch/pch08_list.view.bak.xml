@@ -1,0 +1,963 @@
+<mvc:View controllerName="umc.app.controller.pch.pch08_list"
+    xmlns:core="sap.ui.core"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:layout="sap.ui.layout"
+    xmlns:table="sap.ui.table"
+    xmlns:smartFilterBar="sap.ui.comp.smartfilterbar"
+    xmlns:smartTable="sap.ui.comp.smarttable"
+    xmlns:smartField="sap.ui.comp.smartfield"
+    xmlns:smartform="sap.ui.comp.smartform"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+    xmlns:uxap="sap.uxap" height="100%">
+
+            <f:DynamicPageHeader id="DynamicPageHeader" pinnable="true">
+                <f:content>
+                    <smartFilterBar:SmartFilterBar id="smartFilterBar" entitySet="PCH08_LIST" persistencyKey="PCH08_LIST" showFilterConfiguration="true">
+                        <smartFilterBar:controlConfiguration>
+                            <smartFilterBar:ControlConfiguration id="PCH_QUO_NUMBER" key="QUO_NUMBER" visibleInAdvancedArea="true" label="{pch>U07_QUO_NUMBER}" index="1" />
+                            <smartFilterBar:ControlConfiguration id="PCH_STATUS" key="STATUS" visibleInAdvancedArea="true" label="{pch>PCH08_STATUS}" index="2" />
+                            <smartFilterBar:ControlConfiguration id="PCH_VALIDATE_START" key="VALIDATE_START" controlType="date" filterType="single" visibleInAdvancedArea="true" label="{pch>U07_VALIDATE_START}" index="3" />
+                            <smartFilterBar:ControlConfiguration id="PCH_VALIDATE_END" key="VALIDATE_END" controlType="date" filterType="single" visibleInAdvancedArea="true" label="{pch>U07_VALIDATE_END}" index="4" />
+                        </smartFilterBar:controlConfiguration>
+                    </smartFilterBar:SmartFilterBar>
+                </f:content>
+            </f:DynamicPageHeader>
+            <smartTable:SmartTable id="ID" enableAutoColumnWidth="true" entitySet="PCH08_LIST" ignoredFields="" initiallyVisibleFields="QUO_NUMBER,QUO_ITEM,NO,REFRENCE_NO,CUSTOMER,MACHINE_TYPE,QUANTITY,VALIDATE_START,VALIDATE_END,MATERIAL_NUMBER,CUST_MATERIAL,MANUFACT_MATERIAL,Attachment,Material,MAKER,UWEB_USER,BP_NUMBER,PERSON_NO1,PERSON_NO2,PERSON_NO3,PERSON_NO4,PERSON_NO5,YLP,MANUL,MANUFACT_CODE,CUSTOMER_MMODEL,MID_QF,SMALL_QF,OTHER_QF,CURRENCY,PRICE,PRICE_CONTROL,LEAD_TIME,MOQ,UNIT,SPQ,KBXT,PRODUCT_WEIGHT,ORIGINAL_COU,EOL,ISBOI,Incoterms,Incoterms_Text,MEMO1,MEMO2,MEMO3,SL,TZ,RMATERIAL,RMATERIAL_CURRENCY,RMATERIAL_PRICE,RMATERIAL_LT,RMATERIAL_MOQ,RMATERIAL_KBXT,UMC_COMMENT_1,UMC_COMMENT_2,STATUS" requestAtLeastFields="" smartFilterId="smartFilterBar" enableExport="false" editable="{localModel>/save}" useVariantManagement="true" useTablePersonalisation="true" header="{pch>PCH08_LISTVIEW_TITLE}" showRowCount="true" persistencyKey="pch08_SmartTableAnalytical_Explored" enableAutoBinding="true">
+                <smartTable:customToolbar>
+                    <OverflowToolbar id="overFlowToolbar">
+                        <ToolbarSpacer id="toolbarSpacer" />
+                        <Button id="exportButton" text="{pch>U_B_EXPORTEXCEL}" press="onExport" />
+                        <Button id="editButton" text="{pch>PCH03_BUTTON_EDI}" enabled="{localModel>/show}" tooltip="{pch>PCH03_BUTTON_EDI}" press="onEdit" />
+                        <Button id="saveButton" text="{pch>PCH03_BUTTON_SAV}" enabled="{localModel>/save}" tooltip="{pch>PCH03_BUTTON_SAV}" press="onSave" />
+                        <Button id="confirmButton" text="{pch>PCH03_BUTTON_QUE}" tooltip="{pch>PCH03_BUTTON_QUE}" press="onConfirm" />
+                    </OverflowToolbar>
+                </smartTable:customToolbar>
+                <table:Table id="listTable" visibleRowCount="20" rowActionCount="1" selectionMode="MultiToggle" alternateRowColors="true" fixedColumnCount="0" threshold="20">
+                    <table:columns>
+                        <table:Column id="colQuoNumber" width="10rem" sortProperty="QUO_NUMBER" filterProperty="QUO_NUMBER">
+                            <table:customData>
+                                <core:CustomData key="p13nData" value="{
+                                        columnKey: 'QUO_NUMBER',
+                                        leadingProperty: 'QUO_NUMBER',
+                                        sortProperty: 'QUO_NUMBER',
+                                        filterProperty: 'QUO_NUMBER'
+                                    }" />
+                            </table:customData>
+                            <table:label>
+                                <Label id="labelQuoNumber" text="{pch>U07_QUO_NUMBER}" />
+                            </table:label>
+                            <table:template>
+                                <Text id="textQuoNumber" text="{QUO_NUMBER}" />
+                            </table:template>
+                        </table:Column>
+                        <table:Column id="colQuoItem" width="6rem" sortProperty="QUO_ITEM" filterProperty="QUO_ITEM">
+                            <table:customData>
+                                <core:CustomData key="p13nData" value="{
+                                        columnKey: 'QUO_ITEM',
+                                        leadingProperty: 'QUO_ITEM',
+                                        sortProperty: 'QUO_ITEM',
+                                        filterProperty: 'QUO_ITEM'
+                                    }" />
+                            </table:customData>
+                            <table:label>
+                                <Label id="labelQuoItem" text="{pch>U07_QUO_ITEM}" />
+                            </table:label>
+                            <table:template>
+                                <Text id="textQuoItem" text="{QUO_ITEM}" />
+                            </table:template>
+                        </table:Column>
+                        <table:Column id="colNo" width="6rem" sortProperty="NO" filterProperty="NO">
+                            <table:customData>
+                                <core:CustomData key="p13nData" value="{
+                                        columnKey: 'NO',
+                                        leadingProperty: 'NO',
+                                        sortProperty: 'NO',
+                                        filterProperty: 'NO'
+                                    }" />
+                            </table:customData>
+                            <table:label>
+                                <Label id="labelNo" text="{pch>PCH08_NO}" />
+                            </table:label>
+                            <table:template>
+                                <Text id="textNo" text="{NO}" />
+                            </table:template>
+                        </table:Column>
+                        <table:Column id="colReferenceNo" width="10rem" sortProperty="REFRENCE_NO" filterProperty="REFRENCE_NO">
+                            <table:customData>
+                                <core:CustomData key="p13nData" value="{
+                                        columnKey: 'REFRENCE_NO',
+                                        leadingProperty: 'REFRENCE_NO',
+                                        sortProperty: 'REFRENCE_NO',
+                                        filterProperty: 'REFRENCE_NO'
+                                    }" />
+                            </table:customData>
+                            <table:label>
+                                <Label id="labelReferenceNo" text="{pch>PCH08_REFRENCE_NO}" />
+                            </table:label>
+                            <table:template>
+                                <!-- <Text id="textReferenceNo" text="{REFRENCE_NO}" /> -->
+                                <smartField:SmartField id="textReferenceNo" value="{REFRENCE_NO}" editable="{localModel>/save}" />
+                            </table:template>
+                        </table:Column>
+                        <table:Column id="colCustomer" width="10rem" sortProperty="CUSTOMER" filterProperty="CUSTOMER">
+                            <table:customData>
+                                <core:CustomData key="p13nData" value="{
+                                        columnKey: 'CUSTOMER',
+                                        leadingProperty: 'CUSTOMER',
+                                        sortProperty: 'CUSTOMER',
+                                        filterProperty: 'CUSTOMER'
+                                    }" />
+                            </table:customData>
+                            <table:label>
+                                <Label id="labelCustomer" text="{pch>PCH08_CUSTOMER}" />
+                            </table:label>
+                            <table:template>
+                                <Text id="textCustomer" text="{CUSTOMER}" />
+                            </table:template>
+                        </table:Column>
+                        <table:Column id="colMachineType" width="6rem" sortProperty="MACHINE_TYPE" filterProperty="MACHINE_TYPE">
+                            <table:customData>
+                                <core:CustomData key="p13nData" value="{
+                                        columnKey: 'MACHINE_TYPE',
+                                        leadingProperty: 'MACHINE_TYPE',
+                                        sortProperty: 'MACHINE_TYPE',
+                                        filterProperty: 'MACHINE_TYPE'
+                                    }" />
+                            </table:customData>
+                            <table:label>
+                                <Label id="labelMachineType" text="{pch>PCH08_MACHINE_TYPE}" />
+                            </table:label>
+                            <table:template>
+                                <Text id="textMachineType" text="{MACHINE_TYPE}" />
+                            </table:template>
+                        </table:Column>
+                        <table:Column id="colQuantity" width="10rem" sortProperty="QUANTITY" filterProperty="QUANTITY">
+                            <table:customData>
+                                <core:CustomData key="p13nData" value="{
+                                        columnKey: 'QUANTITY',
+                                        leadingProperty: 'QUANTITY',
+                                        sortProperty: 'QUANTITY',
+                                        filterProperty: 'QUANTITY'
+                                    }" />
+                            </table:customData>
+                            <table:label>
+                                <Label id="labelQuantity" text="{pch>PCH08_QUANTITY}" />
+                            </table:label>
+                            <table:template>
+                                <Text id="textQuantity" text="{QUANTITY}" />
+                            </table:template>
+                        </table:Column>
+                        <table:Column id="colValidateStart" width="10rem" sortProperty="VALIDATE_START" filterProperty="VALIDATE_START">
+                            <table:customData>
+                                <core:CustomData key="p13nData" value="{
+                                        columnKey: 'VALIDATE_START',
+                                        leadingProperty: 'VALIDATE_START',
+                                        sortProperty: 'VALIDATE_START',
+                                        filterProperty: 'VALIDATE_START'
+                                    }" />
+                            </table:customData>
+                            <table:label>
+                                <Label id="labelValidateStart" text="{pch>PCH08_VALIDATE_START}" />
+                            </table:label>
+                            <table:template>
+                                <!-- <Text id="textValidateStart" text="{VALIDATE_START}" /> -->
+                                <smartField:SmartField id="textValidateStart" value="{VALIDATE_START}" editable="{localModel>/save}" />
+                            </table:template>
+                        </table:Column>
+                        <table:Column id="colvalidateEnd" width="10rem" sortProperty="VALIDATE_END" filterProperty="VALIDATE_END">
+                            <table:customData>
+                                <core:CustomData key="p13nData" value="{
+                                        columnKey: 'VALIDATE_END',
+                                        leadingProperty: 'VALIDATE_END',
+                                        sortProperty: 'VALIDATE_END',
+                                        filterProperty: 'VALIDATE_END'
+                                    }" />
+                            </table:customData>
+                            <table:label>
+                                <Label id="labelvalidateEnd" text="{pch>PCH08_VALIDATE_END}" />
+                            </table:label>
+                            <table:template>
+                                <!-- <Text id="textvalidateEnd" text="{VALIDATE_END}" /> -->
+                                <smartField:SmartField id="textValidateEnd" value="{VALIDATE_END}" editable="{localModel>/save}" />
+                            </table:template>
+                        </table:Column>
+                        <table:Column id="colMaterialNumber" width="10rem" sortProperty="MATERIAL_NUMBER" filterProperty="MATERIAL_NUMBER">
+                            <table:customData>
+                                <core:CustomData key="p13nData" value="{
+                                        columnKey: 'MATERIAL_NUMBER',
+                                        leadingProperty: 'MATERIAL_NUMBER',
+                                        sortProperty: 'MATERIAL_NUMBER',
+                                        filterProperty: 'MATERIAL_NUMBER'
+                                    }" />
+                            </table:customData>
+                            <table:label>
+                                <Label id="labelMaterialNumber" text="{pch>PCH08_MATERIAL_NUMBER}" />
+                            </table:label>
+                            <table:template>
+                                <Text id="textMaterialNumber" text="{MATERIAL_NUMBER}" />
+                            </table:template>
+                        </table:Column>
+                        <table:Column id="colCustMaterial" width="10rem" sortProperty="CUST_MATERIAL" filterProperty="CUST_MATERIAL">
+                            <table:customData>
+                                <core:CustomData key="p13nData" value="{
+                                        columnKey: 'CUST_MATERIAL',
+                                        leadingProperty: 'CUST_MATERIAL',
+                                        sortProperty: 'CUST_MATERIAL',
+                                        filterProperty: 'CUST_MATERIAL'
+                                    }" />
+                            </table:customData>
+                            <table:label>
+                                <Label id="labelCustMaterial" text="{pch>PCH08_CUST_MATERIAL}" />
+                            </table:label>
+                            <table:template>
+                                <Text id="textCustMaterial" text="{CUST_MATERIAL}" />
+                            </table:template>
+                        </table:Column>
+                        <table:Column id="colmanufactMaterial" width="10rem" sortProperty="MANUFACT_MATERIAL" filterProperty="MANUFACT_MATERIAL">
+                            <table:customData>
+                                <core:CustomData key="p13nData" value="{
+                                        columnKey: 'MANUFACT_MATERIAL',
+                                        leadingProperty: 'MANUFACT_MATERIAL',
+                                        sortProperty: 'MANUFACT_MATERIAL',
+                                        filterProperty: 'MANUFACT_MATERIAL'
+                                    }" />
+                            </table:customData>
+                            <table:label>
+                                <Label id="labelmanufactMaterial" text="{pch>PCH08_MANUFACT_MATERIAL}" />
+                            </table:label>
+                            <table:template>
+                                <Text id="textmanufactMaterial" text="{MANUFACT_MATERIAL}" />
+                            </table:template>
+                        </table:Column>
+                        <table:Column id="colAttachment" width="10rem" sortProperty="Attachment" filterProperty="Attachment">
+                            <table:customData>
+                                <core:CustomData key="p13nData" value="{
+                                        columnKey: 'Attachment',
+                                        leadingProperty: 'Attachment',
+                                        sortProperty: 'Attachment',
+                                        filterProperty: 'Attachment'
+                                    }" />
+                            </table:customData>
+                            <table:label>
+                                <Label id="labelAttachment" text="{pch>PCH08_Attachment}" />
+                            </table:label>
+                            <table:template>
+                                <Text id="textAttachment" text="{Attachment}" />
+                            </table:template>
+                        </table:Column>
+                        <table:Column id="colMaterial" width="10rem" sortProperty="Material" filterProperty="Material">
+                            <table:customData>
+                                <core:CustomData key="p13nData" value="{
+                                        columnKey: 'Material',
+                                        leadingProperty: 'Material',
+                                        sortProperty: 'Material',
+                                        filterProperty: 'Material'
+                                    }" />
+                            </table:customData>
+                            <table:label>
+                                <Label id="labelMaterial" text="{pch>PCH08_Material}" />
+                            </table:label>
+                            <table:template>
+                                <Text id="textMaterial" text="{Material}" />
+                            </table:template>
+                        </table:Column>
+                        <table:Column id="colMaker" width="10rem" sortProperty="MAKER" filterProperty="MAKER">
+                            <table:customData>
+                                <core:CustomData key="p13nData" value="{
+                                        columnKey: 'MAKER',
+                                        leadingProperty: 'MAKER',
+                                        sortProperty: 'MAKER',
+                                        filterProperty: 'MAKER'
+                                    }" />
+                            </table:customData>
+                            <table:label>
+                                <Label id="labelMaker" text="{pch>PCH08_MAKER}" />
+                            </table:label>
+                            <table:template>
+                                <Text id="textMaker" text="{MAKER}" />
+                            </table:template>
+                        </table:Column>
+                        <table:Column id="colUwebUser" width="10rem" sortProperty="UWEB_USER" filterProperty="UWEB_USER">
+                            <table:customData>
+                                <core:CustomData key="p13nData" value="{
+                                        columnKey: 'UWEB_USER',
+                                        leadingProperty: 'UWEB_USER',
+                                        sortProperty: 'UWEB_USER',
+                                        filterProperty: 'UWEB_USER'
+                                    }" />
+                            </table:customData>
+                            <table:label>
+                                <Label id="labelUwebUser" text="{pch>PCH08_UWEB_USER}" />
+                            </table:label>
+                            <table:template>
+                                <Text id="textUwebUser" text="{UWEB_USER}" />
+                            </table:template>
+                        </table:Column>
+                        <table:Column id="colBp" width="10rem" sortProperty="BP_NUMBER" filterProperty="BP_NUMBER">
+                            <table:customData>
+                                <core:CustomData key="p13nData" value="{
+                                        columnKey: 'BP_NUMBER',
+                                        leadingProperty: 'BP_NUMBER',
+                                        sortProperty: 'BP_NUMBER',
+                                        filterProperty: 'BP_NUMBER'
+                                    }" />
+                            </table:customData>
+                            <table:label>
+                                <Label id="labelBp" text="{pch>PCH08_BP_NUMBER}" />
+                            </table:label>
+                            <table:template>
+                                <Text id="textBp" text="{BP_NUMBER}" />
+                            </table:template>
+                        </table:Column>
+                        <table:Column id="colPersonNo1" width="10rem" sortProperty="PERSON_NO1" filterProperty="PERSON_NO1">
+                            <table:customData>
+                                <core:CustomData key="p13nData" value="{
+                                        columnKey: 'PERSON_NO1',
+                                        leadingProperty: 'PERSON_NO1',
+                                        sortProperty: 'PERSON_NO1',
+                                        filterProperty: 'PERSON_NO1'
+                                    }" />
+                            </table:customData>
+                            <table:label>
+                                <Label id="labelPersonNo1" text="{pch>PCH08_PERSON_NO1}" />
+                            </table:label>
+                            <table:template>
+                                <Text id="textPersonNo1" text="{PERSON_NO1}" />
+                            </table:template>
+                        </table:Column>
+                        <table:Column id="colPersonNo2" width="10rem" sortProperty="PERSON_NO2" filterProperty="PERSON_NO2">
+                            <table:customData>
+                                <core:CustomData key="p13nData" value="{
+                                        columnKey: 'PERSON_NO2',
+                                        leadingProperty: 'PERSON_NO2',
+                                        sortProperty: 'PERSON_NO2',
+                                        filterProperty: 'PERSON_NO2'
+                                    }" />
+                            </table:customData>
+                            <table:label>
+                                <Label id="labelPersonNo2" text="{pch>PCH08_PERSON_NO2}" />
+                            </table:label>
+                            <table:template>
+                                <Text id="textPersonNo2" text="{PERSON_NO2}" />
+                            </table:template>
+                        </table:Column>
+                        <table:Column id="colPersonNo3" width="10rem" sortProperty="PERSON_NO3" filterProperty="PERSON_NO3">
+                            <table:customData>
+                                <core:CustomData key="p13nData" value="{
+                                        columnKey: 'PERSON_NO3',
+                                        leadingProperty: 'PERSON_NO3',
+                                        sortProperty: 'PERSON_NO3',
+                                        filterProperty: 'PERSON_NO3'
+                                    }" />
+                            </table:customData>
+                            <table:label>
+                                <Label id="labelPersonNo3" text="{pch>PCH08_PERSON_NO3}" />
+                            </table:label>
+                            <table:template>
+                                <Text id="textPersonNo3" text="{PERSON_NO3}" />
+                            </table:template>
+                        </table:Column>
+                        <table:Column id="colPersonNo4" width="10rem" sortProperty="PERSON_NO4" filterProperty="PERSON_NO4">
+                            <table:customData>
+                                <core:CustomData key="p13nData" value="{
+                                        columnKey: 'PERSON_NO4',
+                                        leadingProperty: 'PERSON_NO4',
+                                        sortProperty: 'PERSON_NO4',
+                                        filterProperty: 'PERSON_NO4'
+                                    }" />
+                            </table:customData>
+                            <table:label>
+                                <Label id="labelPersonNo4" text="{pch>PCH08_PERSON_NO4}" />
+                            </table:label>
+                            <table:template>
+                                <Text id="textPersonNo4" text="{PERSON_NO4}" />
+                            </table:template>
+                        </table:Column>
+                        <table:Column id="colPersonNo5" width="10rem" sortProperty="PERSON_NO5" filterProperty="PERSON_NO5">
+                            <table:customData>
+                                <core:CustomData key="p13nData" value="{
+                                        columnKey: 'PERSON_NO5',
+                                        leadingProperty: 'PERSON_NO5',
+                                        sortProperty: 'PERSON_NO5',
+                                        filterProperty: 'PERSON_NO5'
+                                    }" />
+                            </table:customData>
+                            <table:label>
+                                <Label id="labelPersonNo5" text="{pch>PCH08_PERSON_NO5}" />
+                            </table:label>
+                            <table:template>
+                                <Text id="textPersonNo5" text="{PERSON_NO5}" />
+                            </table:template>
+                        </table:Column>
+                        <table:Column id="colYlp" width="10rem" sortProperty="YLP" filterProperty="YLP">
+                            <table:customData>
+                                <core:CustomData key="p13nData" value="{
+                                        columnKey: 'YLP',
+                                        leadingProperty: 'YLP',
+                                        sortProperty: 'YLP',
+                                        filterProperty: 'YLP'
+                                    }" />
+                            </table:customData>
+                            <table:label>
+                                <Label id="labelYlp" text="{pch>PCH08_YLP}" />
+                            </table:label>
+                            <table:template>
+                                <Text id="textYlp" text="{YLP}" />
+                            </table:template>
+                        </table:Column>
+                        <table:Column id="colManul" width="10rem" sortProperty="MANUL" filterProperty="MANUL">
+                            <table:customData>
+                                <core:CustomData key="p13nData" value="{
+                                        columnKey: 'MANUL',
+                                        leadingProperty: 'MANUL',
+                                        sortProperty: 'MANUL',
+                                        filterProperty: 'MANUL'
+                                    }" />
+                            </table:customData>
+                            <table:label>
+                                <Label id="labelManul" text="{pch>PCH08_MANUL}" />
+                            </table:label>
+                            <table:template>
+                                <Text id="textManul" text="{MANUL}" />
+                            </table:template>
+                        </table:Column>
+                        <table:Column id="colManufactCode" width="10rem" sortProperty="MANUFACT_CODE" filterProperty="MANUFACT_CODE">
+                            <table:customData>
+                                <core:CustomData key="p13nData" value="{
+                                        columnKey: 'MANUFACT_CODE',
+                                        leadingProperty: 'MANUFACT_CODE',
+                                        sortProperty: 'MANUFACT_CODE',
+                                        filterProperty: 'MANUFACT_CODE'
+                                    }" />
+                            </table:customData>
+                            <table:label>
+                                <Label id="labelManufactCode" text="{pch>PCH08_MANUFACT_CODE}" />
+                            </table:label>
+                            <table:template>
+                                <Text id="textManufactCode" text="{MANUFACT_CODE}" />
+                            </table:template>
+                        </table:Column>
+                        <table:Column id="colCustomerMmodel" width="10rem" sortProperty="CUSTOMER_MMODEL" filterProperty="CUSTOMER_MMODEL">
+                            <table:customData>
+                                <core:CustomData key="p13nData" value="{
+                                        columnKey: 'CUSTOMER_MMODEL',
+                                        leadingProperty: 'CUSTOMER_MMODEL',
+                                        sortProperty: 'CUSTOMER_MMODEL',
+                                        filterProperty: 'CUSTOMER_MMODEL'
+                                    }" />
+                            </table:customData>
+                            <table:label>
+                                <Label id="labelCustomerMmodel" text="{pch>PCH08_CUSTOMER_MMODEL}" />
+                            </table:label>
+                            <table:template>
+                                <Text id="textCustomerMmodel" text="{CUSTOMER_MMODEL}" />
+                            </table:template>
+                        </table:Column>
+                        <table:Column id="colMidQf" width="10rem" sortProperty="MID_QF" filterProperty="MID_QF">
+                            <table:customData>
+                                <core:CustomData key="p13nData" value="{
+                                        columnKey: 'MID_QF',
+                                        leadingProperty: 'MID_QF',
+                                        sortProperty: 'MID_QF',
+                                        filterProperty: 'MID_QF'
+                                    }" />
+                            </table:customData>
+                            <table:label>
+                                <Label id="labelMidQf" text="{pch>PCH08_MID_QF}" />
+                            </table:label>
+                            <table:template>
+                                <Text id="textMidQf" text="{MID_QF}" />
+                            </table:template>
+                        </table:Column>
+                        <table:Column id="colSmallQf" width="10rem" sortProperty="SMALL_QF" filterProperty="SMALL_QF">
+                            <table:customData>
+                                <core:CustomData key="p13nData" value="{
+                                        columnKey: 'SMALL_QF',
+                                        leadingProperty: 'SMALL_QF',
+                                        sortProperty: 'SMALL_QF',
+                                        filterProperty: 'SMALL_QF'
+                                    }" />
+                            </table:customData>
+                            <table:label>
+                                <Label id="labelSmallQf" text="{pch>PCH08_SMALL_QF}" />
+                            </table:label>
+                            <table:template>
+                                <Text id="textSmallQf" text="{SMALL_QF}" />
+                            </table:template>
+                        </table:Column>
+                        <table:Column id="colOtherQf" width="10rem" sortProperty="OTHER_QF" filterProperty="OTHER_QF">
+                            <table:customData>
+                                <core:CustomData key="p13nData" value="{
+                                        columnKey: 'OTHER_QF',
+                                        leadingProperty: 'OTHER_QF',
+                                        sortProperty: 'OTHER_QF',
+                                        filterProperty: 'OTHER_QF'
+                                    }" />
+                            </table:customData>
+                            <table:label>
+                                <Label id="labelOtherQf" text="{pch>PCH08_OTHER_QF}" />
+                            </table:label>
+                            <table:template>
+                                <Text id="textOtherQf" text="{OTHER_QF}" />
+                            </table:template>
+                        </table:Column>
+                        <table:Column id="colCurrency" width="10rem" sortProperty="CURRENCY" filterProperty="CURRENCY">
+                            <table:customData>
+                                <core:CustomData key="p13nData" value="{
+                                        columnKey: 'CURRENCY',
+                                        leadingProperty: 'CURRENCY',
+                                        sortProperty: 'CURRENCY',
+                                        filterProperty: 'CURRENCY'
+                                    }" />
+                            </table:customData>
+                            <table:label>
+                                <Label id="labelCurrency" text="{pch>PCH08_CURRENCY}" />
+                            </table:label>
+                            <table:template>
+                                <Text id="textCurrency" text="{CURRENCY}" />
+                            </table:template>
+                        </table:Column>
+                        <table:Column id="colPrice" width="10rem" sortProperty="PRICE" filterProperty="PRICE">
+                            <table:customData>
+                                <core:CustomData key="p13nData" value="{
+                                        columnKey: 'PRICE',
+                                        leadingProperty: 'PRICE',
+                                        sortProperty: 'PRICE',
+                                        filterProperty: 'PRICE'
+                                    }" />
+                            </table:customData>
+                            <table:label>
+                                <Label id="labelPrice" text="{pch>PCH08_PRICE}" />
+                            </table:label>
+                            <table:template>
+                                <smartField:SmartField id="textPrice" value="{PRICE}" editable="false" />
+                            </table:template>
+                        </table:Column>
+                        <table:Column id="colPriceControl" width="10rem" sortProperty="PRICE_CONTROL" filterProperty="PRICE_CONTROL">
+                            <table:customData>
+                                <core:CustomData key="p13nData" value="{
+                                        columnKey: 'PRICE_CONTROL',
+                                        leadingProperty: 'PRICE_CONTROL',
+                                        sortProperty: 'PRICE_CONTROL',
+                                        filterProperty: 'PRICE_CONTROL'
+                                    }" />
+                            </table:customData>
+                            <table:label>
+                                <Label id="labelPriceControl" text="{pch>PCH08_PRICE_CONTROL}" />
+                            </table:label>
+                            <table:template>
+                                <smartField:SmartField id="textPriceControl" value="{PRICE_CONTROL}" editable="false" />
+                            </table:template>
+                        </table:Column>
+                        <table:Column id="colLeadTime" width="10rem" sortProperty="LEAD_TIME" filterProperty="LEAD_TIME">
+                            <table:customData>
+                                <core:CustomData key="p13nData" value="{
+                                        columnKey: 'LEAD_TIME',
+                                        leadingProperty: 'LEAD_TIME',
+                                        sortProperty: 'LEAD_TIME',
+                                        filterProperty: 'LEAD_TIME'
+                                    }" />
+                            </table:customData>
+                            <table:label>
+                                <Label id="labelLeadTime" text="{pch>PCH08_LEAD_TIME}" />
+                            </table:label>
+                            <table:template>
+                                <!-- <Text id="textLeadTime" text="{LEAD_TIME}" /> -->
+                                <smartField:SmartField id="textLeadTime" value="{LEAD_TIME}" editable="false" />
+                            </table:template>
+                        </table:Column>
+                        <table:Column id="colMoq" width="10rem" sortProperty="MOQ" filterProperty="MOQ">
+                            <table:customData>
+                                <core:CustomData key="p13nData" value="{
+                                        columnKey: 'MOQ',
+                                        leadingProperty: 'MOQ',
+                                        sortProperty: 'MOQ',
+                                        filterProperty: 'MOQ'
+                                    }" />
+                            </table:customData>
+                            <table:label>
+                                <Label id="labelMoq" text="{pch>PCH08_MOQ}" />
+                            </table:label>
+                            <table:template>
+                                <Text id="textMoq" text="{MOQ}" />
+                            </table:template>
+                        </table:Column>
+                        <table:Column id="colUnits" width="10rem" sortProperty="UNIT" filterProperty="UNIT">
+                            <table:customData>
+                                <core:CustomData key="p13nData" value="{
+                                        columnKey: 'UNIT',
+                                        leadingProperty: 'UNIT',
+                                        sortProperty: 'UNIT',
+                                        filterProperty: 'UNIT'
+                                    }" />
+                            </table:customData>
+                            <table:label>
+                                <Label id="labelUnit" text="{pch>PCH08_UNIT}" />
+                            </table:label>
+                            <table:template>
+                                <Text id="textUnit" text="{UNIT}" />
+                            </table:template>
+                        </table:Column>
+                        <table:Column id="colSpq" width="10rem" sortProperty="SPQ" filterProperty="SPQ">
+                            <table:customData>
+                                <core:CustomData key="p13nData" value="{
+                                        columnKey: 'SPQ',
+                                        leadingProperty: 'SPQ',
+                                        sortProperty: 'SPQ',
+                                        filterProperty: 'SPQ'
+                                    }" />
+                            </table:customData>
+                            <table:label>
+                                <Label id="labelSpq" text="{pch>PCH08_SPQ}" />
+                            </table:label>
+                            <table:template>
+                                <Text id="textSpq" text="{SPQ}" />
+                            </table:template>
+                        </table:Column>
+                        <table:Column id="colKbxt" width="10rem" sortProperty="KBXT" filterProperty="KBXT">
+                            <table:customData>
+                                <core:CustomData key="p13nData" value="{
+                                        columnKey: 'KBXT',
+                                        leadingProperty: 'KBXT',
+                                        sortProperty: 'KBXT',
+                                        filterProperty: 'KBXT'
+                                    }" />
+                            </table:customData>
+                            <table:label>
+                                <Label id="labelKbxt" text="{pch>PCH08_KBXT}" />
+                            </table:label>
+                            <table:template>
+                                <Text id="textKbxt" text="{KBXT}" />
+                            </table:template>
+                        </table:Column>
+                        <table:Column id="colProductWeight" width="10rem" sortProperty="PRODUCT_WEIGHT" filterProperty="PRODUCT_WEIGHT">
+                            <table:customData>
+                                <core:CustomData key="p13nData" value="{
+                                        columnKey: 'PRODUCT_WEIGHT',
+                                        leadingProperty: 'PRODUCT_WEIGHT',
+                                        sortProperty: 'PRODUCT_WEIGHT',
+                                        filterProperty: 'PRODUCT_WEIGHT'
+                                    }" />
+                            </table:customData>
+                            <table:label>
+                                <Label id="labelProductWeight" text="{pch>PCH08_PRODUCT_WEIGHT}" />
+                            </table:label>
+                            <table:template>
+                                <Text id="textProductWeight" text="{PRODUCT_WEIGHT}" />
+                            </table:template>
+                        </table:Column>
+                        <table:Column id="colOriginalCou" width="10rem" sortProperty="ORIGINAL_COU" filterProperty="ORIGINAL_COU">
+                            <table:customData>
+                                <core:CustomData key="p13nData" value="{
+                                        columnKey: 'ORIGINAL_COU',
+                                        leadingProperty: 'ORIGINAL_COU',
+                                        sortProperty: 'ORIGINAL_COU',
+                                        filterProperty: 'ORIGINAL_COU'
+                                    }" />
+                            </table:customData>
+                            <table:label>
+                                <Label id="labelOriginalCou" text="{pch>PCH08_ORIGINAL_COU}" />
+                            </table:label>
+                            <table:template>
+                                <Text id="textOriginalCou" text="{ORIGINAL_COU}" />
+                            </table:template>
+                        </table:Column>
+                        <table:Column id="colEol" width="10rem" sortProperty="EOL" filterProperty="EOL">
+                            <table:customData>
+                                <core:CustomData key="p13nData" value="{
+                                        columnKey: 'EOL',
+                                        leadingProperty: 'EOL',
+                                        sortProperty: 'EOL',
+                                        filterProperty: 'EOL'
+                                    }" />
+                            </table:customData>
+                            <table:label>
+                                <Label id="labelEol" text="{pch>PCH08_EOL}" />
+                            </table:label>
+                            <table:template>
+                                <Text id="textEol" text="{EOL}" />
+                            </table:template>
+                        </table:Column>
+                        <table:Column id="colIsboi" width="10rem" sortProperty="ISBOI" filterProperty="ISBOI">
+                            <table:customData>
+                                <core:CustomData key="p13nData" value="{
+                                        columnKey: 'ISBOI',
+                                        leadingProperty: 'ISBOI',
+                                        sortProperty: 'ISBOI',
+                                        filterProperty: 'ISBOI'
+                                    }" />
+                            </table:customData>
+                            <table:label>
+                                <Label id="labelIsboi" text="{pch>PCH08_ISBOI}" />
+                            </table:label>
+                            <table:template>
+                                <!-- <Text id="textIsboi" text="{ISBOI}" /> -->
+                                <smartField:SmartField id="textIsboi" value="{ISBOI}" editable="false" />
+                            </table:template>
+                        </table:Column>
+                        <table:Column id="colIncoterms" width="10rem" sortProperty="Incoterms" filterProperty="Incoterms">
+                            <table:customData>
+                                <core:CustomData key="p13nData" value="{
+                                        columnKey: 'Incoterms',
+                                        leadingProperty: 'Incoterms',
+                                        sortProperty: 'Incoterms',
+                                        filterProperty: 'Incoterms'
+                                    }" />
+                            </table:customData>
+                            <table:label>
+                                <Label id="labelIncoterms" text="{pch>PCH08_Incoterms}" />
+                            </table:label>
+                            <table:template>
+                                <Text id="textIncoterms" text="{Incoterms}" />
+                            </table:template>
+                        </table:Column>
+                        <table:Column id="colIncoterms_Text" width="10rem" sortProperty="Incoterms_Text" filterProperty="Incoterms_Text">
+                            <table:customData>
+                                <core:CustomData key="p13nData" value="{
+                                        columnKey: 'Incoterms_Text',
+                                        leadingProperty: 'Incoterms_Text',
+                                        sortProperty: 'Incoterms_Text',
+                                        filterProperty: 'Incoterms_Text'
+                                    }" />
+                            </table:customData>
+                            <table:label>
+                                <Label id="labelIncoterms_Text" text="{pch>PCH08_Incoterms_Text}" />
+                            </table:label>
+                            <table:template>
+                                <Text id="textIncoterms_Text" text="{Incoterms_Text}" />
+                            </table:template>
+                        </table:Column>
+                        <table:Column id="colMemo1" width="10rem" sortProperty="MEMO1" filterProperty="MEMO1">
+                            <table:customData>
+                                <core:CustomData key="p13nData" value="{
+                                        columnKey: 'MEMO1',
+                                        leadingProperty: 'MEMO1',
+                                        sortProperty: 'MEMO1',
+                                        filterProperty: 'MEMO1'
+                                    }" />
+                            </table:customData>
+                            <table:label>
+                                <Label id="labelMemo1" text="{pch>PCH08_MEMO1}" />
+                            </table:label>
+                            <table:template>
+                                <Text id="textMemo1" text="{MEMO1}" />
+                            </table:template>
+                        </table:Column>
+                        <table:Column id="colMemo2" width="10rem" sortProperty="MEMO2" filterProperty="MEMO2">
+                            <table:customData>
+                                <core:CustomData key="p13nData" value="{
+                                        columnKey: 'MEMO2',
+                                        leadingProperty: 'MEMO2',
+                                        sortProperty: 'MEMO2',
+                                        filterProperty: 'MEMO2'
+                                    }" />
+                            </table:customData>
+                            <table:label>
+                                <Label id="labelMemo2" text="{pch>PCH08_MEMO2}" />
+                            </table:label>
+                            <table:template>
+                                <Text id="textMemo2" text="{MEMO2}" />
+                            </table:template>
+                        </table:Column>
+                        <table:Column id="colMemo3" width="10rem" sortProperty="MEMO3" filterProperty="MEMO3">
+                            <table:customData>
+                                <core:CustomData key="p13nData" value="{
+                                        columnKey: 'MEMO3',
+                                        leadingProperty: 'MEMO3',
+                                        sortProperty: 'MEMO3',
+                                        filterProperty: 'MEMO3'
+                                    }" />
+                            </table:customData>
+                            <table:label>
+                                <Label id="labelMemo3" text="{pch>PCH08_MEMO3}" />
+                            </table:label>
+                            <table:template>
+                                <Text id="textMemo3" text="{MEMO3}" />
+                            </table:template>
+                        </table:Column>
+                        <table:Column id="colSl" width="10rem" sortProperty="SL" filterProperty="SL">
+                            <table:customData>
+                                <core:CustomData key="p13nData" value="{
+                                        columnKey: 'SL',
+                                        leadingProperty: 'SL',
+                                        sortProperty: 'SL',
+                                        filterProperty: 'SL'
+                                    }" />
+                            </table:customData>
+                            <table:label>
+                                <Label id="labelSl" text="{pch>PCH08_SL}" />
+                            </table:label>
+                            <table:template>
+                                <Text id="textSl" text="{SL}" />
+                            </table:template>
+                        </table:Column>
+                        <table:Column id="colTz" width="10rem" sortProperty="TZ" filterProperty="TZ">
+                            <table:customData>
+                                <core:CustomData key="p13nData" value="{
+                                        columnKey: 'TZ',
+                                        leadingProperty: 'TZ',
+                                        sortProperty: 'TZ',
+                                        filterProperty: 'TZ'
+                                    }" />
+                            </table:customData>
+                            <table:label>
+                                <Label id="labelTz" text="{pch>PCH08_TZ}" />
+                            </table:label>
+                            <table:template>
+                                <Text id="textTz" text="{TZ}" />
+                            </table:template>
+                        </table:Column>
+                        <table:Column id="colRmaterial" width="10rem" sortProperty="RMATERIAL" filterProperty="RMATERIAL">
+                            <table:customData>
+                                <core:CustomData key="p13nData" value="{
+                                        columnKey: 'RMATERIAL',
+                                        leadingProperty: 'RMATERIAL',
+                                        sortProperty: 'RMATERIAL',
+                                        filterProperty: 'RMATERIAL'
+                                    }" />
+                            </table:customData>
+                            <table:label>
+                                <Label id="labelRmaterial" text="{pch>PCH08_RMATERIAL}" />
+                            </table:label>
+                            <table:template>
+                                <Text id="textRmaterial" text="{RMATERIAL}" />
+                            </table:template>
+                        </table:Column>
+                        <table:Column id="colRmaterialCurrency" width="10rem" sortProperty="RMATERIAL_CURRENCY" filterProperty="RMATERIAL_CURRENCY">
+                            <table:customData>
+                                <core:CustomData key="p13nData" value="{
+                                        columnKey: 'RMATERIAL_CURRENCY',
+                                        leadingProperty: 'RMATERIAL_CURRENCY',
+                                        sortProperty: 'RMATERIAL_CURRENCY',
+                                        filterProperty: 'RMATERIAL_CURRENCY'
+                                    }" />
+                            </table:customData>
+                            <table:label>
+                                <Label id="labelRmaterialCurrency" text="{pch>PCH08_RMATERIAL_CURRENCY}" />
+                            </table:label>
+                            <table:template>
+                                <Text id="textRmaterialCurrency" text="{RMATERIAL_CURRENCY}" />
+                            </table:template>
+                        </table:Column>
+                        <table:Column id="colRmaterialPrice" width="10rem" sortProperty="RMATERIAL_PRICE" filterProperty="RMATERIAL_PRICE">
+                            <table:customData>
+                                <core:CustomData key="p13nData" value="{
+                                        columnKey: 'RMATERIAL_PRICE',
+                                        leadingProperty: 'RMATERIAL_PRICE',
+                                        sortProperty: 'RMATERIAL_PRICE',
+                                        filterProperty: 'RMATERIAL_PRICE'
+                                    }" />
+                            </table:customData>
+                            <table:label>
+                                <Label id="labelRmaterialPrice" text="{pch>PCH08_RMATERIAL_PRICE}" />
+                            </table:label>
+                            <table:template>
+                                <Text id="textRmaterialPrice" text="{RMATERIAL_PRICE}" />
+                            </table:template>
+                        </table:Column>
+                        <table:Column id="colRmaterialLt" width="10rem" sortProperty="RMATERIAL_LT" filterProperty="RMATERIAL_LT">
+                            <table:customData>
+                                <core:CustomData key="p13nData" value="{
+                                        columnKey: 'RMATERIAL_LT',
+                                        leadingProperty: 'RMATERIAL_LT',
+                                        sortProperty: 'RMATERIAL_LT',
+                                        filterProperty: 'RMATERIAL_LT'
+                                    }" />
+                            </table:customData>
+                            <table:label>
+                                <Label id="labelRmaterialLt" text="{pch>PCH08_RMATERIAL_LT}" />
+                            </table:label>
+                            <table:template>
+                                <!-- <Text id="textRmaterialLt" text="{RMATERIAL_LT}" /> -->
+                                <smartField:SmartField id="textRmaterialLt" value="{RMATERIAL_LT}" editable="false" />
+                            </table:template>
+                        </table:Column>
+                        <table:Column id="colRmaterialMoq" width="10rem" sortProperty="RMATERIAL_MOQ" filterProperty="RMATERIAL_MOQ">
+                            <table:customData>
+                                <core:CustomData key="p13nData" value="{
+                                        columnKey: 'RMATERIAL_MOQ',
+                                        leadingProperty: 'RMATERIAL_MOQ',
+                                        sortProperty: 'RMATERIAL_MOQ',
+                                        filterProperty: 'RMATERIAL_MOQ'
+                                    }" />
+                            </table:customData>
+                            <table:label>
+                                <Label id="labelRmaterialMoq" text="{pch>PCH08_RMATERIAL_MOQ}" />
+                            </table:label>
+                            <table:template>
+                                <Text id="textRmaterialMoq" text="{RMATERIAL_MOQ}" />
+                            </table:template>
+                        </table:Column>
+                        <table:Column id="colRmaterialKbxt" width="10rem" sortProperty="RMATERIAL_KBXT" filterProperty="RMATERIAL_KBXT">
+                            <table:customData>
+                                <core:CustomData key="p13nData" value="{
+                                        columnKey: 'RMATERIAL_KBXT',
+                                        leadingProperty: 'RMATERIAL_KBXT',
+                                        sortProperty: 'RMATERIAL_KBXT',
+                                        filterProperty: 'RMATERIAL_KBXT'
+                                    }" />
+                            </table:customData>
+                            <table:label>
+                                <Label id="labelRmaterialKbxt" text="{pch>PCH08_RMATERIAL_KBXT}" />
+                            </table:label>
+                            <table:template>
+                                <Text id="textRmaterialKbxt" text="{RMATERIAL_KBXT}" />
+                            </table:template>
+                        </table:Column>
+                        <table:Column id="colUcComment1" width="10rem" sortProperty="UMC_COMMENT_1" filterProperty="UMC_COMMENT_1">
+                            <table:customData>
+                                <core:CustomData key="p13nData" value="{
+                                        columnKey: 'UMC_COMMENT_1',
+                                        leadingProperty: 'UMC_COMMENT_1',
+                                        sortProperty: 'UMC_COMMENT_1',
+                                        filterProperty: 'UMC_COMMENT_1'
+                                    }" />
+                            </table:customData>
+                            <table:label>
+                                <Label id="labelUcComment1" text="{pch>PCH08_UMC_COMMENT_1}" />
+                            </table:label>
+                            <table:template>
+                                <Text id="textUcComment1" text="{UMC_COMMENT_1}" />
+                            </table:template>
+                        </table:Column>
+                        <table:Column id="colUcComment2" width="10rem" sortProperty="UMC_COMMENT_2" filterProperty="UMC_COMMENT_2">
+                            <table:customData>
+                                <core:CustomData key="p13nData" value="{
+                                        columnKey: 'UMC_COMMENT_2',
+                                        leadingProperty: 'UMC_COMMENT_2',
+                                        sortProperty: 'UMC_COMMENT_2',
+                                        filterProperty: 'UMC_COMMENT_2'
+                                    }" />
+                            </table:customData>
+                            <table:label>
+                                <Label id="labelUcComment2" text="{pch>PCH08_UMC_COMMENT_2}" />
+                            </table:label>
+                            <table:template>
+                                <Text id="textUcComment2" text="{UMC_COMMENT_2}" />
+                            </table:template>
+                        </table:Column>
+                        <table:Column id="colStatus" width="10rem" sortProperty="STATUS" filterProperty="STATUS">
+                            <table:customData>
+                                <core:CustomData key="p13nData" value="{
+                                        columnKey: 'STATUS',
+                                        leadingProperty: 'STATUS',
+                                        sortProperty: 'STATUS',
+                                        filterProperty: 'STATUS'
+                                    }" />
+                            </table:customData>
+                            <table:label>
+                                <Label id="labelStatus" text="{pch>PCH08_STATUS}" />
+                            </table:label>
+                            <table:template>
+                                <Text id="textStatus" text="{STATUS}" />
+                            </table:template>
+                        </table:Column>
+                    </table:columns>
+                </table:Table>
+
+                
+            </smartTable:SmartTable>
+ 
+</mvc:View>

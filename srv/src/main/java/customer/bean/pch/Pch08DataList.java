@@ -2,8 +2,8 @@ package customer.bean.pch;
 
 import java.util.ArrayList;
 
-public class Pch07DataList {
-    private ArrayList<Pch07> list = new ArrayList<Pch07>();
+public class Pch08DataList {
+    private ArrayList<Pch08> list = new ArrayList<Pch08>();
     // 返回成功失败msg
     private String reTxt;
     // 返回是否有错误:有值指有错误
@@ -12,14 +12,14 @@ public class Pch07DataList {
     /**
      * @return the list
      */
-    public ArrayList<Pch07> getList() {
+    public ArrayList<Pch08> getList() {
         return list;
     }
 
     /**
      * @param list the list to set
      */
-    public void setList(ArrayList<Pch07> list) {
+    public void setList(ArrayList<Pch08> list) {
         this.list = list;
     }
 

@@ -1,46 +1,34 @@
 package customer.dao.pch;
 
-import java.util.List;
-import java.util.Optional;
-
-import customer.comm.tool.DateTools;
-import customer.dao.common.Dao;
-
-import com.sap.cds.ql.Delete;
-import com.sap.cds.ql.Insert;
-import com.sap.cds.ql.Select;
+import cds.gen.pch.Pch_;
+import cds.gen.pch.T06QuotationH;
+import cds.gen.pch.T07QuotationD;
 import com.sap.cds.ql.Update;
-import com.sap.cds.services.persistence.PersistenceService;
-import com.sap.cds.services.request.UserInfo;
-
-import org.springframework.dao.DataAccessException;
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-import java.time.LocalDate;
+import customer.dao.common.Dao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import cds.gen.pch.T02PoD;
-import cds.gen.pch.T02PoD_;
-import cds.gen.pch.T03PoC;
-import cds.gen.pch.T03PoC_;
-import cds.gen.pch.Pch_;
-
-import java.time.Instant;
+import org.springframework.stereotype.Repository;
 
 @Repository
-public class PchD002 extends Dao {
+public class Pch08Dao extends Dao {
 
     // 修改
-    private static final Logger logger = LoggerFactory.getLogger(PchD002.class);
+    private static final Logger logger = LoggerFactory.getLogger(Pch08Dao.class);
 
-    // 修改PCHD002
-    public void updateD002(T02PoD o) {
+    // 修改t06, t07
+    public void updatePch08(T06QuotationH h, T07QuotationD d) {
+        d.setUpTime(getNow());
+        d.setUpBy(this.getUserId());
+        logger.info("修改T07QuotationD" + d.getQuoNumber() + "行号：" + d.getQuoItem());
+        db.run(Update.entity(Pch_.T07_QUOTATION_D).data(d));
 
-        o.setUpTime(getNow());
-        o.setUpBy(this.getUserId());
+        h.setUpTime(getNow());
+        h.setUpBy(this.getUserId());
 
-        logger.info("修改PCHD002" + o.getPoNo() + o.getDNo());
-        db.run(Update.entity(Pch_.T02_PO_D).data(o));
+        logger.info("修改T06QuotationH" + h.getQuoNumber());
+        db.run(Update.entity(Pch_.T07_QUOTATION_D).data(d));
+        db.run(Update.entity(Pch_.T06_QUOTATION_H).data(h));
+
     }
 
     // db.run(Update.entity(Inv_.D001_T).entries(tnoList));
