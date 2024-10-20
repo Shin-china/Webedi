@@ -107,9 +107,11 @@ sap.ui.define([
 					return;
 				}
 			});
+
+
 		
 			// 3. 如果所有检查都通过，调用服务
-			if (checkResult && flgHeand) {
+			if (checkResult && flgHeand && !hasError) {
 				this.getModel().callFunction("/PCH01_CHECK_DATA", {
 					method: "POST",
 					urlParameters: this.getData(),
@@ -207,7 +209,7 @@ sap.ui.define([
 		
 		// 辅助函数：将 Excel 日期序列号转换为实际日期
 		_convertExcelDate: function (serial) {
-			var excelEpoch = new Date(1899, 11, 30); // Excel的基准日期
+			var excelEpoch = new Date(1899, 11, 31); // Excel的基准日期
 			return new Date(excelEpoch.getTime() + serial * 24 * 60 * 60 * 1000).toISOString().split('T')[0]; // 返回 YYYY-MM-DD 格式
 		},
 
