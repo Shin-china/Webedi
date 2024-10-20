@@ -27,6 +27,6 @@ service Common {
     action getS3List(key : String) returns String;//Get S3 List
     action s3Attachment(attachmentJson : array of attachmentJson) returns String;//S3 Insert Attachment
     action s3uploadAttachment(attachmentJson : array of attachmentJson) returns String;//S3 Insert Attachment
-    action s3DownloadAttachment(attachmentJson : String) returns Binary;//S3 Insert Attachment
+    action s3DownloadAttachment(attachmentJson : array of attachmentJson) returns Binary;//S3 Insert Attachment
 
 }

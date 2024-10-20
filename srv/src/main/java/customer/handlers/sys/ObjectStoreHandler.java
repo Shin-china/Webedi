@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.google.common.io.ByteStreams;
@@ -48,40 +49,39 @@ public class ObjectStoreHandler implements EventHandler {
     @On(event = "s3uploadAttachment")
     public void s3UploadAttachment(S3uploadAttachmentContext context) throws IOException {
 
-        // Collection<AttachmentJson> attachments = context.getAttachmentJson();
-        // for (AttachmentJson attachment : attachments) {
-        // if (attachment.getFileName() != "" && attachment.getValue() != null) {
-        // String uuidd = UniqueIDTool.getUUID();
-        // String fieldId = uuidd + "." + attachment.getFileType();
-        // CommMsg msg = objectStoreService.uploadFile(fieldId, RequestBody
-        // .fromBytes(ByteStreams.toByteArray(StringTool.base2InputStream(attachment.getValue()))));
-        // if (msg.getMsgType().equals(UmcConstants.IF_STATUS_S)) {
-        // T13Attachment t13 = T13Attachment.create();
-        // t13.setObject(attachment.getObject());
-        // t13.setFileName(attachment.getFileName());
-        // t13.setFileType(attachment.getFileType());
-        // t13.setObjectType("PCH03");
-        // t13.setId(uuidd);
-        // t13.setObjectType(attachment.getObjectType());
-        // t13.setObjectLink(msg.getMsgTxt());
-        // t13AttachmentDao.insertAttachment(t13);
-        // }
+        Collection<AttachmentJson> attachments = context.getAttachmentJson();
+        for (AttachmentJson attachment : attachments) {
+            if (attachment.getFileName() != "" && attachment.getValue() != null) {
+                String uuidd = UniqueIDTool.getUUID();
+                String fieldId = uuidd + "." + attachment.getFileType();
+                CommMsg msg = objectStoreService.uploadFile(fieldId, RequestBody
+                        .fromBytes(ByteStreams.toByteArray(StringTool.base2InputStream(attachment.getValue()))));
+                if (msg.getMsgType().equals(UmcConstants.IF_STATUS_S)) {
+                    T13Attachment t13 = T13Attachment.create();
+                    t13.setObject(attachment.getObject());
+                    t13.setFileName(attachment.getFileName());
+                    t13.setFileType(attachment.getFileType());
+                    t13.setObjectType("PCH03");
+                    t13.setId(uuidd);
+                    t13.setObjectType(attachment.getObjectType());
+                    t13.setObjectLink(msg.getMsgTxt());
+                    t13AttachmentDao.insertAttachment(t13);
+                }
 
-        // }
-        // }
+            }
+        }
 
         context.setResult("success");
     }
 
     @On(event = "s3DownloadAttachment")
     public void s3DownloadAttachment(S3DownloadAttachmentContext context) throws IOException {
-        // Collection<AttachmentJson> attachments = context.getAttachmentJson();
+        Collection<AttachmentJson> attachments = context.getAttachmentJson();
         ResponseBytes msg = null;
-        String obj = context.getAttachmentJson();
-        msg = objectStoreService.downLoadRes("");
-        // for (AttachmentJson attachment : attachments) {
-        // msg = objectStoreService.downLoadRes(attachment.getValue());
-        // }
+        // String obj = context.getAttachmentJson();
+        for (AttachmentJson attachment : attachments) {
+            msg = objectStoreService.downLoadRes(attachment.getValue());
+        }
         byte[] bytes = msg.asByteArray();
         context.setResult(bytes);
     }
