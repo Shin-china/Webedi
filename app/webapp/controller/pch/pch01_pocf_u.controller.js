@@ -107,12 +107,6 @@ sap.ui.define([
 					return;
 				}
 			});
-			// //如果 任意一行message里有消息，则弹出消息。
-			// if (hasError) {
-			// 	sap.m.MessageBox.alert(that.MessageTools._getI18nTextInModel("pch", "PCH01_MSG_FILED_BLANK", this.getView()) );
-			// 	that._setBusy(false);
-			// 	return;
-			// }
 		
 			// 3. 如果所有检查都通过，调用服务
 			if (checkResult && flgHeand) {
@@ -196,11 +190,26 @@ sap.ui.define([
 				//设置头
 				var header = ["PO_NO","D_NO","MAT_ID","PO_D_TXZ01","PO_PUR_QTY","PO_PUR_UNIT","SUPPLIER_MAT","DELIVERY_DATE","QUANTITY","REFERTO"];   //,"CUSTOMER_MAT" 存疑
 				// 通过 XLSX 将sheet转为json  要转的oSheet，header标题，range起始行（1：第二行开始）
-				var jsonS = XLSX.utils.sheet_to_json(oSheet,{header: header, range: 2});
+				var jsonS = XLSX.utils.sheet_to_json(oSheet,{header: header, range: 1});
+				
+				jsonS.forEach(function (row) {
+				if (row.DELIVERY_DATE && !isNaN(row.DELIVERY_DATE)) {
+						// 转换 Excel 日期序列号为实际日期
+						row.DELIVERY_DATE = that._convertExcelDate(row.DELIVERY_DATE);
+					}
+				});
+				
+				
 				jsonModel.setData(jsonS);
 			};
 			oReader.readAsBinaryString(oFile);
-			},
+		},
+		
+		// 辅助函数：将 Excel 日期序列号转换为实际日期
+		_convertExcelDate: function (serial) {
+			var excelEpoch = new Date(1899, 11, 30); // Excel的基准日期
+			return new Date(excelEpoch.getTime() + serial * 24 * 60 * 60 * 1000).toISOString().split('T')[0]; // 返回 YYYY-MM-DD 格式
+		},
 
 			
 			

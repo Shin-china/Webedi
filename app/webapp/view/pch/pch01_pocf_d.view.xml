@@ -150,7 +150,7 @@
                 value='\{"columnKey":"CUSTOMER_MAT", "leadingProperty":"CUSTOMER_MAT", "sortProperty":"CUSTOMER_MAT", "filterProperty":"CUSTOMER_MAT"}'/>
           </t:customData>
           <t:label>
-            <Label id="label7" text="{pch>CUSTOMER_MAT}"/>
+            <Label id="label7" text="{pch>D_CUSTOMER_MAT}"/>
           </t:label>
           <t:template>
             <Text id="text7" text="{CUSTOMER_MAT}"/>
