@@ -83,7 +83,7 @@ public class ObjectStoreHandler implements EventHandler {
             msg = objectStoreService.downLoadRes(attachment.getValue());
         }
         byte[] bytes = msg.asByteArray();
-        // context.setResult(bytes);
+        context.setResult(bytes);
     }
 
 }
