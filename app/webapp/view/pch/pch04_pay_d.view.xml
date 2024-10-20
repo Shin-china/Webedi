@@ -37,7 +37,7 @@
                     <smartFilterBar:ControlConfiguration id="PCH_DESCRIPTION" key="SUPPLIER_DESCRIPTION" visibleInAdvancedArea="true" label="{pch>SUPPLIER_DESCRIPTION}"      index="2"/>
                     <smartFilterBar:ControlConfiguration id="PCH_PO_NO"       key="PO_NO"                visibleInAdvancedArea="true" label="{pch>PO_NO}"                     index="3"/>
                     <smartFilterBar:ControlConfiguration id="PCH_MAT_ID"      key="MAT_ID"               visibleInAdvancedArea="true" label="{pch>MAT_ID}"                    index="4"/>
-                    <smartFilterBar:ControlConfiguration id="INV_MONTH"       key="INV_MONTH"            visibleInAdvancedArea="true" label="{pch>INV_MONTH1}"           filterType='single'    index="5" />
+                    <smartFilterBar:ControlConfiguration id="INV_MONTH"       key="INV_MONTH"            visibleInAdvancedArea="true" label="{pch>INV_MONTH1}"           filterType='single'    index="5" required="true"/>
                     <smartFilterBar:ControlConfiguration id="PCH_SEND_FLAG"   key="SEND_FLAG"            visibleInAdvancedArea="true" label="{pch>SEND_FLAG}"            filterType="single"  controlType="dropDownList"   index="6"/>
                   
                     </smartFilterBar:controlConfiguration>
@@ -121,7 +121,8 @@
             <Label id="labelGrDate" text="{pch>GR_DATE1}"/>
         </table:label>
         <table:template>
-         <smartField:SmartField id="textGrDate" value="{GR_DATE}" editable="false"/>
+         <!-- <smartField:SmartField id="textGrDate" value="{GR_DATE}" editable="false"/> -->
+         <Text id="textGrDate" text="{path: 'GR_DATE', type: 'sap.ui.model.type.Date', formatOptions: {pattern: 'yyyy/MM/dd'}}" />
         </table:template>
     </table:Column>
 
@@ -241,7 +242,8 @@
             <Label id="labelInvBaseDate" text="{pch>INV_BASE_DATE}"/>
         </table:label>
         <table:template>
-        <smartField:SmartField id="textInvBaseDate" value="{INV_BASE_DATE}" editable="false"/>
+        <!-- <smartField:SmartField id="textInvBaseDate" value="{INV_BASE_DATE}" editable="false"/> -->
+        <Text id="textInvBaseDate" text="{path: 'INV_BASE_DATE', type: 'sap.ui.model.type.Date', formatOptions: {pattern: 'yyyy/MM/dd'}}" />
         </table:template>
     </table:Column>
 

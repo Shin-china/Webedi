@@ -1,0 +1,16 @@
+<mvc:View controllerName="umc.app.controller.pch.pch08_main" xmlns:mvc="sap.ui.core.mvc" displayBlock="true" xmlns="sap.m">
+    <Page id="idPage" title="{pch>PCH08_TITLE}" showHeader="true" showFooter="false" titleAlignment="Center" titleLevel="H1">
+        <content>
+            <IconTabBar id="idIconTabBar" expanded="{device>/isNoPhone}" class="sapUiResponsiveContentPadding">
+                <items>
+                    <IconTabFilter id="idIconTabFilterDetailView" text="{pch>PCH08_LISTVIEW_TITLE}" key="listView">
+                        <mvc:XMLView id="idXMLViewDetail" viewName="umc.app.view.pch.pch08_list"/>
+                    </IconTabFilter>
+                    <IconTabFilter id="idIconTabFilterListView" text="{pch>PCH08_UPLOADVIEW_TITLE}" key="uploadView">
+                        <mvc:XMLView id="idXMLViewList" viewName="umc.app.view.pch.pch08_answ_u"/>
+                    </IconTabFilter>
+                </items>
+            </IconTabBar>
+        </content>
+    </Page>
+</mvc:View>
