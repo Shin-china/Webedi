@@ -192,6 +192,14 @@ entity T13_ATTACHMENT : cuid {
                                 @title: '{i18n>FILE_NAME}' FILE_NAME       : String(100); //  文件名
                                 @title: '{i18n>CD_TIME}' CD_TIME           : DateTime   @cds.on.insert: $now; //创建时间
                                 @title: '{i18n>CD_BY}' CD_BY               : String(36) @cds.on.insert: $user; //创建人
+}
+entity T14_USER_2_BP : cuid, UP_FILED {
+  @title: '{i18n>USER_ID}' USER_ID : String(36); //
+  @title: '{i18n>BP_ID}' BP_ID : String(10); //
 
+  TO_BP                          : Association to one MST.T03_SAP_BP
+                                       on TO_BP.BP_ID = BP_ID; //
 
+  TO_USER                          : Association to one T01_USER
+                                       on TO_USER.ID = USER_ID; //
 }

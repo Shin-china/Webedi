@@ -25,9 +25,7 @@
 				<f:content>
 					<smartFilterBar:SmartFilterBar id="smartFilterBar" useToolbar="false" entitySet="SYS_T01_USER" persistencyKey="receiptprintFilterBar" showFilterConfiguration="true">
 						<smartFilterBar:controlConfiguration>
-							<smartFilterBar:ControlConfiguration id="_IDGenControlConfiguration3" key="USER_ID" visibleInAdvancedArea="true" />
-
-							<smartFilterBar:ControlConfiguration id="_IDGenControlConfiguration1" key="BP_NUMBER" visibleInAdvancedArea="true" />
+							<smartFilterBar:ControlConfiguration id="_IDGenControlConfiguration3" key="USER_ID" visibleInAdvancedArea="true" label="{sys>USER_ID}"/>
 						</smartFilterBar:controlConfiguration>
 					</smartFilterBar:SmartFilterBar>
 				</f:content>
@@ -38,8 +36,8 @@
 
 			<smartTable:SmartTable id="ID" tableType="Table" enableAutoColumnWidth="true" entitySet="SYS_T01_USER" 
 			ignoredFields="UP_BY,USER_PWD,UP_FLAG,ID" 
-			requestAtLeastFields="ID" 
-			initiallyVisibleFields="USER_ID,USER_TYPE,BP_NUMBER,USER_STATUS,VALID_DATE_FROM,VALID_DATE_TO" smartFilterId="smartFilterBar" enableExport="true" beforeExport="onBeforeExport" useVariantManagement="true" useTablePersonalisation="true" header="{com>TITLE_RESULT}" showRowCount="true" persistencyKey="sys01_SmartTableAnalytical_Explored" enableAutoBinding="false">
+			requestAtLeastFields="ID,USER_ID,USER_TYPE,USER_STATUS,VALID_DATE_FROM,VALID_DATE_TO" 
+			initiallyVisibleFields="" smartFilterId="smartFilterBar" enableExport="true" beforeExport="onBeforeExport" useVariantManagement="true" useTablePersonalisation="true" header="{com>TITLE_RESULT}" showRowCount="true" persistencyKey="sys01_SmartTableAnalytical_Explored" enableAutoBinding="false">
 			<!-- Add Button-->
 			<smartTable:customToolbar>
 				<OverflowToolbar design="Transparent">
@@ -52,7 +50,66 @@
 
 			<table:Table id="detailTable" rowMode="Auto" rowActionCount="1" selectionMode="None" alternateRowColors="true" >
 				<table:columns>
-					
+                <!-- User ID -->
+					<table:Column id="colUSER_ID" width="20rem" sortProperty="USER_ID" filterProperty="USER_ID">
+						<table:customData>
+							<core:CustomData key="p33nData" value='{"columnKey":"USER_ID", "leadingProperty":"USER_ID", "sortProperty":"USER_ID", "filterProperty":"USER_ID"}'/>
+						</table:customData>
+						<table:label>
+							<Label id="labelUSER_ID" text="{sys>USER_ID}" />
+						</table:label>
+						<table:template>
+							<Text id="textUSER_ID" text="{USER_ID}" />
+						</table:template>
+					</table:Column>
+                <!-- User Type -->
+				<table:Column id="colUSER_TYPE" width="10rem" sortProperty="USER_TYPE" filterProperty="USER_TYPE">
+					<table:customData>
+						<core:CustomData key="p33nData" value='{"columnKey":"USER_TYPE", "leadingProperty":"USER_TYPE", "sortProperty":"USER_TYPE", "filterProperty":"USER_TYPE"}'/>
+					</table:customData>
+					<table:label>
+						<Label id="labelUSER_TYPE" text="{sys>USER_TYPE}" />
+					</table:label>
+					<table:template>
+						<Text id="textUSER_TYPE" text="{parts:[{path:'USER_TYPE'}],formatter: '.formatter.getUserTypeText'}" />
+					</table:template>
+				</table:Column>
+                <!-- User STATUS -->
+				<table:Column id="colUSER_STATUS" width="10rem" sortProperty="USER_STATUS" filterProperty="USER_STATUS">
+					<table:customData>
+						<core:CustomData key="p33nData" value='{"columnKey":"USER_STATUS", "leadingProperty":"USER_STATUS", "sortProperty":"USER_STATUS", "filterProperty":"USER_STATUS"}'/>
+					</table:customData>
+					<table:label>
+						<Label id="labelUSER_STATUS" text="{sys>USER_STATUS}" />
+					</table:label>
+					<table:template>
+						<Text id="textUSER_STATUS" text="{parts:[{path:'USER_STATUS'}],formatter: '.formatter.getUserStatus'}"  />
+					</table:template>
+				</table:Column>
+                <!-- Validate from -->
+				<table:Column id="colVALID_DATE_FROM" width="10rem" sortProperty="VALID_DATE_FROM" filterProperty="VALID_DATE_FROM">
+					<table:customData>
+						<core:CustomData key="p33nData" value='{"columnKey":"VALID_DATE_FROM", "leadingProperty":"VALID_DATE_FROM", "sortProperty":"VALID_DATE_FROM", "filterProperty":"VALID_DATE_FROM"}'/>
+					</table:customData>
+					<table:label>
+						<Label id="labelVALID_DATE_FROM" text="{sys>VALID_DATE_FROM}" />
+					</table:label>
+					<table:template>
+						<Text id="textVALID_DATE_FROM" text="{VALID_DATE_FROM}" />
+					</table:template>
+				</table:Column>
+                <!-- Validate To -->
+				<table:Column id="colVALID_DATE_TO" width="10rem" sortProperty="VALID_DATE_TO" filterProperty="VALID_DATE_TO">
+					<table:customData>
+						<core:CustomData key="p33nData" value='{"columnKey":"VALID_DATE_TO", "leadingProperty":"VALID_DATE_TO", "sortProperty":"VALID_DATE_TO", "filterProperty":"VALID_DATE_TO"}'/>
+					</table:customData>
+					<table:label>
+						<Label id="labelVALID_DATE_TO" text="{sys>VALID_DATE_TO}" />
+					</table:label>
+					<table:template>
+						<Text id="textVALID_DATE_TO" text="{VALID_DATE_TO}" />
+					</table:template>
+				</table:Column>
 				</table:columns>
 				<table:rowActionTemplate>
 					<table:RowAction id="RowAction">

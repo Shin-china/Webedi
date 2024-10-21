@@ -82,9 +82,9 @@
 	</f:header>
 
 	<f:content>
+		<!-- Plant View -->
 		<IconTabBar id="idIconTabBar" expanded="true" expandable="false" class="sapUiSmallMarginBottom" backgroundDesign="Translucent">
 			<items>
-
 				<IconTabFilter  id="idIconTabFilter" text="{sys>SYS01_TAB_PLANT}" icon="sap-icon://folder"  >
 				   <!-- 编辑状态下显示所有表中的工厂作为选择 -->
 					<smarttable:SmartTable id="smartTable1" persistencyKey="Table1" visible="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'}],formatter: '.formatter.getEditableSaveCommon'}" entitySet="MST_T02_SAP_PLANT" useVariantManagement="false" header="{sys>SYS01_TAB_TITLE_PLANT}" enableAutoBinding="true">

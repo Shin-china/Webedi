@@ -38,7 +38,7 @@
 
     <f:content>
         <smartTable:SmartTable id="ID" tableType="Table" enableAutoColumnWidth="true" entitySet="SYS_T13_ATTACHMENT" 
-        ignoredFields="ID"
+        ignoredFields="ID" 
         requestAtLeastFields="OBJECT,OBJECT_VERSION,FILE_NAME,CD_TIME,CD_BY,OBJECT_LINK,FILE_TYPE" 
         smartFilterId="smartFilterBar" enableExport="true" beforeExport="onBeforeExport" useVariantManagement="true" 
         useTablePersonalisation="true" header="{com>TITLE_RESULT}" showRowCount="true" 

@@ -282,6 +282,24 @@ sap.ui.define([], function () {
         }
         return re;
       },
+      getUserTypeText: function (userType) {
+        if (userType === '1') {
+          return 'Internal User';
+        } else if (userType === '2') {
+          return 'External User';
+        } else {
+          return '未知用户';
+        }
+      },
+      getUserStatus:function(userStatus){
+        if(userStatus === 'A'){
+          return 'Active';
+        }else if(userStatus === 'I'){
+          return 'Inactive';
+        }else{
+          return 'Locked';
+        }
+      },
       		/*++++++++++++++++++++++++++++++
 		日期格式转换
 		参数：

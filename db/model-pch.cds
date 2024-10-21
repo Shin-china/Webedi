@@ -78,6 +78,7 @@ entity T04_PAYMENT_H : IF_CUID_FILED { //付款申请表抬头表
                                @title: '{i18n>INV_POST_DATE}' INV_POST_DATE               : Date; //采购订单明细行号
                                @title: '{i18n>SEND_FLAG}' SEND_FLAG                       : String(1); //采购订单明细行号
                                @title: '{i18n>EXCHANGE}' EXCHANGE                         : Decimal(18, 3); //换算レ-ト
+                               @title: '{i18n>CE_DOC}' CE_DOC                             : String(10); //差額伝票番号
                                TO_ITEMS                                                   : Association to many T05_PAYMENT_D //付款申请表行表
                                                                                               on  TO_ITEMS.INV_NO  = INV_NO
                                                                                               and TO_ITEMS.GL_YEAR = GL_YEAR;
