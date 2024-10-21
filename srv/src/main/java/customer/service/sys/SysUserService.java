@@ -13,8 +13,10 @@ import com.sap.cds.services.messages.Messages;
 import cds.gen.sys.T01User;
 import cds.gen.sys.T04User2Role;
 import cds.gen.sys.T09User2Plant;
+import cds.gen.sys.T14User2Bp;
 import cds.gen.tableservice.SysT01User_;
 import customer.bean.sys.Sys001User;
+import customer.dao.sys.User2BpDao;
 import customer.dao.sys.User2PlantDao;
 import customer.dao.sys.User2RoleDao;
 import customer.dao.sys.UserDao;
@@ -33,6 +35,9 @@ public class SysUserService {
 
     @Autowired
     User2PlantDao user2PlantDao;
+
+    @Autowired
+    User2BpDao user2BpDao;
 
     /*
      * Insert User
@@ -68,6 +73,14 @@ public class SysUserService {
             plant.setPlantId(plantId);
             plant.setUserId(o.getId());
             user2PlantDao.insertUser2Plant(plant);
+        }
+        // 插入用户->BP
+        user2BpDao.deleteByUserId(o.getId());
+        for (String bpId : user.getBps()) {
+            T14User2Bp bp = T14User2Bp.create();
+            bp.setBpId(bpId);
+            bp.setUserId(o.getId());
+            user2BpDao.insertUser2Bp(bp);
         }
 
         return userID;
@@ -107,6 +120,16 @@ public class SysUserService {
             plant.setUserId(o.getId());
             user2PlantDao.insertUser2Plant(plant);
         }
+
+        // 插入用户->BP
+        user2BpDao.deleteByUserId(o.getId());
+        for (String bpId : user.getBps()) {
+            T14User2Bp bp = T14User2Bp.create();
+            bp.setBpId(bpId);
+            bp.setUserId(o.getId());
+            user2BpDao.insertUser2Bp(bp);
+        }
+
     }
 
     // 检查User是否存在
@@ -128,6 +151,8 @@ public class SysUserService {
         userDao.deleteUserID(user.getUserId());
         // 删除用户对应的工厂表
         user2PlantDao.deleteByUserId(user.getUserId());
+        // 删除用户对应的BP表
+        user2BpDao.deleteByUserId(user.getUserId());
     }
 
 }

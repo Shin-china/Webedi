@@ -84,6 +84,8 @@ sap.ui.define([
 
 			that.byId("smartTable1").rebindTable();
 			that.byId("smartTable2").rebindTable();
+			that.byId("smartTable3").rebindTable();
+			that.byId("smartTable4").rebindTable();
 
 		},
 		_onRouteMatchedCreate:function(oEvent){
@@ -131,6 +133,7 @@ sap.ui.define([
 			var userStatus = this.byId("idSelectList").getSelectedKey();
 			var userType = this.byId("idSelectList7").getSelectedKey();
 			var plantIdList = this._getRootId("idTable1","PLANT_ID");
+			var bpIdList = this._getRootId("idTable3","BP_ID");
 			var itemObj = {
 				userId:context.USER_ID,
 				userType:userType,
@@ -139,6 +142,7 @@ sap.ui.define([
 				validDateFrom:dateF,
 				validDateTo:dateT,
 				plants:plantIdList,
+				bps:bpIdList
 			};
 
 			var resStr = { userJson: JSON.stringify(itemObj) };
@@ -265,6 +269,9 @@ sap.ui.define([
 			//获取已选择的工厂数据
 			this._getUserPlantData(headID,true)
 
+			//获取已选择的BP数据
+			this._getUserBpData(headID,true)
+
 			.then((data) =>{
 				that.plantData = data;
 				return that._getPlantData(headID);
@@ -287,6 +294,21 @@ sap.ui.define([
 			var that = this;
 			return new Promise(function(resolve,reject){
 			    that.getModel().read("/SYS_T09_USER_2_PLANT",{
+					filters:[new sap.ui.model.Filter("USER_ID", "EQ", headID)],
+					success:function(data){
+						resolve(data);
+					},
+					error:function(error){
+						reject(error);
+					}
+				})
+			})
+		},
+		//获取用户选择的工作数据
+		_getUserBpData:function(headID,isE){
+			var that = this;
+			return new Promise(function(resolve,reject){
+			    that.getModel().read("/SYS_T14_USER_2_BP",{
 					filters:[new sap.ui.model.Filter("USER_ID", "EQ", headID)],
 					success:function(data){
 						resolve(data);

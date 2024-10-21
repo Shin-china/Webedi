@@ -16,19 +16,28 @@ service TableService {
     entity SYS_T06_DOC_NO as projection on SYS.T06_DOC_NO;
     entity SYS_T13_ATTACHMENT  as projection on SYS.T13_ATTACHMENT;
     entity MST_T02_SAP_PLANT as projection on MST.T02_SAP_PLANT;
+    entity MST_T03_SAP_BP as projection on MST.T03_SAP_BP;
+    //entity SYS_T14_USER_2_BP as projection on SYS.T14_USER_2_BP;
     entity SYS_T11_MAIL_TEMPLATE as projection on SYS.T11_MAIL_TEMPLATE;
     entity T01_PO_H as projection on PCH.T01_PO_H;
     entity T02_PO_D as projection on PCH.T02_PO_D;
     entity T03_PO_C as projection on PCH.T03_PO_C;
-   entity MST_T05_SAP_BP_PURCHASE as projection on MST.T05_SAP_BP_PURCHASE;
+    entity MST_T05_SAP_BP_PURCHASE as projection on MST.T05_SAP_BP_PURCHASE;
   //  entity SYS_T20_CONFIG as projection on SYS.T20_CONFIG;
-   entity SYS_T12_CONFIG as projection on SYS.T12_CONFIG;
-  entity SYS_T09_USER_2_PLANT as 
-    projection on SYS.T09_USER_2_PLANT{
-      *,
-      TO_USER : redirected to SYS_T01_USER,
-      TO_PLANT : redirected to MST_T02_SAP_PLANT
-    };
+    entity SYS_T12_CONFIG as projection on SYS.T12_CONFIG;
+    entity SYS_T09_USER_2_PLANT as 
+      projection on SYS.T09_USER_2_PLANT{
+        *,
+        TO_USER : redirected to SYS_T01_USER,
+        TO_PLANT : redirected to MST_T02_SAP_PLANT
+      };
+
+    entity SYS_T14_USER_2_BP as 
+      projection on SYS.T14_USER_2_BP{
+        *,
+        TO_USER : redirected to SYS_T01_USER,
+        TO_BP : redirected to MST_T03_SAP_BP
+      };
 
 
 

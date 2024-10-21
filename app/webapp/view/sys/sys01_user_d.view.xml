@@ -85,6 +85,7 @@
 		<!-- Plant View -->
 		<IconTabBar id="idIconTabBar" expanded="true" expandable="false" class="sapUiSmallMarginBottom" backgroundDesign="Translucent">
 			<items>
+				<!-- Plant -->
 				<IconTabFilter  id="idIconTabFilter" text="{sys>SYS01_TAB_PLANT}" icon="sap-icon://folder"  >
 				   <!-- 编辑状态下显示所有表中的工厂作为选择 -->
 					<smarttable:SmartTable id="smartTable1" persistencyKey="Table1" visible="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'}],formatter: '.formatter.getEditableSaveCommon'}" entitySet="MST_T02_SAP_PLANT" useVariantManagement="false" header="{sys>SYS01_TAB_TITLE_PLANT}" enableAutoBinding="true">
@@ -120,7 +121,7 @@
 					</smarttable:SmartTable>
 
 				   <!-- 显示状态显示保重存的数据 -->
-				   <smarttable:SmartTable id="smartTable2" persistencyKey="Table1" visible="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'}],formatter: '.formatter.getEditableDCommon'}"
+				   <smarttable:SmartTable id="smartTable2" persistencyKey="Table2" visible="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'}],formatter: '.formatter.getEditableDCommon'}"
 					 entitySet="SYS_T09_USER_2_PLANT"  beforeRebindTable=".onRebindPlant" useVariantManagement="false" header="{sys>SYS01_TAB_TITLE_PLANT}" enableAutoBinding="true" >
 					<t:Table id="idTable2" rowActionCount="1" selectionMode="None">
 						<t:columns>
@@ -153,8 +154,77 @@
 
 				</smarttable:SmartTable>
 				</IconTabFilter>
+
+				<!-- BP -->
+				<IconTabFilter id="idIconTabFilter2" text="{sys>SYS01_TAB_BP}" icon="sap-icon://folder" >
+				   <!-- 编辑状态下显示所有表中的BP作为选择 -->
+					<smarttable:SmartTable id="smartTable3" persistencyKey="Table3" visible="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'}],formatter: '.formatter.getEditableSaveCommon'}" entitySet="MST_T03_SAP_BP" useVariantManagement="false" header="{sys>SYS01_TAB_TITLE_BP}" enableAutoBinding="true">
+						<t:Table id="idTable3" rowActionCount="1" >
+							<t:columns>
+								<!--Plant ID-->
+								<t:Column id="idColumnBPID1" autoResizable="true" sortProperty="BP_ID" filterProperty="BP_ID">
+									<t:customData>
+										<c:CustomData key="p13nData" value='\{"columKey":"BP_ID","leadingProperty":"BP_ID"}' />
+									</t:customData>
+									<t:label>
+										<Label id="_IDGenLabelBPID" text="{sys>BP_ID}" />
+									</t:label>
+									<t:template>
+										<Text id="_IDGenTextBPID" text="{BP_ID}"/>
+									</t:template>
+								</t:Column>
+								<!--Plant Name-->
+								<t:Column id="idColumnBPName1" autoResizable="true" sortProperty="BP_NAME1" filterProperty="BP_NAME1">
+									<t:customData>
+										<c:CustomData key="p13nData" value='\{"columKey":"BP_NAME1","leadingProperty":"BP_NAME1"}' />
+									</t:customData>
+									<t:label>
+										<Label id="_IDLabelBpname" text="{sys>BP_NAME1}" />
+									</t:label>
+									<t:template>
+										<Text id="_IDTxtBpname" text="{BP_NAME1}"/>
+									</t:template>
+								</t:Column>
+							</t:columns>
+						</t:Table>
+					</smarttable:SmartTable>
+				   <!-- 显示状态显示保重存的数据 -->
+				   <smarttable:SmartTable id="smartTable4" persistencyKey="Table4" visible="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'}],formatter: '.formatter.getEditableDCommon'}" entitySet="SYS_T14_USER_2_BP" useVariantManagement="false" header="{sys>SYS01_TAB_TITLE_BP}" enableAutoBinding="true">
+					<t:Table id="idTable4" rowActionCount="1" >
+						<t:columns>
+							<!--Plant ID-->
+							<t:Column id="idColumnBPID2" autoResizable="true" sortProperty="BP_ID" filterProperty="BP_ID">
+								<t:customData>
+									<c:CustomData key="p13nData" value='\{"columKey":"BP_ID","leadingProperty":"BP_ID"}' />
+								</t:customData>
+								<t:label>
+									<Label id="_IDGenLabelBPID2" text="{sys>BP_ID}" />
+								</t:label>
+								<t:template>
+									<Text id="_IDGenTextBPID2" text="{BP_ID}"/>
+								</t:template>
+							</t:Column>
+							<!--Plant Name-->
+							<t:Column id="idColumnBPName2" autoResizable="true" sortProperty="BP_NAME1" filterProperty="BP_NAME1">
+								<t:customData>
+									<c:CustomData key="p13nData" value='\{"columKey":"BP_NAME1","leadingProperty":"BP_NAME1"}' />
+								</t:customData>
+								<t:label>
+									<Label id="_IDLabelBpname2" text="{sys>BP_NAME1}" />
+								</t:label>
+								<t:template>
+									<Text id="_IDTxtBpname2" text="{BP_NAME1}"/>
+								</t:template>
+							</t:Column>
+						</t:columns>
+					</t:Table>
+				</smarttable:SmartTable>
+				</IconTabFilter>
 			</items>
 		</IconTabBar>
+
+		<!-- BP View -->
+
 	</f:content>
 
 	<!-- 创建报错消息框 -->

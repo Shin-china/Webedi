@@ -15,6 +15,7 @@ public class Sys001User {
 
     private ArrayList<String> roles;
     private ArrayList<String> plants;
+    private ArrayList<String> bps;
 
     public String getUserId() {
         return userId;
@@ -86,6 +87,14 @@ public class Sys001User {
 
     public void setPlants(ArrayList<String> plants) {
         this.plants = plants;
+    }
+
+    public ArrayList<String> getBps() {
+        return bps;
+    }
+
+    public void setBps(ArrayList<String> bps) {
+        this.bps = bps;
     }
 
 }

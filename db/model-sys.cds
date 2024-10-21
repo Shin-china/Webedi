@@ -196,7 +196,6 @@ entity T13_ATTACHMENT : cuid {
 entity T14_USER_2_BP : cuid, UP_FILED {
   @title: '{i18n>USER_ID}' USER_ID : String(36); //
   @title: '{i18n>BP_ID}' BP_ID : String(10); //
-
   TO_BP                          : Association to one MST.T03_SAP_BP
                                        on TO_BP.BP_ID = BP_ID; //
 
