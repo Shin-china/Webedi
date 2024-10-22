@@ -5,13 +5,18 @@
     "license": "ISC",
     "repository": "<Add your repository here>",
     "dependencies": {
-        "@cap-js/postgres": "^1.5.1",
-        "umc-webedi-cds": "file:"
+        "@cap-js/postgres": "1.5.1",
+        "@sap/cds-compiler": "4.9.4",
+        "@sap/cds": "7.7.1",
+        "@sap/cds-dk": "7.9.2"
+
     },
     "devDependencies": {
-        "@sap/cds-dk": "^8.1.0",
-        "@sap/ux-specification": "^1.120.6",
-        "rimraf": "^3.0.2"
+        "@sap/cds-compiler": "4.9.4",
+        "@sap/cds-dk": "7.9.2",
+        "@sap/cds": "7.7.1",
+        "@sap/ux-specification": "1.120.6",
+        "rimraf": "3.0.2"
     },
     "scripts": {
         "undeploy": "cf undeploy usapbe --delete-services --delete-service-keys --delete-service-brokers",
