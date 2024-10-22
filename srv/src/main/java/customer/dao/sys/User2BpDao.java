@@ -17,7 +17,7 @@ import customer.dao.common.Dao;
 public class User2BpDao extends Dao {
     // 根据用户ID删除
     public void deleteByUserId(String userId) {
-        db.run(Delete.from(Sys_.T14_USER2_BP).where(o -> o.BP_ID().eq(userId)));
+        db.run(Delete.from(Sys_.T14_USER2_BP).where(o -> o.USER_ID().eq(userId)));
     }
 
     // 插入用户BP

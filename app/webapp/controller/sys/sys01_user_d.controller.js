@@ -239,6 +239,15 @@ sap.ui.define([
 			oEvent.getParameter("bindingParams").parameters.expand = "TO_PLANT";
 
 		},
+		onRebindBp:function(oEvent){
+
+			var oBindingParams = oEvent.getParameter("bindingParams");
+
+			if(this._id != "" && this._id != null){
+				oBindingParams.filters.push(new sap.ui.model.Filter("USER_ID", "EQ", this._id));
+			}
+			oEvent.getParameter("bindingParams").parameters.expand = "TO_BP";
+		},
     /**
      * 获取字段的某一个id集合
      * @param {画面id} viewId
@@ -261,17 +270,18 @@ sap.ui.define([
 
 			//获取所有工厂数据
 			var plantTable = this.byId("idTable1");
+
+			//获取所有BP数据
+			var bpTable = this.byId("idTable3");
 			//清空工厂选择项
 			plantTable.clearSelection();
+
+			bpTable.clearSelection();
 
 			var that = this;
 
 			//获取已选择的工厂数据
 			this._getUserPlantData(headID,true)
-
-			//获取已选择的BP数据
-			this._getUserBpData(headID,true)
-
 			.then((data) =>{
 				that.plantData = data;
 				return that._getPlantData(headID);
@@ -284,6 +294,25 @@ sap.ui.define([
 						if(tableContext[index].PLANT_ID === data[i].PLANT_ID){
 							//plantTable.setSelectedIndex(index,index);
 							plantTable.addSelectionInterval(index,index);
+						}
+					}
+				}
+			});
+
+			//获取已选择的BP数据
+			this._getUserBpData(headID,true)
+			.then((data) =>{
+				that.bpData = data;
+				return that._getBpData(headID);
+			}).then((oTable) =>{
+			    var data = that.bpData.results;
+				var tableContext = oTable.results;
+				//对比工厂数据对选中的进行选中
+				for(var index = 0; index < tableContext.length; index++){
+					for(var i = 0; i < data.length; i++){
+						if(tableContext[index].BP_ID === data[i].BP_ID){
+							//plantTable.setSelectedIndex(index,index);
+							bpTable.addSelectionInterval(index,index);
 						}
 					}
 				}
@@ -324,6 +353,20 @@ sap.ui.define([
 			var that = this;
 			return new Promise(function(resolve,reject){
 			    that.getModel().read("/MST_T02_SAP_PLANT",{
+			        success:function(data){
+			            resolve(data);
+			        },
+					error:function(error){
+					    reject(error);
+					}
+			    })
+			})
+		},
+		//获取所有的BP数据
+		_getBpData:function(headID){
+			var that = this;
+			return new Promise(function(resolve,reject){
+			    that.getModel().read("/MST_T03_SAP_BP",{
 			        success:function(data){
 			            resolve(data);
 			        },

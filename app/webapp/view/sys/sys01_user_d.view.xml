@@ -189,31 +189,31 @@
 						</t:Table>
 					</smarttable:SmartTable>
 				   <!-- 显示状态显示保重存的数据 -->
-				   <smarttable:SmartTable id="smartTable4" persistencyKey="Table4" visible="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'}],formatter: '.formatter.getEditableDCommon'}" entitySet="SYS_T14_USER_2_BP" useVariantManagement="false" header="{sys>SYS01_TAB_TITLE_BP}" enableAutoBinding="true">
-					<t:Table id="idTable4" rowActionCount="1" >
+				   <smarttable:SmartTable id="smartTable4"  beforeRebindTable=".onRebindBp" persistencyKey="Table4" visible="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'}],formatter: '.formatter.getEditableDCommon'}" entitySet="SYS_T14_USER_2_BP" useVariantManagement="false" header="{sys>SYS01_TAB_TITLE_BP}" enableAutoBinding="true">
+					<t:Table id="idTable4" rowActionCount="1" selectionMode="None" >
 						<t:columns>
 							<!--Plant ID-->
-							<t:Column id="idColumnBPID2" autoResizable="true" sortProperty="BP_ID" filterProperty="BP_ID">
+							<t:Column id="idColumnBPID2" autoResizable="true" sortProperty="TO_BP/BP_ID" filterProperty="TO_BP/BP_ID">
 								<t:customData>
-									<c:CustomData key="p13nData" value='\{"columKey":"BP_ID","leadingProperty":"BP_ID"}' />
+									<c:CustomData key="p13nData" value='\{"columKey":"TO_BP/BP_ID","leadingProperty":"TO_BP/BP_ID"}' />
 								</t:customData>
 								<t:label>
 									<Label id="_IDGenLabelBPID2" text="{sys>BP_ID}" />
 								</t:label>
 								<t:template>
-									<Text id="_IDGenTextBPID2" text="{BP_ID}"/>
+									<Text id="_IDGenTextBPID2" text="{TO_BP/BP_ID}"/>
 								</t:template>
 							</t:Column>
 							<!--Plant Name-->
-							<t:Column id="idColumnBPName2" autoResizable="true" sortProperty="BP_NAME1" filterProperty="BP_NAME1">
+							<t:Column id="idColumnBPName2" autoResizable="true" sortProperty="TO_BP/BP_NAME1" filterProperty="TO_BP/BP_NAME1">
 								<t:customData>
-									<c:CustomData key="p13nData" value='\{"columKey":"BP_NAME1","leadingProperty":"BP_NAME1"}' />
+									<c:CustomData key="p13nData" value='\{"columKey":"TO_BP/BP_NAME1","leadingProperty":"TO_BP/BP_NAME1"}' />
 								</t:customData>
 								<t:label>
 									<Label id="_IDLabelBpname2" text="{sys>BP_NAME1}" />
 								</t:label>
 								<t:template>
-									<Text id="_IDTxtBpname2" text="{BP_NAME1}"/>
+									<Text id="_IDTxtBpname2" text="{TO_BP/BP_NAME1}"/>
 								</t:template>
 							</t:Column>
 						</t:columns>
