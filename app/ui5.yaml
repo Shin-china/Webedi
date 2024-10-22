@@ -15,7 +15,7 @@ server:
       afterMiddleware: compression
       configuration:
         debug: true
-        port: 9000
+        port: 1093
         xsappJson: ../app/webapp/xs-app.json
         destinations:
           - name: "UI5"
@@ -28,4 +28,3 @@ server:
             url: "https://adsrestapiformsprocessing-gbdabef24.jp1.hana.ondemand.com"
           - name: "OAuth"
             url: "https://oauthasservices-gbdabef24.jp1.hana.ondemand.com/oauth2"
-
