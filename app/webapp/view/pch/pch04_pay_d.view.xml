@@ -121,8 +121,8 @@
             <Label id="labelGrDate" text="{pch>GR_DATE1}"/>
         </table:label>
         <table:template>
-         <!-- <smartField:SmartField id="textGrDate" value="{GR_DATE}" editable="false"/> -->
-         <Text id="textGrDate" text="{path: 'GR_DATE', type: 'sap.ui.model.type.Date', formatOptions: {pattern: 'yyyy/MM/dd'}}" />
+         <smartField:SmartField id="textGrDate" value="{GR_DATE}" editable="false"/>
+         <!-- <Text id="textGrDate" text="{path: 'GR_DATE', type: 'sap.ui.model.type.Date', formatOptions: {pattern: 'yyyy/MM/dd'}}" /> -->
         </table:template>
     </table:Column>
 

@@ -130,9 +130,28 @@ sap.ui.define([
         
             let options = { compact: true, ignoreComment: true, spaces: 4 };
             var IdList = that._TableDataList("detailTable", 'SUPPLIER');
+
+             // 将日期字符串转换为指定格式
+             function formatDateString(dateString) {
+                const date = new Date(dateString);
+                const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+                const formattedDate = date.toLocaleDateString('zh-CN', options);
+                
+                // 将日期格式调整为 YYYY/MM/DD
+                return formattedDate.replace(/\//g, '/'); // 保证分隔符为 /
+              }
         
             if (IdList) {
                 that.PrintTool._getPrintDataInfo(that, IdList, "/PCH_T05_ACCOUNT_DETAIL_EXCEL", "SUPPLIER").then((oData) => {
+                    oData.results.forEach(function (row) {
+    
+                        // 格式化日期
+                        if (row.INV_POST_DATE) {
+                            row.INV_POST_DATE = formatDateString(row.INV_POST_DATE);
+                        }
+
+                });
+
                     let sResponse = json2xml(oData, options);
                     console.log(sResponse);
                     that.setSysConFig().then(res => {

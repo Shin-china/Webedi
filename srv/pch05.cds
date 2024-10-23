@@ -21,11 +21,11 @@ extend service TableService {
         distinct {
             key T05.INV_NO,                        // 伝票番号
             key T05.GL_YEAR,                       // 会計年度
-            key T05.ITEM_NO,                       // 請求書明細
-                T05.PO_NO,                         // 購買伝票
-                T05.D_NO,                          // 明細
+            key T05.PO_NO,                         // 購買伝票
+            key T05.D_NO,                          // 明細
+            key T04.SUPPLIER,                      // 仕入先
                 T01.PO_BUKRS,                      // 会社コード
-                T04.SUPPLIER,                      // 仕入先
+                T05.ITEM_NO,                       // 請求書明細
                 T04.SUPPLIER_DESCRIPTION,          // 仕入先名称
                 T04.INV_DATE,                      // インボイス
                 T05.PO_TRACK_NO,                   // 購買依頼追跡番号
@@ -45,6 +45,7 @@ extend service TableService {
                 T04.SEND_FLAG,                     // 送信ステータス
                 T05.UNIT_PRICE,                    // 単価
                 T05.TAX_AMOUNT,                    // 消費税額
+                T04.CE_DOC,                        // 差額伝票番号
                 // T05.PRICE_AMOUNT,                  // 本体金額
                 // T05.TOTAL_AMOUNT,                  // 計上金額
                 T04.INV_BASE_DATE,                 // 支払い基準日
@@ -78,11 +79,11 @@ extend service TableService {
         distinct {
             key T05.INV_NO,                        // 伝票番号
             key T05.GL_YEAR,                       // 会計年度
-            key T05.ITEM_NO,                       // 請求書明細
-                T05.PO_NO,                         // 購買伝票
-                T05.D_NO,                          // 明細
+            key T05.PO_NO,                         // 購買伝票
+            key T05.D_NO,                          // 明細
+            key T05.SUPPLIER,                      // 仕入先
+                T05.ITEM_NO,                       // 請求書明細
                 T05.PO_BUKRS,                      // 会社コード
-                T05.SUPPLIER,                      // 仕入先
                 T05.SUPPLIER_DESCRIPTION,          // 仕入先名称
                 T05.INV_DATE,                      // インボイス
                 T05.PO_TRACK_NO,                   // 購買依頼追跡番号
@@ -136,18 +137,19 @@ extend service TableService {
 
         select from   PCH_T05_ACCOUNT_DETAIL_SUM  as T01
 
-        distinct {
-            key T01.PO_BUKRS,                       
-            key T01.SUPPLIER,                       
-            key T01.INV_MONTH,            
+        distinct {   
+            key T01.INV_NO,                     
+            key T01.PO_NO,
+            key T01.D_NO,      
+            key T01.SUPPLIER,      
             SUM(CALC_10_TAX_AMOUNT) as CALC_10_TAX_AMOUNT: Decimal(15, 2),                      // 10% 税抜金额
             SUM(CALC_8_TAX_AMOUNT) as CALC_8_TAX_AMOUNT: Decimal(15, 2),                        // 8%  税抜金额
             SUM(SAP_TAX_AMOUNT_10) as SAP_TAX_AMOUNT_10: Decimal(15, 2),                        // 10% SAP税额
             SUM(SAP_TAX_AMOUNT_8) as SAP_TAX_AMOUNT_8: Decimal(15, 2),                          // 8%  SAP税额
             // SUM(PRICE_AMOUNT) as PRICE_AMOUNT_TOTAL: Decimal(15, 2),                            // 本体金額の合計値
             SUM(ROUND(PRICE_AMOUNT, 2)) as PRICE_AMOUNT_TOTAL : Decimal(15, 2),
-
-
+            INV_MONTH,  
+            PO_BUKRS,  
             CURRENCY,
             TAX_RATE,
             TAX_CODE,
@@ -167,11 +169,11 @@ extend service TableService {
             MAT_DESC,
         }
         group by
-            T01.PO_BUKRS,           // 会社コード (聚合维度)
+            PO_BUKRS,           // 会社コード (聚合维度)
             T01.SUPPLIER,           // 仕入先 (聚合维度)
-            T01.INV_MONTH,          // 月度
-            T01.CURRENCY,
-            T01.TAX_RATE,
+            INV_MONTH,          // 月度
+            CURRENCY,
+            TAX_RATE,
             TAX_CODE,
             GR_DATE,
             VALUE01,
@@ -186,18 +188,24 @@ extend service TableService {
             INV_POST_DATE,
             LOG_NO,
             SUPPLIER_DESCRIPTION,
-            MAT_DESC;
+            MAT_DESC,
+            T01.INV_NO,
+            T01.PO_NO,
+            T01.D_NO;
 
     entity PCH_T05_ACCOUNT_DETAIL_SUM_END as
 
         select from   PCH_T05_ACCOUNT_DETAIL_SUM_GRO  as T02
 
         distinct {
-            key T02.PO_BUKRS,                       
+            key T02.INV_NO,                     
+            key T02.PO_NO,
+            key T02.D_NO,      
             key T02.SUPPLIER,                       
-            key T02.INV_MONTH,
-            key T02.CURRENCY,
-            key T02.TAX_RATE,
+            T02.INV_MONTH,
+            T02.PO_BUKRS,     
+            CURRENCY,
+            TAX_RATE,
             TAX_CODE,
             GR_DATE,
             CALC_10_TAX_AMOUNT,  
@@ -243,11 +251,14 @@ extend service TableService {
         select from   PCH_T05_ACCOUNT_DETAIL_SUM_END  as T03
 
         distinct {
-            key T03.PO_BUKRS,                       
-            key T03.SUPPLIER,                       
-            key T03.INV_MONTH,
-            key T03.CURRENCY,
-            key T03.TAX_RATE,
+            key T03.INV_NO,                     
+            key T03.PO_NO,
+            key T03.D_NO,      
+            key T03.SUPPLIER,        
+            T03.PO_BUKRS,                       
+            T03.INV_MONTH,
+            T03.CURRENCY,
+            T03.TAX_RATE,
             TAX_CODE,
             GR_DATE,
             CALC_10_TAX_AMOUNT,  
@@ -313,11 +324,14 @@ extend service TableService {
         select from   PCH_T05_ACCOUNT_DETAIL_SUM_FINAL
 
         distinct {
-            key PO_BUKRS,                       
-            key SUPPLIER,                       
-            key INV_MONTH,
-            key CURRENCY,
-            key TAX_RATE,
+            key INV_NO,                     
+            key PO_NO,
+            key D_NO,      
+            key SUPPLIER,   
+            PO_BUKRS,                                             
+            INV_MONTH,
+            CURRENCY,
+            TAX_RATE,
             TAX_CODE,  
             GR_DATE,
             CALC_10_TAX_AMOUNT,  

@@ -200,9 +200,33 @@ sap.ui.define([
         
             let options = { compact: true, ignoreComment: true, spaces: 4 };
             var IdList = that._TableDataList("detailTable", 'SUPPLIER');
+
+            // 将日期字符串转换为指定格式
+            function formatDateString(dateString) {
+                const date = new Date(dateString);
+                const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+                const formattedDate = date.toLocaleDateString('zh-CN', options);
+                
+                // 将日期格式调整为 YYYY/MM/DD
+                return formattedDate.replace(/\//g, '/'); // 保证分隔符为 /
+}
         
             if (IdList) {
                 that.PrintTool._getPrintDataInfo(that, IdList, "/PCH_T04_PAYMENT_SUM_HJ6", "SUPPLIER").then((oData) => {
+                    // oData = this.jsonDateToString(oData);  
+					oData.results.forEach(function (row) {
+    
+                            // 格式化日期
+                            if (row.INV_BASE_DATE) {
+                                row.INV_BASE_DATE = formatDateString(row.INV_BASE_DATE);
+                            }
+                            if (row.GR_DATE) {
+                                row.GR_DATE = formatDateString(row.GR_DATE);
+                            }
+
+					});
+
+                    // 确保 oData[0] 存在
                     let sResponse = json2xml(oData, options);
                     console.log(sResponse);
                     that.setSysConFig().then(res => {
@@ -236,7 +260,19 @@ sap.ui.define([
             }
         
             return true; // 检查通过
+        },
+        jsonDateToString: function (json) {
+            for (let key in json) {
+                if (json.hasOwnProperty(key)) {
+                let value = json[key];
+                // 如果值是日期，需要特殊处理
+                if (value instanceof Date) {
+                value = value.toISOString();
+                json[key] = value;
+                }
+            }
+            return json;
+            }   
         }
-
     });
 });
