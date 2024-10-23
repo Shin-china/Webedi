@@ -116,7 +116,7 @@
 							</table:customData>
 							<Label  text="{pch>LABEL_D__DELIVERY_DATE}"/>
 							<table:template>
-								<DatePicker id="H__DOC_DATE2" value="{workInfo>DELIVERY_DATE}"  valueFormat="yyyy-MM-dd-HH-mm-ss" displayFormat="{com>DATE_H__DOC_DATE}" editable="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'}], formatter: '.formatter.getEditableSaveCommon'}"/>
+								<DatePicker id="H__DOC_DATE2" value="{workInfo>DELIVERY_DATE}"  valueFormat="yyyy-MM-dd-HH-mm-ss" displayFormat="{com>DATE_H__DOC_DATE}" editable="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'},{path: 'workInfo>RQ'}], formatter: '.formatter.getEditableSaveCommonData'}"/>
 	
 							
 							</table:template>
@@ -128,7 +128,7 @@
 							</table:customData>
 							<Label  text="{pch>LABEL_D__QUANTITY}"/>
 							<table:template>
-								<Input value="{workInfo>QUANTITY}" editable="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'}], formatter: '.formatter.getEditableSaveCommon'}"/>
+								<Input value="{workInfo>QUANTITY}" editable="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'},{path: 'workInfo>RQ'}], formatter: '.formatter.getEditableSaveCommonData'}"/>
 							
 							</table:template>
 						</table:Column>	
@@ -318,7 +318,7 @@
 							</table:customData>
 							<Label id="_IDGenLabel4" text="{pch>LABEL_D__ExtNumber}"/>
 							<table:template>
-								<Input value="{workInfo>ExtNumber}" editable="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'}], formatter: '.formatter.getEditableSaveCommon'}"/>
+								<Input value="{workInfo>ExtNumber}" editable="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'},{path: 'workInfo>RQ'}], formatter: '.formatter.getEditableSaveCommonData'}"/>
 	
 							</table:template>
 						</table:Column>			

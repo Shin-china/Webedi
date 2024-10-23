@@ -159,37 +159,41 @@ sap.ui.define([
 			var view = this.getView();
 			//清除msg
 			this.MessageTools._clearMessage();
-			var jsonModel = view.getModel("workInfo");
-			this._callCdsAction("/PCH06_SAVE_DATA", this._getData(), this).then((oData) => {
 
-			
-			  var myArray = JSON.parse(oData.PCH06_SAVE_DATA);
-			  this._setEditable(false);
-			  if(myArray.err){
-				this._setEditable(true);
-				that.MessageTools._addMessage(this.MessageTools._getI18nTextInModel("pch", myArray.reTxt, this.getView()), null, 1, this.getView());
-			  }else{
+			if(true){
+				var jsonModel = view.getModel("workInfo");
+				this._callCdsAction("/PCH06_SAVE_DATA", this._getData(), this).then((oData) => {
 
-				that._readEntryByServiceAndEntity(_objectCommData._entity,_objectCommData._aFilters, null).then((oData) => {
 				
-				
-					if (!jsonModel) {
-						jsonModel = new sap.ui.model.json.JSONModel();
-						view.setModel(jsonModel, "workInfo");
-					  }
-					jsonModel.setData(oData.results);
-					//更新seq数据
-					that._getSeq();
-					that._setBusy(false);
-					console.log(oData.results)
-				  });
-			  }
-			  that._setBusy(false);
+				var myArray = JSON.parse(oData.PCH06_SAVE_DATA);
+				this._setEditable(false);
+				if(myArray.err){
+					this._setEditable(true);
+					var rt = myArray.reTxt.split("||");
+					
+					that.MessageTools._addMessage(this.MessageTools._getI18nTextInModel("pch", myArray.reTxt, this.getView()), null, 1, this.getView());
+				}else{
 
-			});
-			
+					that._readEntryByServiceAndEntity(_objectCommData._entity,_objectCommData._aFilters, null).then((oData) => {
+					
+					
+						if (!jsonModel) {
+							jsonModel = new sap.ui.model.json.JSONModel();
+							view.setModel(jsonModel, "workInfo");
+						}
+						jsonModel.setData(oData.results);
+						//更新seq数据
+						that._getSeq();
+						that._setBusy(false);
+						console.log(oData.results)
+					});
+				}
+				that._setBusy(false);
+
+				});
+		}
 		},
-		
+
 		/**
 		 * 
 		 * @returns 

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Pch06DataList {
     private ArrayList<Pch06> list = new ArrayList<Pch06>();
     // 返回成功失败msg
-    private String reTxt;
+    private String reTxt = "";
     // 返回是否有错误:有值指有错误
     private Boolean err = false;
 
@@ -28,7 +28,8 @@ public class Pch06DataList {
     }
 
     public void setReTxt(String reTxt) {
-        this.reTxt = reTxt;
+
+        this.reTxt = this.reTxt + "||" + reTxt;
     }
 
     public Boolean getErr() {

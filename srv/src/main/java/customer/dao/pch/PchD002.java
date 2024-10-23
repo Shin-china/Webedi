@@ -33,6 +33,24 @@ public class PchD002 extends Dao {
     // 修改
     private static final Logger logger = LoggerFactory.getLogger(PchD002.class);
 
+    /**
+     * 根据删除po和dno删除03表
+     * 
+     * @param po
+     * @param dno
+     */
+    public T02PoD getByID(String po, int dno) {
+        Optional<T02PoD> result = db.run(
+                Select.from(Pch_.T02_PO_D)
+                        .where(o -> o.PO_NO().eq(po)
+                                .and(o.D_NO().eq(dno))))
+                .first(T02PoD.class);
+        if (result.isPresent()) {
+            return result.get();
+        }
+        return null;
+    }
+
     // 修改PCHD002
     public void updateD002(T02PoD o) {
 

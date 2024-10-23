@@ -59,6 +59,16 @@ sap.ui.define([], function () {
       getEditableCommon: function (isHEditing, isJurisdiction, hDeleteFlag) {
         return isHEditing && isJurisdiction && this._isHDeleted(hDeleteFlag);
       },
+            /**
+       * 公用，各业务画面,无删除flagy，有自定义字段
+       * 编辑中+有权编辑 按钮显示。
+       * @param {是否在编辑} isHEditing
+       * @param {是否有权编辑} isJurisdiction
+       * @returns
+       */
+            getEditableSaveCommonData: function (isHEditing, isJurisdiction,data) {
+              return isHEditing && isJurisdiction && this.formatter._isNull(data);
+            },
       /**
        * 公用，各业务画面,无删除flag
        * 编辑中+有权编辑 按钮显示。
