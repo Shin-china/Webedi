@@ -190,7 +190,7 @@ public class Pch06Service {
                 LocalDate stringToDate = DateTools.stringToDate(iterable_element.getDELIVERY_DATE().substring(0, 10));
                 if (DateTools.isBeforeToday(stringToDate)) {
                     list.setErr(true);
-                    list.setReTxt("PCH_06_ERROR_MSG1");
+                    list.setReTxt("PCH_06_ERROR_MSG3");
                 }
             }
         }

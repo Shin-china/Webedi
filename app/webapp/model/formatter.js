@@ -34,7 +34,7 @@ sap.ui.define([], function () {
        * @param {是否为空判断} obj
        */
       _isNull: function (obj) {
-        if (undefined != obj && obj != null) {
+        if (undefined != obj && obj != null && obj != "") {
           return false;
         } else return true;
       },

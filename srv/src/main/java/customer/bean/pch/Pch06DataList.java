@@ -29,7 +29,8 @@ public class Pch06DataList {
 
     public void setReTxt(String reTxt) {
 
-        this.reTxt = this.reTxt + "||" + reTxt;
+        if (!this.reTxt.contains(reTxt))
+            this.reTxt = this.reTxt + "||" + reTxt;
     }
 
     public Boolean getErr() {
