@@ -38,7 +38,7 @@ public class Pch06Service {
         hs.keySet().forEach(value -> {
             String[] split = value.split(",");
             T02PoD byID = Pch01saveDao.getByID(split[0], Integer.parseInt(split[1]));
-            byID.setStatus("2");
+            byID.setStatus("1");
             pchD002.updateD002(byID);
             // 如果没有错误，
             // 删除对应的pch03数据
@@ -77,7 +77,7 @@ public class Pch06Service {
      * check数量状态
      */
     public void check(Pch06DataList list) {
-
+        hs = new HashMap<>();
         // 通过key累加数量
         for (Pch06 iterable_element : list.getList()) {
             String poNo = iterable_element.getPO_NO();

@@ -24,55 +24,62 @@
 
 
         <f:content>
+            <l:VerticalLayout id="_IDGenVerticalLayout1">
+                <OverflowToolbar id="ID_header">
+                    <ToolbarSpacer id="idtoolbarspacer1"/>
+                    <m:Button id="Button1" text="修改" icon="sap-icon://edit" press="onEdit"/>
+                </OverflowToolbar>
+                <Table id="idProductsTable" inset="false" items="{path: '/dataList'}">
 
-            <Table id="idProductsTable" inset="false" items="{path: '/dataList'}">
-                <columns>
+                    <columns>
 
-                    <Column id="_IDGenColumn1" width="12em">
-                        <Text id="_IDGenText1" text="{pch>U07_QUO_NUMBER}"/>
-                    </Column>
-                    <Column id="_IDGenColumn2">
-                        <Text id="_IDGenText2" text="{pch>PCH08_Material}"/>
-                    </Column>
-                    <Column id="_IDGenColumn3">
-                        <Text id="_IDGenText3" text="{pch>PCH08_QTY1}"/>
-                    </Column>
-                    <Column id="_IDGenColumn4">
-                        <Text id="_IDGenText4" text="{pch>PCH08_PRICE1}" />
-                    </Column>
-                    <Column id="_IDGenColumn5">
-                        <Text id="_IDGenText5" text="{pch>PCH08_QTY2}" />
-                    </Column>
-                    <Column id="_IDGenColumn6">
-                        <Text id="_IDGenText6" text="{pch>PCH08_PRICE2}" />
-                    </Column>
-                    <Column id="_IDGenColumn7">
-                        <Text id="_IDGenText7" text="{pch>PCH08_QTY3}" />
-                    </Column>
-                    <Column id="_IDGenColumn8">
-                        <Text id="_IDGenText8" text="{pch>PCH08_PRICE3}" />
-                    </Column>
-                </columns>
+                        <Column id="_IDGenColumn1" width="12em">
+                            <Text id="_IDGenText1" text="{pch>U07_QUO_NUMBER}"/>
+                        </Column>
+                        <Column id="_IDGenColumn2">
+                            <Text id="_IDGenText2" text="{pch>PCH08_Material}"/>
+                        </Column>
+                        <Column id="_IDGenColumn3">
+                            <Text id="_IDGenText3" text="{pch>PCH08_QTY1}"/>
+                        </Column>
+                        <Column id="_IDGenColumn4">
+                            <Text id="_IDGenText4" text="{pch>PCH08_PRICE1}" />
+                        </Column>
+                        <Column id="_IDGenColumn5">
+                            <Text id="_IDGenText5" text="{pch>PCH08_QTY2}" />
+                        </Column>
+                        <Column id="_IDGenColumn6">
+                            <Text id="_IDGenText6" text="{pch>PCH08_PRICE2}" />
+                        </Column>
+                        <Column id="_IDGenColumn7">
+                            <Text id="_IDGenText7" text="{pch>PCH08_QTY3}" />
+                        </Column>
+                        <Column id="_IDGenColumn8">
+                            <Text id="_IDGenText8" text="{pch>PCH08_PRICE3}" />
+                        </Column>
+                    </columns>
 
-                <items>
-                    <ColumnListItem id="_IDGenColumnListItem1" vAlign="Middle">
-                        <cells>
-                            <Input id="input1" value="{QUO_NO}" editable="false"/>
-                            <Input id="input2" value="{MAT}" editable="false"/>
-                            <Input id="input3" value="{QTY_1}"/>
-                            <Input id="input4" value="{PRICE_1}"/>
-                            <Input id="input5" value="{QTY_2}"/>
-                            <Input id="input6" value="{PRICE_2}"/>
-                            <Input id="input7" value="{QTY_3}"/>
-                            <Input id="input8" value="{PRICE_3}"/>
-                            <Input id="input9" value="{KEY_1}" visible="false"/>
-                            <Input id="input10" value="{KEY_2}" visible="false"/>
-                            <Input id="input11" value="{KEY_3}" visible="false"/>
+                    <items>
+                        <ColumnListItem id="_IDGenColumnListItem1" vAlign="Middle">
+                            <cells>
+                                <Input id="QUO_NO" value="{QUO_NO}" editable="false"/>
+                                <Input id="MAT" value="{MAT}" editable="false"/>
+                                <Input id="QTY_1" value="{QTY_1}" editable="{parts: [{path: 'QTY_1'}], formatter: '.formatter.pch08GetInputEditable'}"/>
+                                <Input id="PRICE_1" value="{PRICE_1}" editable="{parts: [{path: 'PRICE_1'}], formatter: '.formatter.pch08GetInputEditable'}"/>
+                                <Input id="QTY_2" value="{QTY_2}" editable="{parts: [{path: 'QTY_2'}], formatter: '.formatter.pch08GetInputEditable'}"/>
+                                <Input id="PRICE_2" value="{PRICE_2}" editable="{parts: [{path: 'PRICE_2'}], formatter: '.formatter.pch08GetInputEditable'}"/>
+                                <Input id="QTY_3" value="{QTY_3}" editable="{parts: [{path: 'QTY_3'}], formatter: '.formatter.pch08GetInputEditable'}"/>
+                                <Input id="PRICE_3" value="{PRICE_3}" editable="{parts: [{path: 'PRICE_3'}], formatter: '.formatter.pch08GetInputEditable'}"/>
+                                <Input id="KEY_1" value="{KEY_1}" visible="false"/>
+                                <Input id="KEY_2" value="{KEY_2}" visible="false"/>
+                                <Input id="inpuKEY_3t11" value="{KEY_3}" visible="false"/>
 
-                        </cells>
-                    </ColumnListItem>
-                </items>
-            </Table>
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table>
+            </l:VerticalLayout>
+
         </f:content>
 
 

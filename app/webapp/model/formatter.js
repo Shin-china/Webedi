@@ -325,6 +325,14 @@ sap.ui.define([], function () {
 			return dateStr;
 
 		},
+
+    pch08GetInputEditable : function (str) {
+      if (str != null && str != "" && str != undefined) {
+        return true;
+      }
+      return false;
+    }
+    
     };
   });
   

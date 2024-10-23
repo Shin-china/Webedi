@@ -83,10 +83,10 @@ extend service TableService {
     ![distinct] {
         KEY PO_NO,                     // UMC発注番号
         KEY D_NO,                      // 明細番号 
+        KEY INV_NO,                    // 发票号
         TAX_RATE,                      // INV税率
         UNIT_PRICE,
         EXCHANGE,                      // 換算レート
-        INV_NO,                        // 发票号
         SUPPLIER,                      // 仕入先
         PO_ORG,                        // 購買組織
         SUPPLIER_DESCRIPTION,          // 業者名

@@ -15,10 +15,17 @@ import customer.dao.pch.PchD007;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.ArrayList;
 
 import java.util.LinkedHashMap;
@@ -128,21 +135,25 @@ public class Pch08Service {
     }
 
     public List<LinkedHashMap<String, Object>> getDetailData(String param) {
-        // key: QUO_NUM + MAT_ID
-        String[] keyArr = param.split(",");
+
+        String[] arr = param.split(",");
         List<LinkedHashMap<String, Object>> reList = new ArrayList<>();
         List<PchQuoH> headList = new ArrayList<>();
-        for (String key : keyArr) {
-            PchQuoH head = new PchQuoH();
-            List<PchQuoItem> itemList = new ArrayList<>();
-            String[] arr = key.split("-");
-            if (arr.length == 2) {
-                String quoNum = arr[0];
-                String matId = arr[1];
+        for (String quoNum : arr) {
+
+            List<T07QuotationD> t07List = d007Dao.getList(quoNum);
+            // 根据物料号分组 每个物料一行
+            Map<String, List<T07QuotationD>> tempMap = t07List.stream()
+                    .collect(Collectors.groupingBy(T07QuotationD::getMaterial));
+
+            Set<String> keySet = tempMap.keySet();
+            for (String mat : keySet) {
+                PchQuoH head = new PchQuoH();
+                List<PchQuoItem> itemList = new ArrayList<>();
                 head.setQuoNo(quoNum);
-                head.setMaterial(matId);
-                List<T07QuotationD> t07List = d007Dao.getList(quoNum, matId);
-                for (T07QuotationD t07 : t07List) {
+                head.setMaterial(mat);
+                List<T07QuotationD> list = tempMap.get(mat);
+                for (T07QuotationD t07 : list) {
                     PchQuoItem item = new PchQuoItem();
                     item.setPrice(t07.getPrice());
                     item.setQty(t07.getQty());
@@ -152,7 +163,7 @@ public class Pch08Service {
                 head.setList(itemList);
                 headList.add(head);
             }
-          
+
         }
         for (PchQuoH h : headList) {
             LinkedHashMap<String, Object> m = new LinkedHashMap<>();
@@ -170,6 +181,31 @@ public class Pch08Service {
 
         return reList;
 
+    }
+
+    public void updateDetail(String param) {
+        JSONArray array = JSON.parseArray(param);
+
+        for (int i = 0; i < array.size(); i++) {
+            JSONObject object = (JSONObject) array.get(i);
+            updateT07(object);
+        }
+    }
+
+    public void updateT07(JSONObject o) {
+        for (int i = 1; i <= 3; i++) {
+            if (o.getString("KEY_" + i) != null) {
+                String t07Id = o.getString("KEY_" + i);
+                String qty = o.getString("QTY_" + i);
+                String price = o.getString("PRICE_" + i);
+                T07QuotationD t07 = d007Dao.getById(t07Id);
+                if (t07 != null) {
+                    t07.setQty(qty == null ? BigDecimal.ZERO : new BigDecimal(qty));
+                    t07.setPrice(price == null ? BigDecimal.ZERO : new BigDecimal(price));
+                    d007Dao.update(t07);
+                }
+            }
+        }
     }
 
 }
