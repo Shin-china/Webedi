@@ -57,6 +57,21 @@ sap.ui.define([
 			
 		},	
 		/**
+		 * 过账方法
+		 * @param {*} oEvent 
+		 */
+		onQue:function(oEvent){
+			var that = this;
+			var selectedIndices = this._TableList("tableUploadData"); // 获取选中行
+
+			if(selectedIndices){
+				
+					this._invoPo(selectedIndices);
+				
+
+			}
+		},
+		/**
 		 * 同期方法
 		 * @param {*} oEvent 
 		 */
@@ -68,23 +83,6 @@ sap.ui.define([
 			var jsonModel = view.getModel("workInfo");
 
 			var datas = jsonModel.getData();
-			datas.forEach(data=>{
-				let PO_NO =data.PO_NO;
-				let D_NO =data.D_NO;
-				let SQL = data.SEQ;
-				let podno =PO_NO+D_NO;
-				let hasName = myMap.has(podno);
-				if(hasName){
-					let locSql = myMap.get(podno);
-					
-					//如果存下locSql没有行里面Sql的大，则于以替换
-					if(locSql < SQL){
-						myMap.set(podno,SQL)
-					}
-				}else{
-					myMap.set(podno,SQL)
-				}
-			})
 		},
 		/*==============================
 		删除
@@ -156,13 +154,9 @@ sap.ui.define([
 		onSav: function (oEvent) {
 			var that = this;
 			that._setBusy(true);
-	
-			this._callCdsAction("/PCH06_SAVE_DATA", this._getData(), this).then(
-				
-				
-				
-				
-				(oData) => {
+			//清除msg
+			this.MessageTools._clearMessage();
+			this._callCdsAction("/PCH06_SAVE_DATA", this._getData(), this).then((oData) => {
 
 			
 			  var myArray = JSON.parse(oData.PCH06_SAVE_DATA);
@@ -216,19 +210,6 @@ sap.ui.define([
 			;
 
 			
-		},
-		onRebind: function (oEvent) {
-			//直过滤
-			var oBindingParams = oEvent.getParameter("bindingParams");
-
-			if (this._poNO != "" && this._poNO != null) {
-
-				oBindingParams.filters.push(new sap.ui.model.Filter("PO_NO", "EQ", this._poNO));
-			} else {
-				oBindingParams.filters.push(new sap.ui.model.Filter("PO_NO", "EQ", "1111111111111"));
-			}
-			oBindingParams.parameters.expand = "TO_PCH_T01,TO_PCH_T02";
-	   
 		},
 	
 		onBeforeExport: function (oEvt) {

@@ -5,8 +5,6 @@ extend service TableService {
         select from view.T01_PO_H as T01
         left join view.T02_PO_D as T02 
             ON (T01.PO_NO = T02.PO_NO)
-        // left join view.T03_PO_C as T03 
-        //     on (T01.PO_NO = T03.PO_NO and T02.D_NO = T03.D_NO)
 
         left join view.MST_T05_SAP_BP_PURCHASE T04
             on T01.SUPPLIER = T04.SUPPLIER
@@ -74,6 +72,7 @@ extend service TableService {
 
 }
 
+annotate TableService.PCH_T03_PO_ITEM with @(Capabilities : {FilterRestrictions : {NonFilterableProperties : [ID]}});
 
 annotate TableService.PCH_T03_PO_ITEM with {
   

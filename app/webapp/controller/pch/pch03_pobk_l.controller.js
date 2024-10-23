@@ -148,7 +148,7 @@ sap.ui.define([
 										},
 										{
 											object: "filecontent_1",
-											value: odata.replace("data:application/pdf;base64,","")
+											value: odata
 										},
 										
 										{
@@ -186,13 +186,22 @@ sap.ui.define([
 			var that = this;
 			let options = { compact: true, ignoreComment: true, spaces: 4 };
 			var IdList = that._TableDataList("detailTable", 'ID')
+			var PoList = that._TableDataList("detailTable", 'PO_NO')
+			// PoList= PoList.map
 			if (IdList) {
 				that.PrintTool._getPrintDataInfo(that, IdList, "/PCH_T03_PO_ITEM_PRINT", "ID").then((oData) => {
 					let sResponse = json2xml(oData, options);
 					console.log(sResponse)
 					that.setSysConFig().then(res => {
 						// that.PrintTool._detailSelectPrint(that, sResponse, "test/test", oData, null, null, null, null)
-						that.PrintTool._detailSelectPrintDow(that, sResponse, "test/test", oData, null, null, null, null)
+						that.PrintTool._detailSelectPrintDow(that, sResponse, "test/test", oData, null,"納品書", null, null, null).then((oData) => {
+							var sapPo = {
+								po :PoList.join(","),
+								tpye :"PCH03",
+								fileName :"納品書",
+							}
+							that.PrintTool.printBackActionPo(that,sapPo)
+						})
 					})
 				})
 			}
