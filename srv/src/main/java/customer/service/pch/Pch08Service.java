@@ -15,6 +15,10 @@ import customer.dao.pch.PchD007;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.HashMap;
@@ -177,6 +181,31 @@ public class Pch08Service {
 
         return reList;
 
+    }
+
+    public void updateDetail(String param) {
+        JSONArray array = JSON.parseArray(param);
+
+        for (int i = 0; i < array.size(); i++) {
+            JSONObject object = (JSONObject) array.get(i);
+            updateT07(object);
+        }
+    }
+
+    public void updateT07(JSONObject o) {
+        for (int i = 1; i <= 3; i++) {
+            if (o.getString("KEY_" + i) != null) {
+                String t07Id = o.getString("KEY_" + i);
+                String qty = o.getString("QTY_" + i);
+                String price = o.getString("PRICE_" + i);
+                T07QuotationD t07 = d007Dao.getById(t07Id);
+                if (t07 != null) {
+                    t07.setQty(qty == null ? BigDecimal.ZERO : new BigDecimal(qty));
+                    t07.setPrice(price == null ? BigDecimal.ZERO : new BigDecimal(price));
+                    d007Dao.update(t07);
+                }
+            }
+        }
     }
 
 }

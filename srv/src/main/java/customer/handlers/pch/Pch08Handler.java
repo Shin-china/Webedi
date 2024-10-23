@@ -70,12 +70,7 @@ public class Pch08Handler implements EventHandler {
     @On(event = PCH08EditDETAILContext.CDS_NAME)
     public void updateDetail(PCH08EditDETAILContext context) {
         String param = context.getParam();
-        JSONArray array = JSON.parseArray(param);
-      
-       for (int i = 0; i < array.size(); i++) {
-        JSONObject a = (JSONObject) array.get(i);
-        a.getString("QTY1");
-
-       }
+        pch08Service.updateDetail(param);
+       context.setResult("success");
     }
 }
