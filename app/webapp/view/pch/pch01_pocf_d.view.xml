@@ -48,7 +48,7 @@
   </f:DynamicPageHeader>
 
   <smartTable:SmartTable  id="idSmartTable" smartFilterId="smartFilterBar" enableAutoColumnWidth="true" entitySet="PCH_01_DL" tableType="Table"
-          ignoredFields="" initiallyVisibleFields="PO_NO,D_NO,MAT_ID,PO_D_TXZ01,PO_PUR_QTY,PO_PUR_UNIT,CUSTOMER_MAT" enableExport="true" beforeExport="onBeforeExport" header="{pch>D_RESULT}" enableAutoBinding="true" editable="false" >
+          ignoredFields="" initiallyVisibleFields="PO_NO,D_NO,MAT_ID,PO_D_TXZ01,PO_PUR_QTY,PO_PUR_UNIT,CUSTOMER_MAT,SUPPLIER_MAT" enableExport="true" beforeExport="onBeforeExport" header="{pch>D_RESULT}" enableAutoBinding="true" editable="false" >
     <t:Table id="detailTable" rowMode="Auto"  rowActionCount="1" selectionMode="None" alternateRowColors="true" fixedColumnCount="0">
      
       <t:columns>
@@ -154,6 +154,19 @@
           </t:label>
           <t:template>
             <Text id="text7" text="{CUSTOMER_MAT}"/>
+          </t:template>
+        </t:Column>
+
+        <t:Column id="colSUPMAT" width="10rem" sortProperty="SUPPLIER_MAT" filterProperty="SUPPLIER_MAT">
+          <t:customData>
+            <core:CustomData key="p13nData"
+                value='\{"columnKey":"SUPPLIER_MAT", "leadingProperty":"SUPPLIER_MAT", "sortProperty":"SUPPLIER_MAT", "filterProperty":"SUPPLIER_MAT"}'/>
+          </t:customData>
+          <t:label>
+            <Label id="label8" text="{pch>D_SUPPLIER_MAT}"/>
+          </t:label>
+          <t:template>
+            <Text id="text8" text="{SUPPLIER_MAT}"/>
           </t:template>
         </t:Column>
 

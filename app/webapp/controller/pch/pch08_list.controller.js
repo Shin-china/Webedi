@@ -232,7 +232,33 @@ sap.ui.define([
             }
 
             return true; // 检查通过
-        }
+        },
+
+        getDetail: function (oEvent) { 
+
+            let that = this;
+            let selectedData = this._getSelectedIndicesDatasByTable("listTable");
+            if (selectedData.length == 0) {
+                MessageToast.show("選択されたデータがありません、データを選択してください。");
+                return false;
+            }
+            let para = [];
+            selectedData.forEach(item => {
+                let key = item.QUO_NUMBER + "-" + item.Material;
+                para.push(key);
+            });
+            this._onPress(oEvent,"RouteView_pch08", this.unique(para).join(","));
+         
+            // let params = { param: para };
+            // that._callCdsAction("/PCH08_SHOW_DETAIL", params, that).then((oData) => {
+            //     let json = JSON.parse(oData.PCH08_SHOW_DETAIL);
+            //     console.log(json)
+            //   });
+        },
+
+        unique: function (arr) {
+            return [...new Set(arr)];
+          },  
 
 
 
