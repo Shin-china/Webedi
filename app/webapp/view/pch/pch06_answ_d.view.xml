@@ -110,13 +110,13 @@
 							</table:template>
 						</table:Column>	
 						<!-- 納品日 -->
-						<table:Column id="_IDGenColumn8" width="8rem" sortProperty="DELIVERY_DATE" filterProperty="DELIVERY_DATE"  >
+						<table:Column id="_IDGenColumn8" width="10rem" sortProperty="DELIVERY_DATE" filterProperty="DELIVERY_DATE"  >
 							<table:customData>
 								<core:CustomData key="p13nData" value='\{"columnKey":"DELIVERY_DATE", "leadingProperty":"DELIVERY_DATE"}'/>
 							</table:customData>
 							<Label  text="{pch>LABEL_D__DELIVERY_DATE}"/>
 							<table:template>
-								<DatePicker id="H__DOC_DATE2" value="{parts: [{path: 'workInfo>DELIVERY_DATE'}], formatter: '.formatter.dateFormatDateTime'}" valueFormat="yyyy-MM-dd-HH-mm-ss" displayFormat="{com>DATE_H__DOC_DATE}" editable="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'}], formatter: '.formatter.getEditableSaveCommon'}"/>
+								<DatePicker id="H__DOC_DATE2" value="{workInfo>DELIVERY_DATE}"  valueFormat="yyyy-MM-dd-HH-mm-ss" displayFormat="{com>DATE_H__DOC_DATE}" editable="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'}], formatter: '.formatter.getEditableSaveCommon'}"/>
 	
 							
 							</table:template>

@@ -9,6 +9,7 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.regex.Matcher;
@@ -148,6 +149,19 @@ public class DateTools {
 
         // 从 ZonedDateTime 中提取 LocalDate
         LocalDate localDate = zonedDateTime.toLocalDate();
+        return localDate;
+    }
+
+    // java "2024-11-29 "将上面字符串转为LocalDate
+    public static LocalDate stringToDate(String str) throws ParseException {
+        // 定义一个DateTimeFormatter来解析日期字符串
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        // 使用formatter解析字符串为LocalDate
+        LocalDate localDate = LocalDate.parse(str, formatter);
+
+        // 输出结果
+        System.out.println(localDate); // 输出: 2024-11-29
+
         return localDate;
     }
 

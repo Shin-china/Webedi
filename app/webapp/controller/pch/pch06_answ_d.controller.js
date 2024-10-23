@@ -10,6 +10,7 @@ sap.ui.define([
 	 */
 	var _objectCommData = {
 		_entity: "/PCH_T06_PO_ITEM", //此本页面操作的对象//绑定的数据源视图
+		_aFilters : undefined
 		
 	};
 	var  myMap = new Map(); 
@@ -34,12 +35,13 @@ sap.ui.define([
 			var that = this;
 			that._setBusy(true);
 			var aFilters = this.getView().byId("smartFilterBar").getFilters();
+			_objectCommData._aFilters = aFilters;
 			var view = this.getView();
 			var jsonModel = view.getModel("workInfo");
 			view.setModel(jsonModel, undefined);
 			if(aFilters.length ==0){
-				
-				return 
+				that._setBusy(false);
+				return ;
 			}
 			this._readEntryByServiceAndEntity(_objectCommData._entity,aFilters, null).then((oData) => {
 				
@@ -154,8 +156,10 @@ sap.ui.define([
 		onSav: function (oEvent) {
 			var that = this;
 			that._setBusy(true);
+			var view = this.getView();
 			//清除msg
 			this.MessageTools._clearMessage();
+			var jsonModel = view.getModel("workInfo");
 			this._callCdsAction("/PCH06_SAVE_DATA", this._getData(), this).then((oData) => {
 
 			
@@ -164,6 +168,21 @@ sap.ui.define([
 			  if(myArray.err){
 				this._setEditable(true);
 				that.MessageTools._addMessage(this.MessageTools._getI18nTextInModel("pch", myArray.reTxt, this.getView()), null, 1, this.getView());
+			  }else{
+
+				that._readEntryByServiceAndEntity(_objectCommData._entity,_objectCommData._aFilters, null).then((oData) => {
+				
+				
+					if (!jsonModel) {
+						jsonModel = new sap.ui.model.json.JSONModel();
+						view.setModel(jsonModel, "workInfo");
+					  }
+					jsonModel.setData(oData.results);
+					//更新seq数据
+					that._getSeq();
+					that._setBusy(false);
+					console.log(oData.results)
+				  });
 			  }
 			  that._setBusy(false);
 

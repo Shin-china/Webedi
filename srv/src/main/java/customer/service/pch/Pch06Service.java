@@ -2,6 +2,7 @@ package customer.service.pch;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -55,9 +56,9 @@ public class Pch06Service {
                 t03PoC.setPoNo(iterable_element.getPO_NO());
                 t03PoC.setDNo(iterable_element.getD_NO());
                 t03PoC.setSeq(iterable_element.getSEQ());
-                t03PoC.setDeliveryDate(DateTools.Iso86012Date(iterable_element.getDELIVERY_DATE()));
+                t03PoC.setDeliveryDate(DateTools.stringToDate(iterable_element.getDELIVERY_DATE().substring(0, 10)));
                 t03PoC.setQuantity(iterable_element.getQUANTITY());
-                t03PoC.setStatus("2");
+                t03PoC.setStatus("1");
                 t03PoC.setExtNumber(iterable_element.getExtNumber());
 
                 pchD003.insertD003(t03PoC);
@@ -65,6 +66,9 @@ public class Pch06Service {
                 // 有减少数量则修改
                 T03PoC byID = pchD003.getByID(iterable_element.getPO_NO(), iterable_element.getD_NO(),
                         iterable_element.getSEQ());
+                iterable_element.setQUANTITY(iterable_element.getRQ());
+                iterable_element.setDELIVERY_DATE(DateTools.date2String(byID.getDeliveryDate()));
+
                 byID.setQuantity(byID.getRelevantQuantity());
                 pchD003.updateD003(byID);
             }

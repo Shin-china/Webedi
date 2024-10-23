@@ -19,7 +19,7 @@ sap.ui.define(
        * @param {* 打印数据} _sResponse 【json2xml 格式数据】
        * @param {* 模板} _xdpTemplateID
        * @param {* 打印参数} _data
-       * @param {* 打印回写处理方法} _printBackFuncation
+       * @param {* 是否调用打印回写处理方法} _printBackFuncation
        */
       _detailSelectPrint: function (_that, _sResponse, _xdpTemplateID, _data, _printBackFuncation, _smartTableId, entityInModelID) {
         var that = this;
@@ -87,8 +87,9 @@ sap.ui.define(
        * @param {* 模板} _xdpTemplateID
        * @param {* 打印参数} _data
        * @param {* 打印回写处理方法} _printBackFuncation
+       * @param {* pdf下载名字} _name
        */
-      _detailSelectPrintDow: function (_that, _sResponse, _xdpTemplateID, _data, _printBackFuncation, _smartTableId, entityInModelID) {
+      _detailSelectPrintDow: function (_that, _sResponse, _xdpTemplateID, _data, _printBackFuncation,_name, _smartTableId, entityInModelID) {
             var that = this;
             var zip = new JSZipSync();
     				that.printTaskPdf = {
@@ -97,7 +98,7 @@ sap.ui.define(
               progress : 0,
               pdfUrl: [],
               zip : zip,
-              zipFolder : zip.folder("現品票PDF"),
+              zipFolder : zip.folder(_name),
               zipFile : [],
               
             };
@@ -207,7 +208,7 @@ sap.ui.define(
 						var blob = this.printTaskPdf.zip.generate({ type: 'blob' });
 						var aLabel = document.createElement('a');
 						aLabel.href = URL.createObjectURL(blob);
-						aLabel.download = "現品票PDF.rar";
+						aLabel.download = "PDF.rar";
 						aLabel.click();
 					
 						this.printTaskPdf = undefined;
@@ -449,7 +450,7 @@ sap.ui.define(
 			var downloadName = "";
 			switch (templateId) {
 				case "test/test":
-					downloadName = "購入現品票";
+					downloadName = "納品書";
 					break;
 				case "MMSS_REP02/MMSS_REP02":
 					downloadName = "内製現品票";
@@ -470,7 +471,7 @@ sap.ui.define(
       /**
        * 打印结束后 回写方法
        * @param {*打印的数据集合 key } _data
-       * @param {*回写方法} _funtion
+       * @param {*回写方法} _cdsAction
        * @param {*回写完成后 刷新页面数据}
        * @param {*打印页面非V2时 指定model}entityInModelID
        */
@@ -490,7 +491,36 @@ sap.ui.define(
           }
         });
       },
+  /**
+       * 打印结束后 po-SAP回写方法
+       * @param {*打印的数据集合 key } _data
+       * @param {*回写方法} _cdsAction
+       * @param {*回写完成后 刷新页面数据}
+       * @param {*打印页面非V2时 指定model}entityInModelID
+       */
+  printBackActionPo: function (_that, _data) {
+    _that.PrintTool.getImageBase64(_that._blob).then((odata)=>{
+      var mailObj = { attachmentJson:{
+        // object: "430000001",
+        // object_type:"PCH03",
+        // value:odata,
+        // file_type:"pdf",
+        // file_name:"test"
+        object: _data.po,
+        object_type:_data.type,
+        value:odata,
+        file_type:"pdf",
+        file_name:_data.fileName
+      }}
 
+
+
+      let newModel = _that.getView().getModel('Common');
+      let oBind = newModel.bindList("/s3uploadAttachment");
+      oBind.create(mailObj);
+
+    });
+  },
       /**
        * 系统 UPN 共通打印
        * @param {*} _that
@@ -560,7 +590,8 @@ sap.ui.define(
           reader.readAsDataURL(blob);
           reader.onload = () => {
             const base64 = reader.result;
-            resolve(base64);
+            
+            resolve(base64.replace("data:application/pdf;base64,",""));
           }
           reader.onerror = error => reject(error);
         });
