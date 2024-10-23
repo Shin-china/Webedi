@@ -52,7 +52,7 @@ sap.ui.define([
 				{ label: "品目テキスト", property: "PO_D_TXZ01" },
 				{ label: "発注数量", property: "PO_PUR_QTY" },
 				{ label: "単位", property: "PO_PUR_UNIT" },
-				{ label: "仕入先品目コード", property: "CUSTOMER_MAT"},
+				{ label: "仕入先品目コード", property: "SUPPLIER_MAT"},
 				{ label: "*納品日", property:"" },
 				{ label: "*納品数量", property:"" },
 				{ label: "参照" , property:"" }

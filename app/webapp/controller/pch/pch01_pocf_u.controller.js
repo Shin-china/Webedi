@@ -8,12 +8,11 @@ sap.ui.define([
 	'sap/ui/comp/library',
 	'sap/ui/model/type/String',
 
-], function (Controller, Filter, xlsx, formatter, 
-	 Spreadsheet) {
+], function (Controller, Filter, xlsx, formatter, Spreadsheet) {
 	"use strict";
 
 	return Controller.extend("umc.app.controller.pch.pch01_pocf_u", {
-		formatter : formatter,
+		formatter: formatter,
 
 		onInit: function () {
 			//获取本地信息
@@ -100,7 +99,7 @@ sap.ui.define([
 					}
 						
 					item.STATE = "Error"; // 将状态设置为错误状态
-        			item.I_CON = "sap-icon://error"; // 设置状态图标为错误图
+					item.I_CON = "sap-icon://error"; // 设置状态图标为错误图
 					jsonModel.refresh(); // 刷新模型以更新UI
 					that._setBusy(false);
 					hasError = true;//有错
@@ -126,17 +125,17 @@ sap.ui.define([
 						// 更新画面上的model
 						jsonModel.setData(myArray.list);
 
-						myArray.list.forEach(function (item) {
-							if (item.SUCCESS == false) { // 根据实际数据结构判断是否存在错误字段
-								hasError = true; // 后台检查有错误
-							}
-						});
+						// myArray.list.forEach(function (item) {
+						// 	if (item.SUCCESS == false) { // 根据实际数据结构判断是否存在错误字段
+						// 		hasError = true; // 后台检查有错误
+						// 	}
+						// });
 
-						if (hasError) {
-							// that._setEditable(false);
-							that.getView().getModel("viewModel").setProperty("/isButtonEnabled", false);
+						// if (hasError) {
+						// 	// that._setEditable(false);
+						// 	that.getView().getModel("viewModel").setProperty("/isButtonEnabled", false);
 						
-						}
+						// }
 
 						that._setBusy(false);
 
@@ -149,6 +148,19 @@ sap.ui.define([
 					}
 				});
 			}
+
+			data.forEach(function (item) {
+
+				if (item.MSG_TEXT.length > 0) {
+					hasError = true;
+				}
+
+				if (hasError) {
+					// that._setEditable(false);
+					that.getView().getModel("viewModel").setProperty("/isButtonEnabled", false);
+				}
+			})
+
 		},
 
 		onSave: function () {
@@ -215,16 +227,122 @@ sap.ui.define([
 
 			
 			
-			getData: function () {
-				var jsondata = this.getModel("workInfo").getData();
-				var a = JSON.stringify({ list: jsondata });
-				var oPrams = {
-				  shelfJson: a,
-				};
-				return oPrams;
-			  },
+		getData: function () {
+			var jsondata = this.getModel("workInfo").getData();
+			var a = JSON.stringify({ list: jsondata });
+			var oPrams = {
+				shelfJson: a,
+			};
+			return oPrams;
+		},
 
 
+
+		onExport: function () {
+			var oTable = this.byId("tableUploadData"); // 获取表的引用
+			var oModel = oTable.getModel("workInfo"); // 获取表的数据模型
+			var aData = oModel.getData(); // 获取表中的所有数据
+
+			// 配置导出字段和格式
+			var aColumns = [
+				{
+					label: 'CHECK状态', // PO_NO
+					property: 'STATUS',
+					type: 'string'
+				},
+				{
+					label: '实行结果', // PO_NO
+					property: 'TYPE',
+					type: 'string'
+				},
+				{
+					label: '結果内容', // PO_NO
+					property: 'MSG_TEXT',
+					type: 'string'
+				},
+				{
+					label: '発注番号', // PO_NO
+					property: 'PO_NO',
+					type: 'string'
+				},
+				{
+					label: '明細番号', // PO_NO
+					property: 'D_NO',
+					type: 'string'
+				},
+				{
+					label: '品目コード', // PO_NO
+					property: 'MAT_ID',
+					type: 'string'
+				},
+				{
+					label: '品目テキスト', // PO_NO
+					property: 'PO_D_TXZ01',
+					type: 'string'
+				},	
+				{
+					label: '発注数量', // PO_NO
+					property: 'PO_PUR_QTY',
+					type: 'string'
+				},
+				{
+					label: '単位', // D_NO
+					property: 'PO_PUR_UNIT',
+					type: 'string'
+				},
+				{
+					label: '納品日', // MAT_ID
+					property: 'DELIVERY_DATE',
+					type: 'string'
+				},
+				{
+					label: '数量', // QUANTITY
+					property: 'QUANTITY',
+					type: 'number'
+				},
+				{
+					label: '納品日', // DELIVERY_DATE
+					property: 'DELIVERY_DATE',
+					type: 'date',
+					format: 'yyyy/mm/dd'
+				},
+				{
+					label: '納品数量', // REFERTO
+					property: 'QUANTITY',
+					type: 'string'
+				},
+				{
+					label: '仕入先品目コード', // REFERTO
+					property: 'SUPPLIER_MAT',
+					type: 'string'
+				},
+				{
+					label: '参照', // REFERTO
+					property: 'REFERTO',
+					type: 'string'
+				}
+
+			];
+
+			// 创建导出的配置
+			var oSettings = {
+				workbook: {
+					columns: aColumns
+				},
+				dataSource: aData, // 数据源
+				fileName: "ExportData.xlsx", // 导出的文件名
+				worker: false // 在本地不使用 web worker
+			};
+
+			// 使用 sap.ui.export.Spreadsheet 导出数据为 Excel
+			var oSheet = new sap.ui.export.Spreadsheet(oSettings);
+			oSheet.build().then(function () {
+				sap.m.MessageToast.show("Export success");
+			}).catch(function (oError) {
+				sap.m.MessageToast.show("Export failed");
+			});
+		}
+	
 	});
 
 });

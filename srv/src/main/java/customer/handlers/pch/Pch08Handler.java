@@ -1,7 +1,7 @@
 package customer.handlers.pch;
 
-import cds.gen.tableservice.PCH06SaveDATAContext;
 import cds.gen.tableservice.PCH08SaveDATAContext;
+import cds.gen.tableservice.PCH08ShowDETAILContext;
 import cds.gen.tableservice.TableService_;
 import com.alibaba.fastjson.JSON;
 import com.sap.cds.services.handler.EventHandler;
@@ -14,6 +14,8 @@ import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.stereotype.Component;
 
 import java.text.ParseException;
+import java.util.LinkedHashMap;
+import java.util.List;
 
 @Component
 @ServiceName(TableService_.CDS_NAME)
@@ -22,7 +24,7 @@ public class Pch08Handler implements EventHandler {
     @Autowired
     ResourceBundleMessageSource rbms;
     @Autowired
-    private Pch08Service pchService;
+    private Pch08Service pch08Service;
 
 //    // check数据
 //    @On(event = "PCH07_CHECK_DATA")
@@ -44,12 +46,18 @@ public class Pch08Handler implements EventHandler {
     @On(event = "PCH08_SAVE_DATA")
     public void saveData(PCH08SaveDATAContext context) throws ParseException {
         Pch08DataList list = JSON.parseObject(context.getStr(), Pch08DataList.class);
-        pchService.check(list);
+        pch08Service.check(list);
         if (!list.getErr()) {
-            pchService.detailsSave(list);
+            pch08Service.detailsSave(list);
         }
 
         context.setResult(JSON.toJSONString(list));
     }
 
+
+    @On(event = PCH08ShowDETAILContext.CDS_NAME)
+    public void showDetail(PCH08ShowDETAILContext context) {
+        List<LinkedHashMap<String,Object>> detailData = pch08Service.getDetailData(context.getParam());
+        context.setResult(JSON.toJSONString(detailData));
+    }
 }
