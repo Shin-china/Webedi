@@ -45,4 +45,7 @@ service TableService {
   action PCH01_CHECK_DATA(shelfJson : String)         returns String; //棚番一括アップロード画面：对于上传数据check
   action PCH01_SAVE_DATA(shelfJson : String)          returns String; //棚番一括アップロード画面：对于上传数据保存
 
+  //Excel测试用
+  action EXCEL_TEST(content : String)          returns Binary; //Excel测试用
+
 }

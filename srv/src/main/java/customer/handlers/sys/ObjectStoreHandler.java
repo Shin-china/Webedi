@@ -11,6 +11,12 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.ExcelWriter;
+import com.alibaba.excel.write.metadata.WriteSheet;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.excel.write.metadata.fill.FillConfig;
+
 import com.google.common.io.ByteStreams;
 import com.sap.cds.services.handler.EventHandler;
 import com.sap.cds.services.handler.annotations.On;
@@ -19,8 +25,10 @@ import com.sap.cds.services.handler.annotations.ServiceName;
 import cds.gen.AttachmentJson;
 import cds.gen.common.*;
 import cds.gen.sys.T13Attachment;
+import cds.gen.tableservice.EXCELTESTContext;
 import customer.bean.com.CommMsg;
 import customer.bean.com.UmcConstants;
+import customer.bean.tmpl.test;
 import customer.comm.tool.StringTool;
 import customer.dao.sys.T13AttachmentDao;
 import customer.service.ifm.Ifm01BpService;
@@ -78,13 +86,47 @@ public class ObjectStoreHandler implements EventHandler {
     public void s3DownloadAttachment(S3DownloadAttachmentContext context) throws IOException {
         Collection<AttachmentJson> attachments = context.getAttachmentJson();
         ResponseBytes msg = null;
-        // String obj = context.getAttachmentJson();
 
         for (AttachmentJson attachment : attachments) {
-            msg = objectStoreService.downLoadRes(attachment.getValue());
+            if (attachment.getObject().equals("download")) {
+                msg = objectStoreService.downLoadRes(attachment.getValue());
+            } else if (attachment.getObject().equals("template")) {
+                msg = objectStoreService.downTempRes(attachment.getValue());
+            }
+
         }
         byte[] bytes = msg.asByteArray();
         context.setResult(bytes);
     }
 
+    // Excel 导出测试
+    @On(event = "EXCEL_TEST")
+    public void exportExcel(EXCELTESTContext context) throws IOException {
+        String content = context.getContent();
+        test exl = JSON.parseObject(content, test.class);
+
+        // 获取模板文件
+        InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("template/test.xlsx");
+
+        // Excel写入数据
+        ExcelWriter excelWriter = null;
+        try {
+            excelWriter = EasyExcel.write("aa.xlsx").withTemplate(inputStream).build();
+            WriteSheet writeSheet = EasyExcel.writerSheet().build();
+
+            // 填充完后需要换行
+            FillConfig fileConfig = FillConfig.builder().forceNewRow(true).build();
+            // 写入数据
+            excelWriter.fill(exl, fileConfig, writeSheet);
+
+        } catch (Exception e) {
+
+        } finally {
+            if (excelWriter != null) {
+                excelWriter.finish();
+            }
+        }
+
+        context.setResult(null);
+    }
 }

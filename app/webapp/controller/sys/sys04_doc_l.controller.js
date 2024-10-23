@@ -31,12 +31,12 @@ sap.ui.define([
      	// newModel.execute("$auto",true,null,/*bReplaceWithRVC*/true).then(()=>{
 	    // 	 	debugger;
 	    // 
-
 		var dataList = this._getByIdObject("detailTable");
 		for(var i=0;i<dataList.length;i++){
 			var data = dataList[i];
 			var att_type = "";
-			var mailObj = { attachmentJson:[{
+			var downloadJson = { attachmentJson:[{
+				object:"download",
 				value: data.OBJECT_LINK
 			}]}
 			switch(data.FILE_TYPE){
@@ -56,7 +56,7 @@ sap.ui.define([
 				async:false,
 				crossDomain:true,
 				responseType:'blob',
-				data:JSON.stringify(mailObj),
+				data:JSON.stringify(downloadJson),
 				success:function(base64){
 					const downloadLink = document.createElement("a");
 					const blob = that._base64Blob(base64.value,att_type);

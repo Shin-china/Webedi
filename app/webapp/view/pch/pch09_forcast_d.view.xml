@@ -1,0 +1,238 @@
+<mvc:View 
+    controllerName="umc.app.controller.pch.pch09_forcast_d" 
+    xmlns:core="sap.ui.core" 
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:layout="sap.ui.layout" 
+    xmlns:table="sap.ui.table" 
+    xmlns:smartFilterBar="sap.ui.comp.smartfilterbar" 
+    xmlns:smartTable="sap.ui.comp.smarttable" 
+    xmlns:smartField="sap.ui.comp.smartfield" 
+    xmlns:smartform="sap.ui.comp.smartform" 
+    xmlns:mvc="sap.ui.core.mvc" 
+    xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+    xmlns:uxap="sap.uxap">
+
+    <f:DynamicPage id="dynamicPageId" headerExpanded="true" showFooter="true" busy="{localModel>/busy}">
+        <f:title>
+            <f:DynamicPageTitle id="DynamicPageTitle">
+
+            <f:heading>
+            <Title id="Title" text="{pch>pch09Title}"/>
+            </f:heading>
+            <f:navigationActions>
+            <Button id="_IDGenButton3" icon="sap-icon://nav-back" tooltip="nav-back" press="navTo('RouteMainView')"/>
+            </f:navigationActions>
+            </f:DynamicPageTitle>
+        </f:title>
+
+        <f:header >
+
+            <f:DynamicPageHeader id="DynamicPageHeader" pinnable="true">
+                <f:content>
+                    <smartFilterBar:SmartFilterBar id="smartFilterBar" entitySet="PCH09_LIST" persistencyKey="PCH09_LIST" showFilterConfiguration="true">
+                        <smartFilterBar:controlConfiguration>
+
+                        <smartFilterBar:ControlConfiguration id="PLANT"               key="PLANT"                   visibleInAdvancedArea="true" label="{pch>PCH09_SUPPLIER}"              index="1"/>
+                        <smartFilterBar:ControlConfiguration id="PUR_GROUP"           key="PUR_GROUP"               visibleInAdvancedArea="true" label="{pch>PCH09_PUR_GROUP}"             index="2"/>
+                        <smartFilterBar:ControlConfiguration id="SUPPLIER_F"          key="SUPPLIER"                visibleInAdvancedArea="true" label="{pch>PCH09_SUPPLIER}"              index="3"/>
+                        <smartFilterBar:ControlConfiguration id="SUPPLIER_MATERIAL"   key="SUPPLIER_MATERIAL"       visibleInAdvancedArea="true" label="{pch>PCH09_SUPPLIER_MATERIAL}"     index="4"/>
+                        <smartFilterBar:ControlConfiguration id="ARRANGE_ST_D"        key="ARRANGE_START_DATE"      visibleInAdvancedArea="true" label="{pch>PCH09_ARRANGE_START_DATE}"    index="5"/>
+                        <smartFilterBar:ControlConfiguration id="ARRANGE_ED_D"        key="ARRANGE_END_DATE"        visibleInAdvancedArea="true" label="{pch>PCH09_ARRANGE_END_DATE}"      index="6"/>
+                    
+                        </smartFilterBar:controlConfiguration>
+                    </smartFilterBar:SmartFilterBar>
+                </f:content>
+            </f:DynamicPageHeader>
+            
+        </f:header>
+
+        <f:content>
+    <!-- </f:DynamicPageHeader> -->
+
+            <smartTable:SmartTable id="ID" enableAutoColumnWidth="true" entitySet="PCH09_LIST" 
+                ignoredFields=""  requestAtLeastFields="" initiallyVisibleFields=""
+                smartFilterId="smartFilterBar" enableExport="true" beforeExport="onBeforeExport" 
+                useVariantManagement="true" useTablePersonalisation="true" header="{pch>TITLE_RESULT}" showRowCount="true" persistencyKey="pch09_SmartTableAnalytical_Explored" enableAutoBinding="true">
+            <smartTable:customToolbar>
+                <OverflowToolbar id="myOverflowToolbar1" design="Transparent">
+                    <ToolbarSpacer id="myToolbarSpacer1"/>
+                    <OverflowToolbarButton id="sendEmailButton"   icon="sap-icon://email"  text="{pch>PCH09_BUTTON_SEND}" tooltip="{pch>PCH09_BUTTON_SEND}" press="onSendEmail"/>
+                </OverflowToolbar>
+            </smartTable:customToolbar>
+        
+            <table:Table id="listTable" rowMode="Auto" rowActionCount="1" selectionMode="MultiToggle" alternateRowColors="true" fixedColumnCount="0" threshold="20">
+                <table:columns>       
+                    <table:Column id="idPur_group" width="8rem" sortProperty="PUR_GROUP" filterProperty="PUR_GROUP">
+                        <table:customData>
+                            <core:CustomData key="p13nData" value='{"columnKey":"PUR_GROUP", "leadingProperty":"PUR_GROUP", "sortProperty":"PUR_GROUP", "filterProperty":"PUR_GROUP"}'/>
+                            </table:customData>
+                            <table:label>
+                                <Label id="labelPUR_GROUP" text="{pch>PCH09_PUR_GROUP}"/>
+                            </table:label>
+                            <table:template>
+                                <Text id="textPUR_GROUP" text="{PUR_GROUP}"/>
+                            </table:template>
+                        </table:Column>
+
+                        <table:Column id="idPur_group_nm" width="8rem" sortProperty="PUR_GROUP_NAME" filterProperty="PUR_GROUP_NAME">
+                            <table:customData>
+                                <core:CustomData key="p13nData" value='{"columnKey":"PUR_GROUP_NAME", "leadingProperty":"PUR_GROUP_NAME", "sortProperty":"PUR_GROUP_NAME", "filterProperty":"PUR_GROUP_NAME"}'/>
+                            </table:customData>
+                            <table:label>
+                                <Label id="labelPUR_GROUP_NAME" text="{pch>PCH09_PUR_GROUP_NAME}"/>
+                            </table:label>
+                            <table:template>
+                                <Text id="textPUR_GROUP_NAME" text="{PUR_GROUP_NAME}"/>
+                            </table:template>
+                        </table:Column>
+
+                        <table:Column id="idcolSupplier" width="4rem" sortProperty="SUPPLIER" filterProperty="SUPPLIER">
+                            <table:customData>
+                                <core:CustomData key="p13nData" value='{"columnKey":"SUPPLIER", "leadingProperty":"SUPPLIER", "sortProperty":"SUPPLIER", "filterProperty":"SUPPLIER"}'/>
+                            </table:customData>
+                            <table:label>
+                                <Label id="labelSuppl" text="{pch>PCH09_SUPPLIER}"/>
+                            </table:label>
+                            <table:template>
+                                <Text id="textSuppl" text="{SUPPLIER}"/>
+                            </table:template>
+                        </table:Column>
+
+                        <table:Column id="idcolName1" width="6rem" sortProperty="NAME1" filterProperty="NAME1">
+                            <table:customData>
+                                <core:CustomData key="p13nData" value='{"columnKey":"NAME1", "leadingProperty":"NAME1", "sortProperty":"NAME1", "filterProperty":"NAME1"}'/>
+                            </table:customData>
+                            <table:label>
+                                <Label id="labelName1" text="{pch>PCH09_NAME1}"/>
+                            </table:label>
+                            <table:template>
+                                <Text id="textName1" text="{NAME1}"/>
+                            </table:template>
+                        </table:Column>
+
+                        <table:Column id="idcol_Material" width="5rem" sortProperty="MATERIAL" filterProperty="MATERIAL">
+                            <table:customData>
+                                <core:CustomData key="p13nData" value='{"columnKey":"MATERIAL", "leadingProperty":"MATERIAL", "sortProperty":"MATERIAL", "filterProperty":"MATERIAL"}'/>
+                            </table:customData>
+                            <table:label>
+                                <Label id="label_Material" text="{pch>PCH09_MATERIAL}"/>
+                            </table:label>
+                            <table:template>
+                                <Text id="text_Material" text="{MATERIAL}"/>
+                            </table:template>
+                        </table:Column>
+
+                        <table:Column id="idcol_Material_text" width="10rem" sortProperty="MATERIAL_TEXT" filterProperty="MATERIAL_TEXT">
+                            <table:customData>
+                                <core:CustomData key="p13nData" value='{"columnKey":"MATERIAL_TEXT", "leadingProperty":"MATERIAL_TEXT", "sortProperty":"MATERIAL_TEXT", "filterProperty":"MATERIAL_TEXT"}'/>
+                            </table:customData>
+                            <table:label>
+                                <Label id="label_Material_text" text="{pch>PCH09_MATERIAL_TEXT}"/>
+                            </table:label>
+                            <table:template>
+                                <Text id="text_Material_text" text="{MATERIAL_TEXT}"/>
+                            </table:template>
+                        </table:Column>
+
+                        <table:Column id="idcolSUPPLIER_MATERIAL" width="10rem" sortProperty="SUPPLIER_MATERIAL" filterProperty="SUPPLIER_MATERIAL">
+                            <table:customData>
+                                <core:CustomData key="p13nData" value='{"columnKey":"SUPPLIER_MATERIAL", "leadingProperty":"SUPPLIER_MATERIAL", "sortProperty":"SUPPLIER_MATERIAL", "filterProperty":"SUPPLIER_MATERIAL"}'/>
+                            </table:customData>
+                            <table:label>
+                                <Label id="labelSUPPLIER_MATERIAL" text="{pch>PCH09_SUPPLIER_MATERIAL}"/>
+                            </table:label>
+                            <table:template>
+                                <Text id="textSUPPLIER_MATERIAL" text="{SUPPLIER_MATERIAL}"/>
+                            </table:template>
+                        </table:Column>
+
+                        <table:Column id="idcolDELIVARY_DAYS" width="7rem" sortProperty="DELIVARY_DAYS" filterProperty="DELIVARY_DAYS">
+                            <table:customData>
+                                <core:CustomData key="p13nData" value='{"columnKey":"DELIVARY_DAYS", "leadingProperty":"DELIVARY_DAYS", "sortProperty":"DELIVARY_DAYS", "filterProperty":"DELIVARY_DAYS"}'/>
+                            </table:customData>
+                            <table:label>
+                                <Label id="labelDELIVARY_DAYS" text="{pch>PCH09_DELIVARY_DAYS}"/>
+                            </table:label>
+                            <table:template>
+                                <Text id="textDELIVARY_DAYS" text="{DELIVARY_DAYS}"/>
+                            </table:template>
+                        </table:Column>
+
+                        <table:Column id="idcolMIN_DELIVERY_QTY" width="7rem" sortProperty="MIN_DELIVERY_QTY" filterProperty="MIN_DELIVERY_QTY">
+                            <table:customData>
+                                <core:CustomData key="p13nData" value='{"columnKey":"MIN_DELIVERY_QTY", "leadingProperty":"MIN_DELIVERY_QTY", "sortProperty":"MIN_DELIVERY_QTY", "filterProperty":"MIN_DELIVERY_QTY"}'/>
+                            </table:customData>
+                            <table:label>
+                                <Label id="labelMIN_DELIVERY_QTY" text="{pch>PCH09_MIN_DELIVERY_QTY}"/>
+                            </table:label>
+                            <table:template>
+                                <Text id="textMIN_DELIVERY_QTY" text="{MIN_DELIVERY_QTY}"/>
+                            </table:template>
+                        </table:Column>
+
+                        <table:Column id="idcolMANUF_CODE" width="9rem" sortProperty="MANUF_CODE" filterProperty="MANUF_CODE">
+                            <table:customData>
+                                <core:CustomData key="p13nData" value='{"columnKey":"MANUF_CODE", "leadingProperty":"MANUF_CODE", "sortProperty":"MANUF_CODE", "filterProperty":"MANUF_CODE"}'/>
+                            </table:customData>
+                            <table:label>
+                                <Label id="labelMANUF_CODE" text="{pch>PCH09_MANUF_CODE}"/>
+                            </table:label>
+                            <table:template>
+                                <Text id="textMANUF_CODE" text="{MANUF_CODE}"/>
+                            </table:template>
+                        </table:Column>
+
+                        <table:Column id="colARRANGE_START_DATE" width="10rem" sortProperty="ARRANGE_START_DATE" filterProperty="ARRANGE_START_DATE">
+                            <table:customData>
+                                <core:CustomData key="p13nData" value='{"columnKey":"ARRANGE_START_DATE", "leadingProperty":"ARRANGE_START_DATE", "sortProperty":"ARRANGE_START_DATE", "filterProperty":"ARRANGE_START_DATE"}'/>
+                            </table:customData>
+                            <table:label>
+                                <Label id="labelARRANGE_START_DATE" text="{pch>PCH09_ARRANGE_START_DATE}"/>
+                            </table:label>
+                            <table:template>
+                            <Text id="textARRANGE_START_DATE" text="{path: 'ARRANGE_START_DATE', type: 'sap.ui.model.type.Date', formatOptions: {pattern: 'yyyy/MM/dd'}}" />
+                            </table:template>
+                        </table:Column>
+
+                        <table:Column id="colARRANGE_END_DATE" width="10rem" sortProperty="ARRANGE_END_DATE" filterProperty="ARRANGE_END_DATE">
+                            <table:customData>
+                                <core:CustomData key="p13nData" value='{"columnKey":"ARRANGE_END_DATE", "leadingProperty":"ARRANGE_END_DATE", "sortProperty":"ARRANGE_END_DATE", "filterProperty":"ARRANGE_END_DATE"}'/>
+                            </table:customData>
+                            <table:label>
+                                <Label id="labelARRANGE_END_DATE" text="{pch>PCH09_ARRANGE_END_DATE}"/>
+                            </table:label>
+                            <table:template>
+                            <Text id="textARRANGE_END_DATE" text="{path: 'ARRANGE_END_DATE', type: 'sap.ui.model.type.Date', formatOptions: {pattern: 'yyyy/MM/dd'}}" />
+                            </table:template>
+                        </table:Column>                        
+
+                        <table:Column id="idcolARRANGE_QTY" width="7rem" sortProperty="ARRANGE_QTY" filterProperty="ARRANGE_QTY">
+                            <table:customData>
+                                <core:CustomData key="p13nData" value='{"columnKey":"ARRANGE_QTY", "leadingProperty":"ARRANGE_QTY", "sortProperty":"ARRANGE_QTY", "filterProperty":"ARRANGE_QTY"}'/>
+                            </table:customData>
+                            <table:label>
+                                <Label id="labelARRANGE_QTY" text="{pch>PCH09_ARRANGE_QTY}"/>
+                            </table:label>
+                            <table:template>
+                                <Text id="textARRANGE_QTY" text="{ARRANGE_QTY}"/>
+                            </table:template>
+                        </table:Column>
+
+                        <table:Column id="idcolPLANT" width="5rem" sortProperty="PLANT" filterProperty="PLANT">
+                            <table:customData>
+                                <core:CustomData key="p13nData" value='{"columnKey":"PLANT", "leadingProperty":"PLANT", "sortProperty":"PLANT", "filterProperty":"PLANT"}'/>
+                            </table:customData>
+                            <table:label>
+                                <Label id="labelPLANT" text="{pch>PCH09_PLANT}"/>
+                            </table:label>
+                            <table:template>
+                                <Text id="textPLANT" text="{PLANT}"/>
+                            </table:template>
+                        </table:Column>
+                    </table:columns>
+                </table:Table>
+            </smartTable:SmartTable>
+        </f:content>
+    </f:DynamicPage>
+</mvc:View>
