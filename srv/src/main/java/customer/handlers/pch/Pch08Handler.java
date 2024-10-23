@@ -1,19 +1,25 @@
 package customer.handlers.pch;
 
+import cds.gen.tableservice.PCH08EditDETAILContext;
 import cds.gen.tableservice.PCH08SaveDATAContext;
 import cds.gen.tableservice.PCH08ShowDETAILContext;
 import cds.gen.tableservice.TableService_;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.sap.cds.services.handler.EventHandler;
 import com.sap.cds.services.handler.annotations.On;
 import com.sap.cds.services.handler.annotations.ServiceName;
 import customer.bean.pch.Pch08DataList;
+import customer.bean.pch.PchQuoH;
 import customer.service.pch.Pch08Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.stereotype.Component;
 
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -59,5 +65,17 @@ public class Pch08Handler implements EventHandler {
     public void showDetail(PCH08ShowDETAILContext context) {
         List<LinkedHashMap<String,Object>> detailData = pch08Service.getDetailData(context.getParam());
         context.setResult(JSON.toJSONString(detailData));
+    }
+
+    @On(event = PCH08EditDETAILContext.CDS_NAME)
+    public void updateDetail(PCH08EditDETAILContext context) {
+        String param = context.getParam();
+        JSONArray array = JSON.parseArray(param);
+      
+       for (int i = 0; i < array.size(); i++) {
+        JSONObject a = (JSONObject) array.get(i);
+        a.getString("QTY1");
+
+       }
     }
 }

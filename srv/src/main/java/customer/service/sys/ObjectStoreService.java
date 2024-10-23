@@ -132,4 +132,20 @@ public class ObjectStoreService {
         return por;
 
     }
+
+    // 下载模板
+    public ResponseBytes downTempRes(String keyName) throws S3Exception {
+        S3Client s3Client = getS3Client();
+        List<T12Config> getFolder = Config.get("OBJECT_STORE_TEMPLATE");
+        for (T12Config folder : getFolder) {
+            if (folder.getConCode().equals("OBJECT_STORE_TEMPLATE")) {
+                keyName = folder.getConValue() + keyName;
+            }
+        }
+        GetObjectRequest objectRequest = GetObjectRequest.builder().key(keyName).bucket(S3_BUCKET).build();
+        ResponseBytes<GetObjectResponse> por = s3Client.getObjectAsBytes(objectRequest);
+
+        return por;
+
+    }
 }

@@ -50,7 +50,7 @@
         <f:content>
     <!-- </f:DynamicPageHeader> -->
 
-            <smartTable:SmartTable id="IDtable" enableAutoColumnWidth="true" entitySet="PCH09_LIST" 
+            <smartTable:SmartTable id="ID" enableAutoColumnWidth="true" entitySet="PCH09_LIST" 
                 ignoredFields=""  requestAtLeastFields="" initiallyVisibleFields=""
                 smartFilterId="smartFilterBar" enableExport="true" beforeExport="onBeforeExport" 
                 useVariantManagement="true" useTablePersonalisation="true" header="{pch>TITLE_RESULT}" showRowCount="true" persistencyKey="pch09_SmartTableAnalytical_Explored" enableAutoBinding="true">
@@ -61,7 +61,7 @@
                 </OverflowToolbar>
             </smartTable:customToolbar>
         
-            <table:Table id="iddetailTable" rowMode="Auto" rowActionCount="1" selectionMode="MultiToggle" alternateRowColors="true" fixedColumnCount="0" threshold="20">
+            <table:Table id="listTable" rowMode="Auto" rowActionCount="1" selectionMode="MultiToggle" alternateRowColors="true" fixedColumnCount="0" threshold="20">
                 <table:columns>       
                     <table:Column id="idPur_group" width="8rem" sortProperty="PUR_GROUP" filterProperty="PUR_GROUP">
                         <table:customData>

@@ -34,11 +34,24 @@ sap.ui.define([
                 data.length = 0;
                 json.forEach(item => {
                     data.push(item);
+
                 })
                 this.getModel().refresh(true);
             });
+           
+        },
+
+        onEdit: function() {
+            let data = this.getView().getModel().oData.dataList;
+            let params = { param: JSON.stringify(data) };
+            console.log(data)
+            this._callCdsAction("/PCH08_EDIT_DETAIL",params,this).then(oData => {
+
+                console.log(oData)
+            })
 
         }
+      
 
 
     });
