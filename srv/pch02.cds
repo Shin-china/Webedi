@@ -26,7 +26,7 @@ extend service TableService {
             distinct {
                 key T02.PO_NO,              // 発注番号
                 key T02.D_NO,               // 明細番号
-                    T01.SUPPLIER,           // 仕入先コード
+                key T01.SUPPLIER,           // 仕入先コード
                     T02.MAT_ID,             // 品目コード
                     T03.STATUS,             // ステータス
                     T02.PO_D_TXZ01,         // 品目テキスト

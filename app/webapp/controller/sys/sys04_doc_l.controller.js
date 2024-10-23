@@ -31,6 +31,30 @@ sap.ui.define([
      	// newModel.execute("$auto",true,null,/*bReplaceWithRVC*/true).then(()=>{
 	    // 	 	debugger;
 	    // 
+		//Test for excel
+		// var excelVal = {
+		// 	id:1,
+		// 	mat:"mat1",
+		// 	qty:1,
+		// 	unp:1.0
+		// }
+		// var jsonExcel = { content:JSON.stringify(excelVal) }
+		// this.getModel().callFunction("/EXCEL_TEST", {
+		// 	method: "POST",
+		// 	urlParameters: jsonExcel,
+		// 	success: function(oData) {
+		// 		debugger;
+		// 		const downloadLink = document.createElement("a");
+		// 		const blob = that._base64Blob(oData.EXCEL_TEST,"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+		// 		const blobUrl = URL.createObjectURL(blob);
+		// 		downloadLink.href = blobUrl;
+		// 		downloadLink.download = "test.xlsx";
+		// 		downloadLink.click();
+		// 	},
+		// 	error: function(oError) {
+		// 	}
+		// })
+		//End
 		var dataList = this._getByIdObject("detailTable");
 		for(var i=0;i<dataList.length;i++){
 			var data = dataList[i];
