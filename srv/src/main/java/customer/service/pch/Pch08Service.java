@@ -19,6 +19,9 @@ import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.ArrayList;
 
 import java.util.LinkedHashMap;
@@ -128,21 +131,25 @@ public class Pch08Service {
     }
 
     public List<LinkedHashMap<String, Object>> getDetailData(String param) {
-        // key: QUO_NUM + MAT_ID
-        String[] keyArr = param.split(",");
+
+        String[] arr = param.split(",");
         List<LinkedHashMap<String, Object>> reList = new ArrayList<>();
         List<PchQuoH> headList = new ArrayList<>();
-        for (String key : keyArr) {
-            PchQuoH head = new PchQuoH();
-            List<PchQuoItem> itemList = new ArrayList<>();
-            String[] arr = key.split("-");
-            if (arr.length == 2) {
-                String quoNum = arr[0];
-                String matId = arr[1];
+        for (String quoNum : arr) {
+
+            List<T07QuotationD> t07List = d007Dao.getList(quoNum);
+            // 根据物料号分组 每个物料一行
+            Map<String, List<T07QuotationD>> tempMap = t07List.stream()
+                    .collect(Collectors.groupingBy(T07QuotationD::getMaterial));
+
+            Set<String> keySet = tempMap.keySet();
+            for (String mat : keySet) {
+                PchQuoH head = new PchQuoH();
+                List<PchQuoItem> itemList = new ArrayList<>();
                 head.setQuoNo(quoNum);
-                head.setMaterial(matId);
-                List<T07QuotationD> t07List = d007Dao.getList(quoNum, matId);
-                for (T07QuotationD t07 : t07List) {
+                head.setMaterial(mat);
+                List<T07QuotationD> list = tempMap.get(mat);
+                for (T07QuotationD t07 : list) {
                     PchQuoItem item = new PchQuoItem();
                     item.setPrice(t07.getPrice());
                     item.setQty(t07.getQty());
@@ -152,7 +159,7 @@ public class Pch08Service {
                 head.setList(itemList);
                 headList.add(head);
             }
-          
+
         }
         for (PchQuoH h : headList) {
             LinkedHashMap<String, Object> m = new LinkedHashMap<>();

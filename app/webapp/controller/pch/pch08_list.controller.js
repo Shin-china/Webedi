@@ -244,7 +244,7 @@ sap.ui.define([
             }
             let para = [];
             selectedData.forEach(item => {
-                let key = item.QUO_NUMBER + "-" + item.Material;
+                let key = item.QUO_NUMBER;
                 para.push(key);
             });
             this._onPress(oEvent,"RouteView_pch08", this.unique(para).join(","));
