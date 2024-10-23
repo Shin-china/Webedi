@@ -69,14 +69,14 @@ sap.ui.define([
             var taxCodes = aSelectedData.map(function (oData) {
                 return oData.TAX_CODE;
             });
-            // 使用 Set 来判断是否有不同的税コード
-            var uniqueTaxCodes = new Set(taxCodes);
-            if (uniqueTaxCodes.size > 1) {
-                // 如果 TAX_CODE 不同，抛出错误
-                sap.m.MessageToast.show("同じ税コードを選択してください"); 
-                oEvent.preventDefault(); // 取消导出操作
-                return; // 终止导出流程
-            }
+            // // 使用 Set 来判断是否有不同的税コード
+            // var uniqueTaxCodes = new Set(taxCodes);
+            // if (uniqueTaxCodes.size > 1) {
+            //     // 如果 TAX_CODE 不同，抛出错误
+            //     sap.m.MessageToast.show("同じ税コードを選択してください"); 
+            //     oEvent.preventDefault(); // 取消导出操作
+            //     return; // 终止导出流程
+            // }
 
                 // 生成递增的 invoiceId
                 aSelectedData = aSelectedData.map(function(data, index) {
