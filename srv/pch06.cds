@@ -17,8 +17,8 @@ extend service TableService {
             KEY T03.SEQ,                     // 明細番号
             T02.MAT_ID,                       // 品目コード
             T02.PO_D_TXZ01,                   // 品目テキスト
-            T03.DELIVERY_DATE,                   // 納品日
-            TO_CHAR(T03.DELIVERY_DATE, 'yyyy/MM/dd') as FORMATTED_DELIVERY_DATE : String(100),
+            // T03.DELIVERY_DATE,                   // 納品日
+            TO_CHAR(T03.DELIVERY_DATE, 'yyyy/MM/dd') as DELIVERY_DATE : String(100),
             T03.QUANTITY,                   // 納品数量
             T02.STATUS,                       // ステータス  01：送信済　02：照会済
             T02.PO_PUR_QTY,                   // 発注数量
