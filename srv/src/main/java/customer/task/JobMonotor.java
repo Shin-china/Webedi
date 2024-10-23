@@ -31,7 +31,7 @@ public class JobMonotor {
 
         // IMFS01
         System.out.println("BP Sync run");
-        // ifm01BpService.syncBP();
+        ifm01BpService.syncBP();
         System.out.println("JobMonotor  run");
 
     }

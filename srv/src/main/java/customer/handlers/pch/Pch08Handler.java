@@ -2,7 +2,7 @@ package customer.handlers.pch;
 
 import cds.gen.tableservice.PCH08EditDETAILContext;
 import cds.gen.tableservice.PCH08SaveDATAContext;
-import cds.gen.tableservice.PCH08ShowDETAILContext;
+// import cds.gen.tableservice.PCH08ShowDETAILContext;
 import cds.gen.tableservice.TableService_;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -32,21 +32,23 @@ public class Pch08Handler implements EventHandler {
     @Autowired
     private Pch08Service pch08Service;
 
-//    // check数据
-//    @On(event = "PCH07_CHECK_DATA")
-//    public void checkData(PCH07CheckDATAContext context) {
-//        Pch07DataList list = JSON.parseObject(context.getShelfJson(), Pch07DataList.class);
-//    Pch07Service.detailsCheck(list);
-//    context.setResult(JSON.toJSONString(list));
-//    }
-//
-//      // 保存数据
-//  @On(event = "PCH07_SAVE_DATA")
-//    public void saveData(PCH07SaveDATAContext context) {
-//        Pch07DataList list = JSON.parseObject(context.getShelfJson(), Pch07DataList.class);
-//    // Pch07Service.detailsSave(list);
-//    context.setResult(JSON.toJSONString(list));
-//  }
+    // // check数据
+    // @On(event = "PCH07_CHECK_DATA")
+    // public void checkData(PCH07CheckDATAContext context) {
+    // Pch07DataList list = JSON.parseObject(context.getShelfJson(),
+    // Pch07DataList.class);
+    // Pch07Service.detailsCheck(list);
+    // context.setResult(JSON.toJSONString(list));
+    // }
+    //
+    // // 保存数据
+    // @On(event = "PCH07_SAVE_DATA")
+    // public void saveData(PCH07SaveDATAContext context) {
+    // Pch07DataList list = JSON.parseObject(context.getShelfJson(),
+    // Pch07DataList.class);
+    // // Pch07Service.detailsSave(list);
+    // context.setResult(JSON.toJSONString(list));
+    // }
 
     // 保存数据
     @On(event = "PCH08_SAVE_DATA")
@@ -60,10 +62,9 @@ public class Pch08Handler implements EventHandler {
         context.setResult(JSON.toJSONString(list));
     }
 
-
     @On(event = PCH08ShowDETAILContext.CDS_NAME)
     public void showDetail(PCH08ShowDETAILContext context) {
-        List<LinkedHashMap<String,Object>> detailData = pch08Service.getDetailData(context.getParam());
+        List<LinkedHashMap<String, Object>> detailData = pch08Service.getDetailData(context.getParam());
         context.setResult(JSON.toJSONString(detailData));
     }
 
@@ -71,6 +72,6 @@ public class Pch08Handler implements EventHandler {
     public void updateDetail(PCH08EditDETAILContext context) {
         String param = context.getParam();
         pch08Service.updateDetail(param);
-       context.setResult("success");
+        context.setResult("success");
     }
 }

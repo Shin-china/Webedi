@@ -1,7 +1,10 @@
 package customer.handlers.sys;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.List;
 
@@ -99,34 +102,4 @@ public class ObjectStoreHandler implements EventHandler {
         context.setResult(bytes);
     }
 
-    // Excel 导出测试
-    @On(event = "EXCEL_TEST")
-    public void exportExcel(EXCELTESTContext context) throws IOException {
-        String content = context.getContent();
-        test exl = JSON.parseObject(content, test.class);
-
-        // 获取模板文件
-        InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("template/test.xlsx");
-
-        // Excel写入数据
-        ExcelWriter excelWriter = null;
-        try {
-            excelWriter = EasyExcel.write("aa.xlsx").withTemplate(inputStream).build();
-            WriteSheet writeSheet = EasyExcel.writerSheet().build();
-
-            // 填充完后需要换行
-            FillConfig fileConfig = FillConfig.builder().forceNewRow(true).build();
-            // 写入数据
-            excelWriter.fill(exl, fileConfig, writeSheet);
-
-        } catch (Exception e) {
-
-        } finally {
-            if (excelWriter != null) {
-                excelWriter.finish();
-            }
-        }
-
-        context.setResult(null);
-    }
 }
