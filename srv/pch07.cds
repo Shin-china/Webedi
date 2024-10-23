@@ -6,7 +6,7 @@ using {MST} from '../db/model-mst';
 
 extend service TableService {
 
-    entity PCH_T07_QUO_ITEM as
+    entity PCH_T07_QUO_ITEM1 as
             select from PCH.T06_QUOTATION_H as T01
             left join PCH.T07_QUOTATION_D as T02
                 on T01.QUO_NUMBER = T02.QUO_NUMBER
@@ -20,8 +20,8 @@ extend service TableService {
                 CAST(T02.QUO_ITEM AS Integer) AS QUO_ITEM_INT
             };
 
-    entity PCH_T07_QUO_ITEM_max as
-      select from PCH_T07_QUO_ITEM
+    entity PCH_T07_QUO_ITEM_max1 as
+      select from PCH_T07_QUO_ITEM1
       
             {
                 KEY PLANT_ID,                   // プラント
