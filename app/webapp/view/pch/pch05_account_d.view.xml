@@ -391,7 +391,8 @@
     </table:label>
     <table:template>
         <!-- <Text id="textInvBaseDate" text="{INV_BASE_DATE}"/> -->
-    <smartField:SmartField id="textInvBaseDate" value="{INV_BASE_DATE}" editable="false"/>
+    <!-- <smartField:SmartField id="textInvBaseDate" value="{INV_BASE_DATE}" editable="false"/> -->
+    <Text id="textInvBaseDate" text="{path: 'INV_BASE_DATE', type: 'sap.ui.model.type.Date', formatOptions: {pattern: 'yyyy/MM/dd'}}" />
     </table:template>
 </table:Column>
 
