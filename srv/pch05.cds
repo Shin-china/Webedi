@@ -46,15 +46,12 @@ extend service TableService {
                 T05.UNIT_PRICE,                    // 単価
                 T05.TAX_AMOUNT,                    // 消費税額
                 T04.CE_DOC,                        // 差額伝票番号
-                // T05.PRICE_AMOUNT,                  // 本体金額
-                // T05.TOTAL_AMOUNT,                  // 計上金額
                 T04.INV_BASE_DATE,                 // 支払い基準日
                 T05.GR_DATE,                       // 伝票日付
                 T08.VALUE01,
                 T03.LOG_NO,                        // 登録番号
                 T03.POSTCODE,                      // 郵便番号
                 T03.PLACE_NAME || '' || T03.REGIONS as ADRESS : String(255), // 仕入先のアドレス    
-                // T05.PO_NO || '' || T05.D_NO as NO_DETAILS : String(255), // 注番    
                 T05.PO_NO || REPEAT('0', 5 - LENGTH(CAST(T05.D_NO AS String))) || CAST(T05.D_NO AS String) as NO_DETAILS : String(15), // 注番
                 T05.SHKZG,                         // 借方/貸方フラグ
 
@@ -116,11 +113,11 @@ extend service TableService {
             // 新增计算字段
             case when T05.TAX_RATE = 10 then 
                 cast(T05.PRICE_AMOUNT as Decimal(15,2)) 
-            end as CALC_10_TAX_AMOUNT : Decimal(15, 2),  // 10% 税抜金额
+            end as CALC_10_PRICE_AMOUNT : Decimal(15, 2),  // 10% 税抜金额
             
             case when T05.TAX_RATE = 8 then 
                 cast(T05.PRICE_AMOUNT as Decimal(15,2)) 
-            end as CALC_8_TAX_AMOUNT : Decimal(15, 2),   // 8% 税抜金额
+            end as CALC_8_PRICE_AMOUNT : Decimal(15, 2),   // 8% 税抜金额
 
             // SAP 税额
             case when T05.TAX_RATE = 10 then 
@@ -131,142 +128,125 @@ extend service TableService {
                 cast(T05.TAX_AMOUNT as Decimal(15,2)) 
             end as SAP_TAX_AMOUNT_8 : Decimal(15, 2),    // 8% SAP 税额
 
+            case when T05.TAX_RATE = 10 then 
+                cast(T05.TOTAL_AMOUNT as Decimal(15,2)) 
+            end as TOTAL_AMOUNT_10 : Decimal(15, 2),   
+            
+            case when T05.TAX_RATE = 8 then 
+                cast(T05.TOTAL_AMOUNT as Decimal(15,2)) 
+            end as TOTAL_AMOUNT_8 : Decimal(15, 2),   
+
         }
+
+        entity PCH_T05_PRICE_AMOUNT_SUM as
+
+        select from PCH_T05_ACCOUNT_DETAIL_SUM as T01
+
+        distinct {      
+            key T01.SUPPLIER,  
+            ROUND(SUM(CALC_8_PRICE_AMOUNT), 2) as CALC_8_PRICE_AMOUNT_TOTAL : Decimal(15, 2),
+            ROUND(SUM(CALC_10_PRICE_AMOUNT), 2) as CALC_10_PRICE_AMOUNT_TOTAL : Decimal(15, 2),
+            ROUND(SUM(SAP_TAX_AMOUNT_8), 2) as SAP_TAX_AMOUNT_8_TOTAL : Decimal(15, 2),
+            ROUND(SUM(SAP_TAX_AMOUNT_10), 2) as SAP_TAX_AMOUNT_10_TOTAL : Decimal(15, 2),
+            ROUND(SUM(TOTAL_AMOUNT_8), 2) as TOTAL_AMOUNT_8_TOTAL : Decimal(15, 2),
+            ROUND(SUM(TOTAL_AMOUNT_10), 2) as TOTAL_AMOUNT_10_TOTAL : Decimal(15, 2),     
+            ROUND(SUM(PRICE_AMOUNT), 2) as PRICE_AMOUNT_TOTAL : Decimal(15, 2),
+        }
+        group by
+            T01.SUPPLIER;  
     
     entity PCH_T05_ACCOUNT_DETAIL_SUM_GRO as
 
         select from   PCH_T05_ACCOUNT_DETAIL_SUM  as T01
 
-        distinct {   
-            key T01.INV_NO,                     
-            key T01.PO_NO,
-            key T01.D_NO,      
-            key T01.SUPPLIER,      
-            SUM(CALC_10_TAX_AMOUNT) as CALC_10_TAX_AMOUNT: Decimal(15, 2),                      // 10% 税抜金额
-            SUM(CALC_8_TAX_AMOUNT) as CALC_8_TAX_AMOUNT: Decimal(15, 2),                        // 8%  税抜金额
+        distinct {      
+            key T01.PO_BUKRS,  
+            key T01.SUPPLIER,
+            key T01.INV_NO,   
+            SUM(CALC_10_PRICE_AMOUNT) as CALC_10_PRICE_AMOUNT: Decimal(15, 2),                      // 10% 税抜金额
+            SUM(CALC_8_PRICE_AMOUNT) as CALC_8_PRICE_AMOUNT: Decimal(15, 2),                        // 8%  税抜金额
             SUM(SAP_TAX_AMOUNT_10) as SAP_TAX_AMOUNT_10: Decimal(15, 2),                        // 10% SAP税额
             SUM(SAP_TAX_AMOUNT_8) as SAP_TAX_AMOUNT_8: Decimal(15, 2),                          // 8%  SAP税额
-            // SUM(PRICE_AMOUNT) as PRICE_AMOUNT_TOTAL: Decimal(15, 2),                            // 本体金額の合計値
-            // SUM(ROUND(PRICE_AMOUNT, 2)) as PRICE_AMOUNT_TOTAL : Decimal(15, 2),
-            ROUND(SUM(PRICE_AMOUNT), 2) as PRICE_AMOUNT_TOTAL : Decimal(15, 2),
-            INV_MONTH,  
-            PO_BUKRS,  
-            CURRENCY,
-            TAX_RATE,
-            TAX_CODE,
-            GR_DATE,
-            VALUE01,
-            POSTCODE,
-            ADRESS,
-            NO_DETAILS,
-            LOG_NO,
-            SUPPLIER_DESCRIPTION,
-            MAT_ID,
-            QUANTITY,
-            UNIT,
-            UNIT_PRICE,
-            PRICE_AMOUNT,
-            INV_POST_DATE,
-            MAT_DESC,
         }
         group by
-            PO_BUKRS,           // 会社コード (聚合维度)
-            T01.SUPPLIER,           // 仕入先 (聚合维度)
-            INV_MONTH,          // 月度
-            CURRENCY,
-            TAX_RATE,
-            TAX_CODE,
-            GR_DATE,
-            VALUE01,
-            POSTCODE,
-            ADRESS,
-            NO_DETAILS,
-            MAT_ID,
-            QUANTITY,
-            UNIT,
-            UNIT_PRICE,
-            PRICE_AMOUNT,
-            INV_POST_DATE,
-            LOG_NO,
-            SUPPLIER_DESCRIPTION,
-            MAT_DESC,
-            T01.INV_NO,
-            T01.PO_NO,
-            T01.D_NO;
+            T01.PO_BUKRS,
+            T01.SUPPLIER,
+            T01.INV_NO;           // 仕入先 (聚合维度);
 
     entity PCH_T05_ACCOUNT_DETAIL_SUM_END as
 
         select from   PCH_T05_ACCOUNT_DETAIL_SUM_GRO  as T02
+        left join PCH_T05_ACCOUNT_DETAIL as T03
+        on T02.SUPPLIER = T03.SUPPLIER
+        and T02.INV_NO = T03.INV_NO
 
-        distinct {
-            key T02.INV_NO,                     
-            key T02.PO_NO,
-            key T02.D_NO,      
-            key T02.SUPPLIER,                       
-            T02.INV_MONTH,
-            T02.PO_BUKRS,     
-            CURRENCY,
-            TAX_RATE,
-            TAX_CODE,
-            GR_DATE,
-            CALC_10_TAX_AMOUNT,  
-            CALC_8_TAX_AMOUNT,   
+        distinct {   
+            key T02.SUPPLIER,  
+            T03.INV_NO,
+            T03.PO_NO,
+            T03.D_NO,                     
+            T03.INV_MONTH,
+            T03.PO_BUKRS,     
+            T03.CURRENCY,
+            T03.TAX_RATE,
+            T03.TAX_CODE,
+            T03.GR_DATE,
+            T03.VALUE01,   
+            T03.POSTCODE,
+            T03.ADRESS,   
+            T03.NO_DETAILS,
+            T03.LOG_NO,
+            T03.SUPPLIER_DESCRIPTION,
+            T03.MAT_ID,
+            T03.QUANTITY,
+            T03.UNIT,
+            T03.UNIT_PRICE,
+            T03.PRICE_AMOUNT,
+            T03.INV_POST_DATE,
+            T03.MAT_DESC,
+            CALC_10_PRICE_AMOUNT,  
+            CALC_8_PRICE_AMOUNT,   
             SAP_TAX_AMOUNT_10,
             SAP_TAX_AMOUNT_8,  
-            PRICE_AMOUNT_TOTAL,
-            VALUE01,   
-            POSTCODE,
-            ADRESS,   
-            NO_DETAILS,
-            LOG_NO,
-            SUPPLIER_DESCRIPTION,
-            MAT_ID,
-            QUANTITY,
-            UNIT,
-            UNIT_PRICE,
-            PRICE_AMOUNT,
-            INV_POST_DATE,
-            MAT_DESC,
             // 再计算的税额（根据 CURRENCY 处理小数点后位数）
             case 
-                when T02.CURRENCY = 'JPY' and T02.TAX_RATE = 10 then 
-                    cast(floor(CASE WHEN T02.TAX_RATE = 10 THEN T02.CALC_10_TAX_AMOUNT END * 0.10) as Decimal(15,0))
-                when T02.CURRENCY in ('USD', 'EUR') and T02.TAX_RATE = 10 then 
-                    cast(floor(CASE WHEN T02.TAX_RATE = 10 THEN T02.CALC_10_TAX_AMOUNT END * 0.10 * 100) / 100 as Decimal(15,2))
+                when T03.CURRENCY = 'JPY' and T03.TAX_RATE = 10 then 
+                    cast(floor(CASE WHEN T03.TAX_RATE = 10 THEN T02.CALC_10_PRICE_AMOUNT END * 0.10) as Decimal(15,0))
+                when T03.CURRENCY in ('USD', 'EUR') and T03.TAX_RATE = 10 then 
+                    cast(floor(CASE WHEN T03.TAX_RATE = 10 THEN T02.CALC_10_PRICE_AMOUNT END * 0.10 * 100) / 100 as Decimal(15,2))
             else 
             null // 其他情况返回 NULL
-            end as RECALC_TAX_AMOUNT_10 : Decimal(15, 2),  // 再计算 10% 税额
+            end as RECALC_PRICE_AMOUNT_10 : Decimal(15, 2),  // 再计算 10% 税额
             
             case 
-                when T02.CURRENCY = 'JPY' and T02.TAX_RATE = 8 then 
-                    cast(floor(CASE WHEN T02.TAX_RATE = 8 THEN T02.CALC_8_TAX_AMOUNT END * 0.08) as Decimal(15,0))
-                when T02.CURRENCY in ('USD', 'EUR') and T02.TAX_RATE = 8 then 
-                    cast(floor(CASE WHEN T02.TAX_RATE = 8 THEN T02.CALC_8_TAX_AMOUNT END * 0.08 * 100) / 100 as Decimal(15,2))
+                when T03.CURRENCY = 'JPY' and T03.TAX_RATE = 8 then 
+                    cast(floor(CASE WHEN T03.TAX_RATE = 8 THEN T02.CALC_8_PRICE_AMOUNT END * 0.08) as Decimal(15,0))
+                when T03.CURRENCY in ('USD', 'EUR') and T03.TAX_RATE = 8 then 
+                    cast(floor(CASE WHEN T03.TAX_RATE = 8 THEN T02.CALC_8_PRICE_AMOUNT END * 0.08 * 100) / 100 as Decimal(15,2))
             else 
             null // 其他情况返回 NULL
-            end as RECALC_TAX_AMOUNT_8 : Decimal(15, 2),   // 再计算 8% 税额
+            end as RECALC_PRICE_AMOUNT_8 : Decimal(15, 2),   // 再计算 8% 税额
 
         }
 
         entity PCH_T05_ACCOUNT_DETAIL_SUM_FINAL as
         select from   PCH_T05_ACCOUNT_DETAIL_SUM_END  as T03
 
-        distinct {
-            key T03.INV_NO,                     
-            key T03.PO_NO,
-            key T03.D_NO,      
-            key T03.SUPPLIER,        
+        distinct {    
+            key T03.SUPPLIER, 
+            key T03.INV_NO,
+            T03.PO_NO,
+            T03.D_NO,       
             T03.PO_BUKRS,                       
             T03.INV_MONTH,
             T03.CURRENCY,
             T03.TAX_RATE,
             TAX_CODE,
             GR_DATE,
-            CALC_10_TAX_AMOUNT,  
-            CALC_8_TAX_AMOUNT,   
+            CALC_10_PRICE_AMOUNT,  
+            CALC_8_PRICE_AMOUNT,   
             SAP_TAX_AMOUNT_10,
             SAP_TAX_AMOUNT_8,  
-            PRICE_AMOUNT_TOTAL,
             VALUE01, 
             POSTCODE,
             ADRESS,     
@@ -281,68 +261,44 @@ extend service TableService {
             INV_POST_DATE,
             MAT_DESC,
 
-            // CALC_8_TAX_AMOUNT + CALC_10_TAX_AMOUNT as TOTAL_TAX_AMOUNT : Decimal(15, 3), // 8%和10%的合计税额(PRICE_AMOUNT)
-            // RECALC_TAX_AMOUNT_8 + RECALC_TAX_AMOUNT_10 as TOTAL_RECALC_TAX_AMOUNT : Decimal(15, 3), //8%和10%的合计税额(TAX_AMOUNT)
-
-            COALESCE(CALC_8_TAX_AMOUNT, 0) + COALESCE(CALC_10_TAX_AMOUNT, 0) as TOTAL_TAX_AMOUNT : Decimal(15, 3),
-            COALESCE(RECALC_TAX_AMOUNT_8, 0) + COALESCE(RECALC_TAX_AMOUNT_10, 0) as TOTAL_RECALC_TAX_AMOUNT : Decimal(15, 3),
+            COALESCE(CALC_8_PRICE_AMOUNT, 0) + COALESCE(CALC_10_PRICE_AMOUNT, 0) as TOTAL_PRICE_AMOUNT : Decimal(15, 3),
+            COALESCE(RECALC_PRICE_AMOUNT_8, 0) + COALESCE(RECALC_PRICE_AMOUNT_10, 0) as TOTAL_RECALC_PRICE_AMOUNT : Decimal(15, 3),
 
             // 再计算的税额（根据 CURRENCY 处理小数点后位数）
             case 
                 when T03.CURRENCY = 'JPY' and T03.TAX_RATE = 10 then 
-                    cast(floor(CASE WHEN T03.TAX_RATE = 10 THEN T03.CALC_10_TAX_AMOUNT END * 0.10) as Decimal(15,0))
+                    cast(floor(CASE WHEN T03.TAX_RATE = 10 THEN T03.CALC_10_PRICE_AMOUNT END * 0.10) as Decimal(15,0))
                 when T03.CURRENCY in ('USD', 'EUR') and T03.TAX_RATE = 10 then 
-                    cast(floor(CASE WHEN T03.TAX_RATE = 10 THEN T03.CALC_10_TAX_AMOUNT END * 0.10 * 100) / 100 as Decimal(15,2))
-            end as RECALC_TAX_AMOUNT_10 : Decimal(15, 2),  // 再计算 10% 税额
+                    cast(floor(CASE WHEN T03.TAX_RATE = 10 THEN T03.CALC_10_PRICE_AMOUNT END * 0.10 * 100) / 100 as Decimal(15,2))
+            end as RECALC_PRICE_AMOUNT_10 : Decimal(15, 2),  // 再计算 10% 税额
             
             case 
                 when T03.CURRENCY = 'JPY' and T03.TAX_RATE = 8 then 
-                    cast(floor(CASE WHEN T03.TAX_RATE = 8 THEN T03.CALC_8_TAX_AMOUNT END * 0.08) as Decimal(15,0))
+                    cast(floor(CASE WHEN T03.TAX_RATE = 8 THEN T03.CALC_8_PRICE_AMOUNT END * 0.08) as Decimal(15,0))
                 when T03.CURRENCY in ('USD', 'EUR') and T03.TAX_RATE = 8 then 
-                    cast(floor(CASE WHEN T03.TAX_RATE = 8 THEN T03.CALC_8_TAX_AMOUNT END * 0.08 * 100) / 100 as Decimal(15,2))
-            end as RECALC_TAX_AMOUNT_8 : Decimal(15, 2),   // 再计算 8% 税额
-
-        //   // 消费税差额
-        //     case 
-        //         when T03.TAX_RATE = 10 then 
-        //             (RECALC_TAX_AMOUNT_10 - T03.SAP_TAX_AMOUNT_10)
-        //     end as DIFF_TAX_AMOUNT_10 : Decimal(15, 2), 
-
-        //     case 
-        //         when T03.TAX_RATE = 8 then 
-        //             (RECALC_TAX_AMOUNT_8 - T03.SAP_TAX_AMOUNT_8)
-        //     end as DIFF_TAX_AMOUNT_8 : Decimal(15, 2),
-        //     // 合计金额
-        //     case 
-        //         when T03.TAX_RATE = 10 then 
-        //             (T03.CALC_10_TAX_AMOUNT + RECALC_TAX_AMOUNT_10)
-        //     end as TOTAL_10_TAX_INCLUDED_AMOUNT : Decimal(15, 2), 
-            
-        //     case 
-        //         when T03.TAX_RATE = 8 then 
-        //             (T03.CALC_8_TAX_AMOUNT + RECALC_TAX_AMOUNT_8)
-        //     end as TOTAL_8_TAX_INCLUDED_AMOUNT : Decimal(15, 2)  
+                    cast(floor(CASE WHEN T03.TAX_RATE = 8 THEN T03.CALC_8_PRICE_AMOUNT END * 0.08 * 100) / 100 as Decimal(15,2))
+            end as RECALC_PRICE_AMOUNT_8 : Decimal(15, 2),   // 再计算 8% 税额
 
           // 消费税差额
         case 
             when T03.TAX_RATE = 10 then 
-                COALESCE(RECALC_TAX_AMOUNT_10, 0) - COALESCE(T03.SAP_TAX_AMOUNT_10, 0)
+                COALESCE(RECALC_PRICE_AMOUNT_10, 0) - COALESCE(T03.SAP_TAX_AMOUNT_10, 0)
         end as DIFF_TAX_AMOUNT_10 : Decimal(15, 2), 
 
         case 
             when T03.TAX_RATE = 8 then 
-                COALESCE(RECALC_TAX_AMOUNT_8, 0) - COALESCE(T03.SAP_TAX_AMOUNT_8, 0)
+                COALESCE(RECALC_PRICE_AMOUNT_8, 0) - COALESCE(T03.SAP_TAX_AMOUNT_8, 0)
         end as DIFF_TAX_AMOUNT_8 : Decimal(15, 2),
 
         // 合计金额
         case 
             when T03.TAX_RATE = 10 then 
-                COALESCE(T03.CALC_10_TAX_AMOUNT, 0) + COALESCE(RECALC_TAX_AMOUNT_10, 0)
+                COALESCE(T03.CALC_10_PRICE_AMOUNT, 0) + COALESCE(RECALC_PRICE_AMOUNT_10, 0)
         end as TOTAL_10_TAX_INCLUDED_AMOUNT : Decimal(15, 2), 
 
         case 
             when T03.TAX_RATE = 8 then 
-                COALESCE(T03.CALC_8_TAX_AMOUNT, 0) + COALESCE(RECALC_TAX_AMOUNT_8, 0)
+                COALESCE(T03.CALC_8_PRICE_AMOUNT, 0) + COALESCE(RECALC_PRICE_AMOUNT_8, 0)
         end as TOTAL_8_TAX_INCLUDED_AMOUNT : Decimal(15, 2),
 
 
@@ -350,81 +306,90 @@ extend service TableService {
 
          entity PCH_T05_ACCOUNT_DETAIL_EXCEL as
 
-        select from   PCH_T05_ACCOUNT_DETAIL_SUM_FINAL
+        select from   PCH_T05_ACCOUNT_DETAIL_SUM_FINAL as T01
+        left join PCH_T05_PRICE_AMOUNT_SUM as T02
+        on T01.SUPPLIER = T02.SUPPLIER
+
 
         distinct {
-            key INV_NO,                     
-            key PO_NO,
-            key D_NO,      
-            key SUPPLIER,   
-            PO_BUKRS,                                             
-            INV_MONTH,
-            CURRENCY,
-            TAX_RATE,
-            TAX_CODE,  
-            GR_DATE,
-            CALC_10_TAX_AMOUNT,  
-            CALC_8_TAX_AMOUNT,   
-            SAP_TAX_AMOUNT_10,
-            SAP_TAX_AMOUNT_8,  
-            DIFF_TAX_AMOUNT_10,
-            DIFF_TAX_AMOUNT_8,
-            RECALC_TAX_AMOUNT_8,
-            RECALC_TAX_AMOUNT_10,
-            TOTAL_8_TAX_INCLUDED_AMOUNT,
-            TOTAL_10_TAX_INCLUDED_AMOUNT,
-            PRICE_AMOUNT_TOTAL,
-            TOTAL_TAX_AMOUNT,
-            TOTAL_RECALC_TAX_AMOUNT,
-            VALUE01,
-            POSTCODE,
-            ADRESS,
-            NO_DETAILS,
-            LOG_NO,
-            SUPPLIER_DESCRIPTION,
-            MAT_ID,
-            QUANTITY,
-            UNIT,
-            UNIT_PRICE,
-            PRICE_AMOUNT,
-            INV_POST_DATE,
-            MAT_DESC,
+            key T01.INV_NO,                     
+            key T01.PO_NO,
+            key T01.D_NO,      
+            key T01.SUPPLIER,   
+            T01.PO_BUKRS,                                             
+            T01.INV_MONTH,
+            T01.CURRENCY,
+            T01.TAX_RATE,
+            T01.TAX_CODE,  
+            T01.GR_DATE,
+            T01.CALC_10_PRICE_AMOUNT,  
+            T01.CALC_8_PRICE_AMOUNT,   
+            T01.SAP_TAX_AMOUNT_10,
+            T01.SAP_TAX_AMOUNT_8,  
+            T01.DIFF_TAX_AMOUNT_10,
+            T01.DIFF_TAX_AMOUNT_8,
+            T01.RECALC_PRICE_AMOUNT_8,
+            T01.RECALC_PRICE_AMOUNT_10,
+            T01.TOTAL_8_TAX_INCLUDED_AMOUNT,
+            T01.TOTAL_10_TAX_INCLUDED_AMOUNT,
+            T01.TOTAL_PRICE_AMOUNT,
+            T01.TOTAL_RECALC_PRICE_AMOUNT,
+            T01.VALUE01,
+            T01.POSTCODE,
+            T01.ADRESS,
+            T01.NO_DETAILS,
+            T01.LOG_NO,
+            T01.SUPPLIER_DESCRIPTION,
+            T01.MAT_ID,
+            T01.QUANTITY,
+            T01.UNIT,
+            T01.UNIT_PRICE,
+            T01.PRICE_AMOUNT,
+            T01.INV_POST_DATE,
+            T01.MAT_DESC,
+            T02.PRICE_AMOUNT_TOTAL,
+            T02.TOTAL_AMOUNT_8_TOTAL,
+            T02.TOTAL_AMOUNT_10_TOTAL,
+            T02.SAP_TAX_AMOUNT_8_TOTAL,
+            T02.SAP_TAX_AMOUNT_10_TOTAL,
+            T02.CALC_8_PRICE_AMOUNT_TOTAL,
+            T02.CALC_10_PRICE_AMOUNT_TOTAL,
 
             CONCAT(
-                SUBSTRING(INV_MONTH, 1, 4),  // 提取年份
+                SUBSTRING(T01.INV_MONTH, 1, 4),  // 提取年份
                 '年', 
-                SUBSTRING(INV_MONTH, 5, 2),  // 提取月份
+                SUBSTRING(T01.INV_MONTH, 5, 2),  // 提取月份
                 '月'
             ) as INV_MONTH_FORMATTED : String,
 
             // 计算每个 SUPPLIER 的条数
-            COUNT(*) OVER (PARTITION BY SUPPLIER) as TOTAL_COUNT : Integer, // 按照 SUPPLIER 维度计算条数
-            TOTAL_10_TAX_INCLUDED_AMOUNT + TOTAL_10_TAX_INCLUDED_AMOUNT as TOTAL_TAX_INCLUDED_AMOUNT : Decimal(15, 2), // 計上金額总合计
-            
+            COUNT(*) OVER (PARTITION BY T01.SUPPLIER) as TOTAL_COUNT : Integer, // 按照 SUPPLIER 维度计算条数
+            COALESCE(T02.TOTAL_AMOUNT_8_TOTAL, 0) + COALESCE(T02.TOTAL_AMOUNT_10_TOTAL, 0) as TOTAL_TOTAL_AMOUNT : Decimal(15, 2), // 計上金額总合计
+            COALESCE(T02.SAP_TAX_AMOUNT_8_TOTAL, 0) + COALESCE(T02.SAP_TAX_AMOUNT_10_TOTAL, 0) as TOTAL_TAX_AMOUNT : Decimal(15, 2), // 消費税額总合计
 
             case 
-                when DIFF_TAX_AMOUNT_10 IS NOT NULL THEN DIFF_TAX_AMOUNT_10
-                when DIFF_TAX_AMOUNT_8 IS NOT NULL THEN DIFF_TAX_AMOUNT_8
+                when T01.DIFF_TAX_AMOUNT_10 IS NOT NULL THEN DIFF_TAX_AMOUNT_10
+                when T01.DIFF_TAX_AMOUNT_8 IS NOT NULL THEN DIFF_TAX_AMOUNT_8
                 else NULL
             end AS DIFF_TAX_AMOUNT :Decimal(15, 2),
 
             // 计算借方/贷方标志
             case 
-                when DIFF_TAX_AMOUNT_10 is null and DIFF_TAX_AMOUNT_8 is null then null 
-                when DIFF_TAX_AMOUNT_10 >= 0 or DIFF_TAX_AMOUNT_8 >= 0 then 'S' 
+                when T01.DIFF_TAX_AMOUNT_10 is null and DIFF_TAX_AMOUNT_8 is null then null 
+                when T01.DIFF_TAX_AMOUNT_10 >= 0 or DIFF_TAX_AMOUNT_8 >= 0 then 'S' 
                 else 'H' 
             end as SHKZG_FLAG : String,                      // 借方/贷方标志
 
             // 计算取引
             case 
-                when DIFF_TAX_AMOUNT_10 is null and DIFF_TAX_AMOUNT_8 is null then null 
-                when DIFF_TAX_AMOUNT_10 >= 0 or DIFF_TAX_AMOUNT_8 >= 0 then 1 
+                when T01.DIFF_TAX_AMOUNT_10 is null and DIFF_TAX_AMOUNT_8 is null then null 
+                when T01.DIFF_TAX_AMOUNT_10 >= 0 or DIFF_TAX_AMOUNT_8 >= 0 then 1 
                 else 2 
             end as TRANSACTION : String,                 // 取引类型
 
             case 
-                when DIFF_TAX_AMOUNT_10 is not null then cast(floor(DIFF_TAX_AMOUNT_10 / 0.1) as Decimal(15,0)) 
-                when DIFF_TAX_AMOUNT_8 is not null then cast(floor(DIFF_TAX_AMOUNT_8 / 0.08) as Decimal(15,0)) 
+                when T01.DIFF_TAX_AMOUNT_10 is not null then cast(floor(DIFF_TAX_AMOUNT_10 / 0.1) as Decimal(15,0)) 
+                when T01.DIFF_TAX_AMOUNT_8 is not null then cast(floor(DIFF_TAX_AMOUNT_8 / 0.08) as Decimal(15,0)) 
                 else null 
             end as TAX_BASE_AMOUNT : Decimal(15,0), // 税基金额
 
