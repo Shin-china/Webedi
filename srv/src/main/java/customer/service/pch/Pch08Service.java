@@ -197,7 +197,9 @@ public class Pch08Service {
 
         for (int i = 0; i < array.size(); i++) {
             JSONObject object = (JSONObject) array.get(i);
-            updateT07(object,array.size());
+            // size - 3  去除QuoNo,Mat,MAX  剩下的qty price key 三个为一组
+            int count = (object.size() - 3) / 3;
+            updateT07(object,count);
         }
     }
 
