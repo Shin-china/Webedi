@@ -78,7 +78,9 @@ public class DateTools {
      */
     public static String getTimeAsString(Instant instant) {
         // 使用默认时区将Instant转换为ZonedDateTime
+
         ZoneId defaultZoneId = ZoneId.systemDefault();
+        defaultZoneId = ZoneId.of("Asia/Tokyo");
         ZonedDateTime zonedDateTime = instant.atZone(defaultZoneId);
 
         // 从ZonedDateTime中提取LocalDateTime
@@ -97,6 +99,7 @@ public class DateTools {
 
         // 使用默认时区将Instant转换为ZonedDateTime
         ZoneId defaultZoneId = ZoneId.systemDefault();
+        defaultZoneId = ZoneId.of("Asia/Tokyo");
         ZonedDateTime zonedDateTime = instant.atZone(defaultZoneId);
 
         // 从ZonedDateTime中提取LocalDateTime
