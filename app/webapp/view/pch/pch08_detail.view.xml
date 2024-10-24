@@ -38,6 +38,7 @@
                 <OverflowToolbar id="ID_header">
                     <ToolbarSpacer id="idtoolbarspacer1"/>
                     <m:Button id="Button1" text="修改" icon="sap-icon://edit" press="onEdit"/>
+                    <m:Button id="Button2" text="Export" icon="sap-icon://arrow-bottom" press="onExport"/>
                 </OverflowToolbar>
                 <table:Table id="dataTable" rows="{path: '/dataList'}" selectionMode="None">
                     <!-- <table:columns>

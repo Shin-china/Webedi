@@ -30,6 +30,7 @@ sap.ui.define([
             let params = { param: key };
             that._callCdsAction("/PCH08_SHOW_DETAIL", params, that).then((oData) => {
                 let json = JSON.parse(oData.PCH08_SHOW_DETAIL);
+                this._data = json;
                 let data = this.getView().getModel().oData.dataList;
 
                 // 清空
@@ -40,6 +41,7 @@ sap.ui.define([
                 })
 
                 let maxNum = Math.max.apply(null, rowNo);
+                this._maxNum = maxNum;
                 // 清除旧列 重新生成
                 let oldTable = this.getView().byId("dataTable");
                 let oldColumns = oldTable.getColumns();
@@ -83,7 +85,58 @@ sap.ui.define([
         },
 
 
+        onExport: function () {
 
+            var data = this._data; 
+
+            // 配置导出字段和格式
+            var aColumns = [
+                {
+                    label: '購買見積番号', 
+                    property: 'QUO_NO',
+                    type: 'string'
+                },
+                {
+                    label: '品名', 
+                    property: 'MAT',
+                    type: 'string'
+                }
+
+            ];
+            for (let i = 1; i <= this._maxNum; i++) {
+
+                aColumns.push({ 
+                    label: '数量' + i ,
+                    property: 'QTY_' + i,
+                    type: 'number'
+                });
+                aColumns.push({ 
+                    label: '単価' + i ,
+                    property: 'PRICE_' + i,
+                    type: 'number'
+                })
+
+
+            }
+
+            // 创建导出的配置
+            var oSettings = {
+                workbook: {
+                    columns: aColumns
+                },
+                dataSource: data, // 数据源
+                fileName: "ExportData.xlsx", // 导出的文件名
+                worker: false // 在本地不使用 web worker
+            };
+
+            // 使用 sap.ui.export.Spreadsheet 导出数据为 Excel
+            var oSheet = new sap.ui.export.Spreadsheet(oSettings);
+            oSheet.build().then(function () {
+                sap.m.MessageToast.show("Export success");
+            }).catch(function (oError) {
+                sap.m.MessageToast.show("Export failed");
+            });
+        },
 
 
 
