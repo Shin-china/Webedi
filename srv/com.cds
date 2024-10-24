@@ -40,7 +40,7 @@ extend service TableService with {
        key   VALUE01 as VALUE
     }
     where
-      T03.H_CODE = 'MST_BP_ZABC';
+      T03.H_CODE = 'BP_ZABC';
       
   entity PCH03_STATUS_POP      as
     select from SYS.T07_COM_OP_H T03
