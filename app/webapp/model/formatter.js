@@ -337,6 +337,7 @@ sap.ui.define([], function () {
 		},
 
     pch08GetInputEditable : function (str) {
+      console.log(str)
       if (str != null && str != "" && str != undefined) {
         return true;
       }
