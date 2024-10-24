@@ -12,6 +12,7 @@ extend service TableService {
             key T01.PUR_GROUP,
             key T01.SUPPLIER,
             key T01.MATERIAL,
+            key T01.ARRANGE_END_DATE,
                 T01.PUR_GROUP_NAME,
                 T01.NAME1,
                 T01.MATERIAL_TEXT,
@@ -26,14 +27,13 @@ extend service TableService {
                 T01.ARRANGE_END_DATE,
                 T01.ARRANGE_QTY,
                 T01.PLANT,
-                T01.SUPPLIER_TEL,
-                T01.STATUS,
 
         }
         group by
             PUR_GROUP,
             SUPPLIER,
             MATERIAL,
+            ARRANGE_END_DATE,
             PUR_GROUP_NAME,
             NAME1,
             MATERIAL_TEXT,
@@ -41,10 +41,7 @@ extend service TableService {
             DELIVARY_DAYS,
             MANUF_CODE,
             ARRANGE_START_DATE,
-            ARRANGE_END_DATE,
             ARRANGE_QTY,
             PLANT,
-            SUPPLIER_TEL,
-            STATUS
 
 };
