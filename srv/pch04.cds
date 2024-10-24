@@ -300,7 +300,7 @@ extend service TableService {
         when t2.Company_Code = '1400' then 'ＵＭＣ・Ｈエレクトロニクス株式会社'
         when t2.Company_Code = '1100' then 'ユー・エム・シー・エレクトロニクス株式会社'
         else null
-        end as Company_Name : String(4),
+        end as Company_Name : String(50),
 
         CONCAT(
             SUBSTRING(t3.INV_MONTH, 1, 4),  // 提取年份
