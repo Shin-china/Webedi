@@ -26,7 +26,8 @@ extend service TableService {
             distinct {
                 key T02.PO_NO,              // 発注番号
                 key T02.D_NO,               // 明細番号
-                key T01.SUPPLIER,           // 仕入先コード
+                key T03.SEQ,                // 連続番号
+                    T01.SUPPLIER,           // 仕入先コード
                     T02.MAT_ID,             // 品目コード
                     T03.STATUS,             // ステータス
                     T02.PO_D_TXZ01,         // 品目テキスト
@@ -39,7 +40,6 @@ extend service TableService {
                     T02.DEL_AMOUNT,         // 発注金額
                     T02.MEMO,               // 備考
                     T02.STORAGE_LOC || '' || T02.STORAGE_TXT as STORAGE_NAME : String(255), // 納品先名
-                    T03.SEQ,                // 連続番号
                     T03.DEL_FLAG,           // 削除フラグ
                     T03.ExtNumber,          // 参照
                     T02.PO_NO || REPEAT('0', 5 - LENGTH(CAST(T02.D_NO AS String))) || CAST(T02.D_NO AS String) as NO_DETAILS : String(15), // 購買伝票\明細NO				

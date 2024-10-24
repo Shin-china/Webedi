@@ -147,7 +147,8 @@ extend service TableService {
             SUM(SAP_TAX_AMOUNT_10) as SAP_TAX_AMOUNT_10: Decimal(15, 2),                        // 10% SAP税额
             SUM(SAP_TAX_AMOUNT_8) as SAP_TAX_AMOUNT_8: Decimal(15, 2),                          // 8%  SAP税额
             // SUM(PRICE_AMOUNT) as PRICE_AMOUNT_TOTAL: Decimal(15, 2),                            // 本体金額の合計値
-            SUM(ROUND(PRICE_AMOUNT, 2)) as PRICE_AMOUNT_TOTAL : Decimal(15, 2),
+            // SUM(ROUND(PRICE_AMOUNT, 2)) as PRICE_AMOUNT_TOTAL : Decimal(15, 2),
+            ROUND(SUM(PRICE_AMOUNT), 2) as PRICE_AMOUNT_TOTAL : Decimal(15, 2),
             INV_MONTH,  
             PO_BUKRS,  
             CURRENCY,
@@ -280,8 +281,12 @@ extend service TableService {
             INV_POST_DATE,
             MAT_DESC,
 
-            CALC_8_TAX_AMOUNT + CALC_10_TAX_AMOUNT as TOTAL_TAX_AMOUNT : Decimal(15, 3), // 8%和10%的合计税额(PRICE_AMOUNT)
-            RECALC_TAX_AMOUNT_8 + RECALC_TAX_AMOUNT_10 as TOTAL_RECALC_TAX_AMOUNT : Decimal(15, 3), //8%和10%的合计税额(TAX_AMOUNT)
+            // CALC_8_TAX_AMOUNT + CALC_10_TAX_AMOUNT as TOTAL_TAX_AMOUNT : Decimal(15, 3), // 8%和10%的合计税额(PRICE_AMOUNT)
+            // RECALC_TAX_AMOUNT_8 + RECALC_TAX_AMOUNT_10 as TOTAL_RECALC_TAX_AMOUNT : Decimal(15, 3), //8%和10%的合计税额(TAX_AMOUNT)
+
+            COALESCE(CALC_8_TAX_AMOUNT, 0) + COALESCE(CALC_10_TAX_AMOUNT, 0) as TOTAL_TAX_AMOUNT : Decimal(15, 3),
+            COALESCE(RECALC_TAX_AMOUNT_8, 0) + COALESCE(RECALC_TAX_AMOUNT_10, 0) as TOTAL_RECALC_TAX_AMOUNT : Decimal(15, 3),
+
             // 再计算的税额（根据 CURRENCY 处理小数点后位数）
             case 
                 when T03.CURRENCY = 'JPY' and T03.TAX_RATE = 10 then 
@@ -297,26 +302,50 @@ extend service TableService {
                     cast(floor(CASE WHEN T03.TAX_RATE = 8 THEN T03.CALC_8_TAX_AMOUNT END * 0.08 * 100) / 100 as Decimal(15,2))
             end as RECALC_TAX_AMOUNT_8 : Decimal(15, 2),   // 再计算 8% 税额
 
-          // 消费税差额
-            case 
-                when T03.TAX_RATE = 10 then 
-                    (RECALC_TAX_AMOUNT_10 - T03.SAP_TAX_AMOUNT_10)
-            end as DIFF_TAX_AMOUNT_10 : Decimal(15, 2), 
+        //   // 消费税差额
+        //     case 
+        //         when T03.TAX_RATE = 10 then 
+        //             (RECALC_TAX_AMOUNT_10 - T03.SAP_TAX_AMOUNT_10)
+        //     end as DIFF_TAX_AMOUNT_10 : Decimal(15, 2), 
 
-            case 
-                when T03.TAX_RATE = 8 then 
-                    (RECALC_TAX_AMOUNT_8 - T03.SAP_TAX_AMOUNT_8)
-            end as DIFF_TAX_AMOUNT_8 : Decimal(15, 2),
-            // 合计金额
-            case 
-                when T03.TAX_RATE = 10 then 
-                    (T03.CALC_10_TAX_AMOUNT + RECALC_TAX_AMOUNT_10)
-            end as TOTAL_10_TAX_INCLUDED_AMOUNT : Decimal(15, 2), 
+        //     case 
+        //         when T03.TAX_RATE = 8 then 
+        //             (RECALC_TAX_AMOUNT_8 - T03.SAP_TAX_AMOUNT_8)
+        //     end as DIFF_TAX_AMOUNT_8 : Decimal(15, 2),
+        //     // 合计金额
+        //     case 
+        //         when T03.TAX_RATE = 10 then 
+        //             (T03.CALC_10_TAX_AMOUNT + RECALC_TAX_AMOUNT_10)
+        //     end as TOTAL_10_TAX_INCLUDED_AMOUNT : Decimal(15, 2), 
             
-            case 
-                when T03.TAX_RATE = 8 then 
-                    (T03.CALC_8_TAX_AMOUNT + RECALC_TAX_AMOUNT_8)
-            end as TOTAL_8_TAX_INCLUDED_AMOUNT : Decimal(15, 2)  
+        //     case 
+        //         when T03.TAX_RATE = 8 then 
+        //             (T03.CALC_8_TAX_AMOUNT + RECALC_TAX_AMOUNT_8)
+        //     end as TOTAL_8_TAX_INCLUDED_AMOUNT : Decimal(15, 2)  
+
+          // 消费税差额
+        case 
+            when T03.TAX_RATE = 10 then 
+                COALESCE(RECALC_TAX_AMOUNT_10, 0) - COALESCE(T03.SAP_TAX_AMOUNT_10, 0)
+        end as DIFF_TAX_AMOUNT_10 : Decimal(15, 2), 
+
+        case 
+            when T03.TAX_RATE = 8 then 
+                COALESCE(RECALC_TAX_AMOUNT_8, 0) - COALESCE(T03.SAP_TAX_AMOUNT_8, 0)
+        end as DIFF_TAX_AMOUNT_8 : Decimal(15, 2),
+
+        // 合计金额
+        case 
+            when T03.TAX_RATE = 10 then 
+                COALESCE(T03.CALC_10_TAX_AMOUNT, 0) + COALESCE(RECALC_TAX_AMOUNT_10, 0)
+        end as TOTAL_10_TAX_INCLUDED_AMOUNT : Decimal(15, 2), 
+
+        case 
+            when T03.TAX_RATE = 8 then 
+                COALESCE(T03.CALC_8_TAX_AMOUNT, 0) + COALESCE(RECALC_TAX_AMOUNT_8, 0)
+        end as TOTAL_8_TAX_INCLUDED_AMOUNT : Decimal(15, 2),
+
+
         }
 
          entity PCH_T05_ACCOUNT_DETAIL_EXCEL as

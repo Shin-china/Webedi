@@ -55,6 +55,7 @@ extend service TableService {
         T02.SUPPLIER_MAT,                  // 仕入先品目コード
         M03.LOG_NO,                        // 登録番号    
         M04.ZABC,                          // ABC区分
+        T05.Company_Code,
         // T05.PRICE_AMOUNT,
         // T05.TOTAL_AMOUNT,
         T05.UNIT_PRICE,
@@ -107,6 +108,7 @@ extend service TableService {
         PRICE_AMOUNT,
         TOTAL_AMOUNT,
         INV_MONTH,                     //检收月
+        Company_Code,
  
         CAST(UNIT_PRICE * COALESCE(EXCHANGE, 1) AS Decimal(15, 3)) AS UNIT_PRICE_IN_YEN : Decimal(15, 3),
         // FLOOR(TOTAL_AMOUNT * COALESCE(EXCHANGE, 1)) AS TOTAL_AMOUNT_IN_YEN : Decimal(20, 0), // 円換算後税込金額（檢収）
@@ -142,6 +144,7 @@ extend service TableService {
         UNIT_PRICE_IN_YEN,
         TOTAL_AMOUNT_IN_YEN,
         CURRENCY,
+        Company_Code,
         case 
             when CURRENCY = 'JPY' then cast(PRICE_AMOUNT as Decimal(18,3))
             when CURRENCY in ('USD', 'EUR') then cast(floor(PRICE_AMOUNT * EXCHANGE) as Decimal(18,0))
@@ -286,11 +289,18 @@ extend service TableService {
         t2.UNIT_PRICE_IN_YEN,                // 基準通貨単価
         t2.BASE_AMOUNT_EXCLUDING_TAX,        // 基準通貨金額税抜
         t2.TAX_RATE,                         // INV税率
+        t2.Company_Code,
 
         t2.PO_TRACK_NO,                      // 備考
         t2.INV_BASE_DATE,                    // 支払日
         t3.LOG_NO,                           // 登録番号
         t3.INV_MONTH,                        // 検収月
+
+        case 
+        when t2.Company_Code = '1400' then 'ＵＭＣ・Ｈエレクトロニクス株式会社'
+        when t2.Company_Code = '1100' then 'ユー・エム・シー・エレクトロニクス株式会社'
+        else null
+        end as Company_Name : String(4),
 
         CONCAT(
             SUBSTRING(t3.INV_MONTH, 1, 4),  // 提取年份

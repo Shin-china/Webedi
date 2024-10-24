@@ -57,11 +57,11 @@
             <smartTable:customToolbar>
                 <OverflowToolbar id="myOverflowToolbar1" design="Transparent">
                     <ToolbarSpacer id="myToolbarSpacer1"/>
-                    <OverflowToolbarButton id="sendEmailButton"   icon="sap-icon://email"  text="{pch>PCH09_BUTTON_SEND}" tooltip="{pch>PCH09_BUTTON_SEND}" press="onSendEmail"/>
+                    <OverflowToolbarButton id="sendEmailButton"   icon="sap-icon://email"  text="{pch>PCH09_BUTTON_SEND}" tooltip="{pch>PCH09_BUTTON_SEND}" press="onResend"/>
                 </OverflowToolbar>
             </smartTable:customToolbar>
         
-            <table:Table id="listTable" rowMode="Auto" rowActionCount="1" selectionMode="MultiToggle" alternateRowColors="true" fixedColumnCount="0" threshold="20">
+            <table:Table id="detailTable" rowMode="Auto" rowActionCount="1" selectionMode="MultiToggle" alternateRowColors="true" fixedColumnCount="0" threshold="20">
                 <table:columns>       
                     <table:Column id="idPur_group" width="8rem" sortProperty="PUR_GROUP" filterProperty="PUR_GROUP">
                         <table:customData>
@@ -159,15 +159,15 @@
                             </table:template>
                         </table:Column>
 
-                        <table:Column id="idcolMIN_DELIVERY_QTY" width="7rem" sortProperty="MIN_DELIVERY_QTY" filterProperty="MIN_DELIVERY_QTY">
+                        <table:Column id="idcolMIN_DELIVERY_QTY_SUM" width="7rem" sortProperty="MIN_DELIVERY_QTY_SUM" filterProperty="MIN_DELIVERY_QTY_SUM">
                             <table:customData>
-                                <core:CustomData key="p13nData" value='{"columnKey":"MIN_DELIVERY_QTY", "leadingProperty":"MIN_DELIVERY_QTY", "sortProperty":"MIN_DELIVERY_QTY", "filterProperty":"MIN_DELIVERY_QTY"}'/>
+                                <core:CustomData key="p13nData" value='{"columnKey":"MIN_DELIVERY_QTY_SUM", "leadingProperty":"MIN_DELIVERY_QTY_SUM", "sortProperty":"MIN_DELIVERY_QTY_SUM", "filterProperty":"MIN_DELIVERY_QTY_SUM"}'/>
                             </table:customData>
                             <table:label>
-                                <Label id="labelMIN_DELIVERY_QTY" text="{pch>PCH09_MIN_DELIVERY_QTY}"/>
+                                <Label id="labelMIN_DELIVERY_QTY_SUM" text="{pch>PCH09_MIN_DELIVERY_QTY_SUM}"/>
                             </table:label>
                             <table:template>
-                                <Text id="textMIN_DELIVERY_QTY" text="{MIN_DELIVERY_QTY}"/>
+                                <Text id="textMIN_DELIVERY_QTY_SUM" text="{MIN_DELIVERY_QTY_SUM}"/>
                             </table:template>
                         </table:Column>
 
