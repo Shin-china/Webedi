@@ -56,7 +56,7 @@ public class PchD003 extends Dao {
     }
 
     /**
-     * 根据删除po和dno删除03表
+     * 根据id查找
      * 
      * @param po
      * @param dno

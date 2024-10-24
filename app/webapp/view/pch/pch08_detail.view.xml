@@ -1,0 +1,100 @@
+<mvc:View controllerName="umc.app.controller.pch.pch08_detail"
+    xmlns:smartfield="sap.ui.comp.smartfield"
+    xmlns:smartform="sap.ui.comp.smartform"
+    xmlns:core="sap.ui.core"
+    xmlns="sap.m"
+    xmlns:m="sap.m"
+    xmlns:f="sap.f"
+    xmlns:l="sap.ui.layout"
+    xmlns:smartFilterBar="sap.ui.comp.smartfilterbar"
+    xmlns:smartTable="sap.ui.comp.smarttable"
+    xmlns:sv="sap.ui.comp.smartvariants"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:u="sap.ui.unified"
+    xmlns:upload="sap.m.upload"
+    xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+
+
+
+    <f:DynamicPage id="dynamicPageId" headerExpanded="true" showFooter="true" busy="{localModel>/isBusy}">
+
+
+
+
+        <f:content>
+            <l:VerticalLayout id="_IDGenVerticalLayout1">
+                <OverflowToolbar id="ID_header">
+                    <ToolbarSpacer id="idtoolbarspacer1"/>
+                    <m:Button id="Button1" text="修改" icon="sap-icon://edit" press="onEdit"/>
+                </OverflowToolbar>
+                <Table id="dataTable" inset="false" items="{path: '/dataList'}">
+
+                    <columns>
+
+                        <Column id="_IDGenColumn1" width="12em">
+                            <Text id="_IDGenText1" text="{pch>U07_QUO_NUMBER}"/>
+                        </Column>
+                        <Column id="_IDGenColumn2">
+                            <Text id="_IDGenText2" text="{pch>PCH08_Material}"/>
+                        </Column>
+                        <Column id="_IDGenColumn3">
+                            <Text id="_IDGenText3" text="{pch>PCH08_QTY1}"/>
+                        </Column>
+                        <Column id="_IDGenColumn4">
+                            <Text id="_IDGenText4" text="{pch>PCH08_PRICE1}" />
+                        </Column>
+                        <Column id="_IDGenColumn5">
+                            <Text id="_IDGenText5" text="{pch>PCH08_QTY2}" />
+                        </Column>
+                        <Column id="_IDGenColumn6">
+                            <Text id="_IDGenText6" text="{pch>PCH08_PRICE2}" />
+                        </Column>
+                        <Column id="_IDGenColumn7">
+                            <Text id="_IDGenText7" text="{pch>PCH08_QTY3}" />
+                        </Column>
+                        <Column id="_IDGenColumn8">
+                            <Text id="_IDGenText8" text="{pch>PCH08_PRICE3}" />
+                        </Column>
+                    </columns>
+
+                    <items>
+                        <ColumnListItem id="_IDGenColumnListItem1" vAlign="Middle">
+                            <cells>
+                                <Input id="QUO_NO" value="{QUO_NO}" editable="false"/>
+                                <Input id="MAT" value="{MAT}" editable="false"/>
+                                <Input id="QTY_1" value="{QTY_1}" editable="{parts: [{path: 'QTY_1'}], formatter: '.formatter.pch08GetInputEditable'}"/>
+                                <Input id="PRICE_1" value="{PRICE_1}" editable="{parts: [{path: 'PRICE_1'}], formatter: '.formatter.pch08GetInputEditable'}"/>
+                                <Input id="QTY_2" value="{QTY_2}" editable="{parts: [{path: 'QTY_2'}], formatter: '.formatter.pch08GetInputEditable'}"/>
+                                <Input id="PRICE_2" value="{PRICE_2}" editable="{parts: [{path: 'PRICE_2'}], formatter: '.formatter.pch08GetInputEditable'}"/>
+                                <Input id="QTY_3" value="{QTY_3}" editable="{parts: [{path: 'QTY_3'}], formatter: '.formatter.pch08GetInputEditable'}"/>
+                                <Input id="PRICE_3" value="{PRICE_3}" editable="{parts: [{path: 'PRICE_3'}], formatter: '.formatter.pch08GetInputEditable'}"/>
+                                <Input id="KEY_1" value="{KEY_1}" visible="false"/>
+                                <Input id="KEY_2" value="{KEY_2}" visible="false"/>
+                                <Input id="inpuKEY_3t11" value="{KEY_3}" visible="false"/>
+
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table>
+            </l:VerticalLayout>
+
+        </f:content>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </f:DynamicPage>
+
+
+</mvc:View>

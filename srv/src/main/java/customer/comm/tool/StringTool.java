@@ -313,4 +313,27 @@ public class StringTool {
 		}
 		return stream;
 	}
+
+	/**
+	 * 在字符串的左侧添加零，直到字符串达到指定的长度。
+	 * 
+	 * @param input  要处理的字符串
+	 * @param length 目标长度
+	 * @return 补零后的字符串
+	 * @throws IllegalArgumentException 如果指定的长度小于输入字符串的长度
+	 */
+	public static String leftPadWithZeros(String input, int length) {
+
+		if (length < input.length()) {
+			return input;
+		}
+
+		StringBuilder paddedString = new StringBuilder(length);
+		for (int i = 0; i < length - input.length(); i++) {
+			paddedString.append('0');
+		}
+		paddedString.append(input);
+
+		return paddedString.toString();
+	}
 }

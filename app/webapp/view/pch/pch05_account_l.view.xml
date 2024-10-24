@@ -15,7 +15,7 @@
 
         <f:DynamicPageHeader id="DynamicPageHeader" pinnable="true">
             <f:content>
-                <smartFilterBar:SmartFilterBar id="smartFilterBar" entitySet="PCH_T05_ACCOUNT_DETAIL_EXCEL" persistencyKey="PCH_T05_ACCOUNT_DETAIL" showFilterConfiguration="true">
+                <smartFilterBar:SmartFilterBar id="smartFilterBar" entitySet="PCH_T05_ACCOUNT_DETAIL_EXCEL" persistencyKey="PCH_T05_ACCOUNT_DETAIL_EXCEL" showFilterConfiguration="true">
                     <smartFilterBar:controlConfiguration>
 
                     <smartFilterBar:ControlConfiguration id="PCH_PO_BUKRS"      key="PO_BUKRS"             visibleInAdvancedArea="true" label="{pch>PO_BUKRS}"                index="1"/>
@@ -33,7 +33,7 @@
     <smartTable:SmartTable id="ID" enableAutoColumnWidth="true" entitySet="PCH_T05_ACCOUNT_DETAIL_EXCEL" 
         ignoredFields=""   
         requestAtLeastFields="GR_DATE,TAX_CODE,SHKZG_FLAG,TRANSACTION,TAX_BASE_AMOUNT,REFERENCE, DETAILTEXT, ACCOUNT, DOCUMENTTYPE, HEADERTEXT, DIFF_TAX_AMOUNT, INVOICEID,CURRENCY,LASTDATE" 
-        initiallyVisibleFields="GR_DATE,PO_BUKRS,INV_MONTH,SUPPLIER,CALC_10_TAX_AMOUNT,CALC_8_TAX_AMOUNT,SAP_TAX_AMOUNT_10,SAP_TAX_AMOUNT_8,RECALC_TAX_AMOUNT_10,RECALC_TAX_AMOUNT_8,DIFF_TAX_AMOUNT_10,DIFF_TAX_AMOUNT_8,TOTAL_10_TAX_INCLUDED_AMOUNT,TOTAL_8_TAX_INCLUDED_AMOUNT,TAX_CODE,SHKZG_FLAG,TRANSACTION,TAX_BASE_AMOUNT,REFERENCE, DETAILTEXT, ACCOUNT, DOCUMENTTYPE, HEADERTEXT, DIFF_TAX_AMOUNT, INVOICEID,CURRENCY,LASTDATE" 
+        initiallyVisibleFields="GR_DATE,PO_BUKRS,INV_MONTH,SUPPLIER,CALC_10_PRICE_AMOUNT,CALC_8_PRICE_AMOUNT,SAP_TAX_AMOUNT_10,SAP_TAX_AMOUNT_8,RECALC_PRICE_AMOUNT_10,RECALC_PRICE_AMOUNT_8,DIFF_TAX_AMOUNT_10,DIFF_TAX_AMOUNT_8,CALC_10_PRICE_AMOUNT_TOTAL,CALC_8_PRICE_AMOUNT_TOTAL,TAX_CODE,SHKZG_FLAG,TRANSACTION,TAX_BASE_AMOUNT,REFERENCE, DETAILTEXT, ACCOUNT, DOCUMENTTYPE, HEADERTEXT, DIFF_TAX_AMOUNT, INVOICEID,CURRENCY,LASTDATE" 
         smartFilterId="smartFilterBar" enableExport="true" beforeExport="onBeforeExport" 
         useVariantManagement="true" useTablePersonalisation="true" header="{pch>TITLE_RESULT}" showRowCount="true" persistencyKey="pch05_SmartTableAnalytical_Explored" enableAutoBinding="true">
     
@@ -76,27 +76,27 @@
     </table:template>
 </table:Column>
 
-<table:Column id="colCalc10TaxAmount" width="10rem" sortProperty="CALC_10_TAX_AMOUNT" filterProperty="CALC_10_TAX_AMOUNT">
+<table:Column id="colCalc10TaxAmount" width="10rem" sortProperty="CALC_10_PRICE_AMOUNT" filterProperty="CALC_10_PRICE_AMOUNT">
     <table:customData>
-        <core:CustomData key="p13nData" value='{"columnKey":"CALC_10_TAX_AMOUNT", "leadingProperty":"CALC_10_TAX_AMOUNT", "sortProperty":"CALC_10_TAX_AMOUNT", "filterProperty":"CALC_10_TAX_AMOUNT"}'/>
+        <core:CustomData key="p13nData" value='{"columnKey":"CALC_10_PRICE_AMOUNT", "leadingProperty":"CALC_10_PRICE_AMOUNT", "sortProperty":"CALC_10_PRICE_AMOUNT", "filterProperty":"CALC_10_PRICE_AMOUNT"}'/>
     </table:customData>
     <table:label>
-        <Label id="labelCalc10TaxAmount" text="{pch>CALC_10_TAX_AMOUNT}"/>
+        <Label id="labelCalc10TaxAmount" text="{pch>CALC_10_PRICE_AMOUNT}"/>
     </table:label>
     <table:template>
-        <Text id="textCalc10TaxAmount" text="{CALC_10_TAX_AMOUNT}"/>
+        <Text id="textCalc10TaxAmount" text="{CALC_10_PRICE_AMOUNT}"/>
     </table:template>
 </table:Column>
 
-<table:Column id="colCalc8TaxAmount" width="10rem" sortProperty="CALC_8_TAX_AMOUNT" filterProperty="CALC_8_TAX_AMOUNT">
+<table:Column id="colCalc8TaxAmount" width="10rem" sortProperty="CALC_8_PRICE_AMOUNT" filterProperty="CALC_8_PRICE_AMOUNT">
     <table:customData>
-        <core:CustomData key="p13nData" value='{"columnKey":"CALC_8_TAX_AMOUNT", "leadingProperty":"CALC_8_TAX_AMOUNT", "sortProperty":"CALC_8_TAX_AMOUNT", "filterProperty":"CALC_8_TAX_AMOUNT"}'/>
+        <core:CustomData key="p13nData" value='{"columnKey":"CALC_8_PRICE_AMOUNT", "leadingProperty":"CALC_8_PRICE_AMOUNT", "sortProperty":"CALC_8_PRICE_AMOUNT", "filterProperty":"CALC_8_PRICE_AMOUNT"}'/>
     </table:customData>
     <table:label>
-        <Label id="labelCalc8TaxAmount" text="{pch>CALC_8_TAX_AMOUNT}"/>
+        <Label id="labelCalc8TaxAmount" text="{pch>CALC_8_PRICE_AMOUNT}"/>
     </table:label>
     <table:template>
-        <Text id="textCalc8TaxAmount" text="{CALC_8_TAX_AMOUNT}"/>
+        <Text id="textCalc8TaxAmount" text="{CALC_8_PRICE_AMOUNT}"/>
     </table:template>
 </table:Column>
 
@@ -124,27 +124,27 @@
     </table:template>
 </table:Column>
 
-<table:Column id="colRecalcTaxAmount10" width="10rem" sortProperty="RECALC_TAX_AMOUNT_10" filterProperty="RECALC_TAX_AMOUNT_10">
+<table:Column id="colRecalcTaxAmount10" width="10rem" sortProperty="RECALC_PRICE_AMOUNT_10" filterProperty="RECALC_PRICE_AMOUNT_10">
     <table:customData>
-        <core:CustomData key="p13nData" value='{"columnKey":"RECALC_TAX_AMOUNT_10", "leadingProperty":"RECALC_TAX_AMOUNT_10", "sortProperty":"RECALC_TAX_AMOUNT_10", "filterProperty":"RECALC_TAX_AMOUNT_10"}'/>
+        <core:CustomData key="p13nData" value='{"columnKey":"RECALC_PRICE_AMOUNT_10", "leadingProperty":"RECALC_PRICE_AMOUNT_10", "sortProperty":"RECALC_PRICE_AMOUNT_10", "filterProperty":"RECALC_PRICE_AMOUNT_10"}'/>
     </table:customData>
     <table:label>
-        <Label id="labelRecalcTaxAmount10" text="{pch>RECALC_TAX_AMOUNT_10}"/>
+        <Label id="labelRecalcTaxAmount10" text="{pch>RECALC_PRICE_AMOUNT_10}"/>
     </table:label>
     <table:template>
-        <Text id="textRecalcTaxAmount10" text="{RECALC_TAX_AMOUNT_10}"/>
+        <Text id="textRecalcTaxAmount10" text="{RECALC_PRICE_AMOUNT_10}"/>
     </table:template>
 </table:Column>
 
-<table:Column id="colRecalcTaxAmount8" width="10rem" sortProperty="RECALC_TAX_AMOUNT_8" filterProperty="RECALC_TAX_AMOUNT_8">
+<table:Column id="colRecalcTaxAmount8" width="10rem" sortProperty="RECALC_PRICE_AMOUNT_8" filterProperty="RECALC_PRICE_AMOUNT_8">
     <table:customData>
-        <core:CustomData key="p13nData" value='{"columnKey":"RECALC_TAX_AMOUNT_8", "leadingProperty":"RECALC_TAX_AMOUNT_8", "sortProperty":"RECALC_TAX_AMOUNT_8", "filterProperty":"RECALC_TAX_AMOUNT_8"}'/>
+        <core:CustomData key="p13nData" value='{"columnKey":"RECALC_PRICE_AMOUNT_8", "leadingProperty":"RECALC_PRICE_AMOUNT_8", "sortProperty":"RECALC_PRICE_AMOUNT_8", "filterProperty":"RECALC_PRICE_AMOUNT_8"}'/>
     </table:customData>
     <table:label>
-        <Label id="labelRecalcTaxAmount8" text="{pch>RECALC_TAX_AMOUNT_8}"/>
+        <Label id="labelRecalcTaxAmount8" text="{pch>RECALC_PRICE_AMOUNT_8}"/>
     </table:label>
     <table:template>
-        <Text id="textRecalcTaxAmount8" text="{RECALC_TAX_AMOUNT_8}"/>
+        <Text id="textRecalcTaxAmount8" text="{RECALC_PRICE_AMOUNT_8}"/>
     </table:template>
 </table:Column>
 
@@ -172,27 +172,27 @@
     </table:template>
 </table:Column>
 
-<table:Column id="colTotal10TaxAmount" width="10rem" sortProperty="TOTAL_10_TAX_INCLUDED_AMOUNT" filterProperty="TOTAL_10_TAX_INCLUDED_AMOUNT">
+<table:Column id="colTotal10TaxAmount" width="10rem" sortProperty="CALC_10_PRICE_AMOUNT_TOTAL" filterProperty="CALC_10_PRICE_AMOUNT_TOTAL">
     <table:customData>
-        <core:CustomData key="p13nData" value='{"columnKey":"TOTAL_10_TAX_INCLUDED_AMOUNT", "leadingProperty":"TOTAL_10_TAX_INCLUDED_AMOUNT", "sortProperty":"TOTAL_10_TAX_INCLUDED_AMOUNT", "filterProperty":"TOTAL_10_TAX_INCLUDED_AMOUNT"}'/>
+        <core:CustomData key="p13nData" value='{"columnKey":"CALC_10_PRICE_AMOUNT_TOTAL", "leadingProperty":"CALC_10_PRICE_AMOUNT_TOTAL", "sortProperty":"CALC_10_PRICE_AMOUNT_TOTAL", "filterProperty":"CALC_10_PRICE_AMOUNT_TOTAL"}'/>
     </table:customData>
     <table:label>
-        <Label id="labelTotal10TaxAmount" text="{pch>TOTAL_10_TAX_INCLUDED_AMOUNT}"/>
+        <Label id="labelTotal10TaxAmount" text="{pch>CALC_10_PRICE_AMOUNT_TOTAL}"/>
     </table:label>
     <table:template>
-        <Text id="textTotal10TaxAmount" text="{TOTAL_10_TAX_INCLUDED_AMOUNT}"/>
+        <Text id="textTotal10TaxAmount" text="{CALC_10_PRICE_AMOUNT_TOTAL}"/>
     </table:template>
 </table:Column>
 
-<table:Column id="colTotal8TaxAmount" width="10rem" sortProperty="TOTAL_8_TAX_INCLUDED_AMOUNT" filterProperty="TOTAL_8_TAX_AMOUNT">
+<table:Column id="colTotal8TaxAmount" width="10rem" sortProperty="CALC_8_PRICE_AMOUNT_TOTAL" filterProperty="CALC_8_PRICE_AMOUNT_TOTAL">
     <table:customData>
-        <core:CustomData key="p13nData" value='{"columnKey":"TOTAL_8_TAX_INCLUDED_AMOUNT", "leadingProperty":"TOTAL_8_TAX_INCLUDED_AMOUNT", "sortProperty":"TOTAL_8_TAX_INCLUDED_AMOUNT", "filterProperty":"TOTAL_8_TAX_INCLUDED_AMOUNT"}'/>
+        <core:CustomData key="p13nData" value='{"columnKey":"CALC_8_PRICE_AMOUNT_TOTAL", "leadingProperty":"CALC_8_PRICE_AMOUNT_TOTAL", "sortProperty":"CALC_8_PRICE_AMOUNT_TOTAL", "filterProperty":"CALC_8_PRICE_AMOUNT_TOTAL"}'/>
     </table:customData>
     <table:label>
-        <Label id="labelTotal8TaxAmount" text="{pch>TOTAL_8_TAX_INCLUDED_AMOUNT}"/>
+        <Label id="labelTotal8TaxAmount" text="{pch>CALC_8_PRICE_AMOUNT_TOTAL}"/>
     </table:label>
     <table:template>
-        <Text id="textTotal8TaxAmount" text="{TOTAL_8_TAX_INCLUDED_AMOUNT}"/>
+        <Text id="textTotal8TaxAmount" text="{CALC_8_PRICE_AMOUNT_TOTAL}"/>
     </table:template>
 </table:Column>
 

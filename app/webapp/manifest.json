@@ -183,7 +183,10 @@
         {"pattern": "RouteCre_pch05","name": "RouteCre_pch05","target": "pch05_main"},
         {"pattern": "RouteCre_pch06","name": "RouteCre_pch06","target": "pch06_answ_d"},
         {"pattern": "RouteCre_pch07","name": "RouteCre_pch07","target": "pch07_pocf_u"},
-        {"pattern": "RouteCre_pch08","name": "RouteCre_pch08","target": "pch08_main"}
+        {"pattern": "RouteCre_pch08","name": "RouteCre_pch08","target": "pch08_main"},
+        {"pattern": "RouteCre_pch09","name": "RouteCre_pch09","target": "pch09_forcast_d"},
+
+        {"pattern": "RouteView_pch08/{headID}","name": "RouteView_pch08","target": "pch08_detail"}
       ],
       "targets": {
         "TargetMainView": {
@@ -207,7 +210,9 @@
         "pch05_main"  : {"viewName": "pch/pch05_main" ,"viewId": "pch05_main"},
         "pch06_answ_d"  : {"viewName": "pch/pch06_answ_d" ,"viewId": "pch06_answ_d"},
         "pch07_pocf_u": {"viewName": "pch/pch07_pocf_u","viewId": "pch07_pocf_u"},
-        "pch08_main"  : {"viewName": "pch/pch08_main" ,"viewId": "pch08_main"}
+        "pch08_main"  : {"viewName": "pch/pch08_main" ,"viewId": "pch08_main"},
+        "pch08_detail":{"viewName": "pch/pch08_detail","viewId": "pch08_detail"},
+        "pch09_forcast_d"  : {"viewName": "pch/pch09_forcast_d" ,"viewId": "pch09_forcast_d"}
       }
     },
     "rootView": {

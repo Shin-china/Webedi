@@ -120,7 +120,7 @@ public class EmailServiceFun {
             message.setFrom(new InternetAddress(mailFrom));
             message.setRecipients(Message.RecipientType.TO,
                     InternetAddress.parse(to));
-            message.setSubject(o.getMailTitle());
+            message.setSubject(replaceString(o.getMailTitle(), map));
 
             // Set Body
             BodyPart textBodyPart = new MimeBodyPart();
