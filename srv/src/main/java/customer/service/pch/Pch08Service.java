@@ -170,12 +170,21 @@ public class Pch08Service {
             m.put("QUO_NO", h.getQuoNo());
             m.put("MAT", h.getMaterial());
             Integer i = 1;
-            for (PchQuoItem item : h.getList()) {
-                m.put("QTY_" + i, item.getQty());
-                m.put("PRICE_" + i, item.getPrice());
-                m.put("KEY_" + i, item.getT07Id());
+            List<PchQuoItem> list = h.getList();
+            for (int j = 0; j < list.size(); j++) {
+                m.put("QTY_" + i, list.get(j).getQty());
+                m.put("PRICE_" + i, list.get(j).getPrice());
+                m.put("KEY_" + i, list.get(j).getT07Id());
+                
+                if (j == list.size() - 1) {
+                    m.put("MAX", i);
+                }
                 i++;
             }
+            // for (PchQuoItem item : h.getList()) {
+
+            // i++;
+            // }
             reList.add(m);
         }
 
@@ -188,12 +197,12 @@ public class Pch08Service {
 
         for (int i = 0; i < array.size(); i++) {
             JSONObject object = (JSONObject) array.get(i);
-            updateT07(object);
+            updateT07(object,array.size());
         }
     }
 
-    public void updateT07(JSONObject o) {
-        for (int i = 1; i <= 3; i++) {
+    public void updateT07(JSONObject o,int size) {
+        for (int i = 1; i <= size; i++) {
             if (o.getString("KEY_" + i) != null) {
                 String t07Id = o.getString("KEY_" + i);
                 String qty = o.getString("QTY_" + i);

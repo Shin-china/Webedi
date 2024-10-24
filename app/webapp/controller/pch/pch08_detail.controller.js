@@ -32,14 +32,66 @@ sap.ui.define([
                 let data = this.getView().getModel().oData.dataList;
                 // 清空
                 data.length = 0;
+                let rowNo = [];
                 json.forEach(item => {
-                    data.push(item);
+                    rowNo.push(item.MAX)
+                })
+
+                let maxNum = Math.max.apply(null, rowNo);
+                if (maxNum > 3) {
+                    // 加列
+                    for (let i = 4; i < maxNum + 1; i++) {
+                        let str = "PRICE" + i;
+                        let column1 = new sap.m.Column({ header: new sap.m.Label({ text: "単価" + i }), });
+                        let column2 = new sap.m.Column({ header: new sap.m.Label({ text: "数量" + i }) });
+                        this.getView().byId("dataTable").addColumn(column1);
+                        this.getView().byId("dataTable").addColumn(column2);
+                        var colItems = this.getView().byId("dataTable").getColumns();
+                        console.log(colItems)
+                        // var value = new sap.m.Text("QTY"+i, { text: "100" });
+                        // colItems.addCell(value);
+                    }
+
+
+                }
+                json.forEach(item => {
+
+                    
+                    data.push(item)
 
                 })
+
+
+
+
+
+
                 this.getModel().refresh(true);
             });
 
         },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         onEdit: function () {
             let data = this.getView().getModel().oData.dataList;
@@ -52,7 +104,10 @@ sap.ui.define([
                 this.getModel().refresh(true);
             })
 
-        }
+        },
+
+
+
 
 
 
