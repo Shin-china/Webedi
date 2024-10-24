@@ -67,7 +67,8 @@
                         <Label id="labelStatus" text="{pch>STATUS}"/>
                     </table:label>
                     <table:template>
-                        <Text id="textStatus" text="{STATUS}"/>
+                        <!-- <Text id="textStatus" text="{STATUS}"/> -->
+                        <Text id="textStatus" text="{path: 'STATUS', formatter: '.formatter.formatSendFlagPch02'}"/>
                     </table:template>
                 </table:Column>
 

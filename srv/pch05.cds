@@ -364,9 +364,8 @@ extend service TableService {
 
             // 计算每个 SUPPLIER 的条数
             COUNT(*) OVER (PARTITION BY T01.SUPPLIER) as TOTAL_COUNT : Integer, // 按照 SUPPLIER 维度计算条数
-            T02.TOTAL_AMOUNT_8_TOTAL + T02.TOTAL_AMOUNT_10_TOTAL as TOTAL_TOTAL_AMOUNT : Decimal(15, 2), // 計上金額总合计
-            T02.SAP_TAX_AMOUNT_8_TOTAL + T02.SAP_TAX_AMOUNT_10_TOTAL as TOTAL_TAX_AMOUNT : Decimal(15, 2), // 消費税額总合计
-            
+            COALESCE(T02.TOTAL_AMOUNT_8_TOTAL, 0) + COALESCE(T02.TOTAL_AMOUNT_10_TOTAL, 0) as TOTAL_TOTAL_AMOUNT : Decimal(15, 2), // 計上金額总合计
+            COALESCE(T02.SAP_TAX_AMOUNT_8_TOTAL, 0) + COALESCE(T02.SAP_TAX_AMOUNT_10_TOTAL, 0) as TOTAL_TAX_AMOUNT : Decimal(15, 2), // 消費税額总合计
 
             case 
                 when T01.DIFF_TAX_AMOUNT_10 IS NOT NULL THEN DIFF_TAX_AMOUNT_10
