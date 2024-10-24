@@ -160,7 +160,7 @@ public class DateTools {
         LocalDate localDate = LocalDate.parse(str, formatter);
 
         // 输出结果
-        System.out.println(localDate); // 输出: 2024-11-29
+        // System.out.println(localDate); // 输出: 2024-11-29
 
         return localDate;
     }
@@ -178,4 +178,14 @@ public class DateTools {
         return unit.between(from, to);
     }
 
+    /**
+     * 判断给定的日期是否是今天之前的日期（不包括今天）
+     * 
+     * @param date 要判断的日期
+     * @return 如果是今天之前的日期，则返回true；否则返回false
+     */
+    public static boolean isBeforeToday(LocalDate date) {
+        LocalDate today = LocalDate.now();
+        return date.isBefore(today);
+    }
 }
