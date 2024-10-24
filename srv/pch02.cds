@@ -27,6 +27,7 @@ extend service TableService {
                 key T02.PO_NO,              // 発注番号
                 key T02.D_NO,               // 明細番号
                 key T03.SEQ,                // 連続番号
+                key T04.ID,                 // key ID
                     T01.SUPPLIER,           // 仕入先コード
                     T02.MAT_ID,             // 品目コード
                     T03.STATUS,             // ステータス
@@ -52,7 +53,7 @@ extend service TableService {
                     T04.INPUT_QTY,			// 納入数						
                     // T04.ExtNumber,			// 参照						
                     T04.CD_DATE,			// 登録日付						
-                    T04.CD_TIME,			// 時刻						
+                    T04.CD_DATE_TIME,			// 時刻						
 
             }
 

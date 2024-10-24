@@ -257,6 +257,16 @@ sap.ui.define([], function () {
       }
   },
 
+  formatSendFlagPch02: function(value) {
+    if (value === '1') {
+        return '1: 反映待';
+    } else if (value === '2') {
+        return '2: 反映済';
+    } else {
+        return ''; // 默认返回空字符串
+    }
+},
+
   formatIndex: function(index) {
     return (index + 1).toString(); // 返回行号
 },
