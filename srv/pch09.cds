@@ -24,7 +24,6 @@ extend service TableService {
                 ) as MIN_DELIVERY_QTY_SUM : Decimal(18, 3),
                 T01.MANUF_CODE,
                 T01.ARRANGE_START_DATE,
-                T01.ARRANGE_END_DATE,
                 T01.ARRANGE_QTY,
                 T01.PLANT,
 
