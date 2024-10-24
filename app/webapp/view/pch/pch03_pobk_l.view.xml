@@ -57,18 +57,18 @@
 		<f:content>
 
 
-			<smartTable:SmartTable id="smartTable" enableAutoColumnWidth="true" showFullScreenButton="true" persistencyKey="mst02_receiptprintTable" entitySet="PCH_T03_PO_ITEM" requestAtLeastFields="ID" smartFilterId="smartFilterBar" beforeExport="onBeforeExport" enableExport="true" useVariantManagement="true" useTablePersonalisation="true" initiallyVisibleFields="PO_TYPE,PO_NO,D_NO,MAT_ID,PO_D_TXZ01,PO_PUR_QTY,PO_PUR_UNIT,STATUS,SUPPLIER,SUPPLIER_MAT,CD_BY,CURRENCY,DEL_PRICE,UNIT_PRICE,DEL_AMOUNT,PO_DATE,PO_D_DATE,MEMO," tableType="Table" showRowCount="true" beforeRebindTable="onRebind" placeToolbarInTable="true" header="{com>TITLE_RESULT}" enableAutoBinding="false">
+			<smartTable:SmartTable id="smartTable" enableAutoColumnWidth="true" showFullScreenButton="true" persistencyKey="mst02_receiptprintTable" ignoredFields="ID" entitySet="PCH_T03_PO_ITEM" requestAtLeastFields="ID"  smartFilterId="smartFilterBar" beforeExport="onBeforeExport" enableExport="true" useVariantManagement="true" useTablePersonalisation="true" initiallyVisibleFields="PO_TYPE,PO_NO,D_NO,MAT_ID,PO_D_TXZ01,PO_PUR_QTY,PO_PUR_UNIT,STATUS,ZABC,SUPPLIER,SUPPLIER_MAT,CD_BY,CURRENCY,DEL_PRICE,UNIT_PRICE,DEL_AMOUNT,PO_DATE,PO_D_DATE,MEMO," tableType="Table" showRowCount="true" beforeRebindTable="onRebind" placeToolbarInTable="true" header="{com>TITLE_RESULT}" enableAutoBinding="false">
 
 				<smartTable:customToolbar>
 				<OverflowToolbar id="ID_header">
 					<content>
 					<ToolbarSpacer id="ID_ToolbarSpacer" />
-					<Button id="_IDGenButton22" text="{pch>PCH03_BUTTON_CSV}" press="_csvdow" enabled="true" width="10em"/>
-					<Button id="_IDGenButton23" text="{pch>PCH03_BUTTON_FAX}" press="onPrint" enabled="true" width="10em"/>
-					<Button id="_IDGenButton24" text="{pch>PCH03_BUTTON_MAIL}" press="onEmail" enabled="true" width="10em"/>
-					<Button id="_IDGenButton25" text="{pch>PCH03_BUTTON_QR}" press="onQr" enabled="true" width="10em"/>
-					<Button id="_IDGenButton26" text="{pch>PCH03_BUTTON_ZWS_NPS}" press="onPrint" enabled="true" width="10em"/>
-					<Button id="_IDGenButton27" text="{pch>PCH03_BUTTON_ZWS}" press="onPrint" enabled="true" width="10em"/>
+					<Button id="_IDGenButton22" text="{pch>PCH03_BUTTON_CSV}" press="_csvdow" enabled="true" width="6em"/>
+					<Button id="_IDGenButton23" text="{pch>PCH03_BUTTON_FAX}" press="onPrint" enabled="true" width="5em"/>
+					<Button id="_IDGenButton24" text="{pch>PCH03_BUTTON_MAIL}" press="onEmail" enabled="true" width="6em"/>
+					<Button id="_IDGenButton25" text="{pch>PCH03_BUTTON_QR}" press="onQr" enabled="true" width="4em"/>
+					<Button id="_IDGenButton26" text="{pch>PCH03_BUTTON_ZWS_NPS}" press="onPrint" enabled="true" width="13em"/>
+					<Button id="_IDGenButton27" text="{pch>PCH03_BUTTON_ZWS}" press="onPrint" enabled="true" width="8em"/>
 					<Button id="_IDGenButton28" text="{pch>PCH03_BUTTON_NPS}" press="onPrint" enabled="true" width="10em"/>
 					</content>
 				</OverflowToolbar>
