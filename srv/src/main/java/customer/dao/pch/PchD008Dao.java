@@ -15,6 +15,7 @@ import cds.gen.pch.T03PoC;
 import cds.gen.pch.T07QuotationD;
 import cds.gen.pch.T08Upload;
 import customer.dao.common.Dao;
+import customer.tool.DateTools;
 
 @Repository
 public class PchD008Dao extends Dao {
@@ -47,6 +48,8 @@ public class PchD008Dao extends Dao {
         o.setCdBy(getUserId());
         o.setCdTime(getNow());
 
+        o.setCdDate(DateTools.getLocalDate(o.getCdTime()));
+        o.setCdDateTime(DateTools.getTimeAsString(o.getCdTime()));
         db.run(Insert.into(Pch_.T08_UPLOAD).entry(o));
     }
 

@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
@@ -67,6 +68,41 @@ public class DateTools {
         if (date == null)
             return null;
         return date.format(dateFormatter);
+    }
+
+    /**
+     * 从LocalDateTime对象中获取时间部分，并格式化为"HH:mm:ss"格式的字符串。
+     * 
+     * @param localDateTime 要处理的LocalDateTime对象
+     * @return 格式化为"HH:mm:ss"的时间字符串
+     */
+    public static String getTimeAsString(Instant instant) {
+        // 使用默认时区将Instant转换为ZonedDateTime
+        ZoneId defaultZoneId = ZoneId.systemDefault();
+        ZonedDateTime zonedDateTime = instant.atZone(defaultZoneId);
+
+        // 从ZonedDateTime中提取LocalDateTime
+        LocalDateTime localDateTime = zonedDateTime.toLocalDateTime();
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+        return localDateTime.format(timeFormatter);
+    }
+
+    /**
+     * 从LocalDateTime对象中获取LocalDate对象。
+     * 
+     * @param localDateTime 要处理的LocalDateTime对象
+     * @return LocalDate对象
+     */
+    public static LocalDate getLocalDate(Instant instant) {
+
+        // 使用默认时区将Instant转换为ZonedDateTime
+        ZoneId defaultZoneId = ZoneId.systemDefault();
+        ZonedDateTime zonedDateTime = instant.atZone(defaultZoneId);
+
+        // 从ZonedDateTime中提取LocalDateTime
+        LocalDateTime localDateTime = zonedDateTime.toLocalDateTime();
+
+        return localDateTime.toLocalDate();
     }
 
     // 日期转成字符串 date → 20200101
