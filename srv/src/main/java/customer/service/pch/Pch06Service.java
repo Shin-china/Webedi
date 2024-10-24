@@ -14,6 +14,7 @@ import cds.gen.pch.T03PoC;
 import cds.gen.pch.T08Upload;
 import customer.bean.pch.Pch06;
 import customer.bean.pch.Pch06DataList;
+import customer.comm.tool.StringTool;
 import customer.dao.pch.Pch01saveDao;
 import customer.dao.pch.PchD002;
 import customer.dao.pch.PchD003;
@@ -90,7 +91,7 @@ public class Pch06Service {
         T08Upload t08Upload = T08Upload.create();
         t08Upload.setPoNo(i.getPO_NO());
         t08Upload.setDNo(i.getD_NO());
-        t08Upload.setPoNoDno(i.getPO_NO() + i.getD_NO());
+        t08Upload.setPoNoDno(i.getPO_NO() + StringTool.leftPadWithZeros(i.getD_NO().toString(), 5));
         t08Upload.setMatId(i.getMAT_ID());
         t08Upload.setMatName(byID.getPoDTxz01());
         t08Upload.setQuantity(byID.getPoPurQty());

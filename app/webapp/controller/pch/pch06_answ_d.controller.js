@@ -170,7 +170,7 @@ sap.ui.define([
 					if (myArray.err) {
 						this._setEditable(true);
 						var rt = myArray.reTxt.split("||");
-						for (var i = 1; i < rt.length - 1; i++) {
+						for (var i = 1; i < rt.length; i++) {
 
 							that.MessageTools._addMessage(this.MessageTools._getI18nTextInModel("pch", rt[i], this.getView()), null, 1, this.getView());
 						}
