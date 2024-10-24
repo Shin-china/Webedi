@@ -27,7 +27,7 @@ extend service TableService {
                 key T02.PO_NO,              // 発注番号
                 key T02.D_NO,               // 明細番号
                 key T03.SEQ,                // 連続番号
-                key T04.ID,
+                key T04.ID,                 // key ID
                     T01.SUPPLIER,           // 仕入先コード
                     T02.MAT_ID,             // 品目コード
                     T03.STATUS,             // ステータス

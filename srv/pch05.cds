@@ -43,7 +43,12 @@ extend service TableService {
                 T05.TAX_RATE,                      // 税率
                 T04.INV_POST_DATE,                 // 転記日付
                 T04.SEND_FLAG,                     // 送信ステータス
-                T05.UNIT_PRICE,                    // 単価
+                // T05.UNIT_PRICE,                    // 単価
+                CASE 
+                    WHEN T05.CURRENCY = 'JYP' THEN CAST(T05.UNIT_PRICE AS Decimal(15, 3))  // 保留三位小数
+                    ELSE CAST(T05.UNIT_PRICE AS Decimal(15, 5))  // 保留五位小数
+                END AS UNIT_PRICE : Decimal(15, 5),
+
                 T05.TAX_AMOUNT,                    // 消費税額
                 T04.CE_DOC,                        // 差額伝票番号
                 T04.INV_BASE_DATE,                 // 支払い基準日
