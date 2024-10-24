@@ -36,6 +36,7 @@ extend service TableService {
     {
         KEY T02.PO_NO,                     // UMC発注番号
         KEY T02.D_NO,                      // 明細番号 
+        KEY T04.INV_NO,                    // 发票号
         T01.SUPPLIER,                      // 仕入先
         T01.PO_ORG,                        // 購買組織
         T04.SUPPLIER_DESCRIPTION,          // 業者名
@@ -47,7 +48,6 @@ extend service TableService {
         T05.PO_TRACK_NO,                   // 備考
         T04.INV_BASE_DATE,                 // 支払日
         T05.SHKZG,
-        T04.INV_NO,                        // 发票号
         T04.SEND_FLAG,                     // ステータス
         T04.INV_POST_DATE,                 // 検収月
         T05.CURRENCY,                      // INV通貨コード
@@ -129,18 +129,19 @@ extend service TableService {
         select from PCH_T04_PAYMENT_UNIT as 
 
     ![distinct] {
-        KEY TAX_RATE,                  // INV税率
         KEY SUPPLIER,
-        KEY NO_DETAILS,                // UMC発注番号
-        KEY MAT_ID,                    // 品目コード
-        KEY GR_DATE,                   // 入荷日
-        KEY QUANTITY,                  // 仕入単位数
-        KEY UNIT_PRICE,                // 单价
-        KEY INV_BASE_DATE,             // 支払日
-        PRICE_AMOUNT,                  //要合计值
-        EXCHANGE,                      // 換算レート
-        MAT_DESC,                      // 品目名称
-        PO_TRACK_NO,                   // 備考
+        KEY NO_DETAILS,            // UMC発注番号
+        KEY INV_NO,
+        TAX_RATE,                  // INV税率
+        MAT_ID,                    // 品目コード
+        GR_DATE,                   // 入荷日
+        QUANTITY,                  // 仕入単位数
+        UNIT_PRICE,                // 单价
+        INV_BASE_DATE,             // 支払日
+        PRICE_AMOUNT,              //要合计值
+        EXCHANGE,                  // 換算レート
+        MAT_DESC,                  // 品目名称
+        PO_TRACK_NO,               // 備考
         UNIT_PRICE_IN_YEN,
         TOTAL_AMOUNT_IN_YEN,
         CURRENCY,
