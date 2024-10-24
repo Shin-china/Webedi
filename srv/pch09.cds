@@ -41,6 +41,6 @@ extend service TableService {
             MANUF_CODE,
             ARRANGE_START_DATE,
             ARRANGE_QTY,
-            PLANT,
+            PLANT
 
 };
