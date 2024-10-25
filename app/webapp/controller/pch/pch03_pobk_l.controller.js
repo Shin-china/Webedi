@@ -27,7 +27,15 @@ sap.ui.define([
 		// var oContext = oItem.getBindingContext();
 		// this._onPress(oEvent, "RouteEdit_sys01", oContext.getObject().ID);
 		// },
+				/*==============================
+		init
+		==============================*/
+		_onRouteMatched: function (oEvent) {
+			//取得权限
+			
 
+
+		},
 		onRebind: function (oEvent) {
 			// this._onListRebindDarft(oEvent);
 			// this._onListRebindDarft(oEvent, true);

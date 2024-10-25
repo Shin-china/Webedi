@@ -352,8 +352,28 @@ sap.ui.define([], function () {
         return true;
       }
       return false;
-    }
-    
+    },
+      /**
+       * 如果为1为true判断权限用
+       * @param {*} isHEditing
+       * @param {*} isJurisdiction
+       * @param {*} hDeleteFlag
+       * @returns
+       */
+      checkUserPermission1: function (userType) {
+            return userType == '1';
+          },
+          
+      /**
+       * 如果为2为true判断权限用
+       * @param {*} isHEditing
+       * @param {*} isJurisdiction
+       * @param {*} hDeleteFlag
+       * @returns
+       */
+      checkUserPermission1: function (userType) {
+            return  userType == '2';
+          },
     };
   });
   
