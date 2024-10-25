@@ -80,7 +80,7 @@ sap.ui.define([
 					missingFields.push("納品日");
 				}
 
-				var datePattern = /^\d{4}\/\d{2}\/\d{2}$/; // 正则表达式，确保日期格式为 YYYY/MM/DD
+				var datePattern = /^\d{4}-\d{2}-\d{2}$/; // 正则表达式，确保日期格式为 YYYY-MM-DD
 				if (item.DELIVERY_DATE && (!datePattern.test(item.DELIVERY_DATE) || isNaN(Date.parse(item.DELIVERY_DATE)))) {
 					missingFields.push("納品日の形式が不正です"); // 推送日期格式错误
 					deliveryDateError = true; // 标记为纳品日有错
@@ -95,7 +95,7 @@ sap.ui.define([
 					item.MSG_TEXT = "必須項目は入力していません。データをチェックしてください。"; // 将错误消息设置到对应行的MSG_TEXT字段
 					
 					if (deliveryDateError) {
-						item.MSG_TEXT = "日付形式はYYYY/MM/DDではないので、調整してください"
+						item.MSG_TEXT = "日付形式ではないので、調整してください"
 					}
 						
 					item.STATE = "Error"; // 将状态设置为错误状态
@@ -240,24 +240,24 @@ sap.ui.define([
 
 		onExport: function () {
 			var oTable = this.byId("tableUploadData"); // 获取表的引用
-			var oModel = oTable.getModel("workInfo"); // 获取表的数据模型
+			var oModel = oTable.getModel(); // 获取表的数据模型
 			var aData = oModel.getData(); // 获取表中的所有数据
 
 			// 配置导出字段和格式
 			var aColumns = [
 				{
 					label: 'CHECK状态', // PO_NO
-					property: 'STATUS',
+					property: 'Status',
 					type: 'string'
 				},
 				{
 					label: '实行结果', // PO_NO
-					property: 'TYPE',
+					property: 'SUCCESS',
 					type: 'string'
 				},
 				{
 					label: '結果内容', // PO_NO
-					property: 'MSG_TEXT',
+					property: 'Message',
 					type: 'string'
 				},
 				{
