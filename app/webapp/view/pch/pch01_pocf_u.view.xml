@@ -49,7 +49,7 @@ xmlns:fb="sap.ui.comp.filterbar">
 				<t:Column id="Message" width="20rem" sortProperty="MSG_TEXT" filterProperty="MSG_TEXT">
 					<Label id="_IDGenLabel3" text="{pch>U_MESSAGE}"/>
 					<t:template>
-						<Text id="_IDGenText4" text="{workInfo>MSG_TEXT}" width="12em" tooltip="{local>MSG_TEXT}"/>
+						<Text id="_IDGenText4" text="{workInfo>MSG_TEXT}" tooltip="{local>MSG_TEXT}"/>
 					</t:template>
 				</t:Column>
 
