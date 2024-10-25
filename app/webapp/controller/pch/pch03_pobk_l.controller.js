@@ -5,7 +5,11 @@ sap.ui.define([
 	"sap/ui/export/Spreadsheet"
 ], function (Controller, Filter, formatter, Spreadsheet) {
 	"use strict";
+	var _objectCommData = {
+		_entity: "/USER_AUTH", //此本页面操作的对象//绑定的数据源视图
+		_aFilters: undefined
 
+	};
 	return Controller.extend("umc.app.controller.pch.pch03_pobk_l", {
 		formatter: formatter,
 
@@ -18,7 +22,7 @@ sap.ui.define([
 			this.MessageTools._clearMessage();
 			this.MessageTools._initoMessageManager(this);
 
-			this.getRouter().getRoute("RouteCre_pch07").attachPatternMatched(this._onRouteMatched, this);
+			this.getRouter().getRoute("RouteCre_pch03").attachPatternMatched(this._onRouteMatched, this);
 
 		},
 
@@ -31,8 +35,11 @@ sap.ui.define([
 		init
 		==============================*/
 		_onRouteMatched: function (oEvent) {
+			var that = this;
 			//取得权限
-			
+			this._readEntryData(_objectCommData._entity).then((odata)=>{
+				that._setEditableAuth(odata.results[0].USER_TYPE);
+			})
 
 
 		},
@@ -40,13 +47,42 @@ sap.ui.define([
 			// this._onListRebindDarft(oEvent);
 			// this._onListRebindDarft(oEvent, true);
 		},
+		_checkType: function (oEvent) {
+			let boo = true;
+			oEvent.forEach(odata=>{
+				if(odata.STATUS == '02'){
+					that.MessageTools._addMessage(this.MessageTools._getI18nTextInModel("pch", "PCH03_MESSAGE1", this.getView()), null, 1, this.getView());
+					
+				}
+			})
+			return boo;
+
+			
+		},
 		/**
 		 * 确认
 		 * @param {*} oEvent 
 		 */
 		onQr:function (oEvent) {
-			// this._onListRebindDarft(oEvent);
-			// this._onListRebindDarft(oEvent, true);
+			var that = this
+			// 假设你的数据模型是JSONModel，并且已经绑定到了SmartTable  
+			var selectedIndices = this._TableList("detailTable");
+			if (selectedIndices) {
+				if(this._checkType(selectedIndices)){
+					selectedIndices.forEach(odata=>{
+						var p ={ 
+							po:odata.PO_NO,
+							dNo:odata.D_NO
+						}
+					})
+					this._callCdsAction(PCH03_QUEREN,{parms:JSON.stringify(p)}).then(odata=>{
+						that.byId("smartTable").rebindTable();
+					})
+
+					
+				}
+			}
+			
 		},
 		onBeforeExport: function (oEvt) {
 			var mExcelSettings = oEvt.getParameter("exportSettings");

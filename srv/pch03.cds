@@ -129,6 +129,8 @@ extend service TableService {
 
 
     action PCH03_SENDEMAIL(parms : String) returns String;
+    action PCH03_QUEREN(parms : String) returns String;
+    
 
 }
 

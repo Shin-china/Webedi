@@ -371,7 +371,7 @@ sap.ui.define([], function () {
        * @param {*} hDeleteFlag
        * @returns
        */
-      checkUserPermission1: function (userType) {
+      checkUserPermission2: function (userType) {
             return  userType == '2';
           },
     };
