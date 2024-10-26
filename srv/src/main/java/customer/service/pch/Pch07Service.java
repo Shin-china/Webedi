@@ -180,15 +180,15 @@ public class Pch07Service {
         // t07QuotationD2.setStatus("1"); 
         // t07QuotationD2.setInitialObj(data.getINITIAL_OBJ());
 
-        t07QuotationD2.setUnit(jb.getString("Baseunit"));
-        t07QuotationD2.setOriginalCou(jb.getString("Suppliercertorigincountry"));
-        t07QuotationD2.setPriceControl(jb.getString("Pricingdatecontrol"));       
-        t07QuotationD2.setMoq(jb.getString("Minimumpurchaseorderquantity"));
-        t07QuotationD2.setIncoterms(jb.getString("Incotermsclassification"));
-        t07QuotationD2.setIncotermsText(jb.getString("Incotermslocation1"));
-        t07QuotationD2.setLeadTime(jb.getString("Materialpriceunitqty"));
-        t07QuotationD2.setPrice(jb.getString("Netpriceamount"));
-        t07QuotationD2.setCurrency(jb.getString("Currency"));
+        // t07QuotationD2.setUnit(jb.getString("Baseunit"));
+        // t07QuotationD2.setOriginalCou(jb.getString("Suppliercertorigincountry"));
+        // t07QuotationD2.setPriceControl(jb.getString("Pricingdatecontrol"));       
+        // t07QuotationD2.setMoq(jb.getString("Minimumpurchaseorderquantity"));
+        // t07QuotationD2.setIncoterms(jb.getString("Incotermsclassification"));
+        // t07QuotationD2.setIncotermsText(jb.getString("Incotermslocation1"));
+        // t07QuotationD2.setLeadTime(jb.getString("MaterialPlannedDeliveryDurn"));
+        // t07QuotationD2.setPrice(jb.getString("Netpriceamount"));
+        // t07QuotationD2.setCurrency(jb.getString("Currency"));
         
         pchD007.insert(t07QuotationD2);
     }
