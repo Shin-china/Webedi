@@ -1424,8 +1424,32 @@ sap.ui.define([
           }
           
           return new Blob(byteArrays, {type: mimeType}); 
-      }
+      },
+      _setDialog:function(oView){
+        var that = this;
+        return new Promise(function (resolve, reject) {
+
+          // 假设你的数据模型是JSONModel，并且已经绑定到了SmartTable  
+          sap.m.MessageBox.show(that.MessageTools._getI18nTextInModel("com", "Dialog", that.getView()), {  
+            icon: sap.m.MessageBox.Icon.INFORMATION,  
+            title: "Confirmation",  
+            actions: [sap.m.MessageBox.Action.OK, sap.m.MessageBox.Action.CANCEL],  
+            emphasizedAction: sap.m.MessageBox.Action.OK,  
+            onClose: function(sAction) {  
+              if (sAction === sap.m.MessageBox.Action.OK) {  
+                // 处理OK动作  
+                resolve();
+              } else {  
+
+                reject();
+                that._setBusy(false);
+                // 处理CANCEL或关闭动作  
+              }  
+            }  
+          })});
+        }
+      },
 
 
-    });
+    )
 });

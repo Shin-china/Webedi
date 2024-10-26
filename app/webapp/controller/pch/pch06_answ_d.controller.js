@@ -106,7 +106,7 @@ sap.ui.define([
 							odata.ID !== id
 						)
 					} else {
-						that.MessageTools._addMessage(this.MessageTools._getI18nTextInModel("pch", "PCH_06_ERROR_MSG2", this.getView()), null, 1, this.getView());
+						that.MessageTools._addMessages(this.MessageTools._getI18nTextInModel("pch", "PCH_06_ERROR_MSG2", this.getView()), null, 1, this.getView());
 					}
 
 
@@ -172,7 +172,7 @@ sap.ui.define([
 						var rt = myArray.reTxt.split("||");
 						for (var i = 1; i < rt.length; i++) {
 
-							that.MessageTools._addMessage(this.MessageTools._getI18nTextInModel("pch", rt[i], this.getView()), null, 1, this.getView());
+							that.MessageTools._addMessages(this.MessageTools._getI18nTextInModel("pch", rt[i], this.getView()), null, 1, this.getView());
 						}
 
 					} else {
@@ -208,11 +208,11 @@ sap.ui.define([
 			var boo = true;
 			jsondata.forEach((odata) => {
 				if (this.formatter._isNull(odata.QUANTITY)) {
-					this.MessageTools._addMessage(this.MessageTools._getI18nTextInModel("pch", "PCH_06_ERROR_MSG4", this.getView()), null, 1, this.getView());
+					this.MessageTools._addMessages(this.MessageTools._getI18nTextInModel("pch", "PCH_06_ERROR_MSG4", this.getView()), null, 1, this.getView());
 					boo = false;
 				}
 				if (this.formatter._isNull(odata.DELIVERY_DATE)) {
-					this.MessageTools._addMessage(this.MessageTools._getI18nTextInModel("pch", "PCH_06_ERROR_MSG5", this.getView()), null, 1, this.getView());
+					this.MessageTools._addMessages(this.MessageTools._getI18nTextInModel("pch", "PCH_06_ERROR_MSG5", this.getView()), null, 1, this.getView());
 					boo = false;
 				}
 

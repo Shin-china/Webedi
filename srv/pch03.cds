@@ -62,8 +62,21 @@ extend service TableService {
                 '' as exclusive_tax_amount : String, // 税抜額
                 '' as tax_amount : String, // 税額
                 '' as inclusive_tax_amount : String, // 税込額
-                '' as QR_CODE : String
+                '' as QR_CODE : String,
 
+                '' as cop1 : String,
+                '' as cop2 : String,
+                '' as cop3 : String,
+                '' as cop4 : String,
+                '' as cop5 : String,
+                '' as cop6 : String,
+                '' as cop7 : String,
+                '' as cop8 : String,
+                '' as cop9 : String,
+                '' as cop10 : String,
+                '' as cop11 : String,
+                '' as cop12 : String,
+                
         }
 
 

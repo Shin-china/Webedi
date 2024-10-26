@@ -24,8 +24,6 @@ import cds.gen.pch.T06QuotationH;
 import cds.gen.pch.T07QuotationD;
 import cds.gen.pch.Pch_;
 
-
-
 import java.time.Instant;
 
 @Repository
@@ -45,10 +43,10 @@ public class PchD007 extends Dao {
         return null;
     }
 
-       //追加
-       public void insert(T07QuotationD o){
- 
-        logger.info("=================插入pchd06表号码"+ "================");
+    // 追加
+    public void insert(T07QuotationD o) {
+
+        logger.info("=================插入pchd06表号码" + "================");
         o.setCdBy(getUserId());
         o.setCdTime(getNow());
 
@@ -58,5 +56,9 @@ public class PchD007 extends Dao {
         db.run(Insert.into(Pch_.T07_QUOTATION_D).entry(o));
     }
 
+    public List<T07QuotationD> getList(String quoNum) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getList'");
+    }
 
 }

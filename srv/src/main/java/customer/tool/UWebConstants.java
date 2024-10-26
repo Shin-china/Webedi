@@ -27,4 +27,8 @@ public class UWebConstants {
 	public final static String PCH08_STATUS_1 = "1"; // 为页面
 	public final static String PCH08_STATUS_2 = "2"; // 为上传
 
+	public final static String JPY = "JPY"; // 日元
+	public final static String USD = "USD"; // 美元元
+	public final static String EUR = "EUR"; // 欧元元
+
 }

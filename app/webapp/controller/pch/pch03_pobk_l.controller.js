@@ -7,7 +7,8 @@ sap.ui.define([
 	"use strict";
 	var _objectCommData = {
 		_entity: "/USER_AUTH", //此本页面操作的对象//绑定的数据源视图
-		_aFilters: undefined
+		_aFilters: undefined,
+		_entity2: "/PCH03_QUEREN",
 
 	};
 	return Controller.extend("umc.app.controller.pch.pch03_pobk_l", {
@@ -51,7 +52,7 @@ sap.ui.define([
 			let boo = true;
 			oEvent.forEach(odata=>{
 				if(odata.STATUS == '02'){
-					that.MessageTools._addMessage(this.MessageTools._getI18nTextInModel("pch", "PCH03_MESSAGE1", this.getView()), null, 1, this.getView());
+					that.MessageTools._addMessages(this.MessageTools._getI18nTextInModel("pch", "PCH03_MESSAGE1", this.getView()), null, 1, this.getView());
 					
 				}
 			})
@@ -63,26 +64,39 @@ sap.ui.define([
 		 * 确认
 		 * @param {*} oEvent 
 		 */
-		onQr:function (oEvent) {
-			var that = this
-			// 假设你的数据模型是JSONModel，并且已经绑定到了SmartTable  
+		onQr: function (oEvent) {
+			var that = this;
 			var selectedIndices = this._TableList("detailTable");
 			if (selectedIndices) {
-				if(this._checkType(selectedIndices)){
-					selectedIndices.forEach(odata=>{
-						var p ={ 
-							po:odata.PO_NO,
-							dNo:odata.D_NO
-						}
-					})
-					this._callCdsAction(PCH03_QUEREN,{parms:JSON.stringify(p)}).then(odata=>{
-						that.byId("smartTable").rebindTable();
-					})
+				//设置通用dialog
+				this._setDialog().then((oDialog) => {
+					var pList = Array();
+					if (this._checkType(selectedIndices)) {
+						selectedIndices.forEach(odata => {
+							if (odata.STATUS != '02') {
+								var p = {
+									po: odata.PO_NO,
+									dNo: odata.D_NO
+								}
+								pList.push(p)
+							}
+						})
+						this._callCdsAction(_objectCommData._entity2, { parms: JSON.stringify(pList) }, that).then(
 
-					
-				}
+							function (odata) {
+								that.byId("smartTable").rebindTable();
+							},
+							function (error) {
+								that.MessageTools._addMessage(error.responseText);
+
+							}
+						)
+
+					}
+				});
 			}
-			
+
+
 		},
 		onBeforeExport: function (oEvt) {
 			var mExcelSettings = oEvt.getParameter("exportSettings");
@@ -171,7 +185,7 @@ sap.ui.define([
 						let sResponse = json2xml(oData, options);
 						console.log(sResponse)
 						that.setSysConFig().then(res => {
-							that.PrintTool._detailSelectPrint(that, sResponse, "test/test", oData, null, null, null, null).then(()=>{
+							that.PrintTool._detailSelectPrint(that, sResponse, "test03/test1", oData, null, null, null, null).then(()=>{
 								that.PrintTool.getImageBase64(that._blob).then((odata)=>{
 								//20240820
 								var mailobj = {
@@ -238,7 +252,7 @@ sap.ui.define([
 					console.log(sResponse)
 					that.setSysConFig().then(res => {
 						// that.PrintTool._detailSelectPrint(that, sResponse, "test/test", oData, null, null, null, null)
-						that.PrintTool._detailSelectPrintDow(that, sResponse, "test/test", oData, null,"納品書", null, null, null).then((oData) => {
+						that.PrintTool._detailSelectPrintDow(that, sResponse, "test03/test1", oData, null,"納品書", null, null, null).then((oData) => {
 							var sapPo = {
 								po :PoList.join(","),
 								tpye :"PCH03",
