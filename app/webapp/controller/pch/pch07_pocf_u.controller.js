@@ -24,7 +24,7 @@ sap.ui.define([
 			this.getRouter().getRoute("RouteCre_pch07").attachPatternMatched(this._onRouteMatched, this);
 
 			var oViewModel = new sap.ui.model.json.JSONModel({
-				isButtonEnabled: true // 默认值为 true
+				isButtonEnabled: false // 默认值为 true
 			});
 			this.getView().setModel(oViewModel, "viewModel");
 			
@@ -52,6 +52,7 @@ sap.ui.define([
 		onCheck: function () {
 			var flgHeand = true;
 			var checkResult = true;
+
 		
 			var that = this;
 			that._setBusy(true);
@@ -118,6 +119,7 @@ sap.ui.define([
 		
 			// 3. 如果所有检查都通过，调用服务
 			if (checkResult && flgHeand) {
+
 				this.getModel().callFunction("/PCH07_CHECK_DATA", {
 					method: "POST",
 					urlParameters: this.getData(),
@@ -138,11 +140,9 @@ sap.ui.define([
 							}
 						});
 
-						if (hasError) {
-							// that._setEditable(false);
-							that.getView().getModel("viewModel").setProperty("/isButtonEnabled", false);
-						
-						}
+						 // 更新按钮启用状态
+						 that.getView().getModel("viewModel").setProperty("/isButtonEnabled", !hasError);
+						 that.getModel("workInfo").setData(myArray.list); // 更新模型数据
 
 						that._setBusy(false);
 
@@ -157,22 +157,67 @@ sap.ui.define([
 			}
 		},
 
+		// onSave: function () {
+		// 	var that = this;
+		// 	that._setBusy(true);
+	
+		// 	this._callCdsAction("/PCH07_SAVE_DATA", this.getData(), this).then((oData) => {
+		// 	  var myArray = JSON.parse(oData.PCH01_SAVE_DATA);
+		// 	  //that._setCnt(myArray.reTxt);
+		// 	  var jsonModel = that.getModel("workInfo");
+	
+		// 	  jsonModel.setData(myArray.list);
+		// 	  //设置为非创建
+		// 	  that._setIsCreate(false);
+	
+		// 	  that._setBusy(false);
+		// 	});
+		//   },
+
+		// onSave: function () {
+		// 	var that = this;
+		// 	that._setBusy(true);
+		
+		// 	// 检查按钮是否可用
+		// 	if (that.getView().getModel("viewModel").getProperty("/isButtonEnabled")) {
+		// 		this._callCdsAction("/PCH07_SAVE_DATA", this.getData(), this).then((oData) => {
+		// 			var myArray = JSON.parse(oData.PCH01_SAVE_DATA);
+		// 			var jsonModel = that.getModel("workInfo");
+		
+		// 			jsonModel.setData(myArray.list);
+		// 			// 设置为非创建
+		// 			that._setIsCreate(false);	
+		// 			that._setBusy(false);
+		// 		});
+		// 	} else {
+		// 		// 如果按钮不可用，显示提示
+		// 		that._setBusy(false);
+		// 		sap.m.MessageToast.show("请先完成检查并确保所有项成功。");
+		// 	}
+		// },
+
 		onSave: function () {
 			var that = this;
 			that._setBusy(true);
-	
-			this._callCdsAction("/PCH07_SAVE_DATA", this.getData(), this).then((oData) => {
-			  var myArray = JSON.parse(oData.PCH01_SAVE_DATA);
-			  //that._setCnt(myArray.reTxt);
-			  var jsonModel = that.getModel("workInfo");
-	
-			  jsonModel.setData(myArray.list);
-			  //设置为非创建
-			  that._setIsCreate(false);
-	
-			  that._setBusy(false);
-			});
-		  },
+		
+			// 检查按钮是否可用
+			if (that.getView().getModel("viewModel").getProperty("/isButtonEnabled")) {
+				this._callCdsAction("/PCH07_SAVE_DATA", this.getData(), this).then((oData) => {
+					var myArray = JSON.parse(oData.PCH01_SAVE_DATA);
+					var jsonModel = that.getModel("workInfo");
+		
+					jsonModel.setData(myArray.list);
+					that._setIsCreate(false);
+					that._setBusy(false);
+				});
+			} else {
+				// 如果按钮不可用，显示提示
+				that._setBusy(false);
+				sap.m.MessageToast.show("请先完成检查并确保所有项成功。");
+			}
+		},
+		
+		
 
 		// excel上传
 		onFileChange: function (oEvent) {

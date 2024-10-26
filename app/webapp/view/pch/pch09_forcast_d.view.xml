@@ -159,15 +159,15 @@
                             </table:template>
                         </table:Column>
 
-                        <table:Column id="idcolMIN_DELIVERY_QTY_SUM" width="7rem" sortProperty="MIN_DELIVERY_QTY_SUM" filterProperty="MIN_DELIVERY_QTY_SUM">
+                        <table:Column id="idcolARRANGE_QTY_SUM" width="7rem" sortProperty="ARRANGE_QTY_SUM" filterProperty="ARRANGE_QTY_SUM">
                             <table:customData>
-                                <core:CustomData key="p13nData" value='{"columnKey":"MIN_DELIVERY_QTY_SUM", "leadingProperty":"MIN_DELIVERY_QTY_SUM", "sortProperty":"MIN_DELIVERY_QTY_SUM", "filterProperty":"MIN_DELIVERY_QTY_SUM"}'/>
+                                <core:CustomData key="p13nData" value='{"columnKey":"ARRANGE_QTY_SUM", "leadingProperty":"ARRANGE_QTY_SUM", "sortProperty":"ARRANGE_QTY_SUM", "filterProperty":"ARRANGE_QTY_SUM"}'/>
                             </table:customData>
                             <table:label>
-                                <Label id="labelMIN_DELIVERY_QTY_SUM" text="{pch>PCH09_MIN_DELIVERY_QTY_SUM}"/>
+                                <Label id="labelARRANGE_QTY_SUM" text="{pch>PCH09_ARRANGE_QTY_SUM}"/>
                             </table:label>
                             <table:template>
-                                <Text id="textMIN_DELIVERY_QTY_SUM" text="{MIN_DELIVERY_QTY_SUM}"/>
+                                <Text id="textARRANGE_QTY_SUM" text="{ARRANGE_QTY_SUM}"/>
                             </table:template>
                         </table:Column>
 
@@ -206,18 +206,6 @@
                             <Text id="textARRANGE_END_DATE" text="{path: 'ARRANGE_END_DATE', type: 'sap.ui.model.type.Date', formatOptions: {pattern: 'yyyy/MM/dd'}}" />
                             </table:template>
                         </table:Column>                        
-
-                        <table:Column id="idcolARRANGE_QTY" width="7rem" sortProperty="ARRANGE_QTY" filterProperty="ARRANGE_QTY">
-                            <table:customData>
-                                <core:CustomData key="p13nData" value='{"columnKey":"ARRANGE_QTY", "leadingProperty":"ARRANGE_QTY", "sortProperty":"ARRANGE_QTY", "filterProperty":"ARRANGE_QTY"}'/>
-                            </table:customData>
-                            <table:label>
-                                <Label id="labelARRANGE_QTY" text="{pch>PCH09_ARRANGE_QTY}"/>
-                            </table:label>
-                            <table:template>
-                                <Text id="textARRANGE_QTY" text="{ARRANGE_QTY}"/>
-                            </table:template>
-                        </table:Column>
 
                         <table:Column id="idcolPLANT" width="5rem" sortProperty="PLANT" filterProperty="PLANT">
                             <table:customData>
