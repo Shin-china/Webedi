@@ -57,12 +57,12 @@ extend service TableService {
                 T05.PLACE_NAME,
                 T06.IMP_COMP,//検査合区分
 
-                '' as checkOk, // 検査合区分
-                '' as order_unit_price , // 発注単価
-                '' as exclusive_tax_amount , // 税抜額
-                '' as tax_amount , // 税額
-                '' as inclusive_tax_amount , // 税込額
-                '' as QR_CODE
+                '' as checkOk : String, // 検査合区分
+                '' as order_unit_price : String, // 発注単価
+                '' as exclusive_tax_amount : String, // 税抜額
+                '' as tax_amount : String, // 税額
+                '' as inclusive_tax_amount : String, // 税込額
+                '' as QR_CODE : String
 
         }
 
