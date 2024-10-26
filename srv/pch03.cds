@@ -10,7 +10,8 @@ extend service TableService {
 
         left join view.MST_T05_SAP_BP_PURCHASE T04
             on T01.SUPPLIER = T04.SUPPLIER
-
+        left join view.MST_T03_SAP_BP T05
+            on T05.BP_ID = T01.SUPPLIER
 
         distinct {
             key T01.PO_NO || T02.D_NO as ID      : String(100),
@@ -32,12 +33,33 @@ extend service TableService {
                 T04.ZABC, //ABC区分 E：Email F：Fax  W：Web edi
                 T02.PO_D_TXZ01, // 品目テキスト
                 T02.PO_PUR_QTY, // 発注数量
+
+
                 T02.PO_PUR_UNIT, // 単位
                 T02.CURRENCY, // 通貨
                 T02.DEL_PRICE, // 発注単価（値）
                 T02.UNIT_PRICE, // 価格単位
                 T02.DEL_AMOUNT, // 発注金額（値）
+                T02.CUSTOMER_MAT, // 顾客品番
                 T02.MEMO, // 備考
+                T05.FAX,
+                T05.BP_TYPE,
+                T05.BP_NAME1,
+                T05.BP_NAME2,
+                T05.BP_NAME3,
+                T05.BP_NAME4,
+                T05.TEL,
+                T05.LOG_NO,
+                T05.POSTCODE,
+                T05.REGIONS,
+                T05.PLACE_NAME,
+
+                '' as checkOk, // 検査合区分
+                '' as order_unit_price , // 発注単価
+                '' as exclusive_tax_amount , // 税抜額
+                '' as tax_amount , // 税額
+                '' as inclusive_tax_amount , // 税込額
+                '' as QR_CODE
 
         }
 
