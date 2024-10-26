@@ -12,7 +12,9 @@ extend service TableService {
             on T01.SUPPLIER = T04.SUPPLIER
         left join view.MST_T03_SAP_BP T05
             on T05.BP_ID = T01.SUPPLIER
-
+        left join view.MST_T06_MAT_PLANT T06
+            on T06.PLANT_ID = T02.PLANT_ID
+            and T06.MAT_ID = T02.MAT_ID
         distinct {
             key T01.PO_NO || T02.D_NO as ID      : String(100),
             key T01.PO_NO, // 発注番号
@@ -53,6 +55,7 @@ extend service TableService {
                 T05.POSTCODE,
                 T05.REGIONS,
                 T05.PLACE_NAME,
+                T06.IMP_COMP,//検査合区分
 
                 '' as checkOk, // 検査合区分
                 '' as order_unit_price , // 発注単価

@@ -17,12 +17,23 @@ service TableService {
     entity SYS_T13_ATTACHMENT  as projection on SYS.T13_ATTACHMENT;
     entity MST_T02_SAP_PLANT as projection on MST.T02_SAP_PLANT;
     entity MST_T03_SAP_BP as projection on MST.T03_SAP_BP;
+    entity MST_T04_SAP_LOC as projection on MST.T04_SAP_LOC;
+    entity MST_T05_SAP_BP_PURCHASE as projection on MST.T05_SAP_BP_PURCHASE;
+    entity MST_T06_MAT_PLANT as projection on MST.T06_MAT_PLANT;
+
     //entity SYS_T14_USER_2_BP as projection on SYS.T14_USER_2_BP;
     entity SYS_T11_MAIL_TEMPLATE as projection on SYS.T11_MAIL_TEMPLATE;
     entity T01_PO_H as projection on PCH.T01_PO_H;
     entity T02_PO_D as projection on PCH.T02_PO_D;
     entity T03_PO_C as projection on PCH.T03_PO_C;
-    entity MST_T05_SAP_BP_PURCHASE as projection on MST.T05_SAP_BP_PURCHASE;
+    entity PCH_T04_PAYMENT_H as projection on PCH.T04_PAYMENT_H;
+    entity PCH_T05_PAYMENT_D as projection on PCH.T05_PAYMENT_D;
+    entity PCH_T06_QUOTATION_H as projection on PCH.T06_QUOTATION_H;
+    entity PCH_T07_QUOTATION_D as projection on PCH.T07_QUOTATION_D;
+    entity PCH_T08_UPLOAD as projection on PCH.T08_UPLOAD;
+    entity PCH_T09_FORCAST as projection on PCH.T09_FORCAST;
+
+   
   //  entity SYS_T20_CONFIG as projection on SYS.T20_CONFIG;
     entity SYS_T12_CONFIG as projection on SYS.T12_CONFIG;
     entity SYS_T09_USER_2_PLANT as 
