@@ -76,6 +76,27 @@ extend service TableService {
                 '' as cop10 : String,
                 '' as cop11 : String,
                 '' as cop12 : String,
+                '' as cop13 : String,
+                '' as cop14 : String,
+                '' as cop15 : String,
+                '' as cop16 : String,
+                '' as cop17 : String,
+                '' as cop18 : String,
+                '' as cop19 : String,
+                '' as cop20 : String,
+                '' as cop21 : String,
+
+                '' as ZWS_1 : String,
+                '' as ZWS_2 : String,
+                '' as ZWS_3 : String,
+                '' as ZWS_4 : String,
+                '' as ZWS_5 : String,
+                '' as ZWS_6 : String,
+                '' as ZWS_7 : String,
+                '' as ZWS_8 : String,
+                '' as ZWS_9 : String,
+
+                
                 
         }
 

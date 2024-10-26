@@ -115,6 +115,23 @@ public class Pch03Handler implements EventHandler {
             }
             pchd03.setQrCode(pchService.getQrCode(pchd03));
 
+            // 复制用作显示
+            pchd03.setCop1(pchd03.getPodno());
+            pchd03.setCop2(pchd03.getPoPurQty().toString());
+            pchd03.setCop3(pchd03.getPodno());
+            pchd03.setCop4(pchd03.getPodno());
+            pchd03.setCop5(pchd03.getSupplierMat());
+            pchd03.setCop6(pchd03.getPoDTxz01());
+            pchd03.setCop7(pchd03.getStorage());
+            pchd03.setCop8(pchd03.getCheckOk());
+            pchd03.setCop9(pchd03.getBpName1());
+            pchd03.setCop10(pchd03.getStorage());
+            pchd03.setCop11(pchd03.getPodno());
+            pchd03.setCop12(pchd03.getSupplierMat());
+            // pchd03.setCop13(pchd03.getPoDTxz01());
+            // pchd03.setCop14(pchd03.getPoPurUnit());
+            // pchd03.setCop14(pchd03.getPodno());
+
         });
     }
 
