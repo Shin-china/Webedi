@@ -89,12 +89,12 @@ sap.ui.define(
        * @param {* 打印回写处理方法} _printBackFuncation
        * @param {* pdf下载名字} _name
        */
-      _detailSelectPrintDow: function (_that, _sResponse, _xdpTemplateID, _data, _printBackFuncation,_name, _smartTableId, entityInModelID) {
+      _detailSelectPrintDow: function (_that, _sResponse, _xdpTemplateID, _data, _printBackFuncation,_name, _smartTableId, entityInModelID,count) {
             var that = this;
             var zip = new JSZipSync();
-    				that.printTaskPdf = {
+    				_that.printTaskPdf = {
               completedCount: 0,
-              count: 0,
+              count: 1,
               progress : 0,
               pdfUrl: [],
               zip : zip,
@@ -154,12 +154,82 @@ sap.ui.define(
                     }
                   )
                   .finally(function () {
-                    that._checkPrintTaskPdf();
+                    that._checkPrintTaskPdf(_that);
                     resolve(true);
                   });
               }
             });
           },
+        /**
+               * 账票下载不打印2,多种格式一并下载调用
+               * @param {*} _that 打印画面
+               * @param {* 打印数据} _sResponse 【json2xml 格式数据】
+               * @param {* 模板} _xdpTemplateID
+               * @param {* 打印参数} _data
+               * @param {* 打印回写处理方法} _printBackFuncation
+               * @param {* pdf下载名字} _name
+               */
+        _detailSelectPrintDowS: function (_that, _sResponse, _xdpTemplateID, _data, _printBackFuncation,_name, _smartTableId, entityInModelID) {
+          var that = this;
+
+          return new Promise(function (resolve, reject) {
+            // check if running in localhost
+            if (window.location.hostname === "localhost" || window.location.hostname === "220.248.121.53") {
+              // 本地开发打印
+              that._getOAuthToken(_that).then(
+                function (token) {
+                  //生成pdf
+                  that
+                    ._createPDFDow(_that, _sResponse, _xdpTemplateID, token)
+                    .then(
+                      function () {
+                        //打印回写处理
+                        if (_printBackFuncation) {
+                          that.printBackAction(_that, _data, _printBackFuncation, _smartTableId, entityInModelID);
+                        }
+                      },
+                      function (error) {
+                        //异常MSG处理
+                        reject(error);
+                        sap.m.MessageBox.alert(error.responseText);
+                        _that._setBusy(false);
+                      }
+                    )
+                    .finally(function () {
+                      that._checkPrintTaskPdf(_that);
+                      resolve(true);
+                    });
+                },
+                function (error) {
+                  _that._setBusy(false);
+                  reject(error);
+                  sap.m.MessageBox.alert(error.responseText);
+                  _that._setBusy(false);
+                }
+              );
+            } else {
+              //BTP 打印
+              that
+                ._createPDF(_that, _sResponse, _xdpTemplateID)
+                .then(
+                  function () {
+                    if (_printBackFuncation) {
+                      that.printBackAction(_that, _data, _printBackFuncation, _smartTableId, entityInModelID);
+                    }
+                  },
+                  function (error) {
+                    reject(error);
+                    sap.m.MessageBox.alert(error.responseText);
+                    _that._setBusy(false);
+                  }
+                )
+                .finally(function () {
+                  that._checkPrintTaskPdf();
+                  resolve(true);
+                });
+            }
+          });
+        },
 
       /**
        * 本地打印时，现获取token
@@ -186,34 +256,38 @@ sap.ui.define(
       },
       
 		/* 全部pdf取得后打包 */
-		_checkPrintTaskPdf: function () {
-			if (this.printTaskPdf) {
-
-				
-					this._saveFileZip();
-      }
+		_checkPrintTaskPdf: function (_that) {
+			if (_that.printTaskPdf) {
+				_that.printTaskPdf.completedCount++;
+				if (_that.printTaskPdf.completedCount == _that.printTaskPdf.count) {
+					this._saveFileZip(_that);
+				}
+			} else {
+				// this._setBusy(false);
+			}
 		},
 
-		_saveFileZip: function () {
-			this.printTaskPdf.pdfUrl.forEach(pdf => {
+		_saveFileZip: function (_that) {
+			_that.printTaskPdf.pdfUrl.forEach(pdf => {
 				var xhr = new XMLHttpRequest();
 				xhr.open("GET", pdf.url, true)
 				xhr.responseType = "arraybuffer";
 				xhr.onload = () => {
-					this.printTaskPdf.zipFile.push({ name: pdf.name, content: xhr.response });
-					if (this.printTaskPdf.zipFile.length == this.printTaskPdf.pdfUrl.length) {
-						this.printTaskPdf.zipFile.forEach(file => {
-							this.printTaskPdf.zipFolder.file(file.name, file.content, { binary: true });
+					_that.printTaskPdf.zipFile.push({ name: pdf.name, content: xhr.response });
+					if (_that.printTaskPdf.zipFile.length == _that.printTaskPdf.pdfUrl.length) {
+						_that.printTaskPdf.zipFile.forEach(file => {
+							_that.printTaskPdf.zipFolder.file(file.name, file.content, { binary: true });
 						});
-						var blob = this.printTaskPdf.zip.generate({ type: 'blob' });
+						var blob = _that.printTaskPdf.zip.generate({ type: 'blob' });
 						var aLabel = document.createElement('a');
 						aLabel.href = URL.createObjectURL(blob);
 						aLabel.download = "PDF.rar";
 						aLabel.click();
 					
-						this.printTaskPdf = undefined;
+						_that.printTaskPdf = undefined;
 					}
 				}
+        _that._setBusy(false);
 				xhr.send();
 			});
 		},
@@ -431,8 +505,8 @@ sap.ui.define(
               });
               _that._blob =blob;
               var _pdfurl = URL.createObjectURL(blob);
-              if (that.printTaskPdf) {
-								that.printTaskPdf.pdfUrl.push({ url: _pdfurl, name: that._getDownloadName(xdpTemplateID) });
+              if (_that.printTaskPdf) {
+								_that.printTaskPdf.pdfUrl.push({ url: _pdfurl, name: that._getDownloadName(xdpTemplateID) });
 								resolve(1);
 								return;
 							}
@@ -449,11 +523,11 @@ sap.ui.define(
 		_getDownloadName: function (templateId) {
 			var downloadName = "";
 			switch (templateId) {
-				case "test/test":
-					downloadName = "納品書";
+				case "test03/test2":
+					downloadName = "注文書";
 					break;
-				case "MMSS_REP02/MMSS_REP02":
-					downloadName = "内製現品票";
+				case "test03/test1":
+					downloadName = "納品書";
 					break;
 				case "MMSS_REP03/MMSS_REP03":
 					downloadName = "不良現品票";

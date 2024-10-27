@@ -66,10 +66,8 @@ sap.ui.define([
 		 */
 		onQr: function (oEvent) {
 			var that = this;
-			var selectedIndices = this._TableList("detailTable");
-			if (selectedIndices) {
 				//设置通用dialog
-				this._setDialog().then((oDialog) => {
+				this._AfterDigLogCheck().then((selectedIndices) => {
 					var pList = Array();
 					if (this._checkType(selectedIndices)) {
 						selectedIndices.forEach(odata => {
@@ -81,23 +79,14 @@ sap.ui.define([
 								pList.push(p)
 							}
 						})
-						this._callCdsAction(_objectCommData._entity2, { parms: JSON.stringify(pList) }, that).then(
-
-							function (odata) {
-								that.byId("smartTable").rebindTable();
-							},
-							function (error) {
-								that.MessageTools._addMessage(error.responseText);
-
-							}
-						)
+						this._querenDb(pList)
 
 					}
-				});
-			}
+				})
+			},
+		
 
 
-		},
 		onBeforeExport: function (oEvt) {
 			var mExcelSettings = oEvt.getParameter("exportSettings");
 			for (var i = 0; i < mExcelSettings.workbook.columns.length; i++) {
@@ -111,8 +100,9 @@ sap.ui.define([
 		},
 		_csvdow: function (oEvt) {
 			// 假设你的数据模型是JSONModel，并且已经绑定到了SmartTable  
-			var selectedIndices = this._TableList("detailTable");
-			if (selectedIndices) {
+			var that = this;
+			//设置通用dialog
+			this._AfterDigLogCheck().then((selectedIndices) => {
 				// 构建CSV内容  
 				var csvContent = "data:text/csv;charset=utf-8,";
 				var headers = Object.keys(selectedIndices[0]); // 假设所有条目的结构都相同，取第一条的键作为表头  
@@ -139,7 +129,10 @@ sap.ui.define([
 				link.setAttribute("download", "data.csv");
 				document.body.appendChild(link);
 				link.click();
-			}
+				//完成后是否更新确认
+				that._isQuerenDb(selectedIndices);
+				that._setBusy(false);
+			})
 
 		},
 		// onCreate: function (oEvent) {
@@ -240,9 +233,11 @@ sap.ui.define([
 			
 		
 		},
-		onPrint: function () {
+		onPrintNPS: function () {
 			var that = this;
-			let options = { compact: true, ignoreComment: true, spaces: 4 };
+			//设置通用dialog
+			this._AfterDigLogCheck().then((selectedIndices) => {
+				let options = { compact: true, ignoreComment: true, spaces: 4 };
 			var IdList = that._TableDataList("detailTable", 'ID')
 			var PoList = that._TableDataList("detailTable", 'PO_NO')
 			// PoList= PoList.map
@@ -259,38 +254,140 @@ sap.ui.define([
 								fileName :"納品書",
 							}
 							that.PrintTool.printBackActionPo(that,sapPo)
+							//完成后是否更新确认
+							that._isQuerenDb(selectedIndices);
+							that._setBusy(false);
 						})
 					})
 				})
 			}
+			})
+			
 
 
 		},
 		onPrintZws: function () {
 			var that = this;
-			let options = { compact: true, ignoreComment: true, spaces: 4 };
-			var IdList = that._TableDataList("detailTable", 'ID')
-			var PoList = that._TableDataList("detailTable", 'PO_NO')
-			// PoList= PoList.map
-			if (IdList) {
-				that.PrintTool._getPrintDataInfo(that, IdList, "/PCH_T03_PO_ITEM_PRINT", "ID").then((oData) => {
-					let sResponse = json2xml(oData, options);
-					console.log(sResponse)
-					that.setSysConFig().then(res => {
-						// that.PrintTool._detailSelectPrint(that, sResponse, "test/test", oData, null, null, null, null)
-						that.PrintTool._detailSelectPrintDow(that, sResponse, "test03/test2", oData, null,"注文書", null, null, null).then((oData) => {
-							var sapPo = {
-								po :PoList.join(","),
-								tpye :"PCH03",
-								fileName :"納品書",
-							}
-							// that.PrintTool.printBackActionPo(that,sapPo)
+
+			//设置通用dialog
+			this._AfterDigLogCheck().then((selectedIndices) => {
+				let options = { compact: true, ignoreComment: true, spaces: 4 };
+				var IdList = that._TableDataList("detailTable", 'ID')
+				var PoList = that._TableDataList("detailTable", 'PO_NO')
+				// PoList= PoList.map
+				if (IdList) {
+					that.PrintTool._getPrintDataInfo(that, IdList, "/PCH_T03_PO_ITEM_PRINT", "ID").then((oData) => {
+						let sResponse = json2xml(oData, options);
+						console.log(sResponse)
+						that.setSysConFig().then(res => {
+							// that.PrintTool._detailSelectPrint(that, sResponse, "test/test", oData, null, null, null, null)
+							that.PrintTool._detailSelectPrintDow(that, sResponse, "test03/test2", oData, null,"注文書", null, null, null).then((oData) => {
+								var sapPo = {
+									po :PoList.join(","),
+									tpye :"PCH03",
+									fileName :"納品書",
+								}
+															//完成后是否更新确认
+							that._isQuerenDb(selectedIndices);
+							that._setBusy(false);
+								// that.PrintTool.printBackActionPo(that,sapPo)
+							})
 						})
 					})
-				})
-			}
+				}
+			})
 
 
-		}
+
+		},
+		onPrintZwsNps: function () {
+			var that = this;
+
+			//设置通用dialog
+			this._AfterDigLogCheck().then((selectedIndices) => {
+
+				let options = { compact: true, ignoreComment: true, spaces: 4 };
+				var IdList = that._TableDataList("detailTable", 'ID')
+				var PoList = that._TableDataList("detailTable", 'PO_NO')
+				// PoList= PoList.map
+				if (IdList) {
+					that.PrintTool._getPrintDataInfo(that, IdList, "/PCH_T03_PO_ITEM_PRINT", "ID").then((oData) => {
+						let sResponse = json2xml(oData, options);
+						var zip = new JSZipSync();
+						that.printTaskPdf = {
+						  completedCount: 0,
+						  count: 2,
+						  progress : 0,
+						  pdfUrl: [],
+						  zip : zip,
+						  zipFolder : zip.folder("注文書・指定納品書"),
+						  zipFile : [],
+						  
+						};
+						console.log(sResponse)
+						that.setSysConFig().then(res => {
+							// that.PrintTool._detailSelectPrint(that, sResponse, "test/test", oData, null, null, null, null)
+							that.PrintTool._detailSelectPrintDowS(that, sResponse, "test03/test2", oData, null,"注文書", null, null, null).then((oData) => {
+								var sapPo = {
+									po :PoList.join(","),
+									tpye :"PCH03",
+									fileName :"納品書",
+								}
+								
+															//完成后是否更新确认
+							
+								// that.PrintTool.printBackActionPo(that,sapPo)
+							})
+
+							that.PrintTool._detailSelectPrintDowS(that, sResponse, "test03/test1", oData, null,"納品書", null, null, null).then((oData) => {
+								var sapPo = {
+									po :PoList.join(","),
+									tpye :"PCH03",
+									fileName :"納品書",
+								}
+															//完成后是否更新确认
+								that._isQuerenDb(selectedIndices);
+								// that.PrintTool.printBackActionPo(that,sapPo)
+							})
+							
+						})
+					})
+				}
+			})
+		},
+		/**
+		 * 确认的调用后台
+		 * @param {po和明细} pList 
+		 */
+		_querenDb(pList){
+			var that = this;
+			that._callCdsAction(_objectCommData._entity2, { parms: JSON.stringify(pList) }, that).then(
+
+				function (odata) {
+					that.byId("smartTable").rebindTable();
+				},
+				function (error) {
+					that.MessageTools._addMessage(error.responseText);
+
+				}
+			)
+		},
+		
+		/**
+		 * 判断是否调用后台
+		 */
+		_isQuerenDb(tableList){
+			var pList = Array();
+			tableList.forEach((item) => {
+				if ('2' ==  item.USER_TYPE || ('1' ==  item.USER_TYPE && item.ZABC != 'E'&& item.ZABC != 'F'&& item.ZABC != 'W') ) {
+					var p = {
+						po: item.PO_NO,
+						dNo: item.D_NO
+					}
+					pList.push(p)
+				}
+			})
+			this._querenDb(pList)
+		},
 	});
 });

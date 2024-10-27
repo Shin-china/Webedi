@@ -1447,8 +1447,26 @@ sap.ui.define([
               }  
             }  
           })});
-        }
+        },
+        //需要从明细取数据且弹提示框的所有前置
+        _AfterDigLogCheck() {
+          var that = this;
+          this._setBusy(true);
+          return new Promise(function (resolve, reject) {
+            var selectedIndices = that._TableList("detailTable");
+            if (selectedIndices) {
+              //设置通用dialog
+              that._setDialog().then((oDialog) => {
+                resolve(selectedIndices);
+              });
+            }else {
+              reject();
+              that._setBusy(false);
+            }
+          });
+        },
       },
+      
 
 
     )
