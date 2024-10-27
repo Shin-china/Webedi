@@ -22,6 +22,7 @@ import cds.gen.MailJson;
 import customer.comm.tool.StringTool;
 import customer.service.pch.PchService;
 import customer.service.sys.EmailServiceFun;
+import customer.tool.DateTools;
 import customer.tool.UWebConstants;
 
 import com.alibaba.fastjson.JSON;
@@ -131,6 +132,20 @@ public class Pch03Handler implements EventHandler {
             // pchd03.setCop13(pchd03.getPoDTxz01());
             // pchd03.setCop14(pchd03.getPoPurUnit());
             // pchd03.setCop14(pchd03.getPodno());
+
+            pchd03.setZws1(pchd03.getPodno() + "\n" + pchd03.getCdBy());
+            pchd03.setZws2(pchd03.getSupplier() + "\n" + pchd03.getMatId());
+            pchd03.setZws3(pchd03.getManuCode());
+            pchd03.setZws4("" + "\n" + pchd03.getStorage());
+            pchd03.setZws5(pchd03.getPoPurUnit() + "\n" + pchd03.getMemo());
+            pchd03.setZws6(prc.toString());
+            pchd03.setZws7(pchd03.getPoPurQty().toString());
+            pchd03.setZws8(pchd03.getCurrency());
+            pchd03.setZws8(DateTools.getCurrentDateString(pchd03.getPoDDate()));
+
+            pchd03.setDate1(DateTools.getCurrentDateString());
+            pchd03.setDate2(DateTools.getCurrentDateString());
+            pchd03.setDate3(DateTools.getCurrentDateString());
 
         });
     }

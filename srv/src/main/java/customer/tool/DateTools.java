@@ -43,6 +43,19 @@ public class DateTools {
     // public static LocalDate getUserLocalDate() { // 当前用户对应的时区日期（采番用）
     // return LocalDate.now(ConfigConstants.DEFFAULT_USER_ZONE);
     // }
+    // 获取当前日期并格式化为字符串yyyy/MM/dd
+    public static String getCurrentDateString() {
+        DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        LocalDate currentDate = LocalDate.now(); // 获取当前日期
+        return currentDate.format(DATE_FORMATTER); // 格式化为字符串
+    }
+
+    // 获取当前日期并格式化为字符串yyyy/MM/dd
+    public static String getCurrentDateString(LocalDate data) {
+        DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        LocalDate currentDate = data; // 获取当前日期
+        return currentDate.format(DATE_FORMATTER); // 格式化为字符串
+    }
 
     // 时间戳转换为时间 LocalDateTime(1606176000000) → datetime
     public static LocalDateTime longString2DateTime(String str, ZoneId zone) {
