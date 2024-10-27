@@ -15,6 +15,9 @@ extend service TableService {
         left join view.MST_T06_MAT_PLANT T06
             on T06.PLANT_ID = T02.PLANT_ID
             and T06.MAT_ID = T02.MAT_ID
+                left join view.MST_T01_SAP_MAT T07
+            on T07.MAT_ID = T02.MAT_ID
+  
         distinct {
             key T01.PO_NO || T02.D_NO as ID      : String(100),
             key T01.PO_NO, // 発注番号
@@ -56,6 +59,7 @@ extend service TableService {
                 T05.REGIONS,
                 T05.PLACE_NAME,
                 T06.IMP_COMP,//検査合区分
+                T07.MANU_CODE,
 
                 '' as checkOk : String, // 検査合区分
                 '' as order_unit_price : String, // 発注単価
@@ -95,6 +99,10 @@ extend service TableService {
                 '' as ZWS_7 : String,
                 '' as ZWS_8 : String,
                 '' as ZWS_9 : String,
+
+                '' as DATE1 : String,
+                '' as DATE2 : String,
+                '' as DATE3 : String,
 
                 
                 
