@@ -55,7 +55,10 @@ sap.ui.define([
 
 			//Unbind element
 			that.getView().unbindElement();
+			//bind new element
+			const newHeaderContext = that.getModel().createEntry("/SYS_T11_MAIL_TEMPLATE", "");
 
+			that.getView().setBindingContext(newHeaderContext);
 		},
         onSave:function(){
             const that = this;
@@ -71,7 +74,8 @@ sap.ui.define([
                 templateID: that.byId("TEMPLATE_ID").getValue(),
                 mailName: that.byId("TEMPLATE_NAME").getValue(),
                 mailTitle: that.byId("TEMPLATE_TITLE").getValue(),
-                mailContent: that.byId("TEMPLATE_CONTENT").getValue()
+                mailContent: that.byId("TEMPLATE_CONTENT").getValue(),
+				mailCc: that.byId("TEMPLATE_CC").getValue()
             }
 
             var resStr = { userJson: JSON.stringify(itemobj) };

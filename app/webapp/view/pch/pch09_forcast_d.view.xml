@@ -33,7 +33,7 @@
                     <smartFilterBar:SmartFilterBar id="smartFilterBar" entitySet="PCH09_LIST" persistencyKey="PCH09_LIST" showFilterConfiguration="true">
                         <smartFilterBar:controlConfiguration>
 
-                        <smartFilterBar:ControlConfiguration id="PLANT"               key="PLANT"                   visibleInAdvancedArea="true" label="{pch>PCH09_SUPPLIER}"              index="1"/>
+                        <smartFilterBar:ControlConfiguration id="PLANT"               key="PLANT"                   visibleInAdvancedArea="true" label="{pch>PCH09_PLANT}"              index="1"/>
                         <smartFilterBar:ControlConfiguration id="PUR_GROUP"           key="PUR_GROUP"               visibleInAdvancedArea="true" label="{pch>PCH09_PUR_GROUP}"             index="2"/>
                         <smartFilterBar:ControlConfiguration id="SUPPLIER_F"          key="SUPPLIER"                visibleInAdvancedArea="true" label="{pch>PCH09_SUPPLIER}"              index="3"/>
                         <smartFilterBar:ControlConfiguration id="SUPPLIER_MATERIAL"   key="SUPPLIER_MATERIAL"       visibleInAdvancedArea="true" label="{pch>PCH09_SUPPLIER_MATERIAL}"     index="4"/>
@@ -51,8 +51,8 @@
     <!-- </f:DynamicPageHeader> -->
 
             <smartTable:SmartTable id="ID" enableAutoColumnWidth="true" entitySet="PCH09_LIST" 
-                ignoredFields=""  requestAtLeastFields="" initiallyVisibleFields=""
-                smartFilterId="smartFilterBar" enableExport="true" beforeExport="onBeforeExport" 
+                ignoredFields="MIN_DELIVERY_QTY"  requestAtLeastFields="" initiallyVisibleFields=""
+                smartFilterId="smartFilterBar" enableExport="true" beforeExport="onBeforeExport"  
                 useVariantManagement="true" useTablePersonalisation="true" header="{pch>TITLE_RESULT}" showRowCount="true" persistencyKey="pch09_SmartTableAnalytical_Explored" enableAutoBinding="true">
             <smartTable:customToolbar>
                 <OverflowToolbar id="myOverflowToolbar1" design="Transparent">

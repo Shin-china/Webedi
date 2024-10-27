@@ -19,6 +19,24 @@ sap.ui.define([
             }
 
             var oSettings = oEvent.getParameter("exportSettings");
+
+            oSettings.workbook.columns.forEach(function (oColumn) {
+
+                switch (oColumn.property) {
+                    
+				case "ARRANGE_START_DATE":
+					oColumn.type = sap.ui.export.EdmType.Date;
+                        break;
+                    
+                case "ARRANGE_END_DATE":
+                        oColumn.type = sap.ui.export.EdmType.Date;
+                            break;
+                    
+				default:
+					break;
+				}
+            });
+            
             if (oSettings) {
                 console.log("onBeforeExport called");
                 console.log("Export Settings:", oSettings);

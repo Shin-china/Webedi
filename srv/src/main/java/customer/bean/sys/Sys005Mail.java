@@ -7,6 +7,15 @@ public class Sys005Mail {
     String MAIL_NAME;
     String MAIL_TITLE;
     String MAIL_CONTENT;
+    String MAIL_CC;
+
+    public String getMAIL_CC() {
+        return MAIL_CC;
+    }
+
+    public void setMAIL_CC(String mAIL_CC) {
+        MAIL_CC = mAIL_CC;
+    }
 
     public String getTEMPLATE_ID() {
         return TEMPLATE_ID;

@@ -19,7 +19,7 @@
                 </Toolbar>
             </f:heading>
             <f:navigationActions>
-                <Button id="idButton" icon="sap-icon://nav-back" press="onNavBack()" tooltip="nav-back"/>
+                <Button id="idButton" icon="sap-icon://nav-back" press="navTo('RouteList_sys05')" tooltip="nav-back"/>
             </f:navigationActions>
         </f:DynamicPageTitle>
     </f:title>
@@ -37,19 +37,24 @@
                 <l:VerticalLayout id="idVerticalLayout" class="sapUiSmallMarginEnd">
                     <FlexBox id="idFlexBox" wrap="Wrap" fitContainer="true">
                         <!--Temlate ID  -->
-                        <l:VerticalLayout id="idVerticalLayout1">
-                            <Label id="idLabel1" labelFor="LAB_TEMPLATE_ID" text="TEMPLATE_ID"/>
-                            <Input id="TEMPLATE_ID" value="{TEMPLATE_ID}" editable="true" width="18em"/>
+                        <l:VerticalLayout id="idVerticalLayout1" class="sapUiSmallMarginEnd">
+                            <Label id="idLabel1" labelFor="LAB_TEMPLATE_ID" text="{sys>TEMPLATE_ID}"/>
+                            <Input id="TEMPLATE_ID" value="{TEMPLATE_ID}" editable="{localModel>/createable}" width="18em"/>
                         </l:VerticalLayout>
                         <!--Temlate ID  -->
-                        <l:VerticalLayout id="idVerticalLayout2" >
-                            <Label id="idLabel2" labelFor="LAB_MAIL_NAME" text="MAIL_NAME"/>
+                        <l:VerticalLayout id="idVerticalLayout2" class="sapUiSmallMarginEnd">
+                            <Label id="idLabel2" labelFor="LAB_MAIL_NAME" text="{sys>MAIL_NAME}"/>
                             <Input id="TEMPLATE_NAME" value="{MAIL_NAME}"/>
                         </l:VerticalLayout>
                         <!--Temlate ID  -->
-                        <l:VerticalLayout id="idVerticalLayout3">
-                            <Label id="idLabel3" labelFor="LAB_MAIL_TITLE" text="MAIL_TITLE"/>
+                        <l:VerticalLayout id="idVerticalLayout3" class="sapUiSmallMarginEnd">
+                            <Label id="idLabel3" labelFor="LAB_MAIL_TITLE" text="{sys>MAIL_TITLE}"/>
                             <Input id="TEMPLATE_TITLE" value="{MAIL_TITLE}"/>
+                        </l:VerticalLayout>
+                        <!--Mail CC  -->
+                        <l:VerticalLayout id="idVerticalLayout4" class="sapUiSmallMarginEnd">
+                            <Label id="idLabel4" labelFor="LAB_MAIL_CC" text="{sys>MAIL_CC}"/>
+                            <Input id="TEMPLATE_CC" value="{MAIL_CC}"/>
                         </l:VerticalLayout>
                     </FlexBox>
 
