@@ -6,15 +6,15 @@
     "repository": "<Add your repository here>",
     "dependencies": {
         "@cap-js/postgres": "1.5.1",
-        "@sap/cds-compiler": "4.9.4",
         "@sap/cds": "7.7.1",
-        "@sap/cds-dk": "7.9.2"
-
-    },
-    "devDependencies": {
         "@sap/cds-compiler": "4.9.4",
         "@sap/cds-dk": "7.9.2",
+        "umc-webedi-cds": "file:"
+    },
+    "devDependencies": {
         "@sap/cds": "7.7.1",
+        "@sap/cds-compiler": "4.9.4",
+        "@sap/cds-dk": "7.9.2",
         "@sap/ux-specification": "1.120.6",
         "rimraf": "3.0.2"
     },

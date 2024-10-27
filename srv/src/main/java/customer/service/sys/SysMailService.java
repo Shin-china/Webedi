@@ -25,6 +25,7 @@ public class SysMailService {
         O.setMailName(mail.getMAIL_NAME());
         O.setMailTitle(mail.getMAIL_TITLE());
         O.setMailContent(mail.getMAIL_CONTENT());
+        O.setMailCc(mail.getMAIL_CC());
         mailTempDao.Insert(O);
     }
 
@@ -35,6 +36,7 @@ public class SysMailService {
         O.setMailName(mail.getMAIL_NAME());
         O.setMailTitle(mail.getMAIL_TITLE());
         O.setMailContent(mail.getMAIL_CONTENT());
+        O.setMailCc(mail.getMAIL_CC());
         mailTempDao.Update(O);
 
     }
