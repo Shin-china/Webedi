@@ -7,7 +7,6 @@ import lombok.Data;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-
 public class Pch01 {
 
     @JSONField(name = "SUCCESS")
@@ -18,7 +17,7 @@ public class Pch01 {
     private String I_CON;
 
     @JSONField(name = "TYPE")
-    private String TYPE; 
+    private String TYPE;
 
     @JSONField(name = "PO_TYPE")
     private String PO_TYPE;
@@ -50,8 +49,6 @@ public class Pch01 {
     @JSONField(name = "SUPPLIER_MAT")
     private String SUPPLIER_MAT;
 
-
-
     @JSONField(name = "STATUS")
     private String STATUS;
 
@@ -60,6 +57,17 @@ public class Pch01 {
 
     @JSONField(name = "DELETE")
     private String DELETE;
+
+    @JSONField(name = "ExtNumber")
+    private String ExtNumber;
+
+    public String getExtNumber() {
+        return ExtNumber;
+    }
+
+    public void setExtNumber(String extNumber) {
+        ExtNumber = extNumber;
+    }
 
     /**
      * @return the sUCCESS
@@ -191,5 +199,4 @@ public class Pch01 {
         return DELETE;
     }
 
-    
 }

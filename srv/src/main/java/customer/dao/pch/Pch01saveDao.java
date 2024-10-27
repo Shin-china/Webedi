@@ -130,4 +130,19 @@ public class Pch01saveDao extends Dao {
             return false;
         }
     }
+
+    public Boolean update02status(T02PoD t02) {
+
+        try {
+
+            db.run(Update.entity(Pch_.T02_PO_D).entry(t02));
+
+            return true;
+
+        } catch (Exception e) {
+
+            return false;
+
+        }
+    }
 }

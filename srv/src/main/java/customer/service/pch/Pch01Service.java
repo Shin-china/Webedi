@@ -16,6 +16,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.sap.cds.services.messages.Messages;
 import com.sap.cloud.sdk.result.IntegerExtractor;
 
+import cds.gen.pch.T02PoD;
 import cds.gen.pch.T03PoC;
 import cds.gen.tableservice.PoTypePop;
 import customer.bean.pch.Pch01List;
@@ -289,10 +290,27 @@ public class Pch01Service extends Service {
                 t03.setSeq(seq); // 序号
                 t03.setDeliveryDate(s.getDELIVERY_DATE()); // 交货日期
                 t03.setQuantity(s.getQUANTITY()); // 交货数量
+                t03.setStatus("1");
+                t03.setExtNumber(s.getExtNumber());
 
                 Boolean success = savaDao.insertt03(t03);
 
                 if (success) {
+
+                    T02PoD t02 = T02PoD.create();
+
+                    t02.setDNo(s.getD_NO()); // 设置采购订单编号
+                    t02.setPoNo(s.getPO_NO()); // 采购订单号
+                    t02.setStatus("2");
+
+                    Boolean success02d = savaDao.update02status(t02);
+
+                    if (success02d) {
+                        list.setErr(true);// 有无错误
+                        list.setReTxt(" insert success but t02 update faild");// 返回消息
+                    } else {
+
+                    }
 
                     list.setErr(false);// 有无错误
                     list.setReTxt("insert success");// 返回消息
