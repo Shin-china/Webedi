@@ -6,6 +6,7 @@ import com.sap.cds.services.persistence.PersistenceService;
 import customer.service.ifm.Ifm01BpService;
 import customer.service.ifm.Ifm02MstService;
 // import customer.service.ifm.Ifm03PoService;
+import customer.service.ifm.Ifm03PoService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,13 +29,16 @@ public class JobMonotor {
     @Autowired
     private Ifm02MstService ifm02MstService;
 
+    @Autowired
+    private Ifm03PoService ifm03PoService;
+
     // @Autowired
     // private Ifm03PoService ifm03PoService;
 
     @Scheduled(cron = "0 0/5 * * * ?")
     public void poolMonitor() throws IOException {
 
-        // IMFS01
+        // IMFS01 bp同期
         System.out.println("BP Sync run");
         ifm01BpService.syncBP();
         System.out.println("JobMonotor  run");
@@ -44,18 +48,19 @@ public class JobMonotor {
     @Scheduled(cron = "0 0/5 * * * ?")
     public void poolMonitor1() throws IOException {
 
-        // IF039
+        // IF039 品目同期 标准api
         System.out.println("MST Sync run");
         ifm02MstService.syncMst();
         System.out.println("JobMonotor  run");
     }
 
-    // @Scheduled(cron = "0 0/5 * * * ?")
+    @Scheduled(cron = "0 0/5 * * * ?")
     public void poolMonitor3() throws IOException {
 
-        // IF039
+        // IF041 po同期 自开发
         System.out.println("MST Sync run");
-        // ifm03PoService.syncPo();
+        ifm03PoService.syncPo();
+
         System.out.println("JobMonotor  run");
     }
 
