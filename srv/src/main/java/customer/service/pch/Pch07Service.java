@@ -34,6 +34,7 @@ import customer.dao.mst.MstD001;
 import customer.dao.mst.MstD003;
 import customer.bean.pch.Pch07;
 import customer.service.Service;
+import customer.tool.UniqueIDTool;
 import customer.dao.pch.PchD006;
 import customer.dao.pch.PchD007;
 import customer.bean.pch.Pch01;
@@ -133,29 +134,45 @@ public class Pch07Service {
 
     public void detailsSave(Pch07DataList list) throws Exception {
         HashMap<String,String> hs = new HashMap<>();
+        //明细番号记录
+        HashMap<String,String> dno = new HashMap<>();
+        
         for (Pch07 data : list.getList()) {
 
                 String plant =  data.getPLANT_ID();
                 String matno =  data.getMATERIAL_NUMBER();
                 String no = "";
+                //没有番号的情况采番
+                //明细为1
                 if(hs.get(plant+matno) == null){
                      no = this.getNo(data);
                     hs.put(plant+matno, no);
-
-                    // 调用 Web Service 获取响应
-                String response = getResponse(data);
-                // 处理响应并设置 t07QuotationD2 的字段
-                // createT07(data, response); // 传递响应给 createT07 方法      
+                    data.setQUO_NUMBER(no);
+                    //增加明细番号记录
+                    dno.put(no, "1");
+                    //需要采番的情况创建T06
                     this.createT06(data);
+                //有值的情况下取番明细+1设置dno
                 }else{
-                     no = hs.get(plant+matno);             
-                }
-                data.setQUO_ITEM(no);
+                     no = hs.get(plant+matno);
+                     //获取明细数量
+                     String dnum = dno.get(no);
+                     int num = Integer.parseInt(dnum);
+                     //加1设置dno
+                     dno.put(no, String.valueOf(num+1));
+                     data.setQUO_NUMBER(no);
+                     data.setQUO_ITEM(String.valueOf(num+1));
+                }              
+                //创建T07
                 this.createT07(data);
                         
         }
 
     }
+
+    private String getNo(Pch07 data) {
+        return "MM0001";
+     }
 
     private void createT07(Pch07 data) throws IOException{
 
@@ -168,8 +185,8 @@ public class Pch07Service {
         T01SapMat number = mstD001.getByID(data.getMATERIAL_NUMBER());
         T03SapBp bpid = mstD003.getByID(data.getBP_NUMBER());
   
-       
-        // t07QuotationD2.setQuoNumber("MM0002");
+
+        // t07QuotationD2.setQuoNumber(data.getQUO_NUMBER());
         // t07QuotationD2.setQuoItem(Integer.parseInt(data.getQUO_ITEM()) );
         // t07QuotationD2.setMaterial(number.getMAT_NAME());
         // t07QuotationD2.setMaker(number.getMANUFACT_CODE());
@@ -193,12 +210,9 @@ public class Pch07Service {
         pchD007.insert(t07QuotationD2);
     }
 
-    private String getNo(Pch07 data) {
-        return "MM0001";
-     }
-
     private void createT06(Pch07 data) {
-        T06QuotationH t06QuotationH = T06QuotationH.create();
+        String id = "1";
+        T06QuotationH t06QuotationH = T06QuotationH.create(UniqueIDTool.getUUID());
         
         // t06QuotationH.setQUO_NUMBER(data.getQUO_NUMBER());
         // t06QuotationH.setValidateStart(data.getVALIDATE_START());
