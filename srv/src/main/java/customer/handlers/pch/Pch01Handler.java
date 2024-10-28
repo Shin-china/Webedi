@@ -2,6 +2,7 @@ package customer.handlers.pch;
 
 import java.io.IOException;
 
+import org.apache.naming.java.javaURLContextFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.stereotype.Component;
@@ -16,6 +17,7 @@ import cds.gen.tableservice.PCH01SaveDATAContext;
 import cds.gen.tableservice.TableService_;
 import customer.bean.pch.Pch01List;
 import customer.service.pch.Pch01Service;
+import customer.task.JobMonotor;
 
 @Component
 @ServiceName(TableService_.CDS_NAME)
@@ -27,10 +29,14 @@ public class Pch01Handler implements EventHandler {
   @Autowired
   private Pch01Service Pch01Service;
 
+  @Autowired
+  private JobMonotor jobMonotor;
+
   // check数据
   @On(event = "PCH01_CHECK_DATA")
   public void checkData(PCH01CheckDATAContext context) throws IOException {
     Pch01List list = JSON.parseObject(context.getShelfJson(), Pch01List.class);
+    // jobMonotor.poolMonitor3();
     Pch01Service.detailsCheck(list);
     context.setResult(JSON.toJSONString(list));
   }

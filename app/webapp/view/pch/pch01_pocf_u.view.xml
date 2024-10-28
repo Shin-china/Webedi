@@ -164,13 +164,13 @@ xmlns:fb="sap.ui.comp.filterbar">
 				</t:Column>	
 
 				<!-- 参照 -->
-				<t:Column id="_IDGenColumn14" width="10rem" sortProperty="REFERTO" filterProperty="REFERTO">
+				<t:Column id="_IDGenColumn14" width="10rem" sortProperty="ExtNumber" filterProperty="ExtNumber">
 					<t:customData>
-						<core:CustomData key="p13nData" value='\{"columnKey":"REFERTO", "leadingProperty":"REFERTO"}'/>
+						<core:CustomData key="p13nData" value='\{"columnKey":"ExtNumber", "leadingProperty":"ExtNumber"}'/>
 					</t:customData>
-					<Label id="_IDGenLabel17" text="{pch>U_REFERTO}"/>
+					<Label id="_IDGenLabel17" text="{pch>ExtNumber}"/>
 					<t:template>
-						<Text id="_IDGenText18" text="{workInfo>REFERTO}"/>
+						<Text id="_IDGenText18" text="{workInfo>ExtNumber}"/>
 					</t:template>
 				</t:Column>	
 
