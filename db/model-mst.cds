@@ -13,6 +13,7 @@ entity T01_SAP_MAT : IF_CUID_FILED { //物料基本信息
                               @title: '{i18n>MAT_NAME}' MAT_NAME     : String(40); //物料名称
                               @title: '{i18n>MANU_CODE}' MANU_CODE   : String(10); //製造業者
                               @title: '{i18n>MANU_MATERIAL}' MANU_MATERIAL     : String(40); //制造商物料编号
+                              @title: '{i18n>CUST_MATERIAL}' CUST_MATERIAL     : String(40); //制造商物料编号
 
 
 }
@@ -59,6 +60,7 @@ entity T05_SAP_BP_PURCHASE : IF_CUID_FILED { //BP采购视图
   @title: '{i18n>PURCHASE_ORG}' key PURCHASE_ORG                       : String(4) not null; //購買組織
   @title: '{i18n>SUPPLIER}' key SUPPLIER : String(10) not null; //仕入先
                                     @title: '{i18n>ZABC}' ZABC         : String(1); //ABC区分
+                                    //供应商名
 
 
 }
