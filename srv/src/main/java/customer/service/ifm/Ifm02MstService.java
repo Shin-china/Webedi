@@ -10,13 +10,10 @@ import com.alibaba.fastjson.JSON;
 import cds.gen.mst.T01SapMat;
 import cds.gen.sys.T11IfManager;
 import customer.bean.mst.Value;
-import customer.bean.mst._ProductDescription;
 import customer.bean.mst.SapMstRoot;
 import customer.dao.mst.MaterialDataDao;
 import customer.dao.sys.IFSManageDao;
 import customer.odata.S4OdataTools;
-
-import java.util.ArrayList;
 
 @Component
 public class Ifm02MstService {
@@ -56,24 +53,6 @@ public class Ifm02MstService {
 
             }
 
-            // ArrayList<T01SapMatTexts> textList = new ArrayList<T01SapMatTexts>();
-            // mat.setTexts(textList);
-            // if (s4.get_ProductDescription() != null) { // 物料多语言
-            // int index = 0;
-            // for (_ProductDescription a : s4.get_ProductDescription()) {
-            // T01SapMatTexts text = T01SapMatTexts.create();
-            // text.setLocale(OdateValueTool.getLocaleCode(a.getLanguage()));
-            // text.setMatId(matId);
-            // text.setMatName(a.getProductDescription());
-            // textList.add(text);
-
-            // if (index == 0 || ConfigConstants.USER_LANG_CODE.equals(text.getLocale())) {
-            // //任意给一个。或者直接给日文
-            // mat.setMatName(a.getProductDescription());
-            // }
-            // index++;
-            // }
-            // }
 
         } catch (UnsupportedOperationException e) {
 
