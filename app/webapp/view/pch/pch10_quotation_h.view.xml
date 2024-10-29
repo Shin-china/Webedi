@@ -1,0 +1,17 @@
+<mvc:View controllerName="umc.app.controller.pch.pch10_quotation_h" xmlns:mvc="sap.ui.core.mvc" displayBlock="true" xmlns="sap.m">
+	<Page id="idPage1" showHeader="false" showFooter="true">
+		<content>
+			<IconTabBar id="idIconTabBarNoIcons" expanded="{device>/isNoPhone}" class="sapUiResponsiveContentPadding">
+				<items>
+					<IconTabFilter id="idIconTabFilter1" text="{pch>PCH10_TAB_DISPLAY1}" key="result1">
+						<mvc:XMLView id="idXMLView1" viewName="umc.app.view.pch.pch10_quotation_l"/>
+					</IconTabFilter>
+                	<IconTabFilter  id="idIconTabFilter2" text="{pch>PCH10_TAB_DISPLAY2}" key="result2">
+						<mvc:XMLView id="idXMLView2" viewName="umc.app.view.pch.pch10_quotation_l2"/>
+					</IconTabFilter>
+
+				</items>
+			</IconTabBar>
+		</content>
+	</Page>
+</mvc:View>

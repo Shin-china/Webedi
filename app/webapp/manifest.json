@@ -186,6 +186,9 @@
         {"pattern": "RouteCre_pch08","name": "RouteCre_pch08","target": "pch08_main"},
         {"pattern": "RouteCre_pch09","name": "RouteCre_pch09","target": "pch09_forcast_d"},
 
+        {"pattern": "RouteList_pch10","name": "RouteList_pch10","target":"pch10_quotation_h"},
+        {"pattern": "RouteView_pch10/{headID}","name": "RouteView_pch10","target":"pch10_quotation_d"},
+
         {"pattern": "RouteView_pch08/{headID}","name": "RouteView_pch08","target": "pch08_detail"}
       ],
       "targets": {
@@ -212,7 +215,10 @@
         "pch07_pocf_u": {"viewName": "pch/pch07_pocf_u","viewId": "pch07_pocf_u"},
         "pch08_main"  : {"viewName": "pch/pch08_main" ,"viewId": "pch08_main"},
         "pch08_detail":{"viewName": "pch/pch08_detail","viewId": "pch08_detail"},
-        "pch09_forcast_d"  : {"viewName": "pch/pch09_forcast_d" ,"viewId": "pch09_forcast_d"}
+        "pch09_forcast_d"  : {"viewName": "pch/pch09_forcast_d" ,"viewId": "pch09_forcast_d"},
+        "pch10_quotation_l": {"viewName": "pch/pch10_quotation_l","viewId": "pch10_quotation_l"},
+        "pch10_quotation_h": {"viewName": "pch/pch10_quotation_h","viewId": "pch10_quotation_h"},
+        "pch10_quotation_d": {"viewName": "pch/pch10_quotation_d","viewId": "pch10_quotation_d"}
       }
     },
     "rootView": {

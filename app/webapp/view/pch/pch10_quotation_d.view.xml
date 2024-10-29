@@ -1,0 +1,374 @@
+<mvc:View controllerName="umc.app.controller.pch.pch10_quotation_d"
+  xmlns:smartfield="sap.ui.comp.smartfield"
+  xmlns:smartform="sap.ui.comp.smartform"
+  xmlns:core="sap.ui.core"
+  xmlns="sap.m"
+  xmlns:m="sap.m"
+  xmlns:f="sap.f"
+  xmlns:l="sap.ui.layout"
+  xmlns:smartFilterBar="sap.ui.comp.smartfilterbar"
+  xmlns:smartTable="sap.ui.comp.smarttable"
+  xmlns:sv="sap.ui.comp.smartvariants"
+  xmlns:mvc="sap.ui.core.mvc"
+  xmlns:uxap="sap.uxap"
+  xmlns:table="sap.ui.table"
+  xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+
+  <uxap:ObjectPageLayout id="_IDGenObjectPageLayout1" busy="{localModel>/isBusy}" showFooter="true">
+
+    <uxap:headerTitle>
+      <uxap:ObjectPageHeader id="_IDGenObjectPageHeader1" objectTitle="{pch>pch10HeadTitle}">
+        <uxap:navigationBar>
+          <m:Bar id="_IDGenBar1">
+            <m:contentRight>
+              <m:Button id="_IDGenButton" icon="sap-icon://nav-back" tooltip="nav-back" press="navTo('RouteList_pch10')"/>
+            </m:contentRight>
+          </m:Bar>
+        </uxap:navigationBar>
+        <!-- <uxap:actions>
+          <uxap:ObjectPageHeaderActionButton id="_IDGenObjectPageHeaderActionButton4" icon="sap-icon://accept" text="{pch>INV_BUTTON_D__POST}" tooltip="{pch>INV_BUTTON_D__POST}" hideText="false" enabled="{=${localModel>/editable} === false}" press="onPost"/>
+          <uxap:ObjectPageHeaderActionButton id="_IDGenObjectPageHeaderActionButton5" icon="sap-icon://cancel" text="{pch>INV_BUTTON_D__CANCEL_POST}" tooltip="{pch>INV_BUTTON_D__CANCEL_POST}" hideText="false" enabled="{=${localModel>/editable} === false}" press="onCancel"/>
+        </uxap:actions> -->
+      </uxap:ObjectPageHeader>
+    </uxap:headerTitle>
+
+    <uxap:sections>
+      <uxap:ObjectPageSection id="_IDGenObjectPageSection" title="{com>TITLE_HEAD}">
+        <uxap:subSections>
+          <uxap:ObjectPageSubSection id="_IDGenObjectPageSubSection1" showTitle="false">
+            <uxap:blocks>
+
+              <l:VerticalLayout id="_IDGenVerticalLayout" class="sapUiSmallMarginEnd">
+
+                <FlexBox id="_IDGenFlexBox1" wrap="Wrap" fitContainer="true">
+
+
+                  <l:VerticalLayout id="_IDGenVerticalLayout" class="sapUiSmallMarginEnd">
+                    <Label id="_IDGenLabel1" labelFor="QUO_NUMBER" text="{pch>pch10_QUO_NUMBER}"/>
+                    <smartfield:SmartField id="QUO_NUMBER" value="{QUO_NUMBER}" showLabel="false" width="20em" mandatory = "true" editable="{=${localModel>/editable} || false}"/>
+                  </l:VerticalLayout>
+								   <l:VerticalLayout id="_IDGenVerticalLayout2" class="sapUiSmallMarginEnd" visible="true">
+								  	<Label id="_IDGenLabel2" labelFor="QUO_VERSION" text="{pch>pch10_QUO_VERSION}"/>
+								  	<smartfield:SmartField id="QUO_VERSION" value="{QUO_VERSION}" showLabel="false" width="20em" mandatory = "true" editable="{=${localModel>/editable} || false}"/>
+								  </l:VerticalLayout>
+								  <l:VerticalLayout id="_IDGenVerticalLayout3" class="sapUiSmallMarginEnd" visible="true">
+								  	<Label id="_IDGenLabel3" labelFor="SALES_NUMBER" text="{pch>pch10_SALES_NUMBER}"/>
+								  	<smartfield:SmartField id="SALES_NUMBER" value="{SALES_NUMBER}" showLabel="false" width="20em" mandatory = "true" editable="{=${localModel>/editable} || false}"/>
+								  </l:VerticalLayout> 
+
+
+                </FlexBox>
+              </l:VerticalLayout>
+            </uxap:blocks>
+          </uxap:ObjectPageSubSection>
+        </uxap:subSections>
+      </uxap:ObjectPageSection>
+
+      <uxap:ObjectPageSection id="_IDGenObjectPageSection1" title="{com>TITLE_DETAIL}">
+        <uxap:subSections>
+          <uxap:ObjectPageSubSection id="_IDGenObjectPageSubSection2" showTitle="false">
+            <uxap:blocks>
+
+              <smartTable:SmartTable id="smartTable" tableType="Table" useVariantManagement="false" enableExport="false" editable="false" useTablePersonalisation="false" enableAutoColumnWidth="true" entitySet="TO_ITEMS" tableBindingPath="TO_ITEMS" requestAtLeastFields="H_ID,MOVE_D_NO,UPN_NO,ID" showRowCount="true" persistencyKey="pch34_SmartTableAnalytical_Explored2" enableAutoBinding="true" beforeRebindTable="onRebind">
+                <smartTable:customToolbar>
+                  <OverflowToolbar id="_IDGenOverflowToolbar1">
+                    <content>
+                      <ToolbarSpacer id="_IDGenToolbarSpacer1"/>
+                      <!-- <Button id="_IDGenButton1" text="{pch>pch34delete}" icon="sap-icon://delete" press="onDelete" enabled="true" visible="{localModel>/INV34_DELETE}"/>
+                      <Button id="_IDGenButton2" text="{com>BUTTON_POST}" icon="sap-icon://accept" press="onSend"   enabled="true" visible="{localModel>/INV34_POST}"/>
+                      <Button id="_IDGenButton3" text="{com>BUTTON_CANCEL_POST}" icon="sap-icon://cancel"  enabled="{=${localModel>/editable} === false}" press="onCancel" visible="{localModel>/INV34_CANCEL_P}"/> -->
+                    </content>
+                  </OverflowToolbar>
+                </smartTable:customToolbar>
+
+                <table:Table id="detailTable" alternateRowColors="true"  rowActionCount="1">
+                  <table:columns>
+
+                    <table:Column id="MOVE_D_NO" visible="true" autoResizable="true" sortProperty="MOVE_D_NO" filterProperty="MOVE_D_NO" width="5em">
+                      <table:customData>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"MOVE_D_NO", "leadingProperty":"MOVE_D_NO"}'/>
+                      </table:customData>
+                      <table:label>
+                        <Label id="LABEL_MOVE_D_NO" text="{pch>INV34_MOVE_D_NO}"/>
+                      </table:label>
+                      <table:template>
+
+                        <smartfield:SmartField id="TEMP_MOVE_D_NO" value="{MOVE_D_NO}" editable="false"></smartfield:SmartField>
+                      </table:template>
+                    </table:Column>
+
+
+                    <table:Column id="UPN_NO" visible="true" autoResizable="true" sortProperty="UPN_NO" filterProperty="UPN_NO" width="8em">
+                      <table:customData>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"UPN_NO", "leadingProperty":"UPN_NO"}'/>
+                      </table:customData>
+                      <table:label>
+                        <Label id="LABEL_UPN_NO" text="{pch>INV34_UPN_NO}"/>
+                      </table:label>
+                      <table:template>
+
+                        <smartfield:SmartField id="TEMP_UPN_NO" value="{UPN_NO}" editable="false"></smartfield:SmartField>
+                      </table:template>
+                    </table:Column>
+
+
+                    <table:Column id="MAT_ID" visible="true" autoResizable="true" sortProperty="MAT_ID" filterProperty="MAT_ID" width="8em">
+                      <table:customData>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"MAT_ID", "leadingProperty":"MAT_ID"}'/>
+                      </table:customData>
+                      <table:label>
+                        <Label id="LABEL_MAT_ID" text="{pch>INV34_MAT_ID}"/>
+                      </table:label>
+                      <table:template>
+
+                        <smartfield:SmartField id="TEMP_MAT_ID" value="{MAT_ID}" editable="false" enabled="false"></smartfield:SmartField>
+                      </table:template>
+                    </table:Column>
+
+
+                    <table:Column id="MAT_NAME" visible="true" autoResizable="true" sortProperty="TO_MAT/MAT_NAME" filterProperty="TO_MAT/MAT_NAME" width="8em">
+                      <table:customData>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"TO_MAT/MAT_NAME", "leadingProperty":"TO_MAT/MAT_NAME"}'/>
+                      </table:customData>
+                      <table:label>
+                        <Label id="LABEL_MAT_NAME" text="{pch>INV34_MAT_NAME}"/>
+                      </table:label>
+                      <table:template>
+
+                        <smartfield:SmartField id="TEMP_MAT_NAME" value="{TO_MAT/MAT_NAME}" editable="false" enabled="false"></smartfield:SmartField>
+                      </table:template>
+                    </table:Column>
+
+
+                    <table:Column id="MOVE_QTY" visible="true" autoResizable="true" sortProperty="MOVE_QTY" filterProperty="MOVE_QTY" width="10em">
+                      <table:customData>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"MOVE_QTY", "leadingProperty":"MOVE_QTY"}'/>
+                      </table:customData>
+                      <table:label>
+                        <Label id="LABEL_MOVE_QTY" text="{pch>INV34_MOVE_QTY}"/>
+                      </table:label>
+                      <table:template>
+
+                        <smartfield:SmartField id="TEMP_MOVE_QTY" value="{MOVE_QTY}" editable="false" enabled="false"></smartfield:SmartField>
+                      </table:template>
+                    </table:Column>
+
+
+                    <table:Column id="UPN_UNIT" visible="true" autoResizable="true" sortProperty="TO_UPN/UPN_UNIT" filterProperty="TO_UPN/UPN_UNIT" width="8em">
+                      <table:customData>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"TO_UPN/UPN_UNIT", "leadingProperty":"TO_UPN/UPN_UNIT"}'/>
+                      </table:customData>
+                      <table:label>
+                        <Label id="LABEL_UPN_UNIT" text="{pch>INV34_UPN_UNIT}"/>
+                      </table:label>
+                      <table:template>
+
+                        <smartfield:SmartField id="TEMP_UPN_UNIT" value="{TO_UPN/UPN_UNIT}" editable="false"  enabled="false"></smartfield:SmartField>
+                      </table:template>
+                    </table:Column>
+
+                    <table:Column id="LOC_ID_F" visible="true" autoResizable="true" sortProperty="LOC_ID_F" filterProperty="LOC_ID_F" width="15em">
+                      <table:customData>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"LOC_ID_F", "leadingProperty":"LOC_ID_F"}'/>
+                      </table:customData>
+                      <table:label>
+                        <Label id="LABEL_LOC_ID_F" text="{pch>INV34_LOC_ID_F}"/>
+                      </table:label>
+                      <table:template>
+
+                        <smartfield:SmartField id="TEMP_LOC_ID_F" value="{LOC_ID_F}" editable="false" enabled="false"></smartfield:SmartField>
+                      </table:template>
+                    </table:Column>
+
+                    <table:Column id="LOC_NAME_F" visible="true" autoResizable="true" sortProperty="TO_LOC_F/LOC_NAME" filterProperty="TO_LOC_F/LOC_NAME" width="15em">
+                      <table:customData>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"TO_LOC_F/LOC_NAME", "leadingProperty":"TO_LOC_F/LOC_NAME"}'/>
+                      </table:customData>
+                      <table:label>
+                        <Label id="LABEL_LOC_NAME_F" text="{pch>INV34_LOC_NAME_F}"/>
+                      </table:label>
+                      <table:template>
+
+                        <smartfield:SmartField id="TEMP_LOC_NAME_F" value="{TO_LOC_F/LOC_NAME}" editable="false" enabled="false"></smartfield:SmartField>
+                      </table:template>
+                    </table:Column>
+
+
+                    <table:Column id="SHELF_ID_F" visible="true" autoResizable="true" sortProperty="SHELF_ID_F" filterProperty="SHELF_ID_F" width="10em">
+                      <table:customData>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"SHELF_ID_F", "leadingProperty":"SHELF_ID_F"}'/>
+                      </table:customData>
+                      <table:label>
+                        <Label id="LABEL_SHELF_ID_F" text="{pch>INV34_SHELF_ID_F}"/>
+                      </table:label>
+                      <table:template>
+
+                        <smartfield:SmartField id="TEMP_SHELF_ID_F" value="{SHELF_ID_F}" editable="false" enabled="false"></smartfield:SmartField>
+                      </table:template>
+                    </table:Column>
+
+
+                    <table:Column id="LOC_ID_T" visible="true" autoResizable="true" sortProperty="LOC_ID_T" filterProperty="LOC_ID_T" width="8em">
+                      <table:customData>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"LOC_ID_T", "leadingProperty":"LOC_ID_T"}'/>
+                      </table:customData>
+                      <table:label>
+                        <Label id="LABEL_LOC_ID_T" text="{pch>INV34_LOC_ID_T}"/>
+                      </table:label>
+                      <table:template>
+
+                        <smartfield:SmartField id="TEMP_LOC_ID_T" value="{LOC_ID_T}" editable="false" enabled="false"></smartfield:SmartField>
+                      </table:template>
+                    </table:Column>
+
+                    <table:Column id="LOC_NAME_T" visible="true" autoResizable="true" sortProperty="TO_LOC_T/LOC_NAME" filterProperty="TO_LOC_T/LOC_NAME" width="15em">
+                      <table:customData>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"TO_LOC_T/LOC_NAME", "leadingProperty":"TO_LOC_T/LOC_NAME"}'/>
+                      </table:customData>
+                      <table:label>
+                        <Label id="LABEL_TO_LOC_T" text="{pch>INV34_LOC_NAME_T}"/>
+                      </table:label>
+                      <table:template>
+
+                        <smartfield:SmartField id="TEMP_LOC_NAME_T" value="{TO_LOC_T/LOC_NAME}" editable="false" enabled="false"></smartfield:SmartField>
+                      </table:template>
+                    </table:Column>
+
+                    <table:Column id="SHELF_ID_T" visible="true" autoResizable="true" sortProperty="SHELF_ID_T" filterProperty="SHELF_ID_T" width="8em">
+                      <table:customData>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"SHELF_ID_T", "leadingProperty":"SHELF_ID_T"}'/>
+                      </table:customData>
+                      <table:label>
+                        <Label id="LABEL_SHELF_ID_T" text="{pch>INV34_SHELF_ID_T}"/>
+                      </table:label>
+                      <table:template>
+
+                        <smartfield:SmartField id="TEMP_SHELF_ID_T" value="{SHELF_ID_T}" editable="false" enabled="false"></smartfield:SmartField>
+                      </table:template>
+                    </table:Column>
+
+                    <table:Column id="POST_STATUS" visible="true" autoResizable="true" sortProperty="POST_STATUS" filterProperty="POST_STATUS" width="10em">
+                      <table:customData>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"POST_STATUS", "leadingProperty":"POST_STATUS"}'/>
+                      </table:customData>
+                      <table:label>
+                        <Label id="LABEL_POST_STATUS" text="{pch>INV34_POST_STATUS}"/>
+                      </table:label>
+                      <table:template>
+
+                        <smartfield:SmartField id="TEMP_POST_STATUS" value="{POST_STATUS}" editable="false" enabled="false"></smartfield:SmartField>
+                      </table:template>
+                    </table:Column>
+
+                    <table:Column id="POST_ACCOUNT_DATE" visible="true" autoResizable="true" sortProperty="POST_ACCOUNT_DATE" filterProperty="POST_ACCOUNT_DATE" width="10em">
+                      <table:customData>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"POST_ACCOUNT_DATE", "leadingProperty":"POST_ACCOUNT_DATE"}'/>
+                      </table:customData>
+                      <table:label>
+                        <Label id="LABEL_POST_ACCOUNT_DATE" text="{pch>INV34_POST_ACCOUNT_DATE}"/>
+                      </table:label>
+                      <table:template>
+                        <DatePicker id="TEMP_POST_ACCOUNT_DATE" value="{'path':'POST_ACCOUNT_DATE','type':'sap.ui.model.type.Date','formatOptions': {'pattern': 'yyyy-MM-dd'}}" editable="true" />
+                      </table:template>
+                    </table:Column>
+
+
+                    <table:Column id="CANCEL_ACCOUNT_DATE" visible="true" autoResizable="true" sortProperty="CANCEL_ACCOUNT_DATE" filterProperty="CANCEL_ACCOUNT_DATE" width="10em">
+                      <table:customData>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"CANCEL_ACCOUNT_DATE", "leadingProperty":"CANCEL_ACCOUNT_DATE"}'/>
+                      </table:customData>
+                      <table:label>
+                        <Label id="LABEL_CANCEL_ACCOUNT_DATE" text="{pch>INV34_CANCEL_ACCOUNT_DATE}"/>
+                      </table:label>
+                      <table:template>
+                        <DatePicker id="TEMP_CANCEL_ACCOUNT_DATE" value="{'path':'CANCEL_ACCOUNT_DATE','type':'sap.ui.model.type.Date','formatOptions': {'pattern': 'yyyy-MM-dd'}}" editable="true" />
+                      </table:template>
+                    </table:Column>
+
+
+
+                    <table:Column id="POST_HISTORY" visible="true" autoResizable="true" width="10em">
+
+                      <table:label>
+                        <Label id="LABEL_POST_HISTORY" text="{pch>INV34_POST_HISTORY}"/>
+                      </table:label>
+                      <table:template>
+                        <Button id="_IDGenButGR_TO_POST_HISTORY" text="{pch>INV34_POST_HISTORY}" press="onPostLogPopPress" ariaDescribedBy="defaultButtonDescription genericButtonDescription"/>
+
+                      </table:template>
+                    </table:Column>
+
+
+                    <table:Column id="MOVE_OUT_BY" visible="true" autoResizable="true" sortProperty="MOVE_OUT_BY" filterProperty="MOVE_OUT_BY" width="10em">
+                      <table:customData>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"MOVE_OUT_BY", "leadingProperty":"MOVE_OUT_BY"}'/>
+                      </table:customData>
+                      <table:label>
+                        <Label id="LABEL_D__MOVE_OUT_BY" text="{pch>INV34_MOVE_OUT_BY}"/>
+                      </table:label>
+                      <table:template>
+
+                        <smartfield:SmartField id="TEMP_MOVE_OUT_BY" value="{MOVE_OUT_BY}" editable="false"></smartfield:SmartField>
+                      </table:template>
+                    </table:Column>
+                    
+
+                    <table:Column id="MOVE_OUT_TIME" visible="true" autoResizable="true" sortProperty="MOVE_OUT_TIME" filterProperty="MOVE_OUT_TIME" width="12em">
+                      <table:customData>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"MOVE_OUT_TIME", "leadingProperty":"MOVE_OUT_TIME"}'/>
+                      </table:customData>
+                      <table:label>
+                        <Label id="LABEL_D__MOVE_OUT_TIME" text="{pch>INV34_MOVE_OUT_TIME}"/>
+                      </table:label>
+                      <table:template>
+
+                        <smartfield:SmartField id="TEMP_MOVE_OUT_TIME" value="{MOVE_OUT_TIME}" editable="false"></smartfield:SmartField>
+                      </table:template>
+                    </table:Column>
+
+
+                    <table:Column id="MOVE_IN__BY" visible="true" autoResizable="true" sortProperty="MOVE_IN__BY" filterProperty="MOVE_IN__BY" width="10em">
+                      <table:customData>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"MOVE_IN__BY", "leadingProperty":"MOVE_IN__BY"}'/>
+                      </table:customData>
+                      <table:label>
+                        <Label id="LABEL_D__MOVE_IN__BY" text="{pch>INV34_MOVE_IN__BY}"/>
+                      </table:label>
+                      <table:template>
+
+                        <smartfield:SmartField id="TEMP_MOVE_IN__BY" value="{MOVE_IN__BY}" editable="false"></smartfield:SmartField>
+                      </table:template>
+                    </table:Column>
+
+
+                    <table:Column id="MOVE_IN_TIME" visible="true" autoResizable="true" sortProperty="MOVE_IN_TIME" filterProperty="MOVE_IN_TIME" width="12em">
+                      <table:customData>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"MOVE_IN_TIME", "leadingProperty":"MOVE_IN_TIME"}'/>
+                      </table:customData>
+                      <table:label>
+                        <Label id="LABEL_D_MOVE_IN_TIME" text="{pch>INV34_MOVE_IN_TIME}"/>
+                      </table:label>
+                      <table:template>
+
+                        <smartfield:SmartField id="TEMP_MOVE_IN_TIME" value="{MOVE_IN_TIME}" editable="false"></smartfield:SmartField>
+                      </table:template>
+                    </table:Column>
+                  </table:columns>
+                </table:Table>
+              </smartTable:SmartTable>
+            </uxap:blocks>
+          </uxap:ObjectPageSubSection>
+        </uxap:subSections>
+      </uxap:ObjectPageSection>
+
+
+    </uxap:sections>
+        <uxap:footer>
+      <OverflowToolbar id="otbFooter" visible="{=${message>/}.length > 0}">
+        <Button icon="sap-icon://alert" text="{=${message>/}.length}" visible="{=${message>/}.length > 0}" type="Emphasized" press="onClickMessagePopover" id="messageButton">
+        </Button>
+      </OverflowToolbar>
+    </uxap:footer>
+  </uxap:ObjectPageLayout>
+
+</mvc:View>
