@@ -39,7 +39,16 @@
                         <smartFilterBar:ControlConfiguration id="MATERIAL"            key="MATERIAL"                visibleInAdvancedArea="true" label="{pch>PCH09_MATERIAL}"              index="4"/>
                         <smartFilterBar:ControlConfiguration id="ARRANGE_ST_D"        key="ARRANGE_START_DATE"      visibleInAdvancedArea="true" label="{pch>PCH09_ARRANGE_START_DATE}"    index="5"/>
                         <smartFilterBar:ControlConfiguration id="ARRANGE_ED_D"        key="ARRANGE_END_DATE"        visibleInAdvancedArea="true" label="{pch>PCH09_ARRANGE_END_DATE}"      index="6"/>
-                    
+
+                        <smartFilterBar:ControlConfiguration id="DELIVARY_DAYS"             key="DELIVARY_DAYS"          visibleInAdvancedArea="false"  visible="false"    index="7"/>    
+                        <smartFilterBar:ControlConfiguration id="ARRANGE_QTY_SUM"           key="ARRANGE_QTY_SUM"        visibleInAdvancedArea="false"  visible="false"    index="8"/>    
+                        <smartFilterBar:ControlConfiguration id="MANUF_CODE"                key="MANUF_CODE"             visibleInAdvancedArea="false"  visible="false"   index="9"/>    
+                        <smartFilterBar:ControlConfiguration id="MATERIAL_TEXT"             key="MATERIAL_TEXT"          visibleInAdvancedArea="false"  visible="false"    index="10"/>    
+                        <smartFilterBar:ControlConfiguration id="NAME1"                     key="NAME1"                  visibleInAdvancedArea="false"  visible="false"  index="11"/>          
+                        <smartFilterBar:ControlConfiguration id="PUR_GROUP_NAME"            key="PUR_GROUP_NAME"         visibleInAdvancedArea="false"  visible="false"    index="12"/>    
+                        <smartFilterBar:ControlConfiguration id="MIN_DELIVERY_QTY"         key="MIN_DELIVERY_QTY"      visibleInAdvancedArea="false"  visible="false"    index="13"/>
+                        <smartFilterBar:ControlConfiguration id="SUPPLIER_MATERIAL"         key="SUPPLIER_MATERIAL"      visibleInAdvancedArea="false"  visible="false"    index="14"/>
+
                         </smartFilterBar:controlConfiguration>
                     </smartFilterBar:SmartFilterBar>
                 </f:content>
