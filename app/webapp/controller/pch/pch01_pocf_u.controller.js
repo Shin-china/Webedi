@@ -225,8 +225,6 @@ sap.ui.define([
 			return new Date(excelEpoch.getTime() + serial * 24 * 60 * 60 * 1000).toISOString().split('T')[0]; // 返回 YYYY-MM-DD 格式
 		},
 
-			
-			
 		getData: function () {
 			var jsondata = this.getModel("workInfo").getData();
 			var a = JSON.stringify({ list: jsondata });
@@ -235,112 +233,111 @@ sap.ui.define([
 			};
 			return oPrams;
 		},
-
-
-
+		
 		onExport: function () {
-			var oTable = this.byId("tableUploadData"); // 获取表的引用
-			var oModel = oTable.getModel(); // 获取表的数据模型
-			var aData = oModel.getData(); // 获取表中的所有数据
-
-			// 配置导出字段和格式
-			var aColumns = [
-				{
-					label: 'CHECK状态', // PO_NO
-					property: 'Status',
-					type: 'string'
-				},
-				{
-					label: '实行结果', // PO_NO
-					property: 'SUCCESS',
-					type: 'string'
-				},
-				{
-					label: '結果内容', // PO_NO
-					property: 'Message',
-					type: 'string'
-				},
-				{
-					label: '発注番号', // PO_NO
-					property: 'PO_NO',
-					type: 'string'
-				},
-				{
-					label: '明細番号', // PO_NO
-					property: 'D_NO',
-					type: 'string'
-				},
-				{
-					label: '品目コード', // PO_NO
-					property: 'MAT_ID',
-					type: 'string'
-				},
-				{
-					label: '品目テキスト', // PO_NO
-					property: 'PO_D_TXZ01',
-					type: 'string'
-				},	
-				{
-					label: '発注数量', // PO_NO
-					property: 'PO_PUR_QTY',
-					type: 'string'
-				},
-				{
-					label: '単位', // D_NO
-					property: 'PO_PUR_UNIT',
-					type: 'string'
-				},
-				{
-					label: '納品日', // MAT_ID
-					property: 'DELIVERY_DATE',
-					type: 'string'
-				},
-				{
-					label: '数量', // QUANTITY
-					property: 'QUANTITY',
-					type: 'number'
-				},
-				{
-					label: '納品日', // DELIVERY_DATE
-					property: 'DELIVERY_DATE',
-					type: 'date',
-					format: 'yyyy/mm/dd'
-				},
-				{
-					label: '納品数量', // REFERTO
-					property: 'QUANTITY',
-					type: 'string'
-				},
-				{
-					label: '仕入先品目コード', // REFERTO
-					property: 'SUPPLIER_MAT',
-					type: 'string'
-				},
-				{
-					label: '参照', // REFERTO
-					property: 'REFERTO',
-					type: 'string'
-				}
-
-			];
-
-			// 创建导出的配置
-			var oSettings = {
-				workbook: {
-					columns: aColumns
-				},
-				dataSource: aData, // 数据源
-				fileName: "ExportData.xlsx", // 导出的文件名
-				worker: false // 在本地不使用 web worker
-			};
-
-			// 使用 sap.ui.export.Spreadsheet 导出数据为 Excel
-			var oSheet = new sap.ui.export.Spreadsheet(oSettings);
-			oSheet.build().then(function () {
-				sap.m.MessageToast.show("Export success");
-			}).catch(function (oError) {
-				sap.m.MessageToast.show("Export failed");
+          var aCols, oRowBinding, oSettings, oSheet, oTable;
+        
+          if (!this._oTable) {
+          this._oTable = this.byId('tableUploadData');
+          }
+        
+          oTable = this._oTable;
+          oRowBinding = oTable.getBinding('rows');
+          if (oRowBinding != undefined) {
+          console.log(oRowBinding);
+        
+          aCols = this.createColumnConfig();
+          var oModel = oRowBinding.getModel('resultSet').getProperty('/');
+          console.log(oModel);
+          for (var i = 0; i < oModel.length; i++) {
+          }
+          oSettings = {
+           workbook: {
+           columns: aCols,
+           hierarchyLevel: 'Level'
+           },
+           dataSource: oModel,
+           fileName: 'ExportData.xlsx',
+           worker: false // We need to disable worker because we are using a MockServer as OData Service
+          };
+         
+          oSheet = new sap.ui.export.Spreadsheet(oSettings);
+          oSheet.build().finally(function () {
+           oSheet.destroy();
+          });
+          }
+          
+         },
+        
+		createColumnConfig: function () {
+			var aCols = [];
+        
+			aCols.push({
+				label: 'CHECK状态',
+				property: 'STATE'
 			});
+
+			aCols.push({
+				label: '实行结果',
+				property: 'TYPE'
+			});
+
+			aCols.push({
+				label: '結果内容',
+				property: 'MSG_TEXT'
+			});
+
+			aCols.push({
+				label: '発注番号',
+				property: 'PO_NO'
+			});
+
+			aCols.push({
+				label: '明細番号',
+				property: 'D_NO'
+			});
+
+			aCols.push({
+				label: '品目コード',
+				property: 'MAT_ID'
+			});
+        
+			aCols.push({
+				label: '品目テキスト',
+				property: 'PO_D_TXZ01'
+			});
+		
+			aCols.push({
+				label: '発注数量',
+				property: 'PO_PUR_QTY'
+			});
+
+			aCols.push({
+				label: '単位',
+				property: 'PO_PUR_UNIT'
+			});
+
+			aCols.push({
+				label: '納品日',
+				property: 'DELIVERY_DATE'
+			});
+
+			aCols.push({
+					label: '納品数量',
+					property: 'QUANTITY'
+			});	
+
+			aCols.push({
+					label: '仕入先品目コード',
+					property: 'SUPPLIER_MAT'
+			});	
+
+		    aCols.push({
+					label: '参照',
+					property: 'REFERTO'
+			});	
+
+			return aCols;
 		}
 	
 	});
