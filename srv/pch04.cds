@@ -206,6 +206,7 @@ extend service TableService {
                                 
     distinct {
         KEY t1.SUPPLIER,
+        KEY t1.INV_NO,
         COALESCE(t2.TOTAL_PRICE_AMOUNT_8, 0)   as TOTAL_PRICE_AMOUNT_8: Decimal(18, 3),
         COALESCE(t3.TOTAL_PRICE_AMOUNT_10, 0)  as TOTAL_PRICE_AMOUNT_10: Decimal(18, 3),
         COALESCE(t4.TOTAL_PRICE_AMOUNT_NOT, 0) as TOTAL_PRICE_AMOUNT_NOT: Decimal(18, 3),
@@ -217,6 +218,7 @@ extend service TableService {
                                 
     distinct {
         KEY t1.SUPPLIER,
+        KEY t1.INV_NO,
         TOTAL_PRICE_AMOUNT_8,
         FLOOR(TOTAL_PRICE_AMOUNT_8 * 0.08) AS CONSUMPTION_TAX_8: Decimal(15, 0),  // 计算消費税計(8%対象)
         TOTAL_PRICE_AMOUNT_10,
@@ -228,6 +230,7 @@ extend service TableService {
                                       
     distinct {
         KEY t1.SUPPLIER,
+        KEY t1.INV_NO,
         TOTAL_PRICE_AMOUNT_8,
         CONSUMPTION_TAX_8 ,     // 计算消費税計(8%対象)
         TOTAL_PRICE_AMOUNT_10,
@@ -241,6 +244,7 @@ extend service TableService {
                                 
     distinct {
         KEY t1.SUPPLIER,
+        KEY t1.INV_NO,
         TOTAL_PRICE_AMOUNT_8,
         CONSUMPTION_TAX_8 ,     // 计算消費税計(8%対象)
         TOTAL_PRICE_AMOUNT_10,
@@ -255,6 +259,7 @@ extend service TableService {
                                 
     distinct {
         KEY t1.SUPPLIER,
+        KEY t1.INV_NO,
         TOTAL_PRICE_AMOUNT_8,
         CONSUMPTION_TAX_8 ,               // 计算消費税計(8%対象)
         TOTAL_PRICE_AMOUNT_10,
@@ -269,13 +274,16 @@ extend service TableService {
         select from PCH_T04_PAYMENT_SUM_HJ5 t1
         left join PCH_T04_PAYMENT_SUM t2
         on t1.SUPPLIER = t2.SUPPLIER
+        and t1.INV_NO = t2.INV_NO
         and t2.SUPPLIER is not null
         left join PCH_T04_PAYMENT_UNIT t3
         on t1.SUPPLIER = t3.SUPPLIER
+        and t1.INV_NO = t3.INV_NO
         and t3.SUPPLIER is not null
                                 
     distinct {
         KEY t1.SUPPLIER,
+        KEY t1.INV_NO,
         TOTAL_PRICE_AMOUNT_8,             // 仕入金額計(8%対象)
         CONSUMPTION_TAX_8 ,               // 计算消費税計(8%対象)
         TOTAL_PAYMENT_AMOUNT_8_END,       // 计算税込支払金額(8%対象)
