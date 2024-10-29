@@ -33,11 +33,92 @@ sap.ui.define([
 			this._setOnInitNo("PCH07", ".20240812.01");
 		},
 
-		// onDownloadTemplate: function() {
-		// 	var sUrl = "/path/to/your/template/file.xlsx"; // 模板文件的路径
-		// 	sap.m.URLHelper.redirect(sUrl, true); // 通过 URLHelper 重定向到文件 URL，进行下载
-		// },
-		
+             // 模板下载
+         onSampleExport: function () {
+            var downfilename = "購買見積登録テンプレート";
+            var aCols = this.createSampleConfig();
+            var json = [{
+               D_NMATERIAL_NUMBERO: "",
+               PLANT_ID:"",
+               BP_NUMBER:"",
+               QTY:"",
+               VALIDATE_START:"",
+               VALIDATE_END:"",
+			   UMC_COMMENT_1:"",
+			   UMC_COMMENT_2:"",
+			   INITIAL_OBJ:"",
+            }];
+   
+            var oModel = new sap.ui.model.json.JSONModel(json);
+            var aProducts = oModel.getProperty('/');
+            console.log("a " + aProducts);
+            var oSettings = {
+               workbook: { columns: aCols },
+               dataSource: aProducts,
+               fileName: downfilename
+            };
+            var oSheet = new sap.ui.export.Spreadsheet(oSettings);
+            console.log("b " + oSheet);
+            oSheet.build()
+               .then(function () {
+               }).finally(function () {
+                  oSheet.destroy();
+               });
+         },
+         //文件模板下载
+         createSampleConfig: function () {
+            var aCols = [];
+
+            var MATERIAL_NUMBER = "SAP品目コード";
+            var PLANT_ID = "プラント";
+            var BP_NUMBER = "仕入先";
+            var QTY = "数量";
+            var VALIDATE_START = "有効開始日付";
+            var VALIDATE_END = "有効終了日付";
+			var UMC_COMMENT_1 = "UMC購買コメント1";
+            var UMC_COMMENT_2 = "UMC購買コメント2";
+            var INITIAL_OBJ = "イニシャル費用対象"
+
+            aCols.push({
+               label: MATERIAL_NUMBER,
+               property: MATERIAL_NUMBER
+            });
+            aCols.push({
+               label: PLANT_ID,
+               property: PLANT_ID
+            });
+            aCols.push({
+               label: BP_NUMBER,
+               property: BP_NUMBER
+            });
+            aCols.push({
+               label: QTY,
+               property: QTY
+            });
+            aCols.push({
+               label: VALIDATE_START,
+               property: VALIDATE_START
+            });
+            aCols.push({
+               label: VALIDATE_END,
+               property: VALIDATE_END
+            });
+			aCols.push({
+				label: UMC_COMMENT_1,
+				property: UMC_COMMENT_1
+			 });
+			 aCols.push({
+				label: UMC_COMMENT_2,
+				property: UMC_COMMENT_2
+			 });
+			 aCols.push({
+				label: INITIAL_OBJ,
+				property: INITIAL_OBJ
+			 });
+
+
+            return aCols;
+         },
 
 		uploadButtonPress(oEvent) {
 			this._viewCreateSet();
@@ -157,45 +238,6 @@ sap.ui.define([
 			}
 		},
 
-		// onSave: function () {
-		// 	var that = this;
-		// 	that._setBusy(true);
-	
-		// 	this._callCdsAction("/PCH07_SAVE_DATA", this.getData(), this).then((oData) => {
-		// 	  var myArray = JSON.parse(oData.PCH01_SAVE_DATA);
-		// 	  //that._setCnt(myArray.reTxt);
-		// 	  var jsonModel = that.getModel("workInfo");
-	
-		// 	  jsonModel.setData(myArray.list);
-		// 	  //设置为非创建
-		// 	  that._setIsCreate(false);
-	
-		// 	  that._setBusy(false);
-		// 	});
-		//   },
-
-		// onSave: function () {
-		// 	var that = this;
-		// 	that._setBusy(true);
-		
-		// 	// 检查按钮是否可用
-		// 	if (that.getView().getModel("viewModel").getProperty("/isButtonEnabled")) {
-		// 		this._callCdsAction("/PCH07_SAVE_DATA", this.getData(), this).then((oData) => {
-		// 			var myArray = JSON.parse(oData.PCH01_SAVE_DATA);
-		// 			var jsonModel = that.getModel("workInfo");
-		
-		// 			jsonModel.setData(myArray.list);
-		// 			// 设置为非创建
-		// 			that._setIsCreate(false);	
-		// 			that._setBusy(false);
-		// 		});
-		// 	} else {
-		// 		// 如果按钮不可用，显示提示
-		// 		that._setBusy(false);
-		// 		sap.m.MessageToast.show("请先完成检查并确保所有项成功。");
-		// 	}
-		// },
-
 		onSave: function () {
 			var that = this;
 			that._setBusy(true);
@@ -203,7 +245,7 @@ sap.ui.define([
 			// 检查按钮是否可用
 			if (that.getView().getModel("viewModel").getProperty("/isButtonEnabled")) {
 				this._callCdsAction("/PCH07_SAVE_DATA", this.getData(), this).then((oData) => {
-					var myArray = JSON.parse(oData.PCH01_SAVE_DATA);
+					var myArray = JSON.parse(oData.PCH07_SAVE_DATA);
 					var jsonModel = that.getModel("workInfo");
 		
 					jsonModel.setData(myArray.list);
@@ -215,10 +257,9 @@ sap.ui.define([
 				that._setBusy(false);
 				sap.m.MessageToast.show("请先完成检查并确保所有项成功。");
 			}
+
 		},
 		
-		
-
 		// excel上传
 		onFileChange: function (oEvent) {
 			this._setEditable(true);
@@ -249,25 +290,120 @@ sap.ui.define([
 			oReader.readAsBinaryString(oFile);
 			},
 
-			onExport: function (oEvent) {
-				var oTable = this.getView().byId("tableUploadData");
-				var aSelectedIndices = oTable.getSelectedIndices();
-	
-				if (aSelectedIndices.length === 0) {
-					sap.m.MessageToast.show("選択されたデータがありません、データを選択してください。"); // 提示未选择数据
-					oEvent.preventDefault(); // 取消导出操作
-					return;
-				}
-	
-				var oSettings = oEvent.getParameter("exportSettings");
-				if (oSettings) {
-					console.log("onBeforeExport called");
-					console.log("Export Settings:", oSettings);
-					oSettings.fileName = `購買見積登録.xlsx`;
-				}
-			},
+			onExport: function () {
+				    var aCols, oRowBinding, oSettings, oSheet, oTable;
+				 
+				    if (!this._oTable) {
+				     this._oTable = this.byId('tableUploadData');
+				    }
+				 
+				    oTable = this._oTable;
+				    oRowBinding = oTable.getBinding('rows');
+				    if (oRowBinding != undefined) {
+				     console.log(oRowBinding);
+				 
+				     aCols = this.createColumnConfig();
+				     var oModel = oRowBinding.getModel('resultSet').getProperty('/');
+				     console.log(oModel);
+				     for (var i = 0; i < oModel.length; i++) {
+				      // oModel[i].MODIFIEDDAT = this.formatDate(oModel[i].MODIFIEDDAT)
+				      // oModel[i].SD07_RESULT = this.formateType(oModel[i].SD07_RESULT)
+				     }
+				     oSettings = {
+				      workbook: {
+				       columns: aCols,
+				       hierarchyLevel: 'Level'
+				      },
+				      dataSource: oModel,
+				      fileName: '購買見積登録ExportData.xlsx',
+				      worker: false // We need to disable worker because we are using a MockServer as OData Service
+				     };
+				  
+				     oSheet = new sap.ui.export.Spreadsheet(oSettings);
+				     oSheet.build().finally(function () {
+				      oSheet.destroy();
+				     });
+				    }
+				    
+				   },
+				
+				   createColumnConfig: function () {
+				    var aCols = [];
+				 
+				    aCols.push({
+				     label: 'ステータス',
+				     property: 'STATUS'
+				    });
+				 
+				    aCols.push({
+				     label: '実行結果',
+				     property: 'RESULT'
+				    });
+				 
+				    aCols.push({
+				     label: '結果内容',
+				     property: 'MESSAGE'
+				    });
+				 
+				    aCols.push({
+				     label: '購買見積番号',
+				     property: 'QUO_NUMBER'
+				    });
+				 
+				    aCols.push({
+				     label: '管理No',
+				     property: 'QUO_ITEM',
+				 
+				    });
+				 
+				    aCols.push({
+				     label: 'SAP品目コード.',
+				     property: 'MATERIAL_NUMBER'
+				    });
+				 
+				    aCols.push({
+				     label: '仕入先',
+				     property: 'BP_NUMBER'
+				    });
 
-					
+					aCols.push({
+						label: 'プラント',
+						property: 'PLANT_ID'
+					   });
+
+					aCols.push({
+				     label: '数量',
+				     property: 'QTY'
+				    });
+				 
+			        aCols.push({
+						label: '有効開始日付',
+						property: 'VALIDATE_START'
+					   });
+
+					aCols.push({
+				     label: '有効終了日付',
+				     property: 'VALIDATE_END'
+				    });
+
+					aCols.push({
+						label: 'UMC購買コメント1',
+						property: 'UMC_COMMENT_1'
+					   });
+
+                    aCols.push({
+						label: 'UMC購買コメント2',
+						property: 'UMC_COMMENT_2'
+					   });
+
+					aCols.push({
+						label: 'イニシャル費用対象',
+						property: 'INITIAL_OBJ'
+					   });
+
+					    return aCols;
+				   },
+	
 			getData: function () {
 				var jsondata = this.getModel("workInfo").getData();
 				var a = JSON.stringify({ list: jsondata });

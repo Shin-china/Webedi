@@ -22,8 +22,8 @@ import java.time.LocalDate;
 
 import cds.gen.pch.T06QuotationH;
 import cds.gen.pch.Pch_;
-
-
+import cds.gen.tableservice.TableService_;
+import cds.gen.tableservice.PCHT07QuoItemMax1;
 
 import java.time.Instant;
 
@@ -56,5 +56,36 @@ public class PchD006 extends Dao {
         // o.setCdDateTime(DateTools.getTimeAsString(o.getCdTime()));
 
         db.run(Insert.into(Pch_.T06_QUOTATION_H).entry(o));
+    }
+
+     /**
+  * 获取最大的明细行
+  * 
+  * @param po
+  * @param pod
+  */
+  public PCHT07QuoItemMax1 getVer(String PLANT_ID, String MATERIAL_NUMBER) {
+
+        Optional<PCHT07QuoItemMax1> first = db
+            .run(Select.from(TableService_.PCHT07_QUO_ITEM_MAX1)
+                .where(o -> o.PLANT_ID().eq(PLANT_ID).and(o.MATERIAL_NUMBER().eq(MATERIAL_NUMBER))))
+            .first(PCHT07QuoItemMax1.class);
+        if (first.isPresent()) {
+          return (first.get()); 
+        }
+        return null;
+    }
+    
+    public PCHT07QuoItemMax1 getQuoNumberMax() {
+
+        Optional<PCHT07QuoItemMax1> first = db
+            .run(Select.from(TableService_.PCHT07_QUO_ITEM_MAX1)
+            .orderBy(o -> o.QUO_NUMBER_MAX().desc())
+            .limit(1))
+            .first(PCHT07QuoItemMax1.class);
+        if (first.isPresent()) {
+          return (first.get()); 
+        }
+        return null;
     }
 }

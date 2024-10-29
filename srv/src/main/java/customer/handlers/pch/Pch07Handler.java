@@ -1,5 +1,7 @@
 package customer.handlers.pch;
 
+import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.stereotype.Component;
@@ -35,10 +37,10 @@ public class Pch07Handler implements EventHandler {
 
       // 保存数据
   @On(event = "PCH07_SAVE_DATA")
-    public void saveData(PCH07SaveDATAContext context) {
-        Pch07DataList list = JSON.parseObject(context.getShelfJson(), Pch07DataList.class);
-    // Pch07Service.detailsSave(list);
-    context.setResult(JSON.toJSONString(list));
+    public void saveData(PCH07SaveDATAContext context) throws Exception{
+      Pch07DataList list = JSON.parseObject(context.getShelfJson(), Pch07DataList.class);
+      Pch07Service.detailsSave(list);
+      context.setResult(JSON.toJSONString(list));
   }
 
 }

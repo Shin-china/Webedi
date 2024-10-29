@@ -19,6 +19,7 @@ import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sap.cds.services.messages.Messages;
@@ -30,6 +31,7 @@ import cds.gen.pch.T06QuotationH;
 import cds.gen.pch.T07QuotationD;
 import cds.gen.sys.T11IfManager;
 import cds.gen.tableservice.PoTypePop;
+import cds.gen.tableservice.PCHT07QuoItemMax1;
 import customer.dao.mst.MstD001;
 import customer.dao.mst.MstD003;
 import customer.bean.pch.Pch07;
@@ -133,46 +135,44 @@ public class Pch07Service {
 }
 
     public void detailsSave(Pch07DataList list) throws Exception {
-        HashMap<String,String> hs = new HashMap<>();
-        //明细番号记录
-        HashMap<String,String> dno = new HashMap<>();
+
         
         for (Pch07 data : list.getList()) {
 
                 String plant =  data.getPLANT_ID();
                 String matno =  data.getMATERIAL_NUMBER();
-                String no = "";
+                PCHT07QuoItemMax1 item = pchD006.getVer(plant, matno);
                 //没有番号的情况采番
                 //明细为1
-                if(hs.get(plant+matno) == null){
-                     no = this.getNo(data);
-                    hs.put(plant+matno, no);
+                if(item == null){
+                    PCHT07QuoItemMax1 maxQuo = pchD006.getQuoNumberMax();
+                    String no = (maxQuo == null)? "100001" : String.valueOf(maxQuo.getQuoNumberMax()+1);
                     data.setQUO_NUMBER(no);
                     //增加明细番号记录
-                    dno.put(no, "1");
+                    data.setQUO_ITEM("1");
                     //需要采番的情况创建T06
                     this.createT06(data);
                 //有值的情况下取番明细+1设置dno
                 }else{
-                     no = hs.get(plant+matno);
-                     //获取明细数量
-                     String dnum = dno.get(no);
-                     int num = Integer.parseInt(dnum);
+                     String no = String.valueOf(item.getQuoNumberMax());
+                     String dnum = String.valueOf(item.getQuoItemMax());
+                    // 将 dnum 转换为 Integer，然后加 1
+                    int nextQuoItem = Integer.parseInt(dnum) + 1;
+                    // 将结果转换回 String
+                    data.setQUO_ITEM(String.valueOf(nextQuoItem));
+
                      //加1设置dno
-                     dno.put(no, String.valueOf(num+1));
                      data.setQUO_NUMBER(no);
-                     data.setQUO_ITEM(String.valueOf(num+1));
+                    //  data.setQUO_ITEM(dnum+1);
                 }              
                 //创建T07
                 this.createT07(data);
-                        
+                data.setMESSAGE("購買見積は成功にアップロードしました");
+                data.setQUO_NUMBER(data.getQUO_NUMBER());
+                data.setQUO_ITEM(data.getQUO_ITEM());
         }
-
     }
 
-    private String getNo(Pch07 data) {
-        return "MM0001";
-     }
 
     private void createT07(Pch07 data) throws IOException{
 
@@ -181,47 +181,91 @@ public class Pch07Service {
         T07QuotationD t07QuotationD2 = T07QuotationD.create();
 
         JSONObject jb=  (JSONObject)JSON.parse(response);
-            // String string = jb.getString("Currency");
         T01SapMat number = mstD001.getByID(data.getMATERIAL_NUMBER());
         T03SapBp bpid = mstD003.getByID(data.getBP_NUMBER());
   
+    // 解析 JSON 字符串
+    JSONObject jsonObject = (JSONObject) JSON.parse(response);
 
-        // t07QuotationD2.setQuoNumber(data.getQUO_NUMBER());
-        // t07QuotationD2.setQuoItem(Integer.parseInt(data.getQUO_ITEM()) );
-        // t07QuotationD2.setMaterial(number.getMAT_NAME());
-        // t07QuotationD2.setMaker(number.getMANUFACT_CODE());
-        // t07QuotationD2.setManuMaterial(number.getMANUFACT_MATERIAL());
-        // t07QuotationD2.setUwebUser(bpid.getBP_NAME1());
-        // t07QuotationD2.setCustMaterial(number.getCUST_MATERIAL());   
-        // t07QuotationD2.setQty(data.getQTY());
-        // t07QuotationD2.setStatus("1"); 
-        // t07QuotationD2.setInitialObj(data.getINITIAL_OBJ());
+    // 获取 Items 数组
+    JSONArray itemsArray = jsonObject.getJSONArray("Items");
 
-        // t07QuotationD2.setUnit(jb.getString("Baseunit"));
-        // t07QuotationD2.setOriginalCou(jb.getString("Suppliercertorigincountry"));
-        // t07QuotationD2.setPriceControl(jb.getString("Pricingdatecontrol"));       
-        // t07QuotationD2.setMoq(jb.getString("Minimumpurchaseorderquantity"));
-        // t07QuotationD2.setIncoterms(jb.getString("Incotermsclassification"));
-        // t07QuotationD2.setIncotermsText(jb.getString("Incotermslocation1"));
-        // t07QuotationD2.setLeadTime(jb.getString("MaterialPlannedDeliveryDurn"));
-        // t07QuotationD2.setPrice(jb.getString("Netpriceamount"));
-        // t07QuotationD2.setCurrency(jb.getString("Currency"));
+    // 确保 Items 数组不为空
+    if (itemsArray != null && itemsArray.size() > 0) {
+        // 取第一个 Item
+        JSONObject firstItem = itemsArray.getJSONObject(0);
+
+        // 获取 LeadTime 字符串
+        String leadTimeStr = firstItem.getString("Materialplanneddeliverydurn");
+
+        // 检查字符串是否有效
+        if (leadTimeStr != null && !leadTimeStr.isEmpty() && !leadTimeStr.equals("0")) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+            LocalDate leadTime = LocalDate.parse(leadTimeStr, formatter);
+            t07QuotationD2.setLeadTime(leadTime);
+        } else {
+            // 处理无效值的情况，例如设置为 null 或者提供默认值
+            t07QuotationD2.setLeadTime(null); // 或者根据需要设置默认值
+        }
+
+        // 设置 Qty
+        Double qtyDouble = data.getQTY();
+        BigDecimal qtyBigDecimal = qtyDouble != null ? BigDecimal.valueOf(qtyDouble) : null;
+        t07QuotationD2.setQty(qtyBigDecimal);
+
+        // 设置 Price
+        String priceStr = firstItem.getString("Netpriceamount");
+        BigDecimal priceBigDecimal = (priceStr != null && !priceStr.isEmpty()) ? new BigDecimal(priceStr) : null;
+        t07QuotationD2.setPrice(priceBigDecimal);
+
+
+        // 获取 Baseunit 并设置到表字段中
+        t07QuotationD2.setUnit(firstItem.getString("Baseunit"));
+        t07QuotationD2.setOriginalCou(firstItem.getString("Suppliercertorigincountry"));
+        t07QuotationD2.setPriceControl(firstItem.getString("Pricingdatecontrol"));
+        t07QuotationD2.setMoq(firstItem.getString("Minimumpurchaseorderquantity"));
+        t07QuotationD2.setIncoterms(firstItem.getString("Incotermsclassification"));
+        t07QuotationD2.setIncotermsText(firstItem.getString("Incotermslocation1"));
+        t07QuotationD2.setCurrency(firstItem.getString("Currency"));
+
+    }
+
+        t07QuotationD2.setQuoNumber(data.getQUO_NUMBER());
+        t07QuotationD2.setQuoItem(Integer.parseInt(data.getQUO_ITEM()) );
+        t07QuotationD2.setMaterialNumber(data.getMATERIAL_NUMBER());
+        t07QuotationD2.setInitialObj(data.getINITIAL_OBJ());
+        t07QuotationD2.setStatus("1");  
+        t07QuotationD2.setMaterial(number.getMatName());
+        t07QuotationD2.setMaker(number.getManuCode());
+        t07QuotationD2.setManufactMaterial(number.getManuMaterial());
+        t07QuotationD2.setUwebUser(bpid.getBpName1());
+        t07QuotationD2.setCustMaterial(number.getCustMaterial());
+
+       
+
         
         pchD007.insert(t07QuotationD2);
     }
 
     private void createT06(Pch07 data) {
-        String id = "1";
         T06QuotationH t06QuotationH = T06QuotationH.create(UniqueIDTool.getUUID());
+
+        // 定义日期格式
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+
+        // 将字符串转换为 LocalDate
+        LocalDate validateStart = LocalDate.parse(data.getVALIDATE_START(), formatter);
+        LocalDate validateEnd = LocalDate.parse(data.getVALIDATE_END(), formatter);
+
+        // 设置转换后的日期
+        t06QuotationH.setValidateStart(validateStart);
+        t06QuotationH.setValidateEnd(validateEnd);
         
-        // t06QuotationH.setQUO_NUMBER(data.getQUO_NUMBER());
-        // t06QuotationH.setValidateStart(data.getVALIDATE_START());
-        // t06QuotationH.setValidateEnd(data.getVALIDATE_END());
-        // t06QuotationH.setPLANT_ID(data.getPLANT_ID());
+        t06QuotationH.setQuoNumber(data.getQUO_NUMBER());
+        t06QuotationH.setPlantId(data.getPLANT_ID());
 
         pchD006.insert(t06QuotationH);
     }
-
 
     private String getResponse(Pch07 data) throws IOException {
         ArrayList ar = new ArrayList<>();
