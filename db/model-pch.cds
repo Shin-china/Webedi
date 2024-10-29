@@ -52,9 +52,9 @@ entity T02_PO_D : IF_CUID_FILED { //采购订单行
 }
 
 entity T03_PO_C : IF_CUID_FILED { //采购订单确认表
-  @title: '{i18n>PO_NO}'  KEY PO_NO                                              : String(10) not null; //采购订单编号
-  @title: '{i18n>D_NO}'   KEY D_NO                                               : Integer; //采购订单明细行号
-  @title: '{i18n>SEQ}'    KEY SEQ                                                : Integer; //序号
+  @title: '{i18n>PO_NO}' key PO_NO                                              : String(10) not null; //采购订单编号
+  @title: '{i18n>D_NO}' key  D_NO                                               : Integer; //采购订单明细行号
+  @title: '{i18n>SEQ}' key   SEQ                                                : Integer; //序号
                              @title: '{i18n>DELIVERY_DATE}' DELIVERY_DATE       : Date; //交货日期
                              @title: '{i18n>QUANTITY}' QUANTITY                 : Decimal(18, 3); //交货数量
                              @title: '{i18n>STATUS}' STATUS                     : String(1); //状态
@@ -140,7 +140,11 @@ entity T06_QUOTATION_H : cuid, IF_CUID_FILED { //
   @title: '{i18n>CD_DATE}' CD_DATE               : Date; //创建日
   @title: '{i18n>CD_DATE_TIME}' CD_DATE_TIME     : String(10); //创建日时
 
+  TO_ITEMS                                       : Composition of many T07_QUOTATION_D
+                                                     on TO_ITEMS.QUO_NUMBER = QUO_NUMBER;
+
 }
+
 entity T07_QUOTATION_D : cuid, IF_CUID_FILED { //
   @title: '{i18n>QUO_NUMBER}' QUO_NUMBER                 : String(10); //購買見積番号
   @title: '{i18n>QUO_ITEM}' QUO_ITEM                     : Integer; //管理No
@@ -203,23 +207,28 @@ entity T07_QUOTATION_D : cuid, IF_CUID_FILED { //
   @title: '{i18n>CD_DATE}' CD_DATE                       : Date; //创建日
   @title: '{i18n>CD_DATE_TIME}' CD_DATE_TIME             : String(10); //创建日时
 
+  @title: '{i18n>TO_HEAD}'
+  TO_HEAD                                                : Association to one T06_QUOTATION_H
+                                                             on TO_HEAD.QUO_NUMBER = QUO_NUMBER;
+
 
 }
+
 entity T08_UPLOAD : cuid, IF_CUID_FILED { //
-  @title: '{i18n>PO_NO}'  PO_NO                                      : String(10) not null; //采购订单编号
-  @title: '{i18n>D_NO}'   D_NO                                       : Integer; //采购订单明细行号
-  @title: '{i18n>PO_NO_DNO}' PO_NO_DNO                 : String(50); //購買伝票＋明細
-                             @title: '{i18n>TYPE}' TYPE                 : String(1); //種類
-                             @title: '{i18n>MAT_ID}' MAT_ID             : String(40); //品目
-                             @title: '{i18n>MAT_NAME}' MAT_NAME         : String(40); //物料名称
-                             @title: '{i18n>QUANTITY}' QUANTITY         : Decimal(18, 3); //発注数
-                             @title: '{i18n>PLANT_ID}' PLANT_ID         : String(4); //工厂
-                             @title: '{i18n>STORAGE_LOC}' LOCATION_ID   : String(4); //库存地点
-                             @title: '{i18n>INPUT_DATE}' INPUT_DATE     : Date; //納入日付
-                             @title: '{i18n>INPUT_QTY}' INPUT_QTY       : Decimal(18, 3); //納入数
-                             @title: '{i18n>ExtNumber}' ExtNumber       : String(35); //参照
-                             @title: '{i18n>CD_DATE}' CD_DATE           : Date; //创建日
-                             @title: '{i18n>CD_DATE_TIME}' CD_DATE_TIME : String(10); //创建日时
+  @title: '{i18n>PO_NO}' PO_NO               : String(10) not null; //采购订单编号
+  @title: '{i18n>D_NO}' D_NO                 : Integer; //采购订单明细行号
+  @title: '{i18n>PO_NO_DNO}' PO_NO_DNO       : String(50); //購買伝票＋明細
+  @title: '{i18n>TYPE}' TYPE                 : String(1); //種類
+  @title: '{i18n>MAT_ID}' MAT_ID             : String(40); //品目
+  @title: '{i18n>MAT_NAME}' MAT_NAME         : String(40); //物料名称
+  @title: '{i18n>QUANTITY}' QUANTITY         : Decimal(18, 3); //発注数
+  @title: '{i18n>PLANT_ID}' PLANT_ID         : String(4); //工厂
+  @title: '{i18n>STORAGE_LOC}' LOCATION_ID   : String(4); //库存地点
+  @title: '{i18n>INPUT_DATE}' INPUT_DATE     : Date; //納入日付
+  @title: '{i18n>INPUT_QTY}' INPUT_QTY       : Decimal(18, 3); //納入数
+  @title: '{i18n>ExtNumber}' ExtNumber       : String(35); //参照
+  @title: '{i18n>CD_DATE}' CD_DATE           : Date; //创建日
+  @title: '{i18n>CD_DATE_TIME}' CD_DATE_TIME : String(10); //创建日时
 
 
 }
