@@ -56,10 +56,7 @@ extend service TableService {
         M03.LOG_NO,                        // 登録番号    
         M04.ZABC,                          // ABC区分
         T05.Company_Code,
-        // T05.PRICE_AMOUNT,
-        // T05.TOTAL_AMOUNT,
         T05.UNIT_PRICE,
-        // T02.PO_NO || '' || T02.D_NO AS NO_DETAILS : String(255), // 発注\明細NO
         T02.PO_NO || REPEAT('0', 5 - LENGTH(CAST(T02.D_NO AS String))) || CAST(T02.D_NO AS String) as NO_DETAILS : String(15), // 発注\明細NO
 
         TO_CHAR(T04.INV_POST_DATE, 'YYYYMM') as INV_MONTH : String,  //检收月
@@ -111,7 +108,6 @@ extend service TableService {
         Company_Code,
  
         CAST(UNIT_PRICE * COALESCE(EXCHANGE, 1) AS Decimal(15, 3)) AS UNIT_PRICE_IN_YEN : Decimal(15, 3),
-        // FLOOR(TOTAL_AMOUNT * COALESCE(EXCHANGE, 1)) AS TOTAL_AMOUNT_IN_YEN : Decimal(20, 0), // 円換算後税込金額（檢収）
         ROUND(TOTAL_AMOUNT * COALESCE(EXCHANGE, 1), 0) AS TOTAL_AMOUNT_IN_YEN : Decimal(20, 0), // 円換算後税込金額（檢収）
 
         
@@ -130,8 +126,8 @@ extend service TableService {
 
     ![distinct] {
         KEY SUPPLIER,
-        KEY NO_DETAILS,            // UMC発注番号
         KEY INV_NO,
+        NO_DETAILS,            // UMC発注番号
         TAX_RATE,                  // INV税率
         MAT_ID,                    // 品目コード
         GR_DATE,                   // 入荷日
@@ -160,6 +156,7 @@ extend service TableService {
        SUM(PRICE_AMOUNT)  as TOTAL_PRICE_AMOUNT_8: Decimal(18, 3),       // 仕入金額計(8%対象)
     }
     where TAX_RATE= 8
+      and SUPPLIER is not null and SUPPLIER <> 'N/A'
     group BY SUPPLIER
 ;
  entity PCH_T04_PAYMENT_SUM_FZ2 as
@@ -170,6 +167,7 @@ extend service TableService {
        SUM(PRICE_AMOUNT)  as TOTAL_PRICE_AMOUNT_10: Decimal(18, 3),       // 仕入金額計(10%対象)
     }
     where TAX_RATE= 10
+      and SUPPLIER is not null and SUPPLIER <> 'N/A'
     group BY SUPPLIER;
 
  entity PCH_T04_PAYMENT_SUM_FZ3_1 as
@@ -181,6 +179,8 @@ extend service TableService {
          SUM(PRICE_AMOUNT)  as TOTAL_PRICE_AMOUNT_NOT: Decimal(18, 3) ,    // 非810
     }
     where TAX_RATE != 10 AND TAX_RATE != 8 
+      and SUPPLIER is not null and SUPPLIER <> 'N/A'
+      and TAX_RATE is not null and SUPPLIER <> 'N/A'
     group BY SUPPLIER,TAX_RATE;
 
  entity PCH_T04_PAYMENT_SUM_FZ3 as
@@ -191,14 +191,16 @@ extend service TableService {
         SUM(TOTAL_PRICE_AMOUNT_NOT * TAX_RATE)  as TOTAL_PRICE_AMOUNT_NOT: Decimal(18, 3),       // 非810
     }
     where TAX_RATE != 10 AND TAX_RATE != 8 
+      and SUPPLIER is not null and SUPPLIER <> 'N/A'
+      and TAX_RATE is not null and SUPPLIER <> 'N/A'
     group BY SUPPLIER;
 
  entity PCH_T04_PAYMENT_SUM_HJ1 as
-        select from PCH_T04_PAYMENT_SUM t1
+        select from PCH_T04_PAYMENT_UNIT t1
         left join PCH_T04_PAYMENT_SUM_FZ1 t2
         on t1.SUPPLIER = t2.SUPPLIER
         left join PCH_T04_PAYMENT_SUM_FZ2 t3
-        on t1.SUPPLIER = t3.SUPPLIER
+        on t1.SUPPLIER = t3.SUPPLIER 
         left join PCH_T04_PAYMENT_SUM_FZ3 t4
         on t1.SUPPLIER = t4.SUPPLIER
                                 
@@ -267,8 +269,10 @@ extend service TableService {
         select from PCH_T04_PAYMENT_SUM_HJ5 t1
         left join PCH_T04_PAYMENT_SUM t2
         on t1.SUPPLIER = t2.SUPPLIER
+        and t2.SUPPLIER is not null
         left join PCH_T04_PAYMENT_UNIT t3
         on t1.SUPPLIER = t3.SUPPLIER
+        and t3.SUPPLIER is not null
                                 
     distinct {
         KEY t1.SUPPLIER,
