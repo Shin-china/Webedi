@@ -9,7 +9,8 @@ extend service TableService {
     entity PCH10_Header as
         select from PCH.T06_QUOTATION_H as T01 distinct {
 
-            key T01.QUO_NUMBER,
+            key T01.ID,
+                T01.QUO_NUMBER,
                 T01.CUSTOMER,
                 T01.MACHINE_TYPE,
                 T01.Item,

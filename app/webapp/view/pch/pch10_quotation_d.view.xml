@@ -1,4 +1,4 @@
-<mvc:View controllerName="umc.app.controller.pch.pch10_quotation_d"
+<mvc:View controllerName="umc.app.controller.pch.PCH10_quotation_d"
   xmlns:smartfield="sap.ui.comp.smartfield"
   xmlns:smartform="sap.ui.comp.smartform"
   xmlns:core="sap.ui.core"
@@ -17,11 +17,11 @@
   <uxap:ObjectPageLayout id="_IDGenObjectPageLayout1" busy="{localModel>/isBusy}" showFooter="true">
 
     <uxap:headerTitle>
-      <uxap:ObjectPageHeader id="_IDGenObjectPageHeader1" objectTitle="{pch>pch10HeadTitle}">
+      <uxap:ObjectPageHeader id="_IDGenObjectPageHeader1" objectTitle="{pch>PCH10HeadTitle}">
         <uxap:navigationBar>
           <m:Bar id="_IDGenBar1">
             <m:contentRight>
-              <m:Button id="_IDGenButton" icon="sap-icon://nav-back" tooltip="nav-back" press="navTo('RouteList_pch10')"/>
+              <m:Button id="_IDGenButton" icon="sap-icon://nav-back" tooltip="nav-back" press="navTo('RouteList_PCH10')"/>
             </m:contentRight>
           </m:Bar>
         </uxap:navigationBar>
@@ -38,21 +38,21 @@
           <uxap:ObjectPageSubSection id="_IDGenObjectPageSubSection1" showTitle="false">
             <uxap:blocks>
 
-              <l:VerticalLayout id="_IDGenVerticalLayout" class="sapUiSmallMarginEnd">
+              <l:VerticalLayout id="_IDGenVerticalLayout001" class="sapUiSmallMarginEnd">
 
                 <FlexBox id="_IDGenFlexBox1" wrap="Wrap" fitContainer="true">
 
 
                   <l:VerticalLayout id="_IDGenVerticalLayout" class="sapUiSmallMarginEnd">
-                    <Label id="_IDGenLabel1" labelFor="QUO_NUMBER" text="{pch>pch10_QUO_NUMBER}"/>
+                    <Label id="_IDGenLabel1" labelFor="QUO_NUMBER" text="{pch>PCH10_QUO_NUMBER}"/>
                     <smartfield:SmartField id="QUO_NUMBER" value="{QUO_NUMBER}" showLabel="false" width="20em" mandatory = "true" editable="{=${localModel>/editable} || false}"/>
                   </l:VerticalLayout>
 								   <l:VerticalLayout id="_IDGenVerticalLayout2" class="sapUiSmallMarginEnd" visible="true">
-								  	<Label id="_IDGenLabel2" labelFor="QUO_VERSION" text="{pch>pch10_QUO_VERSION}"/>
+								  	<Label id="_IDGenLabel2" labelFor="QUO_VERSION" text="{pch>PCH10_QUO_VERSION}"/>
 								  	<smartfield:SmartField id="QUO_VERSION" value="{QUO_VERSION}" showLabel="false" width="20em" mandatory = "true" editable="{=${localModel>/editable} || false}"/>
 								  </l:VerticalLayout>
 								  <l:VerticalLayout id="_IDGenVerticalLayout3" class="sapUiSmallMarginEnd" visible="true">
-								  	<Label id="_IDGenLabel3" labelFor="SALES_NUMBER" text="{pch>pch10_SALES_NUMBER}"/>
+								  	<Label id="_IDGenLabel3" labelFor="SALES_NUMBER" text="{pch>PCH10_SALES_NUMBER}"/>
 								  	<smartfield:SmartField id="SALES_NUMBER" value="{SALES_NUMBER}" showLabel="false" width="20em" mandatory = "true" editable="{=${localModel>/editable} || false}"/>
 								  </l:VerticalLayout> 
 
@@ -69,7 +69,7 @@
           <uxap:ObjectPageSubSection id="_IDGenObjectPageSubSection2" showTitle="false">
             <uxap:blocks>
 
-              <smartTable:SmartTable id="smartTable" tableType="Table" useVariantManagement="false" enableExport="false" editable="false" useTablePersonalisation="false" enableAutoColumnWidth="true" entitySet="TO_ITEMS" tableBindingPath="TO_ITEMS" requestAtLeastFields="H_ID,MOVE_D_NO,UPN_NO,ID" showRowCount="true" persistencyKey="pch34_SmartTableAnalytical_Explored2" enableAutoBinding="true" beforeRebindTable="onRebind">
+              <smartTable:SmartTable id="smartTable" tableType="Table" useVariantManagement="false" enableExport="false" editable="false" useTablePersonalisation="false" enableAutoColumnWidth="true" entitySet="TO_ITEMS" tableBindingPath="TO_ITEMS" requestAtLeastFields="ID" showRowCount="true" persistencyKey="pch34_SmartTableAnalytical_Explored2" enableAutoBinding="true" beforeRebindTable="onRebind">
                 <smartTable:customToolbar>
                   <OverflowToolbar id="_IDGenOverflowToolbar1">
                     <content>
@@ -84,275 +84,732 @@
                 <table:Table id="detailTable" alternateRowColors="true"  rowActionCount="1">
                   <table:columns>
 
-                    <table:Column id="MOVE_D_NO" visible="true" autoResizable="true" sortProperty="MOVE_D_NO" filterProperty="MOVE_D_NO" width="5em">
+                    <table:Column id="PCH10_SALES_NUMBER" visible="true" autoResizable="true" sortProperty="SALES_NUMBER" filterProperty="SALES_NUMBER" width="5em">
                       <table:customData>
-                        <core:CustomData key="p13nData" value='\{"columnKey":"MOVE_D_NO", "leadingProperty":"MOVE_D_NO"}'/>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"SALES_NUMBER", "leadingProperty":"SALES_NUMBER"}'/>
                       </table:customData>
                       <table:label>
-                        <Label id="LABEL_MOVE_D_NO" text="{pch>INV34_MOVE_D_NO}"/>
+                        <Label id="LABEL_PCH10_SALES_NUMBER" text="{pch>PCH10_SALES_NUMBER}"/>
                       </table:label>
                       <table:template>
-
-                        <smartfield:SmartField id="TEMP_MOVE_D_NO" value="{MOVE_D_NO}" editable="false"></smartfield:SmartField>
+                        <smartfield:SmartField id="TEMP_PCH10_SALES_NUMBER" value="{SALES_NUMBER}" editable="false"></smartfield:SmartField>
                       </table:template>
                     </table:Column>
 
-
-                    <table:Column id="UPN_NO" visible="true" autoResizable="true" sortProperty="UPN_NO" filterProperty="UPN_NO" width="8em">
+                    <table:Column id="PCH10_QUO_VERSION" visible="true" autoResizable="true" sortProperty="QUO_VERSION" filterProperty="QUO_VERSION" width="5em">
                       <table:customData>
-                        <core:CustomData key="p13nData" value='\{"columnKey":"UPN_NO", "leadingProperty":"UPN_NO"}'/>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"QUO_VERSION", "leadingProperty":"QUO_VERSION"}'/>
                       </table:customData>
                       <table:label>
-                        <Label id="LABEL_UPN_NO" text="{pch>INV34_UPN_NO}"/>
+                        <Label id="LABEL_PCH10_QUO_VERSION" text="{pch>PCH10_QUO_VERSION}"/>
                       </table:label>
                       <table:template>
-
-                        <smartfield:SmartField id="TEMP_UPN_NO" value="{UPN_NO}" editable="false"></smartfield:SmartField>
+                        <smartfield:SmartField id="TEMP_PCH10_QUO_VERSION" value="{QUO_VERSION}" editable="false"></smartfield:SmartField>
                       </table:template>
                     </table:Column>
 
-
-                    <table:Column id="MAT_ID" visible="true" autoResizable="true" sortProperty="MAT_ID" filterProperty="MAT_ID" width="8em">
+                    <table:Column id="PCH10_SALES_D_NO" visible="true" autoResizable="true" sortProperty="SALES_D_NO" filterProperty="SALES_D_NO" width="5em">
                       <table:customData>
-                        <core:CustomData key="p13nData" value='\{"columnKey":"MAT_ID", "leadingProperty":"MAT_ID"}'/>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"SALES_D_NO", "leadingProperty":"SALES_D_NO"}'/>
                       </table:customData>
                       <table:label>
-                        <Label id="LABEL_MAT_ID" text="{pch>INV34_MAT_ID}"/>
+                        <Label id="LABEL_PCH10_SALES_D_NO" text="{pch>PCH10_SALES_D_NO}"/>
                       </table:label>
                       <table:template>
-
-                        <smartfield:SmartField id="TEMP_MAT_ID" value="{MAT_ID}" editable="false" enabled="false"></smartfield:SmartField>
+                        <smartfield:SmartField id="TEMP_PCH10_SALES_D_NO" value="{SALES_D_NO}" editable="false"></smartfield:SmartField>
                       </table:template>
                     </table:Column>
 
-
-                    <table:Column id="MAT_NAME" visible="true" autoResizable="true" sortProperty="TO_MAT/MAT_NAME" filterProperty="TO_MAT/MAT_NAME" width="8em">
+                    <table:Column id="PCH10_SAP_MAT_ID" visible="true" autoResizable="true" sortProperty="SAP_MAT_ID" filterProperty="SAP_MAT_ID" width="5em">
                       <table:customData>
-                        <core:CustomData key="p13nData" value='\{"columnKey":"TO_MAT/MAT_NAME", "leadingProperty":"TO_MAT/MAT_NAME"}'/>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"SAP_MAT_ID", "leadingProperty":"SAP_MAT_ID"}'/>
                       </table:customData>
                       <table:label>
-                        <Label id="LABEL_MAT_NAME" text="{pch>INV34_MAT_NAME}"/>
+                        <Label id="LABEL_PCH10_SAP_MAT_ID" text="{pch>PCH10_SAP_MAT_ID}"/>
                       </table:label>
                       <table:template>
-
-                        <smartfield:SmartField id="TEMP_MAT_NAME" value="{TO_MAT/MAT_NAME}" editable="false" enabled="false"></smartfield:SmartField>
+                        <smartfield:SmartField id="TEMP_PCH10_SAP_MAT_ID" value="{SAP_MAT_ID}" editable="false"></smartfield:SmartField>
                       </table:template>
                     </table:Column>
 
-
-                    <table:Column id="MOVE_QTY" visible="true" autoResizable="true" sortProperty="MOVE_QTY" filterProperty="MOVE_QTY" width="10em">
+                    <table:Column id="PCH10_QUO_NUMBER" visible="true" autoResizable="true" sortProperty="QUO_NUMBER" filterProperty="QUO_NUMBER" width="5em">
                       <table:customData>
-                        <core:CustomData key="p13nData" value='\{"columnKey":"MOVE_QTY", "leadingProperty":"MOVE_QTY"}'/>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"QUO_NUMBER", "leadingProperty":"QUO_NUMBER"}'/>
                       </table:customData>
                       <table:label>
-                        <Label id="LABEL_MOVE_QTY" text="{pch>INV34_MOVE_QTY}"/>
+                        <Label id="LABEL_PCH10_QUO_NUMBER" text="{pch>PCH10_QUO_NUMBER}"/>
                       </table:label>
                       <table:template>
-
-                        <smartfield:SmartField id="TEMP_MOVE_QTY" value="{MOVE_QTY}" editable="false" enabled="false"></smartfield:SmartField>
+                        <smartfield:SmartField id="TEMP_PCH10_QUO_NUMBER" value="{QUO_NUMBER}" editable="false"></smartfield:SmartField>
                       </table:template>
                     </table:Column>
 
-
-                    <table:Column id="UPN_UNIT" visible="true" autoResizable="true" sortProperty="TO_UPN/UPN_UNIT" filterProperty="TO_UPN/UPN_UNIT" width="8em">
+                    <table:Column id="PCH10_QUO_ITEM" visible="true" autoResizable="true" sortProperty="QUO_ITEM" filterProperty="QUO_ITEM" width="5em">
                       <table:customData>
-                        <core:CustomData key="p13nData" value='\{"columnKey":"TO_UPN/UPN_UNIT", "leadingProperty":"TO_UPN/UPN_UNIT"}'/>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"QUO_ITEM", "leadingProperty":"QUO_ITEM"}'/>
                       </table:customData>
                       <table:label>
-                        <Label id="LABEL_UPN_UNIT" text="{pch>INV34_UPN_UNIT}"/>
+                        <Label id="LABEL_PCH10_QUO_ITEM" text="{pch>PCH10_QUO_ITEM}"/>
                       </table:label>
                       <table:template>
-
-                        <smartfield:SmartField id="TEMP_UPN_UNIT" value="{TO_UPN/UPN_UNIT}" editable="false"  enabled="false"></smartfield:SmartField>
+                        <smartfield:SmartField id="TEMP_PCH10_QUO_ITEM" value="{QUO_ITEM}" editable="false"></smartfield:SmartField>
                       </table:template>
                     </table:Column>
 
-                    <table:Column id="LOC_ID_F" visible="true" autoResizable="true" sortProperty="LOC_ID_F" filterProperty="LOC_ID_F" width="15em">
+                    <table:Column id="PCH10_NO" visible="true" autoResizable="true" sortProperty="NO" filterProperty="NO" width="5em">
                       <table:customData>
-                        <core:CustomData key="p13nData" value='\{"columnKey":"LOC_ID_F", "leadingProperty":"LOC_ID_F"}'/>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"NO", "leadingProperty":"NO"}'/>
                       </table:customData>
                       <table:label>
-                        <Label id="LABEL_LOC_ID_F" text="{pch>INV34_LOC_ID_F}"/>
+                        <Label id="LABEL_PCH10_NO" text="{pch>PCH10_NO}"/>
                       </table:label>
                       <table:template>
-
-                        <smartfield:SmartField id="TEMP_LOC_ID_F" value="{LOC_ID_F}" editable="false" enabled="false"></smartfield:SmartField>
+                        <smartfield:SmartField id="TEMP_PCH10_NO" value="{NO}" editable="false"></smartfield:SmartField>
                       </table:template>
                     </table:Column>
 
-                    <table:Column id="LOC_NAME_F" visible="true" autoResizable="true" sortProperty="TO_LOC_F/LOC_NAME" filterProperty="TO_LOC_F/LOC_NAME" width="15em">
+                    <table:Column id="PCH10_REFRENCE_NO" visible="true" autoResizable="true" sortProperty="REFRENCE_NO" filterProperty="REFRENCE_NO" width="5em">
                       <table:customData>
-                        <core:CustomData key="p13nData" value='\{"columnKey":"TO_LOC_F/LOC_NAME", "leadingProperty":"TO_LOC_F/LOC_NAME"}'/>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"REFRENCE_NO", "leadingProperty":"REFRENCE_NO"}'/>
                       </table:customData>
                       <table:label>
-                        <Label id="LABEL_LOC_NAME_F" text="{pch>INV34_LOC_NAME_F}"/>
+                        <Label id="LABEL_PCH10_REFRENCE_NO" text="{pch>PCH10_REFRENCE_NO}"/>
                       </table:label>
                       <table:template>
-
-                        <smartfield:SmartField id="TEMP_LOC_NAME_F" value="{TO_LOC_F/LOC_NAME}" editable="false" enabled="false"></smartfield:SmartField>
+                        <smartfield:SmartField id="TEMP_PCH10_REFRENCE_NO" value="{REFRENCE_NO}" editable="false"></smartfield:SmartField>
                       </table:template>
                     </table:Column>
 
-
-                    <table:Column id="SHELF_ID_F" visible="true" autoResizable="true" sortProperty="SHELF_ID_F" filterProperty="SHELF_ID_F" width="10em">
+                    <table:Column id="PCH10_MATERIAL_NUMBER" visible="true" autoResizable="true" sortProperty="MATERIAL_NUMBER" filterProperty="MATERIAL_NUMBER" width="5em">
                       <table:customData>
-                        <core:CustomData key="p13nData" value='\{"columnKey":"SHELF_ID_F", "leadingProperty":"SHELF_ID_F"}'/>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"MATERIAL_NUMBER", "leadingProperty":"MATERIAL_NUMBER"}'/>
                       </table:customData>
                       <table:label>
-                        <Label id="LABEL_SHELF_ID_F" text="{pch>INV34_SHELF_ID_F}"/>
+                        <Label id="LABEL_PCH10_MATERIAL_NUMBER" text="{pch>PCH10_MATERIAL_NUMBER}"/>
                       </table:label>
                       <table:template>
-
-                        <smartfield:SmartField id="TEMP_SHELF_ID_F" value="{SHELF_ID_F}" editable="false" enabled="false"></smartfield:SmartField>
+                        <smartfield:SmartField id="TEMP_PCH10_MATERIAL_NUMBER" value="{MATERIAL_NUMBER}" editable="false"></smartfield:SmartField>
                       </table:template>
                     </table:Column>
 
-
-                    <table:Column id="LOC_ID_T" visible="true" autoResizable="true" sortProperty="LOC_ID_T" filterProperty="LOC_ID_T" width="8em">
+                    <table:Column id="PCH10_CUST_MATERIAL" visible="true" autoResizable="true" sortProperty="CUST_MATERIAL" filterProperty="CUST_MATERIAL" width="5em">
                       <table:customData>
-                        <core:CustomData key="p13nData" value='\{"columnKey":"LOC_ID_T", "leadingProperty":"LOC_ID_T"}'/>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"CUST_MATERIAL", "leadingProperty":"CUST_MATERIAL"}'/>
                       </table:customData>
                       <table:label>
-                        <Label id="LABEL_LOC_ID_T" text="{pch>INV34_LOC_ID_T}"/>
+                        <Label id="LABEL_PCH10_CUST_MATERIAL" text="{pch>PCH10_CUST_MATERIAL}"/>
                       </table:label>
                       <table:template>
-
-                        <smartfield:SmartField id="TEMP_LOC_ID_T" value="{LOC_ID_T}" editable="false" enabled="false"></smartfield:SmartField>
+                        <smartfield:SmartField id="TEMP_PCH10_CUST_MATERIAL" value="{CUST_MATERIAL}" editable="false"></smartfield:SmartField>
                       </table:template>
                     </table:Column>
 
-                    <table:Column id="LOC_NAME_T" visible="true" autoResizable="true" sortProperty="TO_LOC_T/LOC_NAME" filterProperty="TO_LOC_T/LOC_NAME" width="15em">
+                    <table:Column id="PCH10_MANUFACT_MATERIAL" visible="true" autoResizable="true" sortProperty="MANUFACT_MATERIAL" filterProperty="MANUFACT_MATERIAL" width="5em">
                       <table:customData>
-                        <core:CustomData key="p13nData" value='\{"columnKey":"TO_LOC_T/LOC_NAME", "leadingProperty":"TO_LOC_T/LOC_NAME"}'/>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"MANUFACT_MATERIAL", "leadingProperty":"MANUFACT_MATERIAL"}'/>
                       </table:customData>
                       <table:label>
-                        <Label id="LABEL_TO_LOC_T" text="{pch>INV34_LOC_NAME_T}"/>
+                        <Label id="LABEL_PCH10_MANUFACT_MATERIAL" text="{pch>PCH10_MANUFACT_MATERIAL}"/>
                       </table:label>
                       <table:template>
-
-                        <smartfield:SmartField id="TEMP_LOC_NAME_T" value="{TO_LOC_T/LOC_NAME}" editable="false" enabled="false"></smartfield:SmartField>
+                        <smartfield:SmartField id="TEMP_PCH10_MANUFACT_MATERIAL" value="{MANUFACT_MATERIAL}" editable="false"></smartfield:SmartField>
                       </table:template>
                     </table:Column>
 
-                    <table:Column id="SHELF_ID_T" visible="true" autoResizable="true" sortProperty="SHELF_ID_T" filterProperty="SHELF_ID_T" width="8em">
+                    <table:Column id="PCH10_Attachment" visible="true" autoResizable="true" sortProperty="Attachment" filterProperty="Attachment" width="5em">
                       <table:customData>
-                        <core:CustomData key="p13nData" value='\{"columnKey":"SHELF_ID_T", "leadingProperty":"SHELF_ID_T"}'/>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"Attachment", "leadingProperty":"Attachment"}'/>
                       </table:customData>
                       <table:label>
-                        <Label id="LABEL_SHELF_ID_T" text="{pch>INV34_SHELF_ID_T}"/>
+                        <Label id="LABEL_PCH10_Attachment" text="{pch>PCH10_Attachment}"/>
                       </table:label>
                       <table:template>
-
-                        <smartfield:SmartField id="TEMP_SHELF_ID_T" value="{SHELF_ID_T}" editable="false" enabled="false"></smartfield:SmartField>
+                        <smartfield:SmartField id="TEMP_PCH10_Attachment" value="{Attachment}" editable="false"></smartfield:SmartField>
                       </table:template>
                     </table:Column>
 
-                    <table:Column id="POST_STATUS" visible="true" autoResizable="true" sortProperty="POST_STATUS" filterProperty="POST_STATUS" width="10em">
+                    <table:Column id="PCH10_Material" visible="true" autoResizable="true" sortProperty="Material" filterProperty="Material" width="5em">
                       <table:customData>
-                        <core:CustomData key="p13nData" value='\{"columnKey":"POST_STATUS", "leadingProperty":"POST_STATUS"}'/>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"Material", "leadingProperty":"Material"}'/>
                       </table:customData>
                       <table:label>
-                        <Label id="LABEL_POST_STATUS" text="{pch>INV34_POST_STATUS}"/>
+                        <Label id="LABEL_PCH10_Material" text="{pch>PCH10_Material}"/>
                       </table:label>
                       <table:template>
-
-                        <smartfield:SmartField id="TEMP_POST_STATUS" value="{POST_STATUS}" editable="false" enabled="false"></smartfield:SmartField>
+                        <smartfield:SmartField id="TEMP_PCH10_Material" value="{Material}" editable="false"></smartfield:SmartField>
                       </table:template>
                     </table:Column>
 
-                    <table:Column id="POST_ACCOUNT_DATE" visible="true" autoResizable="true" sortProperty="POST_ACCOUNT_DATE" filterProperty="POST_ACCOUNT_DATE" width="10em">
+                    <table:Column id="PCH10_MAKER" visible="true" autoResizable="true" sortProperty="MAKER" filterProperty="MAKER" width="5em">
                       <table:customData>
-                        <core:CustomData key="p13nData" value='\{"columnKey":"POST_ACCOUNT_DATE", "leadingProperty":"POST_ACCOUNT_DATE"}'/>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"MAKER", "leadingProperty":"MAKER"}'/>
                       </table:customData>
                       <table:label>
-                        <Label id="LABEL_POST_ACCOUNT_DATE" text="{pch>INV34_POST_ACCOUNT_DATE}"/>
+                        <Label id="LABEL_PCH10_MAKER" text="{pch>PCH10_MAKER}"/>
                       </table:label>
                       <table:template>
-                        <DatePicker id="TEMP_POST_ACCOUNT_DATE" value="{'path':'POST_ACCOUNT_DATE','type':'sap.ui.model.type.Date','formatOptions': {'pattern': 'yyyy-MM-dd'}}" editable="true" />
+                        <smartfield:SmartField id="TEMP_PCH10_MAKER" value="{MAKER}" editable="false"></smartfield:SmartField>
                       </table:template>
                     </table:Column>
 
-
-                    <table:Column id="CANCEL_ACCOUNT_DATE" visible="true" autoResizable="true" sortProperty="CANCEL_ACCOUNT_DATE" filterProperty="CANCEL_ACCOUNT_DATE" width="10em">
+                    <table:Column id="PCH10_UWEB_USER" visible="true" autoResizable="true" sortProperty="UWEB_USER" filterProperty="UWEB_USER" width="5em">
                       <table:customData>
-                        <core:CustomData key="p13nData" value='\{"columnKey":"CANCEL_ACCOUNT_DATE", "leadingProperty":"CANCEL_ACCOUNT_DATE"}'/>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"UWEB_USER", "leadingProperty":"UWEB_USER"}'/>
                       </table:customData>
                       <table:label>
-                        <Label id="LABEL_CANCEL_ACCOUNT_DATE" text="{pch>INV34_CANCEL_ACCOUNT_DATE}"/>
+                        <Label id="LABEL_PCH10_UWEB_USER" text="{pch>PCH10_UWEB_USER}"/>
                       </table:label>
                       <table:template>
-                        <DatePicker id="TEMP_CANCEL_ACCOUNT_DATE" value="{'path':'CANCEL_ACCOUNT_DATE','type':'sap.ui.model.type.Date','formatOptions': {'pattern': 'yyyy-MM-dd'}}" editable="true" />
+                        <smartfield:SmartField id="TEMP_PCH10_UWEB_USER" value="{UWEB_USER}" editable="false"></smartfield:SmartField>
                       </table:template>
                     </table:Column>
 
-
-
-                    <table:Column id="POST_HISTORY" visible="true" autoResizable="true" width="10em">
-
-                      <table:label>
-                        <Label id="LABEL_POST_HISTORY" text="{pch>INV34_POST_HISTORY}"/>
-                      </table:label>
-                      <table:template>
-                        <Button id="_IDGenButGR_TO_POST_HISTORY" text="{pch>INV34_POST_HISTORY}" press="onPostLogPopPress" ariaDescribedBy="defaultButtonDescription genericButtonDescription"/>
-
-                      </table:template>
-                    </table:Column>
-
-
-                    <table:Column id="MOVE_OUT_BY" visible="true" autoResizable="true" sortProperty="MOVE_OUT_BY" filterProperty="MOVE_OUT_BY" width="10em">
+                    <table:Column id="PCH10_BP_NUMBER" visible="true" autoResizable="true" sortProperty="BP_NUMBER" filterProperty="BP_NUMBER" width="5em">
                       <table:customData>
-                        <core:CustomData key="p13nData" value='\{"columnKey":"MOVE_OUT_BY", "leadingProperty":"MOVE_OUT_BY"}'/>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"BP_NUMBER", "leadingProperty":"BP_NUMBER"}'/>
                       </table:customData>
                       <table:label>
-                        <Label id="LABEL_D__MOVE_OUT_BY" text="{pch>INV34_MOVE_OUT_BY}"/>
+                        <Label id="LABEL_PCH10_BP_NUMBER" text="{pch>PCH10_BP_NUMBER}"/>
                       </table:label>
                       <table:template>
-
-                        <smartfield:SmartField id="TEMP_MOVE_OUT_BY" value="{MOVE_OUT_BY}" editable="false"></smartfield:SmartField>
+                        <smartfield:SmartField id="TEMP_PCH10_BP_NUMBER" value="{BP_NUMBER}" editable="false"></smartfield:SmartField>
                       </table:template>
                     </table:Column>
+
+                    <table:Column id="PCH10_PERSON_NO1" visible="true" autoResizable="true" sortProperty="PERSON_NO1" filterProperty="PERSON_NO1" width="5em">
+                      <table:customData>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"PERSON_NO1", "leadingProperty":"PERSON_NO1"}'/>
+                      </table:customData>
+                      <table:label>
+                        <Label id="LABEL_PCH10_PERSON_NO1" text="{pch>PCH10_PERSON_NO1}"/>
+                      </table:label>
+                      <table:template>
+                        <smartfield:SmartField id="TEMP_PCH10_PERSON_NO1" value="{PERSON_NO1}" editable="false"></smartfield:SmartField>
+                      </table:template>
+                    </table:Column>
+
+                    <table:Column id="PCH10_PERSON_NO2" visible="true" autoResizable="true" sortProperty="PERSON_NO2" filterProperty="PERSON_NO2" width="5em">
+                      <table:customData>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"PERSON_NO2", "leadingProperty":"PERSON_NO2"}'/>
+                      </table:customData>
+                      <table:label>
+                        <Label id="LABEL_PCH10_PERSON_NO2" text="{pch>PCH10_PERSON_NO2}"/>
+                      </table:label>
+                      <table:template>
+                        <smartfield:SmartField id="TEMP_PCH10_PERSON_NO2" value="{PERSON_NO2}" editable="false"></smartfield:SmartField>
+                      </table:template>
+                    </table:Column>
+
+                    <table:Column id="PCH10_PERSON_NO3" visible="true" autoResizable="true" sortProperty="PERSON_NO3" filterProperty="PERSON_NO3" width="5em">
+                      <table:customData>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"PERSON_NO3", "leadingProperty":"PERSON_NO3"}'/>
+                      </table:customData>
+                      <table:label>
+                        <Label id="LABEL_PCH10_PERSON_NO3" text="{pch>PCH10_PERSON_NO3}"/>
+                      </table:label>
+                      <table:template>
+                        <smartfield:SmartField id="TEMP_PCH10_PERSON_NO3" value="{PERSON_NO3}" editable="false"></smartfield:SmartField>
+                      </table:template>
+                    </table:Column>
+
+                    <table:Column id="PCH10_PERSON_NO4" visible="true" autoResizable="true" sortProperty="PERSON_NO4" filterProperty="PERSON_NO4" width="5em">
+                      <table:customData>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"PERSON_NO4", "leadingProperty":"PERSON_NO4"}'/>
+                      </table:customData>
+                      <table:label>
+                        <Label id="LABEL_PCH10_PERSON_NO4" text="{pch>PCH10_PERSON_NO4}"/>
+                      </table:label>
+                      <table:template>
+                        <smartfield:SmartField id="TEMP_PCH10_PERSON_NO4" value="{PERSON_NO4}" editable="false"></smartfield:SmartField>
+                      </table:template>
+                    </table:Column>
+
+                    <table:Column id="PCH10_PERSON_NO5" visible="true" autoResizable="true" sortProperty="PERSON_NO5" filterProperty="PERSON_NO5" width="5em">
+                      <table:customData>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"PERSON_NO5", "leadingProperty":"PERSON_NO5"}'/>
+                      </table:customData>
+                      <table:label>
+                        <Label id="LABEL_PCH10_PERSON_NO5" text="{pch>PCH10_PERSON_NO5}"/>
+                      </table:label>
+                      <table:template>
+                        <smartfield:SmartField id="TEMP_PCH10_PERSON_NO5" value="{PERSON_NO5}" editable="false"></smartfield:SmartField>
+                      </table:template>
+                    </table:Column>
+
+                    <table:Column id="PCH10_YLP" visible="true" autoResizable="true" sortProperty="YLP" filterProperty="YLP" width="5em">
+                      <table:customData>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"YLP", "leadingProperty":"YLP"}'/>
+                      </table:customData>
+                      <table:label>
+                        <Label id="LABEL_PCH10_YLP" text="{pch>PCH10_YLP}"/>
+                      </table:label>
+                      <table:template>
+                        <smartfield:SmartField id="TEMP_PCH10_YLP" value="{YLP}" editable="false"></smartfield:SmartField>
+                      </table:template>
+                    </table:Column>
+
+                    <table:Column id="PCH10_MANUL" visible="true" autoResizable="true" sortProperty="MANUL" filterProperty="MANUL" width="5em">
+                      <table:customData>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"MANUL", "leadingProperty":"MANUL"}'/>
+                      </table:customData>
+                      <table:label>
+                        <Label id="LABEL_PCH10_MANUL" text="{pch>PCH10_MANUL}"/>
+                      </table:label>
+                      <table:template>
+                        <smartfield:SmartField id="TEMP_PCH10_MANUL" value="{MANUL}" editable="false"></smartfield:SmartField>
+                      </table:template>
+                    </table:Column>
+
+                    <table:Column id="PCH10_MANUFACT_CODE" visible="true" autoResizable="true" sortProperty="MANUFACT_CODE" filterProperty="MANUFACT_CODE" width="5em">
+                      <table:customData>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"MANUFACT_CODE", "leadingProperty":"MANUFACT_CODE"}'/>
+                      </table:customData>
+                      <table:label>
+                        <Label id="LABEL_PCH10_MANUFACT_CODE" text="{pch>PCH10_MANUFACT_CODE}"/>
+                      </table:label>
+                      <table:template>
+                        <smartfield:SmartField id="TEMP_PCH10_MANUFACT_CODE" value="{MANUFACT_CODE}" editable="false"></smartfield:SmartField>
+                      </table:template>
+                    </table:Column>
+
+                    <table:Column id="PCH10_CUSTOMER_MMODEL" visible="true" autoResizable="true" sortProperty="CUSTOMER_MMODEL" filterProperty="CUSTOMER_MMODEL" width="5em">
+                      <table:customData>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"CUSTOMER_MMODEL", "leadingProperty":"CUSTOMER_MMODEL"}'/>
+                      </table:customData>
+                      <table:label>
+                        <Label id="LABEL_PCH10_CUSTOMER_MMODEL" text="{pch>PCH10_CUSTOMER_MMODEL}"/>
+                      </table:label>
+                      <table:template>
+                        <smartfield:SmartField id="TEMP_PCH10_CUSTOMER_MMODEL" value="{CUSTOMER_MMODEL}" editable="false"></smartfield:SmartField>
+                      </table:template>
+                    </table:Column>
+
+                    <table:Column id="PCH10_MID_QF" visible="true" autoResizable="true" sortProperty="MID_QF" filterProperty="MID_QF" width="5em">
+                      <table:customData>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"MID_QF", "leadingProperty":"MID_QF"}'/>
+                      </table:customData>
+                      <table:label>
+                        <Label id="LABEL_PCH10_MID_QF" text="{pch>PCH10_MID_QF}"/>
+                      </table:label>
+                      <table:template>
+                        <smartfield:SmartField id="TEMP_PCH10_MID_QF" value="{MID_QF}" editable="false"></smartfield:SmartField>
+                      </table:template>
+                    </table:Column>
+
+                    <table:Column id="PCH10_SMALL_QF" visible="true" autoResizable="true" sortProperty="SMALL_QF" filterProperty="SMALL_QF" width="5em">
+                      <table:customData>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"SMALL_QF", "leadingProperty":"SMALL_QF"}'/>
+                      </table:customData>
+                      <table:label>
+                        <Label id="LABEL_PCH10_SMALL_QF" text="{pch>PCH10_SMALL_QF}"/>
+                      </table:label>
+                      <table:template>
+                        <smartfield:SmartField id="TEMP_PCH10_SMALL_QF" value="{SMALL_QF}" editable="false"></smartfield:SmartField>
+                      </table:template>
+                    </table:Column>
+
+                    <table:Column id="PCH10_OTHER_QF" visible="true" autoResizable="true" sortProperty="OTHER_QF" filterProperty="OTHER_QF" width="5em">
+                      <table:customData>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"OTHER_QF", "leadingProperty":"OTHER_QF"}'/>
+                      </table:customData>
+                      <table:label>
+                        <Label id="LABEL_PCH10_OTHER_QF" text="{pch>PCH10_OTHER_QF}"/>
+                      </table:label>
+                      <table:template>
+                        <smartfield:SmartField id="TEMP_PCH10_OTHER_QF" value="{OTHER_QF}" editable="false"></smartfield:SmartField>
+                      </table:template>
+                    </table:Column>
+
+                    <table:Column id="PCH10_QTY" visible="true" autoResizable="true" sortProperty="QTY" filterProperty="QTY" width="5em">
+                      <table:customData>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"QTY", "leadingProperty":"QTY"}'/>
+                      </table:customData>
+                      <table:label>
+                        <Label id="LABEL_PCH10_QTY" text="{pch>PCH10_QTY}"/>
+                      </table:label>
+                      <table:template>
+                        <smartfield:SmartField id="TEMP_PCH10_QTY" value="{QTY}" editable="false"></smartfield:SmartField>
+                      </table:template>
+                    </table:Column>
+
+                    <table:Column id="PCH10_CURRENCY" visible="true" autoResizable="true" sortProperty="CURRENCY" filterProperty="CURRENCY" width="5em">
+                      <table:customData>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"CURRENCY", "leadingProperty":"CURRENCY"}'/>
+                      </table:customData>
+                      <table:label>
+                        <Label id="LABEL_PCH10_CURRENCY" text="{pch>PCH10_CURRENCY}"/>
+                      </table:label>
+                      <table:template>
+                        <smartfield:SmartField id="TEMP_PCH10_CURRENCY" value="{CURRENCY}" editable="false"></smartfield:SmartField>
+                      </table:template>
+                    </table:Column>
+
+                    <table:Column id="PCH10_PRICE" visible="true" autoResizable="true" sortProperty="PRICE" filterProperty="PRICE" width="5em">
+                      <table:customData>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"PRICE", "leadingProperty":"PRICE"}'/>
+                      </table:customData>
+                      <table:label>
+                        <Label id="LABEL_PCH10_PRICE" text="{pch>PCH10_PRICE}"/>
+                      </table:label>
+                      <table:template>
+                        <smartfield:SmartField id="TEMP_PCH10_PRICE" value="{PRICE}" editable="false"></smartfield:SmartField>
+                      </table:template>
+                    </table:Column>
+
+                    <table:Column id="PCH10_PRICE_CONTROL" visible="true" autoResizable="true" sortProperty="PRICE_CONTROL" filterProperty="PRICE_CONTROL" width="5em">
+                      <table:customData>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"PRICE_CONTROL", "leadingProperty":"PRICE_CONTROL"}'/>
+                      </table:customData>
+                      <table:label>
+                        <Label id="LABEL_PCH10_PRICE_CONTROL" text="{pch>PCH10_PRICE_CONTROL}"/>
+                      </table:label>
+                      <table:template>
+                        <smartfield:SmartField id="TEMP_PCH10_PRICE_CONTROL" value="{PRICE_CONTROL}" editable="false"></smartfield:SmartField>
+                      </table:template>
+                    </table:Column>
+
+                    <table:Column id="PCH10_LEAD_TIME" visible="true" autoResizable="true" sortProperty="LEAD_TIME" filterProperty="LEAD_TIME" width="5em">
+                      <table:customData>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"LEAD_TIME", "leadingProperty":"LEAD_TIME"}'/>
+                      </table:customData>
+                      <table:label>
+                        <Label id="LABEL_PCH10_LEAD_TIME" text="{pch>PCH10_LEAD_TIME}"/>
+                      </table:label>
+                      <table:template>
+                        <smartfield:SmartField id="TEMP_PCH10_LEAD_TIME" value="{LEAD_TIME}" editable="false"></smartfield:SmartField>
+                      </table:template>
+                    </table:Column>
+
+                    <table:Column id="PCH10_MOQ" visible="true" autoResizable="true" sortProperty="MOQ" filterProperty="MOQ" width="5em">
+                      <table:customData>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"MOQ", "leadingProperty":"MOQ"}'/>
+                      </table:customData>
+                      <table:label>
+                        <Label id="LABEL_PCH10_MOQ" text="{pch>PCH10_MOQ}"/>
+                      </table:label>
+                      <table:template>
+                        <smartfield:SmartField id="TEMP_PCH10_MOQ" value="{MOQ}" editable="false"></smartfield:SmartField>
+                      </table:template>
+                    </table:Column>
+
+                    <table:Column id="PCH10_UNIT" visible="true" autoResizable="true" sortProperty="UNIT" filterProperty="UNIT" width="5em">
+                      <table:customData>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"UNIT", "leadingProperty":"UNIT"}'/>
+                      </table:customData>
+                      <table:label>
+                        <Label id="LABEL_PCH10_UNIT" text="{pch>PCH10_UNIT}"/>
+                      </table:label>
+                      <table:template>
+                        <smartfield:SmartField id="TEMP_PCH10_UNIT" value="{UNIT}" editable="false"></smartfield:SmartField>
+                      </table:template>
+                    </table:Column>
+
+                    <table:Column id="PCH10_SPQ" visible="true" autoResizable="true" sortProperty="SPQ" filterProperty="SPQ" width="5em">
+                      <table:customData>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"SPQ", "leadingProperty":"SPQ"}'/>
+                      </table:customData>
+                      <table:label>
+                        <Label id="LABEL_PCH10_SPQ" text="{pch>PCH10_SPQ}"/>
+                      </table:label>
+                      <table:template>
+                        <smartfield:SmartField id="TEMP_PCH10_SPQ" value="{SPQ}" editable="false"></smartfield:SmartField>
+                      </table:template>
+                    </table:Column>
+
+                    <table:Column id="PCH10_KBXT" visible="true" autoResizable="true" sortProperty="KBXT" filterProperty="KBXT" width="5em">
+                      <table:customData>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"KBXT", "leadingProperty":"KBXT"}'/>
+                      </table:customData>
+                      <table:label>
+                        <Label id="LABEL_PCH10_KBXT" text="{pch>PCH10_KBXT}"/>
+                      </table:label>
+                      <table:template>
+                        <smartfield:SmartField id="TEMP_PCH10_KBXT" value="{KBXT}" editable="false"></smartfield:SmartField>
+                      </table:template>
+                    </table:Column>
+
+                    <table:Column id="PCH10_PRODUCT_WEIGHT" visible="true" autoResizable="true" sortProperty="PRODUCT_WEIGHT" filterProperty="PRODUCT_WEIGHT" width="5em">
+                      <table:customData>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"PRODUCT_WEIGHT", "leadingProperty":"PRODUCT_WEIGHT"}'/>
+                      </table:customData>
+                      <table:label>
+                        <Label id="LABEL_PCH10_PRODUCT_WEIGHT" text="{pch>PCH10_PRODUCT_WEIGHT}"/>
+                      </table:label>
+                      <table:template>
+                        <smartfield:SmartField id="TEMP_PCH10_PRODUCT_WEIGHT" value="{PRODUCT_WEIGHT}" editable="false"></smartfield:SmartField>
+                      </table:template>
+                    </table:Column>
+
+                    <table:Column id="PCH10_ORIGINAL_COU" visible="true" autoResizable="true" sortProperty="ORIGINAL_COU" filterProperty="ORIGINAL_COU" width="5em">
+                      <table:customData>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"ORIGINAL_COU", "leadingProperty":"ORIGINAL_COU"}'/>
+                      </table:customData>
+                      <table:label>
+                        <Label id="LABEL_PCH10_ORIGINAL_COU" text="{pch>PCH10_ORIGINAL_COU}"/>
+                      </table:label>
+                      <table:template>
+                        <smartfield:SmartField id="TEMP_PCH10_ORIGINAL_COU" value="{ORIGINAL_COU}" editable="false"></smartfield:SmartField>
+                      </table:template>
+                    </table:Column>
+
+                    <table:Column id="PCH10_EOL" visible="true" autoResizable="true" sortProperty="EOL" filterProperty="EOL" width="5em">
+                      <table:customData>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"EOL", "leadingProperty":"EOL"}'/>
+                      </table:customData>
+                      <table:label>
+                        <Label id="LABEL_PCH10_EOL" text="{pch>PCH10_EOL}"/>
+                      </table:label>
+                      <table:template>
+                        <smartfield:SmartField id="TEMP_PCH10_EOL" value="{EOL}" editable="false"></smartfield:SmartField>
+                      </table:template>
+                    </table:Column>
+
+                    <table:Column id="PCH10_ISBOI" visible="true" autoResizable="true" sortProperty="ISBOI" filterProperty="ISBOI" width="5em">
+                      <table:customData>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"ISBOI", "leadingProperty":"ISBOI"}'/>
+                      </table:customData>
+                      <table:label>
+                        <Label id="LABEL_PCH10_ISBOI" text="{pch>PCH10_ISBOI}"/>
+                      </table:label>
+                      <table:template>
+                        <smartfield:SmartField id="TEMP_PCH10_ISBOI" value="{ISBOI}" editable="false"></smartfield:SmartField>
+                      </table:template>
+                    </table:Column>
+
+                    <table:Column id="PCH10_Incoterms" visible="true" autoResizable="true" sortProperty="Incoterms" filterProperty="Incoterms" width="5em">
+                      <table:customData>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"Incoterms", "leadingProperty":"Incoterms"}'/>
+                      </table:customData>
+                      <table:label>
+                        <Label id="LABEL_PCH10_Incoterms" text="{pch>PCH10_Incoterms}"/>
+                      </table:label>
+                      <table:template>
+                        <smartfield:SmartField id="TEMP_PCH10_Incoterms" value="{Incoterms}" editable="false"></smartfield:SmartField>
+                      </table:template>
+                    </table:Column>
+
+                    <table:Column id="PCH10_Incoterms_Text" visible="true" autoResizable="true" sortProperty="Incoterms_Text" filterProperty="Incoterms_Text" width="5em">
+                      <table:customData>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"Incoterms_Text", "leadingProperty":"Incoterms_Text"}'/>
+                      </table:customData>
+                      <table:label>
+                        <Label id="LABEL_PCH10_Incoterms_Text" text="{pch>PCH10_Incoterms_Text}"/>
+                      </table:label>
+                      <table:template>
+                        <smartfield:SmartField id="TEMP_PCH10_Incoterms_Text" value="{Incoterms_Text}" editable="false"></smartfield:SmartField>
+                      </table:template>
+                    </table:Column>
+
+                    <table:Column id="PCH10_MEMO1" visible="true" autoResizable="true" sortProperty="MEMO1" filterProperty="MEMO1" width="5em">
+                      <table:customData>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"MEMO1", "leadingProperty":"MEMO1"}'/>
+                      </table:customData>
+                      <table:label>
+                        <Label id="LABEL_PCH10_MEMO1" text="{pch>PCH10_MEMO1}"/>
+                      </table:label>
+                      <table:template>
+                        <smartfield:SmartField id="TEMP_PCH10_MEMO1" value="{MEMO1}" editable="false"></smartfield:SmartField>
+                      </table:template>
+                    </table:Column>
+
+                    <table:Column id="PCH10_MEMO2" visible="true" autoResizable="true" sortProperty="MEMO2" filterProperty="MEMO2" width="5em">
+                      <table:customData>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"MEMO2", "leadingProperty":"MEMO2"}'/>
+                      </table:customData>
+                      <table:label>
+                        <Label id="LABEL_PCH10_MEMO2" text="{pch>PCH10_MEMO2}"/>
+                      </table:label>
+                      <table:template>
+                        <smartfield:SmartField id="TEMP_PCH10_MEMO2" value="{MEMO2}" editable="false"></smartfield:SmartField>
+                      </table:template>
+                    </table:Column>
+
+                    <table:Column id="PCH10_MEMO3" visible="true" autoResizable="true" sortProperty="MEMO3" filterProperty="MEMO3" width="5em">
+                      <table:customData>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"MEMO3", "leadingProperty":"MEMO3"}'/>
+                      </table:customData>
+                      <table:label>
+                        <Label id="LABEL_PCH10_MEMO3" text="{pch>PCH10_MEMO3}"/>
+                      </table:label>
+                      <table:template>
+                        <smartfield:SmartField id="TEMP_PCH10_MEMO3" value="{MEMO3}" editable="false"></smartfield:SmartField>
+                      </table:template>
+                    </table:Column>
+
+                    <table:Column id="PCH10_SL" visible="true" autoResizable="true" sortProperty="SL" filterProperty="SL" width="5em">
+                      <table:customData>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"SL", "leadingProperty":"SL"}'/>
+                      </table:customData>
+                      <table:label>
+                        <Label id="LABEL_PCH10_SL" text="{pch>PCH10_SL}"/>
+                      </table:label>
+                      <table:template>
+                        <smartfield:SmartField id="TEMP_PCH10_SL" value="{SL}" editable="false"></smartfield:SmartField>
+                      </table:template>
+                    </table:Column>
+
+                    <table:Column id="PCH10_TZ" visible="true" autoResizable="true" sortProperty="TZ" filterProperty="TZ" width="5em">
+                      <table:customData>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"TZ", "leadingProperty":"TZ"}'/>
+                      </table:customData>
+                      <table:label>
+                        <Label id="LABEL_PCH10_TZ" text="{pch>PCH10_TZ}"/>
+                      </table:label>
+                      <table:template>
+                        <smartfield:SmartField id="TEMP_PCH10_TZ" value="{TZ}" editable="false"></smartfield:SmartField>
+                      </table:template>
+                    </table:Column>
+
+                    <table:Column id="PCH10_RMATERIAL" visible="true" autoResizable="true" sortProperty="RMATERIAL" filterProperty="RMATERIAL" width="5em">
+                      <table:customData>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"RMATERIAL", "leadingProperty":"RMATERIAL"}'/>
+                      </table:customData>
+                      <table:label>
+                        <Label id="LABEL_PCH10_RMATERIAL" text="{pch>PCH10_RMATERIAL}"/>
+                      </table:label>
+                      <table:template>
+                        <smartfield:SmartField id="TEMP_PCH10_RMATERIAL" value="{RMATERIAL}" editable="false"></smartfield:SmartField>
+                      </table:template>
+                    </table:Column>
+
+                    <table:Column id="PCH10_RMATERIAL_CURRENCY" visible="true" autoResizable="true" sortProperty="RMATERIAL_CURRENCY" filterProperty="RMATERIAL_CURRENCY" width="5em">
+                      <table:customData>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"RMATERIAL_CURRENCY", "leadingProperty":"RMATERIAL_CURRENCY"}'/>
+                      </table:customData>
+                      <table:label>
+                        <Label id="LABEL_PCH10_RMATERIAL_CURRENCY" text="{pch>PCH10_RMATERIAL_CURRENCY}"/>
+                      </table:label>
+                      <table:template>
+                        <smartfield:SmartField id="TEMP_PCH10_RMATERIAL_CURRENCY" value="{RMATERIAL_CURRENCY}" editable="false"></smartfield:SmartField>
+                      </table:template>
+                    </table:Column>
+
+                    <table:Column id="PCH10_RMATERIAL_PRICE" visible="true" autoResizable="true" sortProperty="RMATERIAL_PRICE" filterProperty="RMATERIAL_PRICE" width="5em">
+                      <table:customData>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"RMATERIAL_PRICE", "leadingProperty":"RMATERIAL_PRICE"}'/>
+                      </table:customData>
+                      <table:label>
+                        <Label id="LABEL_PCH10_RMATERIAL_PRICE" text="{pch>PCH10_RMATERIAL_PRICE}"/>
+                      </table:label>
+                      <table:template>
+                        <smartfield:SmartField id="TEMP_PCH10_RMATERIAL_PRICE" value="{RMATERIAL_PRICE}" editable="false"></smartfield:SmartField>
+                      </table:template>
+                    </table:Column>
+
+                    <table:Column id="PCH10_RMATERIAL_LT" visible="true" autoResizable="true" sortProperty="RMATERIAL_LT" filterProperty="RMATERIAL_LT" width="5em">
+                      <table:customData>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"RMATERIAL_LT", "leadingProperty":"RMATERIAL_LT"}'/>
+                      </table:customData>
+                      <table:label>
+                        <Label id="LABEL_PCH10_RMATERIAL_LT" text="{pch>PCH10_RMATERIAL_LT}"/>
+                      </table:label>
+                      <table:template>
+                        <smartfield:SmartField id="TEMP_PCH10_RMATERIAL_LT" value="{RMATERIAL_LT}" editable="false"></smartfield:SmartField>
+                      </table:template>
+                    </table:Column>
+
+                    <table:Column id="PCH10_RMATERIAL_MOQ" visible="true" autoResizable="true" sortProperty="RMATERIAL_MOQ" filterProperty="RMATERIAL_MOQ" width="5em">
+                      <table:customData>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"RMATERIAL_MOQ", "leadingProperty":"RMATERIAL_MOQ"}'/>
+                      </table:customData>
+                      <table:label>
+                        <Label id="LABEL_PCH10_RMATERIAL_MOQ" text="{pch>PCH10_RMATERIAL_MOQ}"/>
+                      </table:label>
+                      <table:template>
+                        <smartfield:SmartField id="TEMP_PCH10_RMATERIAL_MOQ" value="{RMATERIAL_MOQ}" editable="false"></smartfield:SmartField>
+                      </table:template>
+                    </table:Column>
+
+                    <table:Column id="PCH10_RMATERIAL_KBXT" visible="true" autoResizable="true" sortProperty="RMATERIAL_KBXT" filterProperty="RMATERIAL_KBXT" width="5em">
+                      <table:customData>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"RMATERIAL_KBXT", "leadingProperty":"RMATERIAL_KBXT"}'/>
+                      </table:customData>
+                      <table:label>
+                        <Label id="LABEL_PCH10_RMATERIAL_KBXT" text="{pch>PCH10_RMATERIAL_KBXT}"/>
+                      </table:label>
+                      <table:template>
+                        <smartfield:SmartField id="TEMP_PCH10_RMATERIAL_KBXT" value="{RMATERIAL_KBXT}" editable="false"></smartfield:SmartField>
+                      </table:template>
+                    </table:Column>
+
+                    <table:Column id="PCH10_UMC_SELECTION" visible="true" autoResizable="true" sortProperty="UMC_SELECTION" filterProperty="UMC_SELECTION" width="5em">
+                      <table:customData>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"UMC_SELECTION", "leadingProperty":"UMC_SELECTION"}'/>
+                      </table:customData>
+                      <table:label>
+                        <Label id="LABEL_PCH10_UMC_SELECTION" text="{pch>PCH10_UMC_SELECTION}"/>
+                      </table:label>
+                      <table:template>
+                        <smartfield:SmartField id="TEMP_PCH10_UMC_SELECTION" value="{UMC_SELECTION}" editable="false"></smartfield:SmartField>
+                      </table:template>
+                    </table:Column>
+
+                    <table:Column id="PCH10_UMC_COMMENT_1" visible="true" autoResizable="true" sortProperty="UMC_COMMENT_1" filterProperty="UMC_COMMENT_1" width="5em">
+                      <table:customData>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"UMC_COMMENT_1", "leadingProperty":"UMC_COMMENT_1"}'/>
+                      </table:customData>
+                      <table:label>
+                        <Label id="LABEL_PCH10_UMC_COMMENT_1" text="{pch>PCH10_UMC_COMMENT_1}"/>
+                      </table:label>
+                      <table:template>
+                        <smartfield:SmartField id="TEMP_PCH10_UMC_COMMENT_1" value="{UMC_COMMENT_1}" editable="false"></smartfield:SmartField>
+                      </table:template>
+                    </table:Column>
+
+                    <table:Column id="PCH10_UMC_COMMENT_2" visible="true" autoResizable="true" sortProperty="UMC_COMMENT_2" filterProperty="UMC_COMMENT_2" width="5em">
+                      <table:customData>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"UMC_COMMENT_2", "leadingProperty":"UMC_COMMENT_2"}'/>
+                      </table:customData>
+                      <table:label>
+                        <Label id="LABEL_PCH10_UMC_COMMENT_2" text="{pch>PCH10_UMC_COMMENT_2}"/>
+                      </table:label>
+                      <table:template>
+                        <smartfield:SmartField id="TEMP_PCH10_UMC_COMMENT_2" value="{UMC_COMMENT_2}" editable="false"></smartfield:SmartField>
+                      </table:template>
+                    </table:Column>
+
+                    <table:Column id="PCH10_FINAL_CHOICE" visible="true" autoResizable="true" sortProperty="FINAL_CHOICE" filterProperty="FINAL_CHOICE" width="5em">
+                      <table:customData>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"FINAL_CHOICE", "leadingProperty":"FINAL_CHOICE"}'/>
+                      </table:customData>
+                      <table:label>
+                        <Label id="LABEL_PCH10_FINAL_CHOICE" text="{pch>PCH10_FINAL_CHOICE}"/>
+                      </table:label>
+                      <table:template>
+                        <smartfield:SmartField id="TEMP_PCH10_FINAL_CHOICE" value="{FINAL_CHOICE}" editable="false"></smartfield:SmartField>
+                      </table:template>
+                    </table:Column>
+
+                    <table:Column id="PCH10_STATUS" visible="true" autoResizable="true" sortProperty="STATUS" filterProperty="STATUS" width="5em">
+                      <table:customData>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"STATUS", "leadingProperty":"STATUS"}'/>
+                      </table:customData>
+                      <table:label>
+                        <Label id="LABEL_PCH10_STATUS" text="{pch>PCH10_STATUS}"/>
+                      </table:label>
+                      <table:template>
+                        <smartfield:SmartField id="TEMP_PCH10_STATUS" value="{STATUS}" editable="false"></smartfield:SmartField>
+                      </table:template>
+                    </table:Column>
+
+                    <table:Column id="PCH10_INITIAL_OBJ" visible="true" autoResizable="true" sortProperty="INITIAL_OBJ" filterProperty="INITIAL_OBJ" width="5em">
+                      <table:customData>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"INITIAL_OBJ", "leadingProperty":"INITIAL_OBJ"}'/>
+                      </table:customData>
+                      <table:label>
+                        <Label id="LABEL_PCH10_INITIAL_OBJ" text="{pch>PCH10_INITIAL_OBJ}"/>
+                      </table:label>
+                      <table:template>
+                        <smartfield:SmartField id="TEMP_PCH10_INITIAL_OBJ" value="{INITIAL_OBJ}" editable="false"></smartfield:SmartField>
+                      </table:template>
+                    </table:Column>
+
+
+
+
+
+
                     
-
-                    <table:Column id="MOVE_OUT_TIME" visible="true" autoResizable="true" sortProperty="MOVE_OUT_TIME" filterProperty="MOVE_OUT_TIME" width="12em">
-                      <table:customData>
-                        <core:CustomData key="p13nData" value='\{"columnKey":"MOVE_OUT_TIME", "leadingProperty":"MOVE_OUT_TIME"}'/>
-                      </table:customData>
-                      <table:label>
-                        <Label id="LABEL_D__MOVE_OUT_TIME" text="{pch>INV34_MOVE_OUT_TIME}"/>
-                      </table:label>
-                      <table:template>
-
-                        <smartfield:SmartField id="TEMP_MOVE_OUT_TIME" value="{MOVE_OUT_TIME}" editable="false"></smartfield:SmartField>
-                      </table:template>
-                    </table:Column>
-
-
-                    <table:Column id="MOVE_IN__BY" visible="true" autoResizable="true" sortProperty="MOVE_IN__BY" filterProperty="MOVE_IN__BY" width="10em">
-                      <table:customData>
-                        <core:CustomData key="p13nData" value='\{"columnKey":"MOVE_IN__BY", "leadingProperty":"MOVE_IN__BY"}'/>
-                      </table:customData>
-                      <table:label>
-                        <Label id="LABEL_D__MOVE_IN__BY" text="{pch>INV34_MOVE_IN__BY}"/>
-                      </table:label>
-                      <table:template>
-
-                        <smartfield:SmartField id="TEMP_MOVE_IN__BY" value="{MOVE_IN__BY}" editable="false"></smartfield:SmartField>
-                      </table:template>
-                    </table:Column>
-
-
-                    <table:Column id="MOVE_IN_TIME" visible="true" autoResizable="true" sortProperty="MOVE_IN_TIME" filterProperty="MOVE_IN_TIME" width="12em">
-                      <table:customData>
-                        <core:CustomData key="p13nData" value='\{"columnKey":"MOVE_IN_TIME", "leadingProperty":"MOVE_IN_TIME"}'/>
-                      </table:customData>
-                      <table:label>
-                        <Label id="LABEL_D_MOVE_IN_TIME" text="{pch>INV34_MOVE_IN_TIME}"/>
-                      </table:label>
-                      <table:template>
-
-                        <smartfield:SmartField id="TEMP_MOVE_IN_TIME" value="{MOVE_IN_TIME}" editable="false"></smartfield:SmartField>
-                      </table:template>
-                    </table:Column>
                   </table:columns>
                 </table:Table>
               </smartTable:SmartTable>
