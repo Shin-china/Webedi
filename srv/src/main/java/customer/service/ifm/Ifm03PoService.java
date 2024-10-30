@@ -37,13 +37,17 @@ public class Ifm03PoService {
 
             if (webServiceConfig != null) {
                 // 调用 Web Service 的 get 方法
-                String response = S4OdataTools.post(webServiceConfig, "", null);
+                String response = S4OdataTools.get(webServiceConfig, 1000, null, null);
                 System.out.println(response);
             } else {
 
             }
-        } catch (Exception e) {
-
+        } catch (UnsupportedOperationException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
 
     }

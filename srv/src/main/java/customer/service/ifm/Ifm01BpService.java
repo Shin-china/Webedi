@@ -26,7 +26,6 @@ public class Ifm01BpService {
 
     @Autowired
     private BusinessPartnerDao BPDao;
-    public String tt;
 
     public void syncBP() {
         T11IfManager interfaceConfig = ifsManageDao.getByCode("IFM01");
