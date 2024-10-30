@@ -31,7 +31,7 @@
     <smartTable:SmartTable id="ID" enableAutoColumnWidth="true" entitySet="PCH_T05_ACCOUNT_DETAIL" 
         ignoredFields="" requestAtLeastFields="SHKZG,TAX_AMOUNT,TOTAL_AMOUNT"   initiallyVisibleFields="INV_NO,GL_YEAR,ITEM_NO,PO_NO,D_NO,SUPPLIER,SUPPLIER_DESCRIPTION,INV_DATE,PO_TRACK_NO,PR_BY,GL_ACCOUNT,COST_CENTER,PURCHASE_GROUP,PURCHASE_GROUP_DESC,CURRENCY,MAT_ID,QUANTITY,UNIT,MAT_DESC,TAX_CODE,TAX_RATE,INV_POST_DATE,SEND_FLAG,UNIT_PRICE,PRICE_AMOUNT,TAX_AMOUNT,TOTAL_AMOUNT,INV_BASE_DATE,GR_DATE,LOG_NO,CE_DOC" 
         smartFilterId="smartFilterBar" enableExport="true" beforeExport="onBeforeExport" 
-        useVariantManagement="true" useTablePersonalisation="true" header="{pch>TITLE_RESULT}" showRowCount="true" persistencyKey="pch05_SmartTableAnalytical_Explored" enableAutoBinding="true">
+        useVariantManagement="true" useTablePersonalisation="true" header="{pch>TITLE_RESULT}" showRowCount="true" persistencyKey="pch05_SmartTableAnalytical_Explored" enableAutoBinding="false" >
         
       <smartTable:customToolbar>
             <OverflowToolbar id="myOverflowToolbar" design="Transparent">

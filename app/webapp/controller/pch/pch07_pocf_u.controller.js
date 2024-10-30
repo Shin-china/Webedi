@@ -315,7 +315,7 @@ sap.ui.define([
 				       hierarchyLevel: 'Level'
 				      },
 				      dataSource: oModel,
-				      fileName: '購買見積登録ExportData.xlsx',
+				      fileName: '購買見積登録_YYYYMMDD時分秒.xlsx',
 				      worker: false // We need to disable worker because we are using a MockServer as OData Service
 				     };
 				  

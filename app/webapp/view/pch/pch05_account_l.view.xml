@@ -35,7 +35,7 @@
         requestAtLeastFields="GR_DATE,TAX_CODE,SHKZG_FLAG,TRANSACTION,TAX_BASE_AMOUNT,REFERENCE, DETAILTEXT, ACCOUNT, DOCUMENTTYPE, HEADERTEXT, DIFF_TAX_AMOUNT, INVOICEID,CURRENCY,LASTDATE" 
         initiallyVisibleFields="GR_DATE,PO_BUKRS,INV_MONTH,SUPPLIER,CALC_10_PRICE_AMOUNT,CALC_8_PRICE_AMOUNT,SAP_TAX_AMOUNT_10,SAP_TAX_AMOUNT_8,RECALC_PRICE_AMOUNT_10,RECALC_PRICE_AMOUNT_8,DIFF_TAX_AMOUNT_10,DIFF_TAX_AMOUNT_8,CALC_10_PRICE_AMOUNT_TOTAL,CALC_8_PRICE_AMOUNT_TOTAL,TAX_CODE,SHKZG_FLAG,TRANSACTION,TAX_BASE_AMOUNT,REFERENCE, DETAILTEXT, ACCOUNT, DOCUMENTTYPE, HEADERTEXT, DIFF_TAX_AMOUNT, INVOICEID,CURRENCY,LASTDATE" 
         smartFilterId="smartFilterBar" enableExport="true" beforeExport="onBeforeExport" 
-        useVariantManagement="true" useTablePersonalisation="true" header="{pch>TITLE_RESULT}" showRowCount="true" persistencyKey="pch05_SmartTableAnalytical_Explored" enableAutoBinding="true">
+        useVariantManagement="true" useTablePersonalisation="true" header="{pch>TITLE_RESULT}" showRowCount="true" persistencyKey="pch05_SmartTableAnalytical_Explored" enableAutoBinding="false" >
     
     <table:Table id="detailTable" rowMode="Auto" rowActionCount="1" selectionMode="MultiToggle" alternateRowColors="true" fixedColumnCount="0" threshold="20">
         <table:columns>

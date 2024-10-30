@@ -30,7 +30,7 @@
     <smartTable:SmartTable id="ID" enableAutoColumnWidth="true" entitySet="PCH_T02_USER" 
         ignoredFields=""  requestAtLeastFields=""  initiallyVisibleFields="PO_NO,D_NO,NO_DETAILS,MAT_ID,MAT_NAME,QUANTITY,PLANT_ID,LOCATION_ID,INPUT_DATE,INPUT_QTY,ExtNumber,CD_DATE,CD_DATE_TIME" 
         smartFilterId="smartFilterBar" enableExport="true" beforeExport="onBeforeExport" 
-        useVariantManagement="true" useTablePersonalisation="true" header="{pch>TITLE_RESULT}" showRowCount="true" persistencyKey="pch02_SmartTableAnalytical_Explored" enableAutoBinding="true">
+        useVariantManagement="true" useTablePersonalisation="true" header="{pch>TITLE_RESULT}" showRowCount="true" persistencyKey="pch02_SmartTableAnalytical_Explored" enableAutoBinding="false">
         
         
         <table:Table id="detailTable" rowMode="Auto" rowActionCount="1" selectionMode="MultiToggle" alternateRowColors="true" fixedColumnCount="0" threshold="20">
