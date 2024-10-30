@@ -45,6 +45,7 @@ extend service TableService {
 
         }
         action PCH06_SAVE_DATA(str : String) returns String;//Send Email
+        action PCH06_TQ(str : String) returns String;//同期
 
 }
 

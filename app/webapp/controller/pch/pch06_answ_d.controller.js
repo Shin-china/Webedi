@@ -78,12 +78,11 @@ sap.ui.define([
 		 * @param {*} oEvent 
 		 */
 		onTongQi: function (oEvent) {
-			var aFilters = this.getView().byId("smartFilterBar").getFilters();
-			if (aFilters.length == 0) {
-				return
-			}
-			var jsonModel = view.getModel("workInfo");
+         
+			this._callCdsAction("/PCH06_TQ", null, this).then((oData) => {
+				console.log(oData)
 
+			});
 			var datas = jsonModel.getData();
 		},
 		/*==============================
@@ -206,17 +205,20 @@ sap.ui.define([
 		_isCheckData: function () {
 			var jsondata = this.getModel("workInfo").getData();
 			var boo = true;
-			jsondata.forEach((odata) => {
-				if (this.formatter._isNull(odata.QUANTITY)) {
-					this.MessageTools._addMessages(this.MessageTools._getI18nTextInModel("pch", "PCH_06_ERROR_MSG4", this.getView()), null, 1, this.getView());
-					boo = false;
-				}
-				if (this.formatter._isNull(odata.DELIVERY_DATE)) {
-					this.MessageTools._addMessages(this.MessageTools._getI18nTextInModel("pch", "PCH_06_ERROR_MSG5", this.getView()), null, 1, this.getView());
-					boo = false;
-				}
-
-			})
+			if(jsondata.length){
+				jsondata.forEach((odata) => {
+					if (this.formatter._isNull(odata.QUANTITY)) {
+						this.MessageTools._addMessages(this.MessageTools._getI18nTextInModel("pch", "PCH_06_ERROR_MSG4", this.getView()), null, 1, this.getView());
+						boo = false;
+					}
+					if (this.formatter._isNull(odata.DELIVERY_DATE)) {
+						this.MessageTools._addMessages(this.MessageTools._getI18nTextInModel("pch", "PCH_06_ERROR_MSG5", this.getView()), null, 1, this.getView());
+						boo = false;
+					}
+	
+				})
+			}else{boo =false;}
+		
 			return boo;
 		},
 
@@ -233,20 +235,6 @@ sap.ui.define([
 			return oPrams;
 		},
 
-		/**
-		 * 
-		 * @returns 
-		 */
-		_deleteDatas: function (datas, id) {
-			let list = new Array();
-
-			datas.forEach(odata => {
-				if (odata.ID != id) {
-					list
-				}
-			})
-
-		},
 
 		/*==============================
 		init
@@ -268,77 +256,10 @@ sap.ui.define([
 			}
 
 		},
-		/*==============================
-	  编辑生效版本并生成新版本草稿
-	  ==============================*/
-		/**
-		 *
-		 * @param {*草稿表对应的草稿Table_draftEdit} _editDraftPath
-		 * @param {*头表ID} _headId
-		 * @param {*是否为草稿} _isActiveEntity
-		 * @returns
-		 */
-		_editDraft2: function (_editDraftPath, _headId, _isActiveEntity) {
-			let that = this;
-
-			return new Promise(function (resolve, reject) {
-				that.getModel().callFunction(_editDraftPath, {
-					method: "POST",
-					urlParameters: {
-						ID: _headId,
-						IsActiveEntity: _isActiveEntity,
-					},
-					success: function (oData) {
-						resolve(oData);
-					},
-					error: function (oError) {
-						console.log("%c version =======" + oError.statusCode + oError.statusText);
-						reject(oError);
-					},
-				});
-			});
-		},
+	
 
 
-		/*==============================
-		设置弹框内容
-		==============================*/
-		_setPopData: function (material) {
-			var that = this;
-			var myArray = new Array();
-			var view = this.getView();
-			return new Promise((resolve, reject) => {
-				//判断后根据品目设置弹框内容
-				var jsonModel = view.getModel("pch03Data");
-				if (!jsonModel) {
-					jsonModel = new sap.ui.model.json.JSONModel();
-					view.setModel(jsonModel, "pch03Data");
-				}
-				that.getModel().read("/T03_PO_C", {
-					filters: [
-						new sap.ui.model.Filter({
-							path: "PO_NO",
-							value1: material,
-							operator: sap.ui.model.FilterOperator.EQ,
-						}),
-					],
-					success: function (oData) {
-						oData.results.forEach(data => {
-							myArray.push(data);
-						})
-
-						//设置
-						jsonModel.setData(myArray);
-						resolve();
-					},
-					error: function (oError) {
-						reject();
-					}
-				})
-			});
-
-		},
-
+		
 		/**
 		 * 获得并设置sql
 		 * @param {*} data 

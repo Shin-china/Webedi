@@ -119,19 +119,20 @@ entity T05_PAYMENT_D : IF_CUID_FILED { //付款申请表行表
 
 
 entity T06_QUOTATION_H : cuid, IF_CUID_FILED { //
+   @title: '{i18n>SALES_NUMBER}' SALES_NUMBER     : String(50); //販売見積番号
+ @title: '{i18n>VALIDATE_START}' VALIDATE_START : Date; //見積有効開始日
+  @title: '{i18n>VALIDATE_END}' VALIDATE_END     : Date; //見積有効終了日
+
   @title: '{i18n>CUSTOMER}' CUSTOMER             : String(50); //客先
-  @title: '{i18n>MACHINE_TYPE}' MACHINE_TYPE     : String(50); //機種
+  @title: '{i18n>QUO_NUMBER}' QUO_NUMBER         : String(50); //販売見積バージョン
+   @title: '{i18n>STATUS}' STATUS                 : String(50); //ステータス
+ @title: '{i18n>MACHINE_TYPE}' MACHINE_TYPE     : String(50); //機種
   @title: '{i18n>Item}' Item                     : String(50); //アイテム
   @title: '{i18n>QUANTITY}' QUANTITY             : Decimal(18, 3); //数量
   @title: '{i18n>TIME}' TIME                     : Date; //時期
   @title: '{i18n>LOCATION}' LOCATION             : String(50); //量産場所
-  @title: '{i18n>VALIDATE_START}' VALIDATE_START : Date; //見積有効開始日
-  @title: '{i18n>VALIDATE_END}' VALIDATE_END     : Date; //見積有効終了日
-  @title: '{i18n>PLANT_ID}' PLANT_ID             : String(4); //工厂
-  @title: '{i18n>SALES_NUMBER}' SALES_NUMBER     : String(50); //販売見積番号
-  @title: '{i18n>QUO_NUMBER}' QUO_NUMBER         : String(50); //販売見積バージョン
-  @title: '{i18n>STATUS}' STATUS                 : String(50); //ステータス
-  @title: '{i18n>TOTAL_JPY}' TOTAL_JPY           : Decimal(18, 3); //合計金額（日本円）
+   @title: '{i18n>PLANT_ID}' PLANT_ID             : String(4); //工厂
+   @title: '{i18n>TOTAL_JPY}' TOTAL_JPY           : Decimal(18, 3); //合計金額（日本円）
   @title: '{i18n>TOTAL_USD}' TOTAL_USD           : Decimal(18, 3); //合計金額（米ドル）
   @title: '{i18n>TOTAL_CNY}' TOTAL_CNY           : Decimal(18, 3); //合計金額（中国元）
   @title: '{i18n>TOTAL_HKD}' TOTAL_HKD           : Decimal(18, 3); //合計金額（香港ドル）
