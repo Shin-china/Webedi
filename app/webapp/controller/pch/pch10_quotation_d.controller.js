@@ -2,9 +2,9 @@ sap.ui.define(["umc/app/Controller/BaseController", "sap/m/MessageToast"], funct
   "use strict";
 
   let _objectCommData = {
-    _entity: "/T06_QUOTATION_H", //此本页面操作的对象//绑定的数据源视图
+    _entity: "/PCH_T06_QUOTATION_H", //此本页面操作的对象//绑定的数据源视图
     _entity_d: "TO_ITEMS",
-    _items: "TO_ITEMS,TO_ITEMS/TO_UPN,TO_ITEMS/TO_MAT,TO_ITEMS/TO_LOC_F,TO_ITEMS/TO_LOC_T", // 展开数据"TO_ITEMS,TO_XXX,"
+    _items: "TO_ITEMS", // 展开数据"TO_ITEMS,TO_XXX,"
     // _entityDarftEdit: "/INV_T09_MOVE_draftEdit", //草稿对象 编辑
     // _entityDarft: "/INV_T09_MOVE_draftActivate", //激活
     // _entityDetailDarft: "/TO_ITEMS", //草稿对象明细
@@ -25,27 +25,27 @@ sap.ui.define(["umc/app/Controller/BaseController", "sap/m/MessageToast"], funct
       let that = this;
       let headID = oEvent.getParameter("arguments").headID;
       console.log(headID);
-      // this.getView().unbindElement();
-      // this._headID = headID;
-      // this._setEditable(false);
-      // this._setEditableAuth(true);
-      // this._setBusy(true);
-      // this._setIsCreate(false);
+      this.getView().unbindElement();
+      this._headID = headID;
+      this._setEditable(false);
+      this._setEditableAuth(true);
+      this._setBusy(true);
+      this._setIsCreate(false);
       // //初始化 msg
       // this.MessageTools._clearMessage();
       // this.MessageTools._initoMessageManager(this);
       // // 编辑
-      // this._onObjectMatchedCommon(oEvent, _objectCommData._entity, {}, _objectCommData._items, true, "smartTable");
+      this._onObjectMatchedCommon(oEvent, _objectCommData._entity, {}, _objectCommData._items, true, "smartTable");
       // //this.byId("smartTable2").rebindTable();
       // that.getModel().refresh(true);
     },
 
     onRebind: function (oEvent) {
       this._rowNoMap == null;
-      let sorts = ["MOVE_D_NO"];
+      let sorts = ["QUO_NUMBER,QUO_ITEM"];
       let ascs = [false]; //true desc false asc
       //手动添加排序
-      this._onListRebinSort(oEvent, sorts, ascs);
+      // this._onListRebinSort(oEvent, sorts, ascs);
     },
 
     // onDelete: function () {

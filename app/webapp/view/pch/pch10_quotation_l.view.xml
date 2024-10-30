@@ -55,7 +55,7 @@
       </f:DynamicPageHeader>
 
 
-      <smartTable:SmartTable id="smartTable10" tableType="Table" showFullScreenButton="true" enableAutoColumnWidth="true" entitySet="PCH10_Header" requestAtLeastFields="QUO_NUMBER" initiallyVisibleFields="CUSTOMER,MACHINE_TYPE,Item,QUANTITY,TIME,LOCATION,VALIDATE_START,VALIDATE_END,PLANT_ID" smartFilterId="smartFilterBar" enableExport="true" beforeExport="onBeforeExport" useVariantManagement="true" useTablePersonalisation="true" header="{com>TITLE_RESULT}" showRowCount="true" persistencyKey="pch10_SmartTableAnalytical_Explored" enableAutoBinding="false" beforeRebindTable="onRebind">
+      <smartTable:SmartTable id="smartTable10" tableType="Table" showFullScreenButton="true" enableAutoColumnWidth="true" entitySet="PCH10_Header" requestAtLeastFields="ID,QUO_NUMBER" initiallyVisibleFields="CUSTOMER,MACHINE_TYPE,Item,QUANTITY,TIME,LOCATION,VALIDATE_START,VALIDATE_END,PLANT_ID" smartFilterId="smartFilterBar" enableExport="true" beforeExport="onBeforeExport" useVariantManagement="true" useTablePersonalisation="true" header="{com>TITLE_RESULT}" showRowCount="true" persistencyKey="pch10_SmartTableAnalytical_Explored" enableAutoBinding="false" beforeRebindTable="onRebind">
         <smartTable:customToolbar>
           <OverflowToolbar id="_IDGenOverflowToolbar10">
             <content>

@@ -9,31 +9,17 @@ sap.ui.define([
         formatter: formatter,
 
         onInit: function () {
-            this._LocalData = this.getOwnerComponent().getModel("local");
-            this._oDataModel = this.getOwnerComponent().getModel();
-            this._ResourceBundle = this.getOwnerComponent().getModel("i18n").getResourceBundle();
+            this.getView().unbindElement();
+			const oTable = this.byId("detailTable");
+			// oTable.setSelectionMode("None");
+			//  设置版本号
+			this._setOnInitNo("PCH02");
+			this.MessageTools._clearMessage();
+			// this.MessageTools._initoMessageManager(this);
 
-            this._oDataModel.attachBatchRequestCompleted(function (oEvent) {
-                this.setBusy(false);
-                var errors = this._LocalData.getProperty("/errors");
-                if (errors) {
-                    // 处理错误
-                }
-                this._LocalData.setProperty("/errors", "");
-            }.bind(this));
+			// this.getRouter().getRoute("RouteCre_pch03").attachPatternMatched(this._onRouteMatched, this);
         },
         
-        setBusy: function (busy) {
-            if (this._LocalData) { // 检查 _LocalData 是否已初始化
-                this._LocalData.setProperty("/busy", busy);
-            } else {
-                console.error("Local data model is not initialized.");
-            }
-        },        
-
-        // setBusy: function (busy) {
-        //     this._LocalData.setProperty("/busy", busy);
-        // },
 
         onExport: function () {
             var oTable = this.getView().byId("detailTable");

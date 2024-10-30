@@ -175,7 +175,7 @@ public class Pch08Service {
                 m.put("QTY_" + i, list.get(j).getQty());
                 m.put("PRICE_" + i, list.get(j).getPrice());
                 m.put("KEY_" + i, list.get(j).getT07Id());
-                
+
                 if (j == list.size() - 1) {
                     m.put("MAX", i);
                 }
@@ -197,24 +197,24 @@ public class Pch08Service {
 
         for (int i = 0; i < array.size(); i++) {
             JSONObject object = (JSONObject) array.get(i);
-            // size - 3  去除QuoNo,Mat,MAX  剩下的qty price key 三个为一组
+            // size - 3 去除QuoNo,Mat,MAX 剩下的qty price key 三个为一组
             int count = (object.size() - 3) / 3;
-            updateT07(object,count);
+            updateT07(object, count);
         }
     }
 
-    public void updateT07(JSONObject o,int size) {
+    public void updateT07(JSONObject o, int size) {
         for (int i = 1; i <= size; i++) {
             if (o.getString("KEY_" + i) != null) {
                 String t07Id = o.getString("KEY_" + i);
                 String qty = o.getString("QTY_" + i);
                 String price = o.getString("PRICE_" + i);
-                T07QuotationD t07 = d007Dao.getById(t07Id);
-                if (t07 != null) {
-                    t07.setQty(qty == null ? BigDecimal.ZERO : new BigDecimal(qty));
-                    t07.setPrice(price == null ? BigDecimal.ZERO : new BigDecimal(price));
-                    d007Dao.update(t07);
-                }
+                // T07QuotationD t07 = d007Dao.getById(t07Id);
+                // if (t07 != null) {
+                // t07.setQty(qty == null ? BigDecimal.ZERO : new BigDecimal(qty));
+                // t07.setPrice(price == null ? BigDecimal.ZERO : new BigDecimal(price));
+                // d007Dao.update(t07);
+                // }
             }
         }
     }

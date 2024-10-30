@@ -82,7 +82,7 @@ public class Pch07Service {
         T01SapMat matid = mstD001.getByID(matno);
         if (matid == null || "Y".equals(matid.getDelFlag())) {
             item.setSUCCESS(false);
-            item.setMESSAGE("SAP品目コード" + matno + "が未登録或已删除。チェックしてください。");
+            item.setMESSAGE("SAP品目コード" + matno + "が登録されていません。チェックしてください。");
             item.setRESULT("失敗");
             item.setI_CON("sap-icon://error");
             item.setSTATUS("Error");
@@ -102,7 +102,7 @@ public class Pch07Service {
         T03SapBp bpid = mstD003.getByID(bpno);
         if (bpid == null || "Y".equals(bpid.getDelFlag())) {
             item.setSUCCESS(false);
-            item.setMESSAGE("仕入先" + bpno + "が未登録或已删除。チェックしてください。");
+            item.setMESSAGE("仕入先" + bpno + "が登録されていません。チェックしてください。");
             item.setRESULT("失敗");
             item.setI_CON("sap-icon://error");
             item.setSTATUS("Error");

@@ -1,19 +1,17 @@
 package customer.bean.pch;
 
 import java.util.ArrayList;
-import java.util.List;
+
+import lombok.Data;
 
 public class SapPchRoot {
+    private ArrayList<Item> Items;
 
-
-    private List<Items> items = new ArrayList<Items>();
-
-    public void setValue(List<Items> items) {
-        this.items = items;
+    public ArrayList<Item> getItems() {
+        return Items;
     }
 
-    public List<Items> getItems() {
-        return items;
+    public void setItems(ArrayList<Item> items) {
+        this.Items = items;
     }
-
 }

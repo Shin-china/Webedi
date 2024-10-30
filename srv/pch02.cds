@@ -24,10 +24,11 @@ extend service TableService {
                 )
   
             distinct {
-                key T02.PO_NO,              // 発注番号
-                key T02.D_NO,               // 明細番号
-                key T03.SEQ,                // 連続番号
-                key T04.ID,                 // key ID
+                // key T02.PO_NO,              // 発注番号
+                // key T02.D_NO,               // 明細番号
+                // key T03.SEQ,                // 連続番号
+                // key T04.ID,                 // key ID
+                key T02.PO_NO || T02.D_NO || T03.SEQ || T04.ID as ID  : String,
                     T01.SUPPLIER,           // 仕入先コード
                     T02.MAT_ID,             // 品目コード
                     T03.STATUS,             // ステータス

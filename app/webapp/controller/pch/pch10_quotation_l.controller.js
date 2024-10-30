@@ -32,7 +32,7 @@ sap.ui.define(["umc/app/Controller/BaseController", "sap/m/MessageToast"], funct
       let oItem = oEvent.getSource();
       let oContext = oItem.getBindingContext();
       let object = oContext.getObject();
-      let ID = object.QUO_NUMBER;
+      let ID = object.ID;
       console.log(ID);
       this._onPress(oEvent, "RouteView_pch10", ID);
     },
