@@ -46,7 +46,7 @@ public class PchD007 extends Dao {
     // 追加
     public void insert(T07QuotationD o) {
 
-        logger.info("=================插入pchd06表号码" + "================");
+        logger.info("=================插入pchd07表号码" + "================");
         o.setCdBy(getUserId());
         o.setCdTime(getNow());
 
