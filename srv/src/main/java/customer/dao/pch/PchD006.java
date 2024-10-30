@@ -52,8 +52,8 @@ public class PchD006 extends Dao {
         o.setCdBy(getUserId());
         o.setCdTime(getNow());
 
-        // o.setCdDate(DateTools.getLocalDate(o.getCdTime()));
-        // o.setCdDateTime(DateTools.getTimeAsString(o.getCdTime()));
+        o.setCdDate(DateTools.getLocalDate(o.getCdTime()));
+        o.setCdDateTime(DateTools.getTimeAsString(o.getCdTime()));
 
         db.run(Insert.into(Pch_.T06_QUOTATION_H).entry(o));
     }

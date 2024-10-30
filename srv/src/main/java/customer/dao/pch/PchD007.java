@@ -50,8 +50,8 @@ public class PchD007 extends Dao {
         o.setCdBy(getUserId());
         o.setCdTime(getNow());
 
-        // o.setCdDate(DateTools.getLocalDate(o.getCdTime()));
-        // o.setCdDateTime(DateTools.getTimeAsString(o.getCdTime()));
+        o.setCdDate(DateTools.getLocalDate(o.getCdTime()));
+        o.setCdDateTime(DateTools.getTimeAsString(o.getCdTime()));
 
         db.run(Insert.into(Pch_.T07_QUOTATION_D).entry(o));
     }

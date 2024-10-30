@@ -37,7 +37,7 @@
                     <smartFilterBar:ControlConfiguration id="PCH_DESCRIPTION" key="SUPPLIER_DESCRIPTION" visibleInAdvancedArea="true" label="{pch>SUPPLIER_DESCRIPTION}"      index="2"/>
                     <smartFilterBar:ControlConfiguration id="PCH_PO_NO"       key="PO_NO"                visibleInAdvancedArea="true" label="{pch>PO_NO}"                     index="3"/>
                     <smartFilterBar:ControlConfiguration id="PCH_MAT_ID"      key="MAT_ID"               visibleInAdvancedArea="true" label="{pch>MAT_ID}"                    index="4"/>
-                    <smartFilterBar:ControlConfiguration id="INV_MONTH"       key="INV_MONTH"            visibleInAdvancedArea="true" label="{pch>INV_MONTH1}"           filterType='single'    index="5"/>
+                    <smartFilterBar:ControlConfiguration id="INV_MONTH"    mandatory="mandatory"   key="INV_MONTH"            visibleInAdvancedArea="true" label="{pch>INV_MONTH1}"           filterType='single'    index="5"/>
                     <smartFilterBar:ControlConfiguration id="PCH_SEND_FLAG"   key="SEND_FLAG"            visibleInAdvancedArea="true" label="{pch>SEND_FLAG}"            filterType="single"  controlType="dropDownList"   index="6"/>
                   
                     </smartFilterBar:controlConfiguration>
@@ -51,7 +51,7 @@
   <!-- </f:DynamicPageHeader> -->
 
     <smartTable:SmartTable id="ID" enableAutoColumnWidth="true" entitySet="PCH_T04_PAYMENT_UNIT" 
-        ignoredFields=""  requestAtLeastFields="ZABC,INV_POST_DATE,SUPPLIER_DESCRIPTION,INV_MONTH,INV_NO,SHKZG" initiallyVisibleFields="SUPPLIER,NO_DETAILS,MAT_ID,MAT_DESC,GR_DATE,QUANTITY,UNIT_PRICE,CURRENCY,EXCHANGE,SUPPLIER_MAT,PO_TRACK_NO,TAX_RATE,INV_BASE_DATE,SEND_FLAG,ZABC,INV_POST_DATE,SUPPLIER_DESCRIPTION,TOTAL_AMOUNT_IN_YEN,UNIT_PRICE_IN_YEN,INV_MONTH,INV_NO,SHKZG"
+        ignoredFields="INV_MONTH,INV_NO,SHKZG,SUPPLIER_DESCRIPTION,ZABC,PO_ORG,LOG_NO,PRICE_AMOUNT,PRICE_AMOUNT_10,PRICE_AMOUNT_8,TOTAL_AMOUNT,Company_Code,D_NO,PO_NO,INV_POST_DATE"  requestAtLeastFields="INV_MONTH,INV_NO,SHKZG,SUPPLIER_DESCRIPTION,ZABC,PO_ORG,LOG_NO,PRICE_AMOUNT,PRICE_AMOUNT_10,PRICE_AMOUNT_8,TOTAL_AMOUNT,Company_Code,D_NO,PO_NO,INV_POST_DATE" initiallyVisibleFields="SUPPLIER,NO_DETAILS,MAT_ID,MAT_DESC,GR_DATE,QUANTITY,UNIT_PRICE,CURRENCY,EXCHANGE,SUPPLIER_MAT,PO_TRACK_NO,TAX_RATE,INV_BASE_DATE,SEND_FLAG,TOTAL_AMOUNT_IN_YEN,UNIT_PRICE_IN_YEN"
         smartFilterId="smartFilterBar" enableExport="true" beforeExport="onBeforeExport" 
         useVariantManagement="true" useTablePersonalisation="true" header="{pch>TITLE_RESULT}" showRowCount="true" persistencyKey="pch02_SmartTableAnalytical_Explored" enableAutoBinding="false">
         
@@ -259,7 +259,7 @@
         </table:template>
     </table:Column>
 
-<table:Column id="colZabc" width="10rem" sortProperty="ZABC" filterProperty="ZABC" visible="false"> 
+<!-- <table:Column id="colZabc" width="10rem" sortProperty="ZABC" filterProperty="ZABC" visible="false"> 
     <table:customData>
         <core:CustomData key="p13nData" value='{"columnKey":"ZABC", "leadingProperty":"ZABC", "sortProperty":"ZABC", "filterProperty":"ZABC"}'/>
     </table:customData>
@@ -269,9 +269,9 @@
     <table:template>
         <Text id="textZabc" text="{ZABC}"/>
     </table:template>
-</table:Column>
+</table:Column> -->
 
-<table:Column id="colDate" width="10rem" sortProperty="INV_POST_DATE" filterProperty="INV_POST_DATE" visible="false"> 
+<!-- <table:Column id="colDate" width="10rem" sortProperty="INV_POST_DATE" filterProperty="INV_POST_DATE" visible="false"> 
     <table:customData>
         <core:CustomData key="p13nData" value='{"columnKey":"INV_POST_DATE", "leadingProperty":"INV_POST_DATE", "sortProperty":"INV_POST_DATE", "filterProperty":"INV_POST_DATE"}'/>
     </table:customData>
@@ -281,9 +281,9 @@
     <table:template>
         <Text id="textDate" text="{INV_POST_DATE}"/>
     </table:template>
-</table:Column>
+</table:Column> -->
 
-<table:Column id="colSupplierDescription" width="15rem" sortProperty="SUPPLIER_DESCRIPTION" filterProperty="SUPPLIER_DESCRIPTION" visible="false">
+<!-- <table:Column id="colSupplierDescription" width="15rem" sortProperty="SUPPLIER_DESCRIPTION" filterProperty="SUPPLIER_DESCRIPTION" visible="false">
     <table:customData>
         <core:CustomData key="p13nData" value='{"columnKey":"SUPPLIER_DESCRIPTION", "leadingProperty":"SUPPLIER_DESCRIPTION", "sortProperty":"SUPPLIER_DESCRIPTION", "filterProperty":"SUPPLIER_DESCRIPTION"}'/>
     </table:customData>
@@ -293,9 +293,9 @@
     <table:template>
         <Text id="textSupplierDescription" text="{SUPPLIER_DESCRIPTION}"/>
     </table:template>
-</table:Column>
+</table:Column> -->
 
-<table:Column id="colinvmonth" width="15rem" sortProperty="INV_MONTH" filterProperty="INV_MONTH" visible="false">
+<!-- <table:Column id="colinvmonth" width="15rem" sortProperty="INV_MONTH" filterProperty="INV_MONTH" visible="false">
     <table:customData>
         <core:CustomData key="p13nData" value='{"columnKey":"INV_MONTH", "leadingProperty":"INV_MONTH", "sortProperty":"INV_MONTH", "filterProperty":"INV_MONTH"}'/>
     </table:customData>
@@ -305,9 +305,9 @@
     <table:template>
         <Text id="textinvmonth" text="{INV_MONTH}"/>
     </table:template>
-</table:Column>
+</table:Column> -->
 
-<table:Column id="colinvno" width="15rem" sortProperty="INV_NO" filterProperty="INV_NO" visible="false">
+<!-- <table:Column id="colinvno" width="15rem" sortProperty="INV_NO" filterProperty="INV_NO" visible="false">
     <table:customData>
         <core:CustomData key="p13nData" value='{"columnKey":"INV_NO", "leadingProperty":"INV_NO", "sortProperty":"INV_NO", "filterProperty":"INV_NO"}'/>
     </table:customData>
@@ -317,9 +317,9 @@
     <table:template>
         <Text id="textinvno" text="{INV_NO}"/>
     </table:template>
-</table:Column>
+</table:Column> -->
 
-<table:Column id="colShkzg" width="10rem" sortProperty="SHKZG" filterProperty="SHKZG" visible="false">
+<!-- <table:Column id="colShkzg" width="10rem" sortProperty="SHKZG" filterProperty="SHKZG" visible="false">
     <table:customData>
         <core:CustomData key="p13nData" value='{"columnKey":"SHKZG", "leadingProperty":"SHKZG", "sortProperty":"SHKZG", "filterProperty":"SHKZG"}'/>
     </table:customData>
@@ -329,7 +329,7 @@
     <table:template>
         <Text id="textShkzg" text="{SHKZG}"/>
     </table:template>
-</table:Column>
+</table:Column> -->
 
 </table:columns>
 

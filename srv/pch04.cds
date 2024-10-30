@@ -83,6 +83,7 @@ extend service TableService {
         KEY D_NO,                      // 明細番号 
         KEY INV_NO,                    // 发票号
         TAX_RATE,                      // INV税率
+        @title: '{i18n>PCH04_UNIT_PRICE}'
         UNIT_PRICE,
         EXCHANGE,                      // 換算レート
         SUPPLIER,                      // 仕入先
@@ -91,7 +92,9 @@ extend service TableService {
         MAT_ID,                        // 品目コード
         MAT_DESC,                      // 品目名称
         GR_DATE,                       // 入荷日
+        @title: '{i18n>PCH04_QUANTITY}'
         QUANTITY,                      // 仕入単位数
+        @title: '{i18n>PCH04_PO_TRACK_NO}'
         PO_TRACK_NO,                   // 備考
         INV_BASE_DATE,                 // 支払日
         SEND_FLAG,                     // ステータス
