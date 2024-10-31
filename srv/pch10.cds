@@ -22,11 +22,11 @@ extend service TableService {
                 T01.PLANT_ID,
                 T01.SALES_NUMBER,
                 T01.STATUS,
-                T01.TOTAL_JPY,
-                T01.TOTAL_USD,
-                T01.TOTAL_CNY,
-                T01.TOTAL_HKD,
-                T01.TOTAL_THB,
+                // T01.TOTAL_JPY,
+                // T01.TOTAL_USD,
+                // T01.TOTAL_CNY,
+                // T01.TOTAL_HKD,
+                // T01.TOTAL_THB,
                 T01.CD_DATE,
                 T01.CD_DATE_TIME
 

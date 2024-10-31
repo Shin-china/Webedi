@@ -129,8 +129,8 @@ sap.ui.define([
 				link.setAttribute("download", "data.csv");
 				document.body.appendChild(link);
 				link.click();
-				//完成后是否更新确认
-				that._isQuerenDb(selectedIndices);
+				//完成后是否更新确认,false不更新Y
+				that._isQuerenDb(selectedIndices,false);
 				that._setBusy(false);
 			})
 
@@ -148,7 +148,8 @@ sap.ui.define([
 		},
 		onEmail: function (oEvt) {
 			var that = this;
-			var selectedIndices = this._TableList("detailTable");
+			//有输入true则需要判读是否已经发送过邮件，且提示框内容不一样
+			this._AfterDigLogCheck(true).then((selectedIndices) => {
 				if (selectedIndices) {
 					// 构建CSV内容  
 					// var csvContent = "data:text/csv;charset=utf-8,";
@@ -220,6 +221,8 @@ sap.ui.define([
 								let newModel = this.getView().getModel("Common");
 								let oBind = newModel.bindList("/sendEmail");
 								oBind.create(mailobj);
+								//完成后是否更新确认,false不更新Y
+								that._isQuerenDb(selectedIndices,true);
 								})
 								
 							})
@@ -229,6 +232,7 @@ sap.ui.define([
 						})
 					})
 				}
+			})
 			
 			
 		
@@ -254,8 +258,8 @@ sap.ui.define([
 								fileName :"納品書",
 							}
 							that.PrintTool.printBackActionPo(that,sapPo)
-							//完成后是否更新确认
-							that._isQuerenDb(selectedIndices);
+								//完成后是否更新确认,false不更新Y
+								that._isQuerenDb(selectedIndices,false);
 							that._setBusy(false);
 						})
 					})
@@ -287,8 +291,8 @@ sap.ui.define([
 									tpye :"PCH03",
 									fileName :"納品書",
 								}
-															//完成后是否更新确认
-							that._isQuerenDb(selectedIndices);
+								//完成后是否更新确认,false不更新Y
+								that._isQuerenDb(selectedIndices,false);
 							that._setBusy(false);
 								// that.PrintTool.printBackActionPo(that,sapPo)
 							})
@@ -345,8 +349,8 @@ sap.ui.define([
 									tpye :"PCH03",
 									fileName :"納品書",
 								}
-															//完成后是否更新确认
-								that._isQuerenDb(selectedIndices);
+								//完成后是否更新确认,false不更新Y
+								that._isQuerenDb(selectedIndices,false);
 								// that.PrintTool.printBackActionPo(that,sapPo)
 							})
 							
@@ -376,14 +380,25 @@ sap.ui.define([
 		/**
 		 * 判断是否调用后台
 		 */
-		_isQuerenDb(tableList){
+		_isQuerenDb(tableList,boo){
 			var pList = Array();
 			tableList.forEach((item) => {
 				if ('2' ==  item.USER_TYPE || ('1' ==  item.USER_TYPE && item.ZABC != 'E'&& item.ZABC != 'F'&& item.ZABC != 'W') ) {
-					var p = {
-						po: item.PO_NO,
-						dNo: item.D_NO
+					//为true时，为邮件调用，false为下载调用
+					if(boo){
+						var p = {
+							po: item.PO_NO,
+							dNo: item.D_NO,
+							t:"t"
+						}
+					}else{
+						var p = {
+							po: item.PO_NO,
+							dNo: item.D_NO,
+							
+						}
 					}
+				
 					pList.push(p)
 				}
 			})

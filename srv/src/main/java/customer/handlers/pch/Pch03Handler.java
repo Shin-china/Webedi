@@ -48,6 +48,8 @@ public class Pch03Handler implements EventHandler {
     @Autowired
     PchService pchService;
 
+    // @Autowired
+    // PchService pchService;
     /**
      * 
      * @param context
@@ -61,8 +63,10 @@ public class Pch03Handler implements EventHandler {
             JSONObject jsonObject = jsonArray.getJSONObject(i);
             String po = jsonObject.getString("po");
             String dNo = jsonObject.getString("dNo");
-
             pchService.setPoStu(po, dNo);
+            // 确认后写log表
+            pchService.setT09LogData(jsonObject);
+
         }
 
         context.setResult("success");
@@ -122,30 +126,36 @@ public class Pch03Handler implements EventHandler {
             pchd03.setCop3(pchd03.getPodno());
             pchd03.setCop4(pchd03.getPodno());
             pchd03.setCop5(pchd03.getSupplierMat());
-            pchd03.setCop6(pchd03.getPoDTxz01());
+            pchd03.setCop6(pchd03.getMatId());
             pchd03.setCop7(pchd03.getStorage());
             pchd03.setCop8(pchd03.getCheckOk());
             pchd03.setCop9(pchd03.getBpName1());
             pchd03.setCop10(pchd03.getStorage());
             pchd03.setCop11(pchd03.getPodno());
             pchd03.setCop12(pchd03.getSupplierMat());
-            // pchd03.setCop13(pchd03.getPoDTxz01());
-            // pchd03.setCop14(pchd03.getPoPurUnit());
-            // pchd03.setCop14(pchd03.getPodno());
+            pchd03.setCop13(pchd03.getMatId());
 
-            // pchd03.setZws1(pchd03.getPodno() + "\n" + pchd03.getCdBy());
-            // pchd03.setZws2(pchd03.getSupplier() + "\n" + pchd03.getMatId());
-            // pchd03.setZws3(pchd03.getManuCode());
-            // pchd03.setZws4("" + "\n" + pchd03.getStorage());
-            // pchd03.setZws5(pchd03.getPoPurUnit() + "\n" + pchd03.getMemo());
-            // pchd03.setZws6(prc.toString());
-            // pchd03.setZws7(pchd03.getPoPurQty().toString());
-            // pchd03.setZws8(pchd03.getCurrency());
-            // pchd03.setZws8(DateTools.getCurrentDateString(pchd03.getPoDDate()));
+            pchd03.setCop14(pchd03.getPodno());
+            // pchd03.setCop15(pchd03.getPodno());
+            pchd03.setCop16(pchd03.getPodno());
+            pchd03.setCop17(pchd03.getCheckOk());
+            pchd03.setCop17(pchd03.getCheckOk());
 
-            // pchd03.setDate1(DateTools.getCurrentDateString());
-            // pchd03.setDate2(DateTools.getCurrentDateString());
-            // pchd03.setDate3(DateTools.getCurrentDateString());
+            // 公司固定值取出
+
+            pchd03.setZws1(pchd03.getPodno() + "\n" + pchd03.getCdBy());
+            pchd03.setZws2(pchd03.getSupplier() + "\n" + pchd03.getMatId());
+            pchd03.setZws3(pchd03.getManuCode());
+            pchd03.setZws4(pchd03.getPoPurQty() + "\n" + pchd03.getStorage());
+            pchd03.setZws5(pchd03.getPoPurUnit() + "\n" + pchd03.getMemo());
+            pchd03.setZws6(prc.toString());
+            pchd03.setZws7(pchd03.getPoPurQty().toString());
+            pchd03.setZws8(pchd03.getCurrency());
+            pchd03.setZws8(DateTools.getCurrentDateString(pchd03.getPoDDate()));
+
+            pchd03.setDate1(DateTools.getCurrentDateString());
+            pchd03.setDate2(DateTools.getCurrentDateString());
+            pchd03.setDate3(DateTools.getCurrentDateString());
 
         });
     }

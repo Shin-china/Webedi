@@ -132,11 +132,11 @@ entity T06_QUOTATION_H : cuid, IF_CUID_FILED { //
   @title: '{i18n>TIME}' TIME                     : Date; //時期
   @title: '{i18n>LOCATION}' LOCATION             : String(50); //量産場所
    @title: '{i18n>PLANT_ID}' PLANT_ID             : String(4); //工厂
-   @title: '{i18n>TOTAL_JPY}' TOTAL_JPY           : Decimal(18, 3); //合計金額（日本円）
-  @title: '{i18n>TOTAL_USD}' TOTAL_USD           : Decimal(18, 3); //合計金額（米ドル）
-  @title: '{i18n>TOTAL_CNY}' TOTAL_CNY           : Decimal(18, 3); //合計金額（中国元）
-  @title: '{i18n>TOTAL_HKD}' TOTAL_HKD           : Decimal(18, 3); //合計金額（香港ドル）
-  @title: '{i18n>TOTAL_THB}' TOTAL_THB           : Decimal(18, 3); //合計金額（タイバーツ）
+  //  @title: '{i18n>TOTAL_JPY}' TOTAL_JPY           : Decimal(18, 3); //合計金額（日本円）
+  // @title: '{i18n>TOTAL_USD}' TOTAL_USD           : Decimal(18, 3); //合計金額（米ドル）
+  // @title: '{i18n>TOTAL_CNY}' TOTAL_CNY           : Decimal(18, 3); //合計金額（中国元）
+  // @title: '{i18n>TOTAL_HKD}' TOTAL_HKD           : Decimal(18, 3); //合計金額（香港ドル）
+  // @title: '{i18n>TOTAL_THB}' TOTAL_THB           : Decimal(18, 3); //合計金額（タイバーツ）
 
   @title: '{i18n>CD_DATE}' CD_DATE               : Date; //创建日
   @title: '{i18n>CD_DATE_TIME}' CD_DATE_TIME     : String(10); //创建日时
@@ -147,8 +147,17 @@ entity T06_QUOTATION_H : cuid, IF_CUID_FILED { //
 }
 
 entity T07_QUOTATION_D : cuid, IF_CUID_FILED { //
-  @title: '{i18n>QUO_NUMBER}' QUO_NUMBER                 : String(10); //購買見積番号
-  @title: '{i18n>QUO_ITEM}' QUO_ITEM                     : Integer; //管理No
+  @title: '{i18n>QUO_NUMBER}' QUO_NUMBER                 : String(50); //購買見積番号
+  @title: '{i18n>QUO_ITEM}' QUO_ITEM                     :Integer; //管理No
+
+  @title: '{i18n>QUO_ITEM}' SALES_NUMBER                     : String(20); //販売見積番号
+  @title: '{i18n>QUO_ITEM}' QUO_VERSION                     : String(5); //販売見積バージョン
+  @title: '{i18n>QUO_ITEM}' SALES_D_NO                     : String(5); //販売見積案件明細
+  @title: '{i18n>QUO_ITEM}' SAP_MAT_ID                     : String(40); //SAP 品目（製品）
+  @title: '{i18n>QUO_ITEM}' DEVELOP_MAT                     : String(40); //開発品番
+  @title: '{i18n>PLANT_ID}' PLANT_ID                     : String(4); //プラント
+
+
   @title: '{i18n>NO}' NO                                 : Integer; //No.
   @title: '{i18n>REFRENCE_NO}' REFRENCE_NO               : String(50); //併記有無リファレンスNo
   @title: '{i18n>MATERIAL_NUMBER}' MATERIAL_NUMBER       : String(40); //SAP品番（任意）
@@ -253,5 +262,18 @@ entity T09_FORCAST : IF_CUID_FILED { //
                                  @title: '{i18n>SUPPLIER_TEL}' SUPPLIER_TEL             : String(16); //仕入先電話番号
 
                                  @title: '{i18n>STATUS}' STATUS                         : String(1); //ステータス
+
+}
+//发送履历表
+entity T10_UPLOAD :  IF_CUID_FILED { //
+  @title: '{i18n>PO_NO}' key PO_NO               : String(10) not null; //采购订单编号
+  @title: '{i18n>D_NO}' key D_NO                 : Integer; //采购订单明细行号
+  @title: '{i18n>QUANTITY}' QUANTITY         : Decimal(18, 3); //発注数
+  @title: '{i18n>INPUT_DATE}' INPUT_DATE     : Date; //納入日付
+  @title: '{i18n>DEL_PRICE}' DEL_PRICE       : Decimal(18, 3); //发注单价
+  @title: '{i18n>PO_TYPE}' PO_TYPE           : String(1); //发注区分
+  @title: '{i18n>TYPE}' TYPE                 : String(1); //是否送信为Y则发送
+  
+  @title: '{i18n>CD_DATE}' CD_DATE           : Date; //创建日
 
 }

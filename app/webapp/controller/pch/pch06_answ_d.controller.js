@@ -80,8 +80,8 @@ sap.ui.define([
 		onTongQi: function (oEvent) {
          
 			this._callCdsAction("/PCH06_TQ", null, this).then((oData) => {
-				console.log(oData)
-
+				console.log(oData.PCH06_TQ);
+				sap.m.MessageToast.show(oData.PCH06_TQ);
 			});
 			var datas = jsonModel.getData();
 		},

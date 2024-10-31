@@ -58,6 +58,6 @@ public class Pch06Handler implements EventHandler {
         // pchService.detailsSave(list);
         // }
         Ifm03PoService.syncPo();
-        context.setResult(JSON.toJSONString("list"));
+        context.setResult("同步成功");
     }
 }

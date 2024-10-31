@@ -1425,12 +1425,36 @@ sap.ui.define([
           
           return new Blob(byteArrays, {type: mimeType}); 
       },
-      _setDialog:function(oView){
+      _setDialog:function(boo,data){
         var that = this;
         return new Promise(function (resolve, reject) {
+          var PoList = that._TableDataList("detailTable", 'PO_NO')
+          //返回发送过邮件的po号
+          that.PrintTool._getPrintDataInfo(that,PoList,"/PCH_T10_UPLOAD",'PO_NO').then((oData) => {
+            //判断dialog是的提示消息
+            var txt ="";
+            var list = [];
+            oData.forEach((item) => {
+               if('Y' ==  item.TYPE){
+                list.push(item.PO_NO)
+                  
+               }
+            })
 
+            if(boo){
+              if(list.length > 0){
+                
+                txt = txt.MessageTools._getI18nMessage("Dialog2", list)
+              }else{
+                txt = that.MessageTools._getI18nTextInModel("com", "Dialog", that.getView())
+              }
+            }else{
+              txt = that.MessageTools._getI18nTextInModel("com", "Dialog", that.getView())
+            }
+          })
+          
           // 假设你的数据模型是JSONModel，并且已经绑定到了SmartTable  
-          sap.m.MessageBox.show(that.MessageTools._getI18nTextInModel("com", "Dialog", that.getView()), {  
+          sap.m.MessageBox.show(txt), {  
             icon: sap.m.MessageBox.Icon.INFORMATION,  
             title: "Confirmation",  
             actions: [sap.m.MessageBox.Action.OK, sap.m.MessageBox.Action.CANCEL],  
@@ -1446,17 +1470,18 @@ sap.ui.define([
                 // 处理CANCEL或关闭动作  
               }  
             }  
-          })});
-        },
+          }
+        })
+      },
         //需要从明细取数据且弹提示框的所有前置
-        _AfterDigLogCheck() {
+        _AfterDigLogCheck(boo) {
           var that = this;
           this._setBusy(true);
           return new Promise(function (resolve, reject) {
             var selectedIndices = that._TableList("detailTable");
             if (selectedIndices) {
               //设置通用dialog
-              that._setDialog().then((oDialog) => {
+              that._setDialog(boo,selectedIndices).then((oDialog) => {
                 resolve(selectedIndices);
               });
             }else {

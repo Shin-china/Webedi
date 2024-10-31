@@ -31,6 +31,8 @@ import customer.bean.sys.DeliveryInfo;
 import customer.bean.sys.DeliveryInfoList;
 import customer.dao.sys.IFSManageDao;
 import customer.odata.S4OdataTools;
+import customer.service.pch.Pch06Service;
+import customer.service.pch.PchService;
 import customer.tool.Eenvironment;
 
 import com.sap.cds.reflect.CdsService;
@@ -43,7 +45,8 @@ import com.sap.cds.services.handler.annotations.ServiceName;
 public class Pch02Handler implements EventHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(Pch02Handler.class);
-
+    @Autowired
+    private PchService pchService;
     @Autowired
     private IFSManageDao ifsManageDao;
 
@@ -62,6 +65,9 @@ public class Pch02Handler implements EventHandler {
             if (webServiceConfig != null) {
                 // 调用 Web Service 的 get 方法
                 String response = S4OdataTools.post(webServiceConfig, parameters, null);
+
+                // 确认成功后修改po明细状态
+                pchService.updatePch03(context.getParms());
 
                 // 将 Web Service 的响应结果返回给前台
                 context.setResult(response);
