@@ -238,7 +238,7 @@ extend service TableService {
             on T01.SUPPLIER = T04.SUPPLIER
 
 
-        left join view.SYS_T01_USER as Tu
+         join view.SYS_T01_USER as Tu
             on Tu.USER_ID = (select user from view.USER_CODE   ) 
             and Tu.BP_NUMBER = T01.SUPPLIER
 
