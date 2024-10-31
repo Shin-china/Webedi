@@ -57,8 +57,10 @@ public class PchD007 extends Dao {
     }
 
     public List<T07QuotationD> getList(String quoNum) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getList'");
+        return db.run(
+                Select.from(Pch_.T07_QUOTATION_D)
+                        .where(o -> o.QUO_NUMBER().eq(quoNum)))
+                .listOf(T07QuotationD.class);
     }
 
 }
