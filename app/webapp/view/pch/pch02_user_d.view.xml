@@ -13,6 +13,15 @@
     xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
     xmlns:uxap="sap.uxap">
 
+      <f:DynamicPageTitle id="DynamicPageTitle">
+    <f:heading>
+      <Title id="Title" text="{pch>PCH02_TITLE}"/>
+    </f:heading>
+    <f:navigationActions>
+      <Button id="_IDGenButton3" icon="sap-icon://nav-back" tooltip="nav-back" press="navTo('RouteMainView')"/>
+    </f:navigationActions>
+  </f:DynamicPageTitle>
+
         <f:DynamicPageHeader id="DynamicPageHeader" pinnable="true">
             <f:content>
                 <smartFilterBar:SmartFilterBar id="smartFilterBar" entitySet="PCH_T02_USER" persistencyKey="PCH_T02_USER" showFilterConfiguration="true">
@@ -29,7 +38,7 @@
     
 
     <smartTable:SmartTable id="ID" enableAutoColumnWidth="true" entitySet="PCH_T02_USER" 
-        ignoredFields=""  requestAtLeastFields="SEQ,DEL_FLAG"  initiallyVisibleFields="STATUS,PO_NO,D_NO,MAT_ID,PO_D_TXZ01,PO_PUR_QTY,PO_PUR_UNIT,SUPPLIER_MAT,DELIVERY_DATE,QUANTITY,DEL_PRICE,DEL_AMOUNT,MEMO,STORAGE_NAME,SEQ,DEL_FLAG,ExtNumber" 
+        ignoredFields="CD_DATE,CD_DATE_TIME,ID,INPUT_DATE,INPUT_QTY,KEYID,MAT_NAME,NO_DETAILS,SEQ,DEL_FLAG,SUPPLIER,PLANT_ID,LOCATION_ID"  requestAtLeastFields="CD_DATE,CD_DATE_TIME,ID,INPUT_DATE,INPUT_QTY,KEYID,MAT_NAME,NO_DETAILS,SEQ,DEL_FLAG,SUPPLIER,PLANT_ID,LOCATION_ID"  initiallyVisibleFields="STATUS,PO_NO,D_NO,MAT_ID,PO_D_TXZ01,PO_PUR_QTY,PO_PUR_UNIT,SUPPLIER_MAT,DELIVERY_DATE,QUANTITY,DEL_PRICE,DEL_AMOUNT,MEMO,STORAGE_NAME,ExtNumber" 
         smartFilterId="smartFilterBar" enableExport="true" beforeExport="onBeforeExport" 
         useVariantManagement="true" useTablePersonalisation="true" header="{pch>TITLE_RESULT}" showRowCount="true" persistencyKey="pch02_SmartTableAnalytical_Explored" enableAutoBinding="false">
         
@@ -229,7 +238,7 @@
                     </table:template>
                 </table:Column>
            
-             <table:Column id="colSeq" width="5rem" sortProperty="SEQ" filterProperty="SEQ" visible="false">
+             <!-- <table:Column id="colSeq" width="5rem" sortProperty="SEQ" filterProperty="SEQ" visible="false">
                     <table:customData>
                         <core:CustomData key="p13nData" value='{"columnKey":"SEQ", "leadingProperty":"SEQ", "sortProperty":"SEQ", "filterProperty":"SEQ"}'/>
                     </table:customData>
@@ -239,9 +248,9 @@
                     <table:template>
                         <Text id="textSeq" text="{SEQ}"/>
                     </table:template>
-                </table:Column>
+                </table:Column> -->
 
-                 <table:Column id="colDelflag" width="8rem" sortProperty="DEL_FLAG" filterProperty="DEL_FLAG" visible="false">
+                 <!-- <table:Column id="colDelflag" width="8rem" sortProperty="DEL_FLAG" filterProperty="DEL_FLAG" visible="false">
                     <table:customData>
                         <core:CustomData key="p13nData" value='{"columnKey":"DEL_FLAG", "leadingProperty":"DEL_FLAG", "sortProperty":"DEL_FLAG", "filterProperty":"DEL_FLAG"}'/>
                     </table:customData>
@@ -251,7 +260,7 @@
                     <table:template>
                         <Text id="textDelflag" text="{DEL_FLAG}"/>
                     </table:template>
-                </table:Column>
+                </table:Column> -->
 
                    <table:Column id="colExtNumber" width="8rem" sortProperty="ExtNumber" filterProperty="ExtNumber" >
                     <table:customData>

@@ -35,10 +35,10 @@ public class Pch01Handler implements EventHandler {
   // check数据
   @On(event = "PCH01_CHECK_DATA")
   public void checkData(PCH01CheckDATAContext context) throws IOException {
-    // Pch01List list = JSON.parseObject(context.getShelfJson(), Pch01List.class);
-    jobMonotor.poolMonitor3();
-    // Pch01Service.detailsCheck(list);
-    // context.setResult(JSON.toJSONString(list));
+    Pch01List list = JSON.parseObject(context.getShelfJson(), Pch01List.class);
+    // jobMonotor.poolMonitor3();
+    Pch01Service.detailsCheck(list);
+    context.setResult(JSON.toJSONString(list));
   }
 
   // 保存数据

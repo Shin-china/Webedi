@@ -7,6 +7,7 @@ import customer.service.ifm.Ifm01BpService;
 import customer.service.ifm.Ifm02MstService;
 // import customer.service.ifm.Ifm03PoService;
 import customer.service.ifm.Ifm03PoService;
+import customer.service.ifm.Ifm04PrService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,8 +33,8 @@ public class JobMonotor {
     @Autowired
     private Ifm03PoService ifm03PoService;
 
-    // @Autowired
-    // private Ifm03PoService ifm03PoService;
+    @Autowired
+    private Ifm04PrService ifm04PrService;
 
     @Scheduled(cron = "0 0/5 * * * ?")
     public void poolMonitor() throws IOException {
@@ -60,7 +61,15 @@ public class JobMonotor {
         // IF041 po同期 自开发
         System.out.println("MST Sync run");
         ifm03PoService.syncPo();
+        System.out.println("JobMonotor  run");
+    }
 
+    @Scheduled(cron = "0 0/5 * * * ?")
+    public void poolMonitor4() throws IOException {
+
+        // IF065 フォーキャスト連携
+        System.out.println("pr Sync run");
+        ifm04PrService.syncPr();
         System.out.println("JobMonotor  run");
     }
 

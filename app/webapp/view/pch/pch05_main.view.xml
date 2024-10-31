@@ -1,5 +1,5 @@
 <mvc:View controllerName="umc.app.controller.pch.pch05_main" xmlns:mvc="sap.ui.core.mvc" displayBlock="true" xmlns="sap.m">
-    <Page id="idPage" title="買掛金明細" showHeader="true" showFooter="false" titleAlignment="Center" titleLeve="H1">
+    <Page id="idPage" title="買掛金明細" showHeader="false" showFooter="false" titleAlignment="Center" titleLevel="H1">
         <content>
             <IconTabBar id="idIconTabBar" expanded="{device>/isNoPhone}" class="sapUiResponsiveContentPadding">
                 <items>

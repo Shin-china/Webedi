@@ -11,6 +11,7 @@ import com.sap.cds.ql.Update;
 import cds.gen.pch.Pch_;
 import cds.gen.pch.T01PoH;
 import cds.gen.pch.T02PoD;
+import cds.gen.pch.T09Forcast;
 import customer.dao.common.Dao;
 
 @Repository
@@ -103,6 +104,40 @@ public class PurchaseDataDao extends Dao {
         o2.setStatus("1");
         o2.setCdTime(getNow());
         db.run(Update.entity(Pch_.T02_PO_D).entry(o2));
+    }
+
+    public T09Forcast getByID3(String id, Integer dn) {
+        Optional<T09Forcast> result = db
+                .run(Select.from(Pch_.T09_FORCAST).where(o -> o.PR_NUMBER().eq(id).and(o.D_NO().eq(dn))))
+                .first(T09Forcast.class);
+        if (result.isPresent()) {
+
+            return result.get();
+
+        }
+        return null;
+
+    }
+
+    public void modify3(T09Forcast o) {
+        T09Forcast isExist = getByID3(o.getPrNumber(), o.getDNo());
+        if (isExist == null) {
+            insert3(o);
+        } else {
+            update3(o);
+        }
+    }
+
+    // Insert
+    public void insert3(T09Forcast o) {
+        o.setCdTime(getNow());
+        db.run(Insert.into(Pch_.T09_FORCAST).entry(o));
+    }
+
+    // Update
+    public void update3(T09Forcast o) {
+        o.setCdTime(getNow());
+        db.run(Update.entity(Pch_.T09_FORCAST).entry(o));
     }
 
 }
