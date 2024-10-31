@@ -1452,7 +1452,7 @@ sap.ui.define([
               }
             }
             
-            sap.m.MessageBox.confirm(txt), {
+            sap.m.MessageBox.confirm(txt, {
               icon: sap.m.MessageBox.Icon.INFORMATION,  
               title: "Confirmation",  
               actions: [sap.m.MessageBox.Action.OK, sap.m.MessageBox.Action.CANCEL],
@@ -1465,7 +1465,7 @@ sap.ui.define([
                   that._setBusy(false);
                 }
               }
-            }
+            })
           });
           
 
