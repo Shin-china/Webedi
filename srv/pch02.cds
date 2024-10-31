@@ -25,7 +25,7 @@ extend service TableService {
   
             distinct {
                 // key T02.PO_NO || T02.D_NO || T03.SEQ || T04.ID as KEYID  : String,
-                key COALESCE(T02.PO_NO, '') || COALESCE(T02.D_NO, '') || COALESCE(T03.SEQ, '') || COALESCE(T04.ID, '') as KEYID : String,
+                key COALESCE(T02.PO_NO, '') || COALESCE(CAST(T02.D_NO AS String), '') || COALESCE(CAST(T03.SEQ AS String), '') || COALESCE(CAST(T04.ID AS String), '') as KEYID : String,
                     T02.PO_NO,              // 発注番号
                     T02.D_NO,               // 明細番号
                     T03.SEQ,                // 連続番号
