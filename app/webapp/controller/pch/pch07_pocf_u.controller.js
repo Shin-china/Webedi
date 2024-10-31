@@ -1,9 +1,9 @@
 sap.ui.define([
 	"umc/app/Controller/BaseController",
 	"sap/ui/model/Filter",
+	"umc/app/util/xlsx",
 	"umc/app/model/formatter",
 	"sap/ui/export/Spreadsheet",
-	"umc/app/util/xlsx",
 	"sap/m/MessageToast",
 	'sap/ui/comp/library',
 	'sap/ui/model/type/String',
@@ -97,11 +97,15 @@ sap.ui.define([
             });
             aCols.push({
                label: VALIDATE_START,
-               property: VALIDATE_START
+               property: VALIDATE_START,
+			   type: sap.ui.export.EdmType.Date // 设置下载格式为日期
+			//    type: sap.ui.export.EdmType.String // 设置下载格式为文本
             });
             aCols.push({
                label: VALIDATE_END,
-               property: VALIDATE_END
+               property: VALIDATE_END,
+			   type: sap.ui.export.EdmType.Date // 设置下载格式为日期
+			//    type: sap.ui.export.EdmType.String // 设置下载格式为文本
             });
 			aCols.push({
 				label: UMC_COMMENT_1,
@@ -315,7 +319,7 @@ sap.ui.define([
 				       hierarchyLevel: 'Level'
 				      },
 				      dataSource: oModel,
-				      fileName: '購買見積登録_YYYYMMDD時分秒.xlsx',
+				      fileName: '購買見積登録_' + formatter.formatDateForFileName(new Date()) + '.xlsx', // 调用 formatter
 				      worker: false // We need to disable worker because we are using a MockServer as OData Service
 				     };
 				  

@@ -13,6 +13,15 @@
     xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
     xmlns:uxap="sap.uxap">
 
+          <f:DynamicPageTitle id="DynamicPageTitle">
+    <f:heading>
+      <Title id="Title" text="{pch>PCH05_TITLE}"/>
+    </f:heading>
+    <f:navigationActions>
+      <Button id="_IDGenButton3" icon="sap-icon://nav-back" tooltip="nav-back" press="navTo('RouteMainView')"/>
+    </f:navigationActions>
+  </f:DynamicPageTitle>
+
     <f:DynamicPageHeader id="DynamicPageHeader" pinnable="true">
         <f:content>
             <smartFilterBar:SmartFilterBar id="smartFilterBar" entitySet="PCH_T05_ACCOUNT_DETAIL" persistencyKey="PCH_T05_ACCOUNT_DETAIL" showFilterConfiguration="true">

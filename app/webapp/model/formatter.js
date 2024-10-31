@@ -346,6 +346,13 @@ sap.ui.define([], function () {
 
 		},
 
+      formatDateForFileName: function () {
+          var oDate = new Date();
+          var sDate = oDate.toISOString().slice(0, 10).replace(/-/g, '');
+          var sTime = oDate.toTimeString().slice(0, 8).replace(/:/g, '');
+          return `${sDate}${sTime}.xlsx`;
+      },
+
     pch08GetInputEditable : function (str) {
       console.log(str)
       if (str != null && str != "" && str != undefined) {

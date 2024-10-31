@@ -28,7 +28,7 @@
   </f:DynamicPageHeader>
 
     <smartTable:SmartTable id="ID" enableAutoColumnWidth="true" entitySet="PCH_T02_USER" 
-        ignoredFields=""  requestAtLeastFields=""  initiallyVisibleFields="PO_NO,D_NO,NO_DETAILS,MAT_ID,MAT_NAME,QUANTITY,PLANT_ID,LOCATION_ID,INPUT_DATE,INPUT_QTY,ExtNumber,CD_DATE,CD_DATE_TIME" 
+        ignoredFields="DEL_FLAG,DELIVERY_DATE,ID,KEYID,SEQ,STORAGE_NAME,STATUS,DEL_PRICE,DEL_AMOUNT,MEMO,PO_PUR_UNIT,SUPPLIER,PO_D_TXZ01,SUPPLIER_MAT,PO_PUR_QTY"  requestAtLeastFields="DEL_FLAG,DELIVERY_DATE,ID,KEYID,SEQ,STORAGE_NAME,STATUS,DEL_PRICE,DEL_AMOUNT,MEMO,PO_PUR_UNIT,SUPPLIER,PO_D_TXZ01,SUPPLIER_MAT,PO_PUR_QTY"  initiallyVisibleFields="PO_NO,D_NO,NO_DETAILS,MAT_ID,MAT_NAME,QUANTITY,PLANT_ID,LOCATION_ID,INPUT_DATE,INPUT_QTY,ExtNumber,CD_DATE,CD_DATE_TIME" 
         smartFilterId="smartFilterBar" enableExport="true" beforeExport="onBeforeExport" 
         useVariantManagement="true" useTablePersonalisation="true" header="{pch>TITLE_RESULT}" showRowCount="true" persistencyKey="pch02_SmartTableAnalytical_Explored" enableAutoBinding="false">
         
