@@ -131,7 +131,7 @@ public class Pch06Service {
         if (byID == null) {
             return true;
         }
-        if (!byID.getDeliveryDate()
+        if (byID.getDeliveryDate() == null || !byID.getDeliveryDate()
                 .equals(DateTools.stringToDate(iterable_element.getDELIVERY_DATE().substring(0, 10)))) {
             return true;
         }

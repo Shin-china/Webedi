@@ -86,33 +86,33 @@ public class Pch03Handler implements EventHandler {
             String dNo = pchd03.getDNo() + "";
             // 设置前置零
             pchd03.setPodno(po + StringTool.leftPadWithZeros(dNo, 5));
-
+            // 单价
+            BigDecimal prc = BigDecimal.ZERO;
             // 设置税的四个
             BigDecimal unitPrice = pchd03.getUnitPrice();
             BigDecimal delPrice = pchd03.getDelPrice();
             BigDecimal poPurQty = pchd03.getPoPurQty();
             // 货币除了日元5其余2
             String currency = pchd03.getCurrency();
-            // 单价
-            BigDecimal prc = BigDecimal.ZERO;
-            if (UWebConstants.JPY.equals(currency)) {
-                prc = delPrice.divide(unitPrice, 5, RoundingMode.HALF_UP);
-            } else {
-                prc = delPrice.divide(unitPrice, 2, RoundingMode.HALF_UP);
+            if (unitPrice != null && delPrice != null && poPurQty != null) {
+                if (UWebConstants.JPY.equals(currency)) {
+                    prc = delPrice.divide(unitPrice, 5, RoundingMode.HALF_UP);
+                } else {
+                    prc = delPrice.divide(unitPrice, 2, RoundingMode.HALF_UP);
+                }
+                // 税抜額
+                BigDecimal exclusive_tax_amount = poPurQty.multiply(prc);
+                // 税额
+                // 获取税率
+                BigDecimal sl = pchService.getSysD006("税率");
+                BigDecimal tax_amount = exclusive_tax_amount.multiply(sl);
+                // 税込額
+                BigDecimal inclusive_tax_amount = tax_amount.add(exclusive_tax_amount);
+                pchd03.setOrderUnitPrice(prc.toString());
+                pchd03.setExclusiveTaxAmount(exclusive_tax_amount.toString());
+                pchd03.setTaxAmount(tax_amount.toString());
+                pchd03.setInclusiveTaxAmount(inclusive_tax_amount.toString());
             }
-            // 税抜額
-            BigDecimal exclusive_tax_amount = poPurQty.multiply(prc);
-            // 税额
-            // 获取税率
-            BigDecimal sl = pchService.getSysD006("税率");
-            BigDecimal tax_amount = exclusive_tax_amount.multiply(sl);
-            // 税込額
-            BigDecimal inclusive_tax_amount = tax_amount.add(exclusive_tax_amount);
-
-            pchd03.setOrderUnitPrice(prc.toString());
-            pchd03.setExclusiveTaxAmount(exclusive_tax_amount.toString());
-            pchd03.setTaxAmount(tax_amount.toString());
-            pchd03.setInclusiveTaxAmount(inclusive_tax_amount.toString());
 
             // 设置検査合区分
             if (!StringTool.isEmpty(pchd03.getImpComp())) {
@@ -122,7 +122,7 @@ public class Pch03Handler implements EventHandler {
 
             // 复制用作显示
             pchd03.setCop1(pchd03.getPodno());
-            pchd03.setCop2(pchd03.getPoPurQty().toString());
+            pchd03.setCop2(pchd03.getPoPurQty() == null ? "" : pchd03.getPoPurQty().toString());
             pchd03.setCop3(pchd03.getPodno());
             pchd03.setCop4(pchd03.getPodno());
             pchd03.setCop5(pchd03.getSupplierMat());
@@ -146,10 +146,10 @@ public class Pch03Handler implements EventHandler {
             pchd03.setZws1(pchd03.getPodno() + "\n" + pchd03.getCdBy());
             pchd03.setZws2(pchd03.getSupplier() + "\n" + pchd03.getMatId());
             pchd03.setZws3(pchd03.getManuCode());
-            pchd03.setZws4(pchd03.getPoPurQty() + "\n" + pchd03.getStorage());
+            pchd03.setZws4(pchd03.getCop2() + "\n" + pchd03.getStorage());
             pchd03.setZws5(pchd03.getPoPurUnit() + "\n" + pchd03.getMemo());
             pchd03.setZws6(prc.toString());
-            pchd03.setZws7(pchd03.getPoPurQty().toString());
+            pchd03.setZws7(pchd03.getCop2());
             pchd03.setZws8(pchd03.getCurrency());
             pchd03.setZws8(DateTools.getCurrentDateString(pchd03.getPoDDate()));
 

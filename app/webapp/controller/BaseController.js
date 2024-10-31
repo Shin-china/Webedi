@@ -1367,15 +1367,18 @@ sap.ui.define([
          * @param {*Odata}tableOdata
          */
          _invoPo(aSelectedData) {
+          var that =this;
             var oParams = this._buildParams(aSelectedData);
             var par = {parms:JSON.stringify(oParams)};
             this._callCdsAction("/PCH02_CONFIRMATION_REQUEST", par, this).then(
               function (oData) {
                 var str = oData.PCH02_CONFIRMATION_REQUEST;
+                that._setBusy(false);
                 sap.m.MessageToast.show(str);
               },
               function (error) {
-                sap.m.MessageToast.show("Error executing action.");
+                that._setBusy(false);
+                sap.m.MessageToast.show(error);
               }
             );
 
