@@ -1,6 +1,7 @@
 package customer.service.pch;
 
 import cds.gen.pch.T02PoD;
+import cds.gen.pch.T03PoC;
 import cds.gen.pch.T07QuotationD;
 import cds.gen.pch.T10Upload;
 import cds.gen.tableservice.PchT03PoItemPrint;
@@ -38,6 +39,8 @@ import java.util.LinkedHashMap;
 public class PchService {
     @Autowired
     PchD002 pchD002;
+    @Autowired
+    PchD003 pchD003;
     @Autowired
     PchD010 pchD010;
 
@@ -96,8 +99,18 @@ public class PchService {
     }
 
     public void updatePch03(String parms) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'updatePch03'");
+        // 直接从上下文中获取参数
+        JSONArray jsonArray = JSONArray.parseArray(parms);
+        // 根据传入的po和po明细修改po明细状态
+        for (int i = 0; i < jsonArray.size(); i++) {
+            JSONObject jsonObject = jsonArray.getJSONObject(i);
+            T03PoC byID = pchD003.getByID(jsonObject.getString("PONO"), Integer.parseInt(jsonObject.getString("DNO")),
+                    Integer.parseInt(jsonObject.getString("SEQ")));
+
+            byID.setStatus(UmcConstants.DOC_D_STATUS_2);
+            pchD003.updateD003(byID);
+
+        }
     }
 
 }
