@@ -24,7 +24,7 @@ extend service TableService {
                 )
   
             distinct {
-                key T02.PO_NO || T02.D_NO || T03.SEQ || T04.ID as ID  : String,
+                key T02.PO_NO || T02.D_NO || T03.SEQ || T04.ID as KEYID  : String,
                     T02.PO_NO,              // 発注番号
                     T02.D_NO,               // 明細番号
                     T03.SEQ,                // 連続番号
