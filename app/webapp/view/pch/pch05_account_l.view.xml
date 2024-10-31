@@ -31,9 +31,9 @@
   <!-- </f:DynamicPageHeader> -->
 
     <smartTable:SmartTable id="ID" enableAutoColumnWidth="true" entitySet="PCH_T05_ACCOUNT_DETAIL_EXCEL" 
-        ignoredFields=""   
-        requestAtLeastFields="GR_DATE,TAX_CODE,SHKZG_FLAG,TRANSACTION,TAX_BASE_AMOUNT,REFERENCE, DETAILTEXT, ACCOUNT, DOCUMENTTYPE, HEADERTEXT, DIFF_TAX_AMOUNT, INVOICEID,CURRENCY,LASTDATE" 
-        initiallyVisibleFields="GR_DATE,PO_BUKRS,INV_MONTH,SUPPLIER,CALC_10_PRICE_AMOUNT,CALC_8_PRICE_AMOUNT,SAP_TAX_AMOUNT_10,SAP_TAX_AMOUNT_8,RECALC_PRICE_AMOUNT_10,RECALC_PRICE_AMOUNT_8,DIFF_TAX_AMOUNT_10,DIFF_TAX_AMOUNT_8,CALC_10_PRICE_AMOUNT_TOTAL,CALC_8_PRICE_AMOUNT_TOTAL,TAX_CODE,SHKZG_FLAG,TRANSACTION,TAX_BASE_AMOUNT,REFERENCE, DETAILTEXT, ACCOUNT, DOCUMENTTYPE, HEADERTEXT, DIFF_TAX_AMOUNT, INVOICEID,CURRENCY,LASTDATE" 
+        ignoredFields="D_NO,MAT_ID,TAX_CODE,CURRENCY,GR_DATE,ACCOUNT,DETAILTEXT,DIFF_TAX_AMOUNT,HEADERTEXT,INVOICEID,LASTDATE,MAT_DESC,NO_DETAILS,PRICE_AMOUNT,PRICE_AMOUNT_TOTAL,REFERENCE,SAP_TAX_AMOUNT_10_TOTAL,SAP_TAX_AMOUNT_8_TOTAL,SHKZG_FLAG,SUPPLIER_DESCRIPTION,TAX_RATE,TOTAL_10_TAX_INCLUDED_AMOUNT,TOTAL_8_TAX_INCLUDED_AMOUNT,TOTAL_AMOUNT_10_TOTAL,TOTAL_AMOUNT_8_TOTAL,TOTAL_COUNT,TOTAL_PRICE_AMOUNT,TOTAL_RECALC_PRICE_AMOUNT,TOTAL_TAX_AMOUNT,TOTAL_TOTAL_AMOUNT,TRANSACTION,PO_NO,UNIT,UNIT_PRICE,VALUE01,ADRESS,INV_NO,INV_POST_DATE,POSTCODE,QUANTITY,LOG_NO,INV_MONTH_FORMATTED,DOCUMENTTYPE,TAX_BASE_AMOUNT"   
+        requestAtLeastFields="D_NO,MAT_ID,TAX_CODE,CURRENCY,GR_DATE,ACCOUNT,DETAILTEXT,DIFF_TAX_AMOUNT,HEADERTEXT,INVOICEID,LASTDATE,MAT_DESC,NO_DETAILS,PRICE_AMOUNT,PRICE_AMOUNT_TOTAL,REFERENCE,SAP_TAX_AMOUNT_10_TOTAL,SAP_TAX_AMOUNT_8_TOTAL,SHKZG_FLAG,SUPPLIER_DESCRIPTION,TAX_RATE,TOTAL_10_TAX_INCLUDED_AMOUNT,TOTAL_8_TAX_INCLUDED_AMOUNT,TOTAL_AMOUNT_10_TOTAL,TOTAL_AMOUNT_8_TOTAL,TOTAL_COUNT,TOTAL_PRICE_AMOUNT,TOTAL_RECALC_PRICE_AMOUNT,TOTAL_TAX_AMOUNT,TOTAL_TOTAL_AMOUNT,TRANSACTION,PO_NO,UNIT,UNIT_PRICE,VALUE01,ADRESS,INV_NO,INV_POST_DATE,POSTCODE,QUANTITY,LOG_NO,INV_MONTH_FORMATTED,DOCUMENTTYPE,TAX_BASE_AMOUNT" 
+        initiallyVisibleFields="GR_DATE,PO_BUKRS,INV_MONTH,SUPPLIER,CALC_10_PRICE_AMOUNT,CALC_8_PRICE_AMOUNT,SAP_TAX_AMOUNT_10,SAP_TAX_AMOUNT_8,RECALC_PRICE_AMOUNT_10,RECALC_PRICE_AMOUNT_8,DIFF_TAX_AMOUNT_10,DIFF_TAX_AMOUNT_8,CALC_10_PRICE_AMOUNT_TOTAL,CALC_8_PRICE_AMOUNT_TOTAL,SHKZG_FLAG,TRANSACTION,REFERENCE, DETAILTEXT, ACCOUNT, HEADERTEXT, DIFF_TAX_AMOUNT, INVOICEID,LASTDATE" 
         smartFilterId="smartFilterBar" enableExport="true" beforeExport="onBeforeExport" 
         useVariantManagement="true" useTablePersonalisation="true" header="{pch>TITLE_RESULT}" showRowCount="true" persistencyKey="pch05_SmartTableAnalytical_Explored" enableAutoBinding="false" >
     
@@ -196,7 +196,7 @@
     </table:template>
 </table:Column>
 
-<table:Column id="colTaxCode" width="10rem" sortProperty="TAX_CODE" filterProperty="TAX_CODE" visible="false">
+<!-- <table:Column id="colTaxCode" width="10rem" sortProperty="TAX_CODE" filterProperty="TAX_CODE" visible="false">
     <table:customData>
         <core:CustomData key="p13nData" value='{"columnKey":"TAX_CODE", "leadingProperty":"TAX_CODE", "sortProperty":"TAX_CODE", "filterProperty":"TAX_CODE"}'/>
     </table:customData>
@@ -206,9 +206,9 @@
     <table:template>
         <Text id="textTaxCode" text="{TAX_CODE}"/>
     </table:template>
-</table:Column>
+</table:Column> -->
 
-<table:Column id="colTaxamount" width="10rem" sortProperty="TAX_BASE_AMOUNT" filterProperty="TAX_BASE_AMOUNT" visible="false">
+<!-- <table:Column id="colTaxamount" width="10rem" sortProperty="TAX_BASE_AMOUNT" filterProperty="TAX_BASE_AMOUNT" visible="false">
     <table:customData>
         <core:CustomData key="p13nData" value='{"columnKey":"TAX_BASE_AMOUNT", "leadingProperty":"TAX_BASE_AMOUNT", "sortProperty":"TAX_BASE_AMOUNT", "filterProperty":"TAX_BASE_AMOUNT"}'/>
     </table:customData>
@@ -230,9 +230,9 @@
     <table:template>
         <Text id="textshkzg" text="{SHKZG_FLAG}"/>
     </table:template>
-</table:Column>
+</table:Column> -->
 
-<table:Column id="colTransaction" width="10rem" sortProperty="TRANSACTION" filterProperty="TRANSACTION" visible="false">
+<!-- <table:Column id="colTransaction" width="10rem" sortProperty="TRANSACTION" filterProperty="TRANSACTION" visible="false">
     <table:customData>
         <core:CustomData key="p13nData" value='{"columnKey":"TRANSACTION", "leadingProperty":"TRANSACTION", "sortProperty":"TRANSACTION", "filterProperty":"TRANSACTION"}'/>
     </table:customData>
@@ -242,9 +242,9 @@
     <table:template>
         <Text id="textTransaction" text="{TRANSACTION}"/>
     </table:template>
-</table:Column>
+</table:Column> -->
 
-<table:Column id="colReference" width="10rem" sortProperty="REFERENCE" filterProperty="REFERENCE" visible="false">
+<!-- <table:Column id="colReference" width="10rem" sortProperty="REFERENCE" filterProperty="REFERENCE" visible="false">
     <table:customData>
         <core:CustomData key="p13nData" value='{"columnKey":"REFERENCE", "leadingProperty":"REFERENCE", "sortProperty":"REFERENCE", "filterProperty":"REFERENCE"}'/>
     </table:customData>
@@ -278,9 +278,9 @@
     <table:template>
         <Text id="textAccount" text="{ACCOUNT}"/>
     </table:template>
-</table:Column>
+</table:Column> -->
 
-<table:Column id="colDocumentType" width="10rem" sortProperty="DOCUMENTTYPE" filterProperty="DOCUMENTTYPE" visible="false">
+<!-- <table:Column id="colDocumentType" width="10rem" sortProperty="DOCUMENTTYPE" filterProperty="DOCUMENTTYPE" visible="false">
     <table:customData>
         <core:CustomData key="p13nData" value='{"columnKey":"DOCUMENTTYPE", "leadingProperty":"DOCUMENTTYPE", "sortProperty":"DOCUMENTTYPE", "filterProperty":"DOCUMENTTYPE"}'/>
     </table:customData>
@@ -302,8 +302,8 @@
     <table:template>
         <Text id="textHeaderText" text="{HEADERTEXT}"/>
     </table:template>
-</table:Column>
-
+</table:Column> -->
+<!-- 
 <table:Column id="colDiffTaxAmount" width="10rem" sortProperty="DIFF_TAX_AMOUNT" filterProperty="DIFF_TAX_AMOUNT" visible="false">
     <table:customData>
         <core:CustomData key="p13nData" value='{"columnKey":"DIFF_TAX_AMOUNT", "leadingProperty":"DIFF_TAX_AMOUNT", "sortProperty":"DIFF_TAX_AMOUNT", "filterProperty":"DIFF_TAX_AMOUNT"}'/>
@@ -326,9 +326,9 @@
     <table:template>
         <Text id="textcurrency" text="{CURRENCY}"/>
     </table:template>
-</table:Column>
+</table:Column> -->
 
-<table:Column id="collastdate" width="10rem" sortProperty="LASTDATE" filterProperty="LASTDATE" visible="false">
+<!-- <table:Column id="collastdate" width="10rem" sortProperty="LASTDATE" filterProperty="LASTDATE" visible="false">
     <table:customData>
         <core:CustomData key="p13nData" value='{"columnKey":"LASTDATE", "leadingProperty":"LASTDATE", "sortProperty":"LASTDATE", "filterProperty":"LASTDATE"}'/>
     </table:customData>
@@ -350,9 +350,9 @@
     <table:template>
         <Text id="textGrdate" text="{GR_DATE}"/>
     </table:template>
-</table:Column>
+</table:Column> -->
 
-<table:Column id="colvalue01" width="10rem" sortProperty="VALUE01" filterProperty="VALUE01" visible="false">
+<!-- <table:Column id="colvalue01" width="10rem" sortProperty="VALUE01" filterProperty="VALUE01" visible="false">
     <table:customData>
         <core:CustomData key="p13nData" value='{"columnKey":"VALUE01", "leadingProperty":"VALUE01", "sortProperty":"VALUE01", "filterProperty":"VALUE01"}'/>
     </table:customData>
@@ -362,7 +362,7 @@
     <table:template>
         <Text id="textvalue01" text="{VALUE01}"/>
     </table:template>
-</table:Column>
+</table:Column> -->
 
 </table:columns>
         </table:Table>
