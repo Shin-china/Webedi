@@ -1435,45 +1435,40 @@ sap.ui.define([
           //返回发送过邮件的po号
           that.PrintTool._getPrintDataInfo(that,PoList,"/PCH_T10_UPLOAD",'PO_NO').then((oData) => {
             //判断dialog是的提示消息
-            var txt ="";
+            var txt = that.MessageTools._getI18nTextInModel("com", "Dialog", that.getView())
             var list = [];
-            oData.forEach((item) => {
-               if('Y' ==  item.TYPE){
-                list.push(item.PO_NO)
-                  
-               }
-            })
-
-            if(boo){
-              if(list.length > 0){
-                
-                txt = txt.MessageTools._getI18nMessage("Dialog2", list)
-              }else{
-                txt = that.MessageTools._getI18nTextInModel("com", "Dialog", that.getView())
+            
+            if(oData.length  != undefined ){
+                oData.forEach((item) => {
+                  if('Y' ==  item.TYPE){
+                  list.push(item.PO_NO)
+                  }
+              })
+  
+              if(boo){
+                if(list.length > 0){
+                  txt = txt.MessageTools._getI18nMessage("Dialog2", list)
+                }
               }
-            }else{
-              txt = that.MessageTools._getI18nTextInModel("com", "Dialog", that.getView())
             }
-          })
+            
+            sap.m.MessageBox.confirm(txt), {
+              icon: sap.m.MessageBox.Icon.INFORMATION,  
+              title: "Confirmation",  
+              actions: [sap.m.MessageBox.Action.OK, sap.m.MessageBox.Action.CANCEL],
+              emphasizedAction: sap.m.MessageBox.Action.OK,
+              onClose: function (sAction) {
+                if (sAction === sap.m.MessageBox.Action.OK) {
+                  resolve();
+                } else {
+                  reject();
+                  that._setBusy(false);
+                }
+              }
+            }
+          });
           
-          // 假设你的数据模型是JSONModel，并且已经绑定到了SmartTable  
-          sap.m.MessageBox.show(txt), {  
-            icon: sap.m.MessageBox.Icon.INFORMATION,  
-            title: "Confirmation",  
-            actions: [sap.m.MessageBox.Action.OK, sap.m.MessageBox.Action.CANCEL],  
-            emphasizedAction: sap.m.MessageBox.Action.OK,  
-            onClose: function(sAction) {  
-              if (sAction === sap.m.MessageBox.Action.OK) {  
-                // 处理OK动作  
-                resolve();
-              } else {  
 
-                reject();
-                that._setBusy(false);
-                // 处理CANCEL或关闭动作  
-              }  
-            }  
-          }
         })
       },
         //需要从明细取数据且弹提示框的所有前置
