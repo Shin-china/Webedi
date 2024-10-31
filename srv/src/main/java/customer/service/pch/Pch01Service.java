@@ -320,25 +320,25 @@ public class Pch01Service extends Service {
                         list.setReTxt(" insert success but t02 update faild");// 返回消息
                     } else {
 
-                        T02PoD byID = pchD002.getByID(s.getPO_NO(), s.getD_NO());
-                        T08Upload t08Upload = T08Upload.create();
-                        t08Upload.setPoNo(s.getPO_NO());
-                        t08Upload.setDNo(s.getD_NO());
-                        t08Upload.setPoNoDno(s.getPO_NO() + StringTool.leftPadWithZeros(s.getD_NO().toString(), 5));
-                        t08Upload.setMatId(s.getMAT_ID());
-                        t08Upload.setMatName(byID.getPoDTxz01());
-                        t08Upload.setQuantity(byID.getPoPurQty());
-                        t08Upload.setPlantId(byID.getPlantId());
-                        t08Upload.setLocationId(byID.getStorageLoc());
-                        t08Upload.setInputDate(s.getDELIVERY_DATE());
-                        t08Upload.setInputQty(s.getQUANTITY());
-                        t08Upload.setExtNumber(s.getExtNumber());
-
-                        t08Upload.setType("2");
-
-                        pchD008.insert(t08Upload);
-
                     }
+
+                    T02PoD byID = pchD002.getByID(s.getPO_NO(), s.getD_NO());
+                    T08Upload t08Upload = T08Upload.create();
+                    t08Upload.setPoNo(s.getPO_NO());
+                    t08Upload.setDNo(s.getD_NO());
+                    t08Upload.setPoNoDno(s.getPO_NO() + StringTool.leftPadWithZeros(s.getD_NO().toString(), 5));
+                    t08Upload.setMatId(s.getMAT_ID());
+                    t08Upload.setMatName(byID.getPoDTxz01());
+                    t08Upload.setQuantity(byID.getPoPurQty());
+                    t08Upload.setPlantId(byID.getPlantId());
+                    t08Upload.setLocationId(byID.getStorageLoc());
+                    t08Upload.setInputDate(s.getDELIVERY_DATE());
+                    t08Upload.setInputQty(s.getQUANTITY());
+                    t08Upload.setExtNumber(s.getExtNumber());
+
+                    t08Upload.setType("2");
+
+                    pchD008.insert(t08Upload);
 
                 }
 
