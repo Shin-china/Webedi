@@ -70,7 +70,7 @@ public class Pch02Handler implements EventHandler {
                 pchService.updatePch03(context.getParms());
 
                 // 将 Web Service 的响应结果返回给前台
-                context.setResult(response);
+                context.setResult("納期回答情報は購買伝票に反映されました。");
             } else {
                 // 如果没有找到配置，返回错误信息
                 context.setResult("Web Service configuration not found.");

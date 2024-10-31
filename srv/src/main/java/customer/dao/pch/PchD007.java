@@ -5,26 +5,18 @@ import java.util.Optional;
 
 import customer.dao.common.Dao;
 import customer.tool.DateTools;
-import io.vavr.collection.Seq;
-import software.amazon.awssdk.services.kms.endpoints.internal.Value.Int;
 
-import com.sap.cds.ql.Delete;
 import com.sap.cds.ql.Insert;
 import com.sap.cds.ql.Select;
 import com.sap.cds.ql.Update;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-import java.time.LocalDate;
 
-import cds.gen.pch.T06QuotationH;
 import cds.gen.pch.T07QuotationD;
 import cds.gen.pch.Pch_;
 
-import java.time.Instant;
 
 @Repository
 public class PchD007 extends Dao {
@@ -61,6 +53,22 @@ public class PchD007 extends Dao {
                 Select.from(Pch_.T07_QUOTATION_D)
                         .where(o -> o.QUO_NUMBER().eq(quoNum)))
                 .listOf(T07QuotationD.class);
+    }
+
+    public void update(T07QuotationD o) {
+        db.run(Update.entity(Pch_.T07_QUOTATION_D).entry(o));
+    }
+
+    public T07QuotationD getByT07Id(String t07Id) {
+        Optional<T07QuotationD> result = db.run(
+                Select.from(Pch_.T07_QUOTATION_D)
+                        .where(o -> o.ID().eq(t07Id)))
+                .first(T07QuotationD.class);
+
+        if (result.isPresent()) {
+            return result.get();
+        }
+        return null;
     }
 
 }
