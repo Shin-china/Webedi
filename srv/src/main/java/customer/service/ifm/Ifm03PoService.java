@@ -28,7 +28,7 @@ public class Ifm03PoService {
     @Autowired
     private IFSManageDao ifsManageDao;
 
-    public void syncPo() {
+    public String syncPo() {
 
         try {
             // 获取 Web Service 配置信息
@@ -42,7 +42,7 @@ public class Ifm03PoService {
 
                 SapPchRoot sapPchRoot = JSON.parseObject(response, SapPchRoot.class);
 
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
 
                 Boolean dele = false;
 
@@ -124,12 +124,18 @@ public class Ifm03PoService {
 
             } else {
 
+                return "同步失败";
+
             }
-        } catch (UnsupportedOperationException e) {
+        } catch (Exception e) {
+
             e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+
+            return e.getMessage();
+
         }
+
+        return "同步成功";
 
     }
 
