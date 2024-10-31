@@ -11,6 +11,7 @@ import customer.dao.pch.Pch08Dao;
 import customer.dao.pch.PchD002;
 import customer.dao.pch.PchD003;
 import customer.dao.pch.PchD007;
+import customer.tool.StringTool;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -144,6 +145,7 @@ public class Pch08Service {
             List<T07QuotationD> t07List = d007Dao.getList(quoNum);
             // 根据物料号分组 每个物料一行
             Map<String, List<T07QuotationD>> tempMap = t07List.stream()
+                    .filter(t07 -> !StringTool.isEmpty(t07.getMaterial()))
                     .collect(Collectors.groupingBy(T07QuotationD::getMaterial));
 
             Set<String> keySet = tempMap.keySet();
@@ -209,12 +211,12 @@ public class Pch08Service {
                 String t07Id = o.getString("KEY_" + i);
                 String qty = o.getString("QTY_" + i);
                 String price = o.getString("PRICE_" + i);
-                // T07QuotationD t07 = d007Dao.getById(t07Id);
-                // if (t07 != null) {
-                // t07.setQty(qty == null ? BigDecimal.ZERO : new BigDecimal(qty));
-                // t07.setPrice(price == null ? BigDecimal.ZERO : new BigDecimal(price));
-                // d007Dao.update(t07);
-                // }
+                T07QuotationD t07 = d007Dao.getByT07Id(t07Id);
+                if (t07 != null) {
+                    t07.setQty(qty == null ? BigDecimal.ZERO : new BigDecimal(qty));
+                    t07.setPrice(price == null ? BigDecimal.ZERO : new BigDecimal(price));
+                    d007Dao.update(t07);
+                }
             }
         }
     }
