@@ -18,15 +18,19 @@ import com.sap.cloud.sdk.result.IntegerExtractor;
 
 import cds.gen.pch.T02PoD;
 import cds.gen.pch.T03PoC;
+import cds.gen.pch.T08Upload;
 import cds.gen.tableservice.PoTypePop;
 import customer.bean.pch.Pch01List;
 import customer.service.Service;
-
+import customer.tool.DateTools;
 import customer.bean.pch.Pch01;
 import customer.comm.tool.MessageTools;
+import customer.comm.tool.StringTool;
 // import customer.usapbe.comm.tool.UniqueIDTool;
 // import customer.usapbe.service.Service;
 import customer.dao.pch.Pch01saveDao;
+import customer.dao.pch.PchD002;
+import customer.dao.pch.PchD008Dao;
 import customer.dao.sys.IFSManageDao;
 
 @Component
@@ -43,6 +47,12 @@ public class Pch01Service extends Service {
 
     @Autowired
     Pch01saveDao savaDao;
+
+    @Autowired
+    private PchD002 pchD002;
+
+    @Autowired
+    private PchD008Dao pchD008;
 
     // @Autowired
     // MaterialDao materialDao;
@@ -310,21 +320,40 @@ public class Pch01Service extends Service {
                         list.setReTxt(" insert success but t02 update faild");// 返回消息
                     } else {
 
+                        T02PoD byID = pchD002.getByID(s.getPO_NO(), s.getD_NO());
+                        T08Upload t08Upload = T08Upload.create();
+                        t08Upload.setPoNo(s.getPO_NO());
+                        t08Upload.setDNo(s.getD_NO());
+                        t08Upload.setPoNoDno(s.getPO_NO() + StringTool.leftPadWithZeros(s.getD_NO().toString(), 5));
+                        t08Upload.setMatId(s.getMAT_ID());
+                        t08Upload.setMatName(byID.getPoDTxz01());
+                        t08Upload.setQuantity(byID.getPoPurQty());
+                        t08Upload.setPlantId(byID.getPlantId());
+                        t08Upload.setLocationId(byID.getStorageLoc());
+                        t08Upload.setInputDate(s.getDELIVERY_DATE());
+                        t08Upload.setInputQty(s.getQUANTITY());
+                        t08Upload.setExtNumber(s.getExtNumber());
+
+                        t08Upload.setType("2");
+
+                        pchD008.insert(t08Upload);
+
                     }
-
-                    list.setErr(false);// 有无错误
-                    list.setReTxt("insert success");// 返回消息
-                    s.setTYPE("success");// 返回结果
-
-                } else {
-
-                    list.setErr(true);
-                    list.setReTxt("insert faild");
-                    s.setTYPE("error");// 返回结果
 
                 }
 
+                list.setErr(false);// 有无错误
+                list.setReTxt("insert success");// 返回消息
+                s.setTYPE("success");// 返回结果
+
+            } else {
+
+                list.setErr(true);
+                list.setReTxt("insert faild");
+                s.setTYPE("error");// 返回结果
+
             }
+
         }
     }
 

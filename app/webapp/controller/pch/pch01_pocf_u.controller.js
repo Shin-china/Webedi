@@ -98,7 +98,7 @@ sap.ui.define([
 						item.MSG_TEXT = "日付形式ではないので、調整してください"
 					}
 						
-					item.STATE = "Error"; // 将状态设置为错误状态
+					item.STATUS = "Error"; // 将状态设置为错误状态
 					item.I_CON = "sap-icon://error"; // 设置状态图标为错误图
 					jsonModel.refresh(); // 刷新模型以更新UI
 					that._setBusy(false);
@@ -274,7 +274,7 @@ sap.ui.define([
         
 			aCols.push({
 				label: 'CHECK状态',
-				property: 'STATE'
+				property: 'STATUS'
 			});
 
 			aCols.push({
