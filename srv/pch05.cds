@@ -167,7 +167,7 @@ extend service TableService {
         distinct {      
             key T01.PO_BUKRS,  
             key T01.SUPPLIER,
-            key T01.INV_NO,   
+            key T01.INV_MONTH,   
             SUM(CALC_10_PRICE_AMOUNT) as CALC_10_PRICE_AMOUNT: Decimal(15, 2),                      // 10% 税抜金额
             SUM(CALC_8_PRICE_AMOUNT) as CALC_8_PRICE_AMOUNT: Decimal(15, 2),                        // 8%  税抜金额
             SUM(SAP_TAX_AMOUNT_10) as SAP_TAX_AMOUNT_10: Decimal(15, 2),                        // 10% SAP税额
@@ -176,7 +176,7 @@ extend service TableService {
         group by
             T01.PO_BUKRS,
             T01.SUPPLIER,
-            T01.INV_NO;           // 仕入先 (聚合维度);
+            T01.INV_MONTH;           // 仕入先 (聚合维度);
 
     entity PCH_T05_ACCOUNT_DETAIL_SUM_END as
 

@@ -351,7 +351,7 @@
         <Label id="labelUnitPrice" text="{pch>UNIT_PRICE}"/>
     </table:label>
     <table:template>
-        <Text id="textUnitPrice" text="{UNIT_PRICE}"/>
+         <Text id="textUnitPrice" text="{path: 'UNIT_PRICE', formatter: '.formatter.formatUnitPrice'}"/>
     </table:template>
 </table:Column>
 
