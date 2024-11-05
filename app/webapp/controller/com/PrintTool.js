@@ -79,64 +79,6 @@ sap.ui.define(
               });
           }
         });
-      },_detailSelectPrint: function (_that, _sResponse, _xdpTemplateID, _data, _printBackFuncation, _smartTableId, entityInModelID) {
-        var that = this;
-
-        return new Promise(function (resolve, reject) {
-          // check if running in localhost
-          if (window.location.hostname === "localhost" || window.location.hostname === "220.248.121.53") {
-            // 本地开发打印
-            that._getOAuthToken(_that).then(
-              function (token) {
-                //生成pdf
-                that
-                  ._createPDF(_that, _sResponse, _xdpTemplateID, token)
-                  .then(
-                    function () {
-                      //打印回写处理
-                      if (_printBackFuncation) {
-                        that.printBackAction(_that, _data, _printBackFuncation, _smartTableId, entityInModelID);
-                      }
-                    },
-                    function (error) {
-                      //异常MSG处理
-                      reject(error);
-                      sap.m.MessageBox.alert(error.responseText);
-                      _that._setBusy(false);
-                    }
-                  )
-                  .finally(function () {
-                    resolve(true);
-                  });
-              },
-              function (error) {
-                _that._setBusy(false);
-                reject(error);
-                sap.m.MessageBox.alert(error.responseText);
-                _that._setBusy(false);
-              }
-            );
-          } else {
-            //BTP 打印
-            that
-              ._createPDF(_that, _sResponse, _xdpTemplateID)
-              .then(
-                function () {
-                  if (_printBackFuncation) {
-                    that.printBackAction(_that, _data, _printBackFuncation, _smartTableId, entityInModelID);
-                  }
-                },
-                function (error) {
-                  reject(error);
-                  sap.m.MessageBox.alert(error.responseText);
-                  _that._setBusy(false);
-                }
-              )
-              .finally(function () {
-                resolve(true);
-              });
-          }
-        });
       },
       /**
        * 账票下载不打印
