@@ -124,7 +124,8 @@ entity T06_QUOTATION_H : cuid, IF_CUID_FILED { //
   @title: '{i18n>VALIDATE_END}' VALIDATE_END     : Date; //見積有効終了日
 
   @title: '{i18n>CUSTOMER}' CUSTOMER             : String(50); //客先
-  @title: '{i18n>QUO_NUMBER}' QUO_NUMBER         : String(50); //販売見積バージョン
+  @title: '{i18n>QUO_NUMBER}' QUO_NUMBER         : String(50); //購買見積番号
+    @title: '{i18n>QUO_VERSION}' QUO_VERSION         : String(5); //販売見積バージョン
    @title: '{i18n>STATUS}' STATUS                 : String(50); //ステータス
  @title: '{i18n>MACHINE_TYPE}' MACHINE_TYPE     : String(50); //機種
   @title: '{i18n>Item}' Item                     : String(50); //アイテム
