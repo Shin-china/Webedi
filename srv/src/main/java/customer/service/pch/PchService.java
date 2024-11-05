@@ -93,7 +93,7 @@ public class PchService {
                 t10Upload.setType("Y");
             }
 
-            pchD010.insert(t10Upload);
+            pchD010.update(t10Upload);
         }
 
     }

@@ -196,19 +196,19 @@ public class Pch03Handler implements EventHandler {
 
         });
 
-        pchd03List.forEach(pchd03 -> {
-            if (isPrint[0]) {
-                T10Upload byPo = pchD010.getByPo(pchd03.getPoNo());
-                if (byPo == null) {
-                    pchd03.setType(UmcConstants.ZWS_TYPE_1);
-                } else {
-                    pchd03.setType(UmcConstants.ZWS_TYPE_2);
-                }
-            } else {
-                pchd03.setType(UmcConstants.ZWS_TYPE_3);
-            }
+        // pchd03List.forEach(pchd03 -> {
+        // if (isPrint[0]) {
+        // T10Upload byPo = pchD010.getByPo(pchd03.getPoNo());
+        // if (byPo == null) {
+        // pchd03.setType(UmcConstants.ZWS_TYPE_1);
+        // } else {
+        // pchd03.setType(UmcConstants.ZWS_TYPE_2);
+        // }
+        // } else {
+        // pchd03.setType(UmcConstants.ZWS_TYPE_3);
+        // }
 
-        });
+        // });
     }
 
     @On(event = PCH03SENDEMAILContext.CDS_NAME)

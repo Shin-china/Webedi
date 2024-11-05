@@ -152,7 +152,11 @@ extend service TableService {
                 T02.STATUS, // ステータス  01：送信済　02：照会済
                 T02.CD_BY, //登録者
                 T02.PO_D_DATE, //所要日付
-                T04.ZABC, //ABC区分 E：Email F：Fax  W：Web edi
+                 case T04.ZABC
+                    when 'E' then 'E'
+                    when 'F' then 'E'
+                    when 'W' then 'E'
+                    else 'C' end as ZABC : String(5), //ABC区分 E：Email F：Fax  W：Web edi
                 T02.PO_D_TXZ01, // 品目テキスト
                 T02.PO_PUR_QTY, // 発注数量
 
@@ -258,7 +262,11 @@ extend service TableService {
                 T02.STATUS, // ステータス  01：送信済　02：照会済
                 T02.CD_BY, //登録者
                 T02.PO_D_DATE, //所要日付
-                T04.ZABC, //ABC区分 E：Email F：Fax  W：Web edi
+                  case T04.ZABC
+                    when 'E' then 'E'
+                    when 'F' then 'E'
+                    when 'W' then 'E'
+                    else 'C' end as ZABC : String(5), //ABC区分 E：Email F：Fax  W：Web edi
                 T02.PO_D_TXZ01, // 品目テキスト
                 T02.PO_PUR_QTY, // 発注数量
                 T02.PO_PUR_UNIT, // 単位
@@ -302,7 +310,11 @@ extend service TableService {
                     T02.STATUS, // ステータス  01：送信済　02：照会済
                     T02.CD_BY, //登録者
                     T02.PO_D_DATE, //所要日付
-                    T04.ZABC, //ABC区分 E：Email F：Fax  W：Web edi
+                       case T04.ZABC
+                    when 'E' then 'E'
+                    when 'F' then 'E'
+                    when 'W' then 'E'
+                    else 'C' end as ZABC : String(5), //ABC区分 E：Email F：Fax  W：Web edi
                     T02.PO_D_TXZ01, // 品目テキスト
                     T02.PO_PUR_QTY, // 発注数量
                     T02.PO_PUR_UNIT, // 単位

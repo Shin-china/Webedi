@@ -300,7 +300,7 @@ sap.ui.define([
 						var zip = new JSZipSync();
 						that.printTaskPdf = {
 							completedCount: 0,
-							count: myMap.length,
+							count: myMap.size,
 							progress: 0,
 							pdfUrl: [],
 							zip: zip,
@@ -357,10 +357,8 @@ sap.ui.define([
 							    
 							}
 							
-							that._isQuerenDb(ObList, false);
-
-
 						})
+						that._isQuerenDb(ObList, false);
 					})
 				}
 
@@ -437,7 +435,7 @@ sap.ui.define([
 					that.byId("smartTable").rebindTable();
 				},
 				function (error) {
-					that.MessageTools._addMessage(error.responseText);
+					that.MessageTools._addMessage(error.responseText,null,null,that.getView());
 
 				}
 			)

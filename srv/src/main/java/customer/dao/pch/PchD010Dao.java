@@ -88,7 +88,7 @@ public class PchD010Dao extends Dao {
         o.setCdTime(getNow());
         o.setCdDate(DateTools.getLocalDate(o.getCdTime()));
         // o.setCdDateTime(DateTools.getTimeAsString(o.getCdTime()));
-        db.run(Insert.into(Pch_.T03_PO_C).entry(o));
+        db.run(Insert.into(Pch_.T10_UPLOAD).entry(o));
     }
     // db.run(Update.entity(Inv_.D001_T).entries(tnoList));
 }
