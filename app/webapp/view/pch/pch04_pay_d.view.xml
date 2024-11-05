@@ -131,7 +131,7 @@
             <core:CustomData key="p13nData" value='{"columnKey":"QUANTITY", "leadingProperty":"QUANTITY", "sortProperty":"QUANTITY", "filterProperty":"QUANTITY"}'/>
         </table:customData>
         <table:label>
-            <Label id="labelQuantity" text="{pch>QUANTITY}"/>
+            <Label id="labelQuantity" text="{pch>PCH04_QUANTITY}"/>
         </table:label>
         <table:template>
             <Text id="textQuantity" text="{QUANTITY}"/>
@@ -155,7 +155,7 @@
             <core:CustomData key="p13nData" value='{"columnKey":"UNIT_PRICE", "leadingProperty":"UNIT_PRICE", "sortProperty":"UNIT_PRICE", "filterProperty":"UNIT_PRICE"}'/>
         </table:customData>
         <table:label>
-            <Label id="labelUnitPrice" text="{pch>UNIT_PRICE}"/>
+            <Label id="labelUnitPrice" text="{pch>PCH04_UNIT_PRICE}"/>
         </table:label>
         <table:template>
             <Text id="textUnitPrice" text="{UNIT_PRICE}"/>
