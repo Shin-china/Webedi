@@ -433,7 +433,18 @@ extend service TableService {
             SUM(T03.DIFF_TAX_AMOUNT_10) as DIFF_TAX_AMOUNT_10: Decimal(15, 2),         // 10％消費税差額
             SUM(T03.DIFF_TAX_AMOUNT_8) as DIFF_TAX_AMOUNT_8: Decimal(15, 2),           // 8％消費税差額
             SUM(T03.CALC_10_PRICE_AMOUNT_TOTAL) as CALC_10_PRICE_AMOUNT_TOTAL: Decimal(15, 2), // 合計10％税込金額
-            SUM(T03.CALC_8_PRICE_AMOUNT_TOTAL) as CALC_8_PRICE_AMOUNT_TOTAL: Decimal(15, 2)  // 合計8％税込金額
+            SUM(T03.CALC_8_PRICE_AMOUNT_TOTAL) as CALC_8_PRICE_AMOUNT_TOTAL: Decimal(15, 2),  // 合計8％税込金額
+            T03.TRANSACTION,
+            T03.REFERENCE,
+            T03.DOCUMENTTYPE,
+            T03.HEADERTEXT,
+            T03.LASTDATE,
+            T03.ACCOUNT,
+            T03.DETAILTEXT,
+            T03.SHKZG_FLAG,
+            T03.DIFF_TAX_AMOUNT,
+            T03.TAX_CODE,
+          T03.TAX_BASE_AMOUNT
         }
         GROUP BY T02.SUPPLIER, 
                  T02.INV_MONTH,
@@ -442,7 +453,18 @@ extend service TableService {
                  T02.CALC_10_PRICE_AMOUNT,
                  T02.CALC_8_PRICE_AMOUNT, 
                  T02.SAP_TAX_AMOUNT_10, 
-                 T02.SAP_TAX_AMOUNT_8;
+                 T02.SAP_TAX_AMOUNT_8,
+                 T03.TRANSACTION,
+                 T03.REFERENCE,
+                 T03.DOCUMENTTYPE,
+                 T03.HEADERTEXT,
+                 T03.LASTDATE,
+                 T03.ACCOUNT,
+                 T03.DETAILTEXT,
+                 T03.SHKZG_FLAG,
+                 T03.DIFF_TAX_AMOUNT,
+                 T03.TAX_CODE,
+                 T03.TAX_BASE_AMOUNT;
 
 }
 
