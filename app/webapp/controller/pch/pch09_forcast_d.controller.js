@@ -62,6 +62,7 @@ sap.ui.define([
             var oModel = this.getView().getModel();
             var oCommonModel = this.getView().getModel("Common"); // 获取公共模型
             var aEmailParams = [];
+            var mail = "";
 
             // 遍历选中的行，提取所需数据
             var aSelectedData = aSelectedIndices.map(function (iIndex) {
@@ -76,6 +77,109 @@ sap.ui.define([
                 return;
             }
 
+            if (supplierSet.size === 1) { 
+                var H_CODE = "MM0001";
+                var SUPPLIER = supplierSet.values().next().value;
+                var entity = "/SYS_T08_COM_OP_D";
+
+            //     this._readHead(H_CODE, SUPPLIER, entity).then(function (oHeadData) {
+
+            //     let mail = oHeadData.results && oHeadData.results.length > 0 ? oHeadData.results[0].VALUE02 : '';
+
+            //         // 构建邮件内容对象
+            //     var mailobj = {
+            //         emailJson: {
+            //             TEMPLATE_ID: "UWEB_M001",
+            //             MAIL_TO: [
+            //                         mail
+                            
+            //             ].join(", "), // 使用逗号和空格连接
+            //             MAIL_BODY: [
+            //                 {
+            //                     object: "vendor",
+            //                     value: supplierName
+            //                 },
+            //                 {
+            //                     object: "yyyy",
+            //                     value: year
+            //                 },
+            //                 {
+            //                     object: "mm",
+            //                     value: month
+            //                 },
+            //                 {
+            //                     object: "absama",
+            //                     value: "测试没问题　様"
+            //                 }
+
+            //             ]
+            //         }
+            //     };
+                
+            // let newModel = this.getView().getModel("Common");
+            // let oBind = newModel.bindList("/sendEmail");
+            // // oBind.create(mailobj);
+            // let a =oBind.create(mailobj, {
+            //     success: function (oData) {
+            //         console.log(oData)
+            //         // 确保oData不为null并且有返回的结果
+            //         if (oData && oData.result && oData.result === "sucess") {
+            //             MessageToast.show("メールが正常に送信されました。");
+            //         } else {
+            //             MessageBox.error("メール送信に失敗しました。エラー: " + (oData.result || "不明なエラー"));
+            //         }
+            //     },
+            //     error: function (oError) {
+            //         console.log(oError)
+            //         MessageBox.error("メール送信に失敗しました。エラー: " + oError.message);
+            //     }
+                // });
+
+                this._readHead(H_CODE, SUPPLIER, entity).then((oHeadData) => {
+                    let mail = oHeadData.results && oHeadData.results.length > 0 ? 
+                        oHeadData.results.map(result => result.VALUE02).join(", ") : '';            
+                    let absama = oHeadData.results && oHeadData.results.length > 0 ? 
+                        oHeadData.results.map(result => result.VALUE03 + " 様").join("  ") : '';
+                    
+                    let mailobj = {
+                        emailJson: {
+                            TEMPLATE_ID: "UWEB_M001",
+                            MAIL_TO: [mail].join(", "), 
+                            MAIL_BODY: [
+                                { object: "vendor", value: supplierName },
+                                { object: "yyyy", value: year },
+                                { object: "mm", value: month },
+                                { object: "absama", value: absama}
+                            ]
+                        }
+                    };
+
+                    // 确保 this.getView() 是正确的
+                    let newModel = this.getView().getModel("Common");
+                    let oBind = newModel.bindList("/sendEmail");
+
+                    oBind.create(mailobj, {
+                        success: function (oData) {
+                            if (oData && oData.result && oData.result === "sucess") {
+                                MessageToast.show("メールが正常に送信されました。");
+                            } else {
+                                MessageBox.error("メール送信に失敗しました。エラー: " + (oData.result || "不明なエラー"));
+                            }
+                        },
+                        error: function (oError) {
+                            MessageBox.error("メール送信に失敗しました。エラー: " + oError.message);
+                        }
+                    });
+                });
+
+                
+
+            // console.log(a)
+
+            //     });
+
+            }
+                
             // 假设您在这里定义邮件内容模板
             var supplierName = "";
             var year = "";
@@ -95,58 +199,91 @@ sap.ui.define([
             });
 
     
-                // 构建邮件内容对象
-                var mailobj = {
-                    emailJson: {
-                        TEMPLATE_ID: "UWEB_M001",
-                        MAIL_TO: [
-                            "zhao.wang@sh.shin-china.com",
-                            "xiaochen.huang@sh.shin-china.com"
+            //     // 构建邮件内容对象
+            //     var mailobj = {
+            //         emailJson: {
+            //             TEMPLATE_ID: "UWEB_M001",
+            //             MAIL_TO: [
+            //                         mail
                             
-                        ].join(", "), // 使用逗号和空格连接
-                        MAIL_BODY: [
-                            {
-                                object: "vendor",
-                                value: supplierName
-                            },
-                            {
-                                object: "yyyy",
-                                value: year
-                            },
-                            {
-                                object: "mm",
-                                value: month
-                            },
-                            {
-                                object: "absama",
-                                value: "测试没问题　様"
-                            }
+            //             ].join(", "), // 使用逗号和空格连接
+            //             MAIL_BODY: [
+            //                 {
+            //                     object: "vendor",
+            //                     value: supplierName
+            //                 },
+            //                 {
+            //                     object: "yyyy",
+            //                     value: year
+            //                 },
+            //                 {
+            //                     object: "mm",
+            //                     value: month
+            //                 },
+            //                 {
+            //                     object: "absama",
+            //                     value: "测试没问题　様"
+            //                 }
 
-                        ]
-                    }
-                };
+            //             ]
+            //         }
+            //     };
                 
-            let newModel = this.getView().getModel("Common");
-            let oBind = newModel.bindList("/sendEmail");
-            // oBind.create(mailobj);
-            let a =oBind.create(mailobj, {
-                success: function (oData) {
-                    console.log(oData)
-                    // 确保oData不为null并且有返回的结果
-                    if (oData && oData.result && oData.result === "sucess") {
-                        MessageToast.show("メールが正常に送信されました。");
-                    } else {
-                        MessageBox.error("メール送信に失敗しました。エラー: " + (oData.result || "不明なエラー"));
-                    }
-                },
-                error: function (oError) {
-                    console.log(oError)
-                    MessageBox.error("メール送信に失敗しました。エラー: " + oError.message);
-                }
-            });
-            console.log(a)
+            // let newModel = this.getView().getModel("Common");
+            // let oBind = newModel.bindList("/sendEmail");
+            // // oBind.create(mailobj);
+            // let a =oBind.create(mailobj, {
+            //     success: function (oData) {
+            //         console.log(oData)
+            //         // 确保oData不为null并且有返回的结果
+            //         if (oData && oData.result && oData.result === "sucess") {
+            //             MessageToast.show("メールが正常に送信されました。");
+            //         } else {
+            //             MessageBox.error("メール送信に失敗しました。エラー: " + (oData.result || "不明なエラー"));
+            //         }
+            //     },
+            //     error: function (oError) {
+            //         console.log(oError)
+            //         MessageBox.error("メール送信に失敗しました。エラー: " + oError.message);
+            //     }
+            // });
+            // console.log(a)
             
-        }                                                                                                                                                                                                                                                                                          
+        },
+
+        _readHead: function (a,b, entity) {
+          var that = this;
+          return new Promise(function (resolve, reject) {
+            that.getModel().read(entity, {
+                filters: [
+                  
+                new sap.ui.model.Filter({
+                  path: "H_CODE",
+                  value1: a,
+                  operator: sap.ui.model.FilterOperator.EQ,
+                }),
+                new sap.ui.model.Filter({
+                  path: "VALUE01",
+                  value1: b,
+                  operator: sap.ui.model.FilterOperator.EQ,
+                }),
+
+                new sap.ui.model.Filter({
+                  path: "DEL_FLAG",
+                  value1: "X",
+                  operator: sap.ui.model.FilterOperator.NE,
+                }),
+
+              ],
+              success: function (oData) {
+                resolve(oData);
+              },
+              error: function (oError) {
+                reject(oError);
+              },
+            });
+          });
+        },
         
     });
 });

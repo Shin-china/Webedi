@@ -20,7 +20,7 @@
 
   <f:DynamicPageTitle id="DynamicPageTitle">
     <f:heading>
-      <Title id="Title" text="{pch>PCH01_TITLE}"/>
+      <Title id="Title" text="{pch>PCH01_TAB_DISPLAY}"/>
     </f:heading>
     <f:navigationActions>
       <Button id="_IDGenButton3" icon="sap-icon://nav-back" tooltip="nav-back" press="navTo('RouteMainView')"/>
