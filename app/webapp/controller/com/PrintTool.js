@@ -218,6 +218,74 @@ sap.ui.define(
               }
             });
           },
+          /**
+       * 账票EMAIL不打印
+       * @param {*} _that 打印画面
+       * @param {* 打印数据} _sResponse 【json2xml 格式数据】
+       * @param {* 模板} _xdpTemplateID
+       * @param {* 打印参数} _data
+       * @param {* 打印回写处理方法} _printBackFuncation
+       * @param {* pdf下载名字} _name
+       */
+      _detailSelectPrintEmil: function (_that, _sResponse, _xdpTemplateID, _data, _printBackFuncation,_name, _smartTableId, entityInModelID,count) {
+        var that = this;
+
+        return new Promise(function (resolve, reject) {
+          // check if running in localhost
+          if (window.location.hostname === "localhost" || window.location.hostname === "220.248.121.53") {
+            // 本地开发打印
+            that._getOAuthToken(_that).then(
+              function (token) {
+                //生成pdf
+                that
+                  ._createPDFEml(_that, _sResponse, _xdpTemplateID, token)
+                  .then(
+                    function () {
+                      //打印回写处理
+                      if (_printBackFuncation) {
+                        that.printBackAction(_that, _data, _printBackFuncation, _smartTableId, entityInModelID);
+                      }
+                    },
+                    function (error) {
+                      //异常MSG处理
+                      reject(error);
+                      sap.m.MessageBox.alert(error.responseText);
+                      _that._setBusy(false);
+                    }
+                  )
+                  .finally(function () {
+                    resolve(true);
+                  });
+              },
+              function (error) {
+                _that._setBusy(false);
+                reject(error);
+                sap.m.MessageBox.alert(error.responseText);
+                _that._setBusy(false);
+              }
+            );
+          } else {
+            //BTP 打印
+            that
+              ._createPDFEml(_that, _sResponse, _xdpTemplateID)
+              .then(
+                function () {
+                  if (_printBackFuncation) {
+                    that.printBackAction(_that, _data, _printBackFuncation, _smartTableId, entityInModelID);
+                  }
+                },
+                function (error) {
+                  reject(error);
+                  sap.m.MessageBox.alert(error.responseText);
+                  _that._setBusy(false);
+                }
+              )
+              .finally(function () {
+                resolve(true);
+              });
+          }
+        });
+      },
         /**
                * 账票下载不打印2,多种格式一并下载调用
                * @param {*} _that 打印画面
