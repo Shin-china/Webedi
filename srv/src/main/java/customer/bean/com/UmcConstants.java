@@ -132,4 +132,21 @@ public class UmcConstants {
     public final static String SORT_MAT = "0";
     public final static String SORT_SHELF = "1";
 
+    // 公司code的常量
+    public static final String C_INFO = "C_INFO";
+    // 公司code的常量
+    public static final String C_INFO_NAME = "C_INFO_NAME";
+    // 公司code的常量
+    public static final String C_INFO_POSTCODE = "C_INFO_POSTCODE";
+    // 公司code的常量
+    public static final String C_INFO_REGIONS = "C_INFO_REGIONS";
+    // 公司code的常量
+    public static final String C_INFO_FAX = "C_INFO_FAX";
+    // 公司code的常量
+    public static final String C_INFO_TEL = "C_INFO_TEL";
+    // 注文书的常量
+    public static final String ZWS_TYPE_1 = "IUSSE";
+    public static final String ZWS_TYPE_2 = "REIUSSE";
+    public static final String ZWS_TYPE_3 = "CANCEL";
+
 }

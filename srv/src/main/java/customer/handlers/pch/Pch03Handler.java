@@ -19,7 +19,12 @@ import cds.gen.tableservice.PchT03PoItemPrint_;
 import cds.gen.tableservice.TableService_;
 import cds.gen.MailBody;
 import cds.gen.MailJson;
+import cds.gen.pch.T10Upload;
+import cds.gen.sys.T08ComOpD;
+import customer.bean.com.UmcConstants;
 import customer.comm.tool.StringTool;
+import customer.dao.pch.PchD008Dao;
+import customer.dao.pch.PchD010Dao;
 import customer.service.pch.PchService;
 import customer.service.sys.EmailServiceFun;
 import customer.tool.DateTools;
@@ -48,8 +53,11 @@ public class Pch03Handler implements EventHandler {
     @Autowired
     PchService pchService;
 
-    // @Autowired
-    // PchService pchService;
+    @Autowired
+    PchD010Dao pchD010;
+    @Autowired
+    PchD008Dao pchD008Dao;
+
     /**
      * 
      * @param context
@@ -79,6 +87,9 @@ public class Pch03Handler implements EventHandler {
      */
     @After(entity = PchT03PoItemPrint_.CDS_NAME, event = "READ")
     public void beforeReadD03PDF(CdsReadEventContext context, Stream<PchT03PoItemPrint> pchd03List) {
+
+        Boolean[] isPrint = new Boolean[1];
+        isPrint[0] = false;
         pchd03List.forEach(pchd03 -> {
             // 获取po
             String po = pchd03.getPoNo();
@@ -151,11 +162,51 @@ public class Pch03Handler implements EventHandler {
             pchd03.setZws6(prc.toString());
             pchd03.setZws7(pchd03.getCop2());
             pchd03.setZws8(pchd03.getCurrency());
-            pchd03.setZws8(DateTools.getCurrentDateString(pchd03.getPoDDate()));
+            pchd03.setZws9(DateTools.getCurrentDateString(pchd03.getPoDDate()));
 
             pchd03.setDate1(DateTools.getCurrentDateString());
             pchd03.setDate2(DateTools.getCurrentDateString());
             pchd03.setDate3(DateTools.getCurrentDateString());
+
+            List<T08ComOpD> byList = pchD008Dao.getByList(UmcConstants.C_INFO);
+            for (T08ComOpD t08ComOpD : byList) {
+                if (UmcConstants.C_INFO.equals(t08ComOpD.getDName())) {
+                    pchd03.setBpName12(t08ComOpD.getValue01());
+                }
+                if (UmcConstants.C_INFO_POSTCODE.equals(t08ComOpD.getDName())) {
+                    pchd03.setPostcode2(t08ComOpD.getValue01());
+                }
+                if (UmcConstants.C_INFO_REGIONS.equals(t08ComOpD.getDName())) {
+                    pchd03.setRegions2(t08ComOpD.getValue01());
+                }
+                if (UmcConstants.C_INFO_FAX.equals(t08ComOpD.getDName())) {
+                    pchd03.setTel2(t08ComOpD.getValue01());
+                }
+                if (UmcConstants.C_INFO_TEL.equals(t08ComOpD.getDName())) {
+                    pchd03.setFax2(t08ComOpD.getValue01());
+                }
+
+            }
+
+            // 设置注文书状态
+            //
+            if (!"D".equals(pchd03.getPoType())) {
+                isPrint[0] = true;
+            }
+
+        });
+
+        pchd03List.forEach(pchd03 -> {
+            if (isPrint[0]) {
+                T10Upload byPo = pchD010.getByPo(pchd03.getPoNo());
+                if (byPo == null) {
+                    pchd03.setType(UmcConstants.ZWS_TYPE_1);
+                } else {
+                    pchd03.setType(UmcConstants.ZWS_TYPE_2);
+                }
+            } else {
+                pchd03.setType(UmcConstants.ZWS_TYPE_3);
+            }
 
         });
     }

@@ -29,10 +29,10 @@ import cds.gen.pch.Pch_;
 import java.time.Instant;
 
 @Repository
-public class PchD010 extends Dao {
+public class PchD010Dao extends Dao {
 
     // 修改
-    private static final Logger logger = LoggerFactory.getLogger(PchD010.class);
+    private static final Logger logger = LoggerFactory.getLogger(PchD010Dao.class);
 
     /**
      * 根据
@@ -42,9 +42,26 @@ public class PchD010 extends Dao {
      */
     public T10Upload getByID(String po, int dno) {
         Optional<T10Upload> result = db.run(
-                Select.from(Pch_.T02_PO_D)
+                Select.from(Pch_.T10_UPLOAD)
                         .where(o -> o.PO_NO().eq(po)
                                 .and(o.D_NO().eq(dno))))
+                .first(T10Upload.class);
+        if (result.isPresent()) {
+            return result.get();
+        }
+        return null;
+    }
+
+    /**
+     * 判断log中po是否有已经回答
+     * 
+     * @param po
+     */
+    public T10Upload getByPo(String po) {
+        Optional<T10Upload> result = db.run(
+                Select.from(Pch_.T10_UPLOAD)
+                        .where(o -> o.PO_NO().eq(po)
+                                .and(o.TYPE().eq("Y"))))
                 .first(T10Upload.class);
         if (result.isPresent()) {
             return result.get();
@@ -63,7 +80,7 @@ public class PchD010 extends Dao {
     }
 
     // 追加
-    // 新建现品票
+    // 新建
     public void insert(T10Upload o) {
 
         logger.info("=================插入pchd010表号码" + o.getPoNo() + o.getDNo() + "================");

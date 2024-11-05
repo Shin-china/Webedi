@@ -15,7 +15,7 @@ import customer.dao.pch.Pch08Dao;
 import customer.dao.pch.PchD002;
 import customer.dao.pch.PchD003;
 import customer.dao.pch.PchD007;
-import customer.dao.pch.PchD010;
+import customer.dao.pch.PchD010Dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -42,7 +42,7 @@ public class PchService {
     @Autowired
     PchD003 pchD003;
     @Autowired
-    PchD010 pchD010;
+    PchD010Dao pchD010;
 
     // 根据传入的po和po明细修改po明细状态
     public void setPoStu(String po, String dNo) {

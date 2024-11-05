@@ -14,6 +14,8 @@ import cds.gen.pch.Pch_;
 import cds.gen.pch.T03PoC;
 import cds.gen.pch.T07QuotationD;
 import cds.gen.pch.T08Upload;
+import cds.gen.sys.Sys_;
+import cds.gen.sys.T08ComOpD;
 import customer.dao.common.Dao;
 import customer.tool.DateTools;
 
@@ -23,21 +25,36 @@ public class PchD008Dao extends Dao {
     private static final Logger logger = LoggerFactory.getLogger(PchD002.class);
 
     /**
-     * 根据id查找
+     * 根据h_code查找
      * 
      * @param po
      * @param dno
      */
-    public T03PoC getByID(String po, int dno, int seq) {
-        Optional<T03PoC> result = db.run(
-                Select.from(Pch_.T03_PO_C)
-                        .where(o -> o.PO_NO().eq(po)
-                                .and(o.D_NO().eq(dno)).and(o.SEQ().eq(seq))))
-                .first(T03PoC.class);
+    public T08ComOpD getByID(String id) {
+        Optional<T08ComOpD> result = db.run(
+                Select.from(Sys_.T08_COM_OP_D)
+                        .where(o -> o.ID().eq(id)))
+                .first(T08ComOpD.class);
+
         if (result.isPresent()) {
             return result.get();
         }
         return null;
+    }
+
+    /**
+     * 根据h_code查找
+     * 
+     * @param po
+     * @param dno
+     */
+    public List<T08ComOpD> getByList(String h_code) {
+        List<T08ComOpD> listOf = db.run(
+                Select.from(Sys_.T08_COM_OP_D)
+                        .where(o -> o.H_CODE().eq(h_code)))
+                .listOf(T08ComOpD.class);
+
+        return listOf;
     }
 
     // 追加

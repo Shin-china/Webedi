@@ -274,31 +274,97 @@ sap.ui.define([
 			var that = this;
 
 			//设置通用dialog
-			this._AfterDigLogCheck().then((selectedIndices) => {
+			this._AfterDigLogCheck().then((ObList) => {
 				let options = { compact: true, ignoreComment: true, spaces: 4 };
-				var IdList = that._TableDataList("detailTable", 'ID')
+
+				//所有用户数据
+				// var ObList = that._TableList("detailTable")
+
+				// 创建一个新的Map对象  用作判断key值对应po对应的明细数据
+				let myMap = new Map();
+				// 创建一个新的Map对象  用作判断po是否状态
+				let myZABCMap = new Map();
 				var PoList = that._TableDataList("detailTable", 'PO_NO')
+
+				//经过去重以后的po号
+				var uniqueIdList = [...new Set(PoList)];
 				// PoList= PoList.map
-				if (IdList) {
-					that.PrintTool._getPrintDataInfo(that, IdList, "/PCH_T03_PO_ITEM_PRINT", "ID").then((oData) => {
-						let sResponse = json2xml(oData, options);
-						console.log(sResponse)
-						that.setSysConFig().then(res => {
-							// that.PrintTool._detailSelectPrint(that, sResponse, "test/test", oData, null, null, null, null)
-							that.PrintTool._detailSelectPrintDow(that, sResponse, "test03/test2", oData, null,"注文書", null, null, null).then((oData) => {
-								var sapPo = {
-									po :PoList.join(","),
-									tpye :"PCH03",
-									fileName :"納品書",
-								}
-								//完成后是否更新确认,false不更新Y
-								that._isQuerenDb(selectedIndices,false);
-							that._setBusy(false);
-								// that.PrintTool.printBackActionPo(that,sapPo)
-							})
+				if (uniqueIdList != undefined && uniqueIdList.length > 0) {
+					that.setSysConFig().then(res => {
+						//根据po号分批次打印，将po数据原分好，将分别调用cds取对应的信息
+						ObList.forEach((item) => {
+							myMap.get(item.PO_NO) ? myMap.get(item.PO_NO).push(item.ID) : myMap.set(item.PO_NO, [item.ID]);
+							myZABCMap.get(item.PO_NO) ? myZABCMap.get(item.PO_NO) : myZABCMap.set(item.PO_NO, item.ZABC);
+						})
+
+						var zip = new JSZipSync();
+						that.printTaskPdf = {
+							completedCount: 0,
+							count: myMap.length,
+							progress: 0,
+							pdfUrl: [],
+							zip: zip,
+							zipFolder: zip.folder("注文書"),
+							zipFile: [],
+
+						};
+						//通过去重的po号取map数据进行打印
+						uniqueIdList.forEach((item) => {
+
+							//判断是EF,还是sonota还有W
+							let obj = myZABCMap.get(item);
+							//EFwei全po打印
+							if (obj == "E" || obj == "F") {
+							    //打印前先获取打印数据
+								that.PrintTool._getPrintDataInfo(that, [item], "/PCH_T03_PO_ITEM_PRINT", "PO_NO").then((oData) => {
+									let sResponse = json2xml(oData, options);
+									console.log(sResponse)
+									that.PrintTool._detailSelectPrintDowS(that, sResponse, "test03/test2", oData, null, "注文書", null, null, null).then((oData) => {
+										var sapPo = {
+											po: PoList.join(","),
+											tpye: "PCH03",
+											fileName: "納品書",
+										}
+
+										//完成后是否更新确认
+
+										// that.PrintTool.printBackActionPo(that,sapPo)
+										//完成后是否更新确认,false不更新Y
+
+									})
+								})
+							}
+							//sonota和C部分明细打印
+							if (obj == "C" || obj == "W") {
+								//打印前先获取打印数据
+								that.PrintTool._getPrintDataInfo(that, myMap.get(item), "/PCH_T03_PO_ITEM_PRINT", "ID").then((oData) => {
+									let sResponse = json2xml(oData, options);
+									console.log(sResponse)
+									that.PrintTool._detailSelectPrintDowS(that, sResponse, "test03/test2", oData, null, "注文書", null, null, null).then((oData) => {
+										var sapPo = {
+											po: PoList.join(","),
+											tpye: "PCH03",
+											fileName: "納品書",
+										}
+
+										//完成后是否更新确认
+
+										// that.PrintTool.printBackActionPo(that,sapPo)
+										//完成后是否更新确认,false不更新Y
+
+									})
+								})
+							    
+							}
+							
+							that._isQuerenDb(ObList, false);
+
+
 						})
 					})
 				}
+
+
 			})
 
 
