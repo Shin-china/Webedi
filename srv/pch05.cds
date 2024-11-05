@@ -183,7 +183,7 @@ extend service TableService {
         select from   PCH_T05_ACCOUNT_DETAIL_SUM_GRO  as T02
         left join PCH_T05_ACCOUNT_DETAIL as T03
         on T02.SUPPLIER = T03.SUPPLIER
-        and T02.INV_NO = T03.INV_NO
+        and T02.INV_MONTH = T03.INV_MONTH
 
         distinct {   
             key T02.SUPPLIER,  
