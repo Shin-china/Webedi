@@ -184,14 +184,15 @@ extend service TableService {
         left join PCH_T05_ACCOUNT_DETAIL as T03
         on T02.SUPPLIER = T03.SUPPLIER
         and T02.INV_MONTH = T03.INV_MONTH
+        and T02.PO_BUKRS = T03.PO_BUKRS
 
         distinct {   
             key T02.SUPPLIER,  
-            T03.INV_NO,
+            key T03.INV_MONTH,
+            key T03.PO_BUKRS,     
+            key T03.INV_NO,
             T03.PO_NO,
             T03.D_NO,                     
-            T03.INV_MONTH,
-            T03.PO_BUKRS,     
             T03.CURRENCY,
             T03.TAX_RATE,
             T03.TAX_CODE,
