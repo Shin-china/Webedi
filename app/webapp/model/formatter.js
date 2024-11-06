@@ -247,6 +247,40 @@ sap.ui.define([], function () {
         return rate + "%";  // 在税率后加上 % 符号
     },
 
+    formatUnitPrice: function (value) {
+      // 如果 value 为空或无效，直接返回
+      if (value == null || isNaN(value)) {
+          return value;  // 返回原值
+      }
+  
+      // 确保 value 是浮动数字
+      value = parseFloat(value);
+  
+      // 获取货币类型
+      var currency = this.getModel().getProperty('/CURRENCY');
+  
+      // 转换成字符串，防止格式问题
+      var valueStr = value.toString();
+  
+      // 如果是 JPY，保留三位小数
+      if (currency === 'JPY') {
+          var parts = valueStr.split('.');
+          if (parts.length > 1) {
+              // 截取小数部分前三位，且保证尾部补零
+              return parts[0] + '.' + parts[1].slice(0, 3).padEnd(3, '0');
+          }
+          return parts[0];  // 如果没有小数部分，直接返回整数部分
+      }
+  
+      // 对于其他货币，保留五位小数
+      var parts = valueStr.split('.');
+      if (parts.length > 1) {
+          // 截取小数部分前五位，且保证尾部补零
+          return parts[0] + '.' + parts[1].slice(0, 5).padEnd(5, '0');
+      }
+      return parts[0];  // 如果没有小数部分，直接返回整数部分
+    },
+  
     formatSendFlag: function(value) {
       if (value === '1') {
           return '1: 送信済';

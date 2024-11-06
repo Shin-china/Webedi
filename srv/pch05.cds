@@ -167,7 +167,7 @@ extend service TableService {
         distinct {      
             key T01.PO_BUKRS,  
             key T01.SUPPLIER,
-            key T01.INV_NO,   
+            key T01.INV_MONTH,   
             SUM(CALC_10_PRICE_AMOUNT) as CALC_10_PRICE_AMOUNT: Decimal(15, 2),                      // 10% 税抜金额
             SUM(CALC_8_PRICE_AMOUNT) as CALC_8_PRICE_AMOUNT: Decimal(15, 2),                        // 8%  税抜金额
             SUM(SAP_TAX_AMOUNT_10) as SAP_TAX_AMOUNT_10: Decimal(15, 2),                        // 10% SAP税额
@@ -176,14 +176,14 @@ extend service TableService {
         group by
             T01.PO_BUKRS,
             T01.SUPPLIER,
-            T01.INV_NO;           // 仕入先 (聚合维度);
+            T01.INV_MONTH;     
 
     entity PCH_T05_ACCOUNT_DETAIL_SUM_END as
 
         select from   PCH_T05_ACCOUNT_DETAIL_SUM_GRO  as T02
         left join PCH_T05_ACCOUNT_DETAIL as T03
         on T02.SUPPLIER = T03.SUPPLIER
-        and T02.INV_NO = T03.INV_NO
+        and T02.INV_MONTH = T03.INV_MONTH
 
         distinct {   
             key T02.SUPPLIER,  
@@ -400,7 +400,14 @@ extend service TableService {
 
             ROW_NUMBER() OVER () as INVOICEID: Integer,
 
-           null as LASTDATE: Date,
+    TO_CHAR(
+        CAST(
+            TO_DATE(CONCAT(
+                EXTRACT(YEAR FROM CURRENT_DATE), '-', 
+                EXTRACT(MONTH FROM CURRENT_DATE) + 1, '-01'
+            ), 'YYYY-MM-DD') - 1 AS Date
+        ), 'YYYY/MM/DD'
+    ) as LASTDATE : String,
 
             '' as REFERENCE: String,                         // REFERENCE 字段赋值为 null
             '' as DETAILTEXT: String,                        // DETAILTEXT 字段赋值为 null
@@ -409,6 +416,62 @@ extend service TableService {
             'TAX' as HEADERTEXT: String                      // headertext 字段固定值为 'TAX'
                 
         }
+
+          entity PCH_T05_ACCOUNT_DETAIL_DISPLAY as
+
+        select from PCH_T05_PRICE_AMOUNT_SUM as T01
+        left join PCH_T05_ACCOUNT_DETAIL_SUM_GRO as T02
+            on T01.SUPPLIER = T02.SUPPLIER
+        left join PCH_T05_ACCOUNT_DETAIL_EXCEL as T03
+            on T02.SUPPLIER = T03.SUPPLIER
+            and T02.INV_MONTH = T03.INV_MONTH
+            and T02.PO_BUKRS = T03.PO_BUKRS
+        distinct {      
+            key T02.SUPPLIER,  
+            key T02.INV_MONTH,   
+            key T02.PO_BUKRS,
+            T03.CURRENCY,
+            T02.CALC_10_PRICE_AMOUNT,                      // 10% 税抜金额
+            T02.CALC_8_PRICE_AMOUNT,                       // 8%  税抜金额
+            T02.SAP_TAX_AMOUNT_10,                         // 10% SAP税额
+            T02.SAP_TAX_AMOUNT_8,                          // 8%  SAP税额
+            SUM(T03.RECALC_PRICE_AMOUNT_10) as RECALC_PRICE_AMOUNT_10: Decimal(15, 2), // 再計算10％税額
+            SUM(T03.RECALC_PRICE_AMOUNT_8) as RECALC_PRICE_AMOUNT_8: Decimal(15, 2),   // 再計算8％税額
+            SUM(T03.DIFF_TAX_AMOUNT_10) as DIFF_TAX_AMOUNT_10: Decimal(15, 2),         // 10％消費税差額
+            SUM(T03.DIFF_TAX_AMOUNT_8) as DIFF_TAX_AMOUNT_8: Decimal(15, 2),           // 8％消費税差額
+            SUM(T03.CALC_10_PRICE_AMOUNT_TOTAL) as CALC_10_PRICE_AMOUNT_TOTAL: Decimal(15, 2), // 合計10％税込金額
+            SUM(T03.CALC_8_PRICE_AMOUNT_TOTAL) as CALC_8_PRICE_AMOUNT_TOTAL: Decimal(15, 2),  // 合計8％税込金額
+            T03.TRANSACTION,
+            T03.REFERENCE,
+            T03.DOCUMENTTYPE,
+            T03.HEADERTEXT,
+            T03.LASTDATE,
+            T03.ACCOUNT,
+            T03.DETAILTEXT,
+            T03.SHKZG_FLAG,
+            T03.DIFF_TAX_AMOUNT,
+            T03.TAX_CODE,
+            T03.TAX_BASE_AMOUNT
+        }
+        GROUP BY T02.SUPPLIER, 
+                 T02.INV_MONTH,
+                 T02.PO_BUKRS, 
+                 T03.CURRENCY, 
+                 T02.CALC_10_PRICE_AMOUNT,
+                 T02.CALC_8_PRICE_AMOUNT, 
+                 T02.SAP_TAX_AMOUNT_10, 
+                 T02.SAP_TAX_AMOUNT_8,
+                 T03.TRANSACTION,
+                 T03.REFERENCE,
+                 T03.DOCUMENTTYPE,
+                 T03.HEADERTEXT,
+                 T03.LASTDATE,
+                 T03.ACCOUNT,
+                 T03.DETAILTEXT,
+                 T03.SHKZG_FLAG,
+                 T03.DIFF_TAX_AMOUNT,
+                 T03.TAX_CODE,
+                 T03.TAX_BASE_AMOUNT;
 
 }
 
