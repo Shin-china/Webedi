@@ -182,11 +182,12 @@ sap.ui.define(
                 that
                   ._createPDFEml(_that, _sResponse, _xdpTemplateID, token)
                   .then(
-                    function () {
+                    function (blob) {
                       //打印回写处理
                       if (_printBackFuncation) {
                         that.printBackAction(_that, _data, _printBackFuncation, _smartTableId, entityInModelID);
                       }
+                      resolve(blob); ;
                     },
                     function (error) {
                       //异常MSG处理
@@ -515,7 +516,7 @@ sap.ui.define(
                   type: "application/pdf",
                 });
                 _that._blob =blob;
-                resolve(1);
+                resolve(blob);
 
               },
               error: function (xhr, status, error) {

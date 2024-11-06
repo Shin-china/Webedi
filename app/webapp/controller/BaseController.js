@@ -433,7 +433,27 @@ sap.ui.define([
             });
           });
         },
-  
+          //获取 表头的数据,考虑共用，key  entity 参数
+          _readSys: function (headID, entity) {
+            var that = this;
+            return new Promise(function (resolve, reject) {
+              that.getModel().read(entity, {
+                filters: [
+                  new sap.ui.model.Filter({
+                    path: "D_CODE",
+                    value1: headID,
+                    operator: sap.ui.model.FilterOperator.EQ,
+                  }),
+                ],
+                success: function (oData) {
+                  resolve(oData);
+                },
+                error: function (oError) {
+                  reject(oError);
+                },
+              });
+            });
+          },
         /**
          * 草稿类型的照会画面点击编辑按钮
          * @param {*草稿对象entity} _entityDraft

@@ -10,7 +10,7 @@ sap.ui.define([
 		_aFilters: undefined,
 		_entity2: "/PCH03_QUEREN",
 		_entity3: "/PCH03_GETTYPE",
-
+		_entity4: "/PCH03_GETTYPE",
 	};
 	return Controller.extend("umc.app.controller.pch.pch03_pobk_l", {
 		formatter: formatter,
@@ -43,6 +43,8 @@ sap.ui.define([
 				that._setEditableAuth(odata.results[0].USER_TYPE);
 			})
 
+			that.setSysConFig().then(res => {
+			})
 
 		},
 		onRebind: function (oEvent) {
@@ -151,127 +153,146 @@ sap.ui.define([
 			var that = this;
 			//有输入true则需要判读是否已经发送过邮件，且提示框内容不一样
 			this._AfterDigLogCheck(true).then((selectedIndices) => {
-				if (selectedIndices) {
-					// 构建CSV内容  
-					// var csvContent = "data:text/csv;charset=utf-8,";
-					var csvContent = "";
-					var headers = Object.keys(selectedIndices[0]); // 假设所有条目的结构都相同，取第一条的键作为表头  
-					headers.shift();
-					// csvContent += headers.join(",") + "\n";  
+				var csvContent = that._getCsvData(selectedIndices);
+				
+				// 创建一个新的Map对象  用作判断key值对应po对应的明细数据
+				let myMap = new Map();
+				// 创建一个新的Map对象  用作判断po是否状态
+				let myZABCMap = new Map();
+				var PoList = that._TableDataList("detailTable", 'PO_NO')
+				//经过去重以后的po号
+				var uniqueIdList = [...new Set(PoList)];
 
-					selectedIndices.forEach(function (row) {
-						var values = headers.map(function (header) {
-
-							return (row[header] === null || row[header] === undefined) ? "" : '"' + row[header] + '"';
-
-
-						});
-
-						csvContent += values.join(",") + "\n";
-
-
-					});
-				}
 
 				let options = { compact: true, ignoreComment: true, spaces: 4 };
 				var IdList = that._TableDataList("detailTable", 'ID')
-				if (IdList) {
-					that.PrintTool._getPrintDataInfo(that, IdList, "/PCH_T03_PO_ITEM_PRINT", "ID").then((oData) => {
-						let sResponse = json2xml(oData, options);
-						console.log(sResponse)
-						that.setSysConFig().then(res => {
-							that.PrintTool._detailSelectPrint(that, sResponse, "test03/test1", oData, null, null, null, null).then(()=>{
-								that.PrintTool.getImageBase64(that._blob).then((odata)=>{
-									// that._callCdsAction(_objectCommData._entity3, { parms: JSON.stringify(pList) }, that).then((oData) => {
-										
-									//   });
-										
-								//20240820
-								var mailobj = {
-									emailJson: {
-										TEMPLATE_ID: "test",
-										MAIL_TO: "2644715037@qq.com",
-										MAIL_BODY: [{
-											object: "content",
-											value: "hello"
-										},
-										{
-											object: "recipient",
-											value: "aa"
-										},
-										{
-											object: "filename_1",
-											value: "aa.pdf"
-										},
-										{
-											object: "filecontent_1",
-											value: odata
-										},
-										
-										{
-											object: "filename_2",
-											value: "test.csv"
-										},
-										{
-											object: "filecontent_2",
-											value: csvContent
-										}
-									]
-									}
-								};
-
-
-
-
-								let newModel = this.getView().getModel("Common");
-								let oBind = newModel.bindList("/sendEmail");
-								oBind.create(mailobj);
-								//完成后是否更新确认,false不更新Y
-								that._isQuerenDb(selectedIndices,true);
-								})
-								
-							})
-							
-							
-							// that.PrintTool._detailSelectPrintDow(that, sResponse, "test/test", oData, null, null, null, null)
-						})
+				that._readSys("MM0002-1","/SYS_T08_COM_OP_D").then((sys) => {
+				    selectedIndices.forEach((item) => {
+						myMap.get(item.PO_NO) ? myMap.get(item.PO_NO).push(item.ID) : myMap.set(item.PO_NO, [item.ID]);
+						myZABCMap.get(item.PO_NO) ? myZABCMap.get(item.PO_NO) : myZABCMap.set(item.PO_NO, item.ZABC);
 					})
-				}
+					that._callCdsAction(_objectCommData._entity4, { parms: JSON.stringify(pList) }, that).then((data) => {
+					    
+					})
+
+
+					var mailobj = {
+						emailJson: {
+							TEMPLATE_ID: "UWEB_PCH03_C",
+							MAIL_TO: sys.SYS_T08_COM_OP_D.value02,
+							MAIL_BODY: [
+							{
+								object: "content",
+								value: "hello"
+							},
+		
+
+							
+							{
+								object: "filename_2",
+								value: "test.csv"
+							},
+							{
+								object: "filecontent_2",
+								value: csvContent
+							}
+						]
+						}
+					};
+					// {
+					// 	object: "recipient",
+					// 	value: "aa"
+					// },
+					// {
+					// 	object: "filename_1",
+					// 	value: "aa.pdf"
+					// },
+					// {
+					// 	object: "filecontent_1",
+					// 	value: odata
+					// },
+					that._onNPSprintTy(selectedIndices, uniqueIdList, myMap, myZABCMap, that,true,mailobj).then((oData) => {
+						
+						let newModel = this.getView().getModel("Common");
+						let oBind = newModel.bindList("/sendEmail");
+						oBind.create(mailobj);
+					})
+
+				})
+				
+					
+			
+
+
+
+				
+				
 			})
 			
 			
 		
 		},
+		_getCsvData: function (selectedIndices) {
+			var that = this;
+			var csvContent = "";
+		    if (selectedIndices) {
+				// 构建CSV内容  
+				// var csvContent = "data:text/csv;charset=utf-8,";
+				
+				var headers = Object.keys(selectedIndices[0]); // 假设所有条目的结构都相同，取第一条的键作为表头  
+				headers.shift();
+				// csvContent += headers.join(",") + "\n";  
+
+				selectedIndices.forEach(function (row) {
+					var values = headers.map(function (header) {
+
+						return (row[header] === null || row[header] === undefined) ? "" : '"' + row[header] + '"';
+
+
+					});
+
+					csvContent += values.join(",") + "\n";
+
+
+				});
+			}
+			return csvContent;
+		},
 		onPrintNPS: function () {
 			var that = this;
 			//设置通用dialog
 			this._AfterDigLogCheck().then((selectedIndices) => {
-				let options = { compact: true, ignoreComment: true, spaces: 4 };
-			var IdList = that._TableDataList("detailTable", 'ID')
+			// 创建一个新的Map对象  用作判断key值对应po对应的明细数据
+			let myMap = new Map();
+			// 创建一个新的Map对象  用作判断po是否状态
+			let myZABCMap = new Map();
 			var PoList = that._TableDataList("detailTable", 'PO_NO')
+			//经过去重以后的po号
+			var uniqueIdList = [...new Set(PoList)];
 			// PoList= PoList.map
-			if (IdList) {
-				that.PrintTool._getPrintDataInfo(that, IdList, "/PCH_T03_PO_ITEM_PRINT", "ID").then((oData) => {
-					let sResponse = json2xml(oData, options);
-					console.log(sResponse)
-					that.setSysConFig().then(res => {
-						// that.PrintTool._detailSelectPrint(that, sResponse, "test/test", oData, null, null, null, null)
-						that.PrintTool._detailSelectPrintDow(that, sResponse, "test03/test1", oData, null,"納品書", null, null, null).then((oData) => {
-							var sapPo = {
-								po :PoList.join(","),
-								tpye :"PCH03",
-								fileName :"納品書",
-							}
-							that.PrintTool.printBackActionPo(that,sapPo)
-								//完成后是否更新确认,false不更新Y
-								that._isQuerenDb(selectedIndices,false);
-							that._setBusy(false);
-						})
-					})
+			if (uniqueIdList != undefined && uniqueIdList.length > 0) {
+
+				selectedIndices.forEach((item) => {
+					myMap.get(item.PO_NO) ? myMap.get(item.PO_NO).push(item.ID) : myMap.set(item.PO_NO, [item.ID]);
+					myZABCMap.get(item.PO_NO) ? myZABCMap.get(item.PO_NO) : myZABCMap.set(item.PO_NO, item.ZABC);
 				})
+
+				var zip = new JSZipSync();
+				that.printTaskPdf = {
+					completedCount: 0,
+					count: myMap.size,
+					progress: 0,
+					pdfUrl: [],
+					zip: zip,
+					zipFolder: zip.folder("注文書"),
+					zipFile: [],
+
+				};
+				that._onNPSprintTy(selectedIndices, uniqueIdList, myMap, myZABCMap, that,false);
+
 			}
-			})
-			
+
+		})
 
 
 		},
@@ -289,7 +310,7 @@ sap.ui.define([
 				var uniqueIdList = [...new Set(PoList)];
 				// PoList= PoList.map
 				if (uniqueIdList != undefined && uniqueIdList.length > 0) {
-					that.setSysConFig().then(res => {
+					
 							ObList.forEach((item) => {
 								myMap.get(item.PO_NO) ? myMap.get(item.PO_NO).push(item.ID) : myMap.set(item.PO_NO, [item.ID]);
 								myZABCMap.get(item.PO_NO) ? myZABCMap.get(item.PO_NO) : myZABCMap.set(item.PO_NO, item.ZABC);
@@ -302,12 +323,12 @@ sap.ui.define([
 							progress: 0,
 							pdfUrl: [],
 							zip: zip,
-							zipFolder: zip.folder("注文書"),
+							zipFolder: zip.folder("納品書"),
 							zipFile: [],
 
 						};
 						that._onZWSprintTy(ObList, uniqueIdList, myMap, myZABCMap,that);
-					})
+					
 				}
 			})
 
@@ -378,9 +399,79 @@ sap.ui.define([
 
 			})
 			that._isQuerenDb(ObList, false);
+			that._setBusy(false);
 
 		},
+		_onNPSprintTy: function (ObList, uniqueIdList, myMap, myZABCMap,that,boo,list) {
+			let options = { compact: true, ignoreComment: true, spaces: 4 };
+			return new Promise(function (resolve, reject) {
+
+
+			if(boo){
+				uniqueIdList.forEach((item) => {
+	
+					that.PrintTool._getPrintDataInfo(that, myMap.get(item), "/PCH_T03_PO_ITEM_PRINT", "ID").then((oData) => {
+						let sResponse = json2xml(oData, options);
+						console.log(sResponse)
+						
+							// that.PrintTool._detailSelectPrint(that, sResponse, "test/test", oData, null, null, null, null)
+							that.PrintTool._detailSelectPrintEmil(that, sResponse, "test03/test1", oData, null,"納品書", null, null, null).then((oData) => {
+								// var sapPo = {
+								// 	po :PoList.join(","),
+								// 	tpye :"PCH03",
+								// 	fileName :"納品書",
+								// }
+								// that.PrintTool.printBackActionPo(that,sapPo)
+									//完成后是否更新确认,false不更新Y
 		
+									that.PrintTool.getImageBase64(oData).then((odata2)=>{
+										list.emailJson.MAIL_BODY.push({
+											object: "filename_1",
+											value: "納品書.pdf"
+										})
+										list.emailJson.MAIL_BODY.push({
+											object: "filecontent_1",
+											value: odata2
+										})
+										resolve(true);
+									})
+								
+							})
+						
+					})
+					that._isQuerenDb(ObList, false)
+					that._setBusy(false);
+				})
+			}else{//通过去重的po号取map数据进行打印
+				uniqueIdList.forEach((item) => {
+	
+					that.PrintTool._getPrintDataInfo(that, myMap.get(item), "/PCH_T03_PO_ITEM_PRINT", "ID").then((oData) => {
+						let sResponse = json2xml(oData, options);
+						console.log(sResponse)
+						
+							// that.PrintTool._detailSelectPrint(that, sResponse, "test/test", oData, null, null, null, null)
+							that.PrintTool._detailSelectPrintDowS(that, sResponse, "test03/test1", oData, null,"納品書", null, null, null).then((oData) => {
+								// var sapPo = {
+								// 	po :PoList.join(","),
+								// 	tpye :"PCH03",
+								// 	fileName :"納品書",
+								// }
+								// that.PrintTool.printBackActionPo(that,sapPo)
+									//完成后是否更新确认,false不更新Y
+									resolve(true);
+								
+							})
+						
+					})
+					that._isQuerenDb(ObList, false)
+					that._setBusy(false);
+				})
+			}
+
+		})
+			
+
+		},
 
 		onPrintZwsNps: function () {
 			var that = this;
@@ -400,7 +491,7 @@ sap.ui.define([
 				var uniqueIdList = [...new Set(PoList)];
 				// PoList= PoList.map
 				if (IdList) {
-					that.setSysConFig().then(res => {
+					
 					selectedIndices.forEach((item) => {
 						myMap.get(item.PO_NO) ? myMap.get(item.PO_NO).push(item.ID) : myMap.set(item.PO_NO, [item.ID]);
 						myZABCMap.get(item.PO_NO) ? myZABCMap.get(item.PO_NO) : myZABCMap.set(item.PO_NO, item.ZABC);
@@ -416,7 +507,7 @@ sap.ui.define([
 						  zipFile : [],
 						  
 						};
-						that._onZWSprintTy(selectedIndices, uniqueIdList, myMap, myZABCMap,that);
+					that._onZWSprintTy(selectedIndices, uniqueIdList, myMap, myZABCMap,that);
 
 					that.PrintTool._getPrintDataInfo(that, IdList, "/PCH_T03_PO_ITEM_PRINT", "ID").then((oData) => {
 						let sResponse = json2xml(oData, options);
@@ -438,7 +529,7 @@ sap.ui.define([
 								
 							
 						})
-					})
+					
 					that._isQuerenDb(selectedIndices,false);
 				}
 			})
