@@ -48,6 +48,34 @@ sap.ui.define(["umc/app/Controller/BaseController", "sap/m/MessageToast"], funct
       // this._onListRebinSort(oEvent, sorts, ascs);
     },
 
+
+    getDetail: function (oEvent) { 
+
+        let that = this;
+        let selectedData = this._getSelectedIndicesDatasByTable("detailTable");
+        if (selectedData.length == 0) {
+            MessageToast.show("選択されたデータがありません、データを選択してください。");
+            return false;
+        }
+        let para = [];
+        selectedData.forEach(item => {
+            let key = item.QUO_NUMBER;
+            para.push(key);
+        });
+        this._onPress(oEvent,"RouteView_pch10_d", this.unique(para).join(","));
+      
+        // let params = { param: para };
+        // that._callCdsAction("/PCH08_SHOW_DETAIL", params, that).then((oData) => {
+        //     let json = JSON.parse(oData.PCH08_SHOW_DETAIL);
+        //     console.log(json)
+        //   });
+    },
+
+    
+    unique: function (arr) {
+        return [...new Set(arr)];
+      },  
+
     // onDelete: function () {
     //   this.MessageTools._clearMessage();
     //   let selectedIndices = this._getSelectedIndicesDatasByTable("detailTable");

@@ -6,3 +6,19 @@ PLANT_ID = 工厂code
 
 
 #Message
+SALES_NUMBER=販売見積番号
+SALES_NUMBER=販売見積番号
+VALIDATE_START=見積有効開始日
+VALIDATE_END=見積有効終了日
+CUSTOMER=客先
+QUO_NUMBER=販売見積バージョン
+STATUS=ステータス
+MACHINE_TYPE=機種
+Item=アイテム
+QUANTITY=数量
+TIME=時期
+LOCATION=量産場所
+PLANT_ID=工厂
+
+CD_DATE=创建日
+CD_DATE_TIME=创建日时

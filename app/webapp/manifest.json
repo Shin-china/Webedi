@@ -188,6 +188,7 @@
 
         {"pattern": "RouteList_pch10","name": "RouteList_pch10","target":"pch10_quotation_h"},
         {"pattern": "RouteView_pch10/{headID}","name": "RouteView_pch10","target":"pch10_quotation_d"},
+        {"pattern": "RouteView_pch10_d/{headID}","name": "RouteView_pch10_d","target":"pch10_quotation_detail"},
 
         {"pattern": "RouteView_pch08/{headID}","name": "RouteView_pch08","target": "pch08_detail"}
       ],
@@ -218,7 +219,8 @@
         "pch09_forcast_d"  : {"viewName": "pch/pch09_forcast_d" ,"viewId": "pch09_forcast_d"},
         "pch10_quotation_l": {"viewName": "pch/pch10_quotation_l","viewId": "pch10_quotation_l"},
         "pch10_quotation_h": {"viewName": "pch/pch10_quotation_h","viewId": "pch10_quotation_h"},
-        "pch10_quotation_d": {"viewName": "pch/pch10_quotation_d","viewId": "pch10_quotation_d"}
+        "pch10_quotation_d": {"viewName": "pch/pch10_quotation_d","viewId": "pch10_quotation_d"},
+        "pch10_quotation_detail": {"viewName": "pch/pch10_quotation_detail","viewId": "pch10_quotation_detail"}
       }
     },
     "rootView": {

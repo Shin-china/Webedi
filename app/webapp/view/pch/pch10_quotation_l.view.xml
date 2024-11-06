@@ -55,13 +55,13 @@
       </f:DynamicPageHeader>
 
 
-      <smartTable:SmartTable id="smartTable10" tableType="Table" showFullScreenButton="true" enableAutoColumnWidth="true" entitySet="PCH10_Header" requestAtLeastFields="ID,QUO_NUMBER" initiallyVisibleFields="CUSTOMER,MACHINE_TYPE,Item,QUANTITY,TIME,LOCATION,VALIDATE_START,VALIDATE_END,PLANT_ID" smartFilterId="smartFilterBar" enableExport="true" beforeExport="onBeforeExport" useVariantManagement="true" useTablePersonalisation="true" header="{com>TITLE_RESULT}" showRowCount="true" persistencyKey="pch10_SmartTableAnalytical_Explored" enableAutoBinding="false" beforeRebindTable="onRebind">
+      <smartTable:SmartTable id="smartTable10" tableType="Table" showFullScreenButton="true" enableAutoColumnWidth="true" entitySet="PCH10_Header" requestAtLeastFields="ID,QUO_NUMBER" initiallyVisibleFields="CUSTOMER,MACHINE_TYPE,Item,QUANTITY,TIME,LOCATION,VALIDATE_START,VALIDATE_END,PLANT_ID" smartFilterId="smartFilterBar" enableExport="true" beforeExport="onBeforeExport" useVariantManagement="true" useTablePersonalisation="true" header="{com>TITLE_RESULT}" showRowCount="true" persistencyKey="pch10_SmartTableAnalytical_Explored" enableAutoBinding="true" beforeRebindTable="onRebind">
         <smartTable:customToolbar>
           <OverflowToolbar id="_IDGenOverflowToolbar10">
             <content>
               <ToolbarSpacer id="_IDGenToolbarSpacer10"/>
-              <!-- <Button id="_IDGenButton1" text="{inv>inv34PrintUPN}" icon="sap-icon://print" press="onUpnPrint" visible="{localModel>/INV34_PRINT_U}"/>
-              <Button id="_IDGenButton2" text="{com>BUTTON_POST}" icon="sap-icon://accept" press="onSend" visible="{localModel>/INV34_POST_M}" /> -->
+              <Button id="_IDGenButton1" text="{pch>PCH10_SEND}" icon="sap-icon://accept" press="onSend" visible="{localModel>/PCH10_SEND}"/>
+              <Button id="_IDGenButton2" text="{pch>PCH10_LINK}" icon="sap-icon://add" press="onLink" visible="{localModel>/PCH10_LINK}" /> 
             </content>
           </OverflowToolbar>
         </smartTable:customToolbar>
