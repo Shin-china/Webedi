@@ -419,13 +419,14 @@ extend service TableService {
 
           entity PCH_T05_ACCOUNT_DETAIL_DISPLAY as
 
-        select from PCH_T05_PRICE_AMOUNT_SUM as T01
-        left join PCH_T05_ACCOUNT_DETAIL_SUM_GRO as T02
-            on T01.SUPPLIER = T02.SUPPLIER
+          select from PCH_T05_ACCOUNT_DETAIL_SUM_GRO as T02
+        left join PCH_T05_PRICE_AMOUNT_SUM as T01
+            on T02.SUPPLIER = T01.SUPPLIER
         left join PCH_T05_ACCOUNT_DETAIL_EXCEL as T03
             on T02.SUPPLIER = T03.SUPPLIER
             and T02.INV_MONTH = T03.INV_MONTH
             and T02.PO_BUKRS = T03.PO_BUKRS
+
         distinct {      
             key T02.SUPPLIER,  
             key T02.INV_MONTH,   
@@ -435,10 +436,10 @@ extend service TableService {
             T02.CALC_8_PRICE_AMOUNT,                                                   // 8%  税抜金额
             T02.SAP_TAX_AMOUNT_10,                                                     // 10% SAP税额
             T02.SAP_TAX_AMOUNT_8,                                                      // 8%  SAP税额
-            SUM(T03.RECALC_PRICE_AMOUNT_10) as RECALC_PRICE_AMOUNT_10: Decimal(15, 2), // 再計算10％税額
-            SUM(T03.RECALC_PRICE_AMOUNT_8) as RECALC_PRICE_AMOUNT_8: Decimal(15, 2),   // 再計算8％税額
-            SUM(T03.DIFF_TAX_AMOUNT_10) as DIFF_TAX_AMOUNT_10: Decimal(15, 2),         // 10％消費税差額
-            SUM(T03.DIFF_TAX_AMOUNT_8) as DIFF_TAX_AMOUNT_8: Decimal(15, 2),           // 8％消費税差額
+            T03.RECALC_PRICE_AMOUNT_10,       // 再計算10％税額
+            T03.RECALC_PRICE_AMOUNT_8,        // 再計算8％税額
+            T03.DIFF_TAX_AMOUNT_10,           // 10％消費税差額
+            T03.DIFF_TAX_AMOUNT_8,            // 8％消費税差額
             T03.TOTAL_10_TAX_INCLUDED_AMOUNT, // 合計10％税込金額
             T03.TOTAL_8_TAX_INCLUDED_AMOUNT,  // 合計8％税込金額
             T03.TRANSACTION,
@@ -453,27 +454,6 @@ extend service TableService {
             T03.TAX_CODE,
             T03.TAX_BASE_AMOUNT
         }
-        GROUP BY T02.SUPPLIER, 
-                 T02.INV_MONTH,
-                 T02.PO_BUKRS, 
-                 T03.CURRENCY, 
-                 T02.CALC_10_PRICE_AMOUNT,
-                 T02.CALC_8_PRICE_AMOUNT, 
-                 T02.SAP_TAX_AMOUNT_10, 
-                 T02.SAP_TAX_AMOUNT_8,
-                 T03.TRANSACTION,
-                 T03.REFERENCE,
-                 T03.DOCUMENTTYPE,
-                 T03.HEADERTEXT,
-                 T03.LASTDATE,
-                 T03.ACCOUNT,
-                 T03.DETAILTEXT,
-                 T03.SHKZG_FLAG,
-                 T03.DIFF_TAX_AMOUNT,
-                 T03.TAX_CODE,
-                 T03.TAX_BASE_AMOUNT,
-                 T03.TOTAL_10_TAX_INCLUDED_AMOUNT,
-                 T03.TOTAL_8_TAX_INCLUDED_AMOUNT;
 
 }
 
