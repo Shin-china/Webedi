@@ -113,4 +113,31 @@ public class PchService {
         }
     }
 
+    public String getPoSendPDFZWSType(String po) {
+        T10Upload t10Upload = pchD010.getByPo(po);
+        List<T02PoD> byPo = pchD002.getByPo(po);
+        Boolean flag1 = false;
+        // 判断明细是否为D
+        for (T02PoD t02PoD : byPo) {
+            if (!t02PoD.getPoType().equals("D")) {
+                flag1 = true;
+                break;
+            }
+        }
+        // 如果flag1为false，则说明明细都是D，则返回Dtype
+        if (!flag1) {
+            return UmcConstants.DOC_D_STATUS_3;
+        }
+        // 如果t10Upload中type有type为Y的则为type1，否则为type2
+        if (t10Upload != null) {
+            if (t10Upload.getType().equals("Y")) {
+                return UmcConstants.ZWS_TYPE_2;
+            } else {
+                return UmcConstants.ZWS_TYPE_1;
+            }
+        } else {
+            return UmcConstants.ZWS_TYPE_1;
+        }
+    }
+
 }

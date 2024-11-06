@@ -51,6 +51,21 @@ public class PchD002 extends Dao {
         return null;
     }
 
+    /**
+     * 根据删除po
+     * 
+     * @param po
+     * @param dno
+     */
+    public List<T02PoD> getByPo(String po) {
+        List<T02PoD> listOf = db.run(
+                Select.from(Pch_.T02_PO_D)
+                        .where(o -> o.PO_NO().eq(po)))
+                .listOf(T02PoD.class);
+
+        return listOf;
+    }
+
     // 修改PCHD002
     public void updateD002(T02PoD o) {
 

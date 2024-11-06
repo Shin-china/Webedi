@@ -187,28 +187,10 @@ public class Pch03Handler implements EventHandler {
                 }
 
             }
-
-            // 设置注文书状态
-            //
-            if (!"D".equals(pchd03.getPoType())) {
-                isPrint[0] = true;
-            }
+            String poSendPDFZWSType = pchService.getPoSendPDFZWSType(pchd03.getPoNo());
+            pchd03.setType(poSendPDFZWSType);
 
         });
-
-        // pchd03List.forEach(pchd03 -> {
-        // if (isPrint[0]) {
-        // T10Upload byPo = pchD010.getByPo(pchd03.getPoNo());
-        // if (byPo == null) {
-        // pchd03.setType(UmcConstants.ZWS_TYPE_1);
-        // } else {
-        // pchd03.setType(UmcConstants.ZWS_TYPE_2);
-        // }
-        // } else {
-        // pchd03.setType(UmcConstants.ZWS_TYPE_3);
-        // }
-
-        // });
     }
 
     @On(event = PCH03SENDEMAILContext.CDS_NAME)
@@ -228,6 +210,15 @@ public class Pch03Handler implements EventHandler {
             // 处理发送邮件的异常
 
         }
+    }
+
+    @On(event = PCH03SENDEMAILContext.CDS_NAME)
+    public void getType(PCH03SENDEMAILContext context) {
+        // 获取po号
+        String po = (String) context.get("parms"); // 根据上下文对象获取数据
+        // 根据po号获取对应的邮件发送类型
+        String type = pchService.getPoSendPDFZWSType(po);
+        context.setResult(type);
     }
 
     // 创建 MailBody 的集合
