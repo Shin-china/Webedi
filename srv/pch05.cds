@@ -209,10 +209,10 @@ extend service TableService {
             T03.PRICE_AMOUNT,
             T03.INV_POST_DATE,
             T03.MAT_DESC,
-            CALC_10_PRICE_AMOUNT,  
-            CALC_8_PRICE_AMOUNT,   
-            SAP_TAX_AMOUNT_10,
-            SAP_TAX_AMOUNT_8,  
+            T02.CALC_10_PRICE_AMOUNT,  
+            T02.CALC_8_PRICE_AMOUNT,   
+            T02.SAP_TAX_AMOUNT_10,
+            T02.SAP_TAX_AMOUNT_8,  
             // 再计算的税额（根据 CURRENCY 处理小数点后位数）
             case 
                 when T03.CURRENCY = 'JPY' and T03.TAX_RATE = 10 then 
@@ -431,16 +431,16 @@ extend service TableService {
             key T02.INV_MONTH,   
             key T02.PO_BUKRS,
             T03.CURRENCY,
-            T02.CALC_10_PRICE_AMOUNT,                      // 10% 税抜金额
-            T02.CALC_8_PRICE_AMOUNT,                       // 8%  税抜金额
-            T02.SAP_TAX_AMOUNT_10,                         // 10% SAP税额
-            T02.SAP_TAX_AMOUNT_8,                          // 8%  SAP税额
+            T02.CALC_10_PRICE_AMOUNT,                                                  // 10% 税抜金额
+            T02.CALC_8_PRICE_AMOUNT,                                                   // 8%  税抜金额
+            T02.SAP_TAX_AMOUNT_10,                                                     // 10% SAP税额
+            T02.SAP_TAX_AMOUNT_8,                                                      // 8%  SAP税额
             SUM(T03.RECALC_PRICE_AMOUNT_10) as RECALC_PRICE_AMOUNT_10: Decimal(15, 2), // 再計算10％税額
             SUM(T03.RECALC_PRICE_AMOUNT_8) as RECALC_PRICE_AMOUNT_8: Decimal(15, 2),   // 再計算8％税額
             SUM(T03.DIFF_TAX_AMOUNT_10) as DIFF_TAX_AMOUNT_10: Decimal(15, 2),         // 10％消費税差額
             SUM(T03.DIFF_TAX_AMOUNT_8) as DIFF_TAX_AMOUNT_8: Decimal(15, 2),           // 8％消費税差額
-            SUM(T03.CALC_10_PRICE_AMOUNT_TOTAL) as CALC_10_PRICE_AMOUNT_TOTAL: Decimal(15, 2), // 合計10％税込金額
-            SUM(T03.CALC_8_PRICE_AMOUNT_TOTAL) as CALC_8_PRICE_AMOUNT_TOTAL: Decimal(15, 2),  // 合計8％税込金額
+            T03.TOTAL_10_TAX_INCLUDED_AMOUNT, // 合計10％税込金額
+            T03.TOTAL_8_TAX_INCLUDED_AMOUNT,  // 合計8％税込金額
             T03.TRANSACTION,
             T03.REFERENCE,
             T03.DOCUMENTTYPE,
@@ -471,7 +471,9 @@ extend service TableService {
                  T03.SHKZG_FLAG,
                  T03.DIFF_TAX_AMOUNT,
                  T03.TAX_CODE,
-                 T03.TAX_BASE_AMOUNT;
+                 T03.TAX_BASE_AMOUNT,
+                 T03.TOTAL_10_TAX_INCLUDED_AMOUNT,
+                 T03.TOTAL_8_TAX_INCLUDED_AMOUNT;
 
 }
 

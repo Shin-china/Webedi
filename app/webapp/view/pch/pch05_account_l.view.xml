@@ -183,27 +183,27 @@
     </table:template>
 </table:Column>
 
-<table:Column id="colCalc10PriceAmountTotal" width="6rem" sortProperty="CALC_10_PRICE_AMOUNT_TOTAL" filterProperty="CALC_10_PRICE_AMOUNT_TOTAL">
+<table:Column id="colCalc10taxincAmountTotal" width="6rem" sortProperty="TOTAL_10_TAX_INCLUDED_AMOUNT" filterProperty="TOTAL_10_TAX_INCLUDED_AMOUNT">
     <table:customData>
-        <core:CustomData key="p13nData" value='{"columnKey":"CALC_10_PRICE_AMOUNT_TOTAL", "leadingProperty":"CALC_10_PRICE_AMOUNT_TOTAL", "sortProperty":"CALC_10_PRICE_AMOUNT_TOTAL", "filterProperty":"CALC_10_PRICE_AMOUNT_TOTAL"}'/>
+        <core:CustomData key="p13nData" value='{"columnKey":"TOTAL_10_TAX_INCLUDED_AMOUNT", "leadingProperty":"TOTAL_10_TAX_INCLUDED_AMOUNT", "sortProperty":"TOTAL_10_TAX_INCLUDED_AMOUNT", "filterProperty":"TOTAL_10_TAX_INCLUDED_AMOUNT"}'/>
     </table:customData>
     <table:label>
-        <Label id="labelCalc10PriceAmountTotal" text="{pch>CALC_10_PRICE_AMOUNT_TOTAL}"/>
+        <Label id="labelCalc10taxincAmountTotal" text="{pch>TOTAL_10_TAX_INCLUDED_AMOUNT}"/>
     </table:label>
     <table:template>
-        <Text id="textCalc10PriceAmountTotal" text="{CALC_10_PRICE_AMOUNT_TOTAL}"/>
+        <Text id="textCalc10taxincAmountTotal" text="{TOTAL_10_TAX_INCLUDED_AMOUNT}"/>
     </table:template>
 </table:Column>
 
-<table:Column id="colCalc8PriceAmountTotal" width="6rem" sortProperty="CALC_8_PRICE_AMOUNT_TOTAL" filterProperty="CALC_8_PRICE_AMOUNT_TOTAL">
+<table:Column id="colCalc8taxincAmountTotal" width="6rem" sortProperty="TOTAL_8_TAX_INCLUDED_AMOUNT" filterProperty="TOTAL_8_TAX_INCLUDED_AMOUNT">
     <table:customData>
-        <core:CustomData key="p13nData" value='{"columnKey":"CALC_8_PRICE_AMOUNT_TOTAL", "leadingProperty":"CALC_8_PRICE_AMOUNT_TOTAL", "sortProperty":"CALC_8_PRICE_AMOUNT_TOTAL", "filterProperty":"CALC_8_PRICE_AMOUNT_TOTAL"}'/>
+        <core:CustomData key="p13nData" value='{"columnKey":"TOTAL_8_TAX_INCLUDED_AMOUNT", "leadingProperty":"TOTAL_8_TAX_INCLUDED_AMOUNT", "sortProperty":"TOTAL_8_TAX_INCLUDED_AMOUNT", "filterProperty":"TOTAL_8_TAX_INCLUDED_AMOUNT"}'/>
     </table:customData>
     <table:label>
-        <Label id="labelCalc8PriceAmountTotal" text="{pch>CALC_8_PRICE_AMOUNT_TOTAL}"/>
+        <Label id="labelCalc8taxincAmountTotal" text="{pch>TOTAL_8_TAX_INCLUDED_AMOUNT}"/>
     </table:label>
     <table:template>
-        <Text id="textCalc8PriceAmountTotal" text="{CALC_8_PRICE_AMOUNT_TOTAL}"/>
+        <Text id="textCalc8taxincAmountTotal" text="{TOTAL_8_TAX_INCLUDED_AMOUNT}"/>
     </table:template>
 </table:Column>
 
