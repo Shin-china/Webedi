@@ -101,13 +101,13 @@ sap.ui.define([
                 { label: "*取引(1)1=請求書、2=クレジットメモ", property: "TRANSACTION" },
                 { label: "*請求元(10)", property: "SUPPLIER" },
                 { label: "参照(16)", property: "REFERENCE" },
-                { label: "*伝票日付", property: "LASTDATE",type: 'Date' },
-                { label: "*転記日付", property: "LASTDATE" ,type: 'Date'},
+                { label: "*伝票日付", property: "LASTDATE" },
+                { label: "*転記日付", property: "LASTDATE" },
                 { label: "*伝票タイプ", property: "DOCUMENTTYPE" },
                 { label: "伝票ヘッダテキスト(25)", property: "HEADERTEXT" },
                 { label: "*通貨(5)", property: "CURRENCY" },
                 { label: "*伝票通貨での請求書総額", property: "DIFF_TAX_AMOUNT" },
-                { label: "税率定義の日付", property: "LASTDATE" ,type: 'Date'},
+                { label: "税率定義の日付", property: "LASTDATE" },
             
                 // 第二组字段的标题
                 // { label: "G/L勘定明細", property: "glAccountDetails", colspan: 7 }, // 合并的标题

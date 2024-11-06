@@ -77,7 +77,7 @@ sap.ui.define([
                 // 设置 DELIVERY_DATE 列格式
                 oSettings.workbook.columns.forEach(function (oColumn) {
                     if (oColumn.property === "DELIVERY_DATE") {
-                        oColumn.type = sap.ui.export.EdmType.DateTime; // 设置为日期类型
+                        oColumn.type = sap.ui.export.EdmType.Date; // 设置为日期类型
                         oColumn.format = "yyyy/M/d"; // 设置日期格式，去掉时间
                     }
                 });
