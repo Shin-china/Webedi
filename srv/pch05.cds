@@ -407,7 +407,7 @@ extend service TableService {
                 EXTRACT(MONTH FROM CURRENT_DATE) + 1, '-01'
             ), 'YYYY-MM-DD') - 1 AS Date
         ), 'YYYY/MM/DD'
-    ) as LASTDATE,
+    ) as LASTDATE : String,
 
             '' as REFERENCE: String,                         // REFERENCE 字段赋值为 null
             '' as DETAILTEXT: String,                        // DETAILTEXT 字段赋值为 null
