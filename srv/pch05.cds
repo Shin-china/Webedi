@@ -400,7 +400,14 @@ extend service TableService {
 
             ROW_NUMBER() OVER () as INVOICEID: Integer,
 
-           null as LASTDATE: Date,
+    TO_CHAR(
+        CAST(
+            TO_DATE(CONCAT(
+                EXTRACT(YEAR FROM CURRENT_DATE), '-', 
+                EXTRACT(MONTH FROM CURRENT_DATE) + 1, '-01'
+            ), 'YYYY-MM-DD') - 1 AS Date
+        ), 'YYYY/MM/DD'
+    ) as LASTDATE,
 
             '' as REFERENCE: String,                         // REFERENCE 字段赋值为 null
             '' as DETAILTEXT: String,                        // DETAILTEXT 字段赋值为 null
@@ -444,7 +451,7 @@ extend service TableService {
             T03.SHKZG_FLAG,
             T03.DIFF_TAX_AMOUNT,
             T03.TAX_CODE,
-          T03.TAX_BASE_AMOUNT
+            T03.TAX_BASE_AMOUNT
         }
         GROUP BY T02.SUPPLIER, 
                  T02.INV_MONTH,
