@@ -14,7 +14,7 @@ entity T01_PO_H : IF_CUID_FILED { //采购订单抬头
                              @title: '{i18n>PO_GROUP}' PO_GROUP       : String(3); //供应商
                              @title: '{i18n>PO_BSTYP}' PO_BSTYP       : String(1); //PO Status
                              @title: '{i18n>REMARK}' REMARK           : String(1000); //Remark(Header)
-                              @title: '{i18n>POCDBY}' POCDBY           : String(12); //自社参照
+                             @title: '{i18n>POCDBY}' POCDBY           : String(12); //自社参照
 
                              TO_ITEMS                                 : Association to many T02_PO_D //采购订单行
                                                                           on TO_ITEMS.PO_NO = PO_NO;
@@ -46,8 +46,8 @@ entity T02_PO_D : IF_CUID_FILED { //采购订单行
                              @title: '{i18n>PO_D_KNTTP}' PO_D_KNTTP     : String(1); //科目分配カテゴリ
                              @title: '{i18n>PO_D_PSTYP}' PO_D_PSTYP     : String(4); //項目カテゴリ
                              @title: '{i18n>MEMO}' MEMO                 : String(1000); //Remark(Header)
-                             @title: '{i18n>INT_NUMBER}' INT_NUMBER                 : String(18); //海外番号
-                             @title: '{i18n>PR_BY}' PR_BY                 : String(50); //購買依頼者
+                             @title: '{i18n>INT_NUMBER}' INT_NUMBER     : String(18); //海外番号
+                             @title: '{i18n>PR_BY}' PR_BY               : String(50); //購買依頼者
                              TO_HEAD                                    : Association to one T01_PO_H //采购订单抬头表
                                                                             on TO_HEAD.PO_NO = PO_NO;
                              TO_MAT                                     : Association to one MST.T01_SAP_MAT //品目
@@ -122,20 +122,20 @@ entity T05_PAYMENT_D : IF_CUID_FILED { //付款申请表行表
 
 
 entity T06_QUOTATION_H : cuid, IF_CUID_FILED { //
-   @title: '{i18n>SALES_NUMBER}' SALES_NUMBER     : String(50); //販売見積番号
- @title: '{i18n>VALIDATE_START}' VALIDATE_START : Date; //見積有効開始日
+  @title: '{i18n>SALES_NUMBER}' SALES_NUMBER     : String(50); //販売見積番号
+  @title: '{i18n>VALIDATE_START}' VALIDATE_START : Date; //見積有効開始日
   @title: '{i18n>VALIDATE_END}' VALIDATE_END     : Date; //見積有効終了日
 
   @title: '{i18n>CUSTOMER}' CUSTOMER             : String(50); //客先
   @title: '{i18n>QUO_NUMBER}' QUO_NUMBER         : String(50); //購買見積番号
-    @title: '{i18n>QUO_VERSION}' QUO_VERSION         : String(5); //販売見積バージョン
-   @title: '{i18n>STATUS}' STATUS                 : String(50); //ステータス
- @title: '{i18n>MACHINE_TYPE}' MACHINE_TYPE     : String(50); //機種
+  @title: '{i18n>QUO_VERSION}' QUO_VERSION       : String(5); //販売見積バージョン
+  @title: '{i18n>STATUS}' STATUS                 : String(50); //ステータス
+  @title: '{i18n>MACHINE_TYPE}' MACHINE_TYPE     : String(50); //機種
   @title: '{i18n>Item}' Item                     : String(50); //アイテム
   @title: '{i18n>QUANTITY}' QUANTITY             : Decimal(18, 3); //数量
   @title: '{i18n>TIME}' TIME                     : Date; //時期
   @title: '{i18n>LOCATION}' LOCATION             : String(50); //量産場所
-   @title: '{i18n>PLANT_ID}' PLANT_ID             : String(4); //工厂
+  @title: '{i18n>PLANT_ID}' PLANT_ID             : String(4); //工厂
   //  @title: '{i18n>TOTAL_JPY}' TOTAL_JPY           : Decimal(18, 3); //合計金額（日本円）
   // @title: '{i18n>TOTAL_USD}' TOTAL_USD           : Decimal(18, 3); //合計金額（米ドル）
   // @title: '{i18n>TOTAL_CNY}' TOTAL_CNY           : Decimal(18, 3); //合計金額（中国元）
@@ -146,19 +146,21 @@ entity T06_QUOTATION_H : cuid, IF_CUID_FILED { //
   @title: '{i18n>CD_DATE_TIME}' CD_DATE_TIME     : String(10); //创建日时
 
   TO_ITEMS                                       : Composition of many T07_QUOTATION_D
-                                                     on TO_ITEMS.QUO_NUMBER = QUO_NUMBER;
+                                                     on  TO_ITEMS.SALES_NUMBER = SALES_NUMBER
+                                                     and TO_ITEMS.QUO_NUMBER   = QUO_NUMBER
+                                                     and TO_ITEMS.QUO_VERSION  = QUO_VERSION;
 
 }
 
 entity T07_QUOTATION_D : cuid, IF_CUID_FILED { //
   @title: '{i18n>QUO_NUMBER}' QUO_NUMBER                 : String(50); //購買見積番号
-  @title: '{i18n>QUO_ITEM}' QUO_ITEM                     :Integer; //管理No
+  @title: '{i18n>QUO_ITEM}' QUO_ITEM                     : Integer; //管理No
 
-  @title: '{i18n>QUO_ITEM}' SALES_NUMBER                     : String(20); //販売見積番号
-  @title: '{i18n>QUO_ITEM}' QUO_VERSION                     : String(5); //販売見積バージョン
-  @title: '{i18n>QUO_ITEM}' SALES_D_NO                     : String(5); //販売見積案件明細
-  @title: '{i18n>QUO_ITEM}' SAP_MAT_ID                     : String(40); //SAP 品目（製品）
-  @title: '{i18n>QUO_ITEM}' DEVELOP_MAT                     : String(40); //開発品番
+  @title: '{i18n>QUO_ITEM}' SALES_NUMBER                 : String(20); //販売見積番号
+  @title: '{i18n>QUO_ITEM}' QUO_VERSION                  : String(5); //販売見積バージョン
+  @title: '{i18n>QUO_ITEM}' SALES_D_NO                   : String(5); //販売見積案件明細
+  @title: '{i18n>QUO_ITEM}' SAP_MAT_ID                   : String(40); //SAP 品目（製品）
+  @title: '{i18n>QUO_ITEM}' DEVELOP_MAT                  : String(40); //開発品番
   @title: '{i18n>PLANT_ID}' PLANT_ID                     : String(4); //プラント
 
 
@@ -223,7 +225,9 @@ entity T07_QUOTATION_D : cuid, IF_CUID_FILED { //
 
   @title: '{i18n>TO_HEAD}'
   TO_HEAD                                                : Association to one T06_QUOTATION_H
-                                                             on TO_HEAD.QUO_NUMBER = QUO_NUMBER;
+                                                             on  TO_HEAD.SALES_NUMBER = SALES_NUMBER
+                                                             and TO_HEAD.QUO_NUMBER   = QUO_NUMBER
+                                                             and TO_HEAD.QUO_VERSION  = QUO_VERSION;
 
 
 }
@@ -269,15 +273,15 @@ entity T09_FORCAST : IF_CUID_FILED { //
 
 }
 //发送履历表
-entity T10_EMAIL_SEND_LOG :  IF_CUID_FILED { //
-  @title: '{i18n>PO_NO}' key PO_NO               : String(10) not null; //采购订单编号
-  @title: '{i18n>D_NO}' key D_NO                 : Integer; //采购订单明细行号
-  @title: '{i18n>QUANTITY}' QUANTITY         : Decimal(18, 3); //発注数
-  @title: '{i18n>INPUT_DATE}' INPUT_DATE     : Date; //納入日付
-  @title: '{i18n>DEL_PRICE}' DEL_PRICE       : Decimal(18, 3); //发注单价
-  @title: '{i18n>PO_TYPE}' PO_TYPE           : String(1); //发注区分
-  @title: '{i18n>TYPE}' TYPE                 : String(1); //是否送信为Y则发送
-  
-  @title: '{i18n>CD_DATE}' CD_DATE           : Date; //创建日
+entity T10_EMAIL_SEND_LOG : IF_CUID_FILED { //
+  @title: '{i18n>PO_NO}' key PO_NO                                  : String(10) not null; //采购订单编号
+  @title: '{i18n>D_NO}' key  D_NO                                   : Integer; //采购订单明细行号
+                             @title: '{i18n>QUANTITY}' QUANTITY     : Decimal(18, 3); //発注数
+                             @title: '{i18n>INPUT_DATE}' INPUT_DATE : Date; //納入日付
+                             @title: '{i18n>DEL_PRICE}' DEL_PRICE   : Decimal(18, 3); //发注单价
+                             @title: '{i18n>PO_TYPE}' PO_TYPE       : String(1); //发注区分
+                             @title: '{i18n>TYPE}' TYPE             : String(1); //是否送信为Y则发送
+
+                             @title: '{i18n>CD_DATE}' CD_DATE       : Date; //创建日
 
 }
