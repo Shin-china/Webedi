@@ -20,7 +20,7 @@ import cds.gen.tableservice.PchT03PoItemPrint_;
 import cds.gen.tableservice.TableService_;
 import cds.gen.MailBody;
 import cds.gen.MailJson;
-import cds.gen.pch.T10Upload;
+import cds.gen.pch.T10EmailSendLog;
 import cds.gen.sys.T08ComOpD;
 import customer.bean.com.UmcConstants;
 import customer.comm.tool.StringTool;

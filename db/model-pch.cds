@@ -14,6 +14,7 @@ entity T01_PO_H : IF_CUID_FILED { //采购订单抬头
                              @title: '{i18n>PO_GROUP}' PO_GROUP       : String(3); //供应商
                              @title: '{i18n>PO_BSTYP}' PO_BSTYP       : String(1); //PO Status
                              @title: '{i18n>REMARK}' REMARK           : String(1000); //Remark(Header)
+                              @title: '{i18n>POCDBY}' POCDBY           : String(12); //自社参照
 
                              TO_ITEMS                                 : Association to many T02_PO_D //采购订单行
                                                                           on TO_ITEMS.PO_NO = PO_NO;
@@ -45,6 +46,8 @@ entity T02_PO_D : IF_CUID_FILED { //采购订单行
                              @title: '{i18n>PO_D_KNTTP}' PO_D_KNTTP     : String(1); //科目分配カテゴリ
                              @title: '{i18n>PO_D_PSTYP}' PO_D_PSTYP     : String(4); //項目カテゴリ
                              @title: '{i18n>MEMO}' MEMO                 : String(1000); //Remark(Header)
+                             @title: '{i18n>INT_NUMBER}' INT_NUMBER                 : String(18); //海外番号
+                             @title: '{i18n>PR_BY}' PR_BY                 : String(50); //購買依頼者
                              TO_HEAD                                    : Association to one T01_PO_H //采购订单抬头表
                                                                             on TO_HEAD.PO_NO = PO_NO;
                              TO_MAT                                     : Association to one MST.T01_SAP_MAT //品目
@@ -266,7 +269,7 @@ entity T09_FORCAST : IF_CUID_FILED { //
 
 }
 //发送履历表
-entity T10_UPLOAD :  IF_CUID_FILED { //
+entity T10_EMAIL_SEND_LOG :  IF_CUID_FILED { //
   @title: '{i18n>PO_NO}' key PO_NO               : String(10) not null; //采购订单编号
   @title: '{i18n>D_NO}' key D_NO                 : Integer; //采购订单明细行号
   @title: '{i18n>QUANTITY}' QUANTITY         : Decimal(18, 3); //発注数

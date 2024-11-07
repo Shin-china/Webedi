@@ -1453,7 +1453,7 @@ sap.ui.define([
         return new Promise(function (resolve, reject) {
           var PoList = that._TableDataList("detailTable", 'PO_NO')
           //返回发送过邮件的po号
-          that.PrintTool._getPrintDataInfo(that,PoList,"/PCH_T10_UPLOAD",'PO_NO').then((oData) => {
+          that.PrintTool._getPrintDataInfo(that,PoList,"/PCH_T10_EMAIL_SEND_LOG",'PO_NO').then((oData) => {
             //判断dialog是的提示消息
             var txt = that.MessageTools._getI18nTextInModel("com", "Dialog", that.getView())
             var list = [];

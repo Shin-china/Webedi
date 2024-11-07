@@ -23,7 +23,8 @@ import cds.gen.pch.T02PoD;
 import cds.gen.pch.T02PoD_;
 import cds.gen.pch.T03PoC;
 import cds.gen.pch.T03PoC_;
-import cds.gen.pch.T10Upload;
+import cds.gen.pch.T10EmailSendLog;
+import cds.gen.pch.T10EmailSendLog;
 import cds.gen.pch.Pch_;
 
 import java.time.Instant;
@@ -40,12 +41,12 @@ public class PchD010Dao extends Dao {
      * @param po
      * @param dno
      */
-    public T10Upload getByID(String po, int dno) {
-        Optional<T10Upload> result = db.run(
-                Select.from(Pch_.T10_UPLOAD)
+    public T10EmailSendLog getByID(String po, int dno) {
+        Optional<T10EmailSendLog> result = db.run(
+                Select.from(Pch_.T10_EMAIL_SEND_LOG)
                         .where(o -> o.PO_NO().eq(po)
                                 .and(o.D_NO().eq(dno))))
-                .first(T10Upload.class);
+                .first(T10EmailSendLog.class);
         if (result.isPresent()) {
             return result.get();
         }
@@ -57,12 +58,12 @@ public class PchD010Dao extends Dao {
      * 
      * @param po
      */
-    public T10Upload getByPo(String po) {
-        Optional<T10Upload> result = db.run(
-                Select.from(Pch_.T10_UPLOAD)
+    public T10EmailSendLog getByPo(String po) {
+        Optional<T10EmailSendLog> result = db.run(
+                Select.from(Pch_.T10_EMAIL_SEND_LOG)
                         .where(o -> o.PO_NO().eq(po)
                                 .and(o.TYPE().eq("Y"))))
-                .first(T10Upload.class);
+                .first(T10EmailSendLog.class);
         if (result.isPresent()) {
             return result.get();
         }
@@ -70,25 +71,25 @@ public class PchD010Dao extends Dao {
     }
 
     // 修改PCHD002
-    public void update(T10Upload o) {
+    public void update(T10EmailSendLog o) {
 
         o.setUpTime(getNow());
         o.setUpBy(this.getUserId());
 
         logger.info("修改PCHD010" + o.getPoNo() + o.getDNo());
-        db.run(Update.entity(Pch_.T10_UPLOAD).data(o));
+        db.run(Update.entity(Pch_.T10_EMAIL_SEND_LOG).data(o));
     }
 
     // 追加
     // 新建
-    public void insert(T10Upload o) {
+    public void insert(T10EmailSendLog o) {
 
         logger.info("=================插入pchd010表号码" + o.getPoNo() + o.getDNo() + "================");
         o.setCdBy(getUserId());
         o.setCdTime(getNow());
         o.setCdDate(DateTools.getLocalDate(o.getCdTime()));
         // o.setCdDateTime(DateTools.getTimeAsString(o.getCdTime()));
-        db.run(Insert.into(Pch_.T10_UPLOAD).entry(o));
+        db.run(Insert.into(Pch_.T10_EMAIL_SEND_LOG).entry(o));
     }
     // db.run(Update.entity(Inv_.D001_T).entries(tnoList));
 }

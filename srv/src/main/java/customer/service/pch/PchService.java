@@ -3,7 +3,8 @@ package customer.service.pch;
 import cds.gen.pch.T02PoD;
 import cds.gen.pch.T03PoC;
 import cds.gen.pch.T07QuotationD;
-import cds.gen.pch.T10Upload;
+import cds.gen.pch.T10EmailSendLog;
+import cds.gen.pch.T10EmailSendLog;
 import cds.gen.tableservice.PchT03PoItemPrint;
 import customer.bean.com.UmcConstants;
 import customer.bean.pch.Pch08DataList;
@@ -64,36 +65,36 @@ public class PchService {
         String dNo = jsonObject.getString("dNo");
         String t = jsonObject.getString("t");
         T02PoD byID = pchD002.getByID(po, Integer.parseInt(dNo));
-        T10Upload byID2 = pchD010.getByID(po, Integer.parseInt(dNo));
+        T10EmailSendLog byID2 = pchD010.getByID(po, Integer.parseInt(dNo));
         // 如果t10为空则为新规，如果不为空则为 修改
         if (byID2 == null) {
 
-            T10Upload t10Upload = T10Upload.create();
-            t10Upload.setPoNo(po);
-            t10Upload.setDNo(Integer.parseInt(dNo));
-            t10Upload.setQuantity(byID.getPoPurQty());
-            t10Upload.setInputDate(byID.getPoDDate());
-            t10Upload.setDelFlag(byID.getDelFlag());
-            t10Upload.setPoType(byID.getPoType());
+            T10EmailSendLog t10 = T10EmailSendLog.create();
+            t10.setPoNo(po);
+            t10.setDNo(Integer.parseInt(dNo));
+            t10.setQuantity(byID.getPoPurQty());
+            t10.setInputDate(byID.getPoDDate());
+            t10.setDelFlag(byID.getDelFlag());
+            t10.setPoType(byID.getPoType());
             // 如果t不为空，则进行写Y操作
             if (!StringTool.isEmpty(t)) {
-                t10Upload.setType("Y");
+                t10.setType("Y");
             }
 
-            pchD010.insert(t10Upload);
+            pchD010.insert(t10);
         } else {
-            T10Upload t10Upload = T10Upload.create();
+            T10EmailSendLog t10 = T10EmailSendLog.create();
 
-            t10Upload.setQuantity(byID.getPoPurQty());
-            t10Upload.setInputDate(byID.getPoDDate());
-            t10Upload.setDelFlag(byID.getDelFlag());
-            t10Upload.setPoType(byID.getPoType());
+            t10.setQuantity(byID.getPoPurQty());
+            t10.setInputDate(byID.getPoDDate());
+            t10.setDelFlag(byID.getDelFlag());
+            t10.setPoType(byID.getPoType());
             // 如果t不为空，则进行写Y操作
             if (!StringTool.isEmpty(t)) {
-                t10Upload.setType("Y");
+                t10.setType("Y");
             }
 
-            pchD010.update(t10Upload);
+            pchD010.update(t10);
         }
 
     }
@@ -114,7 +115,7 @@ public class PchService {
     }
 
     public String getPoSendPDFZWSType(String po) {
-        T10Upload t10Upload = pchD010.getByPo(po);
+        T10EmailSendLog t10 = pchD010.getByPo(po);
         List<T02PoD> byPo = pchD002.getByPo(po);
         Boolean flag1 = false;
         // 判断明细是否为D
@@ -128,9 +129,9 @@ public class PchService {
         if (!flag1) {
             return UmcConstants.DOC_D_STATUS_3;
         }
-        // 如果t10Upload中type有type为Y的则为type1，否则为type2
-        if (t10Upload != null) {
-            if (t10Upload.getType().equals("Y")) {
+        // 如果T10EmailSendLog中type有type为Y的则为type1，否则为type2
+        if (t10 != null) {
+            if (t10.getType().equals("Y")) {
                 return UmcConstants.ZWS_TYPE_2;
             } else {
                 return UmcConstants.ZWS_TYPE_1;
