@@ -11,6 +11,7 @@ import com.sap.cds.services.handler.annotations.After;
 import com.sap.cds.services.handler.annotations.On;
 import com.sap.cds.services.handler.annotations.ServiceName;
 
+import cds.gen.tableservice.PCH03GETTYPEContext;
 import cds.gen.tableservice.PCH03QUERENContext;
 import cds.gen.tableservice.PCH03SENDEMAILContext;
 import cds.gen.tableservice.PCH04SENDEMAILContext;
@@ -212,8 +213,8 @@ public class Pch03Handler implements EventHandler {
         }
     }
 
-    @On(event = PCH03SENDEMAILContext.CDS_NAME)
-    public void getType(PCH03SENDEMAILContext context) {
+    @On(event = PCH03GETTYPEContext.CDS_NAME)
+    public void getType(PCH03GETTYPEContext context) {
         // 获取po号
         String po = (String) context.get("parms"); // 根据上下文对象获取数据
         // 根据po号获取对应的邮件发送类型

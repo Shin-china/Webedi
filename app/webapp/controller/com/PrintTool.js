@@ -251,11 +251,12 @@ sap.ui.define(
                   that
                     ._createPDFDow(_that, _sResponse, _xdpTemplateID, token)
                     .then(
-                      function () {
+                      function (blob) {
                         //打印回写处理
                         if (_printBackFuncation) {
                           that.printBackAction(_that, _data, _printBackFuncation, _smartTableId, entityInModelID);
                         }
+                        resolve(blob); ;
                       },
                       function (error) {
                         //异常MSG处理
@@ -576,9 +577,10 @@ sap.ui.define(
               var _pdfurl = URL.createObjectURL(blob);
               if (_that.printTaskPdf) {
 								_that.printTaskPdf.pdfUrl.push({ url: _pdfurl, name: that._getDownloadName(xdpTemplateID) });
-								resolve(1);
+								resolve(blob);
 								return;
 							}
+              resolve(blob);
           
             },
             error: function (xhr, status, error) {

@@ -1458,8 +1458,8 @@ sap.ui.define([
             var txt = that.MessageTools._getI18nTextInModel("com", "Dialog", that.getView())
             var list = [];
             
-            if(oData.length  != undefined ){
-                oData.forEach((item) => {
+            if(oData.results  != undefined ){
+                oData.results.forEach((item) => {
                   if('Y' ==  item.TYPE){
                   list.push(item.PO_NO)
                   }
@@ -1467,7 +1467,7 @@ sap.ui.define([
   
               if(boo){
                 if(list.length > 0){
-                  txt = txt.MessageTools._getI18nMessage("Dialog2", list)
+                  txt = that.MessageTools._getI18nMessage("Dialog2", list, that.getView())
                 }
               }
             }
