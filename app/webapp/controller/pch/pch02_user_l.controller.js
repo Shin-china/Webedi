@@ -43,6 +43,15 @@ sap.ui.define([
                 var sTime = oDate.toTimeString().slice(0, 8).replace(/:/g, '');
                 // 设置文件名为当前日期和时间
                 oSettings.fileName = `納期回答履歴_${sDate}${sTime}.xlsx`;
+
+			   // 设置 DELIVERY_DATE 和 CD_DATE 列格式
+				oSettings.workbook.columns.forEach(function (oColumn) {
+					if (oColumn.property === "INPUT_DATE" || oColumn.property === "CD_DATE") {
+						oColumn.type = sap.ui.export.EdmType.Date; // 设置为日期类型
+						oColumn.format = "yyyy/M/d"; // 设置日期格式，去掉时间
+					}
+				});
+
             }
         },
 		

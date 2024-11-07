@@ -43,35 +43,35 @@ public class Pch05Handler implements EventHandler {
    * @param context       传入上下文
    * @param d012MoveActHs 传入画面输入值
    */
-  @After(entity = PchT05AccountDetailExcel_.CDS_NAME, event = "READ")
-  public void beforeReadD012MoveActH(CdsReadEventContext context, Stream<PchT05AccountDetailExcel> pchT05AccountDetailExcel) {
-    pchT05AccountDetailExcel.forEach(pchT05AccountDetail -> {
-        System.out.println(pchT05AccountDetail.getGrDate());   
-        LocalDate grDate = pchT05AccountDetail.getGrDate(); // 获取GR_DATE作为LocalDate对象
+//   @After(entity = PchT05AccountDetailExcel_.CDS_NAME, event = "READ")
+//   public void beforeReadD012MoveActH(CdsReadEventContext context, Stream<PchT05AccountDetailExcel> pchT05AccountDetailExcel) {
+//     pchT05AccountDetailExcel.forEach(pchT05AccountDetail -> {
+//         System.out.println(pchT05AccountDetail.getGrDate());   
+//         LocalDate grDate = pchT05AccountDetail.getGrDate(); // 获取GR_DATE作为LocalDate对象
         
-        if(grDate !=null){
-            // 获取年份和月份
-            int year = grDate.getYear();
-            int month = grDate.getMonthValue();
+//         if(grDate !=null){
+//             // 获取年份和月份
+//             int year = grDate.getYear();
+//             int month = grDate.getMonthValue();
 
-            // 计算当月最后一天
-            LocalDate lastDate;
-            if (month == 2) {
-                lastDate = LocalDate.of(year, month, grDate.isLeapYear() ? 29 : 28);
-            } else if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12) {
-                lastDate = LocalDate.of(year, month, 31);
-            } else {
-                lastDate = LocalDate.of(year, month, 30);
-            }
+//             // 计算当月最后一天
+//             LocalDate lastDate;
+//             if (month == 2) {
+//                 lastDate = LocalDate.of(year, month, grDate.isLeapYear() ? 29 : 28);
+//             } else if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12) {
+//                 lastDate = LocalDate.of(year, month, 31);
+//             } else {
+//                 lastDate = LocalDate.of(year, month, 30);
+//             }
 
-                // 设置计算出的LASTDATE
-                pchT05AccountDetail.setLastdate(lastDate);
-        }
+//                 // 设置计算出的LASTDATE
+//                 pchT05AccountDetail.setLastdate(lastDate);
+//         }
        
 
-        // pchT05AccountDetail.setLastdate(LocalDate.now());
-      });
+//         // pchT05AccountDetail.setLastdate(LocalDate.now());
+//       });
     
-  }
+//   }
    
 }

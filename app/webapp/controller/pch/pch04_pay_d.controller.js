@@ -45,6 +45,9 @@ sap.ui.define([
                 }
 
                 // 假设您在这里定义邮件内容模板
+                var H_CODE = "MM0007";
+                var SUPPLIER = supplierSet.values().next().value;
+                var entity = "/SYS_T08_COM_OP_D";
              
                 var supplierName = "";
                 var year = "";
@@ -94,16 +97,18 @@ sap.ui.define([
                     finalMonth = ("0" + (finalDateObj.getMonth() + 1)).slice(-2); // 月份补零
                     finalDay = ("0" + finalDateObj.getDate()).slice(-2);          // 日期补零
                 });
-                
-                // 构建邮件内容对象
-                var mailobj = {
-                    emailJson: {
-                        TEMPLATE_ID: "UWEB_M007",
-                        MAIL_TO: [
-                            "xiaoyue.wang@sh.shin-china.com",
-                            "huifang.ji@sh.shin-china.com"
-                        ].join(", "), // 使用逗号和空格连接
-                        MAIL_BODY: [
+
+                this._readHead(H_CODE, SUPPLIER, entity).then((oHeadData) => {
+                    let mail = oHeadData.results && oHeadData.results.length > 0 ? 
+                    oHeadData.results.map(result => result.VALUE02).join(", ") : '';            
+                let absama = oHeadData.results && oHeadData.results.length > 0 ? 
+                    oHeadData.results.map(result => result.VALUE03 + " 様").join("  ") : '';
+         
+                    let mailobj = {
+                        emailJson: {
+                            TEMPLATE_ID: "UWEB_M007",
+                            MAIL_TO: [mail].join(", "), 
+                            MAIL_BODY: [
                             {
                                 object: "仕入先名称",
                                 value: supplierName // 使用替换后的邮件内容
@@ -152,9 +157,44 @@ sap.ui.define([
                     MessageBox.error("メール送信に失敗しました。エラー: " + oError.message);
                 }
             });
-            console.log(a)
-            
-        },
+        });
+    },
+
+        _readHead: function (a,b, entity) {
+            var that = this;
+            return new Promise(function (resolve, reject) {
+              that.getModel().read(entity, {
+                  filters: [
+                    
+                  new sap.ui.model.Filter({
+                    path: "H_CODE",
+                    value1: a,
+                    operator: sap.ui.model.FilterOperator.EQ,
+                  }),
+                  new sap.ui.model.Filter({
+                    path: "VALUE01",
+                    value1: b,
+                    operator: sap.ui.model.FilterOperator.EQ,
+                  }),
+  
+                  new sap.ui.model.Filter({
+                    path: "DEL_FLAG",
+                    value1: "X",
+                    operator: sap.ui.model.FilterOperator.NE,
+                  }),
+  
+                ],
+                success: function (oData) {
+                  resolve(oData);
+                },
+                error: function (oError) {
+                  reject(oError);
+                },
+              });
+            });
+          },
+    
+  
 
         // 从选中的行中获取 ZABC 的值
         getZABCFromSelection: function (oTable, aSelectedIndices) {
@@ -171,24 +211,6 @@ sap.ui.define([
             console.log("Validating ZABC value: ", zabcValue); // 调试日志
             return zabcValue === "W";
         },
-
-        // onExportToPDF: function () {
-		// 	var that = this;
-		// 	let options = { compact: true, ignoreComment: true, spaces: 4 };
-		// 	var IdList = that._TableDataList("detailTable", 'SUPPLIER')
-		// 	if (IdList) {
-		// 		that.PrintTool._getPrintDataInfo(that, IdList, "/PCH_T04_PAYMENT_SUM_HJ6", "SUPPLIER").then((oData) => {
-		// 			let sResponse = json2xml(oData, options);
-		// 			console.log(sResponse)
-		// 			that.setSysConFig().then(res => {
-		// 				// that.PrintTool._detailSelectPrint(that, sResponse, "test/test", oData, null, null, null, null)
-		// 				that.PrintTool._detailSelectPrintDow(that, sResponse, "test02/test02", oData, null, null, null, null)
-		// 			})
-		// 		})
-		// 	}
-
-
-		// }
 
         onExportToPDF: function () {
             var that = this;
@@ -274,5 +296,6 @@ sap.ui.define([
             return json;
             }   
         }
+        
     });
 });

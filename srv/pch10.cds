@@ -112,4 +112,6 @@ extend service TableService {
                 T01.INITIAL_OBJ,
                 T01.PLANT_ID
         }
+
+    action PCH10_GR_SEND(params : String) returns String;
 };

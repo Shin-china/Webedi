@@ -67,9 +67,62 @@ sap.ui.define(["umc/app/Controller/BaseController", "sap/m/MessageToast"], funct
     //  * 过账，取消过账
     //  * @param {} oEvent
     //  */
-    // onSend: function (oEvent) {
-    //   this.MessageTools._clearMessage();
-    //   this.onSendDetailCommon("detailTable", "INV34", "/INV34_GR_SEND", true, "smartTable",false);
-    // },
+
+    onSend: function (oEvent) {
+
+      var that = this;
+      that._setBusy(true);
+
+      let selectedData = this._getSelectedIndicesDatasByTable("detailTable10");
+      if (selectedData.length == 0) {
+          MessageToast.show("選択されたデータがありません、データを選択してください。");
+          return false;
+      }
+
+      var pList = Array();
+      selectedData.forEach(odata => {
+        var p = {
+
+          Quo_No: odata.QUO_NUMBER
+
+        };
+
+        pList.push(p);
+        
+			})
+
+      this._callCdsAction("/PCH10_GR_SEND",  { params: JSON.stringify(pList) }, this).then(oData => {
+
+
+      });
+      
+    },
+
+    onBeforeExport: function (oEvent) {
+			var mExcelSettings = oEvent.getParameter("exportSettings");
+      
+      // 设置文件名
+			var oDate = new Date();
+			var sDate = oDate.toISOString().slice(0, 10).replace(/-/g, '');
+			var sTime = oDate.toTimeString().slice(0, 8).replace(/:/g, '');
+      mExcelSettings.fileName = `購買見積依頼管理_ ${sDate}${sTime}.xlsx`;
+      
+			mExcelSettings.workbook.columns.forEach(function (oColumn) {
+				switch (oColumn.property) {
+				// case "SalesOrderDate":
+				// 	oColumn.type = sap.ui.export.EdmType.Date;
+				// 	break;
+				// case "NetAmount":
+				// 	oColumn.type = sap.ui.export.EdmType.Currency;
+				// 	oColumn.unitProperty = 'TransactionCurrency';
+				// 	oColumn.delimiter = true; //'true':display thousands separators,'false'/'default':no display
+				// 	oColumn.width = 20;
+				// 	break;
+				default:
+					break;
+				}
+			});
+    },
+    
   });
 });
