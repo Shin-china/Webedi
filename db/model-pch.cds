@@ -176,6 +176,7 @@ entity T07_QUOTATION_D : cuid, IF_CUID_FILED { //
   @title: '{i18n>PERSON_NO1}' BP_NUMBER                  : Integer; //SAP BP（任意）
   @title: '{i18n>INITIAL_OBJ}' INITIAL_OBJ               : String(1); //イ二シ儿費用対象
   @title: '{i18n>QTY}' QTY                               : Decimal(18, 3); //数量
+  @title: '{i18n>SMI_CM_MM}' SMI_CM_MM                   : String(150); //SAP品番（任意）+顧客品番+メーカー品番
 
   @title: '{i18n>PERSON_NO1}' PERSON_NO1                 : Integer; //員数1
   @title: '{i18n>PERSON_NO2}' PERSON_NO2                 : Integer; //員数2
