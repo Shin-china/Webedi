@@ -14,7 +14,7 @@ extend service TableService {
         left join PCH.T01_PO_H as T01
             on T05.PO_NO = T01.PO_NO
         left join MST.T03_SAP_BP as T03
-            on T04.SUPPLIER = T03.LOG_NO
+            on T04.SUPPLIER = T03.BP_ID
         left join SYS.T08_COM_OP_D as T08
             on T08.H_CODE = 'MM0011'
             
@@ -414,7 +414,8 @@ extend service TableService {
             '' as DETAILTEXT: String,                        // DETAILTEXT 字段赋值为 null
             12600000 as ACCOUNT: String,                     // account 字段赋值为 12600000
             'RE' as DOCUMENTTYPE: String,                    // documentType 字段固定值为 'RE'
-            'TAX' as HEADERTEXT: String                      // headertext 字段固定值为 'TAX'
+            'TAX' as HEADERTEXT: String,                      // headertext 字段固定值为 'TAX'
+             CONCAT('(', CONCAT(T01.SUPPLIER, ')')) as SUPPLIER_1 : String
                 
         }
 

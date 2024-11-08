@@ -30,7 +30,7 @@
                     <smartFilterBar:ControlConfiguration id="pch_po_no"    key="PO_NO"    visibleInAdvancedArea="true" label="{pch>PO_NO}"          index="1"/>
                     <smartFilterBar:ControlConfiguration id="pch_supplier" key="SUPPLIER" visibleInAdvancedArea="true" label="{pch>SUPPLIER}"       index="2"/>
                     <smartFilterBar:ControlConfiguration id="pch_status"   key="STATUS"   visibleInAdvancedArea="true" label="{pch>STATUS}"   filterType="single" controlType="dropDownList" index="3"/>
-                  
+                    <smartFilterBar:ControlConfiguration id="pch_supplier_mat"   key="SUPPLIER_MAT"   visibleInAdvancedArea="true" label="{pch>SUPPLIER_MAT}"   filterType="single"  index="4"/>
                     </smartFilterBar:controlConfiguration>
                 </smartFilterBar:SmartFilterBar>
             </f:content>
