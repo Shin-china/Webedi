@@ -26,9 +26,9 @@
             <f:content>
                 <smartfilterbar:SmartFilterBar id="idSmartFilterBar" useToolbar="false" entitySet="SYS_T11_MAIL_TEMPLATE" persistencyKey="SYS_T11_MAIL_TEMPLATE" showFilterConfiguration="true">
                     <smartFilterBar:controlConfiguration>
-                        <smartfilterbar:ControlConfiguration id="idControlConfiguration1" key="TEMPLATE_ID" visibleInAdvancedArea="true"/>
-                        <smartfilterbar:ControlConfiguration id="idControlConfiguration2" key="MAIL_NAME" visibleInAdvancedArea="true"/>
-                        <smartfilterbar:ControlConfiguration id="idControlConfiguration3" key="MAIL_TITLE" visibleInAdvancedArea="true"/>
+                        <smartfilterbar:ControlConfiguration id="idControlConfiguration1" label="{sys>TEMPLATE_ID}" key="TEMPLATE_ID" visibleInAdvancedArea="true"/>
+                        <smartfilterbar:ControlConfiguration id="idControlConfiguration2" label="{sys>MAIL_NAME}" key="MAIL_NAME" visibleInAdvancedArea="true"/>
+                        <smartfilterbar:ControlConfiguration id="idControlConfiguration3" label="{sys>MAIL_TITLE}" key="MAIL_TITLE" visibleInAdvancedArea="true"/>
                     </smartFilterBar:controlConfiguration>
                 </smartfilterbar:SmartFilterBar>
             </f:content>

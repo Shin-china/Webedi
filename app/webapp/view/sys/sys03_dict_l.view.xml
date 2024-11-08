@@ -1,0 +1,221 @@
+<mvc:View controllerName="umc.app.controller.sys.sys03_dict_l"
+	xmlns:smartfield="sap.ui.comp.smartfield"
+	xmlns:smartform="sap.ui.comp.smartform"
+	xmlns:core="sap.ui.core"
+	xmlns="sap.m"
+	xmlns:m="sap.m"
+	xmlns:f="sap.f"
+	xmlns:l="sap.ui.layout"
+	xmlns:smartFilterBar="sap.ui.comp.smartfilterbar"
+	xmlns:smartTable="sap.ui.comp.smarttable"
+	xmlns:sv="sap.ui.comp.smartvariants"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:uxap="sap.uxap"
+	xmlns:table="sap.ui.table"
+	xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+
+	<f:DynamicPage id="dynamicPageId" headerExpanded="true" showFooter="true" busy="{localModel>/isBusy}">
+		<f:title>
+			<f:DynamicPageTitle id="DynamicPageTitle">
+				<f:heading>
+					<Title id="Title" text="{sys>SYS03_DICT_L}"/>
+				</f:heading>
+				<f:navigationActions>
+					<m:Button id="_IDGenButton3" icon="sap-icon://home" tooltip="nav-home" press="navToHome"/>
+				</f:navigationActions>
+
+			</f:DynamicPageTitle>
+
+		</f:title>
+
+		<f:header>
+			<f:DynamicPageHeader id="DynamicPageHeader" pinnable="true">
+
+				<f:content>
+
+					<smartFilterBar:SmartFilterBar id="smartFilterBar" useToolbar="true" entitySet="SYS03_DICT_LIST" persistencyKey="sys03_receiptprintFilterBar" showFilterConfiguration="true">
+						<smartFilterBar:controlConfiguration>
+							<smartFilterBar:ControlConfiguration id="_IDGenControlConfiguration1" key="H_CODE" label="{sys>SYS03_H_CODE}" visibleInAdvancedArea="true"  />
+							<smartFilterBar:ControlConfiguration id="_IDGenControlConfiguration2" key="H_NAME" label="{sys>SYS03_H_NAME}" visibleInAdvancedArea="true"  />
+							<smartFilterBar:ControlConfiguration id="_IDGenControlConfiguration3" key="D_NAME" label="{sys>SYS03_D_NAME}" visibleInAdvancedArea="true"  />
+
+						</smartFilterBar:controlConfiguration>
+					</smartFilterBar:SmartFilterBar>
+
+				</f:content>
+			</f:DynamicPageHeader>
+		</f:header>
+
+		<f:content>
+
+			<smartTable:SmartTable id="smartTable" smartVariant="__SVM01" showFullScreenButton="true" persistencyKey="sys03_SmartTableAnalytical_Explored" entitySet="SYS03_DICT_LIST" requestAtLeastFields="H_ID" smartFilterId="smartFilterBar" enableExport="true" useVariantManagement="true" useTablePersonalisation="true" tableType="Table" showRowCount="true" beforeRebindTable="onRebind" placeToolbarInTable="true" header="{com>TITLE_RESULT}" enableAutoBinding="false">
+
+				<smartTable:customToolbar>
+					<OverflowToolbar id="_IDGenOverflowToolbar1">
+						<content>
+							<ToolbarSpacer id="_IDGenToolbarSpacer1" />
+
+							<Button id="_IDGenButton2"  icon="sap-icon://create" text="{sys>SYS03_BUTTON_CREAT}"  visible="{localModel>/SYS03_CREAT}"  press="navTo('RouteCre_sys03')" width="10em"/>
+						</content>
+					</OverflowToolbar>
+				</smartTable:customToolbar>
+				<table:Table id="detailTable" rowMode="Auto" rowActionCount="1">
+
+					<table:columns>
+						<table:Column id="H_CODE" visible="true" autoResizable="true" sortProperty="H_CODE" filterProperty="H_CODE" width="20em">
+							<table:customData>
+								<core:CustomData key="p13nData" value='\{"columnKey":"H_CODE", "leadingProperty":"H_CODE"}'/>
+							</table:customData>
+							<table:label>
+								<Label id="SYS03_H_CODE" text="{sys>SYS03_H_CODE}"/>
+							</table:label>
+							<table:template>
+								<Text id="TEMP_H_CODE" text="{H_CODE}"></Text>
+							</table:template>
+						</table:Column>
+						<table:Column id="H_NAME" visible="true" autoResizable="true" sortProperty="H_NAME" filterProperty="H_NAME" width="10em">
+							<table:customData>
+								<core:CustomData key="p13nData" value='\{"columnKey":"H_NAME", "leadingProperty":"H_NAME"}'/>
+							</table:customData>
+							<table:label>
+								<Label id="SYS03_H_NAME" text="{sys>SYS03_H_NAME}"/>
+							</table:label>
+							<table:template>
+								<Text id="TEMP_H_NAME" text="{H_NAME}"></Text>
+							</table:template>
+						</table:Column>
+						<table:Column id="D_NO" visible="true" autoResizable="true" sortProperty="D_NO" filterProperty="D_NO" width="5em">
+							<table:customData>
+								<core:CustomData key="p13nData" value='\{"columnKey":"D_NO", "leadingProperty":"D_NO"}'/>
+							</table:customData>
+							<table:label>
+								<Label id="SYS03_D_NO" text="{sys>SYS03_D_NO}"/>
+							</table:label>
+							<table:template>
+								<Text id="TEMP_D_NO" text="{D_NO}"></Text>
+							</table:template>
+						</table:Column>
+
+						<table:Column id="D_CODE" visible="true" autoResizable="true" sortProperty="D_CODE" filterProperty="D_CODE" width="10em">
+							<table:customData>
+								<core:CustomData key="p13nData" value='\{"columnKey":"D_CODE", "leadingProperty":"D_CODE"}'/>
+							</table:customData>
+							<table:label>
+								<Label id="SYS03_D_CODE" text="{sys>SYS03_D_CODE}"/>
+							</table:label>
+							<table:template>
+								<Text id="TEMP_D_CODE" text="{D_CODE}"></Text>
+							</table:template>
+						</table:Column>
+
+
+
+						<table:Column id="D_NAME" visible="true" autoResizable="true" sortProperty="D_NAME" filterProperty="D_NAME" width="10em">
+							<table:customData>
+								<core:CustomData key="p13nData" value='\{"columnKey":"D_NAME", "leadingProperty":"D_NAME"}'/>
+							</table:customData>
+							<table:label>
+								<Label id="SYS03_D_NAME" text="{sys>SYS03_D_NAME}"/>
+							</table:label>
+							<table:template>
+								<Text id="TEMP_D_NAME" text="{D_NAME}"></Text>
+							</table:template>
+						</table:Column>
+
+						<table:Column id="VALUE01" visible="true" autoResizable="true" sortProperty="VALUE01" filterProperty="VALUE01" width="10em">
+							<table:customData>
+								<core:CustomData key="p13nData" value='\{"columnKey":"VALUE01", "leadingProperty":"VALUE01"}'/>
+							</table:customData>
+							<table:label>
+								<Label id="SYS03_VALUE01" text="{sys>SYS03_VALUE01}"/>
+							</table:label>
+							<table:template>
+								<Text id="TEMP_VALUE01" text="{VALUE01}"></Text>
+							</table:template>
+						</table:Column>
+
+						<table:Column id="VALUE02" visible="true" autoResizable="true" sortProperty="VALUE02" filterProperty="VALUE02" width="10em">
+							<table:customData>
+								<core:CustomData key="p13nData" value='\{"columnKey":"VALUE02", "leadingProperty":"VALUE02"}'/>
+							</table:customData>
+							<table:label>
+								<Label id="SYS03_VALUE02" text="{sys>SYS03_VALUE02}"/>
+							</table:label>
+							<table:template>
+								<Text id="TEMP_VALUE02" text="{VALUE02}"></Text>
+							</table:template>
+						</table:Column>
+
+						<table:Column id="VALUE03" visible="true" autoResizable="true" sortProperty="VALUE03" filterProperty="VALUE03" width="10em">
+							<table:customData>
+								<core:CustomData key="p13nData" value='\{"columnKey":"VALUE03", "leadingProperty":"VALUE03"}'/>
+							</table:customData>
+							<table:label>
+								<Label id="SYS03_VALUE03" text="{sys>SYS03_VALUE03}"/>
+							</table:label>
+							<table:template>
+								<Text id="TEMP_VALUE03" text="{VALUE03}"></Text>
+							</table:template>
+						</table:Column>
+
+						<table:Column id="VALUE04" visible="true" autoResizable="true" sortProperty="VALUE04" filterProperty="VALUE04" width="10em">
+							<table:customData>
+								<core:CustomData key="p13nData" value='\{"columnKey":"VALUE04", "leadingProperty":"VALUE04"}'/>
+							</table:customData>
+							<table:label>
+								<Label id="SYS03_VALUE04" text="{sys>SYS03_VALUE04}"/>
+							</table:label>
+							<table:template>
+								<Text id="TEMP_VALUE04" text="{VALUE04}"></Text>
+							</table:template>
+						</table:Column>
+
+						<table:Column id="VALUE05" visible="true" autoResizable="true" sortProperty="VALUE05" filterProperty="VALUE05" width="10em">
+							<table:customData>
+								<core:CustomData key="p13nData" value='\{"columnKey":"VALUE05", "leadingProperty":"VALUE05"}'/>
+							</table:customData>
+							<table:label>
+								<Label id="SYS03_VALUE05" text="{sys>SYS03_VALUE05}"/>
+							</table:label>
+							<table:template>
+								<Text id="TEMP_VALUE05" text="{VALUE05}"></Text>
+							</table:template>
+						</table:Column>
+
+						<table:Column id="DEL_FLAG" visible="true" autoResizable="true" sortProperty="DEL_FLAG" filterProperty="DEL_FLAG" width="10em">
+							<table:customData>
+								<core:CustomData key="p13nData" value='\{"columnKey":"DEL_FLAG", "leadingProperty":"DEL_FLAG"}'/>
+							</table:customData>
+							<table:label>
+								<Label id="SYS03_DEL_FLAG" text="{sys>SYS03_DEL_FLAG}"/>
+							</table:label>
+							<table:template>
+								<Text id="TEMP_DEL_FLAG" text="{DEL_FLAG}"></Text>
+							</table:template>
+						</table:Column>
+
+
+
+					</table:columns>
+					<table:rowActionTemplate>
+						<table:RowAction id="RowAction">
+							<table:items>
+								<table:RowActionItem id="RowActionItem" type="Navigation" press="onPress"  visible="{localModel>/SYS03_DETAIL_VIEW}" />
+							</table:items>
+						</table:RowAction>
+					</table:rowActionTemplate>
+
+				</table:Table>
+
+
+			</smartTable:SmartTable>
+		</f:content>
+		<f:footer>
+			<OverflowToolbar id="otbFooter" visible="{=${message>/}.length > 0}">
+				<Button icon="sap-icon://alert" text="{=${message>/}.length}" visible="{=${message>/}.length > 0}" type="Emphasized" press="onClickMessagePopover" id="messageButton">
+				</Button>
+			</OverflowToolbar>
+		</f:footer>
+	</f:DynamicPage>
+
+</mvc:View>
