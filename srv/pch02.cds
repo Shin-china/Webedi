@@ -17,19 +17,13 @@ extend service TableService {
                         T02.PO_NO = T03.PO_NO
                     and T02.D_NO  = T03.D_NO
                 )
-            left join PCH.T08_UPLOAD as T04
-                on(
-                        T02.PO_NO = T04.PO_NO
-                    and T02.D_NO  = T04.D_NO
-                )
   
             distinct {
                 // key T02.PO_NO || T02.D_NO || T03.SEQ || T04.ID as KEYID  : String,
-                key COALESCE(T01.PO_NO, '') || COALESCE(CAST(T02.D_NO AS String), '') || COALESCE(CAST(T03.SEQ AS String), '') || COALESCE(CAST(T04.ID AS String), '') as KEYID : String,
-                    T01.PO_NO,              // 発注番号
-                    T02.D_NO,               // 明細番号
-                    T03.SEQ,                // 連続番号
-                    T04.ID,                 // key ID
+                // key COALESCE(T01.PO_NO, '') || COALESCE(CAST(T02.D_NO AS String), '') || COALESCE(CAST(T03.SEQ AS String), '') || COALESCE(CAST(T04.ID AS String), '') as KEYID : String,
+                    key T01.PO_NO,              // 発注番号
+                    key T02.D_NO,               // 明細番号
+                    key T03.SEQ,                // 連続番号
                     T01.SUPPLIER,           // 仕入先コード
                     T02.MAT_ID,             // 品目コード
                     T03.STATUS,             // ステータス
@@ -45,17 +39,7 @@ extend service TableService {
                     T02.STORAGE_LOC || '' || T02.STORAGE_TXT as STORAGE_NAME : String(255), // 納品先名
                     T03.DEL_FLAG,           // 削除フラグ
                     T03.ExtNumber,          // 参照
-                    T02.PO_NO || REPEAT('0', 5 - LENGTH(CAST(T02.D_NO AS String))) || CAST(T02.D_NO AS String) as NO_DETAILS : String(15), // 購買伝票\明細NO				
-                    // T04.MAT_ID,				// 品目						
-                    T04.MAT_NAME,			// テキスト（短）						
-                    // T04.QUANTITY,			// 発注数						
-                    T04.PLANT_ID,			// プラント						
-                    T04.LOCATION_ID,		// 保管場所						
-                    T04.INPUT_DATE,			// 納入日付						
-                    T04.INPUT_QTY,			// 納入数						
-                    // T04.ExtNumber,			// 参照						
-                    T04.CD_DATE,			// 登録日付						
-                    T04.CD_DATE_TIME,			// 時刻						
+                    T02.PO_NO || REPEAT('0', 5 - LENGTH(CAST(T02.D_NO AS String))) || CAST(T02.D_NO AS String) as NO_DETAILS : String(15), // 購買伝票\明細NO								
 
             }
 
