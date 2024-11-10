@@ -98,7 +98,9 @@ public class Pch07Service {
             // 如果前面已经失败，直接跳过后续检查
             continue;
         }
-
+        
+        // 如果 MATERIAL_NUMBER 有值，检查 SAP 品目代码
+        if (matno != null && !matno.isEmpty()) {
         // 1. 检查 SAP 品目代码 (MATERIAL_NUMBER -> MAT_ID)
         T01SapMat matid = mstD001.getByID(matno);
         if (matid == null || "Y".equals(matid.getDelFlag())) {
@@ -112,7 +114,7 @@ public class Pch07Service {
             item.setRESULT("成功");
             item.setI_CON("sap-icon://sys-enter-2");
             item.setSTATUS("Success");
-        }
+        }}
 
         if (!item.getSUCCESS()) {
             // 如果前面已经失败，直接跳过后续检查
