@@ -457,5 +457,67 @@ extend service TableService {
             T03.TAX_BASE_AMOUNT
         }
 
+        entity PCH_T05_ACCOUNT_DETAIL_DISPLAY2 as
+
+          select from PCH_T05_ACCOUNT_DETAIL_DISPLAY 
+
+        distinct {      
+            key SUPPLIER,  
+            key INV_MONTH,   
+            key PO_BUKRS,
+            SUM(CALC_10_PRICE_AMOUNT) as CALC_10_PRICE_AMOUNT: Decimal(15, 2),      // 10% 税抜金额
+            SUM(CALC_8_PRICE_AMOUNT) as CALC_8_PRICE_AMOUNT: Decimal(15, 2),        // 8% 税抜金额
+            SUM(SAP_TAX_AMOUNT_10) AS SAP_TAX_AMOUNT_10 : Decimal(15, 2),           //10% SAP税额
+            SUM(SAP_TAX_AMOUNT_8) AS SAP_TAX_AMOUNT_8 : Decimal(15, 2),             //8% SAP税额
+            SUM(RECALC_PRICE_AMOUNT_10) AS RECALC_PRICE_AMOUNT_10 : Decimal(15, 2), //再計算10％税額
+            SUM(RECALC_PRICE_AMOUNT_8) AS RECALC_PRICE_AMOUNT_8 : Decimal(15, 2),   //再計算8％税額
+            SUM(DIFF_TAX_AMOUNT_10) AS DIFF_TAX_AMOUNT_10 : Decimal(15, 2),         //10％消費税差額
+            SUM(DIFF_TAX_AMOUNT_8) AS DIFF_TAX_AMOUNT_8 : Decimal(15, 2),           //8％消費税差額
+            SUM(TOTAL_10_TAX_INCLUDED_AMOUNT) AS TOTAL_10_TAX_INCLUDED_AMOUNT : Decimal(15, 2), //合計10％税込金額
+            SUM(TOTAL_8_TAX_INCLUDED_AMOUNT) AS TOTAL_8_TAX_INCLUDED_AMOUNT : Decimal(15, 2)    //合計8％税込金額
+        }
+        group by
+            PO_BUKRS,
+            SUPPLIER,
+            INV_MONTH; 
+
+        entity PCH_T05_ACCOUNT_DETAIL_DISPLAY3 as
+
+          select from PCH_T05_ACCOUNT_DETAIL_DISPLAY2 as T01
+        left join PCH_T05_ACCOUNT_DETAIL_DISPLAY as T02
+            on  T01.SUPPLIER  = T02.SUPPLIER
+            and T01.INV_MONTH = T02.INV_MONTH
+            and T01.PO_BUKRS  = T02.PO_BUKRS
+
+        distinct {      
+            key T01.SUPPLIER,  
+            key T01.INV_MONTH,   
+            key T01.PO_BUKRS,
+            T02.CURRENCY,
+            T01.CALC_10_PRICE_AMOUNT,         // 10% 税抜金额
+            T01.CALC_8_PRICE_AMOUNT,          // 8%  税抜金额
+            T01.SAP_TAX_AMOUNT_10,            // 10% SAP税额
+            T01.SAP_TAX_AMOUNT_8,             // 8%  SAP税额
+            T01.RECALC_PRICE_AMOUNT_10,       // 再計算10％税額
+            T01.RECALC_PRICE_AMOUNT_8,        // 再計算8％税額
+            T01.DIFF_TAX_AMOUNT_10,           // 10％消費税差額
+            T01.DIFF_TAX_AMOUNT_8,            // 8％消費税差額
+            T01.TOTAL_10_TAX_INCLUDED_AMOUNT, // 合計10％税込金額
+            T01.TOTAL_8_TAX_INCLUDED_AMOUNT,  // 合計8％税込金額
+            T02.TRANSACTION,
+            T02.REFERENCE,
+            T02.DOCUMENTTYPE,
+            T02.HEADERTEXT,
+            T02.LASTDATE,
+            T02.ACCOUNT,
+            T02.DETAILTEXT,
+            T02.SHKZG_FLAG,
+            T02.DIFF_TAX_AMOUNT,
+            T02.TAX_CODE,
+            T02.TAX_BASE_AMOUNT
+        }
+
+
+
 }
 
