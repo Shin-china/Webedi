@@ -363,7 +363,8 @@
         <Label id="labelPriceAmount" text="{pch>PRICE_AMOUNT}"/>
     </table:label>
     <table:template>
-        <Text id="textPriceAmount" text="{PRICE_AMOUNT}"/>
+        <!-- <Text id="textPriceAmount" text="{PRICE_AMOUNT}"/> -->
+        <Text id="textPriceAmount" text="{path: 'PRICE_AMOUNT', formatter: '.formatter.formatUnitPrice'}"/>
     </table:template>
 </table:Column>
 
@@ -375,7 +376,8 @@
         <Label id="labelTotalAmount" text="{pch>TOTAL_AMOUNT}"/>
     </table:label>
     <table:template>
-        <Text id="textTotalAmount" text="{TOTAL_AMOUNT}"/>
+        <!-- <Text id="textTotalAmount" text="{TOTAL_AMOUNT}"/> -->
+        <Text id="textTotalAmount" text="{path: 'TOTAL_AMOUNT', formatter: '.formatter.formatUnitPrice'}"/>
     </table:template>
 </table:Column>
 
@@ -387,7 +389,8 @@
         <Label id="labelTaxAmount" text="{pch>TAX_AMOUNT}"/>
     </table:label>
     <table:template>
-        <Text id="textTaxAmount" text="{TAX_AMOUNT}"/>
+        <!-- <Text id="textTaxAmount" text="{TAX_AMOUNT}"/> -->
+         <Text id="textTaxAmount" text="{path: 'TAX_AMOUNT', formatter: '.formatter.formatUnitPrice'}"/>
     </table:template>
     </table:Column>
 

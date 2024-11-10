@@ -77,6 +77,27 @@ public class Pch07Service {
             String bpno  =  item.getBP_NUMBER();
             String valstart =  item.getVALIDATE_START();
             String valend  =  item.getVALIDATE_END();
+            String custMaterial  =  item.getCUST_MATERIAL();
+
+        // 先检查 MATERIAL_NUMBER 和 CUST_MATERIAL 字段是否至少有一个有值
+        if ((matno == null || matno.isEmpty()) && (custMaterial == null || custMaterial.isEmpty())) {
+            // 如果两个字段都为空，报错
+            item.setSUCCESS(false);
+            item.setMESSAGE("SAP 品目コード、図面品番は少なくとも一つを入力してください。");
+            item.setRESULT("失敗");
+            item.setI_CON("sap-icon://error");
+            item.setSTATUS("Error");
+        }else {
+            item.setSUCCESS(true);
+            item.setRESULT("成功");
+            item.setI_CON("sap-icon://sys-enter-2");
+            item.setSTATUS("Success");
+        }
+
+        if (!item.getSUCCESS()) {
+            // 如果前面已经失败，直接跳过后续检查
+            continue;
+        }
 
         // 1. 检查 SAP 品目代码 (MATERIAL_NUMBER -> MAT_ID)
         T01SapMat matid = mstD001.getByID(matno);
@@ -98,25 +119,25 @@ public class Pch07Service {
             continue;
         }
 
-        // 2. 检查供应商 ID (BP_NUMBER -> BP_ID)
-        T03SapBp bpid = mstD003.getByID(bpno);
-        if (bpid == null || "Y".equals(bpid.getDelFlag())) {
-            item.setSUCCESS(false);
-            item.setMESSAGE("仕入先" + bpno + "が登録されていません。チェックしてください。");
-            item.setRESULT("失敗");
-            item.setI_CON("sap-icon://error");
-            item.setSTATUS("Error");
-        }else {
-            item.setSUCCESS(true);
-            item.setRESULT("成功");
-            item.setI_CON("sap-icon://sys-enter-2");
-            item.setSTATUS("Success");
-        }
+        // // 2. 检查供应商 ID (BP_NUMBER -> BP_ID)
+        // T03SapBp bpid = mstD003.getByID(bpno);
+        // if (bpid == null || "Y".equals(bpid.getDelFlag())) {
+        //     item.setSUCCESS(false);
+        //     item.setMESSAGE("仕入先" + bpno + "が登録されていません。チェックしてください。");
+        //     item.setRESULT("失敗");
+        //     item.setI_CON("sap-icon://error");
+        //     item.setSTATUS("Error");
+        // }else {
+        //     item.setSUCCESS(true);
+        //     item.setRESULT("成功");
+        //     item.setI_CON("sap-icon://sys-enter-2");
+        //     item.setSTATUS("Success");
+        // }
 
-        if (!item.getSUCCESS()) {
-            // 如果前面已经失败，直接跳过后续检查
-            continue;
-        }
+        // if (!item.getSUCCESS()) {
+        //     // 如果前面已经失败，直接跳过后续检查
+        //     continue;
+        // }
 
         // 3. 检查日期格式 (VALIDATE_START, VALIDATE_END)
         if (!isValidDateFormat(valstart) || !isValidDateFormat(valend)) {
@@ -239,7 +260,7 @@ public class Pch07Service {
         t07QuotationD2.setMaker(number.getManuCode());
         t07QuotationD2.setManufactMaterial(number.getManuMaterial());
         t07QuotationD2.setUwebUser(bpid.getBpName1());
-        t07QuotationD2.setCustMaterial(number.getCustMaterial());
+        t07QuotationD2.setCustMaterial(data.getCUST_MATERIAL());
 
        
 

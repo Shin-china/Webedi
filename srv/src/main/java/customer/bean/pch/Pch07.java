@@ -44,7 +44,7 @@ public class Pch07 {
     private String MATERIAL_NUMBER; // SAP品番（任意）
 
     @JSONField(name = "CUST_MATERIAL")
-    private String CUST_MATERIAL; // 顧客品番
+    private String CUST_MATERIAL; // 図面品番
 
     @JSONField(name = "MANUFACT_MATERIAL")
     private String MANUFACT_MATERIAL; // メーカー品番

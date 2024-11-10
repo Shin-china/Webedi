@@ -39,6 +39,7 @@ sap.ui.define([
             var aCols = this.createSampleConfig();
             var json = [{
                D_NMATERIAL_NUMBERO: "",
+			   CUST_MATERIAL:"",
                PLANT_ID:"",
                BP_NUMBER:"",
                QTY:"",
@@ -70,6 +71,7 @@ sap.ui.define([
             var aCols = [];
 
             var MATERIAL_NUMBER = "SAP品目コード";
+			var CUST_MATERIAL = "図面品番";
             var PLANT_ID = "プラント";
             var BP_NUMBER = "仕入先";
             var QTY = "数量";
@@ -83,6 +85,10 @@ sap.ui.define([
                label: MATERIAL_NUMBER,
                property: MATERIAL_NUMBER
             });
+			aCols.push({
+				label: CUST_MATERIAL,
+				property: CUST_MATERIAL
+			 });
             aCols.push({
                label: PLANT_ID,
                property: PLANT_ID
@@ -159,10 +165,17 @@ sap.ui.define([
 			data.forEach(function (item) {
 				var missingFields = [];
 
-				if (!item.MATERIAL_NUMBER || item.MATERIAL_NUMBER === "") {
-					//missingFields.push("SAP品目コード"); // SAP品目コード
-					missingFields.push("SAP品目コード");
-				}
+				// if (!item.MATERIAL_NUMBER || item.MATERIAL_NUMBER === "") {
+				// 	//missingFields.push("SAP品目コード"); // SAP品目コード
+				// 	missingFields.push("SAP品目コード");
+				// }
+
+                // 先检查 MATERIAL_NUMBER 和 CUST_MATERIAL 字段是否至少有一个有值
+				// if ((!item.MATERIAL_NUMBER || item.MATERIAL_NUMBER === "") && 
+				// (!item.CUST_MATERIAL || item.CUST_MATERIAL === "")) {
+				// missingFields.push("SAP 品目コード、図面品番は少なくとも一つを入力してください。");
+		    	// }
+
 				if (!item.BP_NUMBER || item.BP_NUMBER === "") {
 					//missingFields.push("仕入先"); // 仕入先
 					missingFields.push("仕入先");
@@ -286,7 +299,7 @@ sap.ui.define([
 				//获得 sheet
 				var oSheet = oWB.Sheets[oWB.SheetNames[0]];
 				//设置头
-				var header = ["MATERIAL_NUMBER","PLANT_ID","BP_NUMBER","QTY","VALIDATE_START","VALIDATE_END","UMC_COMMENT_1","UMC_COMMENT_2","INITIAL_OBJ"];
+				var header = ["MATERIAL_NUMBER","CUST_MATERIAL","PLANT_ID","BP_NUMBER","QTY","VALIDATE_START","VALIDATE_END","UMC_COMMENT_1","UMC_COMMENT_2","INITIAL_OBJ"];
 				// 通过 XLSX 将sheet转为json  要转的oSheet，header标题，range起始行（1：第二行开始）
 				var jsonS = XLSX.utils.sheet_to_json(oSheet,{header: header, range: 1});
 				jsonModel.setData(jsonS);
@@ -361,9 +374,14 @@ sap.ui.define([
 				    });
 				 
 				    aCols.push({
-				     label: 'SAP品目コード.',
+				     label: 'SAP品目コード',
 				     property: 'MATERIAL_NUMBER'
 				    });
+
+					aCols.push({
+						label: '図面品番.',
+						property: 'CUST_MATERIAL'
+					   });
 				 
 				    aCols.push({
 				     label: '仕入先',

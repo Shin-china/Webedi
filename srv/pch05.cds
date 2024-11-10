@@ -434,10 +434,10 @@ extend service TableService {
             key T02.INV_MONTH,   
             key T02.PO_BUKRS,
             T03.CURRENCY,
-            T02.CALC_10_PRICE_AMOUNT,                                                  // 10% 税抜金额
-            T02.CALC_8_PRICE_AMOUNT,                                                   // 8%  税抜金额
-            T02.SAP_TAX_AMOUNT_10,                                                     // 10% SAP税额
-            T02.SAP_TAX_AMOUNT_8,                                                      // 8%  SAP税额
+            T02.CALC_10_PRICE_AMOUNT,         // 10% 税抜金额
+            T02.CALC_8_PRICE_AMOUNT,          // 8%  税抜金额
+            T02.SAP_TAX_AMOUNT_10,            // 10% SAP税额
+            T02.SAP_TAX_AMOUNT_8,             // 8%  SAP税额
             T03.RECALC_PRICE_AMOUNT_10,       // 再計算10％税額
             T03.RECALC_PRICE_AMOUNT_8,        // 再計算8％税額
             T03.DIFF_TAX_AMOUNT_10,           // 10％消費税差額

@@ -87,7 +87,7 @@
     </table:template>
 </table:Column>
 
-<table:Column id="colCalc10PriceAmount" width="6rem" sortProperty="CALC_10_PRICE_AMOUNT" filterProperty="CALC_10_PRICE_AMOUNT">
+<table:Column id="colCalc10PriceAmount" width="10rem" sortProperty="CALC_10_PRICE_AMOUNT" filterProperty="CALC_10_PRICE_AMOUNT">
     <table:customData>
         <core:CustomData key="p13nData" value='{"columnKey":"CALC_10_PRICE_AMOUNT", "leadingProperty":"CALC_10_PRICE_AMOUNT", "sortProperty":"CALC_10_PRICE_AMOUNT", "filterProperty":"CALC_10_PRICE_AMOUNT"}'/>
     </table:customData>
@@ -95,11 +95,12 @@
         <Label id="labelCalc10PriceAmount" text="{pch>CALC_10_PRICE_AMOUNT}"/>
     </table:label>
     <table:template>
-        <Text id="textCalc10PriceAmount" text="{CALC_10_PRICE_AMOUNT}"/>
+        <!-- <Text id="textCalc10PriceAmount" text="{CALC_10_PRICE_AMOUNT}"/> -->
+        <Text id="textCalc10PriceAmount" text="{path: 'CALC_10_PRICE_AMOUNT', formatter: '.formatter.formatUnitPrice'}"/>
     </table:template>
 </table:Column>
 
-<table:Column id="colCalc8PriceAmount" width="6rem" sortProperty="CALC_8_PRICE_AMOUNT" filterProperty="CALC_8_PRICE_AMOUNT">
+<table:Column id="colCalc8PriceAmount" width="10rem" sortProperty="CALC_8_PRICE_AMOUNT" filterProperty="CALC_8_PRICE_AMOUNT">
     <table:customData>
         <core:CustomData key="p13nData" value='{"columnKey":"CALC_8_PRICE_AMOUNT", "leadingProperty":"CALC_8_PRICE_AMOUNT", "sortProperty":"CALC_8_PRICE_AMOUNT", "filterProperty":"CALC_8_PRICE_AMOUNT"}'/>
     </table:customData>
@@ -107,11 +108,12 @@
         <Label id="labelCalc8PriceAmount" text="{pch>CALC_8_PRICE_AMOUNT}"/>
     </table:label>
     <table:template>
-        <Text id="textCalc8PriceAmount" text="{CALC_8_PRICE_AMOUNT}"/>
+        <!-- <Text id="textCalc8PriceAmount" text="{CALC_8_PRICE_AMOUNT}"/> -->
+        <Text id="textCalc8PriceAmount" text="{path: 'CALC_8_PRICE_AMOUNT', formatter: '.formatter.formatUnitPrice'}"/>
     </table:template>
 </table:Column>
 
-<table:Column id="colSapTaxAmount10" width="6rem" sortProperty="SAP_TAX_AMOUNT_10" filterProperty="SAP_TAX_AMOUNT_10">
+<table:Column id="colSapTaxAmount10" width="10rem" sortProperty="SAP_TAX_AMOUNT_10" filterProperty="SAP_TAX_AMOUNT_10">
     <table:customData>
         <core:CustomData key="p13nData" value='{"columnKey":"SAP_TAX_AMOUNT_10", "leadingProperty":"SAP_TAX_AMOUNT_10", "sortProperty":"SAP_TAX_AMOUNT_10", "filterProperty":"SAP_TAX_AMOUNT_10"}'/>
     </table:customData>
@@ -119,11 +121,12 @@
         <Label id="labelSapTaxAmount10" text="{pch>SAP_TAX_AMOUNT_10}"/>
     </table:label>
     <table:template>
-        <Text id="textSapTaxAmount10" text="{SAP_TAX_AMOUNT_10}"/>
+        <!-- <Text id="textSapTaxAmount10" text="{SAP_TAX_AMOUNT_10}"/> -->
+        <Text id="textSapTaxAmount10" text="{path: 'SAP_TAX_AMOUNT_10', formatter: '.formatter.formatUnitPrice'}"/>
     </table:template>
 </table:Column>
 
-<table:Column id="colSapTaxAmount8" width="6rem" sortProperty="SAP_TAX_AMOUNT_8" filterProperty="SAP_TAX_AMOUNT_8">
+<table:Column id="colSapTaxAmount8" width="10rem" sortProperty="SAP_TAX_AMOUNT_8" filterProperty="SAP_TAX_AMOUNT_8">
     <table:customData>
         <core:CustomData key="p13nData" value='{"columnKey":"SAP_TAX_AMOUNT_8", "leadingProperty":"SAP_TAX_AMOUNT_8", "sortProperty":"SAP_TAX_AMOUNT_8", "filterProperty":"SAP_TAX_AMOUNT_8"}'/>
     </table:customData>
@@ -131,11 +134,12 @@
         <Label id="labelSapTaxAmount8" text="{pch>SAP_TAX_AMOUNT_8}"/>
     </table:label>
     <table:template>
-        <Text id="textSapTaxAmount8" text="{SAP_TAX_AMOUNT_8}"/>
+        <!-- <Text id="textSapTaxAmount8" text="{SAP_TAX_AMOUNT_8}"/> -->
+        <Text id="textSapTaxAmount8" text="{path: 'SAP_TAX_AMOUNT_8', formatter: '.formatter.formatUnitPrice'}"/>
     </table:template>
 </table:Column>
 
-<table:Column id="colRecalcPriceAmount10" width="6rem" sortProperty="RECALC_PRICE_AMOUNT_10" filterProperty="RECALC_PRICE_AMOUNT_10">
+<table:Column id="colRecalcPriceAmount10" width="10rem" sortProperty="RECALC_PRICE_AMOUNT_10" filterProperty="RECALC_PRICE_AMOUNT_10">
     <table:customData>
         <core:CustomData key="p13nData" value='{"columnKey":"RECALC_PRICE_AMOUNT_10", "leadingProperty":"RECALC_PRICE_AMOUNT_10", "sortProperty":"RECALC_PRICE_AMOUNT_10", "filterProperty":"RECALC_PRICE_AMOUNT_10"}'/>
     </table:customData>
@@ -143,11 +147,12 @@
         <Label id="labelRecalcPriceAmount10" text="{pch>RECALC_PRICE_AMOUNT_10}"/>
     </table:label>
     <table:template>
-        <Text id="textRecalcPriceAmount10" text="{RECALC_PRICE_AMOUNT_10}"/>
+        <!-- <Text id="textRecalcPriceAmount10" text="{RECALC_PRICE_AMOUNT_10}"/> -->
+        <Text id="textRecalcPriceAmount10" text="{path: 'RECALC_PRICE_AMOUNT_10', formatter: '.formatter.formatUnitPrice'}"/>
     </table:template>
 </table:Column>
 
-<table:Column id="colRecalcPriceAmount8" width="6rem" sortProperty="RECALC_PRICE_AMOUNT_8" filterProperty="RECALC_PRICE_AMOUNT_8">
+<table:Column id="colRecalcPriceAmount8" width="10rem" sortProperty="RECALC_PRICE_AMOUNT_8" filterProperty="RECALC_PRICE_AMOUNT_8">
     <table:customData>
         <core:CustomData key="p13nData" value='{"columnKey":"RECALC_PRICE_AMOUNT_8", "leadingProperty":"RECALC_PRICE_AMOUNT_8", "sortProperty":"RECALC_PRICE_AMOUNT_8", "filterProperty":"RECALC_PRICE_AMOUNT_8"}'/>
     </table:customData>
@@ -155,11 +160,12 @@
         <Label id="labelRecalcPriceAmount8" text="{pch>RECALC_PRICE_AMOUNT_8}"/>
     </table:label>
     <table:template>
-        <Text id="textRecalcPriceAmount8" text="{RECALC_PRICE_AMOUNT_8}"/>
+        <!-- <Text id="textRecalcPriceAmount8" text="{RECALC_PRICE_AMOUNT_8}"/> -->
+        <Text id="textRecalcPriceAmount8" text="{path: 'RECALC_PRICE_AMOUNT_8', formatter: '.formatter.formatUnitPrice'}"/>
     </table:template>
 </table:Column>
 
-<table:Column id="colDiffTaxAmount10" width="6rem" sortProperty="DIFF_TAX_AMOUNT_10" filterProperty="DIFF_TAX_AMOUNT_10">
+<table:Column id="colDiffTaxAmount10" width="10rem" sortProperty="DIFF_TAX_AMOUNT_10" filterProperty="DIFF_TAX_AMOUNT_10">
     <table:customData>
         <core:CustomData key="p13nData" value='{"columnKey":"DIFF_TAX_AMOUNT_10", "leadingProperty":"DIFF_TAX_AMOUNT_10", "sortProperty":"DIFF_TAX_AMOUNT_10", "filterProperty":"DIFF_TAX_AMOUNT_10"}'/>
     </table:customData>
@@ -167,11 +173,12 @@
         <Label id="labelDiffTaxAmount10" text="{pch>DIFF_TAX_AMOUNT_10}"/>
     </table:label>
     <table:template>
-        <Text id="textDiffTaxAmount10" text="{DIFF_TAX_AMOUNT_10}"/>
+        <!-- <Text id="textDiffTaxAmount10" text="{DIFF_TAX_AMOUNT_10}"/> -->
+        <Text id="textDiffTaxAmount10" text="{path: 'DIFF_TAX_AMOUNT_10', formatter: '.formatter.formatUnitPrice'}"/>
     </table:template>
 </table:Column>
 
-<table:Column id="colDiffTaxAmount8" width="6rem" sortProperty="DIFF_TAX_AMOUNT_8" filterProperty="DIFF_TAX_AMOUNT_8">
+<table:Column id="colDiffTaxAmount8" width="10rem" sortProperty="DIFF_TAX_AMOUNT_8" filterProperty="DIFF_TAX_AMOUNT_8">
     <table:customData>
         <core:CustomData key="p13nData" value='{"columnKey":"DIFF_TAX_AMOUNT_8", "leadingProperty":"DIFF_TAX_AMOUNT_8", "sortProperty":"DIFF_TAX_AMOUNT_8", "filterProperty":"DIFF_TAX_AMOUNT_8"}'/>
     </table:customData>
@@ -179,11 +186,12 @@
         <Label id="labelDiffTaxAmount8" text="{pch>DIFF_TAX_AMOUNT_8}"/>
     </table:label>
     <table:template>
-        <Text id="textDiffTaxAmount8" text="{DIFF_TAX_AMOUNT_8}"/>
+        <!-- <Text id="textDiffTaxAmount8" text="{DIFF_TAX_AMOUNT_8}"/> -->
+        <Text id="textDiffTaxAmount8" text="{path: 'DIFF_TAX_AMOUNT_8', formatter: '.formatter.formatUnitPrice'}"/>
     </table:template>
 </table:Column>
 
-<table:Column id="colCalc10taxincAmountTotal" width="6rem" sortProperty="TOTAL_10_TAX_INCLUDED_AMOUNT" filterProperty="TOTAL_10_TAX_INCLUDED_AMOUNT">
+<table:Column id="colCalc10taxincAmountTotal" width="10rem" sortProperty="TOTAL_10_TAX_INCLUDED_AMOUNT" filterProperty="TOTAL_10_TAX_INCLUDED_AMOUNT">
     <table:customData>
         <core:CustomData key="p13nData" value='{"columnKey":"TOTAL_10_TAX_INCLUDED_AMOUNT", "leadingProperty":"TOTAL_10_TAX_INCLUDED_AMOUNT", "sortProperty":"TOTAL_10_TAX_INCLUDED_AMOUNT", "filterProperty":"TOTAL_10_TAX_INCLUDED_AMOUNT"}'/>
     </table:customData>
@@ -191,11 +199,12 @@
         <Label id="labelCalc10taxincAmountTotal" text="{pch>TOTAL_10_TAX_INCLUDED_AMOUNT}"/>
     </table:label>
     <table:template>
-        <Text id="textCalc10taxincAmountTotal" text="{TOTAL_10_TAX_INCLUDED_AMOUNT}"/>
+        <!-- <Text id="textCalc10taxincAmountTotal" text="{TOTAL_10_TAX_INCLUDED_AMOUNT}"/> -->
+        <Text id="textCalc10taxincAmountTotal" text="{path: 'TOTAL_10_TAX_INCLUDED_AMOUNT', formatter: '.formatter.formatUnitPrice'}"/>
     </table:template>
 </table:Column>
 
-<table:Column id="colCalc8taxincAmountTotal" width="6rem" sortProperty="TOTAL_8_TAX_INCLUDED_AMOUNT" filterProperty="TOTAL_8_TAX_INCLUDED_AMOUNT">
+<table:Column id="colCalc8taxincAmountTotal" width="10rem" sortProperty="TOTAL_8_TAX_INCLUDED_AMOUNT" filterProperty="TOTAL_8_TAX_INCLUDED_AMOUNT">
     <table:customData>
         <core:CustomData key="p13nData" value='{"columnKey":"TOTAL_8_TAX_INCLUDED_AMOUNT", "leadingProperty":"TOTAL_8_TAX_INCLUDED_AMOUNT", "sortProperty":"TOTAL_8_TAX_INCLUDED_AMOUNT", "filterProperty":"TOTAL_8_TAX_INCLUDED_AMOUNT"}'/>
     </table:customData>
@@ -203,7 +212,8 @@
         <Label id="labelCalc8taxincAmountTotal" text="{pch>TOTAL_8_TAX_INCLUDED_AMOUNT}"/>
     </table:label>
     <table:template>
-        <Text id="textCalc8taxincAmountTotal" text="{TOTAL_8_TAX_INCLUDED_AMOUNT}"/>
+        <!-- <Text id="textCalc8taxincAmountTotal" text="{TOTAL_8_TAX_INCLUDED_AMOUNT}"/> -->
+        <Text id="textCalc8taxincAmountTotal" text="{path: 'TOTAL_8_TAX_INCLUDED_AMOUNT', formatter: '.formatter.formatUnitPrice'}"/>
     </table:template>
 </table:Column>
 

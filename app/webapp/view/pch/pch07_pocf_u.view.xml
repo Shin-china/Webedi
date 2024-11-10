@@ -85,7 +85,17 @@ xmlns:fb="sap.ui.comp.filterbar">
 					</t:template>
 				</t:Column>
 
-				<t:Column id="_IDGenColumn7" width="10rem" sortProperty="BP_NUMBER" filterProperty="BP_NUMBER">
+				<t:Column id="_IDGenColumn7" width="10rem" sortProperty="CUST_MATERIAL" filterProperty="CUST_MATERIAL">
+					<t:customData>
+						<core:CustomData key="p13nData" value='\{"columnKey":"CUST_MATERIAL", "leadingProperty":"CUST_MATERIAL"}'/>
+					</t:customData>
+					<Label id="_IDGenLabel21" text="{pch>U07_CUST_MATERIAL}"/>
+					<t:template>
+						<Text id="_IDGenText22" text="{workInfo>CUST_MATERIAL}"/>
+					</t:template>
+				</t:Column>			
+
+				<t:Column id="_IDGenColumn8" width="10rem" sortProperty="BP_NUMBER" filterProperty="BP_NUMBER">
 					<t:customData>
 						<core:CustomData key="p13nData" value='\{"columnKey":"BP_NUMBER", "leadingProperty":"BP_NUMBER"}'/>
 					</t:customData>
@@ -95,7 +105,7 @@ xmlns:fb="sap.ui.comp.filterbar">
 					</t:template>
 				</t:Column>
 
-				<t:Column id="_IDGenColumn8" width="10rem" sortProperty="PLANT_ID" filterProperty="PLANT_ID">
+				<t:Column id="_IDGenColumn9" width="10rem" sortProperty="PLANT_ID" filterProperty="PLANT_ID">
 					<t:customData>
 						<core:CustomData key="p13nData" value='\{"columnKey":"PLANT_ID", "leadingProperty":"PLANT_ID"}'/>
 					</t:customData>
@@ -103,17 +113,7 @@ xmlns:fb="sap.ui.comp.filterbar">
 					<t:template>
 						<Text id="_IDGenText12" text="{workInfo>PLANT_ID}"/>
 					</t:template>
-				</t:Column>
-
-				<t:Column id="_IDGenColumn9" width="10rem" sortProperty="QTY" filterProperty="QTY">
-					<t:customData>
-						<core:CustomData key="p13nData" value='\{"columnKey":"QTY", "leadingProperty":"QTY"}'/>
-					</t:customData>
-					<Label id="_IDGenLabel12" text="{pch>U07_QTY}"/>
-					<t:template>
-						<Text id="_IDGenText13" text="{workInfo>QTY}"/>
-					</t:template>
-				</t:Column>				
+				</t:Column>	
 
 				<t:Column id="_IDGenColumn10" width="10rem" sortProperty="VALIDATE_START" filterProperty="VALIDATE_START">
 					<t:customData>

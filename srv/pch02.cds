@@ -59,6 +59,33 @@ extend service TableService {
 
             }
 
+             entity PCH_T02_USER_2 as
+            select from PCH.T08_UPLOAD as T01
+            left join PCH.T02_PO_D as T02
+                on(
+                    T01.PO_NO = T02.PO_NO
+                    and T01.D_NO  = T02.D_NO
+                )
+
+    distinct {
+
+                    key T01.PO_NO,          // 発注番号
+                    key T01.D_NO,           // 明細番号
+                    key T01.ID,             // key ID
+                    T01.MAT_ID,             // 品目コード
+                    T01.QUANTITY,           // 納品数
+                    T01.ExtNumber,          // 参照
+                    T01.PO_NO || REPEAT('0', 5 - LENGTH(CAST(T01.D_NO AS String))) || CAST(T01.D_NO AS String) as NO_DETAILS : String(15), // 購買伝票\明細NO								
+                    T01.MAT_NAME,			// テキスト（短）											
+                    T01.PLANT_ID,			// プラント						
+                    T01.LOCATION_ID,		// 保管場所						
+                    T01.INPUT_DATE,			// 納入日付						
+                    T01.INPUT_QTY,			// 納入数											
+                    T01.CD_DATE,			// 登録日付						
+                    T01.CD_DATE_TIME,	    // 時刻		
+
+    }
+
         // union all
         //     select from PCH.PCH_T01_PO_H as T01
         //     left join PCH.PCH_T02_PO_D as T02
