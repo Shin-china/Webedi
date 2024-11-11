@@ -45,6 +45,8 @@ public class Ifm02MstService {
                 o.setMatUnit(value.getBaseUnit());
                 o.setMatType(value.getProductType());
                 o.setMatGroup(value.getProductGroup());
+                o.setManuCode(value.getManufacturerNumber());
+                o.setManuMaterial(value.getProductManufacturerNumber());
                 // o.setMatStatus(value.getCrossPlantStatus());
                 // o.setMatName(value.getBaseUnit());
                 // o.setManuCode(value.getBaseUnit());
@@ -52,7 +54,6 @@ public class Ifm02MstService {
                 MSTDao.modify(o);
 
             }
-
 
         } catch (UnsupportedOperationException e) {
 
