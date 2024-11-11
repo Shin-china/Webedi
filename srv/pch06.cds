@@ -11,10 +11,10 @@ extend service TableService {
             on (T01.PO_NO = T03.PO_NO and T02.D_NO = T03.D_NO)
 
         distinct {
-           KEY T01.PO_NO || T02.D_NO ||T03.SEQ  as ID : String(100),
+           KEY T01.PO_NO || T02.D_NO || COALESCE(T03.SEQ,0)  as ID : String(100),
             KEY T01.PO_NO,                    // 発注番号
             KEY T02.D_NO,                     // 明細番号
-            KEY T03.SEQ,                     // 明細番号
+             T03.SEQ,                     // 明細番号
             T02.MAT_ID,                       // 品目コード
             T02.PO_D_TXZ01,                   // 品目テキスト
             // T03.DELIVERY_DATE,                   // 納品日

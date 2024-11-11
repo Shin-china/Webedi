@@ -78,12 +78,20 @@ sap.ui.define([
 		 * @param {*} oEvent 
 		 */
 		onTongQi: function (oEvent) {
-         
-			this._callCdsAction("/PCH06_TQ", null, this).then((oData) => {
-				console.log(oData.PCH06_TQ);
-				sap.m.MessageToast.show(oData.PCH06_TQ);
-			});
-			var datas = jsonModel.getData();
+			var that = this; 
+			that._setBusy(true);
+			this._callCdsAction("/PCH06_TQ", null, this).then(
+				function (oData) {
+				  var str = oData.PCH02_CONFIRMATION_REQUEST;
+				  that._setBusy(false);
+				  sap.m.MessageToast.show(str);
+				},
+				function (error) {
+				  that._setBusy(false);
+				  sap.m.MessageToast.show(error);
+				}
+			  )
+			// var datas = jsonModel.getData();
 		},
 		/*==============================
 		删除
