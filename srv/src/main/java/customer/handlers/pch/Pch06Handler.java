@@ -2,7 +2,10 @@ package customer.handlers.pch;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import com.sap.cds.services.cds.CdsReadEventContext;
 import com.sap.cds.services.handler.EventHandler;
+import com.sap.cds.services.handler.annotations.After;
 import com.sap.cds.services.handler.annotations.On;
 import com.sap.cds.services.handler.annotations.ServiceName;
 
@@ -10,6 +13,10 @@ import cds.gen.tableservice.PCH03SENDEMAILContext;
 import cds.gen.tableservice.PCH04SENDEMAILContext;
 import cds.gen.tableservice.PCH06SaveDATAContext;
 import cds.gen.tableservice.PCH06TQContext;
+import cds.gen.tableservice.PchT03PoItemPrint;
+import cds.gen.tableservice.PchT03PoItemPrint_;
+import cds.gen.tableservice.PchT06PoItem;
+import cds.gen.tableservice.PchT06PoItem_;
 import cds.gen.tableservice.TableService_;
 import cds.gen.MailBody;
 import cds.gen.MailJson;
@@ -27,6 +34,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Stream;
 
 @Component
 @ServiceName(TableService_.CDS_NAME)
@@ -57,7 +65,22 @@ public class Pch06Handler implements EventHandler {
         // if (!list.getErr()) {
         // pchService.detailsSave(list);
         // }
-        Ifm03PoService.syncPo();
-        context.setResult("同步成功");
+
+        String run = Ifm03PoService.syncPo();
+        context.setResult(run);
     }
+
+    /**
+     * 
+     * 打印前数据处理
+     * 
+     */
+    // @After(entity = PchT06PoItem_.CDS_NAME, event = "READ")
+    // public void beforeReadD03PDF(CdsReadEventContext context,
+    // Stream<PchT06PoItem> pchd06List) {
+    // pchd06List.forEach(pchd06 -> {
+    // pchd06.setSeq(pchd06.getSeq() == null ? 1 : pchd06.getSeq());
+
+    // });
+    // }
 }
