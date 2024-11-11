@@ -40,7 +40,9 @@ sap.ui.define([
             var json = [{
                D_NMATERIAL_NUMBERO: "",
 			   CUST_MATERIAL:"",
+			   MANUFACT_MATERIAL:"",
                PLANT_ID:"",
+			   SALES_NUMBER:"",
                BP_NUMBER:"",
                QTY:"",
                VALIDATE_START:"",
@@ -71,8 +73,10 @@ sap.ui.define([
             var aCols = [];
 
             var MATERIAL_NUMBER = "SAP品目コード";
-			var CUST_MATERIAL = "図面品番";
+			var CUST_MATERIAL = "顧客品番";
+			var MANUFACT_MATERIAL = "メーカー品番";
             var PLANT_ID = "プラント";
+			var SALES_NUMBER = "販売見積案件No";
             var BP_NUMBER = "仕入先";
             var QTY = "数量";
             var VALIDATE_START = "有効開始日付";
@@ -89,10 +93,18 @@ sap.ui.define([
 				label: CUST_MATERIAL,
 				property: CUST_MATERIAL
 			 });
+			 aCols.push({
+				label: MANUFACT_MATERIAL,
+				property: MANUFACT_MATERIAL
+			 });
             aCols.push({
                label: PLANT_ID,
                property: PLANT_ID
             });
+			aCols.push({
+				label: SALES_NUMBER,
+				property: SALES_NUMBER
+			 });
             aCols.push({
                label: BP_NUMBER,
                property: BP_NUMBER
@@ -299,13 +311,40 @@ sap.ui.define([
 				//获得 sheet
 				var oSheet = oWB.Sheets[oWB.SheetNames[0]];
 				//设置头
-				var header = ["MATERIAL_NUMBER","CUST_MATERIAL","PLANT_ID","BP_NUMBER","QTY","VALIDATE_START","VALIDATE_END","UMC_COMMENT_1","UMC_COMMENT_2","INITIAL_OBJ"];
+				var header = ["MATERIAL_NUMBER","CUST_MATERIAL","MANUFACT_MATERIAL","PLANT_ID","SALES_NUMBER","BP_NUMBER","QTY","VALIDATE_START","VALIDATE_END","UMC_COMMENT_1","UMC_COMMENT_2","INITIAL_OBJ"];
 				// 通过 XLSX 将sheet转为json  要转的oSheet，header标题，range起始行（1：第二行开始）
 				var jsonS = XLSX.utils.sheet_to_json(oSheet,{header: header, range: 1});
+
+				jsonS.forEach(function (row) {
+					if (row.VALIDATE_START && !isNaN(row.VALIDATE_START)) {
+						// 转换 Excel 日期序列号为实际日期
+						row.VALIDATE_START = that._convertExcelDate(row.VALIDATE_START);
+					}
+					if (row.VALIDATE_END && !isNaN(row.VALIDATE_END)) {
+						// 转换 Excel 日期序列号为实际日期
+						row.VALIDATE_END = that._convertExcelDate(row.VALIDATE_END);
+					}
+				});
+				
+
 				jsonModel.setData(jsonS);
 			};
 			oReader.readAsBinaryString(oFile);
 			},
+
+		        // 辅助函数：将 Excel 日期序列号转换为实际日期
+			_convertExcelDate: function (serial) {
+				var excelEpoch = new Date(1899, 11, 31); // Excel的基准日期
+				var convertedDate = new Date(excelEpoch.getTime() + serial * 24 * 60 * 60 * 1000);
+				
+				// 提取年、月、日并格式化为 YYYY/MM/DD
+				var year = convertedDate.getFullYear();
+				var month = String(convertedDate.getMonth() + 1).padStart(2, '0');
+				var day = String(convertedDate.getDate()).padStart(2, '0');
+				
+				return `${year}/${month}/${day}`;
+			},
+
 
 			onExport: function () {
 				    var aCols, oRowBinding, oSettings, oSheet, oTable;
@@ -379,10 +418,15 @@ sap.ui.define([
 				    });
 
 					aCols.push({
-						label: '図面品番.',
+						label: '顧客品番',
 						property: 'CUST_MATERIAL'
 					   });
-				 
+
+					   aCols.push({
+						label: 'メーカー品番',
+						property: 'MANUFACT_MATERIAL'
+					   });
+
 				    aCols.push({
 				     label: '仕入先',
 				     property: 'BP_NUMBER'
@@ -391,6 +435,11 @@ sap.ui.define([
 					aCols.push({
 						label: 'プラント',
 						property: 'PLANT_ID'
+					   });
+
+					   aCols.push({
+						label: '販売見積案件No',
+						property: 'SALES_NUMBER'
 					   });
 
 					aCols.push({

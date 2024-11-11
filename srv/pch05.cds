@@ -49,7 +49,7 @@ extend service TableService {
                     ELSE CAST(T05.UNIT_PRICE AS Decimal(15, 5))  // 保留五位小数
                 END AS UNIT_PRICE : Decimal(15, 5),
 
-                T05.TAX_AMOUNT,                    // 消費税額
+                // T05.TAX_AMOUNT,                    // 消費税額
                 T04.CE_DOC,                        // 差額伝票番号
                 T04.INV_BASE_DATE,                 // 支払い基準日
                 T05.GR_DATE,                       // 伝票日付
@@ -71,6 +71,12 @@ extend service TableService {
                     WHEN T05.SHKZG = 'H' THEN -T05.TOTAL_AMOUNT   // 贷方为负
                     ELSE T05.TOTAL_AMOUNT                         // 默认情况
                 END as TOTAL_AMOUNT : Decimal(18, 3),             // 計上金額
+
+                CASE 
+                    WHEN T05.SHKZG = 'S' THEN T05.TAX_AMOUNT    // 借方为正
+                    WHEN T05.SHKZG = 'H' THEN -T05.TAX_AMOUNT   // 贷方为负
+                    ELSE T05.TAX_AMOUNT                         // 默认情况
+                END as TAX_AMOUNT : Decimal(18, 3),             // 計上金額
 
                 TO_CHAR(T04.INV_POST_DATE, 'YYYYMM') as INV_MONTH : String
       

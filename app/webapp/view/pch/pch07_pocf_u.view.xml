@@ -93,7 +93,37 @@ xmlns:fb="sap.ui.comp.filterbar">
 					<t:template>
 						<Text id="_IDGenText22" text="{workInfo>CUST_MATERIAL}"/>
 					</t:template>
+				</t:Column>	
+
+				<t:Column id="_IDGenColumn16" width="10rem" sortProperty="MANUFACT_MATERIAL" filterProperty="MANUFACT_MATERIAL">
+					<t:customData>
+						<core:CustomData key="p13nData" value='\{"columnKey":"MANUFACT_MATERIAL", "leadingProperty":"MANUFACT_MATERIAL"}'/>
+					</t:customData>
+					<Label id="_IDGenLabel23" text="{pch>U07_MANUFACT_MATERIAL}"/>
+					<t:template>
+						<Text id="_IDGenText24" text="{workInfo>MANUFACT_MATERIAL}"/>
+					</t:template>
 				</t:Column>			
+
+				<t:Column id="_IDGenColumn9" width="10rem" sortProperty="PLANT_ID" filterProperty="PLANT_ID">
+					<t:customData>
+						<core:CustomData key="p13nData" value='\{"columnKey":"PLANT_ID", "leadingProperty":"PLANT_ID"}'/>
+					</t:customData>
+					<Label id="_IDGenLabel11" text="{pch>U07_PLANT_ID}"/>
+					<t:template>
+						<Text id="_IDGenText12" text="{workInfo>PLANT_ID}"/>
+					</t:template>
+				</t:Column>	
+
+				<t:Column id="_IDGenColumn17" width="10rem" sortProperty="SALES_NUMBER" filterProperty="SALES_NUMBER">
+					<t:customData>
+						<core:CustomData key="p13nData" value='\{"columnKey":"SALES_NUMBER", "leadingProperty":"SALES_NUMBER"}'/>
+					</t:customData>
+					<Label id="_IDGenLabel25" text="{pch>U07_SALES_NUMBER}"/>
+					<t:template>
+						<Text id="_IDGenText26" text="{workInfo>SALES_NUMBER}"/>
+					</t:template>
+				</t:Column>		
 
 				<t:Column id="_IDGenColumn8" width="10rem" sortProperty="BP_NUMBER" filterProperty="BP_NUMBER">
 					<t:customData>
@@ -105,15 +135,15 @@ xmlns:fb="sap.ui.comp.filterbar">
 					</t:template>
 				</t:Column>
 
-				<t:Column id="_IDGenColumn9" width="10rem" sortProperty="PLANT_ID" filterProperty="PLANT_ID">
+				<t:Column id="_IDGenColumn18" width="10rem" sortProperty="QTY" filterProperty="QTY">
 					<t:customData>
-						<core:CustomData key="p13nData" value='\{"columnKey":"PLANT_ID", "leadingProperty":"PLANT_ID"}'/>
+						<core:CustomData key="p13nData" value='\{"columnKey":"QTY", "leadingProperty":"QTY"}'/>
 					</t:customData>
-					<Label id="_IDGenLabel11" text="{pch>U07_PLANT_ID}"/>
+					<Label id="_IDGenLabel27" text="{pch>U07_QTY}"/>
 					<t:template>
-						<Text id="_IDGenText12" text="{workInfo>PLANT_ID}"/>
+						<Text id="_IDGenText28" text="{workInfo>QTY}"/>
 					</t:template>
-				</t:Column>	
+				</t:Column>
 
 				<t:Column id="_IDGenColumn10" width="10rem" sortProperty="VALIDATE_START" filterProperty="VALIDATE_START">
 					<t:customData>

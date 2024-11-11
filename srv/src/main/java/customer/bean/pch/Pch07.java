@@ -73,6 +73,9 @@ public class Pch07 {
     @JSONField(name = "PLANT_ID")
     private String PLANT_ID; // 管理No
 
+    @JSONField(name = "SALES_NUMBER")
+    private String SALES_NUMBER; // 販売見積案件No
+
     @JSONField(name = "MANUFACT_CODE")
     private String MANUFACT_CODE; // Manfact. Code name
 
