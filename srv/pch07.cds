@@ -14,8 +14,9 @@ extend service TableService {
             {
                 KEY T01.PLANT_ID,                   // プラント
                 KEY T02.MATERIAL_NUMBER,            // SAP品目コード
+                KEY T02.CUST_MATERIAL,              // 顧客品目コード
                     T01.QUO_NUMBER,                 // 販売見積バージョン
-                    T02.QUO_ITEM,                   // 管理No
+                    T02.QUO_ITEM,                   // 管理No        
                 CAST(T02.QUO_NUMBER AS Integer) AS QUO_NUMBER_INT,
                 CAST(T02.QUO_ITEM AS Integer) AS QUO_ITEM_INT
             };
