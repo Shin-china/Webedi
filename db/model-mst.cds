@@ -5,7 +5,7 @@ using {COMM.CUID_FILED as CUID_FILED} from './model-common';
 using {cuid} from '@sap/cds/common';
 
 entity T01_SAP_MAT : IF_CUID_FILED { //物料基本信息
-  @title: '{i18n>MAT_ID}' key MAT_ID                                 : String(18) not null; //物料编号
+  @title: '{i18n>MAT_ID}' key MAT_ID                                 : String(40) not null; //物料编号
                               @title: '{i18n>MAT_UNIT}' MAT_UNIT     : String(3); //物料基本单位
                               @title: '{i18n>MAT_TYPE}' MAT_TYPE     : String(4); //物料类型区别字符MTART
                               @title: '{i18n>MAT_GROUP}' MAT_GROUP   : String(9); //物料组MATKL
@@ -67,7 +67,7 @@ entity T05_SAP_BP_PURCHASE : IF_CUID_FILED { //BP采购视图
 
 
 entity T06_MAT_PLANT : IF_CUID_FILED { //BP采购视图
-  @title: '{i18n>MAT_ID}' key MAT_ID                       : String(18) not null; //物料编号
+  @title: '{i18n>MAT_ID}' key MAT_ID                       : String(40) not null; //物料编号
   @title: '{i18n>PLANT_ID}' key PLANT_ID : String(4) not null; //工厂code
                                     @title: '{i18n>IMP_COMP}' IMP_COMP         : String(1); //重要组件
 
