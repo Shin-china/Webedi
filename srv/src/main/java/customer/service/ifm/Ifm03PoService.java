@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import com.alibaba.fastjson.JSON;
 import cds.gen.pch.T01PoH;
 import cds.gen.pch.T02PoD;
+import cds.gen.pch.T03PoC;
 import cds.gen.sys.T11IfManager;
 import customer.bean.pch.Item;
 import customer.bean.pch.SapPchRoot;
@@ -50,6 +51,7 @@ public class Ifm03PoService {
 
                     T01PoH o = T01PoH.create();
                     o.setPoNo(Items.getPurchaseorder());
+                    o.setPoBukrs(Items.getCompanycode());
 
                     try {
 
@@ -61,7 +63,9 @@ public class Ifm03PoService {
                         System.out.println("日期格式无效: " + e.getMessage()); // 处理格式错误
 
                     }
-                    o.setSupplier(Items.getSupplier());
+                    // o.setSupplier(Items.getSupplier());
+                    // 去除前导 0
+                    o.setSupplier(Items.getSupplier().replaceFirst("^0+(?!$)", ""));
 
                     PchDao.modify(o);
 
@@ -77,6 +81,8 @@ public class Ifm03PoService {
 
                     o2.setPoPurQty(new BigDecimal(Items.getOrderquantity()));
                     o2.setPoPurUnit(Items.getPurchaseorderquantityunit());
+
+                    o2.setCurrency(Items.getDocumentcurrency());
 
                     try {
 
@@ -111,7 +117,10 @@ public class Ifm03PoService {
                     o2.setDelAmount(new BigDecimal(Items.getNetamount()));
                     o2.setUnitPrice(new BigDecimal(Items.getNetpricequantity()));
                     o2.setStorageLoc(Items.getStoragelocation());
+                    o2.setStorageTxt(Items.getStoragelocationname());
                     o2.setMemo(Items.getPlainlongtext());
+
+                    o2.setSupplierMat(Items.getSupplierMaterialNumber());
 
                     if (Items.getPurchasingdocumentdeletioncode() == "X") {
 
@@ -119,6 +128,10 @@ public class Ifm03PoService {
                     }
 
                     PchDao.modify2(o2, dele);
+
+                    // T03PoC o3 = T03PoC.create();
+                    // o3.setPoNo(Items.getPurchaseorder());    
+                    // o3.setDNo(number);
 
                 }
 

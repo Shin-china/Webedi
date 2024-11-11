@@ -7,6 +7,7 @@ public class Item {
 
     private String Purchaseorder;
     private String Supplier;
+    private String Companycode;
     private String Purchasingdocumentdeletioncode;
     private String Purchaseorderdate;
     private String Creationdate;
@@ -15,6 +16,7 @@ public class Item {
     private String Purchaseorderitem;
     private String Documentcurrency;
     private String Material;
+    private String Plant;
     private String Purchaseorderitemtext;
     private String Orderquantity;
     private String Purchaseorderquantityunit;
@@ -26,5 +28,6 @@ public class Item {
     private String Textobjecttype;
     private String Plainlongtext;
     private String Schedulelinedeliverydate;
+    private String SupplierMaterialNumber;
 
 }
