@@ -7,7 +7,7 @@ extend service TableService {
         select from view.T01_PO_H as T01
          join view.T02_PO_D as T02 
             ON (T01.PO_NO = T02.PO_NO)
-         join view.T03_PO_C as T03 
+         left join view.T03_PO_C as T03 
             on (T01.PO_NO = T03.PO_NO and T02.D_NO = T03.D_NO)
 
         distinct {
