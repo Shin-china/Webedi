@@ -454,7 +454,8 @@ extend service TableService {
             T03.SHKZG_FLAG,
             T03.DIFF_TAX_AMOUNT,
             T03.TAX_CODE,
-            T03.TAX_BASE_AMOUNT
+            T03.TAX_BASE_AMOUNT,
+            T03.INVOICEID
         }
 
         entity PCH_T05_ACCOUNT_DETAIL_DISPLAY2 as
@@ -514,7 +515,8 @@ extend service TableService {
             T02.SHKZG_FLAG,
             T02.DIFF_TAX_AMOUNT,
             T02.TAX_CODE,
-            T02.TAX_BASE_AMOUNT
+            T02.TAX_BASE_AMOUNT,
+            T02.INVOICEID
         }
 
 

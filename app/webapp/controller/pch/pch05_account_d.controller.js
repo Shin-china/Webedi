@@ -137,6 +137,14 @@ sap.ui.define([
                     var sTime = oDate.toTimeString().slice(0, 8).replace(/:/g, '');
                     // 设置文件名为当前日期和时间
                     oSettings.fileName = `買掛金明細_${sDate}${sTime}.xlsx`;
+
+				oSettings.workbook.columns.forEach(function (oColumn) {
+					if (oColumn.property === "INV_POST_DATE" || oColumn.property === "INV_BASE_DATE" || oColumn.property === "GR_DATE") {
+						oColumn.type = sap.ui.export.EdmType.Date; // 设置为日期类型
+						oColumn.format = "yyyy/M/d"; // 设置日期格式，去掉时间
+					}
+				});
+
                 }
             },
              

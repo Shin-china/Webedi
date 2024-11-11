@@ -164,6 +164,7 @@ public class Pch07Service {
 
                 String plant =  data.getPLANT_ID();
                 String matno =  data.getMATERIAL_NUMBER();
+                String cust  =  data.getCUST_MATERIAL();
                 PCHT07QuoItemMax1 item = pchD006.getVer(plant, matno);
                 //没有番号的情况采番
                 //明细为1
