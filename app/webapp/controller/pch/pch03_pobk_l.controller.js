@@ -162,6 +162,10 @@ init
 				let myMap = new Map();
 				// 创建一个新的Map对象  用作判断po是否状态
 				let myZABCMap = new Map();
+				// 创建一个新的Map对象  用作判断po是否状态
+				let mySuppliMap = new Map();
+				// 创建一个新的Map对象  用作判断po是否状态
+				let myPlantMap = new Map();
 				var PoList = that._TableDataList("detailTable", 'PO_NO')
 				//经过去重以后的po号
 				var uniqueIdList = [...new Set(PoList)];
@@ -173,6 +177,8 @@ init
 					selectedIndices.forEach((item) => {
 						myMap.get(item.PO_NO) ? myMap.get(item.PO_NO).push(item.ID) : myMap.set(item.PO_NO, [item.ID]);
 						myZABCMap.get(item.PO_NO) ? myZABCMap.get(item.PO_NO) : myZABCMap.set(item.PO_NO, item.ZABC);
+						mySuppliMap.get(item.PO_NO) ? mySuppliMap.get(item.PO_NO) : mySuppliMap.set(item.PO_NO, item.SUPPLIER);
+						myPlantMap.get(item.PO_NO) ? myPlantMap.get(item.PO_NO) : myPlantMap.set(item.PO_NO, item.PLANT_ID,);
 					})
 
 					//通过去重的po号取map数据进行打印
@@ -180,23 +186,28 @@ init
 						//重置以打印个数
 						_objectCommData._EmailPdfCount = 0
 						that._callCdsAction(_objectCommData._entity4, { parms: item }, that).then((data) => {
-							if ("IUSSE" == data.PCH03_GETTYPE) {
-								tempName = "UWEB_PCH03_C";
+							if("1400" == myPlantMap.get(item)){
+								tempName = "UWEB_PCH03_P";
+							}else{
+							    if ("IUSSE" == data.PCH03_GETTYPE) {
+									tempName = "UWEB_PCH03_C";
+								}
+								if ("REIUSSE" == data.PCH03_GETTYPE) {
+									tempName = "UWEB_PCH03_U";
+								}
+								if ("CANCEL" == data.PCH03_GETTYPE) {
+									tempName = "UWEB_PCH03_D";
+								}
 							}
-							if ("REIUSSE" == data.PCH03_GETTYPE) {
-								tempName = "UWEB_PCH03_U";
-							}
-							if ("CANCEL" == data.PCH03_GETTYPE) {
-								tempName = "UWEB_PCH03_D";
-							}
+							
 							var mailobj = {
 								emailJson: {
 									TEMPLATE_ID: tempName,
 									MAIL_TO: sys.results[0].VALUE02,
 									MAIL_BODY: [
 										{
-											object: "content",
-											value: "hello"
+											object: "仕入先名称",
+											value: mySuppliMap.get(item) // 使用替换后的邮件内容
 										},
 
 										// {

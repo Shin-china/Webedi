@@ -262,6 +262,7 @@ extend service TableService {
                 T02.STATUS, // ステータス  01：送信済　02：照会済
                 T02.CD_BY, //登録者
                 T02.PO_D_DATE, //所要日付
+                T02.PLANT_ID,
                      case T04.ZABC
                     when 'E' then 'E'
                     when 'F' then 'F'
@@ -310,6 +311,7 @@ extend service TableService {
                     T02.STATUS, // ステータス  01：送信済　02：照会済
                     T02.CD_BY, //登録者
                     T02.PO_D_DATE, //所要日付
+                    T02.PLANT_ID,
                        case T04.ZABC
                     when 'E' then 'E'
                     when 'F' then 'F'
