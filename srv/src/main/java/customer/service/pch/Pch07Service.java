@@ -42,6 +42,7 @@ import customer.dao.pch.PchD007;
 import customer.bean.pch.Pch01;
 import customer.bean.pch.Pch07DataList;
 import customer.comm.tool.MessageTools;
+import customer.dao.sys.DocNoDao;
 // import customer.usapbe.comm.tool.UniqueIDTool;
 // import customer.usapbe.service.Service;
 import customer.dao.sys.IFSManageDao;
@@ -66,6 +67,8 @@ public class Pch07Service {
     private PchD007 pchD007; 
     @Autowired
     private IFSManageDao ifsManageDao;
+    @Autowired
+    private DocNoDao docDao;
 
     public void detailsCheck(Pch07DataList list) {
         // 遍历上传的每条记录,
@@ -158,37 +161,39 @@ public class Pch07Service {
 }
 
     public void detailsSave(Pch07DataList list) throws Exception {
-
+        //获取map储存key值与最大明细值，与番号
+        //番号
+        HashMap<String, String> map = new HashMap<>();
+        //最大明细值
+        HashMap<String, String> map2 = new HashMap<>();
         
         for (Pch07 data : list.getList()) {
 
                 String plant =  data.getPLANT_ID();
                 String matno =  data.getMATERIAL_NUMBER();
                 String cust  =  data.getCUST_MATERIAL();
-                PCHT07QuoItemMax1 item = pchD006.getVer(plant, matno);
-                //没有番号的情况采番
-                //明细为1
-                if(item == null){
-                    PCHT07QuoItemMax1 maxQuo = pchD006.getQuoNumberMax();
-                    String no = (maxQuo == null)? "100001" : String.valueOf(maxQuo.getQuoNumberMax()+1);
-                    data.setQUO_NUMBER(no);
-                    //增加明细番号记录
-                    data.setQUO_ITEM("1");
-                    //需要采番的情况创建T06
-                    this.createT06(data);
-                //有值的情况下取番明细+1设置dno
-                }else{
-                     String no = String.valueOf(item.getQuoNumberMax());
-                     String dnum = String.valueOf(item.getQuoItemMax());
-                    // 将 dnum 转换为 Integer，然后加 1
-                    int nextQuoItem = Integer.parseInt(dnum) + 1;
-                    // 将结果转换回 String
-                    data.setQUO_ITEM(String.valueOf(nextQuoItem));
 
-                     //加1设置dno
-                     data.setQUO_NUMBER(no);
-                    //  data.setQUO_ITEM(dnum+1);
-                }              
+
+                // PCHT07QuoItemMax1 item = pchD006.getVer(plant, matno,cust);
+                // //没有番号的情况采番
+                // //明细为1
+                //  if(item == null){
+                //     PCHT07QuoItemMax1 maxQuo = pchD006.getQuoNumberMax();
+                //     String no = docDao.getPJNo(1);
+                //     data.setQUO_NUMBER(no);
+                //     //增加明细番号记录
+                //     data.setQUO_ITEM("1");
+                //     //需要采番的情况创建T06
+                //     this.createT06(data);
+                //     int nextQuoItem = Integer.parseInt(dnum) + 1;
+                //     // 将结果转换回 String
+                //     data.setQUO_ITEM(String.valueOf(nextQuoItem));
+
+                //      //加1设置dno
+                //      data.setQUO_NUMBER(no);
+                //     //  data.setQUO_ITEM(dnum+1);
+                // }            
+
                 //创建T07
                 this.createT07(data);
                 data.setMESSAGE("購買見積は成功にアップロードしました");

@@ -12,6 +12,8 @@ import com.sap.cds.services.handler.annotations.Before;
 import com.sap.cds.services.handler.annotations.On;
 import com.sap.cds.services.handler.annotations.ServiceName;
 
+import cds.gen.tableservice.PchT05AccountDetailDisplay3;
+import cds.gen.tableservice.PchT05AccountDetailDisplay3_;
 import cds.gen.tableservice.PchT05AccountDetailExcel;
 import cds.gen.tableservice.PchT05AccountDetailExcel_;
 import cds.gen.tableservice.PchT05AccountDetail;
@@ -63,15 +65,15 @@ public class Pch05Handler implements EventHandler {
     });
   }
   /**
-   * PCH_T05_ACCOUNT_DETAIL_EXCEL
+   * PCH_T05_ACCOUNT_DETAIL_DISPLAY3
    * 检查抬头 工厂 检查明细
    * 
    * @param context       传入上下文
    * @param d012MoveActHs 传入画面输入值
    */
-  @After(entity = PchT05AccountDetailExcel_.CDS_NAME, event = "READ")
-  public void afterReadPchT05AccountDetailExcel(CdsReadEventContext context,
-      Stream<PchT05AccountDetailExcel> datas) {
+  @After(entity = PchT05AccountDetailDisplay3_.CDS_NAME, event = "READ")
+  public void afterReadPchT05AccountDetailDisplay3(CdsReadEventContext context,
+      Stream<PchT05AccountDetailDisplay3> datas) {
 
 
         int[] a = new int[1];
