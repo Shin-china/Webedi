@@ -26,10 +26,11 @@ extend service TableService {
             {
                 KEY PLANT_ID,                   // プラント
                 KEY MATERIAL_NUMBER,            // SAP品目コード
+                KEY CUST_MATERIAL,            // SAP品目コード
                 MAX(QUO_NUMBER) AS QUO_NUMBER_MAX : Integer,
                 MAX(QUO_ITEM) AS QUO_ITEM_MAX  : Integer
             }
-            GROUP BY PLANT_ID,MATERIAL_NUMBER;
+            GROUP BY PLANT_ID,MATERIAL_NUMBER,CUST_MATERIAL;
 
             action PCH07_CHECK_DATA(ShelfJson : String) returns String;
             action PCH07_SAVE_DATA(ShelfJson : String) returns String;

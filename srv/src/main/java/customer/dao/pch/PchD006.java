@@ -75,11 +75,11 @@ public class PchD006 extends Dao {
      * @param po
      * @param pod
      */
-    public PCHT07QuoItemMax1 getVer(String PLANT_ID, String MATERIAL_NUMBER) {
+    public PCHT07QuoItemMax1 getVer(String PLANT_ID, String MATERIAL_NUMBER, String cust) {
 
         Optional<PCHT07QuoItemMax1> first = db
                 .run(Select.from(TableService_.PCHT07_QUO_ITEM_MAX1)
-                        .where(o -> o.PLANT_ID().eq(PLANT_ID).and(o.MATERIAL_NUMBER().eq(MATERIAL_NUMBER))))
+                        .where(o -> o.PLANT_ID().eq(PLANT_ID).and(o.MATERIAL_NUMBER().eq(MATERIAL_NUMBER)).and(o.CUST_MATERIAL().eq(cust))))
                 .first(PCHT07QuoItemMax1.class);
         if (first.isPresent()) {
             return (first.get());
