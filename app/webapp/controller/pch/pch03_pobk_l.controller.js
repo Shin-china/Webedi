@@ -657,7 +657,7 @@ init
 		_isQuerenDb(tableList, boo) {
 			var pList = Array();
 			tableList.forEach((item) => {
-				if ('2' == item.USER_TYPE || ('1' == item.USER_TYPE && item.ZABC != 'E' && item.ZABC != 'F' && item.ZABC != 'W')) {
+				
 					//为true时，为邮件调用，false为下载调用
 					if (boo) {
 						var p = {
@@ -665,16 +665,19 @@ init
 							dNo: item.D_NO,
 							t: "t"
 						}
+						pList.push(p)
 					} else {
+						if ('2' == item.USER_TYPE || ('1' == item.USER_TYPE && item.ZABC != 'E' && item.ZABC != 'F' && item.ZABC != 'W')) {
 						var p = {
 							po: item.PO_NO,
 							dNo: item.D_NO,
 
 						}
+						pList.push(p)
+						}
+	
 					}
-
-					pList.push(p)
-				}
+				
 			})
 			this._querenDb(pList)
 		},
