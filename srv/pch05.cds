@@ -45,9 +45,9 @@ extend service TableService {
                 T04.SEND_FLAG,                     // 送信ステータス
                 // T05.UNIT_PRICE,                    // 単価
                 CASE 
-                    WHEN T05.CURRENCY = 'JYP' THEN CAST(T05.UNIT_PRICE AS Decimal(15, 3))  // 保留三位小数
-                    ELSE CAST(T05.UNIT_PRICE AS Decimal(15, 5))  // 保留五位小数
-                END AS UNIT_PRICE : Decimal(15, 5),
+                    WHEN T05.CURRENCY = 'JYP' THEN CAST(T05.UNIT_PRICE AS Decimal(18, 3))  // 保留三位小数
+                    ELSE CAST(T05.UNIT_PRICE AS Decimal(18, 5))  // 保留五位小数
+                END AS UNIT_PRICE : Decimal(18, 5),
 
                 // T05.TAX_AMOUNT,                    // 消費税額
                 T04.CE_DOC,                        // 差額伝票番号
@@ -469,10 +469,10 @@ extend service TableService {
             key SUPPLIER,  
             key INV_MONTH,   
             key PO_BUKRS,
-            SUM(CALC_10_PRICE_AMOUNT) as CALC_10_PRICE_AMOUNT: Decimal(15, 2),      // 10% 税抜金额
-            SUM(CALC_8_PRICE_AMOUNT) as CALC_8_PRICE_AMOUNT: Decimal(15, 2),        // 8% 税抜金额
-            SUM(SAP_TAX_AMOUNT_10) AS SAP_TAX_AMOUNT_10 : Decimal(15, 2),           //10% SAP税额
-            SUM(SAP_TAX_AMOUNT_8) AS SAP_TAX_AMOUNT_8 : Decimal(15, 2),             //8% SAP税额
+            // SUM(CALC_10_PRICE_AMOUNT) as CALC_10_PRICE_AMOUNT: Decimal(15, 2),      // 10% 税抜金额
+            // SUM(CALC_8_PRICE_AMOUNT) as CALC_8_PRICE_AMOUNT: Decimal(15, 2),        // 8% 税抜金额
+            // SUM(SAP_TAX_AMOUNT_10) AS SAP_TAX_AMOUNT_10 : Decimal(15, 2),           //10% SAP税额
+            // SUM(SAP_TAX_AMOUNT_8) AS SAP_TAX_AMOUNT_8 : Decimal(15, 2),             //8% SAP税额
             SUM(RECALC_PRICE_AMOUNT_10) AS RECALC_PRICE_AMOUNT_10 : Decimal(15, 2), //再計算10％税額
             SUM(RECALC_PRICE_AMOUNT_8) AS RECALC_PRICE_AMOUNT_8 : Decimal(15, 2),   //再計算8％税額
             SUM(DIFF_TAX_AMOUNT_10) AS DIFF_TAX_AMOUNT_10 : Decimal(15, 2),         //10％消費税差額
@@ -498,10 +498,10 @@ extend service TableService {
             key T01.INV_MONTH,   
             key T01.PO_BUKRS,
             T02.CURRENCY,
-            T01.CALC_10_PRICE_AMOUNT,         // 10% 税抜金额
-            T01.CALC_8_PRICE_AMOUNT,          // 8%  税抜金额
-            T01.SAP_TAX_AMOUNT_10,            // 10% SAP税额
-            T01.SAP_TAX_AMOUNT_8,             // 8%  SAP税额
+            T02.CALC_10_PRICE_AMOUNT,         // 10% 税抜金额
+            T02.CALC_8_PRICE_AMOUNT,          // 8%  税抜金额
+            T02.SAP_TAX_AMOUNT_10,            // 10% SAP税额
+            T02.SAP_TAX_AMOUNT_8,             // 8%  SAP税额
             T01.RECALC_PRICE_AMOUNT_10,       // 再計算10％税額
             T01.RECALC_PRICE_AMOUNT_8,        // 再計算8％税額
             T01.DIFF_TAX_AMOUNT_10,           // 10％消費税差額

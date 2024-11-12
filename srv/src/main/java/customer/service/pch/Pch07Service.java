@@ -175,28 +175,31 @@ public class Pch07Service {
             String plant = data.getPLANT_ID() == null ? "" : data.getPLANT_ID();
             String matno = data.getMATERIAL_NUMBER() == null ? "" : data.getMATERIAL_NUMBER();
             String cust = data.getCUST_MATERIAL() == null ? "" : data.getCUST_MATERIAL();
+            String manu = data.getMANUFACT_MATERIAL() == null ? "" : data.getMANUFACT_MATERIAL();
 
             // 首先找有没有之前这个noMap的值
-            if (noMap.containsKey(plant + matno + cust)) {
+            String key = plant + matno + cust + manu;
+
+            if (noMap.containsKey(key)) {
                 // 如果存在则取出最大明细值进行+1
 
-                String dNo = dNoMap.get(plant + matno + cust);
+                String dNo = dNoMap.get(key);
                 int dNoInt = Integer.parseInt(dNo);
                 dNoInt++;
-                dNoMap.put(plant + matno + cust, String.valueOf(dNoInt));
+                dNoMap.put(key, String.valueOf(dNoInt));
             }
             // 如果不存在则创建noMap和从1开始的最大明细值
             else {
                 // 番号
                 String no = docDao.getPJNo(plant, 1);
-                noMap.put(plant + matno + cust, no);
+                noMap.put(key, no);
                 // 最大明细值
-                dNoMap.put(plant + matno + cust, "1");
+                dNoMap.put(key, "1");
             }
 
-            data.setQUO_NUMBER(noMap.get(plant + matno + cust));
+            data.setQUO_NUMBER(noMap.get(key));
             // 增加明细番号记录
-            data.setQUO_ITEM(dNoMap.get(plant + matno + cust));
+            data.setQUO_ITEM(dNoMap.get(key));
             // 需要采番的情况创建T06
             this.createT06(data);
 

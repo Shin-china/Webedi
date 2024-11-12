@@ -110,7 +110,7 @@ extend service TableService {
         INV_MONTH,                     //检收月
         Company_Code,
  
-        CAST(UNIT_PRICE * COALESCE(EXCHANGE, 1) AS Decimal(15, 3)) AS UNIT_PRICE_IN_YEN : Decimal(15, 3),
+        CAST(UNIT_PRICE * COALESCE(EXCHANGE, 1) AS Decimal(18, 5)) AS UNIT_PRICE_IN_YEN : Decimal(18, 5),
         ROUND(TOTAL_AMOUNT * COALESCE(EXCHANGE, 1), 0) AS TOTAL_AMOUNT_IN_YEN : Decimal(20, 0), // 円換算後税込金額（檢収）
 
         
