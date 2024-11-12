@@ -15,6 +15,7 @@ import customer.dao.pch.Pch01saveDao;
 import customer.dao.pch.Pch08Dao;
 import customer.dao.pch.PchD002;
 import customer.dao.pch.PchD003;
+import customer.dao.pch.PchD004;
 import customer.dao.pch.PchD007;
 import customer.dao.pch.PchD010Dao;
 
@@ -43,6 +44,8 @@ public class PchService {
     @Autowired
     PchD003 pchD003;
     @Autowired
+    PchD004 pchD004;
+    @Autowired
     PchD010Dao pchD010;
 
     // 根据传入的po和po明细修改po明细状态
@@ -51,6 +54,18 @@ public class PchService {
         byID.setStatus(UmcConstants.PCH02_STATUS_02);
         pchD002.updateD002(byID);
     }
+
+        // 根据传入的SUPLI明细状态
+        public void setSendflag(String supp) {
+
+            Map<String, Object> data = new HashMap<>();
+            data.put("SEND_FLAG", UmcConstants.PCH04_STATUS_02);
+            Map<String, Object> keys = new HashMap<>();
+                keys.put("SUPPLIER", supp);
+            // 数据是否被修改修改标记
+
+            pchD004.updateMap(data,keys);
+        }
 
     public BigDecimal getSysD006(String string) {
         return BigDecimal.ONE;

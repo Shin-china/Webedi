@@ -22,8 +22,11 @@ import cds.gen.tableservice.TableService_;
 import cds.gen.MailBody;
 import cds.gen.MailJson;
 import customer.service.sys.EmailServiceFun;
+import cds.gen.tableservice.PCH05SENDEMAILContext;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -151,5 +154,18 @@ public class Pch05Handler implements EventHandler {
   private BigDecimal scaleToTwoDecimal(BigDecimal value) {
     return (value != null) ? value.setScale(2, BigDecimal.ROUND_HALF_UP) : null;
   }
+
+    /**
+     * 
+     * @param context
+     */
+    @On(event = "PCH05_SENDEMAIL")
+    public void sendemail(PCH05SENDEMAILContext context) {
+        // 直接从上下文中获取参数
+        JSONArray jsonArray = JSONArray.parseArray(context.getParms());
+
+            String supp = jsonObject.getString("supplier");
+
+    }
 
 }

@@ -14,6 +14,9 @@ public class UmcConstants {
     public final static String PCH02_STATUS_01 = "1"; // 否
     public final static String PCH02_STATUS_02 = "2"; // 否
 
+    public final static String PCH04_STATUS_01 = "1"; // 否
+    public final static String PCH04_STATUS_02 = "2"; // 否
+
     public static Integer MAX_STRING_SIZE = 4000; // 通用字符串最大长度 存储DB的。 超过的 用对象存储。
 
     public final static String DELETE_YES = "Y"; // 已经删除
