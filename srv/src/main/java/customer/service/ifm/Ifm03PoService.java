@@ -76,6 +76,8 @@ public class Ifm03PoService {
                     o2.setDNo(number);
 
                     o2.setMatId(Items.getMaterial());
+
+                    o2.setPlantId(Items.getPlant());
                     o2.setPoDTxz01(Items.getPurchaseorderitemtext());
                     Items.getOrderquantity();
 
