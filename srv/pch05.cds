@@ -403,9 +403,7 @@ extend service TableService {
                 when T01.DIFF_TAX_AMOUNT_10 is not null then cast(floor(DIFF_TAX_AMOUNT_10 / 0.1) as Decimal(15,0)) 
                 when T01.DIFF_TAX_AMOUNT_8 is not null then cast(floor(DIFF_TAX_AMOUNT_8 / 0.08) as Decimal(15,0)) 
                 else null 
-            end as TAX_BASE_AMOUNT : Decimal(15,0), // 税基金额
-
-            ROW_NUMBER() OVER () as INVOICEID: Integer,
+            end as TAX_BASE_AMOUNT : Decimal(15,0), // 税基金额         
 
     TO_CHAR(
         CAST(
@@ -461,7 +459,6 @@ extend service TableService {
             T03.DIFF_TAX_AMOUNT,
             T03.TAX_CODE,
             T03.TAX_BASE_AMOUNT,
-            T03.INVOICEID
         }
 
         entity PCH_T05_ACCOUNT_DETAIL_DISPLAY2 as
@@ -522,7 +519,7 @@ extend service TableService {
             T02.DIFF_TAX_AMOUNT,
             T02.TAX_CODE,
             T02.TAX_BASE_AMOUNT,
-            T02.INVOICEID
+            ROW_NUMBER() OVER () as INVOICEID: Integer,
         }
 
 
