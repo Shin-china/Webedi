@@ -81,12 +81,14 @@ public class Pch07Service {
             String valstart = item.getVALIDATE_START();
             String valend = item.getVALIDATE_END();
             String custMaterial = item.getCUST_MATERIAL();
+            String manu = item.getMANUFACT_MATERIAL();
 
             // 先检查 MATERIAL_NUMBER 和 CUST_MATERIAL 字段是否至少有一个有值
-            if ((matno == null || matno.isEmpty()) && (custMaterial == null || custMaterial.isEmpty())) {
-                // 如果两个字段都为空，报错
+            if ((matno == null || matno.isEmpty()) && (custMaterial == null || custMaterial.isEmpty())
+                    && (manu == null || manu.isEmpty())) {
+                // 如果三个字段都为空，报错
                 item.setSUCCESS(false);
-                item.setMESSAGE("SAP 品目コード、図面品番は少なくとも一つを入力してください。");
+                item.setMESSAGE("SAP 品目コード、顧客品番、メーカー品番は少なくとも一つを入力してください。");
                 item.setRESULT("失敗");
                 item.setI_CON("sap-icon://error");
                 item.setSTATUS("Error");
@@ -268,9 +270,11 @@ public class Pch07Service {
         t07QuotationD2.setStatus("1");
         t07QuotationD2.setMaterial(number.getMatName());
         t07QuotationD2.setMaker(number.getManuCode());
-        t07QuotationD2.setManufactMaterial(number.getManuMaterial());
+        // t07QuotationD2.setManufactMaterial(number.getManuMaterial());
         t07QuotationD2.setUwebUser(bpid.getBpName1());
         t07QuotationD2.setCustMaterial(data.getCUST_MATERIAL());
+        t07QuotationD2.setManufactMaterial(data.getMANUFACT_MATERIAL());
+        t07QuotationD2.setSalesNumber(data.getSALES_NUMBER());
 
         pchD007.insert(t07QuotationD2);
     }
