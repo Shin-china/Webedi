@@ -54,7 +54,9 @@ public class Ifm04PrService {
                     o.setArrangeStartDate(LocalDate.parse(item.getArrangeStartDate(), formatter)); // 假设
                                                                                                    // item.getArrangeStartDate()
                                                                                                    // // 为字符串
-                    o.setArrangeEndDate(LocalDate.parse(item.getArrangeEndDate())); // 假设 item.getArrangeEndDate() 为字符串
+                    o.setArrangeEndDate(LocalDate.parse(item.getArrangeEndDate(), formatter)); // 假设
+                                                                                               // item.getArrangeEndDate()
+                                                                                               // 为字符串
                     o.setPlant(item.getPlant());
                     o.setArrangeQty(new BigDecimal(item.getArrangeQty())); // 假设 item.getArrangeQty() 返回的是 String 类型
                     o.setName1(item.getName1());
