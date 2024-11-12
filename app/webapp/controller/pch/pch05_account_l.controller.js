@@ -117,7 +117,7 @@ sap.ui.define([
                 { label: "明細テキスト", property: "DETAILTEXT" },
                 { label: "借方/貸方フラグ(1)s=借方 H=貸方", property: "SHKZG_FLAG" },
                 { label: "金額(伝票通貨)", property: "DIFF_TAX_AMOUNT" },
-                { label: "税コード(2)", property: "TAX_CODE" },
+                { label: "税コード(2)", property: "" },
                 { label: "伝票通貨での課税基準額", property: "TAX_BASE_AMOUNT" }
             ];
                 var oDate = new Date();

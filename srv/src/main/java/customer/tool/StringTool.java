@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -166,6 +167,39 @@ public class StringTool {
 		return str;
 	}
 
+	    /**
+     * 将 GBK 编码的字符串转换为 Shift_JIS 编码
+     *
+     * @param gbkString GBK 编码的字符串
+     * @return 转换为 Shift_JIS 编码的字符串
+     */
+    public static String convertGbkToShiftJIS(String gbkString) {
+        try {
+            // 将 GBK 字符串转换为字节数组
+            byte[] gbkBytes = gbkString.getBytes("GBK");
+            // 将字节数组转换为 Shift_JIS 编码的字符串
+            return new String(gbkBytes, "ShiftJ_IS");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    /**
+     * 将 GBK 编码的字符串转换为 UTF-8 编码。
+     * 
+     * @param input GBK 编码的字符串
+     * @return 转换后的 UTF-8 编码字符串
+     */
+    public static String convertGBKToUTF8(String input) throws UnsupportedEncodingException {
+        if (input == null) {
+            return null;
+        }
+        // 将 GBK 编码的字符串转换为字节数组
+        byte[] gbkBytes = input.getBytes("GBK");
+        
+        // 将字节数组按 UTF-8 编码转换回字符串
+        return new String(gbkBytes, StandardCharsets.UTF_8);
+    }
 	public static String InputStream2String(InputStream inputStream) throws IOException {
 
 		StringBuilder sb = new StringBuilder();

@@ -34,6 +34,7 @@ import customer.odata.S4OdataTools;
 import customer.service.pch.Pch06Service;
 import customer.service.pch.PchService;
 import customer.tool.Eenvironment;
+import customer.tool.StringTool;
 
 import com.sap.cds.reflect.CdsService;
 import com.sap.cds.services.handler.EventHandler;
@@ -65,12 +66,14 @@ public class Pch02Handler implements EventHandler {
             if (webServiceConfig != null) {
                 // 调用 Web Service 的 get 方法
                 String response = S4OdataTools.post(webServiceConfig, parameters, null);
-
+                JSONObject object = JSONObject.parseObject(response);
                 // 确认成功后修改po明细状态
                 pchService.updatePch03(context.getParms());
 
+                System.out.println(StringTool.convertGBKToUTF8( object.getString("message")));
                 // 将 Web Service 的响应结果返回给前台
-                context.setResult("納期回答情報は購買伝票に反映されました。");
+
+                context.setResult(StringTool.convertGBKToUTF8( object.getString("message")));
             } else {
                 // 如果没有找到配置，返回错误信息
                 context.setResult("Web Service configuration not found.");

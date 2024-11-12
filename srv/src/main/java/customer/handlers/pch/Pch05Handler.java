@@ -62,8 +62,56 @@ public class Pch05Handler implements EventHandler {
         pchT05AccountDetail.setTaxAmount(scaleToTwoDecimal(pchT05AccountDetail.getTaxAmount()));
         pchT05AccountDetail.setTotalAmount(scaleToTwoDecimal(pchT05AccountDetail.getTotalAmount()));
       }
+
+      pchT05AccountDetail.setQuantity(stripTrailingZeros(pchT05AccountDetail.getQuantity()));
+      pchT05AccountDetail.setTaxRate(stripTrailingZeros(pchT05AccountDetail.getTaxRate()));
+
     });
   }
+
+  /**
+   * 
+   * 检查抬头 工厂 检查明细
+   * 
+   * @param context       传入上下文
+   * @param d012MoveActHs 传入画面输入值
+   */
+  @After(entity = PchT05AccountDetailExcel_.CDS_NAME, event = "READ")
+  public void afterReadPchT05AccountDetailExcel(CdsReadEventContext context, Stream<PchT05AccountDetailExcel> datas1) {
+
+    datas1.forEach(data1 -> {
+
+      data1.setQuantity(stripTrailingZeros(data1.getQuantity()));
+      data1.setTaxRate(stripTrailingZeros(data1.getTaxRate()));
+      data1.setUnitPrice(stripTrailingZeros(data1.getUnitPrice()));
+      data1.setPriceAmount(stripTrailingZeros(data1.getPriceAmount()));
+      data1.setPriceAmountTotal(stripTrailingZeros(data1.getPriceAmountTotal()));
+      data1.setTotalAmount8Total(stripTrailingZeros(data1.getTotalAmount8Total()));
+      data1.setTotalAmount10Total(stripTrailingZeros(data1.getTotalAmount10Total()));
+      data1.setSapTaxAmount8Total(stripTrailingZeros(data1.getSapTaxAmount8Total()));
+      data1.setSapTaxAmount10Total(stripTrailingZeros(data1.getSapTaxAmount10Total()));
+      data1.setCalc8PriceAmountTotal(stripTrailingZeros(data1.getCalc8PriceAmountTotal()));
+      data1.setCalc10PriceAmountTotal(stripTrailingZeros(data1.getCalc10PriceAmountTotal()));
+      data1.setTotalTotalAmount(stripTrailingZeros(data1.getTotalTotalAmount()));
+      data1.setTotalTaxAmount(stripTrailingZeros(data1.getTotalTaxAmount()));
+      data1.setDiffTaxAmount(stripTrailingZeros(data1.getDiffTaxAmount()));
+
+    });
+  }
+
+  /**
+   * 处理金额字段，去除尾随零。
+   * 
+   * @param amount 金额
+   * @return 返回处理后的金额，去除尾随零
+   */
+  private BigDecimal stripTrailingZeros(BigDecimal amount) {
+    if (amount != null) {
+      return amount.stripTrailingZeros();  // 去除尾随零
+    }
+    return BigDecimal.ZERO;
+  }
+
   /**
    * PCH_T05_ACCOUNT_DETAIL_DISPLAY3
    * 检查抬头 工厂 检查明细
@@ -72,8 +120,7 @@ public class Pch05Handler implements EventHandler {
    * @param d012MoveActHs 传入画面输入值
    */
   @After(entity = PchT05AccountDetailDisplay3_.CDS_NAME, event = "READ")
-  public void afterReadPchT05AccountDetailDisplay3(CdsReadEventContext context,
-      Stream<PchT05AccountDetailDisplay3> datas) {
+  public void afterReadPchT05AccountDetailDisplay3(CdsReadEventContext context, Stream<PchT05AccountDetailDisplay3> datas) {
 
 
         int[] a = new int[1];
@@ -81,9 +128,20 @@ public class Pch05Handler implements EventHandler {
         datas.forEach(data -> {
           a[0] = a[0]+1;
           data.setInvoiceid(a[0]);
-      // 检查 currency 并根据需要设置字段精度
+          // 检查 currency 并根据需要设置字段精度
+
+          data.setCalc10PriceAmount(stripTrailingZeros(data.getCalc10PriceAmount()));
+          data.setCalc8PriceAmount(stripTrailingZeros(data.getCalc8PriceAmount()));
+          data.setSapTaxAmount10(stripTrailingZeros(data.getSapTaxAmount10()));
+          data.setSapTaxAmount8(stripTrailingZeros(data.getSapTaxAmount8()));
+          data.setRecalcPriceAmount10(stripTrailingZeros(data.getRecalcPriceAmount10()));
+          data.setRecalcPriceAmount8(stripTrailingZeros(data.getRecalcPriceAmount8()));
+          data.setDiffTaxAmount10(stripTrailingZeros(data.getDiffTaxAmount10()));
+          data.setDiffTaxAmount8(stripTrailingZeros(data.getDiffTaxAmount8()));
+          data.setTotal10TaxIncludedAmount(stripTrailingZeros(data.getTotal10TaxIncludedAmount()));
+          data.setTotal8TaxIncludedAmount(stripTrailingZeros(data.getTotal8TaxIncludedAmount()));
      
-    });
+       });
   }
   // 保留整数
   private BigDecimal scaleToInteger(BigDecimal value) {

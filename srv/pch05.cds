@@ -457,7 +457,7 @@ extend service TableService {
             T03.DETAILTEXT,
             T03.SHKZG_FLAG,
             T03.DIFF_TAX_AMOUNT,
-            T03.TAX_CODE,
+            // T03.TAX_CODE,
             T03.TAX_BASE_AMOUNT,
         }
 
@@ -517,7 +517,7 @@ extend service TableService {
             T02.DETAILTEXT,
             T02.SHKZG_FLAG,
             T02.DIFF_TAX_AMOUNT,
-            T02.TAX_CODE,
+            // T02.TAX_CODE,
             T02.TAX_BASE_AMOUNT,
             ROW_NUMBER() OVER () as INVOICEID: Integer,
         }
