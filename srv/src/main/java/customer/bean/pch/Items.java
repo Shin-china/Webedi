@@ -21,5 +21,6 @@ public class Items {
     private String ManufCode; // 生产商代码
     private String PurGroupName; // 采购组名称
     private String Supplierphonenumber; // 供应商电话
+    private String Suppliermaterialnumber; // 供应商物料号
 
 }
