@@ -66,6 +66,8 @@ public class Ifm04PrService {
                     o.setManufCode(item.getManufCode());
                     o.setPurGroupName(item.getPurGroupName());
 
+                    o.setSupplierTel(item.getSupplierphonenumber());
+
                     PchDao.modify3(o);
 
                 }
