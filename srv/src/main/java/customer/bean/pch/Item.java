@@ -22,7 +22,7 @@ public class Item {
     private String Purchaseorderquantityunit;
     private String Netpricequantity;
     private String Netamount;
-    private String Grossamount;
+    private String Netpriceamount;
     private String Storagelocation;
     private String Storagelocationname;
     private String Textobjecttype;
