@@ -120,7 +120,7 @@ sap.ui.define([
 								let oBind = newModel.bindList("/sendEmail");
 								oBind.create(mailobj);
 
-                                that._callCdsAction(_objectCommData._entity, { parms: IdList }, that).then((data) => {
+                                that._callCdsAction(_objectCommData._entity, { parms: IdList[0] }, that).then((data) => {
 
 
                                 });

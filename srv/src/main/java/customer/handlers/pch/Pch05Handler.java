@@ -21,6 +21,7 @@ import cds.gen.tableservice.PchT05AccountDetail_;
 import cds.gen.tableservice.TableService_;
 import cds.gen.MailBody;
 import cds.gen.MailJson;
+import customer.service.pch.PchService;
 import customer.service.sys.EmailServiceFun;
 import cds.gen.tableservice.PCH05SENDEMAILContext;
 
@@ -42,6 +43,10 @@ import java.math.BigDecimal;
 @Component
 @ServiceName(TableService_.CDS_NAME)
 public class Pch05Handler implements EventHandler {
+
+  @Autowired
+  PchService pchService;
+
   /**
    * 
    * 检查抬头 工厂 检查明细
@@ -109,7 +114,7 @@ public class Pch05Handler implements EventHandler {
    */
   private BigDecimal stripTrailingZeros(BigDecimal amount) {
     if (amount != null) {
-      return amount.stripTrailingZeros();  // 去除尾随零
+      return amount.stripTrailingZeros(); // 去除尾随零
     }
     return BigDecimal.ZERO;
   }
@@ -122,29 +127,30 @@ public class Pch05Handler implements EventHandler {
    * @param d012MoveActHs 传入画面输入值
    */
   @After(entity = PchT05AccountDetailDisplay3_.CDS_NAME, event = "READ")
-  public void afterReadPchT05AccountDetailDisplay3(CdsReadEventContext context, Stream<PchT05AccountDetailDisplay3> datas) {
+  public void afterReadPchT05AccountDetailDisplay3(CdsReadEventContext context,
+      Stream<PchT05AccountDetailDisplay3> datas) {
 
+    int[] a = new int[1];
+    a[0] = 0;
+    datas.forEach(data -> {
+      a[0] = a[0] + 1;
+      data.setInvoiceid(a[0]);
+      // 检查 currency 并根据需要设置字段精度
 
-        int[] a = new int[1];
-        a[0]= 0; 
-        datas.forEach(data -> {
-          a[0] = a[0]+1;
-          data.setInvoiceid(a[0]);
-          // 检查 currency 并根据需要设置字段精度
+      data.setCalc10PriceAmount(stripTrailingZeros(data.getCalc10PriceAmount()));
+      data.setCalc8PriceAmount(stripTrailingZeros(data.getCalc8PriceAmount()));
+      data.setSapTaxAmount10(stripTrailingZeros(data.getSapTaxAmount10()));
+      data.setSapTaxAmount8(stripTrailingZeros(data.getSapTaxAmount8()));
+      data.setRecalcPriceAmount10(stripTrailingZeros(data.getRecalcPriceAmount10()));
+      data.setRecalcPriceAmount8(stripTrailingZeros(data.getRecalcPriceAmount8()));
+      data.setDiffTaxAmount10(stripTrailingZeros(data.getDiffTaxAmount10()));
+      data.setDiffTaxAmount8(stripTrailingZeros(data.getDiffTaxAmount8()));
+      data.setTotal10TaxIncludedAmount(stripTrailingZeros(data.getTotal10TaxIncludedAmount()));
+      data.setTotal8TaxIncludedAmount(stripTrailingZeros(data.getTotal8TaxIncludedAmount()));
 
-          data.setCalc10PriceAmount(stripTrailingZeros(data.getCalc10PriceAmount()));
-          data.setCalc8PriceAmount(stripTrailingZeros(data.getCalc8PriceAmount()));
-          data.setSapTaxAmount10(stripTrailingZeros(data.getSapTaxAmount10()));
-          data.setSapTaxAmount8(stripTrailingZeros(data.getSapTaxAmount8()));
-          data.setRecalcPriceAmount10(stripTrailingZeros(data.getRecalcPriceAmount10()));
-          data.setRecalcPriceAmount8(stripTrailingZeros(data.getRecalcPriceAmount8()));
-          data.setDiffTaxAmount10(stripTrailingZeros(data.getDiffTaxAmount10()));
-          data.setDiffTaxAmount8(stripTrailingZeros(data.getDiffTaxAmount8()));
-          data.setTotal10TaxIncludedAmount(stripTrailingZeros(data.getTotal10TaxIncludedAmount()));
-          data.setTotal8TaxIncludedAmount(stripTrailingZeros(data.getTotal8TaxIncludedAmount()));
-     
-       });
+    });
   }
+
   // 保留整数
   private BigDecimal scaleToInteger(BigDecimal value) {
     return (value != null) ? value.setScale(0, BigDecimal.ROUND_DOWN) : null;
@@ -155,17 +161,18 @@ public class Pch05Handler implements EventHandler {
     return (value != null) ? value.setScale(2, BigDecimal.ROUND_HALF_UP) : null;
   }
 
-    /**
-     * 
-     * @param context
-     */
-    @On(event = "PCH05_SENDEMAIL")
-    public void sendemail(PCH05SENDEMAILContext context) {
-        // 直接从上下文中获取参数
-        JSONArray jsonArray = JSONArray.parseArray(context.getParms());
+  /**
+   * 
+   * @param context
+   */
+  @On(event = "PCH05_SENDEMAIL")
+  public void sendemail(PCH05SENDEMAILContext context) {
 
-            String supp = jsonObject.getString("supplier");
+    String suppli = context.getParms();
+    pchService.setSendflag(suppli);
 
-    }
+    context.setResult("success");
+
+  }
 
 }

@@ -55,17 +55,17 @@ public class PchService {
         pchD002.updateD002(byID);
     }
 
-        // 根据传入的SUPLI明细状态
-        public void setSendflag(String supp) {
+    // 根据传入的SUPLI明细状态
+    public void setSendflag(String supp) {
 
-            Map<String, Object> data = new HashMap<>();
-            data.put("SEND_FLAG", UmcConstants.PCH04_STATUS_02);
-            Map<String, Object> keys = new HashMap<>();
-                keys.put("SUPPLIER", supp);
-            // 数据是否被修改修改标记
+        Map<String, Object> data = new HashMap<>();
+        data.put("SEND_FLAG", UmcConstants.PCH04_STATUS_02);
+        Map<String, Object> keys = new HashMap<>();
+        keys.put("SUPPLIER", supp);
+        // 数据是否被修改修改标记
 
-            pchD004.updateMap(data,keys);
-        }
+        pchD004.updateMap(data, keys);
+    }
 
     public BigDecimal getSysD006(String string) {
         return BigDecimal.ONE;
