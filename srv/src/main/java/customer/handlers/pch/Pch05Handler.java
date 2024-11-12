@@ -94,7 +94,6 @@ public class Pch05Handler implements EventHandler {
       data1.setCalc10PriceAmountTotal(stripTrailingZeros(data1.getCalc10PriceAmountTotal()));
       data1.setTotalTotalAmount(stripTrailingZeros(data1.getTotalTotalAmount()));
       data1.setTotalTaxAmount(stripTrailingZeros(data1.getTotalTaxAmount()));
-      data1.setDiffTaxAmount(stripTrailingZeros(data1.getDiffTaxAmount()));
 
     });
   }
