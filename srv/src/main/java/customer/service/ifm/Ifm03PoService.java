@@ -17,9 +17,14 @@ import com.google.gson.reflect.TypeToken;
 import cds.gen.pch.T01PoH;
 import cds.gen.pch.T02PoD;
 import cds.gen.pch.T03PoC;
+import cds.gen.pch.T06QuotationH;
 import cds.gen.sys.T08ComOpD;
 import cds.gen.sys.T11IfManager;
+import customer.bean.pch.Confirmation;
 import customer.bean.pch.Item;
+import customer.bean.pch.Items;
+import customer.bean.pch.confirmation;
+
 import customer.bean.pch.SapPchRoot;
 import customer.dao.pch.PurchaseDataDao;
 import customer.dao.sys.IFSManageDao;
@@ -71,23 +76,49 @@ public class Ifm03PoService {
 
                 Boolean dele = false;
 
-                Boolean isMailObj = false;
-
-                Map<String, String> supplierMap = new HashMap<>();
-
                 Map<String, String> supplierCreatMap = new HashMap<>();
                 Map<String, String> supplierUpdateMap = new HashMap<>();
                 Map<String, String> supplierDeleteMap = new HashMap<>();
 
                 Collection<MailJson> mailJsonList = new ArrayList<>();
 
-                Integer key = 0;
-
                 String H_CODE = "MM0004";
 
                 for (Item Items : sapPchRoot.getItems()) {
 
                     int dn = Integer.parseInt(Items.getPurchaseorderitem());
+
+                    for (Confirmation conf : Items.getConfirmation()) {
+
+                        if (conf != null) {
+
+                            T03PoC o3 = T03PoC.create();
+                            o3.setPoNo(conf.getPurchaseorder());
+
+                            o3.setDNo(Integer.parseInt(conf.getPurchaseorderitem()));
+
+                            o3.setSeq(Integer.parseInt(conf.getSequentialnmbrofsuplrconf()));
+
+                            try {
+                                LocalDate deliveryDate = LocalDate.parse(conf.getDeliverydate(), formatter);
+
+                                o3.setDeliveryDate(deliveryDate);
+
+                            } catch (DateTimeParseException e) {
+
+                                System.out.println("日期格式错误: " + e.getMessage());
+                            }
+
+                            o3.setQuantity(new BigDecimal(conf.getConfirmedquantity()));
+
+                            o3.setRelevantQuantity(new BigDecimal(conf.getMrprelevantquantity()));
+
+                            o3.setExtNumber(conf.getSupplierconfirmationextnumber());
+
+                            PchDao.modifyT03(o3);
+                        }
+
+                    }
 
                     if ("X".equals(Items.getPurchasingdocumentdeletioncode())
                             && PchDao.getByID2(Items.getPurchaseorder(), dn) == null) {
