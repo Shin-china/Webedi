@@ -45,11 +45,11 @@ extend service TableService {
                 T04.SEND_FLAG,                     // 送信ステータス
                 // T05.UNIT_PRICE,                    // 単価
                 CASE 
-                    WHEN T05.CURRENCY = 'JYP' THEN CAST(T05.UNIT_PRICE AS Decimal(15, 3))  // 保留三位小数
-                    ELSE CAST(T05.UNIT_PRICE AS Decimal(15, 5))  // 保留五位小数
-                END AS UNIT_PRICE : Decimal(15, 5),
+                    WHEN T05.CURRENCY = 'JYP' THEN CAST(T05.UNIT_PRICE AS Decimal(18, 3))  // 保留三位小数
+                    ELSE CAST(T05.UNIT_PRICE AS Decimal(18, 5))  // 保留五位小数
+                END AS UNIT_PRICE : Decimal(18, 5),
 
-                T05.TAX_AMOUNT,                    // 消費税額
+                // T05.TAX_AMOUNT,                    // 消費税額
                 T04.CE_DOC,                        // 差額伝票番号
                 T04.INV_BASE_DATE,                 // 支払い基準日
                 T05.GR_DATE,                       // 伝票日付
@@ -71,6 +71,12 @@ extend service TableService {
                     WHEN T05.SHKZG = 'H' THEN -T05.TOTAL_AMOUNT   // 贷方为负
                     ELSE T05.TOTAL_AMOUNT                         // 默认情况
                 END as TOTAL_AMOUNT : Decimal(18, 3),             // 計上金額
+
+                CASE 
+                    WHEN T05.SHKZG = 'S' THEN T05.TAX_AMOUNT    // 借方为正
+                    WHEN T05.SHKZG = 'H' THEN -T05.TAX_AMOUNT   // 贷方为负
+                    ELSE T05.TAX_AMOUNT                         // 默认情况
+                END as TAX_AMOUNT : Decimal(18, 3),             // 計上金額
 
                 TO_CHAR(T04.INV_POST_DATE, 'YYYYMM') as INV_MONTH : String
       
@@ -373,48 +379,6 @@ extend service TableService {
             COALESCE(T02.TOTAL_AMOUNT_8_TOTAL, 0) + COALESCE(T02.TOTAL_AMOUNT_10_TOTAL, 0) as TOTAL_TOTAL_AMOUNT : Decimal(15, 2), // 計上金額总合计
             COALESCE(T02.SAP_TAX_AMOUNT_8_TOTAL, 0) + COALESCE(T02.SAP_TAX_AMOUNT_10_TOTAL, 0) as TOTAL_TAX_AMOUNT : Decimal(15, 2), // 消費税額总合计
 
-            case 
-                when T01.DIFF_TAX_AMOUNT_10 IS NOT NULL THEN DIFF_TAX_AMOUNT_10
-                when T01.DIFF_TAX_AMOUNT_8 IS NOT NULL THEN DIFF_TAX_AMOUNT_8
-                else NULL
-            end AS DIFF_TAX_AMOUNT :Decimal(15, 2),
-
-            // 计算借方/贷方标志
-            case 
-                when T01.DIFF_TAX_AMOUNT_10 is null and DIFF_TAX_AMOUNT_8 is null then null 
-                when T01.DIFF_TAX_AMOUNT_10 >= 0 or DIFF_TAX_AMOUNT_8 >= 0 then 'S' 
-                else 'H' 
-            end as SHKZG_FLAG : String,                      // 借方/贷方标志
-
-            // 计算取引
-            case 
-                when T01.DIFF_TAX_AMOUNT_10 is null and DIFF_TAX_AMOUNT_8 is null then null 
-                when T01.DIFF_TAX_AMOUNT_10 >= 0 or DIFF_TAX_AMOUNT_8 >= 0 then 1 
-                else 2 
-            end as TRANSACTION : String,                 // 取引类型
-
-            case 
-                when T01.DIFF_TAX_AMOUNT_10 is not null then cast(floor(DIFF_TAX_AMOUNT_10 / 0.1) as Decimal(15,0)) 
-                when T01.DIFF_TAX_AMOUNT_8 is not null then cast(floor(DIFF_TAX_AMOUNT_8 / 0.08) as Decimal(15,0)) 
-                else null 
-            end as TAX_BASE_AMOUNT : Decimal(15,0), // 税基金额
-
-            ROW_NUMBER() OVER () as INVOICEID: Integer,
-
-    TO_CHAR(
-        CAST(
-            TO_DATE(CONCAT(
-                EXTRACT(YEAR FROM CURRENT_DATE), '-', 
-                EXTRACT(MONTH FROM CURRENT_DATE) + 1, '-01'
-            ), 'YYYY-MM-DD') - 1 AS Date
-        ), 'YYYY/MM/DD'
-    ) as LASTDATE : String,
-
-            '' as REFERENCE: String,                         // REFERENCE 字段赋值为 null
-            '' as DETAILTEXT: String,                        // DETAILTEXT 字段赋值为 null
-            12600000 as ACCOUNT: String,                     // account 字段赋值为 12600000
-            'RE' as DOCUMENTTYPE: String,                    // documentType 字段固定值为 'RE'
-            'TAX' as HEADERTEXT: String,                      // headertext 字段固定值为 'TAX'
              CONCAT('(', CONCAT(T01.SUPPLIER, ')')) as SUPPLIER_1 : String
                 
         }
@@ -444,17 +408,17 @@ extend service TableService {
             T03.DIFF_TAX_AMOUNT_8,            // 8％消費税差額
             T03.TOTAL_10_TAX_INCLUDED_AMOUNT, // 合計10％税込金額
             T03.TOTAL_8_TAX_INCLUDED_AMOUNT,  // 合計8％税込金額
-            T03.TRANSACTION,
-            T03.REFERENCE,
-            T03.DOCUMENTTYPE,
-            T03.HEADERTEXT,
-            T03.LASTDATE,
-            T03.ACCOUNT,
-            T03.DETAILTEXT,
-            T03.SHKZG_FLAG,
-            T03.DIFF_TAX_AMOUNT,
-            T03.TAX_CODE,
-            T03.TAX_BASE_AMOUNT
+            // T03.TRANSACTION,
+            // T03.REFERENCE,
+            // T03.DOCUMENTTYPE,
+            // T03.HEADERTEXT,
+            // T03.LASTDATE,
+            // T03.ACCOUNT,
+            // T03.DETAILTEXT,
+            // T03.SHKZG_FLAG,
+            // T03.DIFF_TAX_AMOUNT,
+            // // T03.TAX_CODE,
+            // T03.TAX_BASE_AMOUNT,
         }
 
         entity PCH_T05_ACCOUNT_DETAIL_DISPLAY2 as
@@ -465,10 +429,7 @@ extend service TableService {
             key SUPPLIER,  
             key INV_MONTH,   
             key PO_BUKRS,
-            SUM(CALC_10_PRICE_AMOUNT) as CALC_10_PRICE_AMOUNT: Decimal(15, 2),      // 10% 税抜金额
-            SUM(CALC_8_PRICE_AMOUNT) as CALC_8_PRICE_AMOUNT: Decimal(15, 2),        // 8% 税抜金额
-            SUM(SAP_TAX_AMOUNT_10) AS SAP_TAX_AMOUNT_10 : Decimal(15, 2),           //10% SAP税额
-            SUM(SAP_TAX_AMOUNT_8) AS SAP_TAX_AMOUNT_8 : Decimal(15, 2),             //8% SAP税额
+            key CURRENCY,
             SUM(RECALC_PRICE_AMOUNT_10) AS RECALC_PRICE_AMOUNT_10 : Decimal(15, 2), //再計算10％税額
             SUM(RECALC_PRICE_AMOUNT_8) AS RECALC_PRICE_AMOUNT_8 : Decimal(15, 2),   //再計算8％税額
             SUM(DIFF_TAX_AMOUNT_10) AS DIFF_TAX_AMOUNT_10 : Decimal(15, 2),         //10％消費税差額
@@ -479,45 +440,127 @@ extend service TableService {
         group by
             PO_BUKRS,
             SUPPLIER,
-            INV_MONTH; 
+            INV_MONTH,
+            CURRENCY; 
 
-        entity PCH_T05_ACCOUNT_DETAIL_DISPLAY3 as
+            entity PCH_T05_ACCOUNT_DETAIL_DISPLAY3 as
 
-          select from PCH_T05_ACCOUNT_DETAIL_DISPLAY2 as T01
-        left join PCH_T05_ACCOUNT_DETAIL_DISPLAY as T02
-            on  T01.SUPPLIER  = T02.SUPPLIER
-            and T01.INV_MONTH = T02.INV_MONTH
-            and T01.PO_BUKRS  = T02.PO_BUKRS
+            select from PCH_T05_ACCOUNT_DETAIL_SUM_GRO as T01
+            left join PCH_T05_ACCOUNT_DETAIL_DISPLAY2 as T02
+                on  T01.SUPPLIER  = T02.SUPPLIER
+                and T01.INV_MONTH = T02.INV_MONTH
+                and T01.PO_BUKRS  = T02.PO_BUKRS
 
-        distinct {      
-            key T01.SUPPLIER,  
-            key T01.INV_MONTH,   
-            key T01.PO_BUKRS,
-            T02.CURRENCY,
-            T01.CALC_10_PRICE_AMOUNT,         // 10% 税抜金额
-            T01.CALC_8_PRICE_AMOUNT,          // 8%  税抜金额
-            T01.SAP_TAX_AMOUNT_10,            // 10% SAP税额
-            T01.SAP_TAX_AMOUNT_8,             // 8%  SAP税额
-            T01.RECALC_PRICE_AMOUNT_10,       // 再計算10％税額
-            T01.RECALC_PRICE_AMOUNT_8,        // 再計算8％税額
-            T01.DIFF_TAX_AMOUNT_10,           // 10％消費税差額
-            T01.DIFF_TAX_AMOUNT_8,            // 8％消費税差額
-            T01.TOTAL_10_TAX_INCLUDED_AMOUNT, // 合計10％税込金額
-            T01.TOTAL_8_TAX_INCLUDED_AMOUNT,  // 合計8％税込金額
-            T02.TRANSACTION,
-            T02.REFERENCE,
-            T02.DOCUMENTTYPE,
-            T02.HEADERTEXT,
-            T02.LASTDATE,
-            T02.ACCOUNT,
-            T02.DETAILTEXT,
-            T02.SHKZG_FLAG,
-            T02.DIFF_TAX_AMOUNT,
-            T02.TAX_CODE,
-            T02.TAX_BASE_AMOUNT
-        }
+            distinct {      
+                key T01.SUPPLIER,  
+                key T01.INV_MONTH,   
+                key T01.PO_BUKRS,
+                T02.CURRENCY,
+                T01.CALC_10_PRICE_AMOUNT,         // 10% 税抜金额
+                T01.CALC_8_PRICE_AMOUNT,          // 8%  税抜金额
+                T01.SAP_TAX_AMOUNT_10,            // 10% SAP税额
+                T01.SAP_TAX_AMOUNT_8,             // 8%  SAP税额
+                T02.RECALC_PRICE_AMOUNT_10,       // 再計算10％税額
+                T02.RECALC_PRICE_AMOUNT_8,        // 再計算8％税額
+                T02.DIFF_TAX_AMOUNT_10,           // 10％消費税差額
+                T02.DIFF_TAX_AMOUNT_8,            // 8％消費税差額
+                T02.TOTAL_10_TAX_INCLUDED_AMOUNT, // 合計10％税込金額
+                T02.TOTAL_8_TAX_INCLUDED_AMOUNT,  // 合計8％税込金額
 
+                case 
+                when T02.DIFF_TAX_AMOUNT_10 IS NOT NULL THEN DIFF_TAX_AMOUNT_10
+                when T02.DIFF_TAX_AMOUNT_8 IS NOT NULL THEN DIFF_TAX_AMOUNT_8
+                else NULL
+            end AS DIFF_TAX_AMOUNT :Decimal(15, 2),
 
+            // 计算借方/贷方标志
+            case 
+                when T02.DIFF_TAX_AMOUNT_10 is null and DIFF_TAX_AMOUNT_8 is null then null 
+                when T02.DIFF_TAX_AMOUNT_10 >= 0 or DIFF_TAX_AMOUNT_8 >= 0 then 'S' 
+                else 'H' 
+            end as SHKZG_FLAG : String,                      // 借方/贷方标志
+
+            // 计算取引
+            case 
+                when T02.DIFF_TAX_AMOUNT_10 is null and DIFF_TAX_AMOUNT_8 is null then null 
+                when T02.DIFF_TAX_AMOUNT_10 >= 0 or DIFF_TAX_AMOUNT_8 >= 0 then 1 
+                else 2 
+            end as TRANSACTION : String,                 // 取引类型
+
+            case 
+                when T02.DIFF_TAX_AMOUNT_10 is not null then cast(floor(DIFF_TAX_AMOUNT_10 / 0.1) as Decimal(15,0)) 
+                when T02.DIFF_TAX_AMOUNT_8 is not null then cast(floor(DIFF_TAX_AMOUNT_8 / 0.08) as Decimal(15,0)) 
+                else null 
+            end as TAX_BASE_AMOUNT : Decimal(15,0), // 税基金额         
+
+            TO_CHAR(
+                CAST(
+                    TO_DATE(CONCAT(
+                        EXTRACT(YEAR FROM CURRENT_DATE), '-', 
+                        EXTRACT(MONTH FROM CURRENT_DATE) + 1, '-01'
+                    ), 'YYYY-MM-DD') - 1 AS Date
+                ), 'YYYY/MM/DD'
+            ) as LASTDATE : String,
+
+            '' as REFERENCE: String,                         // REFERENCE 字段赋值为 null
+            '' as DETAILTEXT: String,                        // DETAILTEXT 字段赋值为 null
+            12600000 as ACCOUNT: String,                     // account 字段赋值为 12600000
+            'RE' as DOCUMENTTYPE: String,                    // documentType 字段固定值为 'RE'
+            'TAX' as HEADERTEXT: String,                      // headertext 字段固定值为 'TAX'
+                
+                // T02.CURRENCY,
+                // T02.TRANSACTION,
+                // T02.REFERENCE,
+                // T02.DOCUMENTTYPE,
+                // T02.HEADERTEXT,
+                // T02.LASTDATE,
+                // T02.ACCOUNT,
+                // T02.DETAILTEXT,
+                // T02.SHKZG_FLAG,
+                // T02.DIFF_TAX_AMOUNT,
+                // // T02.TAX_CODE,
+                // T02.TAX_BASE_AMOUNT,
+                ROW_NUMBER() OVER () as INVOICEID: Integer,
+            }
+
+        // entity PCH_T05_ACCOUNT_DETAIL_DISPLAY3 as
+
+        //   select from PCH_T05_ACCOUNT_DETAIL_DISPLAY2 as T01
+        // left join PCH_T05_ACCOUNT_DETAIL_DISPLAY as T02
+        //     on  T01.SUPPLIER  = T02.SUPPLIER
+        //     and T01.INV_MONTH = T02.INV_MONTH
+        //     and T01.PO_BUKRS  = T02.PO_BUKRS
+
+        // distinct {      
+        //     key T01.SUPPLIER,  
+        //     key T01.INV_MONTH,   
+        //     key T01.PO_BUKRS,
+        //     T02.CURRENCY,
+        //     T02.CALC_10_PRICE_AMOUNT,         // 10% 税抜金额
+        //     T02.CALC_8_PRICE_AMOUNT,          // 8%  税抜金额
+        //     T02.SAP_TAX_AMOUNT_10,            // 10% SAP税额
+        //     T02.SAP_TAX_AMOUNT_8,             // 8%  SAP税额
+        //     T01.RECALC_PRICE_AMOUNT_10,       // 再計算10％税額
+        //     T01.RECALC_PRICE_AMOUNT_8,        // 再計算8％税額
+        //     T01.DIFF_TAX_AMOUNT_10,           // 10％消費税差額
+        //     T01.DIFF_TAX_AMOUNT_8,            // 8％消費税差額
+        //     T01.TOTAL_10_TAX_INCLUDED_AMOUNT, // 合計10％税込金額
+        //     T01.TOTAL_8_TAX_INCLUDED_AMOUNT,  // 合計8％税込金額
+        //     T02.TRANSACTION,
+        //     T02.REFERENCE,
+        //     T02.DOCUMENTTYPE,
+        //     T02.HEADERTEXT,
+        //     T02.LASTDATE,
+        //     T02.ACCOUNT,
+        //     T02.DETAILTEXT,
+        //     T02.SHKZG_FLAG,
+        //     T02.DIFF_TAX_AMOUNT,
+        //     // T02.TAX_CODE,
+        //     T02.TAX_BASE_AMOUNT,
+        //     ROW_NUMBER() OVER () as INVOICEID: Integer,
+        // }
+
+ action PCH05_SENDEMAIL(parms : String) returns String;
 
 }
 

@@ -363,8 +363,7 @@
         <Label id="labelPriceAmount" text="{pch>PRICE_AMOUNT}"/>
     </table:label>
     <table:template>
-        <!-- <Text id="textPriceAmount" text="{PRICE_AMOUNT}"/> -->
-        <Text id="textPriceAmount" text="{path: 'PRICE_AMOUNT', formatter: '.formatter.formatUnitPrice'}"/>
+        <Text id="textPriceAmount" text="{PRICE_AMOUNT}"/>
     </table:template>
 </table:Column>
 
@@ -376,8 +375,7 @@
         <Label id="labelTotalAmount" text="{pch>TOTAL_AMOUNT}"/>
     </table:label>
     <table:template>
-        <!-- <Text id="textTotalAmount" text="{TOTAL_AMOUNT}"/> -->
-        <Text id="textTotalAmount" text="{path: 'TOTAL_AMOUNT', formatter: '.formatter.formatUnitPrice'}"/>
+        <Text id="textTotalAmount" text="{TOTAL_AMOUNT}"/>
     </table:template>
 </table:Column>
 
@@ -389,8 +387,7 @@
         <Label id="labelTaxAmount" text="{pch>TAX_AMOUNT}"/>
     </table:label>
     <table:template>
-        <!-- <Text id="textTaxAmount" text="{TAX_AMOUNT}"/> -->
-         <Text id="textTaxAmount" text="{path: 'TAX_AMOUNT', formatter: '.formatter.formatUnitPrice'}"/>
+        <Text id="textTaxAmount" text="{TAX_AMOUNT}"/>
     </table:template>
     </table:Column>
 
@@ -431,18 +428,6 @@
         <Text id="textLogNo" text="{LOG_NO}"/>
     </table:template>
 </table:Column>
-
-<!-- <table:Column id="colShkzg" width="10rem" sortProperty="SHKZG" filterProperty="SHKZG" visible="false">
-    <table:customData>
-        <core:CustomData key="p13nData" value='{"columnKey":"SHKZG", "leadingProperty":"SHKZG", "sortProperty":"SHKZG", "filterProperty":"SHKZG", "visible":false}'/>
-    </table:customData>
-    <table:label>
-        <Label id="labelShkzg" text="{pch>SHKZG}"/>
-    </table:label>
-    <table:template>
-        <Text id="textShkzg" text="{SHKZG}"/>
-    </table:template>
-</table:Column> -->
 
 </table:columns>
         </table:Table>

@@ -1,5 +1,6 @@
 package customer.dao.common;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,4 +36,15 @@ public class Dao {
         }
 
     }
+
+    /**
+     * 将传入数值加1
+     * 
+     * @param docIndex 菜单KEY
+     * @return 数值
+     */
+    protected BigDecimal getBigDecimalAdd(BigDecimal docIndex) {
+        return docIndex.add(BigDecimal.ONE);
+    }
+
 }

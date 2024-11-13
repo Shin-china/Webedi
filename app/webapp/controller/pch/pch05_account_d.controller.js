@@ -7,6 +7,11 @@ sap.ui.define([
 ], function (Controller,A, MessageToast, MessageBox,formatter) {
     "use strict";
 
+    var _objectCommData = {
+		_entity: "/PCH05_SENDEMAIL",
+	};
+
+
     return Controller.extend("umc.app.controller.pch.pch05_pay_d", {
         formatter: formatter, // 将格式化器分配给控制器
 
@@ -67,6 +72,8 @@ sap.ui.define([
                             return;
                         }
 
+
+
 				let options = { compact: true, ignoreComment: true, spaces: 4 };
 				var IdList = that._TableDataList("detailTable", 'SUPPLIER')
 				if (IdList) {
@@ -80,6 +87,7 @@ sap.ui.define([
                             }
     
                     });
+
                     let sResponse = json2xml(oData, options);
 						console.log(sResponse)
 						that.setSysConFig().then(res => {
@@ -111,12 +119,19 @@ sap.ui.define([
 								let newModel = this.getView().getModel("Common");
 								let oBind = newModel.bindList("/sendEmail");
 								oBind.create(mailobj);
+
+                                that._callCdsAction(_objectCommData._entity, { parms: IdList[0] }, that).then((data) => {
+
+
+                                });
+
 								})								
 							})						
 						})
 					})
 				}				
             },
+            
 
             onBeforeExport: function (oEvent) {
                 var oTable = this.getView().byId("detailTable");
@@ -137,6 +152,14 @@ sap.ui.define([
                     var sTime = oDate.toTimeString().slice(0, 8).replace(/:/g, '');
                     // 设置文件名为当前日期和时间
                     oSettings.fileName = `買掛金明細_${sDate}${sTime}.xlsx`;
+
+				oSettings.workbook.columns.forEach(function (oColumn) {
+					if (oColumn.property === "INV_POST_DATE" || oColumn.property === "INV_BASE_DATE" || oColumn.property === "GR_DATE") {
+						oColumn.type = sap.ui.export.EdmType.Date; // 设置为日期类型
+						oColumn.format = "yyyy/M/d"; // 设置日期格式，去掉时间
+					}
+				});
+
                 }
             },
              

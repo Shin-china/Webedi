@@ -96,7 +96,7 @@ sap.ui.define([
                 // 第一组字段的标题
                 // { label: "ヘッダデータ", property: "headerData", colspan: 11 }, // 合并的标题
                 // 第一组字段
-                // { label: "*請求書ID", property: "INVOICEID" },
+                { label: "*請求書ID", property: "INVOICEID" },
                 { label: "*会社コード(4)", property: "PO_BUKRS" },
                 { label: "*取引(1)1=請求書、2=クレジットメモ", property: "TRANSACTION" },
                 { label: "*請求元(10)", property: "SUPPLIER" },
@@ -117,7 +117,7 @@ sap.ui.define([
                 { label: "明細テキスト", property: "DETAILTEXT" },
                 { label: "借方/貸方フラグ(1)s=借方 H=貸方", property: "SHKZG_FLAG" },
                 { label: "金額(伝票通貨)", property: "DIFF_TAX_AMOUNT" },
-                { label: "税コード(2)", property: "TAX_CODE" },
+                { label: "税コード(2)", property: "" },
                 { label: "伝票通貨での課税基準額", property: "TAX_BASE_AMOUNT" }
             ];
                 var oDate = new Date();

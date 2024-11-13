@@ -7,14 +7,14 @@ extend service TableService {
         select from view.T01_PO_H as T01
          join view.T02_PO_D as T02 
             ON (T01.PO_NO = T02.PO_NO)
-         join view.T03_PO_C as T03 
+         left join view.T03_PO_C as T03 
             on (T01.PO_NO = T03.PO_NO and T02.D_NO = T03.D_NO)
 
         distinct {
-           KEY T01.PO_NO || T02.D_NO ||T03.SEQ  as ID : String(100),
+           KEY T01.PO_NO || T02.D_NO || COALESCE(T03.SEQ,1)  as ID : String(100),
             KEY T01.PO_NO,                    // 発注番号
             KEY T02.D_NO,                     // 明細番号
-            KEY T03.SEQ,                     // 明細番号
+            KEY COALESCE(T03.SEQ,1) as SEQ :Integer,                     // 明細番号
             T02.MAT_ID,                       // 品目コード
             T02.PO_D_TXZ01,                   // 品目テキスト
             // T03.DELIVERY_DATE,                   // 納品日

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.ExcelWriter;
+import com.alibaba.excel.util.StringUtils;
 import com.alibaba.excel.write.metadata.WriteSheet;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -120,20 +121,30 @@ public class ObjectStoreHandler implements EventHandler {
         // 获取uqmc传入的t06数据
         Collection<PchT06QuotationH> pch06 = context.getPch06();
         try {
-            // 将 Collection 转换为 List
+            // 将 Collection 转换为 Listpch06BatchImport
             List<PchT06QuotationH> pch06List = new ArrayList<>(pch06);
             for (PchT06QuotationH pchT06QuotationH : pch06List) {
                 // 插入头标，首先删除原key值数据
                 T06QuotationH t06QuotationH = T06QuotationH.create();
                 // 复制类属性
                 BeanUtils.copyProperties(pchT06QuotationH, t06QuotationH);
-                PchD006.insert(t06QuotationH);
+                // 如果已经存在则更新，如果不存在则插入
+                T06QuotationH byID = PchD006.getByID(t06QuotationH.getSalesNumber(), t06QuotationH.getQuoVersion());
+                if (byID != null) {
+                    PchD006.update(t06QuotationH);
+                } else {
+                    PchD006.insert(t06QuotationH);
+                }
+
                 // 插入明细
                 List<PchT07QuotationD> toItems = pchT06QuotationH.getToItems();
                 for (PchT07QuotationD pchT07QuotationD : toItems) {
                     T07QuotationD t07QuotationD = T07QuotationD.create();
                     // 复制类属性
                     BeanUtils.copyProperties(pchT07QuotationD, t07QuotationD);
+                    // 如果已经存在则更新，如果不存在则插入
+                    // T07QuotationD byID = PchD007.getByID(t07QuotationD.getQuoNumber(),
+                    // t07QuotationD.getSeq());
                     // 插入明细
                     PchD007.insert(t07QuotationD);
                 }
@@ -151,16 +162,22 @@ public class ObjectStoreHandler implements EventHandler {
         ArrayList<T06QuotationH> pch06List = new ArrayList<>();
 
         try {
-            // 直接从上下文中获取参数
-            JSONArray jsonArray = JSONArray.parseArray(context.getJson());
-            // 根据传入的po和po明细修改po明细状态
-            // 获取要传入的字符串
-            for (int i = 0; i < jsonArray.size(); i++) {
-                JSONObject jsonObject = jsonArray.getJSONObject(i);
-                T06QuotationH t06QuotationH = PchD006.get(jsonObject.getString("QUO_NUMBER"));
-                pch06List.add(t06QuotationH);
-                // pchService.setPoStu(po, dNo);
+            String json = context.getJson();
+            if (StringUtils.isBlank(json)) {
+
+            } else {
+                // 直接从上下文中获取参数
+                JSONArray jsonArray = JSONArray.parseArray(context.getJson());
+                // 根据传入的po和po明细修改po明细状态
+                // 获取要传入的字符串
+                for (int i = 0; i < jsonArray.size(); i++) {
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                    T06QuotationH t06QuotationH = PchD006.get(jsonObject.getString("QUO_NUMBER"));
+                    pch06List.add(t06QuotationH);
+                    // pchService.setPoStu(po, dNo);
+                }
             }
+
             // 调用接口传值
 
         } catch (Exception e) {

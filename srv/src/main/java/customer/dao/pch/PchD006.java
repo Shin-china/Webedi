@@ -43,6 +43,18 @@ public class PchD006 extends Dao {
         return null;
     }
 
+    public T06QuotationH getByID(String saNum, String ver) {
+        Optional<T06QuotationH> result = db.run(
+                Select.from(Pch_.T06_QUOTATION_H)
+                        .where(o -> o.SALES_NUMBER().eq(saNum).and(o.QUO_VERSION().eq(ver))))
+                .first(T06QuotationH.class);
+
+        if (result.isPresent()) {
+            return result.get();
+        }
+        return null;
+    }
+
     // 追加
     public void insert(T06QuotationH o) {
 
@@ -75,11 +87,12 @@ public class PchD006 extends Dao {
      * @param po
      * @param pod
      */
-    public PCHT07QuoItemMax1 getVer(String PLANT_ID, String MATERIAL_NUMBER) {
+    public PCHT07QuoItemMax1 getVer(String PLANT_ID, String MATERIAL_NUMBER, String cust) {
 
         Optional<PCHT07QuoItemMax1> first = db
                 .run(Select.from(TableService_.PCHT07_QUO_ITEM_MAX1)
-                        .where(o -> o.PLANT_ID().eq(PLANT_ID).and(o.MATERIAL_NUMBER().eq(MATERIAL_NUMBER))))
+                        .where(o -> o.PLANT_ID().eq(PLANT_ID).and(o.MATERIAL_NUMBER().eq(MATERIAL_NUMBER))
+                                .and(o.CUST_MATERIAL().eq(cust))))
                 .first(PCHT07QuoItemMax1.class);
         if (first.isPresent()) {
             return (first.get());
@@ -98,6 +111,14 @@ public class PchD006 extends Dao {
             return (first.get());
         }
         return null;
+    }
+
+    public void update(T06QuotationH o) {
+        o.setUpTime(getNow());
+        o.setUpBy(this.getUserId());
+
+        logger.info("修改PCHD006" + o.getId());
+        db.run(Update.entity(Pch_.T06_QUOTATION_H).data(o));
     }
 
 }

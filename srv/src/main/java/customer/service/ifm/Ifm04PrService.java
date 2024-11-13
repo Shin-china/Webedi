@@ -46,7 +46,8 @@ public class Ifm04PrService {
                     o.setPrNumber(item.getPrNumber());
                     o.setDNo(Integer.parseInt(item.getDNo())); // 假设 item.getDNo() 返回的是 String 类型
                     o.setPurGroup(item.getPurGroup());
-                    o.setSupplier(item.getSupplier());
+                    o.setSupplier(item.getSupplier().replaceFirst("^0+(?!$)", ""));
+
                     o.setMaterial(item.getMaterial());
                     o.setMaterialText(item.getMaterialText());
                     o.setDelivaryDays(Integer.parseInt(item.getDelivaryDays())); // 假设 item.getDelivaryDays() 返回的是
@@ -54,7 +55,9 @@ public class Ifm04PrService {
                     o.setArrangeStartDate(LocalDate.parse(item.getArrangeStartDate(), formatter)); // 假设
                                                                                                    // item.getArrangeStartDate()
                                                                                                    // // 为字符串
-                    o.setArrangeEndDate(LocalDate.parse(item.getArrangeEndDate())); // 假设 item.getArrangeEndDate() 为字符串
+                    o.setArrangeEndDate(LocalDate.parse(item.getArrangeEndDate(), formatter)); // 假设
+                                                                                               // item.getArrangeEndDate()
+                                                                                               // 为字符串
                     o.setPlant(item.getPlant());
                     o.setArrangeQty(new BigDecimal(item.getArrangeQty())); // 假设 item.getArrangeQty() 返回的是 String 类型
                     o.setName1(item.getName1());
@@ -62,6 +65,9 @@ public class Ifm04PrService {
                                                                                    // String 类型
                     o.setManufCode(item.getManufCode());
                     o.setPurGroupName(item.getPurGroupName());
+
+                    o.setSupplierTel(item.getSupplierphonenumber());
+                    o.setSupplierMaterial(item.getSuppliermaterialnumber());
 
                     PchDao.modify3(o);
 

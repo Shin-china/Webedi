@@ -76,6 +76,8 @@ public class Ifm03PoService {
                     o2.setDNo(number);
 
                     o2.setMatId(Items.getMaterial());
+
+                    o2.setPlantId(Items.getPlant());
                     o2.setPoDTxz01(Items.getPurchaseorderitemtext());
                     Items.getOrderquantity();
 
@@ -96,13 +98,13 @@ public class Ifm03PoService {
 
                     try {
                         // 将字符串转换为 BigDecimal
-                        BigDecimal netAmount = new BigDecimal(Items.getNetamount());
+                        BigDecimal netpriceAmount = new BigDecimal(Items.getNetpriceamount());
                         BigDecimal netPriceQuantity = new BigDecimal(Items.getNetpricequantity());
 
                         // 检查 netPriceQuantity 是否为 0，以避免除以 0 的情况
                         if (netPriceQuantity.compareTo(BigDecimal.ZERO) != 0) {
                             // 计算并设置价格，使用指定为具有两位小数的舍入模式
-                            BigDecimal delPrice = netAmount.divide(netPriceQuantity, 2, RoundingMode.HALF_UP);
+                            BigDecimal delPrice = netpriceAmount.divide(netPriceQuantity, 2, RoundingMode.HALF_UP);
                             o2.setDelPrice(delPrice);
                         } else {
                             // 处理除以 0 的情况，例如设置为 0 或抛出异常
@@ -130,7 +132,7 @@ public class Ifm03PoService {
                     PchDao.modify2(o2, dele);
 
                     // T03PoC o3 = T03PoC.create();
-                    // o3.setPoNo(Items.getPurchaseorder());    
+                    // o3.setPoNo(Items.getPurchaseorder());
                     // o3.setDNo(number);
 
                 }

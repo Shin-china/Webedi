@@ -31,7 +31,7 @@ entity T02_PO_D : IF_CUID_FILED { //采购订单行
                              @title: '{i18n>PO_PUR_QTY}' PO_PUR_QTY     : Decimal(18, 3); //采购发注单位数量
                              @title: '{i18n>PO_PUR_UNIT}' PO_PUR_UNIT   : String(3); //发注单位
                              @title: '{i18n>CURRENCY}' CURRENCY         : String(3); //货币
-                             @title: '{i18n>UNIT_PRICE}' UNIT_PRICE     : Decimal(18, 3); //价格单位
+                             @title: '{i18n>UNIT_PRICE}' UNIT_PRICE     : Decimal(18, 5); //价格单位
                              @title: '{i18n>DEL_PRICE}' DEL_PRICE       : Decimal(18, 3); //发注单价
                              @title: '{i18n>DEL_AMOUNT}' DEL_AMOUNT     : Decimal(18, 3); //发注金额
                              @title: '{i18n>STORAGE_LOC}' STORAGE_LOC   : String(4); //库存地点
@@ -109,7 +109,7 @@ entity T05_PAYMENT_D : IF_CUID_FILED { //付款申请表行表
                                @title: '{i18n>UNIT}' UNIT                               : String(3); //采购订单明细行号
                                @title: '{i18n>TAX_CODE}' TAX_CODE                       : String(3); //采购订单明细行号
                                @title: '{i18n>TAX_RATE}' TAX_RATE                       : Decimal(18, 3); //采购订单明细行号
-                               @title: '{i18n>UNIT_PRICE}' UNIT_PRICE                   : Decimal(18, 3); //采购订单明细行号
+                               @title: '{i18n>UNIT_PRICE}' UNIT_PRICE                   : Decimal(18, 5); //采购订单明细行号
                                @title: '{i18n>PRICE_AMOUNT}' PRICE_AMOUNT               : Decimal(18, 3); //采购订单明细行号
                                @title: '{i18n>TAX_AMOUNT}' TAX_AMOUNT                   : Decimal(18, 3); //采购订单明细行号
                                @title: '{i18n>TOTAL_AMOUNT}' TOTAL_AMOUNT               : Decimal(18, 3); //采购订单明细行号

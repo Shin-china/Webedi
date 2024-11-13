@@ -274,9 +274,9 @@ sap.ui.define([], function () {
   
     formatSendFlag: function(value) {
       if (value === '1') {
-          return '1: 送信済';
+          return '1: 未送信';
       } else if (value === '2') {
-          return '2: 照会済';
+          return '2: 送信済';
       } else {
           return ''; // 默认返回空字符串
       }
