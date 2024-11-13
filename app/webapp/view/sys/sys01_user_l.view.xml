@@ -51,9 +51,9 @@
 			<table:Table id="detailTable" rowMode="Auto" rowActionCount="1" selectionMode="None" alternateRowColors="true" >
 				<table:columns>
                 <!-- User ID -->
-					<table:Column id="colUSER_ID" width="20rem" sortProperty="USER_ID" filterProperty="USER_ID">
+					<table:Column id="USER_ID" width="20rem" sortProperty="USER_ID" filterProperty="USER_ID">
 						<table:customData>
-							<core:CustomData key="p33nData" value='{"columnKey":"USER_ID", "leadingProperty":"USER_ID", "sortProperty":"USER_ID", "filterProperty":"USER_ID"}'/>
+							<core:CustomData key="p13nData" value='\{"columnKey":"USER_ID", "leadingProperty":"USER_ID", "sortProperty":"USER_ID", "filterProperty":"USER_ID"}}'/>
 						</table:customData>
 						<table:label>
 							<Label id="labelUSER_ID" text="{sys>USER_ID}" />
@@ -63,9 +63,9 @@
 						</table:template>
 					</table:Column>
                 <!-- User Type -->
-				<table:Column id="colUSER_TYPE" width="10rem" sortProperty="USER_TYPE" filterProperty="USER_TYPE">
+				<table:Column id="USER_TYPE" width="10rem" sortProperty="USER_TYPE" filterProperty="USER_TYPE">
 					<table:customData>
-						<core:CustomData key="p33nData" value='{"columnKey":"USER_TYPE", "leadingProperty":"USER_TYPE", "sortProperty":"USER_TYPE", "filterProperty":"USER_TYPE"}'/>
+						<core:CustomData key="p14nData" value='\{"columnKey":"USER_TYPE", "leadingProperty":"USER_TYPE", "sortProperty":"USER_TYPE", "filterProperty":"USER_TYPE"}'/>
 					</table:customData>
 					<table:label>
 						<Label id="labelUSER_TYPE" text="{sys>USER_TYPE}" />
@@ -77,7 +77,7 @@
                 <!-- User STATUS -->
 				<table:Column id="colUSER_STATUS" width="10rem" sortProperty="USER_STATUS" filterProperty="USER_STATUS">
 					<table:customData>
-						<core:CustomData key="p33nData" value='{"columnKey":"USER_STATUS", "leadingProperty":"USER_STATUS", "sortProperty":"USER_STATUS", "filterProperty":"USER_STATUS"}'/>
+						<core:CustomData key="p15nData" value='\{"columnKey":"USER_STATUS", "leadingProperty":"USER_STATUS", "sortProperty":"USER_STATUS", "filterProperty":"USER_STATUS"}'/>
 					</table:customData>
 					<table:label>
 						<Label id="labelUSER_STATUS" text="{sys>USER_STATUS}" />
@@ -87,9 +87,9 @@
 					</table:template>
 				</table:Column>
                 <!-- Validate from -->
-				<table:Column id="colVALID_DATE_FROM" width="10rem" sortProperty="VALID_DATE_FROM" filterProperty="VALID_DATE_FROM">
+				<table:Column id="VALID_DATE_FROM" width="10rem" sortProperty="VALID_DATE_FROM" filterProperty="VALID_DATE_FROM">
 					<table:customData>
-						<core:CustomData key="p33nData" value='{"columnKey":"VALID_DATE_FROM", "leadingProperty":"VALID_DATE_FROM", "sortProperty":"VALID_DATE_FROM", "filterProperty":"VALID_DATE_FROM"}'/>
+						<core:CustomData key="p16nData" value='\{"columnKey":"VALID_DATE_FROM", "leadingProperty":"VALID_DATE_FROM", "sortProperty":"VALID_DATE_FROM", "filterProperty":"VALID_DATE_FROM"}'/>
 					</table:customData>
 					<table:label>
 						<Label id="labelVALID_DATE_FROM" text="{sys>VALID_DATE_FROM}" />
@@ -99,9 +99,9 @@
 					</table:template>
 				</table:Column>
                 <!-- Validate To -->
-				<table:Column id="colVALID_DATE_TO" width="10rem" sortProperty="VALID_DATE_TO" filterProperty="VALID_DATE_TO">
+				<table:Column id="VALID_DATE_TO" width="10rem" sortProperty="VALID_DATE_TO" filterProperty="VALID_DATE_TO">
 					<table:customData>
-						<core:CustomData key="p33nData" value='{"columnKey":"VALID_DATE_TO", "leadingProperty":"VALID_DATE_TO", "sortProperty":"VALID_DATE_TO", "filterProperty":"VALID_DATE_TO"}'/>
+						<core:CustomData key="p17nData" value='{"columnKey":"VALID_DATE_TO", "leadingProperty":"VALID_DATE_TO", "sortProperty":"VALID_DATE_TO", "filterProperty":"VALID_DATE_TO"}'/>
 					</table:customData>
 					<table:label>
 						<Label id="labelVALID_DATE_TO" text="{sys>VALID_DATE_TO}" />

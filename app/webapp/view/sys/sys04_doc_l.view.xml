@@ -55,9 +55,9 @@
         <table:Table id="detailTable" rowMode="Auto" rowActionCount="1" selectionMode="MultiToggle" alternateRowColors="true" >
             <table:columns>
                 <!-- 下载Objet号 -->
-                <table:Column id="colObject" width="10rem" sortProperty="OBJECT" filterProperty="OBJECT">
+                <table:Column id="tp13nData" width="10rem" sortProperty="OBJECT" filterProperty="OBJECT">
                     <table:customData>
-                        <core:CustomData key="p33nData" value='{"columnKey":"OBJECT", "leadingProperty":"OBJECT", "sortProperty":"OBJECT", "filterProperty":"OBJECT"}'/>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"OBJECT", "leadingProperty":"OBJECT", "sortProperty":"OBJECT", "filterProperty":"OBJECT"}'/>
                     </table:customData>
                     <table:label>
                         <Label id="labelObject" text="{sys>OBJECT}" />
@@ -67,21 +67,21 @@
                     </table:template>
                 </table:Column>
                 <!-- 版本 -->
-                <table:Column id="colVersion" width="10rem" sortProperty="OBJECT_VERSION" filterProperty="OBJECT">
-                    <table:customData>
-                        <core:CustomData key="p34nData" value='{"columnKey":"OBJECT_VERSION", "leadingProperty":"OBJECT_VERSION", "sortProperty":"OBJECT_VERSION", "filterProperty":"OBJECT_VERSION"}'/>
+                <table:Column id="colVersion" width="10rem" sortProperty="OBJECT_VERSION" filterProperty="OBJECT_VERSION">
+                    <table:customData  >
+                        <core:CustomData key="p13nData" value='\{"columnKey":"OBJECT_VERSION", "leadingProperty":"OBJECT_VERSION", "sortProperty":"OBJECT_VERSION", "filterProperty":"OBJECT_VERSION"}'/>
                     </table:customData>
                     <table:label>
                         <Label id="labelVersion" text="{sys>OBJECT_VERSION}" />
                     </table:label>
                     <table:template>
-                        <Text id="textVersion" text="{OBJECT_VERSION}" />
+                        <Text    id="textVersion" text="{OBJECT_VERSION}" />
                     </table:template>
                 </table:Column>
                 <!-- 文件名 -->
                 <table:Column id="colName" width="10rem" sortProperty="FILE_NAME" filterProperty="FILE_NAME">
                     <table:customData>
-                        <core:CustomData key="p35nData" value='{"columnKey":"FILE_NAME", "leadingProperty":"FILE_NAME", "sortProperty":"FILE_NAME", "filterProperty":"FILE_NAME"}'/>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"FILE_NAME", "leadingProperty":"FILE_NAME", "sortProperty":"FILE_NAME", "filterProperty":"FILE_NAME"}'/>
                     </table:customData>
                     <table:label>
                         <Label id="labelName" text="{sys>FILE_NAME}" />
@@ -93,19 +93,19 @@
                 <!-- 創建日期 -->
                 <table:Column id="colTime" width="10rem" sortProperty="CD_TIME" filterProperty="CD_TIME">
                     <table:customData>
-                        <core:CustomData key="p36nData" value='{"columnKey":"CD_TIME", "leadingProperty":"CD_TIME", "sortProperty":"CD_TIME", "filterProperty":"CD_TIME"}'/>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"CD_TIME", "leadingProperty":"CD_TIME", "sortProperty":"CD_TIME", "filterProperty":"CD_TIME"}'/>
                     </table:customData>
                     <table:label>
                         <Label id="labelTime" text="{sys>CD_TIME}" />
                     </table:label>
                     <table:template>
-                        <Text id="textTime" text="{CD_TIME}" />
+						<Text id="textTime" text="{parts:[{path:'CD_TIME'}],formatter: '.formatter.formatDate'}"  />
                     </table:template>
                 </table:Column>
                 <!-- 創建人 -->
                 <table:Column id="colBy" width="10rem" sortProperty="CD_BY" filterProperty="CD_BY">
                     <table:customData>
-                        <core:CustomData key="p38nData" value='{"columnKey":"CD_BY", "leadingProperty":"CD_BY", "sortProperty":"CD_BY", "filterProperty":"CD_BY"}'/>
+                        <core:CustomData key="p13nData" value='\{"columnKey":"CD_BY", "leadingProperty":"CD_BY", "sortProperty":"CD_BY", "filterProperty":"CD_BY"}'/>
                     </table:customData>
                     <table:label>
                         <Label id="labelBy" text="{sys>CD_BY}" />

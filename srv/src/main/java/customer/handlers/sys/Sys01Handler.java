@@ -29,7 +29,6 @@ import cds.gen.tableservice.SYS01UserEditUserContext;
 import cds.gen.tableservice.TableService_;
 import customer.bean.sys.Sys001User;
 import customer.bean.tmpl.test;
-import customer.bean.tmpl.testList;
 import customer.service.sys.SysUserService;
 
 @Component
