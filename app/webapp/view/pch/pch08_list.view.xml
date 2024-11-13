@@ -14,12 +14,13 @@
     
     <f:DynamicPageHeader id="DynamicPageHeader" pinnable="true">
         <f:content>
-            <smartFilterBar:SmartFilterBar id="smartFilterBar" entitySet="PCH08_LIST" persistencyKey="PCH08_LIST" showFilterConfiguration="true">
+            <smartFilterBar:SmartFilterBar id="smartFilterBar" entitySet="PCH08_LIST" persistencyKey="PCH08_LIST" showFilterConfiguration="false">
                 <smartFilterBar:controlConfiguration>
                     <smartFilterBar:ControlConfiguration id="PCH_QUO_NUMBER" key="QUO_NUMBER" visibleInAdvancedArea="true" label="{pch>U07_QUO_NUMBER}" index="1" />
                     <smartFilterBar:ControlConfiguration id="PCH_STATUS" key="STATUS" visibleInAdvancedArea="true" label="{pch>PCH08_STATUS}" index="2" />
-                    <smartFilterBar:ControlConfiguration id="PCH_VALIDATE_START" key="VALIDATE_START" controlType="date" filterType="single" visibleInAdvancedArea="true" label="{pch>U07_VALIDATE_START}" index="3" />
-                    <smartFilterBar:ControlConfiguration id="PCH_VALIDATE_END" key="VALIDATE_END" controlType="date" filterType="single" visibleInAdvancedArea="true" label="{pch>U07_VALIDATE_END}" index="4" />
+                    <smartFilterBar:ControlConfiguration id="PCH_SUPPLIER_MAT" key="SUPPLIER_MAT" visibleInAdvancedArea="true" label="{pch>PCH08_SUPPLIER_MAT}" index="3" />
+                    <smartFilterBar:ControlConfiguration id="PCH_VALIDATE_START" key="VALIDATE_START" controlType="date" filterType="single" visibleInAdvancedArea="true" label="{pch>U07_VALIDATE_START}" index="4" />
+                    <smartFilterBar:ControlConfiguration id="PCH_VALIDATE_END" key="VALIDATE_END" controlType="date" filterType="single" visibleInAdvancedArea="true" label="{pch>U07_VALIDATE_END}" index="5" />
                 </smartFilterBar:controlConfiguration>
             </smartFilterBar:SmartFilterBar>
         </f:content>
@@ -99,7 +100,7 @@
                     </table:label>
                     <table:template>
                         <!-- <Text id="textReferenceNo" text="{REFRENCE_NO}" /> -->
-                        <smartField:SmartField id="textReferenceNo" value="{REFRENCE_NO}" editable="{localModel>/save}" change="onRefrenceNoChange" />
+                        <smartField:SmartField id="textReferenceNo" value="{REFRENCE_NO}" editable="false" change="onRefrenceNoChange" />
                     </table:template>
                 </table:Column>
                 <table:Column id="colCustomer" width="10rem" sortProperty="CUSTOMER" filterProperty="CUSTOMER">
@@ -116,7 +117,7 @@
                     </table:label>
                     <table:template>
                         <!-- <Text id="textCustomer" text="{CUSTOMER}" /> -->
-                        <smartField:SmartField id="textCustomer" value="{CUSTOMER}" editable="{localModel>/save}" />
+                        <smartField:SmartField id="textCustomer" value="{CUSTOMER}" editable="false" />
 
                     </table:template>
                 </table:Column>
@@ -166,7 +167,7 @@
                     </table:label>
                     <table:template>
                         <!-- <Text id="textValidateStart" text="{VALIDATE_START}" /> -->
-                        <smartField:SmartField id="textValidateStart" value="{VALIDATE_START}" editable="{localModel>/save}" />
+                        <smartField:SmartField id="textValidateStart" value="{VALIDATE_START}" editable="false" />
                     </table:template>
                 </table:Column>
                 <table:Column id="colvalidateEnd" width="10rem" sortProperty="VALIDATE_END" filterProperty="VALIDATE_END">
@@ -183,7 +184,7 @@
                     </table:label>
                     <table:template>
                         <!-- <Text id="textvalidateEnd" text="{VALIDATE_END}" /> -->
-                        <smartField:SmartField id="textValidateEnd" value="{VALIDATE_END}" editable="{localModel>/save}" />
+                        <smartField:SmartField id="textValidateEnd" value="{VALIDATE_END}" editable="false" />
                     </table:template>
                 </table:Column>
                 <table:Column id="colMaterialNumber" width="10rem" sortProperty="MATERIAL_NUMBER" filterProperty="MATERIAL_NUMBER">
@@ -939,6 +940,22 @@
                     </table:label>
                     <table:template>
                         <Text id="textUcComment2" text="{UMC_COMMENT_2}" />
+                    </table:template>
+                </table:Column>
+                <table:Column id="colSupplierMat" width="10rem" sortProperty="SUPPLIER_MAT" filterProperty="SUPPLIER_MAT">
+                    <table:customData>
+                        <core:CustomData key="p13nData" value="{
+                                columnKey: 'SUPPLIER_MAT',
+                                leadingProperty: 'SUPPLIER_MAT',
+                                sortProperty: 'SUPPLIER_MAT',
+                                filterProperty: 'SUPPLIER_MAT'
+                            }" />
+                    </table:customData>
+                    <table:label>
+                        <Label id="labelSupplierMat" text="{pch>PCH08_SUPPLIER_MAT}" />
+                    </table:label>
+                    <table:template>
+                        <Text id="textSupplierMat" text="{SUPPLIER_MAT}" />
                     </table:template>
                 </table:Column>
                 <table:Column id="colStatus" width="10rem" sortProperty="STATUS" filterProperty="STATUS">

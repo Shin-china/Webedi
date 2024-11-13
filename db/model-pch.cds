@@ -223,6 +223,7 @@ entity T07_QUOTATION_D : cuid, IF_CUID_FILED { //
   @title: '{i18n>STATUS}' STATUS                         : String(50); //ステータス
   @title: '{i18n>CD_DATE}' CD_DATE                       : Date; //创建日
   @title: '{i18n>CD_DATE_TIME}' CD_DATE_TIME             : String(10); //创建日时
+  @title: '{i18n>SUPPLIER_MAT}' SUPPLIER_MAT :String(35);//仕入先品目コード
 
   @title: '{i18n>TO_HEAD}'
   TO_HEAD                                                : Association to one T06_QUOTATION_H
