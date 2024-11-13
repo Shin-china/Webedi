@@ -64,13 +64,16 @@ sap.ui.define([
 		 */
 		onQue: function (oEvent) {
 			var that = this;
-			var selectedIndices = this._TableList("tableUploadData"); // 获取选中行
 			that._setBusy(true);
+			var selectedIndices = this._TableList("tableUploadData"); // 获取选中行
+			
 			if (selectedIndices) {
 
 				this._invoPo(selectedIndices);
 
 
+			}else{
+				that._setBusy(false);
 			}
 		},
 		/**
