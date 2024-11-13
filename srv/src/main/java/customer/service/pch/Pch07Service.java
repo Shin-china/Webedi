@@ -271,10 +271,29 @@ public class Pch07Service {
         t07QuotationD2.setMaterialNumber(data.getMATERIAL_NUMBER());
         t07QuotationD2.setInitialObj(data.getINITIAL_OBJ());
         t07QuotationD2.setStatus("1");
-        t07QuotationD2.setMaterial(number.getMatName());
-        t07QuotationD2.setMaker(number.getManuCode());
+        // t07QuotationD2.setMaterial(number.getMatName());
+        // t07QuotationD2.setMaker(number.getManuCode());
+
+            // 处理与 number 相关的逻辑
+            if (number != null && number.getMatName() != null && !number.getMatName().isEmpty()) {
+                t07QuotationD2.setMaterial(number.getMatName());
+            } else {
+                t07QuotationD2.setMaterial(null); // 如果 MatName 为 null 或空，设置为 null
+            }
+
+            if (number != null && number.getManuCode() != null && !number.getManuCode().isEmpty()) {
+                t07QuotationD2.setMaker(number.getManuCode());
+            } else {
+                t07QuotationD2.setMaker(null); // 如果 ManuCode 为 null 或空，设置为 null
+            }
+
         // t07QuotationD2.setManufactMaterial(number.getManuMaterial());
-        t07QuotationD2.setUwebUser(bpid.getBpName1());
+        if (bpid != null && bpid.getBpName1() != null && !bpid.getBpName1().isEmpty()) {
+            t07QuotationD2.setUwebUser(bpid.getBpName1());
+        } else {
+            t07QuotationD2.setUwebUser(null);
+        }        
+        // t07QuotationD2.setUwebUser(bpid.getBpName1());
         t07QuotationD2.setCustMaterial(data.getCUST_MATERIAL());
         t07QuotationD2.setManufactMaterial(data.getMANUFACT_MATERIAL());
         t07QuotationD2.setSalesNumber(data.getSALES_NUMBER());
