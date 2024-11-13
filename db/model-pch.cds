@@ -32,7 +32,7 @@ entity T02_PO_D : IF_CUID_FILED { //采购订单行
                              @title: '{i18n>PO_PUR_UNIT}' PO_PUR_UNIT   : String(3); //发注单位
                              @title: '{i18n>CURRENCY}' CURRENCY         : String(3); //货币
                              @title: '{i18n>UNIT_PRICE}' UNIT_PRICE     : Decimal(18, 5); //价格单位
-                             @title: '{i18n>DEL_PRICE}' DEL_PRICE       : Decimal(18, 3); //发注单价
+                             @title: '{i18n>DEL_PRICE}' DEL_PRICE       : Decimal(18, 5); //发注单价
                              @title: '{i18n>DEL_AMOUNT}' DEL_AMOUNT     : Decimal(18, 3); //发注金额
                              @title: '{i18n>STORAGE_LOC}' STORAGE_LOC   : String(4); //库存地点
                              @title: '{i18n>STORAGE_TXT}' STORAGE_TXT   : String(40); //保管场所文本
@@ -192,7 +192,7 @@ entity T07_QUOTATION_D : cuid, IF_CUID_FILED { //
   @title: '{i18n>OTHER_QF}' OTHER_QF                     : String(50); //その他区分
 
   @title: '{i18n>CURRENCY}' CURRENCY                     : String(3); //通貨
-  @title: '{i18n>PRICE}' PRICE                           : Decimal(18, 3); //単価
+  @title: '{i18n>PRICE}' PRICE                           : Decimal(18, 5); //単価
   @title: '{i18n>PRICE_CONTROL}' PRICE_CONTROL           : String(1); //Date of pricing control(価格有効日：発注時or納入時)
   @title: '{i18n>LEAD_TIME}' LEAD_TIME                   : Date; //LT（日数）
   @title: '{i18n>MOQ}' MOQ                               : String(50); //MOQ
