@@ -55,7 +55,7 @@ public class JobMonotor {
         System.out.println("JobMonotor  run");
     }
 
-    @Scheduled(cron = "0 0/5 * * * ?")
+    @Scheduled(cron = "0 0/30 * * * ?")
     public void poolMonitor3() throws IOException {
 
         // IF041 po同期 自开发

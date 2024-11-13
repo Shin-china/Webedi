@@ -1,7 +1,11 @@
 package customer.dao.pch;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
+import org.checkerframework.checker.units.qual.t;
 import org.springframework.stereotype.Repository;
 
 import com.sap.cds.ql.Insert;
@@ -12,6 +16,8 @@ import cds.gen.pch.Pch_;
 import cds.gen.pch.T01PoH;
 import cds.gen.pch.T02PoD;
 import cds.gen.pch.T09Forcast;
+import customer.bean.pch.Item;
+import customer.bean.pch.Items;
 import customer.dao.common.Dao;
 
 @Repository
@@ -138,6 +144,47 @@ public class PurchaseDataDao extends Dao {
     public void update3(T09Forcast o) {
         o.setCdTime(getNow());
         db.run(Update.entity(Pch_.T09_FORCAST).entry(o));
+    }
+
+    public Boolean getByPoDnUpdateOrInsertObj(Item items) {
+        Integer dn = Integer.parseInt(items.getPurchaseorderitem());
+
+        T02PoD isExist = getByID2(items.getPurchaseorder(), dn);
+        if (isExist == null) {
+
+            return true;
+
+        } else {
+
+            Boolean update = updateobj(isExist, items);
+
+            return update;
+
+        }
+
+    }
+
+    private Boolean updateobj(T02PoD isExist, Item items) {
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        LocalDate deliveryDate = LocalDate.parse(items.getSchedulelinedeliverydate(), formatter);
+        Integer dn = Integer.parseInt(items.getPurchaseorderitem());
+        BigDecimal PoPurQty = new BigDecimal(items.getOrderquantity());
+        BigDecimal amount = new BigDecimal(items.getNetamount());
+
+        if (isExist.getPoNo() != items.getPurchaseorder()
+                || !isExist.getDNo().equals(dn)
+                || !isExist.getPoPurQty().equals(PoPurQty)
+                || isExist.getPoDDate().isEqual(deliveryDate)
+                || isExist.getDelAmount().equals(amount)
+                || isExist.getDelFlag() != items.getPurchasingdocumentdeletioncode()
+
+        ) {
+            return true; // 只要有一个值不一样，返回 true
+        }
+
+        return false;
+
     }
 
 }

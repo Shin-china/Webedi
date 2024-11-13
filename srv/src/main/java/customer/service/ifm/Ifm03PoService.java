@@ -1,22 +1,40 @@
 package customer.service.ifm;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+
+import org.checkerframework.checker.units.qual.s;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import com.alibaba.fastjson.JSON;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import cds.gen.pch.T01PoH;
 import cds.gen.pch.T02PoD;
 import cds.gen.pch.T03PoC;
+import cds.gen.sys.T08ComOpD;
 import cds.gen.sys.T11IfManager;
 import customer.bean.pch.Item;
 import customer.bean.pch.SapPchRoot;
 import customer.dao.pch.PurchaseDataDao;
 import customer.dao.sys.IFSManageDao;
+import customer.dao.sys.SysD008Dao;
 import customer.odata.S4OdataTools;
+import customer.service.sys.EmailServiceFun;
+import software.amazon.awssdk.services.kms.endpoints.internal.Value.Str;
+import cds.gen.MailBody;
+import cds.gen.MailJson;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import java.math.RoundingMode;
 
@@ -28,6 +46,12 @@ public class Ifm03PoService {
 
     @Autowired
     private IFSManageDao ifsManageDao;
+
+    @Autowired
+    private EmailServiceFun emailServiceFun;
+
+    @Autowired
+    private SysD008Dao sysd008dao;
 
     public String syncPo() {
 
@@ -47,7 +71,19 @@ public class Ifm03PoService {
 
                 Boolean dele = false;
 
+                Boolean isMailObj = false;
+
+                Map<String, String> supplierMap = new HashMap<>();
+
+                Collection<MailJson> mailJsonList = new ArrayList<>();
+
+                Integer key = 0;
+
+                String H_CODE = "MM0004";
+
                 for (Item Items : sapPchRoot.getItems()) {
+
+                    isMailObj = PchDao.getByPoDnUpdateOrInsertObj(Items);
 
                     T01PoH o = T01PoH.create();
                     o.setPoNo(Items.getPurchaseorder());
@@ -55,7 +91,8 @@ public class Ifm03PoService {
 
                     try {
 
-                        LocalDate poDate = LocalDate.parse(Items.getPurchaseorderdate(), formatter); // 转换字符串为 LocalDate
+                        LocalDate poDate = LocalDate.parse(Items.getPurchaseorderdate(), formatter); // 转换字符串为
+                                                                                                     // LocalDate
                         o.setPoDate(poDate);
 
                     } catch (DateTimeParseException e) {
@@ -65,7 +102,10 @@ public class Ifm03PoService {
                     }
                     // o.setSupplier(Items.getSupplier());
                     // 去除前导 0
-                    o.setSupplier(Items.getSupplier().replaceFirst("^0+(?!$)", ""));
+
+                    String supplier = Items.getSupplier().replaceFirst("^0+(?!$)", "");
+
+                    o.setSupplier(supplier);
 
                     PchDao.modify(o);
 
@@ -131,9 +171,54 @@ public class Ifm03PoService {
 
                     PchDao.modify2(o2, dele);
 
-                    // T03PoC o3 = T03PoC.create();
-                    // o3.setPoNo(Items.getPurchaseorder());
-                    // o3.setDNo(number);
+                    // 记录供应商信息，供后续邮件发送使用
+                    // 判断是否需要更新或插入对象 (購買伝票 + 明細番号 + 発注数量 + 納入日付 + 発注単価 + 削除フラグ+MRP減少数量 有变化时才是变更对象
+                    // podn 找不到则也是变更对象)
+                    if (isMailObj) {
+
+                        key++;
+                        if (!supplierMap.containsKey(supplier)) {
+
+                            supplierMap.put(supplier, supplier);
+
+                        }
+                        ;
+
+                    }
+
+                }
+
+                // 处理邮件通知
+                if (supplierMap.size() > 0) {
+
+                    for (Map.Entry<String, String> entry : supplierMap.entrySet()) {
+
+                        MailJson mailJson = MailJson.create();
+
+                        List<T08ComOpD> emailadd = sysd008dao.getmailaddByHcodeV1(H_CODE, entry.getValue());
+
+                        if (emailadd != null) {
+
+                            mailJson.setTemplateId("UWEB_M004_C");
+
+                            mailJson.setMailTo(emailadd.get(0).getValue02());
+
+                            mailJson.setMailBody(createMailBody(emailadd)); // 设置邮件内容（MailBody）
+
+                            // 添加到邮件列表
+                            mailJsonList.add(mailJson);
+
+                            // 调用邮件发送服务
+                            try {
+                                emailServiceFun.sendEmailFun(mailJsonList);
+                                // 设置操作结果
+                                return ("メール送信に成功しました。");
+                            } catch (Exception e) {
+                                // 处理发送邮件的异常
+                                return e.getMessage();
+                            }
+                        }
+                    }
 
                 }
 
@@ -149,9 +234,19 @@ public class Ifm03PoService {
             return e.getMessage();
 
         }
-
+        System.out.println("po接口测试结束");
         return "同步成功";
 
+    }
+
+    // 创建 MailBody 的集合
+    private Collection<MailBody> createMailBody(List<T08ComOpD> emailadd) {
+        Collection<MailBody> bodies = new ArrayList<>();
+        MailBody body = MailBody.create();
+        body.setObject("vendor"); // 根据具体需求设置
+        body.setValue(emailadd.get(0).getValue02()); // 使用参数内容
+        bodies.add(body);
+        return bodies;
     }
 
 }
