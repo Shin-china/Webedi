@@ -359,7 +359,7 @@ public class Ifm03PoService {
         Collection<MailBody> bodies = new ArrayList<>();
         MailBody body = MailBody.create();
         body.setObject("vendor"); // 根据具体需求设置
-        body.setValue(emailadd.get(0).getValue02()); // 使用参数内容
+        body.setValue(emailadd.get(0).getValue03()); // 使用参数内容
         bodies.add(body);
         return bodies;
     }
