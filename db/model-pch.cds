@@ -223,7 +223,7 @@ entity T07_QUOTATION_D : cuid, IF_CUID_FILED { //
   @title: '{i18n>STATUS}' STATUS                         : String(50); //ステータス
   @title: '{i18n>CD_DATE}' CD_DATE                       : Date; //创建日
   @title: '{i18n>CD_DATE_TIME}' CD_DATE_TIME             : String(10); //创建日时
-  @title: '{i18n>SUPPLIER_MAT}' SUPPLIER_MAT :String(35);//仕入先品目コード
+
 
   @title: '{i18n>PUR_PRICE_JPY}' PUR_PRICE_JPY            : Decimal(18, 3); //仕入単価（JPY）					
   @title: '{i18n>SUBMIT_PRICE}' SUBMIT_PRICE             : Decimal(18, 3); //提出単価					
