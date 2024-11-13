@@ -66,7 +66,7 @@ public class Pch05Handler implements EventHandler {
         pchT05AccountDetail.setTaxAmount(scaleToInteger(pchT05AccountDetail.getTaxAmount()));
         pchT05AccountDetail.setTotalAmount(scaleToInteger(pchT05AccountDetail.getTotalAmount()));
       } else if ("USD".equals(currency) || "EUR".equals(currency)) {
-        pchT05AccountDetail.setPriceAmount(scaleToTwoDecimal(pchT05AccountDetail.getUnitPrice()));
+        pchT05AccountDetail.setPriceAmount(scaleToTwoDecimal(pchT05AccountDetail.getPriceAmount()));
         pchT05AccountDetail.setTaxAmount(scaleToTwoDecimal(pchT05AccountDetail.getTaxAmount()));
         pchT05AccountDetail.setTotalAmount(scaleToTwoDecimal(pchT05AccountDetail.getTotalAmount()));
       }
