@@ -417,7 +417,7 @@ extend service TableService {
             // T03.DETAILTEXT,
             // T03.SHKZG_FLAG,
             // T03.DIFF_TAX_AMOUNT,
-            // // T03.TAX_CODE,
+            T03.TAX_CODE,
             // T03.TAX_BASE_AMOUNT,
         }
 
@@ -520,45 +520,50 @@ extend service TableService {
                 // T02.DIFF_TAX_AMOUNT,
                 // // T02.TAX_CODE,
                 // T02.TAX_BASE_AMOUNT,
-                ROW_NUMBER() OVER () as INVOICEID: Integer,
+                
             }
 
-        // entity PCH_T05_ACCOUNT_DETAIL_DISPLAY3 as
+        entity PCH_T05_FOREXCEL as
 
-        //   select from PCH_T05_ACCOUNT_DETAIL_DISPLAY2 as T01
-        // left join PCH_T05_ACCOUNT_DETAIL_DISPLAY as T02
-        //     on  T01.SUPPLIER  = T02.SUPPLIER
-        //     and T01.INV_MONTH = T02.INV_MONTH
-        //     and T01.PO_BUKRS  = T02.PO_BUKRS
+          select from PCH_T05_ACCOUNT_DETAIL_DISPLAY2 as T01
+        left join PCH_T05_ACCOUNT_DETAIL_DISPLAY as T02
+            on  T01.SUPPLIER  = T02.SUPPLIER
+            and T01.INV_MONTH = T02.INV_MONTH
+            and T01.PO_BUKRS  = T02.PO_BUKRS
+        left join PCH_T05_ACCOUNT_DETAIL_DISPLAY3 as T03
+            on  T02.SUPPLIER  = T03.SUPPLIER
+            and T02.INV_MONTH = T03.INV_MONTH
+            and T02.PO_BUKRS  = T03.PO_BUKRS
 
-        // distinct {      
-        //     key T01.SUPPLIER,  
-        //     key T01.INV_MONTH,   
-        //     key T01.PO_BUKRS,
-        //     T02.CURRENCY,
-        //     T02.CALC_10_PRICE_AMOUNT,         // 10% 税抜金额
-        //     T02.CALC_8_PRICE_AMOUNT,          // 8%  税抜金额
-        //     T02.SAP_TAX_AMOUNT_10,            // 10% SAP税额
-        //     T02.SAP_TAX_AMOUNT_8,             // 8%  SAP税额
-        //     T01.RECALC_PRICE_AMOUNT_10,       // 再計算10％税額
-        //     T01.RECALC_PRICE_AMOUNT_8,        // 再計算8％税額
-        //     T01.DIFF_TAX_AMOUNT_10,           // 10％消費税差額
-        //     T01.DIFF_TAX_AMOUNT_8,            // 8％消費税差額
-        //     T01.TOTAL_10_TAX_INCLUDED_AMOUNT, // 合計10％税込金額
-        //     T01.TOTAL_8_TAX_INCLUDED_AMOUNT,  // 合計8％税込金額
-        //     T02.TRANSACTION,
-        //     T02.REFERENCE,
-        //     T02.DOCUMENTTYPE,
-        //     T02.HEADERTEXT,
-        //     T02.LASTDATE,
-        //     T02.ACCOUNT,
-        //     T02.DETAILTEXT,
-        //     T02.SHKZG_FLAG,
-        //     T02.DIFF_TAX_AMOUNT,
-        //     // T02.TAX_CODE,
-        //     T02.TAX_BASE_AMOUNT,
-        //     ROW_NUMBER() OVER () as INVOICEID: Integer,
-        // }
+        distinct {      
+            key T01.SUPPLIER,  
+            key T01.INV_MONTH,   
+            key T01.PO_BUKRS,
+            T02.CURRENCY,
+            T02.CALC_10_PRICE_AMOUNT,         // 10% 税抜金额
+            T02.CALC_8_PRICE_AMOUNT,          // 8%  税抜金额
+            T02.SAP_TAX_AMOUNT_10,            // 10% SAP税额
+            T02.SAP_TAX_AMOUNT_8,             // 8%  SAP税额
+            T01.RECALC_PRICE_AMOUNT_10,       // 再計算10％税額
+            T01.RECALC_PRICE_AMOUNT_8,        // 再計算8％税額
+            T01.DIFF_TAX_AMOUNT_10,           // 10％消費税差額
+            T01.DIFF_TAX_AMOUNT_8,            // 8％消費税差額
+            T01.TOTAL_10_TAX_INCLUDED_AMOUNT, // 合計10％税込金額
+            T01.TOTAL_8_TAX_INCLUDED_AMOUNT,  // 合計8％税込金額
+            T03.TRANSACTION,
+            T03.REFERENCE,
+            T03.DOCUMENTTYPE,
+            T03.HEADERTEXT,
+            T03.LASTDATE,
+            T03.ACCOUNT,
+            T03.DETAILTEXT,
+            T03.SHKZG_FLAG,
+            T03.DIFF_TAX_AMOUNT,
+            T02.TAX_CODE,
+            T03.TAX_BASE_AMOUNT,
+            ROW_NUMBER() OVER () as INVOICEID: Integer,
+
+        }
 
  action PCH05_SENDEMAIL(parms : String) returns String;
 

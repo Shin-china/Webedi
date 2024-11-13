@@ -96,7 +96,7 @@ sap.ui.define([
                 // 第一组字段的标题
                 // { label: "ヘッダデータ", property: "headerData", colspan: 11 }, // 合并的标题
                 // 第一组字段
-                { label: "*請求書ID", property: "INVOICEID" },
+                // { label: "*請求書ID", property: "INVOICEID" },
                 { label: "*会社コード(4)", property: "PO_BUKRS" },
                 { label: "*取引(1)1=請求書、2=クレジットメモ", property: "TRANSACTION" },
                 { label: "*請求元(10)", property: "SUPPLIER" },
