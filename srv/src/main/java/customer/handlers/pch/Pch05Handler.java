@@ -14,6 +14,8 @@ import com.sap.cds.services.handler.annotations.ServiceName;
 
 import cds.gen.tableservice.PchT05AccountDetailDisplay3;
 import cds.gen.tableservice.PchT05AccountDetailDisplay3_;
+import cds.gen.tableservice.PchT05Forexcel;
+import cds.gen.tableservice.PchT05Forexcel_;
 import cds.gen.tableservice.PchT05AccountDetailExcel;
 import cds.gen.tableservice.PchT05AccountDetailExcel_;
 import cds.gen.tableservice.PchT05AccountDetail;
@@ -126,9 +128,9 @@ public class Pch05Handler implements EventHandler {
    * @param context       传入上下文
    * @param d012MoveActHs 传入画面输入值
    */
-  @After(entity = PchT05AccountDetailDisplay3_.CDS_NAME, event = "READ")
-  public void afterReadPchT05AccountDetailDisplay3(CdsReadEventContext context,
-      Stream<PchT05AccountDetailDisplay3> datas) {
+  @After(entity = PchT05Forexcel_.CDS_NAME, event = "READ")
+  public void afterReadPchT05Forexcel(CdsReadEventContext context,
+      Stream<PchT05Forexcel> datas) {
 
     int[] a = new int[1];
     a[0] = 0;
