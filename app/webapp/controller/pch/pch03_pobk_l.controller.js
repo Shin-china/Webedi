@@ -257,34 +257,10 @@ init
 						})
 					})
 					that._isQuerenDb(selectedIndices, true);
-					// {
-					// 	object: "recipient",
-					// 	value: "aa"
-					// },
-					// {
-					// 	object: "filename_1",
-					// 	value: "aa.pdf"
-					// },
-					// {
-					// 	object: "filecontent_1",
-					// 	value: odata
-					// },
-
-
 				})
-
-
-
-
-
-
-
-
 			})
-
-
-
 		},
+
 		_getCsvData: function (selectedIndices) {
 			var that = this;
 			var csvContent = "";
@@ -358,6 +334,8 @@ init
 				let myMap = new Map();
 				// 创建一个新的Map对象  用作判断po是否状态
 				let myZABCMap = new Map();
+				// 创建一个新的Map对象  用作判断key值对应po对应的明细数据 po+明细
+				let myMapPoDno = new Map();
 				var PoList = that._TableDataList("detailTable", 'PO_NO')
 				//经过去重以后的po号
 				var uniqueIdList = [...new Set(PoList)];
@@ -366,6 +344,7 @@ init
 
 					ObList.forEach((item) => {
 						myMap.get(item.PO_NO) ? myMap.get(item.PO_NO).push(item.ID) : myMap.set(item.PO_NO, [item.ID]);
+						
 						myZABCMap.get(item.PO_NO) ? myZABCMap.get(item.PO_NO) : myZABCMap.set(item.PO_NO, item.ZABC);
 					})
 
@@ -395,15 +374,7 @@ init
 				console.log(sResponse)
 
 				that.PrintTool._detailSelectPrintEmil(that, sResponse, "test03/test2", oData, null, "注文書", null, null, null).then((oData) => {
-					// var sapPo = {
-					// 	po: PoList.join(","),
-					// 	tpye: "PCH03",
-					// 	fileName: "納品書",
-					// }
 
-					//完成后是否更新确认
-
-					// that.PrintTool.printBackActionPo(that,sapPo)
 					//完成后是否更新确认,false不更新Y
 					that.PrintTool.getImageBase64(oData).then((odata2) => {
 						list.emailJson.MAIL_BODY.push({
@@ -433,16 +404,15 @@ init
 				console.log(sResponse)
 
 				that.PrintTool._detailSelectPrintDowS(that, sResponse, "test03/test2", oData, null, "注文書", null, null, null).then((oData) => {
-					// var sapPo = {
-					// 	po: PoList.join(","),
-					// 	tpye: "PCH03",
-					// 	fileName: "納品書",
-					// }
+					//po=po+podno
+					var sapPo = {
+						po: item[0],
+						tpye: "PCH03",
+						fileName: "注文書",
+					}
+					//打印pdf后写表共通
+					that.PrintTool.printBackActionPo(that,oData,sapPo)
 
-					//完成后是否更新确认
-
-					// that.PrintTool.printBackActionPo(that,sapPo)
-					//完成后是否更新确认,false不更新Y
 					
 				})
 
@@ -454,16 +424,20 @@ init
 		},
 
 
-
+		/**
+		 * 打印注文书中转站
+		 * @param {*} ObList 
+		 * @param {*} uniqueIdList 
+		 * @param {*} myMap 
+		 * @param {*} myZABCMap 
+		 * @param {*} that 
+		 * @param {*} boo 
+		 * @returns 
+		 */
 		_onZWSprintTy: function (ObList, uniqueIdList, myMap, myZABCMap, that, boo) {
 			let options = { compact: true, ignoreComment: true, spaces: 4 };
 
-
 			return new Promise(function (resolve, reject) {
-
-
-
-
 					//通过去重的po号取map数据进行打印
 					uniqueIdList.forEach((item) => {
 
@@ -550,19 +524,32 @@ init
 
 				// that.PrintTool._detailSelectPrint(that, sResponse, "test/test", oData, null, null, null, null)
 				that.PrintTool._detailSelectPrintDowS(that, sResponse, "test03/test1", oData, null, "納品書", null, null, null).then((oData) => {
-					// var sapPo = {
-					// 	po :PoList.join(","),
-					// 	tpye :"PCH03",
-					// 	fileName :"納品書",
-					// }
-					// that.PrintTool.printBackActionPo(that,sapPo)
-					//完成后是否更新确认,false不更新Y
+					var sapPo = {
+						po:  myMap.get(item),
+						tpye: "PCH03",
+						fileName: "納品書",
+					}
+
+					//完成后是否更新确认
+
+					that.PrintTool.printBackActionPo(that,oData,sapPo)
 
 
 				})
 
 			})
 		},
+		/**
+		 * 纳品书中转站
+		 * @param {*} ObList 
+		 * @param {*} uniqueIdList 
+		 * @param {*} myMap 
+		 * @param {*} myZABCMap 
+		 * @param {*} that 
+		 * @param {*} boo 
+		 * @param {*} list 
+		 * @returns 
+		 */
 		_onNPSprintTy: function (ObList, uniqueIdList, myMap, myZABCMap, that, boo, list) {
 
 			return new Promise(function (resolve, reject) {

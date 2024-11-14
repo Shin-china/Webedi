@@ -69,11 +69,11 @@ public class Pch02Handler implements EventHandler {
                 JSONObject object = JSONObject.parseObject(response);
                 // 确认成功后修改po明细状态
                 pchService.updatePch03(context.getParms());
-
-                System.out.println(StringTool.convertGBKToUTF8( object.getString("message")));
+                System.out.println(StringTool.convertGBKToUTF8(object.getString("message")));
                 // 将 Web Service 的响应结果返回给前台
 
-                context.setResult(StringTool.convertGBKToUTF8( object.getString("message")));
+                // context.setResult(StringTool.convertGBKToUTF8(object.getString("message")));
+                context.setResult(object.getString("message"));
             } else {
                 // 如果没有找到配置，返回错误信息
                 context.setResult("Web Service configuration not found.");

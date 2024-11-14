@@ -59,7 +59,7 @@ public class Ifm02MstService {
 
                 }
 
-                o.setMatUnit(value.getBaseUnit());
+                // o.setMatUnit(value.getBaseUnit());
                 o.setMatType(value.getProductType());
                 o.setMatGroup(value.getProductGroup());
                 o.setManuCode(value.getManufacturerNumber());

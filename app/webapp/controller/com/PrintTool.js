@@ -639,18 +639,12 @@ sap.ui.define(
   /**
        * 打印结束后 po-SAP回写方法
        * @param {*打印的数据集合 key } _data
-       * @param {*回写方法} _cdsAction
-       * @param {*回写完成后 刷新页面数据}
-       * @param {*打印页面非V2时 指定model}entityInModelID
+
        */
-  printBackActionPo: function (_that, _data) {
-    _that.PrintTool.getImageBase64(_that._blob).then((odata)=>{
+  printBackActionPo: function (_that,_blob, _data) {
+
+    _that.PrintTool.getImageBase64(_blob).then((odata)=>{
       var mailObj = { attachmentJson:{
-        // object: "430000001",
-        // object_type:"PCH03",
-        // value:odata,
-        // file_type:"pdf",
-        // file_name:"test"
         object: _data.po,
         object_type:_data.type,
         value:odata,
@@ -658,11 +652,19 @@ sap.ui.define(
         file_name:_data.fileName
       }}
 
-
-
-      let newModel = _that.getView().getModel('Common');
-      let oBind = newModel.bindList("/s3uploadAttachment");
-      oBind.create(mailObj);
+			$.ajax({
+				url: "srv/odata/v4/Common/s3uploadAttachment",
+				type: "POST",
+				contentType: "application/json; charset=utf-8",
+				dataType: "json",
+				async: false,
+				crossDomain: true,
+				responseType: 'blob',
+				data: JSON.stringify(mailObj),
+				success: function (base64) {
+          console.log("上传成功");
+				}
+			})
 
     });
   },

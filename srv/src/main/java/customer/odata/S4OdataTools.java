@@ -165,7 +165,7 @@ public class S4OdataTools {
         String userInfo = Base64Util.encode(info.getSapuser());// 用户名,密码
         requestcreate.addHeader("Authorization", "Basic " + userInfo);
         requestcreate.addHeader("Accept-Language", info.getLangCode());
-        requestcreate.addHeader("Content-Type", "application/json");
+        requestcreate.addHeader("Content-Type", "application/json;charset=UTF-8");
         requestcreate.addHeader("Accept", "application/json");
 
         // if (headMap != null) {

@@ -19,7 +19,7 @@ extend service TableService {
             on T07.MAT_ID = T02.MAT_ID
   
         distinct {
-            key T01.PO_NO || T02.D_NO as ID      : String(100),
+            key T01.PO_NO || RIGHT('00000' || T02.D_NO, 5)  as ID      : String(100),
             key T01.PO_NO, // 発注番号
             key T02.D_NO, // 明細番号
 
