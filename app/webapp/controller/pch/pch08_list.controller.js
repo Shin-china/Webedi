@@ -17,8 +17,8 @@ sap.ui.define([
             // 这里可以添加其他初始化逻辑，比如绑定数据等
             console.log("Controller initialized.");
 
-              this.MessageTools._clearMessage();
-			  this.MessageTools._initoMessageManager(this);
+            this.MessageTools._clearMessage();
+            this.MessageTools._initoMessageManager(this);
             this._ResourceBundle = this.getOwnerComponent().getModel("i18n").getResourceBundle();
             this._localModel = new sap.ui.model.json.JSONModel();
             this._localModel.setData({
@@ -44,51 +44,131 @@ sap.ui.define([
                 return;
             }
 
-            var aColumns = oTable.getColumns().map(function (oColumn) {
-                var sDateFormat = 'yyyy-MM-dd';
-                var sFormat = '';
-                var sType = '';
-
-                var property = oColumn.getTemplate().getBindingPath("text") || oColumn.getTemplate().mBindingInfos.value.parts[0].path;
-
-                if (property === 'VALIDATE_START' || property === 'VALIDATE_END' || property === 'LEAD_TIME') {
-                    sFormat = sDateFormat;
-                    sType = 'date';
+            //动态列
+            var sKeys = '';
+            var sResult = ''; 
+            var iMaxTotal = 0;
+            var aExport = [];
+            aSelectedData.forEach(row => {
+                if (sKeys === "") {
+                    sKeys = row.QUO_NUMBER;
                 } else {
-                    sFormat = '';
-                    sType = 'string';
+                    sKeys = sKeys + "," + row.QUO_NUMBER;
                 }
+            })
 
+            var params = { param: sKeys };
 
-                return {
-                    label: oColumn.getLabel().getText(),
-                    type: sType,
-                    property: oColumn.getTemplate().getBindingPath("text") || oColumn.getTemplate().mBindingInfos.value.parts[0].path,
-                    width: parseFloat(oColumn.getWidth()),
-                    format: sFormat
-                };
-            });
+            this._callCdsAction("/PCH08_SHOW_DETAIL", params, this).then((oData) => {
+                let json = JSON.parse(oData.PCH08_SHOW_DETAIL);
+                console.log(json)
+                sResult = json;
 
-            var oSettings = {
-                dataSource: aSelectedData,
-                workbook: {
-                    columns: aColumns,
+                //拼接动态对象
+                aSelectedData.forEach(data=>{
+                    var oExportData = data;
 
-                    context: {
-                        sheetName: "購買見積回答"
+                    var oQtyInfo = sResult.filter(e=>{
+                        return e.QUO_NO == data.QUO_NUMBER;
+                    });
+
+                    if(!oQtyInfo || oQtyInfo.length == 0){
+                        aExport.push(oExportData);
+                        return;
                     }
-                }
-            };
 
-            var oSheet = new sap.ui.export.Spreadsheet(oSettings);
-            oSheet.attachBeforeExport(this.onBeforeExport.bind(this));
-            oSheet.build()
-                .then(function () {
-                    sap.m.MessageToast.show(this._ResourceBundle.getText("exportFinished"));
+                    oQtyInfo.forEach(item => {
+                        let iMax = item["MAX"];
+                        if (!iMax) {
+                            return;
+                        }
+    
+                        if (iMax > iMaxTotal) {
+                            iMaxTotal = iMax;
+                        }
+    
+                        for (var i = 1; i <= iMax; i++) { 
+                            var sQty = 'QTY_' + i;
+                            oExportData[sQty] = item[sQty]; 
+
+                            var sPrice = 'PRICE_' + i;
+                            oExportData[sPrice] = item[sPrice];
+                        }
+                    }) 
+
+                    aExport.push(oExportData);
                 })
-                .finally(function () {
-                    oSheet.destroy();
+
+                var aColumns = oTable.getColumns().map(function (oColumn) {
+                    var sDateFormat = 'yyyy-MM-dd';
+                    var sFormat = '';
+                    var sType = '';
+                    var sLabel = '';
+
+                    var property = oColumn.getTemplate().getBindingPath("text") || oColumn.getTemplate().mBindingInfos.value.parts[0].path;
+
+                    if (property === 'VALIDATE_START' || property === 'VALIDATE_END' || property === 'LEAD_TIME') {
+                        sFormat = sDateFormat;
+                        sType = 'date';
+                    } else {
+                        sFormat = '';
+                        sType = 'string';
+                    }
+
+
+                    return {
+
+                        label: sLabel || oColumn.getLabel().getText(),
+                        type: sType,
+                        property: oColumn.getTemplate().getBindingPath("text") || oColumn.getTemplate().mBindingInfos.value.parts[0].path,
+                        width: parseFloat(oColumn.getWidth()),
+                        format: sFormat
+                    };
                 });
+
+                //动态列数据
+                for (var i = 1; i <= iMaxTotal; i++) {
+                    var sQty = 'QTY_' + i;
+                    var sPrice = 'PRICE_' + i;
+                    aColumns.push({
+                        label: "数量_" + i,
+                        type: 'string',
+                        property: sQty,
+                        width: 13,
+                        format: ''
+                    });
+
+                    aColumns.push({
+                        label: "単価_" + i,
+                        type: 'string',
+                        property: sPrice,
+                        width: 13,
+                        format: ''
+                    });
+
+                }
+
+                var oSettings = {
+                    dataSource: aExport,
+                    workbook: {
+                        columns: aColumns,
+
+                        context: {
+                            sheetName: "購買見積回答"
+                        }
+                    }
+                };
+
+                var oSheet = new sap.ui.export.Spreadsheet(oSettings);
+                oSheet.attachBeforeExport(this.onBeforeExport.bind(this));
+                oSheet.build()
+                    .then(function () {
+                        sap.m.MessageToast.show(this._ResourceBundle.getText("exportFinished"));
+                    })
+                    .finally(function () {
+                        oSheet.destroy();
+                    });
+            });
         },
 
         onEdit: function () {
@@ -96,7 +176,7 @@ sap.ui.define([
             this._localModel.setProperty("/save", true);
         },
 
-        __formatDate: function(date){
+        __formatDate: function (date) {
             let newDate = new Date(date);
             return newDate.toISOString().split('T')[0];
         },
@@ -160,8 +240,8 @@ sap.ui.define([
 
         },
 
-        onRefrenceNoChange:function(oEvent){
-            oEvent.oSource.getBindingContext().setProperty("CUSTOMER","12345")
+        onRefrenceNoChange: function (oEvent) {
+            oEvent.oSource.getBindingContext().setProperty("CUSTOMER", "12345")
         },
 
         onBeforeExport: function (oEvent) {
@@ -234,12 +314,12 @@ sap.ui.define([
             return true; // 检查通过
         },
 
-        getDetail: function (oEvent) { 
+        getDetail: function (oEvent) {
 
             let that = this;
             let selectedData = this._getSelectedIndicesDatasByTable("listTable");
             if (selectedData.length == 0) {
-                MessageToast.show("選択されたデータがありません、データを選択してください。");
+                sap.m.MessageToast.show("選択されたデータがありません、データを選択してください。");
                 return false;
             }
             let para = [];
@@ -247,8 +327,8 @@ sap.ui.define([
                 let key = item.QUO_NUMBER;
                 para.push(key);
             });
-            this._onPress(oEvent,"RouteView_pch08", this.unique(para).join(","));
-         
+            this._onPress(oEvent, "RouteView_pch08", this.unique(para).join(","));
+
             // let params = { param: para };
             // that._callCdsAction("/PCH08_SHOW_DETAIL", params, that).then((oData) => {
             //     let json = JSON.parse(oData.PCH08_SHOW_DETAIL);
@@ -258,7 +338,7 @@ sap.ui.define([
 
         unique: function (arr) {
             return [...new Set(arr)];
-          },  
+        },
 
 
 

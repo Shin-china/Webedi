@@ -1,5 +1,6 @@
 package customer.dao.sys;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,6 +16,7 @@ import cds.gen.pch.T03PoC;
 import cds.gen.pch.T07QuotationD;
 import cds.gen.pch.T08Upload;
 import cds.gen.sys.Sys_;
+import cds.gen.sys.T07ComOpH;
 import cds.gen.sys.T08ComOpD;
 import customer.dao.common.Dao;
 import customer.tool.DateTools;
@@ -23,6 +25,33 @@ import customer.tool.DateTools;
 public class SysD008Dao extends Dao {
     // LOG
     private static final Logger logger = LoggerFactory.getLogger(SysD008Dao.class);
+
+    // 根据 区分头code 查区分信息
+    public T07ComOpH getByCode(String hCode) {
+        java.util.Optional<T07ComOpH> result = db.run(Select.from(Sys_.T07_COM_OP_H).where(o -> o.H_CODE().eq(hCode)))
+                .first(T07ComOpH.class);
+        if (result.isPresent()) {
+            return result.get();
+        }
+
+        return null;
+
+    }
+
+    // 根据 区分头code 查所有明细信息
+    public List<T08ComOpD> getT08ByHcode(String code) {
+        return db.run(Select.from(Sys_.T08_COM_OP_D).where(o -> o.H_CODE().eq(code))).listOf(T08ComOpD.class);
+    }
+
+    // 根据 区分头code 查所有明细信息
+    public HashMap<String, T08ComOpD> getT08ByHcodeToMap(String code) {
+        HashMap<String, T08ComOpD> map = new HashMap<String, T08ComOpD>();
+        List<T08ComOpD> list = getT08ByHcode(code);
+        for (T08ComOpD d : list) {
+            map.put(d.getDCode(), d);
+        }
+        return map;
+    }
 
     /**
      * 根据id查找
@@ -52,4 +81,19 @@ public class SysD008Dao extends Dao {
         return null;
     }
 
+    public String getDnameByHcode(String h_code) {
+
+        Optional<T08ComOpD> listOf = db.run(
+                Select.from(Sys_.T08_COM_OP_D)
+                        .where(o -> o.H_CODE().eq(h_code)))
+
+                .first(T08ComOpD.class);
+
+        if (listOf != null) {
+
+            return listOf.get().getDName();
+
+        }
+        return null;
+    }
 }

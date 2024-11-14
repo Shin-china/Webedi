@@ -222,6 +222,8 @@ sap.ui.define([
         
             let options = { compact: true, ignoreComment: true, spaces: 4 };
             var IdList = that._TableDataList("detailTable", 'SUPPLIER');
+            // 获取前台输入的 INV_MONTH 和 SUPPLIER
+            var invMonth = this.getView().byId("INV_MONTH").getValue(); 
 
             // 将日期字符串转换为指定格式
             function formatDateString(dateString) {
@@ -234,7 +236,7 @@ sap.ui.define([
 }
         
             if (IdList) {
-                that.PrintTool._getPrintDataInfo(that, IdList, "/PCH_T04_PAYMENT_SUM_HJ6", "SUPPLIER").then((oData) => {
+                that.PrintTool._getPrintDataInfo(that, IdList, "/PCH_T04_PAYMENT_SUM_HJ6", "SUPPLIER", invMonth).then((oData) => {
                     // oData = this.jsonDateToString(oData);  
 					oData.results.forEach(function (row) {
     

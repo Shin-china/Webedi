@@ -5,6 +5,16 @@ sap.ui.define([
     "sap/ui/export/Spreadsheet"
 ], function (Controller, Filter, formatter,Spreadsheet) {
     "use strict";   
+
+/**
+	 * 共通用对象 全局
+	 */
+var _objectCommData = {
+    _entity: "/PCH_T05_FOREXCEL", //此本页面操作的对象//绑定的数据源视图
+    _aFilters: undefined
+
+};
+
     return Controller.extend("umc.app.controller.pch.pch05_account_l", {
         formatter : formatter,
         onInit: function () {
@@ -125,6 +135,84 @@ sap.ui.define([
                 var sTime = oDate.toTimeString().slice(0, 8).replace(/:/g, '');
                 oSettings.fileName = `消費税差額差処理_${sDate}${sTime}.xlsx`;
         },
+
+    //     onExportToEXCEL:function(){
+   
+    //             var jsonExcel = { content:JSON.stringify(excelVal) }
+    //             this.getModel().callFunction("/PCH05_EXCELDOWNLOAD", {
+    //              method: "POST",
+    //              urlParameters: jsonExcel,
+    //              success: function(oData) {
+    //                debugger;
+    //                const downloadLink = document.createElement("a");
+    //                const blob = that._base64Blob(oData.PCH05_EXCELDOWNLOAD,"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+    //                const blobUrl = URL.createObjectURL(blob);
+    //                downloadLink.href = blobUrl;
+    //                downloadLink.download = "消費税差額差処理.xlsx";
+    //                downloadLink.click();
+    //             },
+    //              error: function(oError) {
+    //             }
+    //             }),
+
+    /*==============================
+		下载excel
+		==============================*/
+		onExportToEXCEL: function (selectedIndices) {
+			var that = this;
+			that._setBusy(true);
+
+            var aFilters = this.getView().byId("smartFilterBar").getFilters();
+			_objectCommData._aFilters = aFilters;
+			var view = this.getView();
+			var jsonModel = view.getModel("workInfo");
+			view.setModel(jsonModel, undefined);
+			if (aFilters.length == 0) {
+				that._setBusy(false);
+				return;
+			}
+			this._readEntryByServiceAndEntity(_objectCommData._entity, aFilters, null).then((oData) => {
+
+                // 如果获取到数据
+        if (oData) {
+            // 动态生成文件名
+            var oDate = new Date();
+            var sDate = oDate.toISOString().slice(0, 10).replace(/-/g, ''); // 格式化为YYYYMMDD
+            var sTime = oDate.toTimeString().slice(0, 8).replace(/:/g, ''); // 格式化为HHMMSS
+
+            // 生成文件名
+            var fileName = `消費税差額差処理_${sDate}${sTime}.xlsx`;}
+
+			var selectedIndices = this._TableList("detailTable");
+			if (selectedIndices) {
+				// if(this.checkDelete(selectedIndices)){
+					this._callCdsAction("/PCH05_EXCELDOWNLOAD", this._getDataDow(oData), this).then((oData) => {
+						const downloadLink = document.createElement("a");
+						const blob = that._base64Blob(oData.PCH05_EXCELDOWNLOAD,"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+						const blobUrl = URL.createObjectURL(blob);
+						downloadLink.href = blobUrl;
+						// downloadLink.download = "消費税差額差処理.xlsx";
+                        downloadLink.download = fileName; // 使用动态生成的文件名
+						downloadLink.click();
+						that._setBusy(false); 
+					})
+				}
+            });
+		},
+		_getDataDow(oData){
+			var jsondata = Array();
+			oData.results.forEach((odata) => {
+			    
+				jsondata.push(odata);
+			})
+
+			var a = JSON.stringify({ list: jsondata });
+			var oPrams = {
+                parms: a,
+			};
+			return oPrams;
+			
+		},
    
        },
         

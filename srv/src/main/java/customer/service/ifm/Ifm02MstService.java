@@ -15,6 +15,7 @@ import customer.bean.mst.Value;
 import customer.bean.mst.SapMstRoot;
 import customer.dao.mst.MaterialDataDao;
 import customer.dao.sys.IFSManageDao;
+import customer.dao.sys.SysD008Dao;
 import customer.odata.S4OdataTools;
 
 @Component
@@ -25,6 +26,9 @@ public class Ifm02MstService {
 
     @Autowired
     private MaterialDataDao MSTDao;
+
+    @Autowired
+    private SysD008Dao sysD008Dao;
 
     public String tt;
 
@@ -44,7 +48,18 @@ public class Ifm02MstService {
                 o.setMatId(value.getProduct());
                 o.setCdBy(value.getCreatedByUser());
                 o.setUpBy(value.getLastChangedByUser());
-                o.setMatUnit(value.getBaseUnit());
+
+                String dbMat = value.getBaseUnit();
+
+                if (dbMat != null) {
+
+                    String dbMatUser = sysD008Dao.getDnameByHcode("S4_UNIT_TEC_2_USER");
+
+                    o.setMatUnit(dbMatUser);
+
+                }
+
+                // o.setMatUnit(value.getBaseUnit());
                 o.setMatType(value.getProductType());
                 o.setMatGroup(value.getProductGroup());
                 o.setManuCode(value.getManufacturerNumber());

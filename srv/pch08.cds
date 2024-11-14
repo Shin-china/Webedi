@@ -11,21 +11,6 @@ extend service TableService {
                 on(
                      T01.QUO_NUMBER = T02.QUO_NUMBER
                 )
-//             left join MST.T01_SAP_MAT as T03
-//                 on(
-//                     T02.Material = T03.MAT_NAME
-//                 )
-//             left join MST.T03_SAP_BP as T04
-//                 on(
-//                     T02.UWEB_USER = T04.BP_NAME1
-//                 )
-//             // left join MST.T04_SAP_PLANT as T05
-//             //     on(
-//             //         T02.MAKER = T05.MANU_CODE
-//             //         AND T02.MANUFACT_MATERIAL = T05.MANU_MATERIAL
-//             //     )
-
-                
 
             distinct {
                 key T02.QUO_NUMBER,
@@ -58,7 +43,7 @@ extend service TableService {
                     T02.SMALL_QF,
                     T02.OTHER_QF,
                     T02.CURRENCY,
-                    T02.PRICE,
+                    //T02.PRICE,
                     T02.PRICE_CONTROL,
                     T02.LEAD_TIME,
                     T02.MOQ,
@@ -87,7 +72,7 @@ extend service TableService {
                     T02.STATUS,
                     T02.SUPPLIER_MAT
 
-            }
+            } group by T02.QUO_NUMBER,T02.QUO_ITEM;
 //                 action PCH07_CHECK_DATA(shelfJson : String) returns String;
 //                 action PCH07_SAVE_DATA(shelfJson : String) returns String;
 
