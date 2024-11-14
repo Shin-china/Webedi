@@ -21,6 +21,20 @@
 
                     <smartFilterBar:ControlConfiguration id="pch_po_no"    key="PO_NO"    visibleInAdvancedArea="true" label="{pch>PO_NO}"          index="1"/>
                     <smartFilterBar:ControlConfiguration id="pch_d_no" key="D_NO"        visibleInAdvancedArea="true" label="{pch>D_NO}"       index="2"/>
+ 
+                   <smartFilterBar:ControlConfiguration key="ExtNumber"   visible="false" index="99"/>
+                   <smartFilterBar:ControlConfiguration key="ID"   visible="false" index="99"/>
+                   <smartFilterBar:ControlConfiguration key="INPUT_DATE"   visible="false" index="99"/>
+                   <smartFilterBar:ControlConfiguration key="INPUT_QTY"   visible="false" index="99"/>
+                   <smartFilterBar:ControlConfiguration key="MAT_NAME"   visible="false" index="99"/>
+                   <smartFilterBar:ControlConfiguration key="NO_TETAILS"   visible="false" index="99"/>
+                   <smartFilterBar:ControlConfiguration key="NO_DETAILS"   visible="false" index="99"/>
+                   <smartFilterBar:ControlConfiguration key="PLANT_ID"   visible="false" index="99"/>
+                   <smartFilterBar:ControlConfiguration key="MAT_ID"   visible="false" index="99"/>
+                   <smartFilterBar:ControlConfiguration key="QUANTITY"   visible="false" index="99"/>
+                    <smartFilterBar:ControlConfiguration key="CD_DATE"   visible="false" index="99"/>
+                   <smartFilterBar:ControlConfiguration key="CD_DATE_TIME"   visible="false" index="99"/>
+                   <smartFilterBar:ControlConfiguration key="STORAGE_LOC"   visible="false" index="99"/>
                   
                     </smartFilterBar:controlConfiguration>
                 </smartFilterBar:SmartFilterBar>
