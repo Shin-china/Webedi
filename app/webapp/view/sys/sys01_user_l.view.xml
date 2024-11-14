@@ -95,7 +95,7 @@
 						<Label id="labelVALID_DATE_FROM" text="{sys>VALID_DATE_FROM}" />
 					</table:label>
 					<table:template>
-						<Text id="textVALID_DATE_FROM" text="{VALID_DATE_FROM}" />
+						<Text id="textVALID_DATE_FROM" text="{parts:[{path:'VALID_DATE_FROM'}],formatter: '.formatter.formatDate'}"  />
 					</table:template>
 				</table:Column>
                 <!-- Validate To -->
@@ -107,7 +107,7 @@
 						<Label id="labelVALID_DATE_TO" text="{sys>VALID_DATE_TO}" />
 					</table:label>
 					<table:template>
-						<Text id="textVALID_DATE_TO" text="{VALID_DATE_TO}" />
+						<Text id="textVALID_DATE_TO" text="{parts:[{path:'VALID_DATE_TO'}],formatter: '.formatter.formatDate'}"  />
 					</table:template>
 				</table:Column>
 				</table:columns>
