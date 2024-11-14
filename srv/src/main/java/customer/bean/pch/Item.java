@@ -1,5 +1,8 @@
 package customer.bean.pch;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import lombok.Data;
 
 @Data
@@ -29,5 +32,7 @@ public class Item {
     private String Plainlongtext;
     private String Schedulelinedeliverydate;
     private String SupplierMaterialNumber;
+
+    private List<Confirmation> Confirmation = new ArrayList<Confirmation>();
 
 }

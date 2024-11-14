@@ -49,6 +49,8 @@ public class Ifm02MstService {
                 o.setMatGroup(value.getProductGroup());
                 o.setManuCode(value.getManufacturerNumber());
                 o.setManuMaterial(value.getProductManufacturerNumber());
+
+                o.setMatName(value.get_ProductDescription().get(0).getProductDescription());
                 // o.setMatStatus(value.getCrossPlantStatus());
                 // o.setMatName(value.getBaseUnit());
                 // o.setManuCode(value.getBaseUnit());

@@ -295,7 +295,46 @@ sap.ui.define([
             }
             return json;
             }   
-        }
+        },
+
+        // onExportToEXCEL:function(){
+        //         //test
+        //         let that = this;
+        //         var mailObj = { attachmentJson:[{
+        //          object: "3a8b4654",
+        //          value: "3a8b4654-221c-4537-a324-4e64aee8d6ba.pdf"
+        //         }]}
+        //         var newModel = this.getView().getModel('Common').bindContext("/s3DownloadAttachment.Common(...)",JSON.stringify(mailObj))
+        //         .invoke("$auto",false,null,/*bReplaceWithRVC*/false);
+        //         newModel.setParameter("attachmentJson", JSON.stringify(mailObj));
+        //         newModel.execute("$auto",true,null,/*bReplaceWithRVC*/true).then(()=>{
+        //            debugger;
+                
+        //         //Test for excel
+        //         var excelVal = {
+        //          id:1,
+        //          mat:"mat1",
+        //          qty:1,
+        //          unp:1.0
+        //         }
+        //         var jsonExcel = { content:JSON.stringify(excelVal) }
+        //         this.getModel().callFunction("/PCH04_EXCELDOWNLOAD", {
+        //          method: "POST",
+        //          urlParameters: jsonExcel,
+        //          success: function(oData) {
+        //            debugger;
+        //            const downloadLink = document.createElement("a");
+        //            const blob = that._base64Blob(oData.PCH04_EXCELDOWNLOAD,"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        //            const blobUrl = URL.createObjectURL(blob);
+        //            downloadLink.href = blobUrl;
+        //            downloadLink.download = "仕入先コード_YYYY年MM月度UMC支払通知書.xlsx";
+        //            downloadLink.click();
+        //         },
+        //          error: function(oError) {
+        //         }
+        //         })
+        //         //End
+            
         
     });
 });

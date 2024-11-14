@@ -14,12 +14,13 @@
     
     <f:DynamicPageHeader id="DynamicPageHeader" pinnable="true">
         <f:content>
-            <smartFilterBar:SmartFilterBar id="smartFilterBar" entitySet="PCH08_LIST" persistencyKey="PCH08_LIST" showFilterConfiguration="true">
+            <smartFilterBar:SmartFilterBar id="smartFilterBar" entitySet="PCH08_LIST" persistencyKey="PCH08_LIST" showFilterConfiguration="false">
                 <smartFilterBar:controlConfiguration>
                     <smartFilterBar:ControlConfiguration id="PCH_QUO_NUMBER" key="QUO_NUMBER" visibleInAdvancedArea="true" label="{pch>U07_QUO_NUMBER}" index="1" />
                     <smartFilterBar:ControlConfiguration id="PCH_STATUS" key="STATUS" visibleInAdvancedArea="true" label="{pch>PCH08_STATUS}" index="2" />
-                    <smartFilterBar:ControlConfiguration id="PCH_VALIDATE_START" key="VALIDATE_START" controlType="date" filterType="single" visibleInAdvancedArea="true" label="{pch>U07_VALIDATE_START}" index="3" />
-                    <smartFilterBar:ControlConfiguration id="PCH_VALIDATE_END" key="VALIDATE_END" controlType="date" filterType="single" visibleInAdvancedArea="true" label="{pch>U07_VALIDATE_END}" index="4" />
+                    <smartFilterBar:ControlConfiguration id="PCH_SUPPLIER_MAT" key="SUPPLIER_MAT" visibleInAdvancedArea="true" label="{pch>PCH08_SUPPLIER_MAT}" index="3" />
+                    <smartFilterBar:ControlConfiguration id="PCH_VALIDATE_START" key="VALIDATE_START" controlType="date" filterType="single" visibleInAdvancedArea="true" label="{pch>U07_VALIDATE_START}" index="4" />
+                    <smartFilterBar:ControlConfiguration id="PCH_VALIDATE_END" key="VALIDATE_END" controlType="date" filterType="single" visibleInAdvancedArea="true" label="{pch>U07_VALIDATE_END}" index="5" />
                 </smartFilterBar:controlConfiguration>
             </smartFilterBar:SmartFilterBar>
         </f:content>
@@ -99,7 +100,7 @@
                     </table:label>
                     <table:template>
                         <!-- <Text id="textReferenceNo" text="{REFRENCE_NO}" /> -->
-                        <smartField:SmartField id="textReferenceNo" value="{REFRENCE_NO}" editable="{localModel>/save}" change="onRefrenceNoChange" />
+                        <smartField:SmartField id="textReferenceNo" value="{REFRENCE_NO}" editable="false" change="onRefrenceNoChange" />
                     </table:template>
                 </table:Column>
                 <table:Column id="colCustomer" width="10rem" sortProperty="CUSTOMER" filterProperty="CUSTOMER">
@@ -116,7 +117,7 @@
                     </table:label>
                     <table:template>
                         <!-- <Text id="textCustomer" text="{CUSTOMER}" /> -->
-                        <smartField:SmartField id="textCustomer" value="{CUSTOMER}" editable="{localModel>/save}" />
+                        <smartField:SmartField id="textCustomer" value="{CUSTOMER}" editable="false" />
 
                     </table:template>
                 </table:Column>
@@ -166,7 +167,10 @@
                     </table:label>
                     <table:template>
                         <!-- <Text id="textValidateStart" text="{VALIDATE_START}" /> -->
-                        <smartField:SmartField id="textValidateStart" value="{VALIDATE_START}" editable="{localModel>/save}" />
+                        <DatePicker id="textValidateStart" value="{'path': 'VALIDATE_START','type':'sap.ui.model.type.Date',
+						'formatOptions': {
+							'pattern': 'yyyy-MM-dd'
+						}}" editable="false" />
                     </table:template>
                 </table:Column>
                 <table:Column id="colvalidateEnd" width="10rem" sortProperty="VALIDATE_END" filterProperty="VALIDATE_END">
@@ -183,10 +187,14 @@
                     </table:label>
                     <table:template>
                         <!-- <Text id="textvalidateEnd" text="{VALIDATE_END}" /> -->
-                        <smartField:SmartField id="textValidateEnd" value="{VALIDATE_END}" editable="{localModel>/save}" />
+                        <DatePicker id="textValidateEnd" value="{'path': 'VALIDATE_END', 'type':'sap.ui.model.type.Date',
+						'formatOptions': {
+							'pattern': 'yyyy-MM-dd'
+						}
+                        }" editable="false" />
                     </table:template>
                 </table:Column>
-                <table:Column id="colMaterialNumber" width="10rem" sortProperty="MATERIAL_NUMBER" filterProperty="MATERIAL_NUMBER">
+                <table:Column id="colMaterialNumber" width="10rem" sortProperty="MATERIAL_NUMBER" filterProperty="MATERIAL_NUMBER" >
                     <table:customData>
                         <core:CustomData key="p13nData" value="{
                                 columnKey: 'MATERIAL_NUMBER',
@@ -407,7 +415,7 @@
                         <Label id="labelYlp" text="{pch>PCH08_YLP}" />
                     </table:label>
                     <table:template>
-                        <Text id="textYlp" text="{YLP}" />
+                        <smartField:SmartField id="textYlp" value="{YLP}" editable="{localModel>/save}" />
                     </table:template>
                 </table:Column>
                 <table:Column id="colManul" width="10rem" sortProperty="MANUL" filterProperty="MANUL">
@@ -423,7 +431,7 @@
                         <Label id="labelManul" text="{pch>PCH08_MANUL}" />
                     </table:label>
                     <table:template>
-                        <Text id="textManul" text="{MANUL}" />
+                        <smartField:SmartField id="textManul" value="{MANUL}"  editable="{localModel>/save}" />
                     </table:template>
                 </table:Column>
                 <table:Column id="colManufactCode" width="10rem" sortProperty="MANUFACT_CODE" filterProperty="MANUFACT_CODE">
@@ -439,7 +447,7 @@
                         <Label id="labelManufactCode" text="{pch>PCH08_MANUFACT_CODE}" />
                     </table:label>
                     <table:template>
-                        <Text id="textManufactCode" text="{MANUFACT_CODE}" />
+                        <smartField:SmartField id="textManufactCode" value="{MANUFACT_CODE}"  editable="{localModel>/save}"/>
                     </table:template>
                 </table:Column>
                 <table:Column id="colCustomerMmodel" width="10rem" sortProperty="CUSTOMER_MMODEL" filterProperty="CUSTOMER_MMODEL">
@@ -455,7 +463,7 @@
                         <Label id="labelCustomerMmodel" text="{pch>PCH08_CUSTOMER_MMODEL}" />
                     </table:label>
                     <table:template>
-                        <Text id="textCustomerMmodel" text="{CUSTOMER_MMODEL}" />
+                        <smartField:SmartField id="textCustomerMmodel" value="{CUSTOMER_MMODEL}" editable="{localModel>/save}" />
                     </table:template>
                 </table:Column>
                 <table:Column id="colMidQf" width="10rem" sortProperty="MID_QF" filterProperty="MID_QF">
@@ -471,7 +479,7 @@
                         <Label id="labelMidQf" text="{pch>PCH08_MID_QF}" />
                     </table:label>
                     <table:template>
-                        <Text id="textMidQf" text="{MID_QF}" />
+                        <smartField:SmartField id="textMidQf" value="{MID_QF}" editable="{localModel>/save}" />
                     </table:template>
                 </table:Column>
                 <table:Column id="colSmallQf" width="10rem" sortProperty="SMALL_QF" filterProperty="SMALL_QF">
@@ -487,7 +495,7 @@
                         <Label id="labelSmallQf" text="{pch>PCH08_SMALL_QF}" />
                     </table:label>
                     <table:template>
-                        <Text id="textSmallQf" text="{SMALL_QF}" />
+                        <smartField:SmartField id="textSmallQf" value="{SMALL_QF}" editable="{localModel>/save}"/>
                     </table:template>
                 </table:Column>
                 <table:Column id="colOtherQf" width="10rem" sortProperty="OTHER_QF" filterProperty="OTHER_QF">
@@ -503,7 +511,7 @@
                         <Label id="labelOtherQf" text="{pch>PCH08_OTHER_QF}" />
                     </table:label>
                     <table:template>
-                        <Text id="textOtherQf" text="{OTHER_QF}" />
+                        <smartField:SmartField id="textOtherQf" value="{OTHER_QF}" editable="{localModel>/save}" />
                     </table:template>
                 </table:Column>
                 <table:Column id="colCurrency" width="10rem" sortProperty="CURRENCY" filterProperty="CURRENCY">
@@ -519,7 +527,7 @@
                         <Label id="labelCurrency" text="{pch>PCH08_CURRENCY}" />
                     </table:label>
                     <table:template>
-                        <Text id="textCurrency" text="{CURRENCY}" />
+                        <smartField:SmartField id="textCurrency" value="{CURRENCY}" editable="{localModel>/save}"/>
                     </table:template>
                 </table:Column>
                 <table:Column id="colPrice" width="10rem" sortProperty="PRICE" filterProperty="PRICE">
@@ -535,7 +543,7 @@
                         <Label id="labelPrice" text="{pch>PCH08_PRICE}" />
                     </table:label>
                     <table:template>
-                        <smartField:SmartField id="textPrice" value="{PRICE}" editable="false" />
+                        <smartField:SmartField id="textPrice" value="{PRICE}" editable="{localModel>/save}" />
                     </table:template>
                 </table:Column>
                 <table:Column id="colPriceControl" width="10rem" sortProperty="PRICE_CONTROL" filterProperty="PRICE_CONTROL">
@@ -551,7 +559,7 @@
                         <Label id="labelPriceControl" text="{pch>PCH08_PRICE_CONTROL}" />
                     </table:label>
                     <table:template>
-                        <smartField:SmartField id="textPriceControl" value="{PRICE_CONTROL}" editable="false" />
+                        <smartField:SmartField id="textPriceControl" value="{PRICE_CONTROL}" editable="{localModel>/save}" />
                     </table:template>
                 </table:Column>
                 <table:Column id="colLeadTime" width="10rem" sortProperty="LEAD_TIME" filterProperty="LEAD_TIME">
@@ -568,7 +576,7 @@
                     </table:label>
                     <table:template>
                         <!-- <Text id="textLeadTime" text="{LEAD_TIME}" /> -->
-                        <smartField:SmartField id="textLeadTime" value="{LEAD_TIME}" editable="false" />
+                        <smartField:SmartField id="textLeadTime" value="{LEAD_TIME}" editable="{localModel>/save}" />
                     </table:template>
                 </table:Column>
                 <table:Column id="colMoq" width="10rem" sortProperty="MOQ" filterProperty="MOQ">
@@ -584,7 +592,7 @@
                         <Label id="labelMoq" text="{pch>PCH08_MOQ}" />
                     </table:label>
                     <table:template>
-                        <Text id="textMoq" text="{MOQ}" />
+                        <smartField:SmartField id="textMoq" value="{MOQ}"  editable="{localModel>/save}" />
                     </table:template>
                 </table:Column>
                 <table:Column id="colUnits" width="10rem" sortProperty="UNIT" filterProperty="UNIT">
@@ -600,7 +608,7 @@
                         <Label id="labelUnit" text="{pch>PCH08_UNIT}" />
                     </table:label>
                     <table:template>
-                        <Text id="textUnit" text="{UNIT}" />
+                        <smartField:SmartField id="textUnit" value="{UNIT}" editable="{localModel>/save}" />
                     </table:template>
                 </table:Column>
                 <table:Column id="colSpq" width="10rem" sortProperty="SPQ" filterProperty="SPQ">
@@ -616,7 +624,7 @@
                         <Label id="labelSpq" text="{pch>PCH08_SPQ}" />
                     </table:label>
                     <table:template>
-                        <Text id="textSpq" text="{SPQ}" />
+                        <smartField:SmartField id="textSpq" value="{SPQ}" editable="{localModel>/save}"/>
                     </table:template>
                 </table:Column>
                 <table:Column id="colKbxt" width="10rem" sortProperty="KBXT" filterProperty="KBXT">
@@ -632,7 +640,7 @@
                         <Label id="labelKbxt" text="{pch>PCH08_KBXT}" />
                     </table:label>
                     <table:template>
-                        <Text id="textKbxt" text="{KBXT}" />
+                        <smartField:SmartField id="textKbxt" value="{KBXT}" editable="{localModel>/save}" />
                     </table:template>
                 </table:Column>
                 <table:Column id="colProductWeight" width="10rem" sortProperty="PRODUCT_WEIGHT" filterProperty="PRODUCT_WEIGHT">
@@ -648,7 +656,7 @@
                         <Label id="labelProductWeight" text="{pch>PCH08_PRODUCT_WEIGHT}" />
                     </table:label>
                     <table:template>
-                        <Text id="textProductWeight" text="{PRODUCT_WEIGHT}" />
+                        <smartField:SmartField id="textProductWeight" value="{PRODUCT_WEIGHT}" editable="{localModel>/save}" />
                     </table:template>
                 </table:Column>
                 <table:Column id="colOriginalCou" width="10rem" sortProperty="ORIGINAL_COU" filterProperty="ORIGINAL_COU">
@@ -664,7 +672,7 @@
                         <Label id="labelOriginalCou" text="{pch>PCH08_ORIGINAL_COU}" />
                     </table:label>
                     <table:template>
-                        <Text id="textOriginalCou" text="{ORIGINAL_COU}" />
+                        <smartField:SmartField id="textOriginalCou" value="{ORIGINAL_COU}" editable="{localModel>/save}" />
                     </table:template>
                 </table:Column>
                 <table:Column id="colEol" width="10rem" sortProperty="EOL" filterProperty="EOL">
@@ -680,7 +688,7 @@
                         <Label id="labelEol" text="{pch>PCH08_EOL}" />
                     </table:label>
                     <table:template>
-                        <Text id="textEol" text="{EOL}" />
+                        <smartField:SmartField id="textEol" value="{EOL}" editable="{localModel>/save}" />
                     </table:template>
                 </table:Column>
                 <table:Column id="colIsboi" width="10rem" sortProperty="ISBOI" filterProperty="ISBOI">
@@ -697,7 +705,7 @@
                     </table:label>
                     <table:template>
                         <!-- <Text id="textIsboi" text="{ISBOI}" /> -->
-                        <smartField:SmartField id="textIsboi" value="{ISBOI}" editable="false" />
+                        <smartField:SmartField id="textIsboi" value="{ISBOI}" editable="{localModel>/save}" />
                     </table:template>
                 </table:Column>
                 <table:Column id="colIncoterms" width="10rem" sortProperty="Incoterms" filterProperty="Incoterms">
@@ -713,7 +721,7 @@
                         <Label id="labelIncoterms" text="{pch>PCH08_Incoterms}" />
                     </table:label>
                     <table:template>
-                        <Text id="textIncoterms" text="{Incoterms}" />
+                        <smartField:SmartField id="textIncoterms" value="{Incoterms}" editable="{localModel>/save}" />
                     </table:template>
                 </table:Column>
                 <table:Column id="colIncoterms_Text" width="10rem" sortProperty="Incoterms_Text" filterProperty="Incoterms_Text">
@@ -729,7 +737,7 @@
                         <Label id="labelIncoterms_Text" text="{pch>PCH08_Incoterms_Text}" />
                     </table:label>
                     <table:template>
-                        <Text id="textIncoterms_Text" text="{Incoterms_Text}" />
+                        <smartField:SmartField id="textIncoterms_Text" value="{Incoterms_Text}" editable="{localModel>/save}" />
                     </table:template>
                 </table:Column>
                 <table:Column id="colMemo1" width="10rem" sortProperty="MEMO1" filterProperty="MEMO1">
@@ -745,7 +753,7 @@
                         <Label id="labelMemo1" text="{pch>PCH08_MEMO1}" />
                     </table:label>
                     <table:template>
-                        <Text id="textMemo1" text="{MEMO1}" />
+                        <smartField:SmartField id="textMemo1" value="{MEMO1}"  editable="{localModel>/save}" />
                     </table:template>
                 </table:Column>
                 <table:Column id="colMemo2" width="10rem" sortProperty="MEMO2" filterProperty="MEMO2">
@@ -761,7 +769,7 @@
                         <Label id="labelMemo2" text="{pch>PCH08_MEMO2}" />
                     </table:label>
                     <table:template>
-                        <Text id="textMemo2" text="{MEMO2}" />
+                        <smartField:SmartField id="textMemo2" value="{MEMO2}" editable="{localModel>/save}" />
                     </table:template>
                 </table:Column>
                 <table:Column id="colMemo3" width="10rem" sortProperty="MEMO3" filterProperty="MEMO3">
@@ -777,7 +785,7 @@
                         <Label id="labelMemo3" text="{pch>PCH08_MEMO3}" />
                     </table:label>
                     <table:template>
-                        <Text id="textMemo3" text="{MEMO3}" />
+                        <smartField:SmartField id="textMemo3" value="{MEMO3}" editable="{localModel>/save}" />
                     </table:template>
                 </table:Column>
                 <table:Column id="colSl" width="10rem" sortProperty="SL" filterProperty="SL">
@@ -793,7 +801,7 @@
                         <Label id="labelSl" text="{pch>PCH08_SL}" />
                     </table:label>
                     <table:template>
-                        <Text id="textSl" text="{SL}" />
+                        <smartField:SmartField id="textSl" value="{SL}" editable="{localModel>/save}" />
                     </table:template>
                 </table:Column>
                 <table:Column id="colTz" width="10rem" sortProperty="TZ" filterProperty="TZ">
@@ -809,7 +817,7 @@
                         <Label id="labelTz" text="{pch>PCH08_TZ}" />
                     </table:label>
                     <table:template>
-                        <Text id="textTz" text="{TZ}" />
+                        <smartField:SmartField id="textTz" value="{TZ}" editable="{localModel>/save}" />
                     </table:template>
                 </table:Column>
                 <table:Column id="colRmaterial" width="10rem" sortProperty="RMATERIAL" filterProperty="RMATERIAL">
@@ -825,7 +833,7 @@
                         <Label id="labelRmaterial" text="{pch>PCH08_RMATERIAL}" />
                     </table:label>
                     <table:template>
-                        <Text id="textRmaterial" text="{RMATERIAL}" />
+                        <smartField:SmartField id="textRmaterial" value="{RMATERIAL}" editable="{localModel>/save}" />
                     </table:template>
                 </table:Column>
                 <table:Column id="colRmaterialCurrency" width="10rem" sortProperty="RMATERIAL_CURRENCY" filterProperty="RMATERIAL_CURRENCY">
@@ -841,7 +849,7 @@
                         <Label id="labelRmaterialCurrency" text="{pch>PCH08_RMATERIAL_CURRENCY}" />
                     </table:label>
                     <table:template>
-                        <Text id="textRmaterialCurrency" text="{RMATERIAL_CURRENCY}" />
+                        <smartField:SmartField id="textRmaterialCurrency" value="{RMATERIAL_CURRENCY}" editable="{localModel>/save}" />
                     </table:template>
                 </table:Column>
                 <table:Column id="colRmaterialPrice" width="10rem" sortProperty="RMATERIAL_PRICE" filterProperty="RMATERIAL_PRICE">
@@ -857,7 +865,7 @@
                         <Label id="labelRmaterialPrice" text="{pch>PCH08_RMATERIAL_PRICE}" />
                     </table:label>
                     <table:template>
-                        <Text id="textRmaterialPrice" text="{RMATERIAL_PRICE}" />
+                        <smartField:SmartField id="textRmaterialPrice" value="{RMATERIAL_PRICE}" editable="{localModel>/save}" />
                     </table:template>
                 </table:Column>
                 <table:Column id="colRmaterialLt" width="10rem" sortProperty="RMATERIAL_LT" filterProperty="RMATERIAL_LT">
@@ -874,7 +882,7 @@
                     </table:label>
                     <table:template>
                         <!-- <Text id="textRmaterialLt" text="{RMATERIAL_LT}" /> -->
-                        <smartField:SmartField id="textRmaterialLt" value="{RMATERIAL_LT}" editable="false" />
+                        <smartField:SmartField id="textRmaterialLt" value="{RMATERIAL_LT}" editable="{localModel>/save}" />
                     </table:template>
                 </table:Column>
                 <table:Column id="colRmaterialMoq" width="10rem" sortProperty="RMATERIAL_MOQ" filterProperty="RMATERIAL_MOQ">
@@ -890,7 +898,7 @@
                         <Label id="labelRmaterialMoq" text="{pch>PCH08_RMATERIAL_MOQ}" />
                     </table:label>
                     <table:template>
-                        <Text id="textRmaterialMoq" text="{RMATERIAL_MOQ}" />
+                        <smartField:SmartField id="textRmaterialMoq" value="{RMATERIAL_MOQ}" editable="{localModel>/save}" />
                     </table:template>
                 </table:Column>
                 <table:Column id="colRmaterialKbxt" width="10rem" sortProperty="RMATERIAL_KBXT" filterProperty="RMATERIAL_KBXT">
@@ -906,7 +914,7 @@
                         <Label id="labelRmaterialKbxt" text="{pch>PCH08_RMATERIAL_KBXT}" />
                     </table:label>
                     <table:template>
-                        <Text id="textRmaterialKbxt" text="{RMATERIAL_KBXT}" />
+                        <smartField:SmartField id="textRmaterialKbxt" value="{RMATERIAL_KBXT}" editable="{localModel>/save}" />
                     </table:template>
                 </table:Column>
                 <table:Column id="colUcComment1" width="10rem" sortProperty="UMC_COMMENT_1" filterProperty="UMC_COMMENT_1">
@@ -941,6 +949,22 @@
                         <Text id="textUcComment2" text="{UMC_COMMENT_2}" />
                     </table:template>
                 </table:Column>
+                <table:Column id="colSupplierMat" width="10rem" sortProperty="SUPPLIER_MAT" filterProperty="SUPPLIER_MAT">
+                    <table:customData>
+                        <core:CustomData key="p13nData" value="{
+                                columnKey: 'SUPPLIER_MAT',
+                                leadingProperty: 'SUPPLIER_MAT',
+                                sortProperty: 'SUPPLIER_MAT',
+                                filterProperty: 'SUPPLIER_MAT'
+                            }" />
+                    </table:customData>
+                    <table:label>
+                        <Label id="labelSupplierMat" text="{pch>PCH08_SUPPLIER_MAT}" />
+                    </table:label>
+                    <table:template>
+                        <Text id="textSupplierMat" text="{SUPPLIER_MAT}"  />
+                    </table:template>
+                </table:Column>
                 <table:Column id="colStatus" width="10rem" sortProperty="STATUS" filterProperty="STATUS">
                     <table:customData>
                         <core:CustomData key="p13nData" value="{
@@ -954,7 +978,7 @@
                         <Label id="labelStatus" text="{pch>PCH08_STATUS}" />
                     </table:label>
                     <table:template>
-                        <Text id="textStatus" text="{STATUS}" />
+                        <Text id="textStatus" text="{STATUS}"  />
                     </table:template>
                 </table:Column>
             </table:columns>

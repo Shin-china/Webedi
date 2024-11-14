@@ -38,4 +38,18 @@ public class SysD008Dao extends Dao {
         return listOf;
     }
 
+    public List<T08ComOpD> getmailaddByHcodeV1(String h_code, String value1) {
+
+        List<T08ComOpD> listOf = db.run(
+                Select.from(Sys_.T08_COM_OP_D)
+                        .where(o -> o.H_CODE().eq(h_code).and(o.VALUE01().eq(value1)).and(o.DEL_FLAG().eq("N"))))
+
+                .listOf(T08ComOpD.class);
+
+        if (listOf.size() > 0) {
+            return listOf;
+        }
+        return null;
+    }
+
 }

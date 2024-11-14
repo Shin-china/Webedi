@@ -288,15 +288,29 @@ sap.ui.define([
 
 		        // 辅助函数：将 Excel 日期序列号转换为实际日期
 			_convertExcelDate: function (serial) {
-				var excelEpoch = new Date(1899, 11, 31); // Excel的基准日期
-				var convertedDate = new Date(excelEpoch.getTime() + serial * 24 * 60 * 60 * 1000);
-				
+			// 辅助函数：将 Excel 日期序列号转换为实际日期（基于1899年12月31日作为基准日期）
+
+				// 注意：这里使用1899年12月30日作为基准日期可能会导致不准确的结果
+				// 如果你的Excel实际上使用的是1899年12月31日作为基准，应该使用下面的代码（但已经按照你的要求使用了31日）
+				// 然而，由于历史原因，有时Excel的基准日期被视为1899年12月30日
+				// 在这种情况下，你应该将下面的日期改为1899, 11, 29（但这里我们保持31日来匹配你的要求）
+				var excelEpoch = new Date(Date.UTC(1899, 11, 31)); // 使用UTC来避免时区问题
+				excelEpoch.setUTCHours(0, 0, 0, 0); // 确保时间是当天的开始
+			
+				// 由于Excel日期序列号是以天为单位的浮点数（可能包含时间部分），
+				// 我们需要将序列号乘以一天的毫秒数（24小时 * 60分钟 * 60秒 * 1000毫秒）
+				var convertedDate = new Date(excelEpoch.getTime() + (serial - 1) * 24 * 60 * 60 * 1000);
+				// 注意：这里减去1是因为Excel的序列号通常从0开始（即1899年12月31日是序列号0，如果是30日则不需要减1）
+				// 但由于你指定了31日作为基准，且希望45656对应正确的日期，我们需要根据实际情况调整
+				// 如果你的Excel实际上是从1899年12月30日开始计数的，那么上面的代码中的excelEpoch应该是1899, 11, 29，并且不需要减1
+			
 				// 提取年、月、日并格式化为 YYYY/MM/DD
-				var year = convertedDate.getFullYear();
-				var month = String(convertedDate.getMonth() + 1).padStart(2, '0');
-				var day = String(convertedDate.getDate()).padStart(2, '0');
-				
+				var year = convertedDate.getUTCFullYear(); // 使用UTC方法来避免时区影响
+				var month = String(convertedDate.getUTCMonth() + 1).padStart(2, '0');
+				var day = String(convertedDate.getUTCDate()).padStart(2, '0');
+			
 				return `${year}/${month}/${day}`;
+
 			},
 
 

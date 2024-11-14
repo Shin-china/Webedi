@@ -1,7 +1,12 @@
 package customer.dao.pch;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Optional;
 
+import org.checkerframework.checker.units.qual.t;
 import org.springframework.stereotype.Repository;
 
 import com.sap.cds.ql.Insert;
@@ -11,7 +16,10 @@ import com.sap.cds.ql.Update;
 import cds.gen.pch.Pch_;
 import cds.gen.pch.T01PoH;
 import cds.gen.pch.T02PoD;
+import cds.gen.pch.T03PoC;
 import cds.gen.pch.T09Forcast;
+import customer.bean.pch.Item;
+import customer.bean.pch.Items;
 import customer.dao.common.Dao;
 
 @Repository
@@ -138,6 +146,123 @@ public class PurchaseDataDao extends Dao {
     public void update3(T09Forcast o) {
         o.setCdTime(getNow());
         db.run(Update.entity(Pch_.T09_FORCAST).entry(o));
+    }
+
+    public Boolean getByPoDnUpdateObj(Item items) {
+        Integer dn = Integer.parseInt(items.getPurchaseorderitem());
+
+        T02PoD isExist = getByID2(items.getPurchaseorder(), dn);
+        if (isExist == null) {
+
+            return false;
+
+        } else {
+
+            Boolean update = updateobj(isExist, items);
+
+            return update;
+
+        }
+
+    }
+
+    private Boolean updateobj(T02PoD isExist, Item items) {
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        LocalDate deliveryDate = LocalDate.parse(items.getSchedulelinedeliverydate(), formatter);
+        Integer dn = Integer.parseInt(items.getPurchaseorderitem());
+        BigDecimal PoPurQty = new BigDecimal(items.getOrderquantity());
+        BigDecimal amount = new BigDecimal(items.getNetamount());
+
+        if (isExist.getPoNo() != items.getPurchaseorder()
+                || !isExist.getDNo().equals(dn)
+                || !isExist.getPoPurQty().equals(PoPurQty)
+                || isExist.getPoDDate().isEqual(deliveryDate)
+                || isExist.getDelAmount().equals(amount)
+        // 删除flag，单独考虑
+        // || isExist.getDelFlag() != items.getPurchasingdocumentdeletioncode()
+
+        ) {
+            return true; // 只要有一个值不一样，返回 true
+        }
+
+        return false;
+
+    }
+
+    public Boolean getDelflaghavechange(Item items) {
+
+        return false;
+
+    }
+
+    public Boolean getdelbyPO(String purchaseorder) {
+
+        List<T02PoD> result = getByPo(purchaseorder);
+
+        for (T02PoD t02PoD : result) {
+            // 如果当前po下，任意一个明细的delflag为N，则返回false
+            if ("N".equals(t02PoD.getDelFlag())) {
+                return false; // 遇到"N"即返回false
+            }
+        }
+
+        // 如果所有的delflag都为Y，则返回true
+        return true; // 只有当没有"N"时，返回true
+    }
+
+    public List<T02PoD> getByPo(String po) {
+
+        List<T02PoD> listOf = db.run(
+                Select.from(Pch_.T02_PO_D)
+                        .where(o -> o.PO_NO().eq(po)))
+                .listOf(T02PoD.class);
+
+        return listOf;
+
+    }
+
+    public void modifyT03(T03PoC o3) {
+
+        T03PoC isExist = getByIDT03(o3.getPoNo(), o3.getDNo(), o3.getSeq());
+        if (isExist == null) {
+            insertT03(o3);
+        } else {
+            updateT03(o3);
+        }
+
+    }
+
+    private void updateT03(T03PoC o3) {
+
+        o3.setUpTime(getNow());
+        db.run(Update.entity(Pch_.T03_PO_C).entry(o3));
+
+    }
+
+    private void insertT03(T03PoC o3) {
+        o3.setCdTime(getNow());
+
+        db.run(Insert.into(Pch_.T03_PO_C).entry(o3));
+
+    }
+
+    private T03PoC getByIDT03(String poNo, Integer dNo, Integer seq) {
+
+        Optional<T03PoC> result = db.run(Select.from(Pch_.T03_PO_C)
+                .where(o -> o.PO_NO().eq(poNo)
+                        .and(o.D_NO().eq(dNo))
+                        .and(o.SEQ().eq(seq))))
+                .first(T03PoC.class);
+
+        if (result.isPresent()) {
+
+            return result.get();
+
+        }
+
+        return null;
+
     }
 
 }
