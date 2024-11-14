@@ -11,8 +11,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.poi.ss.formula.functions.T;
-import org.checkerframework.checker.units.qual.s;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -27,8 +25,6 @@ import cds.gen.sys.T08ComOpD;
 import cds.gen.sys.T11IfManager;
 import customer.bean.pch.Confirmation;
 import customer.bean.pch.Item;
-import customer.bean.pch.Items;
-
 import customer.bean.pch.SapPchRoot;
 import customer.dao.pch.PurchaseDataDao;
 import customer.dao.sys.IFSManageDao;
