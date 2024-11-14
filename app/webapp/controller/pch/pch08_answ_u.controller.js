@@ -196,16 +196,106 @@ sap.ui.define([
 				//获得 sheet
 				var oSheet = oWB.Sheets[oWB.SheetNames[0]];
 				//设置头
-				var header = ["QUO_NUMBER", "QUO_ITEM", "NO",
-					'REFRENCE_NO', 'CUSTOMER', 'MACHINE_TYPE', 'QUANTITY', 'VALIDATE_START', 'VALIDATE_END', 'MATERIAL_NUMBER', 'CUST_MATERIAL',
-					'MANUFACT_MATERIAL', 'Attachment', 'Material', 'MAKER', 'UWEB_USER', 'BP_NUMBER', 'PERSON_NO1', 'PERSON_NO2', 'PERSON_NO3',
-					'PERSON_NO4', 'PERSON_NO5', 'YLP', 'MANUL', 'MANUFACT_CODE', 'CUSTOMER_MMODEL', 'MID_QF', 'SMALL_QF', 'OTHER_QF',
-					'CURRENCY', 'PRICE', 'PRICE_CONTROL', 'LEAD_TIME', 'MOQ', 'UNIT', 'SPQ', 'KBXT', 'PRODUCT_WEIGHT', 'ORIGINAL_COU',
-					'EOL', 'ISBOI', 'Incoterms', 'Incoterms_Text', 'MEMO1', 'MEMO2', 'MEMO3', 'SL', 'TZ', 'RMATERIAL', 'RMATERIAL_CURRENCY',
-					'RMATERIAL_PRICE', 'RMATERIAL_LT', 'RMATERIAL_MOQ', 'RMATERIAL_KBXT', 'UMC_COMMENT_1', 'UMC_COMMENT_2', 'SUPPLIER_MAT'];
-				// 通过 XLSX 将sheet转为json  要转的oSheet，header标题，range起始行（1：第二行开始）
-				var jsonS = XLSX.utils.sheet_to_json(oSheet, { header: header, range: 1, raw: true });
-			    
+				// var header = ["QUO_NUMBER", "QUO_ITEM", "NO",
+				// 	'REFRENCE_NO', 'CUSTOMER', 'MACHINE_TYPE', 'QUANTITY', 'VALIDATE_START', 'VALIDATE_END', 'MATERIAL_NUMBER', 'CUST_MATERIAL',
+				// 	'MANUFACT_MATERIAL', 'Attachment', 'Material', 'MAKER', 'UWEB_USER', 'BP_NUMBER', 'PERSON_NO1', 'PERSON_NO2', 'PERSON_NO3',
+				// 	'PERSON_NO4', 'PERSON_NO5', 'YLP', 'MANUL', 'MANUFACT_CODE', 'CUSTOMER_MMODEL', 'MID_QF', 'SMALL_QF', 'OTHER_QF',
+				// 	'CURRENCY', 'PRICE', 'PRICE_CONTROL', 'LEAD_TIME', 'MOQ', 'UNIT', 'SPQ', 'KBXT', 'PRODUCT_WEIGHT', 'ORIGINAL_COU',
+				// 	'EOL', 'ISBOI', 'Incoterms', 'Incoterms_Text', 'MEMO1', 'MEMO2', 'MEMO3', 'SL', 'TZ', 'RMATERIAL', 'RMATERIAL_CURRENCY',
+				// 	'RMATERIAL_PRICE', 'RMATERIAL_LT', 'RMATERIAL_MOQ', 'RMATERIAL_KBXT', 'UMC_COMMENT_1', 'UMC_COMMENT_2', 'SUPPLIER_MAT'];
+				// // 通过 XLSX 将sheet转为json  要转的oSheet，header标题，range起始行（1：第二行开始）
+				// var jsonS = XLSX.utils.sheet_to_json(oSheet, { header: header, range: 1, raw: true });
+			  
+				var sExcelJson = XLSX.utils.sheet_to_json(oSheet, {
+					header: 1,  // 使用数组形式
+					defval: null  // 空值处理
+				});
+
+				if(!sExcelJson || sExcelJson === ''){
+					return;
+				}
+
+				delete sExcelJson[0]; // 删除第一行
+
+				var aExcelData = [];
+				//rebuild json
+				sExcelJson.forEach(row=>{
+					var length = row.length;
+					var oItem = {};
+					oItem["QUO_NUMBER"] = row[0];
+					oItem["QUO_ITEM"] = row[1];
+					oItem["NO"] = row[2];
+					oItem['REFRENCE_NO'] = row[3];
+					oItem['CUSTOMER'] = row[4];
+					oItem['MACHINE_TYPE'] = row[5];
+					oItem['QUANTITY'] = row[6];
+					oItem['VALIDATE_START'] = row[7];
+					oItem['VALIDATE_END'] = row[8];
+					oItem['MATERIAL_NUMBER'] = row[9];
+					oItem['CUST_MATERIAL'] = row[10];
+					oItem['MANUFACT_MATERIAL'] = row[11];
+					oItem['Attachment'] = row[12];
+					oItem['Material'] = row[13];
+					oItem['MAKER'] = row[14];
+					oItem['UWEB_USER'] = row[15];
+					oItem['BP_NUMBER'] = row[16];
+					oItem['PERSON_NO1'] = row[17];
+					oItem['PERSON_NO2'] = row[18];
+					oItem['PERSON_NO3'] = row[19];
+					oItem['PERSON_NO4'] = row[20];
+					oItem['PERSON_NO5'] = row[21];
+					oItem['YLP'] = row[22];
+					oItem['MANUL'] = row[23];
+					oItem['MANUFACT_CODE'] = row[24];
+					oItem['CUSTOMER_MMODEL'] = row[25];
+					oItem['MID_QF'] = row[26];
+					oItem['SMALL_QF'] = row[27];
+					oItem['OTHER_QF'] = row[28];
+					oItem['CURRENCY'] = row[29];
+					oItem['PRICE'] = row[30];
+					oItem['PRICE_CONTROL'] = row[31];
+					oItem['LEAD_TIME'] = row[32];
+					oItem['MOQ'] = row[33];
+					oItem['UNIT'] = row[34];
+					oItem['SPQ'] = row[35];
+					oItem['KBXT'] = row[36];
+					oItem['PRODUCT_WEIGHT'] = row[37];
+					oItem['ORIGINAL_COU'] = row[38];
+					oItem['EOL'] = row[39];
+					oItem['ISBOI'] = row[40];
+					oItem['Incoterms'] = row[41];
+					oItem['Incoterms_Text'] = row[42];
+					oItem['MEMO1'] = row[43];
+					oItem['MEMO2'] = row[44];
+					oItem['MEMO3'] = row[45];
+					oItem['SL'] = row[46];
+					oItem['TZ'] = row[47];
+					oItem['RMATERIAL'] = row[48];
+					oItem['RMATERIAL_CURRENCY'] = row[49];
+					oItem['RMATERIAL_PRICE'] = row[50];
+					oItem['RMATERIAL_LT'] = row[51];
+					oItem['RMATERIAL_MOQ'] = row[52];
+					oItem['RMATERIAL_KBXT'] = row[53];
+					oItem['UMC_COMMENT_1'] = row[54];
+					oItem['UMC_COMMENT_2'] = row[55];
+					oItem['SUPPLIER_MAT'] = row[56];
+
+					for(var i = 56; i < length; i++){
+						if(row[i] && Number(row[i]) > 0){
+							oItem["QTY_" + (i - 55)] = row[i];
+						}
+
+						if(row[i] && Number(row[i]) > 0){
+							oItem["PRICE_" + (i - 55)] = row[i];
+						}
+					}
+
+					aExcelData.push(oItem);
+				});
+
+				var jsonS = aExcelData;//JSON.stringify(aExcelData);
+
+				debugger;
 				
 				const sConvertedData = jsonS.map(row => {
 					const newRow = { ...row };  

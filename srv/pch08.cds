@@ -72,7 +72,7 @@ extend service TableService {
                     T02.STATUS,
                     T02.SUPPLIER_MAT
 
-            } group by T02.QUO_NUMBER,T02.QUO_ITEM;
+            }
 //                 action PCH07_CHECK_DATA(shelfJson : String) returns String;
 //                 action PCH07_SAVE_DATA(shelfJson : String) returns String;
 
