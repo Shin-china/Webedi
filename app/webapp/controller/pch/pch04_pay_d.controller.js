@@ -6,6 +6,11 @@ sap.ui.define([
 ], function (Controller,A, MessageToast, MessageBox) {
     "use strict";
 
+    var _objectCommData = {
+		_entity: "/PCH_T04_PAYMENT_SUM_HJ6",
+	};
+
+
     return Controller.extend("umc.app.controller.pch.pch04_pay_d", {
 
         onResend: function () {
@@ -298,45 +303,60 @@ sap.ui.define([
             return json;
             }   
         },
+        
+        /*==============================
+		下载excel
+		==============================*/
+		onExportToEXCEL: function (selectedIndices) {
+			var that = this;
+			that._setBusy(true);
 
-        // onExportToEXCEL:function(){
-        //         //test
-        //         let that = this;
-        //         var mailObj = { attachmentJson:[{
-        //          object: "3a8b4654",
-        //          value: "3a8b4654-221c-4537-a324-4e64aee8d6ba.pdf"
-        //         }]}
-        //         var newModel = this.getView().getModel('Common').bindContext("/s3DownloadAttachment.Common(...)",JSON.stringify(mailObj))
-        //         .invoke("$auto",false,null,/*bReplaceWithRVC*/false);
-        //         newModel.setParameter("attachmentJson", JSON.stringify(mailObj));
-        //         newModel.execute("$auto",true,null,/*bReplaceWithRVC*/true).then(()=>{
-        //            debugger;
-                
-        //         //Test for excel
-        //         var excelVal = {
-        //          id:1,
-        //          mat:"mat1",
-        //          qty:1,
-        //          unp:1.0
-        //         }
-        //         var jsonExcel = { content:JSON.stringify(excelVal) }
-        //         this.getModel().callFunction("/PCH04_EXCELDOWNLOAD", {
-        //          method: "POST",
-        //          urlParameters: jsonExcel,
-        //          success: function(oData) {
-        //            debugger;
-        //            const downloadLink = document.createElement("a");
-        //            const blob = that._base64Blob(oData.PCH04_EXCELDOWNLOAD,"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-        //            const blobUrl = URL.createObjectURL(blob);
-        //            downloadLink.href = blobUrl;
-        //            downloadLink.download = "仕入先コード_YYYY年MM月度UMC支払通知書.xlsx";
-        //            downloadLink.click();
-        //         },
-        //          error: function(oError) {
-        //         }
-        //         })
-        //         //End
-            
+            var aFilters = this.getView().byId("smartFilterBar").getFilters();
+			_objectCommData._aFilters = aFilters;
+			var view = this.getView();
+			var jsonModel = view.getModel("workInfo");
+			view.setModel(jsonModel, undefined);
+			if (aFilters.length == 0) {
+				that._setBusy(false);
+				return;
+			}
+			this._readEntryByServiceAndEntity(_objectCommData._entity, aFilters, null).then((oData) => {
+
+        if (oData) {
+
+            // var invMonth = this.getView().byId("INV_MONTH").getValue();  
+            // 生成文件名
+            var fileName = `仕入先コード_月度UMC支払通知書.xlsx`;}
+
+			var selectedIndices = this._TableList("detailTable");
+			if (selectedIndices) {
+				// if(this.checkDelete(selectedIndices)){
+					this._callCdsAction("/PCH04_EXCELDOWNLOAD", this._getDataDow(oData), this).then((oData) => {
+						const downloadLink = document.createElement("a");
+						const blob = that._base64Blob(oData.PCH05_EXCELDOWNLOAD,"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+						const blobUrl = URL.createObjectURL(blob);
+						downloadLink.href = blobUrl;
+                        downloadLink.download = fileName; // 使用动态生成的文件名
+						downloadLink.click();
+						that._setBusy(false); 
+					})
+				}
+            });
+		},
+		_getDataDow(oData){
+			var jsondata = Array();
+			oData.results.forEach((odata) => {
+			    
+				jsondata.push(odata);
+			})
+
+			var a = JSON.stringify({ list: jsondata });
+			var oPrams = {
+                parms: a,
+			};
+			return oPrams;
+			
+		},
         
     });
 });

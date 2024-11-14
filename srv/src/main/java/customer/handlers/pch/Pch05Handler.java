@@ -26,7 +26,7 @@ import cds.gen.tableservice.TableService_;
 import cds.gen.MailBody;
 import cds.gen.MailJson;
 import customer.bean.com.UmcConstants;
-import customer.bean.tmpl.Pch05;
+
 import customer.bean.tmpl.test;
 import customer.service.pch.PchService;
 import customer.service.sys.EmailServiceFun;
@@ -214,14 +214,6 @@ public class Pch05Handler implements EventHandler {
     // String content = context.getContent();
     byte[] bytes = null;
     Pch05List dataList = JSON.parseObject(context.getParms(),Pch05List.class);
-
-    // for (Pch05List item : list.getList()) {
-     
-    //   Pch05List.setINVOICEID(item.getINVOICEID());
-    //   Pch05List.setPO_BUKRS1(item.getPO_BUKRS());
-    //   Pch05List.setLASTDATE1(item.getLASTDATE());
-    //   Pch05List.setLASTDATE2(item.getLASTDATE());
-    //   Pch05List.setDIFF_TAX_AMOUNT1(item.getDIFF_TAX_AMOUNT());
 
     // 检查 dataList 是否为空，并且确保它的 list 字段存在
     if (dataList != null && dataList.getList() != null) {

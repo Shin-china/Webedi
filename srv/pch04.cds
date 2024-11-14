@@ -338,7 +338,7 @@ extend service TableService {
     }
 
     action PCH04_SENDEMAIL(parms : String) returns String;
-    action PCH04_EXCELDOWNLOAD(parms : String) returns String;
+    action PCH04_EXCELDOWNLOAD(parms : String) returns LargeBinary;
 
 }
 annotate TableService.PCH_T04_PAYMENT_UNIT with {

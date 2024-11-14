@@ -8,7 +8,7 @@ sap.ui.define([
     "use strict";
 
     var _objectCommData = {
-		_entity: "/PCH05_SENDEMAIL",
+		_entity: "/PCH_T05_FOREXCEL",
 	};
 
 

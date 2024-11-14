@@ -1,5 +1,5 @@
 package customer.handlers.pch;
-
+import java.io.ByteArrayOutputStream;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -12,9 +12,11 @@ import cds.gen.tableservice.PCH04EXCELDOWNLOADContext;
 import cds.gen.tableservice.TableService_;
 import cds.gen.MailBody;
 import cds.gen.MailJson;
-import customer.bean.tmpl.pch04excel;
+
 import customer.bean.tmpl.test;
 import customer.service.sys.EmailServiceFun;
+import customer.bean.tmpl.Pch04;
+import customer.bean.tmpl.Pch04List;
 
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.ExcelWriter;
@@ -120,71 +122,45 @@ public class Pch04Handler implements EventHandler {
         }
     }
 
-    // // Excel 导出
-    // @On(event = "PCH04_EXCELDOWNLOAD")
-    // public void exportExcel(PCH04EXCELDOWNLOADContext context) throws IOException {
-    //     String content = context.getContent();
-    //     byte[] bytes = null;
-    //     List<test> dataList = new ArrayList<>();
-    //     pch04excel exl = JSON.parseObject(content, pch04excel.class);
-    //     pch04excel temp = new pch04excel();
-    //     temp.setNO_DETAILS(exl.getNO_DETAILS());
-    //     temp.setMAT_ID(exl.getMAT_ID());
-    //     temp.setMAT_DESC(exl.getMAT_DESC());
-    //     temp.setGR_DATE(exl.getGR_DATE());
-    //     temp.setQUANTITY(exl.getQUANTITY());
-    //     temp.setUNIT_PRICE_IN_YEN(exl.getUNIT_PRICE_IN_YEN());
-    //     temp.setBASE_AMOUNT_EXCLUDING_TAX(exl.getBASE_AMOUNT_EXCLUDING_TAX());
-    //     temp.setTAX_RATE(exl.getTAX_RATE());
-    //     temp.setPO_TRACK_NO(exl.getPO_TRACK_NO());
-    //     temp.setINV_BASE_DATE(exl.getINV_BASE_DATE());
-    //     temp.setTOTAL_PRICE_AMOUNT_8(exl.getTOTAL_PRICE_AMOUNT_8());
-    //     temp.setCONSUMPTION_TAX_8(exl.getCONSUMPTION_TAX_8());
-    //     temp.setTOTAL_PAYMENT_AMOUNT_8_END(exl.getTOTAL_PAYMENT_AMOUNT_8_END());
-    //     temp.setTOTAL_PRICE_AMOUNT_10(exl.getTOTAL_PRICE_AMOUNT_10());
-    //     temp.setCONSUMPTION_TAX_10(exl.getCONSUMPTION_TAX_10());
-    //     temp.setTOTAL_PAYMENT_AMOUNT_10_END(exl.getTOTAL_PAYMENT_AMOUNT_10_END());
-    //     temp.setNON_APPLICABLE_AMOUNT(exl.getNON_APPLICABLE_AMOUNT());
-    //     temp.setTOTAL_PAYMENT_AMOUNT_FINAL(exl.getTOTAL_PAYMENT_AMOUNT_FINAL());
-    //     temp.setINV_MONTH_FORMATTED(exl.getINV_MONTH_FORMATTED());
-    //     temp.setSUPPLIER_DESCRIPTION(exl.getSUPPLIER_DESCRIPTION());
-    //     temp.setLOG_NO(exl.getLOG_NO());
-    //     temp.setCompany_Name(exl.getCompany_Name());
-    //     temp.setCURRENT_DAY(exl.getCURRENT_DAY());
-    //     // dataList.add(temp);
+     // Excel 导出测试
+  @On(event = "PCH04_EXCELDOWNLOAD")
+  public void exportExcel(PCH04EXCELDOWNLOADContext context) throws IOException {
+    // String content = context.getContent();
+    byte[] bytes = null;
+    Pch04List dataList = JSON.parseObject(context.getParms(),Pch04List.class);
 
-    //     // 获取模板文件
-    //     InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("template/test.xlsx");
+    // 获取模板文件
+    InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("template/支払通知照会.xlsx");
 
-    //     // Excel写入数据
-    //     ExcelWriter excelWriter = null;
-    //     try {
-    //         ByteArrayOutputStream os = new ByteArrayOutputStream();
-    //         excelWriter = EasyExcel.write(os).withTemplate(inputStream).inMemory(true).build();
-    //         WriteSheet writeSheet = EasyExcel.writerSheet().build();
+    // Excel写入数据
+    ExcelWriter excelWriter = null;
+    try {
+      ByteArrayOutputStream os = new ByteArrayOutputStream();
+      excelWriter = EasyExcel.write(os).withTemplate(inputStream).inMemory(true).build();
+      WriteSheet writeSheet = EasyExcel.writerSheet().build();
 
-    //         // 填充完后需要换行
-    //         FillConfig fileConfig = FillConfig.builder().forceNewRow(true).build();
-    //         // 写入数据
-    //         // excelWriter.write(os, writeSheet)
-    //         excelWriter.fill(dataList, fileConfig, writeSheet);
-    //         // 重新计算公式
-    //         Workbook workbook = excelWriter.writeContext().writeWorkbookHolder().getWorkbook();
-    //         // 调用
-    //         workbook.getCreationHelper().createFormulaEvaluator().evaluateAll();
+      // 填充完后需要换行
+      FillConfig fileConfig = FillConfig.builder().forceNewRow(true).build();
+      // 写入数据
+      // excelWriter.write(os, writeSheet)
+      excelWriter.fill(dataList.getList(), fileConfig, writeSheet);
+      // 重新计算公式
+      Workbook workbook = excelWriter.writeContext().writeWorkbookHolder().getWorkbook();
+      // 调用
+      workbook.getCreationHelper().createFormulaEvaluator().evaluateAll();
 
-    //         excelWriter.finish();
+      excelWriter.finish();
 
-    //         // 获取byte字节、
-    //         bytes = os.toByteArray();
-    //     } catch (Exception e) {
+      // 获取byte字节、
+      bytes = os.toByteArray();
+    } catch (Exception e) {
 
-    //     } finally {
-    //         if (excelWriter != null) {
-    //             excelWriter.finish();
-    //         }
-    //     }
+    } finally {
+      if (excelWriter != null) {
+        excelWriter.finish();
+      }
+    }
 
-    //     context.setResult(bytes);
-    // }
+    context.setResult(bytes);
+  }
 }
