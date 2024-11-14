@@ -80,7 +80,7 @@ sap.ui.define([
                 }
             };
 
-            var oSheet = new Spreadsheet(oSettings);
+            var oSheet = new sap.ui.export.Spreadsheet(oSettings);
             oSheet.attachBeforeExport(this.onBeforeExport.bind(this));
             oSheet.build()
                 .then(function () {
@@ -101,7 +101,7 @@ sap.ui.define([
             return newDate.toISOString().split('T')[0];
         },
 
-        onSave: function () {
+        onSave: function (oEvent) {
             var that = this;
             that._setBusy(true);
 

@@ -8,12 +8,12 @@ sap.ui.define([
 	'sap/ui/comp/library',
 	'sap/ui/model/type/String',
 
-], function (Controller, Filter, xlsx, formatter, 
-	 Spreadsheet) {
+], function (Controller, Filter, xlsx, formatter,
+	Spreadsheet) {
 	"use strict";
 
 	return Controller.extend("umc.app.controller.pch.pch08_answ_u", {
-		formatter : formatter,
+		formatter: formatter,
 
 		onInit: function () {
 			//获取本地信息
@@ -27,17 +27,17 @@ sap.ui.define([
 				isButtonEnabled: true // 默认值为 true
 			});
 			this.getView().setModel(oViewModel, "viewModel");
-			
+
 
 			//  设置版本号
 			this._setOnInitNo("PCH07", ".20240812.01");
 		},
 
-		// onDownloadTemplate: function() {
-		// 	var sUrl = "/path/to/your/template/file.xlsx"; // 模板文件的路径
-		// 	sap.m.URLHelper.redirect(sUrl, true); // 通过 URLHelper 重定向到文件 URL，进行下载
-		// },
-		
+		onDownloadTemplate: function () {
+			var sUrl = "/path/to/your/template/file.xlsx"; // 模板文件的路径
+			sap.m.URLHelper.redirect(sUrl, true); // 通过 URLHelper 重定向到文件 URL，进行下载
+		},
+
 
 		uploadButtonPress(oEvent) {
 			this._viewCreateSet();
@@ -52,21 +52,21 @@ sap.ui.define([
 		onCheck: function () {
 			var flgHeand = true;
 			var checkResult = true;
-		
+
 			var that = this;
 			that._setBusy(true);
 			that._setEditable(true);
-		
+
 			var jsonModel = that.getModel("workInfo");
 			var data = jsonModel.getData();
-		
+
 			// 1. 检查模板是否有数据
 			if (jsonModel.oData.length === undefined) {
 				sap.m.MessageBox.alert(that.MessageTools._getI18nTextInModel("pch", "PCH01_MSG_FILE_BLANK", this.getView()));
 				that._setBusy(false);
 				return;
 			}
-		
+
 			//2. 必输字段检查   ・必須入力データは「SAP品目コード」、「仕入先」、「プラント」、「数量」、「有効開始日付」、「有効終了日付」
 			var hasError = false;
 
@@ -102,7 +102,7 @@ sap.ui.define([
 					item.MSG_TEXT = missingFields.join("\n"); // 将错误消息设置到对应行的MSG_TEXT字段
 
 					item.STATE = "Error"; // 将状态设置为错误状态
-        			item.I_CON = "sap-icon://error"; // 设置状态图标为错误图
+					item.I_CON = "sap-icon://error"; // 设置状态图标为错误图
 					jsonModel.refresh(); // 刷新模型以更新UI
 					that._setBusy(false);
 					hasError = true;//有错
@@ -111,11 +111,11 @@ sap.ui.define([
 			});
 			//如果 任意一行message里有消息，则弹出消息。
 			if (hasError) {
-				sap.m.MessageBox.alert(that.MessageTools._getI18nTextInModel("pch", "PCH01_MSG_FILED_BLANK", this.getView()) );
+				sap.m.MessageBox.alert(that.MessageTools._getI18nTextInModel("pch", "PCH01_MSG_FILED_BLANK", this.getView()));
 				that._setBusy(false);
 				return;
 			}
-		
+
 			// 3. 如果所有检查都通过，调用服务
 			if (checkResult && flgHeand) {
 				this.getModel().callFunction("/PCH07_CHECK_DATA", {
@@ -125,10 +125,10 @@ sap.ui.define([
 						// 取数据
 						var arr = result.PCH07_CHECK_DATA;
 						var myArray = JSON.parse(arr);
-		
+
 						// 设置画面上总结
 						//that._setCnt(myArray.reTxt);
-		
+
 						// 更新画面上的model
 						jsonModel.setData(myArray.list);
 
@@ -141,7 +141,7 @@ sap.ui.define([
 						if (hasError) {
 							// that._setEditable(false);
 							that.getView().getModel("viewModel").setProperty("/isButtonEnabled", false);
-						
+
 						}
 
 						that._setBusy(false);
@@ -151,7 +151,7 @@ sap.ui.define([
 					error: function (oError) {
 
 						that._setBusy(false);
-						
+
 					}
 				});
 			}
@@ -160,19 +160,19 @@ sap.ui.define([
 		onSave: function () {
 			var that = this;
 			that._setBusy(true);
-	
+
 			this._callCdsAction("/PCH07_SAVE_DATA", this.getData(), this).then((oData) => {
-			  var myArray = JSON.parse(oData.PCH01_SAVE_DATA);
-			  //that._setCnt(myArray.reTxt);
-			  var jsonModel = that.getModel("workInfo");
-	
-			  jsonModel.setData(myArray.list);
-			  //设置为非创建
-			  that._setIsCreate(false);
-	
-			  that._setBusy(false);
+				var myArray = JSON.parse(oData.PCH01_SAVE_DATA);
+				//that._setCnt(myArray.reTxt);
+				var jsonModel = that.getModel("workInfo");
+
+				jsonModel.setData(myArray.list);
+				//设置为非创建
+				that._setIsCreate(false);
+
+				that._setBusy(false);
 			});
-		  },
+		},
 
 		// excel上传
 		onFileChange: function (oEvent) {
@@ -191,46 +191,169 @@ sap.ui.define([
 			oReader.onload = function (oFileData) {
 				var sResult = oFileData.target.result;
 				var oWB = XLSX.read(sResult, {
-				type: "binary",
+					type: "binary"
 				});
 				//获得 sheet
 				var oSheet = oWB.Sheets[oWB.SheetNames[0]];
 				//设置头
-				var header = ["MATERIAL_NUMBER","PLANT_ID","BP_NUMBER","QTY","VALIDATE_START","VALIDATE_END","UMC_COMMENT_1","UMC_COMMENT_2","INITIAL_OBJ"];
+				var header = ["QUO_NUMBER", "QUO_ITEM", "NO",
+					'REFRENCE_NO', 'CUSTOMER', 'MACHINE_TYPE', 'QUANTITY', 'VALIDATE_START', 'VALIDATE_END', 'MATERIAL_NUMBER', 'CUST_MATERIAL',
+					'MANUFACT_MATERIAL', 'Attachment', 'Material', 'MAKER', 'UWEB_USER', 'BP_NUMBER', 'PERSON_NO1', 'PERSON_NO2', 'PERSON_NO3',
+					'PERSON_NO4', 'PERSON_NO5', 'YLP', 'MANUL', 'MANUFACT_CODE', 'CUSTOMER_MMODEL', 'MID_QF', 'SMALL_QF', 'OTHER_QF',
+					'CURRENCY', 'PRICE', 'PRICE_CONTROL', 'LEAD_TIME', 'MOQ', 'UNIT', 'SPQ', 'KBXT', 'PRODUCT_WEIGHT', 'ORIGINAL_COU',
+					'EOL', 'ISBOI', 'Incoterms', 'Incoterms_Text', 'MEMO1', 'MEMO2', 'MEMO3', 'SL', 'TZ', 'RMATERIAL', 'RMATERIAL_CURRENCY',
+					'RMATERIAL_PRICE', 'RMATERIAL_LT', 'RMATERIAL_MOQ', 'RMATERIAL_KBXT', 'UMC_COMMENT_1', 'UMC_COMMENT_2', 'SUPPLIER_MAT'];
 				// 通过 XLSX 将sheet转为json  要转的oSheet，header标题，range起始行（1：第二行开始）
-				var jsonS = XLSX.utils.sheet_to_json(oSheet,{header: header, range: 1});
-				jsonModel.setData(jsonS);
+				var jsonS = XLSX.utils.sheet_to_json(oSheet, { header: header, range: 1, raw: true });
+			    
+				
+				const sConvertedData = jsonS.map(row => {
+					const newRow = { ...row };  
+
+					if (newRow.VALIDATE_START) { 
+						newRow.VALIDATE_START = that.__formatExcelDate(newRow.VALIDATE_START); 
+					}
+
+					if (newRow.VALIDATE_END) { 
+						newRow.VALIDATE_END = that.__formatExcelDate(newRow.VALIDATE_END);
+					}
+
+					if (newRow.LEAD_TIME) {
+						newRow.LEAD_TIME = that.__formatExcelDate(newRow.LEAD_TIME);
+					}
+
+					return newRow;
+				});
+
+				jsonModel.setData(sConvertedData);
 			};
 			oReader.readAsBinaryString(oFile);
-			},
+		},
 
-			onExport: function (oEvent) {
-				var oTable = this.getView().byId("tableUploadData");
-				var aSelectedIndices = oTable.getSelectedIndices();
-	
-				if (aSelectedIndices.length === 0) {
-					sap.m.MessageToast.show("選択されたデータがありません、データを選択してください。"); // 提示未选择数据
-					oEvent.preventDefault(); // 取消导出操作
-					return;
-				}
-	
-				var oSettings = oEvent.getParameter("exportSettings");
-				if (oSettings) {
-					console.log("onBeforeExport called");
-					console.log("Export Settings:", oSettings);
-					oSettings.fileName = `購買見積登録.xlsx`;
-				}
-			},
+		__formatExcelDate: function (date) {
+			if(!date || date === ''){
+				return;
+			}
 
-					
-			getData: function () {
-				var jsondata = this.getModel("workInfo").getData();
-				var a = JSON.stringify({ list: jsondata });
-				var oPrams = {
-				  ShelfJson: a,
-				};
-				return oPrams;
-			  },
+			const excelEpoch = new Date(1899, 11, 30);
+			const msPerDay = 24 * 60 * 60 * 1000; 
+			const dNewDate = new Date(excelEpoch.getTime() + (date * msPerDay));
+			const sNewdate = dNewDate.toISOString().split("T")[0];
+			
+			return sNewdate;
+		},
+
+		onExport: function (oEvent) {
+			var oTable = this.getView().byId("tableUploadData");
+			var aSelectedIndices = oTable.getSelectedIndices();
+
+			if (aSelectedIndices.length === 0) {
+				sap.m.MessageToast.show("選択されたデータがありません、データを選択してください。"); // 提示未选择数据
+				oEvent.preventDefault(); // 取消导出操作
+				return;
+			}
+
+			var aSelectedData = aSelectedIndices.map(function (iIndex) {
+                return oTable.getContextByIndex(iIndex).getObject();
+            });
+
+            if (aSelectedData.length === 0) {
+                sap.m.MessageToast.show("選択されたデータがありません、データを選択してください。");
+                return;
+            }
+
+			aSelectedData.forEach(row=>{
+				if(row.VALIDATE_START && row.VALIDATE_START!== ''){
+					row.VALIDATE_START = new Date(row.VALIDATE_START);
+				}
+
+				if(row.VALIDATE_END && row.VALIDATE_END!== ''){
+					row.VALIDATE_END = new Date(row.VALIDATE_END);
+				}
+
+				if(row.LEAD_TIME && row.LEAD_TIME!== ''){
+					row.LEAD_TIME = new Date(row.LEAD_TIME);
+				}
+			})
+
+			var aColumns = oTable.getColumns().map(function (oColumn) {
+                var sDateFormat = 'yyyy-MM-dd';
+                var sFormat = '';
+                var sType = '';
+
+                var property = oColumn.getTemplate().getBindingPath("text");
+
+                if (property === 'VALIDATE_START' || property === 'VALIDATE_END' || property === 'LEAD_TIME') {
+                    sFormat = sDateFormat;
+                    sType = 'date';
+                } else {
+                    sFormat = '';
+                    sType = 'string';
+                }
+
+
+                return {
+                    label: oColumn.getLabel().getText(),
+                    type: sType,
+                    property: oColumn.getTemplate().getBindingPath("text"),
+                    width: parseFloat(oColumn.getWidth()),
+                    format: sFormat
+                };
+            });
+
+			var oSettings = {
+                dataSource: aSelectedData,
+                workbook: {
+                    columns: aColumns,
+
+                    context: {
+                        sheetName: "購買見積登録"
+                    }
+                }
+            };
+
+			var oSheet = new sap.ui.export.Spreadsheet(oSettings);
+			oSheet.attachBeforeExport(this.onBeforeExport.bind(this));
+			oSheet.build()
+				.then(function () {
+					sap.m.MessageToast.show(this._ResourceBundle.getText("exportFinished"));
+				})
+				.finally(function () {
+					oSheet.destroy();
+				});
+		},
+
+		onBeforeExport: function (oEvent) {
+			var oTable = this.getView().byId("tableUploadData");
+			var aSelectedIndices = oTable.getSelectedIndices();
+
+			if (aSelectedIndices.length === 0) {
+				sap.m.MessageToast.show("選択されたデータがありません、データを選択してください。"); // 提示未选择数据
+				oEvent.preventDefault(); // 取消导出操作
+				return;
+			}
+
+			var oSettings = oEvent.getParameter("exportSettings");
+			if (oSettings) {
+				console.log("onBeforeExport called");
+				console.log("Export Settings:", oSettings);
+				var oDate = new Date();
+				var sDate = oDate.toISOString().slice(0, 10).replace(/-/g, '');
+				var sTime = oDate.toTimeString().slice(0, 8).replace(/:/g, '');
+				// 设置文件名为当前日期和时间
+				oSettings.fileName = `購買見積登録_${sDate}${sTime}.xlsx`;
+			}
+		},
+
+
+		getData: function () {
+			var jsondata = this.getModel("workInfo").getData();
+			var a = JSON.stringify({ list: jsondata });
+			var oPrams = {
+				ShelfJson: a,
+			};
+			return oPrams;
+		},
 
 
 	});

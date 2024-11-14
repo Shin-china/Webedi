@@ -86,6 +86,7 @@ extend service TableService {
                     T02.UMC_COMMENT_2,
                     T02.STATUS,
                     T02.SUPPLIER_MAT
+
             }
 //                 action PCH07_CHECK_DATA(shelfJson : String) returns String;
 //                 action PCH07_SAVE_DATA(shelfJson : String) returns String;

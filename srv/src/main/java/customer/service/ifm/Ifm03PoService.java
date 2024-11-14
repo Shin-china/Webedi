@@ -1,47 +1,33 @@
 package customer.service.ifm;
 
-import java.io.IOException;
-import java.lang.reflect.Type;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.util.Collection;
 
-import org.checkerframework.checker.units.qual.s;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import com.alibaba.fastjson.JSON;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
+import com.alibaba.fastjson.JSON;
+
+import cds.gen.MailBody;
+import cds.gen.MailJson;
 import cds.gen.pch.T01PoH;
 import cds.gen.pch.T02PoD;
 import cds.gen.pch.T03PoC;
-import cds.gen.pch.T06QuotationH;
 import cds.gen.sys.T08ComOpD;
 import cds.gen.sys.T11IfManager;
 import customer.bean.pch.Confirmation;
 import customer.bean.pch.Item;
-import customer.bean.pch.Items;
-import customer.bean.pch.confirmation;
-
 import customer.bean.pch.SapPchRoot;
 import customer.dao.pch.PurchaseDataDao;
 import customer.dao.sys.IFSManageDao;
 import customer.dao.sys.SysD008Dao;
 import customer.odata.S4OdataTools;
 import customer.service.sys.EmailServiceFun;
-import software.amazon.awssdk.services.kms.endpoints.internal.Value.Str;
-import cds.gen.MailBody;
-import cds.gen.MailJson;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import java.math.RoundingMode;
 
 @Component
 public class Ifm03PoService {
@@ -209,10 +195,10 @@ public class Ifm03PoService {
 
                         }
 
-                        try {
-                            // 将字符串转换为 BigDecimal
-                            BigDecimal netpriceAmount = new BigDecimal(Items.getNetpriceamount());
-                            BigDecimal netPriceQuantity = new BigDecimal(Items.getNetpricequantity());
+                    try {
+                        // 将字符串转换为 BigDecimal
+                        BigDecimal netpriceAmount = new BigDecimal(Items.getNetamount());
+                        BigDecimal netPriceQuantity = new BigDecimal(Items.getNetpricequantity());
 
                             // 检查 netPriceQuantity 是否为 0，以避免除以 0 的情况
                             if (netPriceQuantity.compareTo(BigDecimal.ZERO) != 0) {
