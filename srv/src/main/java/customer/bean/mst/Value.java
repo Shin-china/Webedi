@@ -98,6 +98,7 @@ public class Value {
     private String ManufacturerNumber;
     private String ManufacturerPartProfile;
     private String OwnInventoryManagedProduct;
+    private String YY1_CUSTOMERMATERIAL_PRD;
     private List<String> SAP__Messages;
     private List<_ProductDescription> _ProductDescription = new ArrayList<_ProductDescription>();
     private List<_ProductPlant> _ProductPlant = new ArrayList<_ProductPlant>();
@@ -916,6 +917,14 @@ public class Value {
 
     public String getOwnInventoryManagedProduct() {
         return OwnInventoryManagedProduct;
+    }
+
+    public void setYY1_CUSTOMERMATERIAL_PRD(String YY1_CUSTOMERMATERIAL_PRD) {
+        this.YY1_CUSTOMERMATERIAL_PRD = YY1_CUSTOMERMATERIAL_PRD;
+    }
+
+    public String getYY1_CUSTOMERMATERIAL_PRD() {
+        return YY1_CUSTOMERMATERIAL_PRD;
     }
 
     public void setSAP__Messages(List<String> SAP__Messages) {

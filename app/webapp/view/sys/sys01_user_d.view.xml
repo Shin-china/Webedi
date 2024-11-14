@@ -152,7 +152,7 @@
 						</t:columns>
 					</t:Table>
 
-				</smarttable:SmartTable>
+				   </smarttable:SmartTable>
 				</IconTabFilter>
 
 				<!-- BP -->
@@ -218,8 +218,79 @@
 							</t:Column>
 						</t:columns>
 					</t:Table>
-				</smarttable:SmartTable>
+				   </smarttable:SmartTable>
 				</IconTabFilter>
+
+				<!-- 权限 -->
+				<IconTabFilter id="_IDGenIconTabFilter13" icon="sap-icon://folder" text="{sys>SYS01_TAB_TITLE_ROLE}" >
+					<!-- 编辑状态显示所有权限 -->
+					<smarttable:SmartTable id="smartTable13" persistencyKey="receiptprintTable" requestAtLeastFields="ID" entitySet="SYS_T02_ROLE" 
+					visible="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'}],formatter: '.formatter.getEditableSaveCommon'}"
+					smartFilterId="smartFilterBar"  useVariantManagement="false" useTablePersonalisation="false" tableType="Table" showRowCount="true" placeToolbarInTable="true" header="{sys>SYS01_TAB_TITLE_ROLE}" enableAutoBinding="true">
+						<t:Table id="roleTable" rowActionCount="1">
+							<t:columns>
+								<!-- 機能権限ID -->
+								<t:Column id="_IDGenColumn13" visible="true" autoResizable="true" sortProperty="ROLE_CODE" filterProperty="ROLE_CODE" minWidth="20" width="10em">
+									<t:customData>
+										<c:CustomData key="p13nData" value='\{"columnKey":"ROLE_CODE", "leadingProperty":"ROLE_CODE"}'/>
+									</t:customData>
+									<t:label>
+										<Label id="_IDGenLabel15" text="{sys>SYS01_LABEL_ROLE_CODE}"/>
+									</t:label>
+									<t:template>
+										<Text id="_IDGenText15" text="{ROLE_CODE}"></Text>
+									</t:template>
+								</t:Column>
+								<!-- 機能ID -->
+								<t:Column id="_IDGenColumn14" visible="true" autoResizable="true" sortProperty="ROLE_NAME" filterProperty="ROLE_NAME" minWidth="20" width="10em">
+									<t:customData>
+										<c:CustomData key="p13nData" value='\{"columnKey":"ROLE_NAME", "leadingProperty":"ROLE_NAME"}'/>
+									</t:customData>
+									<t:label>
+										<Label id="_IDGenLabel16" text="{sys>SYS01_LABEL_ROLE_NAME}"/>
+									</t:label>
+									<t:template>
+										<Text id="_IDGenText16" text="{ROLE_NAME}"></Text>
+									</t:template>
+								</t:Column>
+							</t:columns>
+						</t:Table>
+					</smarttable:SmartTable>
+
+					<smarttable:SmartTable id="smartTable24" persistencyKey="receiptprintTable" requestAtLeastFields="ID" entitySet="SYS_T04_USER_2_ROLE"
+					visible="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'}],formatter: '.formatter.getEditableDCommon'}" 
+					 smartFilterId="smartFilterBar"  useVariantManagement="false" useTablePersonalisation="false" tableType="Table" showRowCount="true" placeToolbarInTable="true" header="{sys>SYS01_TAB_TITLE_ROLE}" enableAutoBinding="true">
+						<t:Table id="roleTable2" rowActionCount="1">
+							<t:columns>
+								<!-- 機能権限ID -->
+								<t:Column id="_IDGenColumn23" visible="true" autoResizable="true" sortProperty="ROLE_CODE" filterProperty="ROLE_CODE" minWidth="20" width="10em">
+									<t:customData>
+										<c:CustomData key="p13nData" value='\{"columnKey":"ROLE_CODE", "leadingProperty":"ROLE_CODE"}'/>
+									</t:customData>
+									<t:label>
+										<Label id="_IDGenLabel25" text="{sys>SYS01_LABEL_ROLE_CODE}"/>
+									</t:label>
+									<t:template>
+										<Text id="_IDGenText25" text="{ROLE_CODE}"></Text>
+									</t:template>
+								</t:Column>
+								<!-- 機能ID -->
+								<t:Column id="_IDGenColumn24" visible="true" autoResizable="true" sortProperty="ROLE_NAME" filterProperty="ROLE_NAME" minWidth="20" width="10em">
+									<t:customData>
+										<c:CustomData key="p13nData" value='\{"columnKey":"ROLE_NAME", "leadingProperty":"ROLE_NAME"}'/>
+									</t:customData>
+									<t:label>
+										<Label id="_IDGenLabel26" text="{sys>SYS01_LABEL_ROLE_NAME}"/>
+									</t:label>
+									<t:template>
+										<Text id="_IDGenText26" text="{ROLE_NAME}"></Text>
+									</t:template>
+								</t:Column>
+							</t:columns>
+						</t:Table>
+					</smarttable:SmartTable>
+				</IconTabFilter>
+
 			</items>
 		</IconTabBar>
 
