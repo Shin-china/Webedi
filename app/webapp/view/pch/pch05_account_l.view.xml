@@ -21,6 +21,30 @@
                     <smartFilterBar:ControlConfiguration id="PCH_PO_BUKRS"      key="PO_BUKRS"             visibleInAdvancedArea="true" label="{pch>PO_BUKRS}"                index="1"/>
                     <smartFilterBar:ControlConfiguration id="PCH_INV_MONTH"     key="INV_MONTH"            visibleInAdvancedArea="true" label="{pch>INV_MONTH}"               index="2"/>
                     <smartFilterBar:ControlConfiguration id="PCH_SUPPLIER"      key="SUPPLIER"             visibleInAdvancedArea="true" label="{pch>SUPPLIER}"                index="3"/>
+
+                    <smartFilterBar:ControlConfiguration key="CURRENCY"   visible="false"  index="99"/>
+                    <smartFilterBar:ControlConfiguration key="ACCOUNT"  visible="false"  index="99"/>
+                    <smartFilterBar:ControlConfiguration key="CALC_10_PRICE_AMOUNT"      visible="false"  index="99"/>
+                    <smartFilterBar:ControlConfiguration key="CALC_8_PRICE_AMOUNT"  visible="false"  index="99"/>
+                    <smartFilterBar:ControlConfiguration key="DETAILTEXT"  visible="false"  index="99"/>
+                    <smartFilterBar:ControlConfiguration key="DIFF_TAX_AMOUNT"  visible="false"  index="99"/>
+                    <smartFilterBar:ControlConfiguration key="DIFF_TAX_AMOUNT_10"  visible="false"  index="99"/>
+                    <smartFilterBar:ControlConfiguration key="DIFF_TAX_AMOUNT_8"  visible="false"  index="99"/>
+                    <smartFilterBar:ControlConfiguration key="DOCUMENTTYPE"   visible="false"  index="99"/>
+                    <smartFilterBar:ControlConfiguration key="HEADERTEXT"  visible="false"  index="99"/>
+                    <smartFilterBar:ControlConfiguration key="LASTDATE"      visible="false"  index="99"/>
+                    <smartFilterBar:ControlConfiguration key="RECALC_PRICE_AMOUNT_10"  visible="false"  index="99"/>
+                    <smartFilterBar:ControlConfiguration key="RECALC_PRICE_AMOUNT_8"  visible="false"  index="99"/>
+                    <smartFilterBar:ControlConfiguration key="SHKZG_FLAG"  visible="false"  index="99"/>
+                    <smartFilterBar:ControlConfiguration key="TAX_BASE_AMOUNT"  visible="false"  index="99"/>
+                    <smartFilterBar:ControlConfiguration key="TOTAL_10_TAX_INVOICE_AMOUNT"  visible="false"  index="99"/>
+                    <smartFilterBar:ControlConfiguration key="TOTAL_8_TAX_INVOICE_AMOUNT"   visible="false"  index="99"/>
+                    <smartFilterBar:ControlConfiguration key="TRANSACTION"   visible="false"  index="99"/>
+                    <smartFilterBar:ControlConfiguration key="REFERENCE"  visible="false"  index="99"/>
+                    <smartFilterBar:ControlConfiguration key="SAP_TAX_AMOUNT_10"  visible="false"  index="99"/>
+                    <smartFilterBar:ControlConfiguration key="SAP_TAX_AMOUNT_8"  visible="false"  index="99"/>
+                    <smartFilterBar:ControlConfiguration key="TOTAL_10_TAX_INCLUDED_AMOUNT"   visible="false"  index="99"/>
+                    <smartFilterBar:ControlConfiguration key="TOTAL_8_TAX_INCLUDED_AMOUNT"   visible="false"  index="99"/>
                   
                     </smartFilterBar:controlConfiguration>
                 </smartFilterBar:SmartFilterBar>
@@ -36,6 +60,13 @@
         smartFilterId="smartFilterBar" enableExport="true" beforeExport="onBeforeExport" 
         useVariantManagement="true" useTablePersonalisation="true" header="{pch>TITLE_RESULT}" showRowCount="true" persistencyKey="pch05_SmartTableAnalytical_Explored" enableAutoBinding="false" >
     
+        <smartTable:customToolbar>
+            <OverflowToolbar id="myOverflowToolbar" design="Transparent">
+                <ToolbarSpacer id="myToolbarSpacer"/>
+                <OverflowToolbarButton id="downloadEXCELBtn" icon="sap-icon://excel-attachment" text="{pch>PCH05_BUTTON_EXCEL}"    tooltip="{pch>PCH05_BUTTON_EXCEL}"    press="onExportToEXCEL"/>
+            </OverflowToolbar>
+        </smartTable:customToolbar>
+
     <table:Table id="detailTable" rowMode="Auto" rowActionCount="1" selectionMode="MultiToggle" alternateRowColors="true" fixedColumnCount="0" threshold="20">
         <table:columns>
 

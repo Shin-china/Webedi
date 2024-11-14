@@ -17,47 +17,47 @@ public class pch04excel {
     @ExcelProperty(index = 1, value = "品目番号")
     private String MAT_ID;
     @ExcelProperty(index = 2, value = "品目名称")
-    private Integer MAT_DESC;
+    private String MAT_DESC;  
     @ExcelProperty(index = 3, value = "入荷日")
-    private float GR_DATE;
+    private String GR_DATE;  
     @ExcelProperty(index = 4, value = "仕入単位数")
-    private Integer QUANTITY;
+    private Integer QUANTITY;   
     @ExcelProperty(index = 5, value = "基準通貨単価")
-    private String UNIT_PRICE_IN_YEN;
+    private Float UNIT_PRICE_IN_YEN;  
     @ExcelProperty(index = 6, value = "基準通貨金額税抜")
-    private Integer BASE_AMOUNT_EXCLUDING_TAX;
+    private Float BASE_AMOUNT_EXCLUDING_TAX; 
     @ExcelProperty(index = 7, value = "消費税率")
-    private float TAX_RATE;
+    private Float TAX_RATE;  
     @ExcelProperty(index = 8, value = "備考")
-    private Integer PO_TRACK_NO;
+    private String PO_TRACK_NO;  
     @ExcelProperty(index = 9, value = "支払日")
-    private float INV_BASE_DATE;
+    private String INV_BASE_DATE;  
     @ExcelProperty(index = 10, value = "仕入金額計(8%対象)")
-    private Integer TOTAL_PRICE_AMOUNT_8;
+    private Float TOTAL_PRICE_AMOUNT_8;  
     @ExcelProperty(index = 11, value = "消費税計(8%対象)")
-    private String CONSUMPTION_TAX_8;
+    private Float CONSUMPTION_TAX_8;  
     @ExcelProperty(index = 12, value = "税込支払金額(8%対象)")
-    private Integer TOTAL_PAYMENT_AMOUNT_8_END;
+    private Float TOTAL_PAYMENT_AMOUNT_8_END; 
     @ExcelProperty(index = 13, value = "仕入金額計(10%対象)")
-    private float TOTAL_PRICE_AMOUNT_10;
+    private Float TOTAL_PRICE_AMOUNT_10; 
     @ExcelProperty(index = 14, value = "消費税計(10%対象)")
-    private Integer CONSUMPTION_TAX_10;
+    private Float CONSUMPTION_TAX_10;  
     @ExcelProperty(index = 15, value = "税込支払金額(10%対象)")
-    private String TOTAL_PAYMENT_AMOUNT_10_END;
+    private Float TOTAL_PAYMENT_AMOUNT_10_END;  
     @ExcelProperty(index = 16, value = "対象外金額")
-    private Integer NON_APPLICABLE_AMOUNT;
+    private Float NON_APPLICABLE_AMOUNT;  
     @ExcelProperty(index = 17, value = "総合計")
-    private String TOTAL_PAYMENT_AMOUNT_FINAL;
+    private Float TOTAL_PAYMENT_AMOUNT_FINAL;  
     @ExcelProperty(index = 18, value = "月度買掛金計上高明細表")
-    private Integer INV_MONTH_FORMATTED;
+    private String INV_MONTH_FORMATTED;  
     @ExcelProperty(index = 19, value = "御中")
-    private String SUPPLIER_DESCRIPTION;
+    private String SUPPLIER_DESCRIPTION; 
     @ExcelProperty(index = 20, value = "登録番号")
-    private String LOG_NO;
+    private String LOG_NO;  
     @ExcelProperty(index = 21, value = "会社")
-    private Integer Company_Name;
+    private String Company_Name; 
     @ExcelProperty(index = 22, value = "発行日：")
-    private Integer CURRENT_DAY;
+    private String CURRENT_DAY;  
 
 
 }

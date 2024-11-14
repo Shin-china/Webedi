@@ -31,6 +31,28 @@
                     <smartFilterBar:ControlConfiguration id="pch_supplier" key="SUPPLIER" visibleInAdvancedArea="true" label="{pch>SUPPLIER}"       index="2"/>
                     <smartFilterBar:ControlConfiguration id="pch_status"   key="STATUS"   visibleInAdvancedArea="true" label="{pch>STATUS}"   filterType="single" controlType="dropDownList" index="3"/>
                     <smartFilterBar:ControlConfiguration id="pch_supplier_mat"   key="SUPPLIER_MAT"   visibleInAdvancedArea="true" label="{pch>SUPPLIER_MAT}"   filterType="single"  index="4"/>
+
+                   <smartFilterBar:ControlConfiguration key="DEL_FLAG"   visible="false" index="99"/>
+                   <smartFilterBar:ControlConfiguration key="DELIVERY_DATE"   visible="false" index="99"/>
+                   <smartFilterBar:ControlConfiguration key="ExtNumber"   visible="false" index="99"/>
+                   <smartFilterBar:ControlConfiguration key="KEYID"   visible="false" index="99"/>
+                   <smartFilterBar:ControlConfiguration key="NO_DETAILS"   visible="false" index="99"/>
+                   <smartFilterBar:ControlConfiguration key="SEQ"   visible="false" index="99"/>
+                   <smartFilterBar:ControlConfiguration key="STORAGE_NAME"   visible="false" index="99"/>
+
+                   
+                   <smartFilterBar:ControlConfiguration key="MEMO"   visible="false" index="99"/>
+                   <smartFilterBar:ControlConfiguration key="PO_PUR_UNIT"   visible="false" index="99"/>
+                   <smartFilterBar:ControlConfiguration key="DEL_PRICE"   visible="false" index="99"/>
+                   <smartFilterBar:ControlConfiguration key="DEL_AMOUNT"   visible="false" index="99"/>
+                   <smartFilterBar:ControlConfiguration key="NO_DETAILS"   visible="false" index="99"/>
+                   <smartFilterBar:ControlConfiguration key="PO_PUR_QTY"   visible="false" index="99"/>
+                   <smartFilterBar:ControlConfiguration key="D_NO"   visible="false" index="99"/>
+                   <smartFilterBar:ControlConfiguration key="MAT_ID"   visible="false" index="99"/>
+                   <smartFilterBar:ControlConfiguration key="PO_D_TXZ01"   visible="false" index="99"/>
+                   <smartFilterBar:ControlConfiguration key="QUANTITY"   visible="false" index="99"/>
+                   
+
                     </smartFilterBar:controlConfiguration>
                 </smartFilterBar:SmartFilterBar>
             </f:content>

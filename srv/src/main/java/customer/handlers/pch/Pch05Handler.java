@@ -1,5 +1,6 @@
 package customer.handlers.pch;
-
+import java.io.ByteArrayOutputStream;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -12,6 +13,7 @@ import com.sap.cds.services.handler.annotations.Before;
 import com.sap.cds.services.handler.annotations.On;
 import com.sap.cds.services.handler.annotations.ServiceName;
 
+import cds.gen.tableservice.PCH05EXCELDOWNLOADContext;
 import cds.gen.tableservice.PchT05AccountDetailDisplay3;
 import cds.gen.tableservice.PchT05AccountDetailDisplay3_;
 import cds.gen.tableservice.PchT05Forexcel;
@@ -23,16 +25,27 @@ import cds.gen.tableservice.PchT05AccountDetail_;
 import cds.gen.tableservice.TableService_;
 import cds.gen.MailBody;
 import cds.gen.MailJson;
+import customer.bean.com.UmcConstants;
+import customer.bean.tmpl.Pch05;
+import customer.bean.tmpl.test;
 import customer.service.pch.PchService;
 import customer.service.sys.EmailServiceFun;
 import cds.gen.tableservice.PCH05SENDEMAILContext;
+import customer.bean.tmpl.Pch05List;
+import customer.bean.tmpl.Pch05;
 
+import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.ExcelWriter;
+import com.alibaba.excel.write.metadata.WriteSheet;
+import com.alibaba.excel.write.metadata.fill.FillConfig;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -122,6 +135,32 @@ public class Pch05Handler implements EventHandler {
   }
 
   /**
+   * 
+   * 检查抬头 工厂 检查明细
+   * 
+   * @param context       传入上下文
+   * @param d012MoveActHs 传入画面输入值
+   */
+  @After(entity = PchT05AccountDetailDisplay3_.CDS_NAME, event = "READ")
+  public void afterReadPchT05AccountDetailDisplay3(CdsReadEventContext context, Stream<PchT05AccountDetailDisplay3> datas2) {
+
+    datas2.forEach(data2 -> {
+
+      data2.setCalc10PriceAmount(stripTrailingZeros(data2.getCalc10PriceAmount()));
+      data2.setCalc8PriceAmount(stripTrailingZeros(data2.getCalc8PriceAmount()));
+      data2.setSapTaxAmount10(stripTrailingZeros(data2.getSapTaxAmount10()));
+      data2.setSapTaxAmount8(stripTrailingZeros(data2.getSapTaxAmount8()));
+      data2.setRecalcPriceAmount10(stripTrailingZeros(data2.getRecalcPriceAmount10()));
+      data2.setRecalcPriceAmount8(stripTrailingZeros(data2.getRecalcPriceAmount8()));
+      data2.setDiffTaxAmount10(stripTrailingZeros(data2.getDiffTaxAmount10()));
+      data2.setDiffTaxAmount8(stripTrailingZeros(data2.getDiffTaxAmount8()));
+      data2.setTotal10TaxIncludedAmount(stripTrailingZeros(data2.getTotal10TaxIncludedAmount()));
+      data2.setTotal8TaxIncludedAmount(stripTrailingZeros(data2.getTotal8TaxIncludedAmount()));
+
+    });
+  }
+
+  /**
    * PCH_T05_ACCOUNT_DETAIL_DISPLAY3
    * 检查抬头 工厂 检查明细
    * 
@@ -139,16 +178,8 @@ public class Pch05Handler implements EventHandler {
       data.setInvoiceid(a[0]);
       // 检查 currency 并根据需要设置字段精度
 
-      data.setCalc10PriceAmount(stripTrailingZeros(data.getCalc10PriceAmount()));
-      data.setCalc8PriceAmount(stripTrailingZeros(data.getCalc8PriceAmount()));
-      data.setSapTaxAmount10(stripTrailingZeros(data.getSapTaxAmount10()));
-      data.setSapTaxAmount8(stripTrailingZeros(data.getSapTaxAmount8()));
-      data.setRecalcPriceAmount10(stripTrailingZeros(data.getRecalcPriceAmount10()));
-      data.setRecalcPriceAmount8(stripTrailingZeros(data.getRecalcPriceAmount8()));
-      data.setDiffTaxAmount10(stripTrailingZeros(data.getDiffTaxAmount10()));
-      data.setDiffTaxAmount8(stripTrailingZeros(data.getDiffTaxAmount8()));
-      data.setTotal10TaxIncludedAmount(stripTrailingZeros(data.getTotal10TaxIncludedAmount()));
-      data.setTotal8TaxIncludedAmount(stripTrailingZeros(data.getTotal8TaxIncludedAmount()));
+      data.setDiffTaxAmount(stripTrailingZeros(data.getDiffTaxAmount()));
+      data.setTaxBaseAmount(stripTrailingZeros(data.getTaxBaseAmount()));
 
     });
   }
@@ -176,5 +207,68 @@ public class Pch05Handler implements EventHandler {
     context.setResult("success");
 
   }
+
+      // Excel 导出测试
+  @On(event = "PCH05_EXCELDOWNLOAD")
+  public void exportExcel(PCH05EXCELDOWNLOADContext context) throws IOException {
+    // String content = context.getContent();
+    byte[] bytes = null;
+    Pch05List dataList = JSON.parseObject(context.getParms(),Pch05List.class);
+
+    // for (Pch05List item : list.getList()) {
+     
+    //   Pch05List.setINVOICEID(item.getINVOICEID());
+    //   Pch05List.setPO_BUKRS1(item.getPO_BUKRS());
+    //   Pch05List.setLASTDATE1(item.getLASTDATE());
+    //   Pch05List.setLASTDATE2(item.getLASTDATE());
+    //   Pch05List.setDIFF_TAX_AMOUNT1(item.getDIFF_TAX_AMOUNT());
+
+    // 检查 dataList 是否为空，并且确保它的 list 字段存在
+    if (dataList != null && dataList.getList() != null) {
+      // 遍历 Pch05List 中的每一项（每个 item 为 Pch05List 的一个记录）
+      for (Pch05 item : dataList.getList()) {
+          // 将 Pch05List 中的字段值赋给其他字段
+          item.setPO_BUKRS1(item.getPO_BUKRS());  // 赋值 PO_BUKRS1
+          item.setLASTDATE1(item.getLASTDATE());  // 将 LASTDATE 的值赋给 LASTDATE1
+          item.setLASTDATE2(item.getLASTDATE());  // 将 LASTDATE 的值赋给 LASTDATE2
+          item.setDIFF_TAX_AMOUNT1(item.getDIFF_TAX_AMOUNT()); // 赋值 DIFF_TAX_AMOUNT1
+      }
+  }
+
+    // 获取模板文件
+    InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("template/消費税差額差処理.xlsx");
+
+    // Excel写入数据
+    ExcelWriter excelWriter = null;
+    try {
+      ByteArrayOutputStream os = new ByteArrayOutputStream();
+      excelWriter = EasyExcel.write(os).withTemplate(inputStream).inMemory(true).build();
+      WriteSheet writeSheet = EasyExcel.writerSheet().build();
+
+      // 填充完后需要换行
+      FillConfig fileConfig = FillConfig.builder().forceNewRow(true).build();
+      // 写入数据
+      // excelWriter.write(os, writeSheet)
+      excelWriter.fill(dataList.getList(), fileConfig, writeSheet);
+      // 重新计算公式
+      Workbook workbook = excelWriter.writeContext().writeWorkbookHolder().getWorkbook();
+      // 调用
+      workbook.getCreationHelper().createFormulaEvaluator().evaluateAll();
+
+      excelWriter.finish();
+
+      // 获取byte字节、
+      bytes = os.toByteArray();
+    } catch (Exception e) {
+
+    } finally {
+      if (excelWriter != null) {
+        excelWriter.finish();
+      }
+    }
+
+    context.setResult(bytes);
+  }
+
 
 }

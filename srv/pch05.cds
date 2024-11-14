@@ -566,6 +566,7 @@ extend service TableService {
         }
 
  action PCH05_SENDEMAIL(parms : String) returns String;
+ action PCH05_EXCELDOWNLOAD(parms : String) returns LargeBinary;
 
 }
 

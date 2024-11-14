@@ -1,12 +1,10 @@
 package customer.handlers.pch;
 
-import cds.gen.tableservice.PCH08EditDETAILContext;
-import cds.gen.tableservice.PCH08SaveDATAContext;
-import cds.gen.tableservice.PCH08ShowDETAILContext;
-import cds.gen.tableservice.TableService_;
+import cds.gen.tableservice.*;
 import com.alibaba.fastjson.JSON;
 
 import com.sap.cds.services.handler.EventHandler;
+import com.sap.cds.services.handler.annotations.After;
 import com.sap.cds.services.handler.annotations.On;
 import com.sap.cds.services.handler.annotations.ServiceName;
 import customer.bean.pch.Pch08DataList;
@@ -73,4 +71,5 @@ public class Pch08Handler implements EventHandler {
         pch08Service.updateDetail(param);
         context.setResult("success");
     }
+
 }
