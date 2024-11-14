@@ -645,11 +645,6 @@ sap.ui.define(
 
     _that.PrintTool.getImageBase64(_blob).then((odata)=>{
       var mailObj = { attachmentJson:{
-        // object: "430000001",
-        // object_type:"PCH03",
-        // value:odata,
-        // file_type:"pdf",
-        // file_name:"test"
         object: _data.po,
         object_type:_data.type,
         value:odata,
