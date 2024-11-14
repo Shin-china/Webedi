@@ -71,89 +71,54 @@ var _objectCommData = {
                 oEvent.preventDefault(); // 取消导出操作
                 return;
             }
-            // 获取选中的数据
-            var aSelectedData = aSelectedIndices.map(function (index) {
-                return oTable.getContextByIndex(index).getObject();
-            });
-            // 检查 TAX_CODE 是否相同
-            var taxCodes = aSelectedData.map(function (oData) {
-                return oData.TAX_CODE;
-            });
-            // // 使用 Set 来判断是否有不同的税コード
-            // var uniqueTaxCodes = new Set(taxCodes);
-            // if (uniqueTaxCodes.size > 1) {
-            //     // 如果 TAX_CODE 不同，抛出错误
-            //     sap.m.MessageToast.show("同じ税コードを選択してください"); 
-            //     oEvent.preventDefault(); // 取消导出操作
-            //     return; // 终止导出流程
-            // }
-
-                // 生成递增的 invoiceId
-                aSelectedData = aSelectedData.map(function(data, index) {
-                    return {
-                        ...data, // 拷贝现有数据
-                        invoiceId1: (index + 1).toString() // 添加新的 ID
-                    };
-                });
+            // // 获取选中的数据
+            // var aSelectedData = aSelectedIndices.map(function (index) {
+            //     return oTable.getContextByIndex(index).getObject();
+            // });
+            // // 检查 TAX_CODE 是否相同
+            // var taxCodes = aSelectedData.map(function (oData) {
+            //     return oData.TAX_CODE;
+            // });
 
                 // 获取导出设置
                 var oSettings = oEvent.getParameter("exportSettings");
 
-                // 确保设置数据源
-                // oSettings.dataSource = aSelectedData; // 设置数据源为选中的数据
+            //     // 确保设置数据源
+            //     // oSettings.dataSource = aSelectedData; // 设置数据源为选中的数据
         
-            oSettings.workbook.columns = [
-                // 第一组字段的标题
-                // { label: "ヘッダデータ", property: "headerData", colspan: 11 }, // 合并的标题
-                // 第一组字段
-                // { label: "*請求書ID", property: "INVOICEID" },
-                { label: "*会社コード(4)", property: "PO_BUKRS" },
-                { label: "*取引(1)1=請求書、2=クレジットメモ", property: "TRANSACTION" },
-                { label: "*請求元(10)", property: "SUPPLIER" },
-                { label: "参照(16)", property: "REFERENCE" },
-                { label: "*伝票日付", property: "LASTDATE" },
-                { label: "*転記日付", property: "LASTDATE" },
-                { label: "*伝票タイプ", property: "DOCUMENTTYPE" },
-                { label: "伝票ヘッダテキスト(25)", property: "HEADERTEXT" },
-                { label: "*通貨(5)", property: "CURRENCY" },
-                { label: "*伝票通貨での請求書総額", property: "DIFF_TAX_AMOUNT" },
-                { label: "税率定義の日付", property: "LASTDATE" },
+            // oSettings.workbook.columns = [
+            //     // 第一组字段的标题
+            //     // { label: "ヘッダデータ", property: "headerData", colspan: 11 }, // 合并的标题
+            //     // 第一组字段
+            //     // { label: "*請求書ID", property: "INVOICEID" },
+            //     { label: "*会社コード(4)", property: "PO_BUKRS" },
+            //     { label: "*取引(1)1=請求書、2=クレジットメモ", property: "TRANSACTION" },
+            //     { label: "*請求元(10)", property: "SUPPLIER" },
+            //     { label: "参照(16)", property: "REFERENCE" },
+            //     { label: "*伝票日付", property: "LASTDATE" },
+            //     { label: "*転記日付", property: "LASTDATE" },
+            //     { label: "*伝票タイプ", property: "DOCUMENTTYPE" },
+            //     { label: "伝票ヘッダテキスト(25)", property: "HEADERTEXT" },
+            //     { label: "*通貨(5)", property: "CURRENCY" },
+            //     { label: "*伝票通貨での請求書総額", property: "DIFF_TAX_AMOUNT" },
+            //     { label: "税率定義の日付", property: "LASTDATE" },
             
-                // 第二组字段的标题
-                // { label: "G/L勘定明細", property: "glAccountDetails", colspan: 7 }, // 合并的标题
-                // 第二组字段
-                { label: "*会社コード(4)", property: "PO_BUKRS" },
-                { label: "勘定(10)", property: "ACCOUNT" },
-                { label: "明細テキスト", property: "DETAILTEXT" },
-                { label: "借方/貸方フラグ(1)s=借方 H=貸方", property: "SHKZG_FLAG" },
-                { label: "金額(伝票通貨)", property: "DIFF_TAX_AMOUNT" },
-                { label: "税コード(2)", property: "" },
-                { label: "伝票通貨での課税基準額", property: "TAX_BASE_AMOUNT" }
-            ];
+            //     // 第二组字段的标题
+            //     // { label: "G/L勘定明細", property: "glAccountDetails", colspan: 7 }, // 合并的标题
+            //     // 第二组字段
+            //     { label: "*会社コード(4)", property: "PO_BUKRS" },
+            //     { label: "勘定(10)", property: "ACCOUNT" },
+            //     { label: "明細テキスト", property: "DETAILTEXT" },
+            //     { label: "借方/貸方フラグ(1)s=借方 H=貸方", property: "SHKZG_FLAG" },
+            //     { label: "金額(伝票通貨)", property: "DIFF_TAX_AMOUNT" },
+            //     { label: "税コード(2)", property: "" },
+            //     { label: "伝票通貨での課税基準額", property: "TAX_BASE_AMOUNT" }
+            // ];
                 var oDate = new Date();
                 var sDate = oDate.toISOString().slice(0, 10).replace(/-/g, '');
                 var sTime = oDate.toTimeString().slice(0, 8).replace(/:/g, '');
-                oSettings.fileName = `消費税差額差処理_${sDate}${sTime}.xlsx`;
+                oSettings.fileName = `差額レポート_${sDate}${sTime}.xlsx`;
         },
-
-    //     onExportToEXCEL:function(){
-   
-    //             var jsonExcel = { content:JSON.stringify(excelVal) }
-    //             this.getModel().callFunction("/PCH05_EXCELDOWNLOAD", {
-    //              method: "POST",
-    //              urlParameters: jsonExcel,
-    //              success: function(oData) {
-    //                debugger;
-    //                const downloadLink = document.createElement("a");
-    //                const blob = that._base64Blob(oData.PCH05_EXCELDOWNLOAD,"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-    //                const blobUrl = URL.createObjectURL(blob);
-    //                downloadLink.href = blobUrl;
-    //                downloadLink.download = "消費税差額差処理.xlsx";
-    //                downloadLink.click();
-    //             },
-    //              error: function(oError) {
-    //             }
-    //             }),
 
     /*==============================
 		下载excel

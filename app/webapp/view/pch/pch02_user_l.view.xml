@@ -32,9 +32,9 @@
                    <smartFilterBar:ControlConfiguration key="PLANT_ID"   visible="false" index="99"/>
                    <smartFilterBar:ControlConfiguration key="MAT_ID"   visible="false" index="99"/>
                    <smartFilterBar:ControlConfiguration key="QUANTITY"   visible="false" index="99"/>
-                    <smartFilterBar:ControlConfiguration key="CD_DATE"   visible="false" index="99"/>
+                  <smartFilterBar:ControlConfiguration key="CD_DATE"   visible="false" index="99"/>
                    <smartFilterBar:ControlConfiguration key="CD_DATE_TIME"   visible="false" index="99"/>
-                   <smartFilterBar:ControlConfiguration key="STORAGE_LOC"   visible="false" index="99"/>
+                   <smartFilterBar:ControlConfiguration key="LOCATION_ID"   visible="false" index="99"/>
                   
                     </smartFilterBar:controlConfiguration>
                 </smartFilterBar:SmartFilterBar>

@@ -39,6 +39,41 @@
                     <smartFilterBar:ControlConfiguration id="PCH_MAT_ID"      key="MAT_ID"               visibleInAdvancedArea="true" label="{pch>MAT_ID}"                    index="4"/>
                     <smartFilterBar:ControlConfiguration id="INV_MONTH"    mandatory="mandatory"   key="INV_MONTH"            visibleInAdvancedArea="true" label="{pch>INV_MONTH1}"           filterType='single'    index="5"/>
                     <smartFilterBar:ControlConfiguration id="PCH_SEND_FLAG"   key="SEND_FLAG"            visibleInAdvancedArea="true" label="{pch>SEND_FLAG}"            filterType="single"  controlType="dropDownList"   index="6"/>
+
+                    <smartFilterBar:ControlConfiguration key="INV_NO"   visible="false"  index="99"/>
+                    <smartFilterBar:ControlConfiguration key="INV_POST_DATE"  visible="false"  index="99"/>
+                    <smartFilterBar:ControlConfiguration key="LOG_NO"      visible="false"  index="99"/>
+                    <smartFilterBar:ControlConfiguration key="MAT_DESC"  visible="false"  index="99"/>
+                    <smartFilterBar:ControlConfiguration key="NO_DETAILS"  visible="false"  index="99"/>
+                    <smartFilterBar:ControlConfiguration key="PO_ORG"  visible="false"  index="99"/>
+                    <smartFilterBar:ControlConfiguration key="PRICE_AMOUNT"  visible="false"  index="99"/>
+                    <smartFilterBar:ControlConfiguration key="PRICE_AMOUNT_10"  visible="false"  index="99"/>
+                    <smartFilterBar:ControlConfiguration key="PRICE_AMOUNT_8"   visible="false"  index="99"/>
+                    <smartFilterBar:ControlConfiguration key="SHKZG"  visible="false"  index="99"/>
+                    <smartFilterBar:ControlConfiguration key="TAX_RATE"   visible="false"  index="99"/>
+                    <smartFilterBar:ControlConfiguration key="TOTAL_AMOUNT"  visible="false"  index="99"/>
+                    <smartFilterBar:ControlConfiguration key="TOTAL_AMOUNT_IN_YEN"   visible="false"  index="99"/>
+                    <smartFilterBar:ControlConfiguration key="UNIT_PRICE_IN_YEN"   visible="false"  index="99"/>
+
+                    <smartFilterBar:ControlConfiguration key="Company_Code"  visible="false"  index="99"/>
+                    <smartFilterBar:ControlConfiguration key="EXCHANGE"   visible="false"  index="99"/>
+                    <smartFilterBar:ControlConfiguration key="GR_DATE"  visible="false"  index="99"/>
+                    <smartFilterBar:ControlConfiguration key="INV_BASE_DATE"   visible="false"  index="99"/>
+                    <smartFilterBar:ControlConfiguration key="PO_TRACK_NO"    visible="false"  index="99"/>
+                    <smartFilterBar:ControlConfiguration key="D_NO"  visible="false"  index="99"/>
+                    <smartFilterBar:ControlConfiguration key="PCH04_UNIT_PRICE"   visible="false"  index="99"/>
+                    <smartFilterBar:ControlConfiguration key="PCH04_QUANTITY"    visible="false"  index="99"/>
+                    <smartFilterBar:ControlConfiguration key="SUPPLIER_MAT"   visible="false"  index="99"/>
+                    <smartFilterBar:ControlConfiguration key="CURRENCY"    visible="false"  index="99"/>
+
+                    <smartFilterBar:ControlConfiguration key="UNIT_PRICE"    visible="false"  index="99"/>
+                    <smartFilterBar:ControlConfiguration key="QUANTITY"    visible="false"  index="99"/>
+                    <smartFilterBar:ControlConfiguration key="MAT_ID"    visible="false"  index="99"/>
+                    <smartFilterBar:ControlConfiguration key="SUPPLIER"    visible="false"  index="99"/>
+                    <smartFilterBar:ControlConfiguration key="SEND_FLAG"    visible="false"  index="99"/>
+                    <smartFilterBar:ControlConfiguration key="ZABC"    visible="false"  index="99"/>
+
+          
                   
                     </smartFilterBar:controlConfiguration>
                 </smartFilterBar:SmartFilterBar>
