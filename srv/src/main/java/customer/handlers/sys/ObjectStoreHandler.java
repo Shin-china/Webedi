@@ -140,20 +140,24 @@ public class ObjectStoreHandler implements EventHandler {
                 List<PchT07QuotationD> toItems = pchT06QuotationH.getToItems();
                 for (PchT07QuotationD pchT07QuotationD : toItems) {
                     T07QuotationD t07QuotationD = T07QuotationD.create();
-                    // 复制类属性
+
+                    // // 复制类属性
                     BeanUtils.copyProperties(pchT07QuotationD, t07QuotationD);
-                    // 如果已经存在则更新，如果不存在则插入
-                    // T07QuotationD byID = PchD007.getByID(t07QuotationD.getQuoNumber(),
-                    // t07QuotationD.getSeq());
-                    // 插入明细
-                    PchD007.insert(t07QuotationD);
+                    // // 如果已经存在则更新，如果不存在则插入
+                    T07QuotationD byID2 = PchD007.getByT07Id(t07QuotationD.getId());
+
+                    if (byID2 != null) {
+                        PchD007.update(t07QuotationD);
+                    } else {
+                        PchD007.insert(t07QuotationD);
+                    }
                 }
             }
         } catch (Exception e) {
-            context.setResult("bytes");
+            context.setResult("失败");
         }
 
-        context.setResult("bytes");
+        context.setResult("成功");
     }
 
     // IFM055 購買見積依頼受信
@@ -181,7 +185,7 @@ public class ObjectStoreHandler implements EventHandler {
             // 调用接口传值
 
         } catch (Exception e) {
-            context.setResult("bytes");
+            context.setResult("失败");
         }
 
         context.setResult(JSON.toJSONString(pch06List));

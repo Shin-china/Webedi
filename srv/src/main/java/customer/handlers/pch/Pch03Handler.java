@@ -15,8 +15,10 @@ import cds.gen.tableservice.PCH03GETTYPEContext;
 import cds.gen.tableservice.PCH03QUERENContext;
 import cds.gen.tableservice.PCH03SENDEMAILContext;
 import cds.gen.tableservice.PCH04SENDEMAILContext;
+import cds.gen.tableservice.PchT03PoItem;
 import cds.gen.tableservice.PchT03PoItemPrint;
 import cds.gen.tableservice.PchT03PoItemPrint_;
+import cds.gen.tableservice.PchT03PoItem_;
 import cds.gen.tableservice.TableService_;
 import cds.gen.MailBody;
 import cds.gen.MailJson;
@@ -191,6 +193,26 @@ public class Pch03Handler implements EventHandler {
             String poSendPDFZWSType = pchService.getPoSendPDFZWSType(pchd03.getPoNo());
             pchd03.setType(poSendPDFZWSType);
 
+        });
+    }
+
+    /**
+     * 
+     * 打印前数据处理
+     * 
+     */
+    @After(entity = PchT03PoItem_.CDS_NAME, event = "READ")
+    public void beforeReadD03(CdsReadEventContext context, Stream<PchT03PoItem> pchd03List) {
+
+        Boolean[] isPrint = new Boolean[1];
+        isPrint[0] = false;
+        pchd03List.forEach(pchd03 -> {
+            // 获取po
+            String po = pchd03.getPoNo();
+            // 获取明细编号
+            String dNo = pchd03.getDNo() + "";
+            // 设置前置零
+            pchd03.setId(po + StringTool.leftPadWithZeros(dNo, 5));
         });
     }
 
