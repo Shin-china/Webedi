@@ -53,7 +53,7 @@ public class Ifm02MstService {
 
                 if (dbMat != null) {
 
-                    String dbMatUser = sysD008Dao.getDnameByHcode("S4_UNIT_TEC_2_USER");
+                    String dbMatUser = sysD008Dao.getDnameByHcode("S4_UNIT_TEC_2_USER", dbMat);
 
                     o.setMatUnit(dbMatUser);
 
