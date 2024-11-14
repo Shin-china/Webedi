@@ -55,6 +55,7 @@ public class Ifm02MstService {
                 // o.setMatName(value.getBaseUnit());
                 // o.setManuCode(value.getBaseUnit());
                 // o.setManuMaterial(value.getBaseUnit());
+                o.setCustMaterial(value.getYY1_CUSTOMERMATERIAL_PRD());
                 MSTDao.modify(o);
 
                 T06MatPlant o2 = T06MatPlant.create();

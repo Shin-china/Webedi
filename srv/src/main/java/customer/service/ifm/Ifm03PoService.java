@@ -7,7 +7,12 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+import org.apache.poi.ss.formula.functions.T;
+import org.checkerframework.checker.units.qual.s;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -22,6 +27,8 @@ import cds.gen.sys.T08ComOpD;
 import cds.gen.sys.T11IfManager;
 import customer.bean.pch.Confirmation;
 import customer.bean.pch.Item;
+import customer.bean.pch.Items;
+
 import customer.bean.pch.SapPchRoot;
 import customer.dao.pch.PurchaseDataDao;
 import customer.dao.sys.IFSManageDao;
@@ -74,38 +81,6 @@ public class Ifm03PoService {
 
                     int dn = Integer.parseInt(Items.getPurchaseorderitem());
 
-                    for (Confirmation conf : Items.getConfirmation()) {
-
-                        if (conf != null) {
-
-                            T03PoC o3 = T03PoC.create();
-                            o3.setPoNo(conf.getPurchaseorder());
-
-                            o3.setDNo(Integer.parseInt(conf.getPurchaseorderitem()));
-
-                            o3.setSeq(Integer.parseInt(conf.getSequentialnmbrofsuplrconf()));
-
-                            try {
-                                LocalDate deliveryDate = LocalDate.parse(conf.getDeliverydate(), formatter);
-
-                                o3.setDeliveryDate(deliveryDate);
-
-                            } catch (DateTimeParseException e) {
-
-                                System.out.println("日期格式错误: " + e.getMessage());
-                            }
-
-                            o3.setQuantity(new BigDecimal(conf.getConfirmedquantity()));
-
-                            o3.setRelevantQuantity(new BigDecimal(conf.getMrprelevantquantity()));
-
-                            o3.setExtNumber(conf.getSupplierconfirmationextnumber());
-
-                            PchDao.modifyT03(o3);
-                        }
-
-                    }
-
                     if ("X".equals(Items.getPurchasingdocumentdeletioncode())
                             && PchDao.getByID2(Items.getPurchaseorder(), dn) == null) {
 
@@ -114,11 +89,23 @@ public class Ifm03PoService {
                     } else {
                         T01PoH o = T01PoH.create();
 
-                        T01PoH T01have = PchDao.getByID(Items.getPurchaseorder());
+                        T01PoH T01poExist = PchDao.getByID(Items.getPurchaseorder());
+
                         String supplier = Items.getSupplier().replaceFirst("^0+(?!$)", "");
 
-                        // 如果是空的，则插入，更新supplier creat名单
-                        if (T01have == null) {
+                        // 头找到了
+                        if (T01poExist != null) {
+
+                            // 但是明细没找到，也是创建
+                            Boolean T02podnExist = (PchDao.getByID2(Items.getPurchaseorder(), dn)) != null;
+
+                            if (T02podnExist) {
+
+                                supplierCreatMap.put(supplier, "头没找到，肯定是创建");
+
+                            }
+
+                        } else { // 头没找到，创建
 
                             supplierCreatMap.put(supplier, "头没找到，肯定是创建");
 
@@ -231,6 +218,38 @@ public class Ifm03PoService {
                         //
                         PchDao.modify2(o2, dele);
 
+                        for (Confirmation conf : Items.getConfirmation()) {
+
+                            if (conf != null) {
+
+                                T03PoC o3 = T03PoC.create();
+                                o3.setPoNo(conf.getPurchaseorder());
+
+                                o3.setDNo(Integer.parseInt(conf.getPurchaseorderitem()));
+
+                                o3.setSeq(Integer.parseInt(conf.getSequentialnmbrofsuplrconf()));
+
+                                try {
+                                    LocalDate deliveryDate = LocalDate.parse(conf.getDeliverydate(), formatter);
+
+                                    o3.setDeliveryDate(deliveryDate);
+
+                                } catch (DateTimeParseException e) {
+
+                                    System.out.println("日期格式错误: " + e.getMessage());
+                                }
+
+                                o3.setQuantity(new BigDecimal(conf.getConfirmedquantity()));
+
+                                o3.setRelevantQuantity(new BigDecimal(conf.getMrprelevantquantity()));
+
+                                o3.setExtNumber(conf.getSupplierconfirmationextnumber());
+
+                                PchDao.modifyT03(o3);
+                            }
+
+                        }
+
                         // ------------------------------------------------------------------------------以上是对t02的修改
 
                         // 首先是，dele被修改的情况下再继续。
@@ -246,40 +265,6 @@ public class Ifm03PoService {
                     }
                 }
 
-                // // 处理邮件通知
-                // if (supplierMap.size() > 0) {
-
-                // for (Map.Entry<String, String> entry : supplierMap.entrySet()) {
-
-                // MailJson mailJson = MailJson.create();
-
-                // List<T08ComOpD> emailadd = sysd008dao.getmailaddByHcodeV1(H_CODE,
-                // entry.getValue());
-
-                // if (emailadd != null) {
-
-                // mailJson.setTemplateId("UWEB_M004_C");
-
-                // mailJson.setMailTo(emailadd.get(0).getValue02());
-
-                // mailJson.setMailBody(createMailBody(emailadd)); // 设置邮件内容（MailBody）
-
-                // // 添加到邮件列表
-                // mailJsonList.add(mailJson);
-
-                // // 调用邮件发送服务
-                // try {
-                // emailServiceFun.sendEmailFun(mailJsonList);
-                // // 设置操作结果
-                // return ("メール送信に成功しました。");
-                // } catch (Exception e) {
-                // // 处理发送邮件的异常
-                // return e.getMessage();
-                // }
-                // }
-                // }
-
-                // }
                 // 创建发信
                 if (supplierCreatMap.size() > 0) {
                     for (Map.Entry<String, String> entry : supplierCreatMap.entrySet()) {
