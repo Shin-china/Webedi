@@ -145,8 +145,8 @@ var _objectCommData = {
 			var jsonModel = view.getModel("workInfo");
 			view.setModel(jsonModel, undefined);
 			if (aFilters.length == 0) {
-				that._setBusy(false);
-				return;
+				// that._setBusy(false);
+				// return;
 			}
 			this._readEntryByServiceAndEntity(_objectCommData._entity, aFilters, null).then((oData) => {
 
