@@ -15,7 +15,8 @@ entity T01_PO_H : IF_CUID_FILED { //采购订单抬头
                              @title: '{i18n>PO_BSTYP}' PO_BSTYP       : String(1); //PO Status
                              @title: '{i18n>REMARK}' REMARK           : String(1000); //Remark(Header)
                              @title: '{i18n>POCDBY}' POCDBY           : String(12); //自社参照
-
+                              @title: '{i18n>CD_DATE}' CD_DATE                       : Date; //创建日
+                              @title: '{i18n>CD_DATE_TIME}' CD_DATE_TIME             : String(10); //创建日时
                              TO_ITEMS                                 : Association to many T02_PO_D //采购订单行
                                                                           on TO_ITEMS.PO_NO = PO_NO;
 
@@ -223,6 +224,7 @@ entity T07_QUOTATION_D : cuid, IF_CUID_FILED { //
   @title: '{i18n>STATUS}' STATUS                         : String(50); //ステータス
   @title: '{i18n>CD_DATE}' CD_DATE                       : Date; //创建日
   @title: '{i18n>CD_DATE_TIME}' CD_DATE_TIME             : String(10); //创建日时
+
 
 
   @title: '{i18n>PUR_PRICE_JPY}' PUR_PRICE_JPY            : Decimal(18, 3); //仕入単価（JPY）					
