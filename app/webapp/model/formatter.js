@@ -282,6 +282,16 @@ sap.ui.define([], function () {
       }
   },
 
+  formatSendFlag1: function(value) {
+    if (value === '1') {
+        return '1: 送信済';
+    } else if (value === '2') {
+        return '2: 照会済';
+    } else {
+        return ''; // 默认返回空字符串
+    }
+},
+
   formatSendFlagPch02: function(value) {
     if (value === '1') {
         return '1: 反映待';

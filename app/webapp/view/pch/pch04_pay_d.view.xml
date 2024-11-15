@@ -114,7 +114,7 @@
         </table:template>
     </table:Column>
 
-    <table:Column id="colNoDetails" width="15rem" sortProperty="NO_DETAILS" filterProperty="NO_DETAILS">
+    <table:Column id="colNoDetails" width="9rem" sortProperty="NO_DETAILS" filterProperty="NO_DETAILS">
         <table:customData>
             <core:CustomData key="p13nData" value='{"columnKey":"NO_DETAILS", "leadingProperty":"NO_DETAILS", "sortProperty":"NO_DETAILS", "filterProperty":"NO_DETAILS"}'/>
         </table:customData>
@@ -126,7 +126,7 @@
         </table:template>
     </table:Column>
 
-    <table:Column id="colMatId" width="5rem" sortProperty="MAT_ID" filterProperty="MAT_ID">
+    <table:Column id="colMatId" width="8rem" sortProperty="MAT_ID" filterProperty="MAT_ID">
         <table:customData>
             <core:CustomData key="p13nData" value='{"columnKey":"MAT_ID", "leadingProperty":"MAT_ID", "sortProperty":"MAT_ID", "filterProperty":"MAT_ID"}'/>
         </table:customData>
@@ -267,7 +267,8 @@
             <Label id="labelTaxRate" text="{pch>TAX_RATE}"/>
         </table:label>
         <table:template>
-            <Text id="textTaxRate" text="{TAX_RATE}"/>
+            <!-- <Text id="textTaxRate" text="{TAX_RATE}"/> -->
+            <Text id="textTaxRate" text="{path: 'TAX_RATE', formatter: '.formatter.formatTaxRate'}"/>
         </table:template>
     </table:Column>
 
@@ -292,7 +293,8 @@
             <Label id="labelSendFlag" text="{pch>SEND_FLAG}"/>
         </table:label>
         <table:template>
-            <Text id="textSendFlag" text="{SEND_FLAG}"/>
+            <!-- <Text id="textSendFlag" text="{SEND_FLAG}"/> -->
+            <Text id="textSendFlag" text="{path: 'SEND_FLAG', formatter: '.formatter.formatSendFlag1'}"/>
         </table:template>
     </table:Column>
 
