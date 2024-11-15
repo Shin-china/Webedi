@@ -109,6 +109,7 @@ extend service TableService {
         TOTAL_AMOUNT,
         INV_MONTH,                     //检收月
         Company_Code,
+        SUPPLIER || INV_MONTH  as DOWNLOADID      : String(100),
  
         CAST(UNIT_PRICE * COALESCE(EXCHANGE, 1) AS Decimal(18, 5)) AS UNIT_PRICE_IN_YEN : Decimal(18, 5),
         ROUND(TOTAL_AMOUNT * COALESCE(EXCHANGE, 1), 0) AS TOTAL_AMOUNT_IN_YEN : Decimal(20, 0), // 円換算後税込金額（檢収）
@@ -287,7 +288,7 @@ extend service TableService {
     distinct {
         KEY t1.SUPPLIER,
         KEY t1.INV_NO,
-        KEY t1.SUPPLIER || t3.INV_MONTH  as DOWNLOADID      : String(100),
+        KEY t3.DOWNLOADID,
         TOTAL_PRICE_AMOUNT_8,             // 仕入金額計(8%対象)
         CONSUMPTION_TAX_8 ,               // 计算消費税計(8%対象)
         TOTAL_PAYMENT_AMOUNT_8_END,       // 计算税込支払金額(8%対象)

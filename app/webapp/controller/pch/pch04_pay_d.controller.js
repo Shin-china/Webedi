@@ -235,7 +235,7 @@ sap.ui.define([
             }
         
             let options = { compact: true, ignoreComment: true, spaces: 4 };
-            var IdList = that._TableDataList("detailTable", 'SUPPLIER');
+            var IdList = that._TableDataList("detailTable", 'DOWNLOADID');
             // 获取前台输入的 INV_MONTH 和 SUPPLIER
             // var invMonth = this.getView().byId("INV_MONTH").getValue(); 
 
@@ -332,8 +332,11 @@ sap.ui.define([
 			}
 			this._readEntryByServiceAndEntity(_objectCommData._entity, aFilters, null).then((oData) => {
 
+                let options = { compact: true, ignoreComment: true, spaces: 4 };
+                var IdList = that._TableDataList("detailTable", 'DOWNLOADID');
+
                 if (IdList) {
-                    that.PrintTool._getPrintDataInfo(that, IdList, "/PCH_T04_PAYMENT_SUM_HJ6", "DOWNLOADID").then((J) => {
+                    that.PrintTool._getPrintDataInfo(that, IdList, "/PCH_T04_PAYMENT_SUM_HJ6", "DOWNLOADID").then((oData) => {
                         // oData = this.jsonDateToString(oData);  
                         oData.results.forEach(function (row) {                  
 
@@ -343,8 +346,8 @@ sap.ui.define([
             // 生成文件名
             var fileName = `仕入先コード_月度UMC支払通知書.xlsx`;}
 
-			var selectedIndices = this._TableList("detailTable");
-			if (selectedIndices) {
+			// var oData = this._TableList("detailTable");
+			if (oData) {
 				// if(this.checkDelete(selectedIndices)){
 					this._callCdsAction("/PCH04_EXCELDOWNLOAD", this._getDataDow(oData), this).then((oData) => {
 						const downloadLink = document.createElement("a");
