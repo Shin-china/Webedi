@@ -146,6 +146,7 @@ extend service TableService {
         TOTAL_AMOUNT_IN_YEN,
         CURRENCY,
         Company_Code,
+        INV_MONTH,
         case 
             when CURRENCY = 'JPY' then cast(PRICE_AMOUNT as Decimal(18,3))
             when CURRENCY in ('USD', 'EUR') then cast(floor(PRICE_AMOUNT * EXCHANGE) as Decimal(18,0))
@@ -157,22 +158,24 @@ extend service TableService {
 
     ![distinct] {
         KEY SUPPLIER,
+        KEY INV_MONTH,
        SUM(PRICE_AMOUNT)  as TOTAL_PRICE_AMOUNT_8: Decimal(18, 3),       // 仕入金額計(8%対象)
     }
     where TAX_RATE= 8
       and SUPPLIER is not null and SUPPLIER <> 'N/A'
-    group BY SUPPLIER
-;
+    group BY SUPPLIER,INV_MONTH;
+
  entity PCH_T04_PAYMENT_SUM_FZ2 as
         select from PCH_T04_PAYMENT_SUM as 
 
     ![distinct] {
          KEY SUPPLIER,
+         KEY INV_MONTH,
        SUM(PRICE_AMOUNT)  as TOTAL_PRICE_AMOUNT_10: Decimal(18, 3),       // 仕入金額計(10%対象)
     }
     where TAX_RATE= 10
       and SUPPLIER is not null and SUPPLIER <> 'N/A'
-    group BY SUPPLIER;
+    group BY SUPPLIER,INV_MONTH;
 
  entity PCH_T04_PAYMENT_SUM_FZ3_1 as
         select from PCH_T04_PAYMENT_SUM as 
@@ -180,24 +183,26 @@ extend service TableService {
     ![distinct] {
          KEY SUPPLIER,
          key TAX_RATE,
+         KEY INV_MONTH,
          SUM(PRICE_AMOUNT)  as TOTAL_PRICE_AMOUNT_NOT: Decimal(18, 3) ,    // 非810
     }
     where TAX_RATE != 10 AND TAX_RATE != 8 
       and SUPPLIER is not null and SUPPLIER <> 'N/A'
       and TAX_RATE is not null and SUPPLIER <> 'N/A'
-    group BY SUPPLIER,TAX_RATE;
+    group BY SUPPLIER,TAX_RATE,INV_MONTH;
 
  entity PCH_T04_PAYMENT_SUM_FZ3 as
         select from PCH_T04_PAYMENT_SUM_FZ3_1 as 
 
     ![distinct] {
          KEY SUPPLIER,
+         KEY INV_MONTH,
         SUM(TOTAL_PRICE_AMOUNT_NOT * TAX_RATE)  as TOTAL_PRICE_AMOUNT_NOT: Decimal(18, 3),       // 非810
     }
     where TAX_RATE != 10 AND TAX_RATE != 8 
       and SUPPLIER is not null and SUPPLIER <> 'N/A'
       and TAX_RATE is not null and SUPPLIER <> 'N/A'
-    group BY SUPPLIER;
+    group BY SUPPLIER,INV_MONTH;
 
  entity PCH_T04_PAYMENT_SUM_HJ1 as
         select from PCH_T04_PAYMENT_UNIT t1

@@ -3,12 +3,17 @@ import java.io.ByteArrayOutputStream;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import com.sap.cds.services.cds.CdsReadEventContext;
 import com.sap.cds.services.handler.EventHandler;
+import com.sap.cds.services.handler.annotations.After;
 import com.sap.cds.services.handler.annotations.On;
 import com.sap.cds.services.handler.annotations.ServiceName;
 
 import cds.gen.tableservice.PCH04SENDEMAILContext;
 import cds.gen.tableservice.PCH04EXCELDOWNLOADContext;
+import cds.gen.tableservice.PchT04PaymentSumHj6;
+import cds.gen.tableservice.PchT04PaymentSumHj6_;
 import cds.gen.tableservice.TableService_;
 import cds.gen.MailBody;
 import cds.gen.MailJson;
@@ -32,6 +37,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
@@ -39,6 +45,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Stream;
 
 @Component
 @ServiceName(TableService_.CDS_NAME)
@@ -127,6 +134,47 @@ public class Pch04Handler implements EventHandler {
             return MAIL_TO;
         }
     }
+
+    /**
+   * 
+   * 检查抬头 工厂 检查明细
+   * 
+   * @param context       传入上下文
+   * @param d012MoveActHs 传入画面输入值
+   */
+  @After(entity = PchT04PaymentSumHj6_.CDS_NAME, event = "READ")
+  public void afterReadPchT04PaymentSumHj6(CdsReadEventContext context, Stream<PchT04PaymentSumHj6> datas1) {
+
+    datas1.forEach(data1 -> {
+
+      data1.setTotalPriceAmount8(stripTrailingZeros(data1.getTotalPriceAmount8()));
+      data1.setConsumptionTax8(stripTrailingZeros(data1.getConsumptionTax8()));
+      data1.setTotalPaymentAmount8End(stripTrailingZeros(data1.TotalPaymentAmount8End()));
+      data1.setTotalPriceAmount10(stripTrailingZeros(data1.getTotalPriceAmount10()));
+      data1.setConsumptionTax10(stripTrailingZeros(data1.getConsumptionTax10()));
+      data1.setTotalPaymentAmount10End(stripTrailingZeros(data1.getTotalPaymentAmount10End()));
+      data1.setTotalPriceAmountNot(stripTrailingZeros(data1.getTotalPriceAmountNot()));
+      data1.setTotalPaymentAmountFinal(stripTrailingZeros(data1.getTotalPaymentAmountFinal()));
+      data1.setQuantity(stripTrailingZeros(data1.getQuantity()));
+      data1.setUnitPriceInYen(stripTrailingZeros(data1.getUnitPriceInYen()));
+      data1.setBaseAmountExcludingTax(stripTrailingZeros(data1.getBaseAmountExcludingTax()));
+      data1.setTaxRate(stripTrailingZeros(data1.getTaxRate()));
+
+    });
+  }
+
+  /**
+   * 处理金额字段，去除尾随零。
+   * 
+   * @param amount 金额
+   * @return 返回处理后的金额，去除尾随零
+   */
+  private BigDecimal stripTrailingZeros(BigDecimal amount) {
+    if (amount != null) {
+      return amount.stripTrailingZeros(); // 去除尾随零
+    }
+    return BigDecimal.ZERO;
+  }
 
      // Excel 导出测试
   @On(event = "PCH04_EXCELDOWNLOAD")
