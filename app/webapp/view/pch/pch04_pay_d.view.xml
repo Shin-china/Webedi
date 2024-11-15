@@ -95,7 +95,8 @@
                 <ToolbarSpacer id="myToolbarSpacer"/>
                 <OverflowToolbarButton id="resendButton"   icon="sap-icon://email"          text="{pch>PCH04_BUTTON_RESEND}" tooltip="{pch>PCH04_BUTTON_RESEND}" press="onResend"/>
                 <OverflowToolbarButton id="downloadPdfBtn" icon="sap-icon://pdf-attachment" text="{pch>PCH04_BUTTON_PDF}"    tooltip="{pch>PCH04_BUTTON_PDF}"    press="onExportToPDF"/>
-                <OverflowToolbarButton id="downloadEXCELBtn" icon="sap-icon://excel-attachment" text="{pch>PCH04_BUTTON_EXCEL}"    tooltip="{pch>PCH04_BUTTON_EXCEL}"    press="onExportToEXCEL"/>
+                <Button id="downloadEXCELBtn" text="{pch>PCH04_BUTTON_EXCEL}" press="onExportToEXCEL" />
+                <!-- <OverflowToolbarButton id="downloadEXCELBtn"  text="{pch>PCH04_BUTTON_EXCEL}"    tooltip="{pch>PCH04_BUTTON_EXCEL}"    press="onExportToEXCEL"/> -->
             </OverflowToolbar>
         </smartTable:customToolbar>
     

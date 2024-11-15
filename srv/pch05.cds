@@ -408,17 +408,7 @@ extend service TableService {
             T03.DIFF_TAX_AMOUNT_8,            // 8％消費税差額
             T03.TOTAL_10_TAX_INCLUDED_AMOUNT, // 合計10％税込金額
             T03.TOTAL_8_TAX_INCLUDED_AMOUNT,  // 合計8％税込金額
-            // T03.TRANSACTION,
-            // T03.REFERENCE,
-            // T03.DOCUMENTTYPE,
-            // T03.HEADERTEXT,
-            // T03.LASTDATE,
-            // T03.ACCOUNT,
-            // T03.DETAILTEXT,
-            // T03.SHKZG_FLAG,
-            // T03.DIFF_TAX_AMOUNT,
             T03.TAX_CODE,
-            // T03.TAX_BASE_AMOUNT,
         }
 
         entity PCH_T05_ACCOUNT_DETAIL_DISPLAY2 as
@@ -508,19 +498,6 @@ extend service TableService {
             'RE' as DOCUMENTTYPE: String,                    // documentType 字段固定值为 'RE'
             'TAX' as HEADERTEXT: String,                      // headertext 字段固定值为 'TAX'
                 
-                // T02.CURRENCY,
-                // T02.TRANSACTION,
-                // T02.REFERENCE,
-                // T02.DOCUMENTTYPE,
-                // T02.HEADERTEXT,
-                // T02.LASTDATE,
-                // T02.ACCOUNT,
-                // T02.DETAILTEXT,
-                // T02.SHKZG_FLAG,
-                // T02.DIFF_TAX_AMOUNT,
-                // // T02.TAX_CODE,
-                // T02.TAX_BASE_AMOUNT,
-                
             }
 
         entity PCH_T05_FOREXCEL as
@@ -566,6 +543,8 @@ extend service TableService {
         }
 
  action PCH05_SENDEMAIL(parms : String) returns String;
+ action PCH05_CONFIRM(parms : String) returns String;
+ action PCH05_CANCEL(parms : String) returns String;
  action PCH05_EXCELDOWNLOAD(parms : String) returns LargeBinary;
 
 }

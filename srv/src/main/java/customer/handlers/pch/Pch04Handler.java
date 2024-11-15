@@ -17,9 +17,11 @@ import customer.bean.tmpl.test;
 import customer.service.sys.EmailServiceFun;
 import customer.bean.tmpl.Pch04;
 import customer.bean.tmpl.Pch04List;
+import customer.bean.tmpl.Pch05;
 
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.ExcelWriter;
+import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.write.metadata.WriteSheet;
 import com.alibaba.excel.write.metadata.fill.FillConfig;
 import com.alibaba.fastjson.JSON;
@@ -30,8 +32,12 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
+import java.time.LocalDate;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 
 @Component
@@ -129,6 +135,41 @@ public class Pch04Handler implements EventHandler {
     byte[] bytes = null;
     Pch04List dataList = JSON.parseObject(context.getParms(),Pch04List.class);
 
+    // 检查 dataList 是否为空，并且确保它的 list 字段存在
+    if (dataList != null && dataList.getList() != null) {
+      // 遍历 Pch04List 中的每一项（每个 item 为 Pch04List 的一个记录）
+      for (Pch04 item : dataList.getList()) {
+
+            String grDateString = item.getGR_DATE();
+            String invBaseDateString = item.getINV_BASE_DATE();
+
+            // 如果 GR_DATE 存在，解析并格式化它
+            if (grDateString != null && !grDateString.isEmpty()) {
+                try {
+                    // 使用 OffsetDateTime 解析带时区的日期字符串
+                    OffsetDateTime grDate = OffsetDateTime.parse(grDateString); // 解析为 OffsetDateTime
+                    String formattedGrDate = grDate.format(DateTimeFormatter.ofPattern("yyyy/MM/dd")); // 格式化为 yyyy/MM/dd
+                    item.setGR_DATE(formattedGrDate); // 设置格式化后的日期
+                } catch (Exception e) {
+                    e.printStackTrace(); // 如果解析失败，打印错误信息
+                }
+            }
+
+            // 如果 INV_BASE_DATE 存在，解析并格式化它
+            if (invBaseDateString != null && !invBaseDateString.isEmpty()) {
+                try {
+                    // 使用 OffsetDateTime 解析带时区的日期字符串
+                    OffsetDateTime invBaseDate = OffsetDateTime.parse(invBaseDateString); // 解析为 OffsetDateTime
+                    String formattedInvBaseDate = invBaseDate.format(DateTimeFormatter.ofPattern("yyyy/MM/dd")); // 格式化为 yyyy/MM/dd
+                    item.setINV_BASE_DATE(formattedInvBaseDate); // 设置格式化后的日期
+                } catch (Exception e) {
+                    e.printStackTrace(); // 如果解析失败，打印错误信息
+            }
+      }
+  }
+
+}
+
     // 获取模板文件
     InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("template/支払通知照会.xlsx");
 
@@ -139,6 +180,22 @@ public class Pch04Handler implements EventHandler {
       excelWriter = EasyExcel.write(os).withTemplate(inputStream).inMemory(true).build();
       WriteSheet writeSheet = EasyExcel.writerSheet().build();
 
+      //map组合数据
+      HashMap<String, String> otherData = new HashMap<>();
+      otherData.put("TOTAL_PRICE_AMOUNT_8",dataList.getList().get(0).getTOTAL_PRICE_AMOUNT_8());
+      otherData.put("CONSUMPTION_TAX_8",dataList.getList().get(0).getCONSUMPTION_TAX_8());
+      otherData.put("TOTAL_PAYMENT_AMOUNT_8_END",dataList.getList().get(0).getTOTAL_PAYMENT_AMOUNT_8_END());
+      otherData.put("TOTAL_PRICE_AMOUNT_10",dataList.getList().get(0).getTOTAL_PRICE_AMOUNT_10());
+      otherData.put("CONSUMPTION_TAX_10",dataList.getList().get(0).getCONSUMPTION_TAX_10());
+      otherData.put("TOTAL_PAYMENT_AMOUNT_10_END",dataList.getList().get(0).getTOTAL_PAYMENT_AMOUNT_10_END());
+      otherData.put("NON_APPLICABLE_AMOUNT",dataList.getList().get(0).getNON_APPLICABLE_AMOUNT());
+      otherData.put("TOTAL_PAYMENT_AMOUNT_FINAL",dataList.getList().get(0).getTOTAL_PAYMENT_AMOUNT_FINAL());
+      otherData.put("INV_MONTH_FORMATTED",dataList.getList().get(0).getINV_MONTH_FORMATTED());
+      otherData.put("SUPPLIER_DESCRIPTION",dataList.getList().get(0).getSUPPLIER_DESCRIPTION());
+      otherData.put("LOG_NO",dataList.getList().get(0).getLOG_NO());
+      otherData.put("Company_Name",dataList.getList().get(0).getCompany_Name());
+      otherData.put("CURRENT_DAY",dataList.getList().get(0).getCURRENT_DAY());
+
       // 填充完后需要换行
       FillConfig fileConfig = FillConfig.builder().forceNewRow(true).build();
       // 写入数据
@@ -148,7 +205,8 @@ public class Pch04Handler implements EventHandler {
       Workbook workbook = excelWriter.writeContext().writeWorkbookHolder().getWorkbook();
       // 调用
       workbook.getCreationHelper().createFormulaEvaluator().evaluateAll();
-
+        // 填充
+        excelWriter.fill(otherData, writeSheet);
       excelWriter.finish();
 
       // 获取byte字节、

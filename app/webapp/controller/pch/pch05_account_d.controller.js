@@ -11,14 +11,73 @@ sap.ui.define([
 		_entity: "/PCH_T05_FOREXCEL",
 	};
 
-
     return Controller.extend("umc.app.controller.pch.pch05_pay_d", {
         formatter: formatter, // 将格式化器分配给控制器
 
         onInit: function () {
+
+            var oViewModel = new sap.ui.model.json.JSONModel({
+				isButtonEnabled: false // 默认值为 true
+			});
+			this.getView().setModel(oViewModel, "viewModel");
             // 初始化代码
             // 这里可以添加其他初始化逻辑，比如绑定数据等
             console.log("Controller initialized.");
+        },
+
+        onConfirm: function () {
+			var that = this;
+            var oTable = this.getView().byId("detailTable");
+            var aSelectedIndices = oTable.getSelectedIndices();
+
+            // 获取选中行的 SUPPLIER 字段值
+           var oSelectedRow = oTable.getContextByIndex(aSelectedIndices[0]).getObject(); // 获取选中行的数据对象
+           var supplierValue = oSelectedRow.SUPPLIER; // 获取选中行的 SUPPLIER 字段值
+
+            // 设置标志为已确认
+            this.isConfirmed = true;
+
+            // 启用 onResend 按钮，通过更新 viewModel
+            this.getView().getModel("viewModel").setProperty("/isButtonEnabled", true);
+
+            // 遍历所有行，选中与选中行的 SUPPLIER 字段相等的行，并更新 INV_DATE 字段
+            var aAllItems = oTable.getItems(); // 获取所有的行数据
+            aAllItems.forEach(function (oItem) {
+            var oRowContext = oItem.getBindingContext();
+            var oRowData = oRowContext.getObject(); // 获取当前行的数据对象
+
+                if (oRowData.SUPPLIER === supplierValue) {
+                    // 如果行的 SUPPLIER 字段值与选中行相同，选中该行并更新 INV_DATE 字段为 "確定"
+                    oItem.setSelected(true);
+                    oRowData.INV_DATE = "確定"; // 更新 INV_DATE 字段
+                    oRowContext.setProperty("INV_DATE", "確定"); // 使用 setProperty 更新 INV_DATE 字段值
+                } else {
+                    // 否则，取消选中该行
+                    oItem.setSelected(false);
+                }
+            });
+        },
+
+        // 取消按钮点击事件
+        onCancel: function () {
+            // 将 isButtonEnabled 设置为 false，使 onResend 按钮不可用
+            this.isConfirmed = false; // 取消确认状态
+            this.getView().getModel("viewModel").setProperty("/isButtonEnabled", false);
+
+            // 你可以添加其他取消的逻辑，例如清除选择的表格行
+            var oTable = this.getView().byId("detailTable");
+            oTable.removeSelections(); // 清除表格中的选中行
+
+            // 遍历所有行，清空 INV_DATE 字段
+            var aAllItems = oTable.getItems(); // 获取所有的行数据
+            aAllItems.forEach(function (oItem) {
+                var oRowContext = oItem.getBindingContext();
+                var oRowData = oRowContext.getObject(); // 获取当前行的数据对象
+
+                // 清空 INV_DATE 字段
+                oRowData.INV_DATE = ""; // 或者 oRowData.INV_DATE = null; 根据你的需求
+                oRowContext.setProperty("INV_DATE", ""); // 使用 setProperty 清空 INV_DATE 字段值
+            });
         },
         
         onResend: function () {
@@ -131,6 +190,8 @@ sap.ui.define([
 					})
 				}				
             },
+
+
             
 
             onBeforeExport: function (oEvent) {

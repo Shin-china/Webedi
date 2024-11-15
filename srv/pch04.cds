@@ -287,6 +287,7 @@ extend service TableService {
     distinct {
         KEY t1.SUPPLIER,
         KEY t1.INV_NO,
+        KEY t1.SUPPLIER || t3.INV_MONTH  as DOWNLOADID      : String(100),
         TOTAL_PRICE_AMOUNT_8,             // 仕入金額計(8%対象)
         CONSUMPTION_TAX_8 ,               // 计算消費税計(8%対象)
         TOTAL_PAYMENT_AMOUNT_8_END,       // 计算税込支払金額(8%対象)
@@ -295,7 +296,6 @@ extend service TableService {
         TOTAL_PAYMENT_AMOUNT_10_END,      // 计算税込支払金額(10%対象)
         TOTAL_PRICE_AMOUNT_NOT,           // 対象外金額
         TOTAL_PAYMENT_AMOUNT_FINAL,       // 総合計
-
         t2.NO_DETAILS,                       // 発注\明細NO
         t2.MAT_ID,                           // 品目コード
         t2.MAT_DESC,                         // 品目名称

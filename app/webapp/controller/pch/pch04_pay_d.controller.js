@@ -199,8 +199,6 @@ sap.ui.define([
             });
           },
     
-  
-
         // 从选中的行中获取 ZABC 的值
         getZABCFromSelection: function (oTable, aSelectedIndices) {
             if (aSelectedIndices.length > 0) {
@@ -219,6 +217,17 @@ sap.ui.define([
 
         onExportToPDF: function () {
             var that = this;
+
+            var aFilters = this.getView().byId("smartFilterBar").getFilters();
+			_objectCommData._aFilters = aFilters;
+			var view = this.getView();
+			var jsonModel = view.getModel("workInfo");
+			view.setModel(jsonModel, undefined);
+			if (aFilters.length == 0) {
+				that._setBusy(false);
+				return;
+			}
+			this._readEntryByServiceAndEntity(_objectCommData._entity, aFilters, null).then((oData) => {
             
             // 调用检查逻辑
             if (!this.checkSelectedSuppliers()) {
@@ -228,7 +237,7 @@ sap.ui.define([
             let options = { compact: true, ignoreComment: true, spaces: 4 };
             var IdList = that._TableDataList("detailTable", 'SUPPLIER');
             // 获取前台输入的 INV_MONTH 和 SUPPLIER
-            var invMonth = this.getView().byId("INV_MONTH").getValue(); 
+            // var invMonth = this.getView().byId("INV_MONTH").getValue(); 
 
             // 将日期字符串转换为指定格式
             function formatDateString(dateString) {
@@ -241,7 +250,7 @@ sap.ui.define([
 }
         
             if (IdList) {
-                that.PrintTool._getPrintDataInfo(that, IdList, "/PCH_T04_PAYMENT_SUM_HJ6", "SUPPLIER", invMonth).then((oData) => {
+                that.PrintTool._getPrintDataInfo(that, IdList, "/PCH_T04_PAYMENT_SUM_HJ6", "DOWNLOADID").then((J) => {
                     // oData = this.jsonDateToString(oData);  
 					oData.results.forEach(function (row) {
     
@@ -263,8 +272,9 @@ sap.ui.define([
                         that.PrintTool._detailSelectPrintDow(that, sResponse, "test02/test05", oData, null, null, null, null);
                     });
                 });
-            }
+            }});
         },
+        
         
         checkSelectedSuppliers: function () {
             var oTable = this.getView().byId("detailTable");
@@ -322,6 +332,11 @@ sap.ui.define([
 			}
 			this._readEntryByServiceAndEntity(_objectCommData._entity, aFilters, null).then((oData) => {
 
+                if (IdList) {
+                    that.PrintTool._getPrintDataInfo(that, IdList, "/PCH_T04_PAYMENT_SUM_HJ6", "DOWNLOADID").then((J) => {
+                        // oData = this.jsonDateToString(oData);  
+                        oData.results.forEach(function (row) {                  
+
         if (oData) {
 
             // var invMonth = this.getView().byId("INV_MONTH").getValue();  
@@ -333,7 +348,7 @@ sap.ui.define([
 				// if(this.checkDelete(selectedIndices)){
 					this._callCdsAction("/PCH04_EXCELDOWNLOAD", this._getDataDow(oData), this).then((oData) => {
 						const downloadLink = document.createElement("a");
-						const blob = that._base64Blob(oData.PCH05_EXCELDOWNLOAD,"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+						const blob = that._base64Blob(oData.PCH04_EXCELDOWNLOAD,"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
 						const blobUrl = URL.createObjectURL(blob);
 						downloadLink.href = blobUrl;
                         downloadLink.download = fileName; // 使用动态生成的文件名
@@ -341,7 +356,11 @@ sap.ui.define([
 						that._setBusy(false); 
 					})
 				}
+            })
+        })};
             });
+
+            
 		},
 		_getDataDow(oData){
 			var jsondata = Array();
