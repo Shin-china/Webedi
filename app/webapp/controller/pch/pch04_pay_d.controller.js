@@ -252,7 +252,7 @@ sap.ui.define([
             if (IdList) {
                 that.PrintTool._getPrintDataInfo(that, IdList, "/PCH_T04_PAYMENT_SUM_HJ6", "DOWNLOADID").then((J) => {
                     // oData = this.jsonDateToString(oData);  
-					oData.results.forEach(function (row) {
+					J.results.forEach(function (row) {
     
                             // 格式化日期
                             if (row.INV_BASE_DATE) {
@@ -265,11 +265,11 @@ sap.ui.define([
 					});
 
                     // 确保 oData[0] 存在
-                    let sResponse = json2xml(oData, options);
+                    let sResponse = json2xml(J, options);
                     console.log(sResponse);
                     that.setSysConFig().then(res => {
                         // 调用打印方法
-                        that.PrintTool._detailSelectPrintDow(that, sResponse, "test02/test05", oData, null, null, null, null);
+                        that.PrintTool._detailSelectPrintDow(that, sResponse, "test02/test05", J, null, null, null, null);
                     });
                 });
             }});
@@ -332,39 +332,36 @@ sap.ui.define([
 			}
 			this._readEntryByServiceAndEntity(_objectCommData._entity, aFilters, null).then((oData) => {
 
+                // 调用检查逻辑
+            if (!this.checkSelectedSuppliers()) {
+                return; // 如果检查不通过，则终止执行
+            }
+        
+
                 let options = { compact: true, ignoreComment: true, spaces: 4 };
                 var IdList = that._TableDataList("detailTable", 'DOWNLOADID');
 
                 if (IdList) {
                     that.PrintTool._getPrintDataInfo(that, IdList, "/PCH_T04_PAYMENT_SUM_HJ6", "DOWNLOADID").then((oData) => {
-                        // oData = this.jsonDateToString(oData);  
-                        oData.results.forEach(function (row) {                  
+               
 
-        if (oData) {
+                    var fileName = `仕入先コード_月度UMC支払通知書.xlsx`;
 
-            // var invMonth = this.getView().byId("INV_MONTH").getValue();  
-            // 生成文件名
-            var fileName = `仕入先コード_月度UMC支払通知書.xlsx`;}
-
-			// var oData = this._TableList("detailTable");
-			if (oData) {
-				// if(this.checkDelete(selectedIndices)){
-					this._callCdsAction("/PCH04_EXCELDOWNLOAD", this._getDataDow(oData), this).then((oData) => {
+					that._callCdsAction("/PCH04_EXCELDOWNLOAD", that._getDataDow(oData), that).then((J) => {
 						const downloadLink = document.createElement("a");
-						const blob = that._base64Blob(oData.PCH04_EXCELDOWNLOAD,"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+						const blob = that._base64Blob(J.PCH04_EXCELDOWNLOAD,"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
 						const blobUrl = URL.createObjectURL(blob);
 						downloadLink.href = blobUrl;
                         downloadLink.download = fileName; // 使用动态生成的文件名
 						downloadLink.click();
 						that._setBusy(false); 
 					})
-				}
-            })
-        })};
-            });
+                
+            })};
+        });
 
-            
 		},
+
 		_getDataDow(oData){
 			var jsondata = Array();
 			oData.results.forEach((odata) => {
