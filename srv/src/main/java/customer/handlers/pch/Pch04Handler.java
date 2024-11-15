@@ -1,4 +1,5 @@
 package customer.handlers.pch;
+
 import java.io.ByteArrayOutputStream;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ import cds.gen.MailJson;
 
 import customer.bean.tmpl.test;
 import customer.service.sys.EmailServiceFun;
+import customer.tool.UWebConstants;
 import customer.bean.tmpl.Pch04;
 import customer.bean.tmpl.Pch04List;
 import customer.bean.tmpl.Pch05;
@@ -42,6 +44,7 @@ import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -58,7 +61,7 @@ public class Pch04Handler implements EventHandler {
     public void sendEmail(PCH04SENDEMAILContext context) {
         // 直接从上下文中获取参数
         String emailJsonParam = (String) context.get("parms"); // 根据上下文对象获取数据
-        
+
         // 解析 JSON 参数为 List<MailParam> 对象
         List<MailParam> emailParams = parseParams(emailJsonParam);
 
@@ -102,7 +105,8 @@ public class Pch04Handler implements EventHandler {
     // 解析传入的 JSON 参数为 List<MailParam>
     private List<MailParam> parseParams(String parms) {
         Gson gson = new Gson();
-        Type mailParamListType = new TypeToken<List<MailParam>>() {}.getType();
+        Type mailParamListType = new TypeToken<List<MailParam>>() {
+        }.getType();
         return gson.fromJson(parms, mailParamListType);
     }
 
@@ -136,137 +140,161 @@ public class Pch04Handler implements EventHandler {
     }
 
     /**
-   * 
-   * 检查抬头 工厂 检查明细
-   * 
-   * @param context       传入上下文
-   * @param d012MoveActHs 传入画面输入值
-   */
-  @After(entity = PchT04PaymentSumHj6_.CDS_NAME, event = "READ")
-  public void afterReadPchT04PaymentSumHj6(CdsReadEventContext context, Stream<PchT04PaymentSumHj6> datas1) {
+     * 
+     * 检查抬头 工厂 检查明细
+     * 
+     * @param context       传入上下文
+     * @param d012MoveActHs 传入画面输入值
+     */
+    @After(entity = PchT04PaymentSumHj6_.CDS_NAME, event = "READ")
+    public void afterReadPchT04PaymentSumHj6(CdsReadEventContext context, Stream<PchT04PaymentSumHj6> datas1) {
 
-    datas1.forEach(data1 -> {
+        datas1.forEach(data1 -> {
 
-      data1.setTotalPriceAmount8(stripTrailingZeros(data1.getTotalPriceAmount8()));
-      data1.setConsumptionTax8(stripTrailingZeros(data1.getConsumptionTax8()));
-      data1.setTotalPaymentAmount8End(stripTrailingZeros(data1.TotalPaymentAmount8End()));
-      data1.setTotalPriceAmount10(stripTrailingZeros(data1.getTotalPriceAmount10()));
-      data1.setConsumptionTax10(stripTrailingZeros(data1.getConsumptionTax10()));
-      data1.setTotalPaymentAmount10End(stripTrailingZeros(data1.getTotalPaymentAmount10End()));
-      data1.setTotalPriceAmountNot(stripTrailingZeros(data1.getTotalPriceAmountNot()));
-      data1.setTotalPaymentAmountFinal(stripTrailingZeros(data1.getTotalPaymentAmountFinal()));
-      data1.setQuantity(stripTrailingZeros(data1.getQuantity()));
-      data1.setUnitPriceInYen(stripTrailingZeros(data1.getUnitPriceInYen()));
-      data1.setBaseAmountExcludingTax(stripTrailingZeros(data1.getBaseAmountExcludingTax()));
-      data1.setTaxRate(stripTrailingZeros(data1.getTaxRate()));
+            data1.setTotalPriceAmount8(stripTrailingZeros(data1.getTotalPriceAmount8()));
+            data1.setConsumptionTax8(stripTrailingZeros(data1.getConsumptionTax8()));
+            data1.setTotalPaymentAmount8End(stripTrailingZeros(data1.getTotalPaymentAmount8End()));
+            data1.setTotalPriceAmount10(stripTrailingZeros(data1.getTotalPriceAmount10()));
+            data1.setConsumptionTax10(stripTrailingZeros(data1.getConsumptionTax10()));
+            data1.setTotalPaymentAmount10End(stripTrailingZeros(data1.getTotalPaymentAmount10End()));
+            data1.setTotalPriceAmountNot(stripTrailingZeros(data1.getTotalPriceAmountNot()));
+            data1.setTotalPaymentAmountFinal(stripTrailingZeros(data1.getTotalPaymentAmountFinal()));
+            data1.setQuantity(stripTrailingZeros(data1.getQuantity()));
+            data1.setUnitPriceInYen(stripTrailingZeros(data1.getUnitPriceInYen()));
+            data1.setBaseAmountExcludingTax(stripTrailingZeros(data1.getBaseAmountExcludingTax()));
+            data1.setTaxRate(stripTrailingZeros(data1.getTaxRate()));
 
-    });
-  }
-
-  /**
-   * 处理金额字段，去除尾随零。
-   * 
-   * @param amount 金额
-   * @return 返回处理后的金额，去除尾随零
-   */
-  private BigDecimal stripTrailingZeros(BigDecimal amount) {
-    if (amount != null) {
-      return amount.stripTrailingZeros(); // 去除尾随零
+        });
     }
-    return BigDecimal.ZERO;
-  }
 
-     // Excel 导出测试
-  @On(event = "PCH04_EXCELDOWNLOAD")
-  public void exportExcel(PCH04EXCELDOWNLOADContext context) throws IOException {
-    // String content = context.getContent();
-    byte[] bytes = null;
-    Pch04List dataList = JSON.parseObject(context.getParms(),Pch04List.class);
+    /**
+     * 处理金额字段，去除尾随零。
+     * 
+     * @param amount 金额
+     * @return 返回处理后的金额，去除尾随零
+     */
+    private BigDecimal stripTrailingZeros(BigDecimal amount) {
+        if (amount != null) {
+            return amount.stripTrailingZeros(); // 去除尾随零
+        }
+        return BigDecimal.ZERO;
+    }
 
-    // 检查 dataList 是否为空，并且确保它的 list 字段存在
-    if (dataList != null && dataList.getList() != null) {
-      // 遍历 Pch04List 中的每一项（每个 item 为 Pch04List 的一个记录）
-      for (Pch04 item : dataList.getList()) {
+    // Excel 导出测试
+    @On(event = "PCH04_EXCELDOWNLOAD")
+    public void exportExcel(PCH04EXCELDOWNLOADContext context) throws IOException {
+        // String content = context.getContent();
+        byte[] bytes = null;
+        Pch04List dataList = JSON.parseObject(context.getParms(), Pch04List.class);
 
-            String grDateString = item.getGR_DATE();
-            String invBaseDateString = item.getINV_BASE_DATE();
+        // 检查 dataList 是否为空，并且确保它的 list 字段存在
+        if (dataList != null && dataList.getList() != null) {
+            // 遍历 Pch04List 中的每一项（每个 item 为 Pch04List 的一个记录）
+            for (Pch04 item : dataList.getList()) {
 
-            // 如果 GR_DATE 存在，解析并格式化它
-            if (grDateString != null && !grDateString.isEmpty()) {
-                try {
-                    // 使用 OffsetDateTime 解析带时区的日期字符串
-                    OffsetDateTime grDate = OffsetDateTime.parse(grDateString); // 解析为 OffsetDateTime
-                    String formattedGrDate = grDate.format(DateTimeFormatter.ofPattern("yyyy/MM/dd")); // 格式化为 yyyy/MM/dd
-                    item.setGR_DATE(formattedGrDate); // 设置格式化后的日期
-                } catch (Exception e) {
-                    e.printStackTrace(); // 如果解析失败，打印错误信息
+                String grDateString = item.getGR_DATE();
+                String invBaseDateString = item.getINV_BASE_DATE();
+
+                // 如果 GR_DATE 存在，解析并格式化它
+                if (grDateString != null && !grDateString.isEmpty()) {
+                    try {
+                        // 使用 OffsetDateTime 解析带时区的日期字符串
+                        OffsetDateTime grDate = OffsetDateTime.parse(grDateString); // 解析为 OffsetDateTime
+                        String formattedGrDate = grDate.format(DateTimeFormatter.ofPattern("yyyy/MM/dd")); // 格式化为
+                                                                                                           // yyyy/MM/dd
+                        item.setGR_DATE(formattedGrDate); // 设置格式化后的日期
+                    } catch (Exception e) {
+                        e.printStackTrace(); // 如果解析失败，打印错误信息
+                    }
+                }
+
+                // 如果 INV_BASE_DATE 存在，解析并格式化它
+                if (invBaseDateString != null && !invBaseDateString.isEmpty()) {
+                    try {
+                        // 使用 OffsetDateTime 解析带时区的日期字符串
+                        OffsetDateTime invBaseDate = OffsetDateTime.parse(invBaseDateString); // 解析为 OffsetDateTime
+                        String formattedInvBaseDate = invBaseDate.format(DateTimeFormatter.ofPattern("yyyy/MM/dd")); // 格式化为
+                                                                                                                     // yyyy/MM/dd
+                        item.setINV_BASE_DATE(formattedInvBaseDate); // 设置格式化后的日期
+                    } catch (Exception e) {
+                        e.printStackTrace(); // 如果解析失败，打印错误信息
+                    }
                 }
             }
 
-            // 如果 INV_BASE_DATE 存在，解析并格式化它
-            if (invBaseDateString != null && !invBaseDateString.isEmpty()) {
-                try {
-                    // 使用 OffsetDateTime 解析带时区的日期字符串
-                    OffsetDateTime invBaseDate = OffsetDateTime.parse(invBaseDateString); // 解析为 OffsetDateTime
-                    String formattedInvBaseDate = invBaseDate.format(DateTimeFormatter.ofPattern("yyyy/MM/dd")); // 格式化为 yyyy/MM/dd
-                    item.setINV_BASE_DATE(formattedInvBaseDate); // 设置格式化后的日期
-                } catch (Exception e) {
-                    e.printStackTrace(); // 如果解析失败，打印错误信息
+        }
+        // 先改写模板文件，再生成excel
+        // this._setModel(UWebConstants.PCH04_TEP_PATH ,dataList.size()+2);
+        // 再将模板改回去
+        // this._relModel(UWebConstants.PCH04_TEP_PATH ,dataList.size()+2);
+        // 获取模板文件
+        InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(UWebConstants.PCH04_TEP_PATH);
+
+        // Excel写入数据
+        ExcelWriter excelWriter = null;
+        try {
+            ByteArrayOutputStream os = new ByteArrayOutputStream();
+            excelWriter = EasyExcel.write(os).withTemplate(inputStream).inMemory(true).build();
+            WriteSheet writeSheet = EasyExcel.writerSheet().build();
+
+            // map组合数据
+            HashMap<String, String> otherData = new HashMap<>();
+            otherData.put("TOTAL_PRICE_AMOUNT_8", dataList.getList().get(0).getTOTAL_PRICE_AMOUNT_8());
+            otherData.put("CONSUMPTION_TAX_8", dataList.getList().get(0).getCONSUMPTION_TAX_8());
+            otherData.put("TOTAL_PAYMENT_AMOUNT_8_END", dataList.getList().get(0).getTOTAL_PAYMENT_AMOUNT_8_END());
+            otherData.put("TOTAL_PRICE_AMOUNT_10", dataList.getList().get(0).getTOTAL_PRICE_AMOUNT_10());
+            otherData.put("CONSUMPTION_TAX_10", dataList.getList().get(0).getCONSUMPTION_TAX_10());
+            otherData.put("TOTAL_PAYMENT_AMOUNT_10_END", dataList.getList().get(0).getTOTAL_PAYMENT_AMOUNT_10_END());
+            otherData.put("NON_APPLICABLE_AMOUNT", dataList.getList().get(0).getNON_APPLICABLE_AMOUNT());
+            otherData.put("TOTAL_PAYMENT_AMOUNT_FINAL", dataList.getList().get(0).getTOTAL_PAYMENT_AMOUNT_FINAL());
+            otherData.put("INV_MONTH_FORMATTED", dataList.getList().get(0).getINV_MONTH_FORMATTED());
+            otherData.put("SUPPLIER_DESCRIPTION", dataList.getList().get(0).getSUPPLIER_DESCRIPTION());
+            otherData.put("LOG_NO", dataList.getList().get(0).getLOG_NO());
+            otherData.put("Company_Name", dataList.getList().get(0).getCompany_Name());
+            otherData.put("CURRENT_DAY", dataList.getList().get(0).getCURRENT_DAY());
+
+            // 填充完后需要换行
+            FillConfig fileConfig = FillConfig.builder().forceNewRow(true).build();
+            // 写入数据
+
+            // excelWriter.write(os, writeSheet)
+            excelWriter.fill(dataList.getList(), fileConfig, writeSheet);
+            // 重新计算公式
+            Workbook workbook = excelWriter.writeContext().writeWorkbookHolder().getWorkbook();
+            // 调用
+            workbook.getCreationHelper().createFormulaEvaluator().evaluateAll();
+            // 填充
+            excelWriter.fill(otherData, writeSheet);
+            excelWriter.finish();
+
+            // 获取byte字节、
+            bytes = os.toByteArray();
+        } catch (Exception e) {
+
+        } finally {
+            if (excelWriter != null) {
+                excelWriter.finish();
             }
-      }
-  }
+        }
 
-}
-
-    // 获取模板文件
-    InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("template/支払通知照会.xlsx");
-
-    // Excel写入数据
-    ExcelWriter excelWriter = null;
-    try {
-      ByteArrayOutputStream os = new ByteArrayOutputStream();
-      excelWriter = EasyExcel.write(os).withTemplate(inputStream).inMemory(true).build();
-      WriteSheet writeSheet = EasyExcel.writerSheet().build();
-
-      //map组合数据
-      HashMap<String, String> otherData = new HashMap<>();
-      otherData.put("TOTAL_PRICE_AMOUNT_8",dataList.getList().get(0).getTOTAL_PRICE_AMOUNT_8());
-      otherData.put("CONSUMPTION_TAX_8",dataList.getList().get(0).getCONSUMPTION_TAX_8());
-      otherData.put("TOTAL_PAYMENT_AMOUNT_8_END",dataList.getList().get(0).getTOTAL_PAYMENT_AMOUNT_8_END());
-      otherData.put("TOTAL_PRICE_AMOUNT_10",dataList.getList().get(0).getTOTAL_PRICE_AMOUNT_10());
-      otherData.put("CONSUMPTION_TAX_10",dataList.getList().get(0).getCONSUMPTION_TAX_10());
-      otherData.put("TOTAL_PAYMENT_AMOUNT_10_END",dataList.getList().get(0).getTOTAL_PAYMENT_AMOUNT_10_END());
-      otherData.put("NON_APPLICABLE_AMOUNT",dataList.getList().get(0).getNON_APPLICABLE_AMOUNT());
-      otherData.put("TOTAL_PAYMENT_AMOUNT_FINAL",dataList.getList().get(0).getTOTAL_PAYMENT_AMOUNT_FINAL());
-      otherData.put("INV_MONTH_FORMATTED",dataList.getList().get(0).getINV_MONTH_FORMATTED());
-      otherData.put("SUPPLIER_DESCRIPTION",dataList.getList().get(0).getSUPPLIER_DESCRIPTION());
-      otherData.put("LOG_NO",dataList.getList().get(0).getLOG_NO());
-      otherData.put("Company_Name",dataList.getList().get(0).getCompany_Name());
-      otherData.put("CURRENT_DAY",dataList.getList().get(0).getCURRENT_DAY());
-
-      // 填充完后需要换行
-      FillConfig fileConfig = FillConfig.builder().forceNewRow(true).build();
-      // 写入数据
-      // excelWriter.write(os, writeSheet)
-      excelWriter.fill(dataList.getList(), fileConfig, writeSheet);
-      // 重新计算公式
-      Workbook workbook = excelWriter.writeContext().writeWorkbookHolder().getWorkbook();
-      // 调用
-      workbook.getCreationHelper().createFormulaEvaluator().evaluateAll();
-        // 填充
-        excelWriter.fill(otherData, writeSheet);
-      excelWriter.finish();
-
-      // 获取byte字节、
-      bytes = os.toByteArray();
-    } catch (Exception e) {
-
-    } finally {
-      if (excelWriter != null) {
-        excelWriter.finish();
-      }
+        context.setResult(bytes);
     }
 
-    context.setResult(bytes);
-  }
+    private void _relModel(String pch04TepPath,int dataSize) {
+
+        List<String> data = new ArrayList<>();
+        data.add("支払通知エクセルファイル");
+        
+        EasyExcel.write(pch04TepPath).sheet("支払通知エクセルファイル");
+        // .doWrite(data,writeSheet->{
+
+        //     writeSheet.setFixedIndexes(0,0);//将A1作为
+        //     return writeSheet;
+        // });
+    }
+
+    private void _setModel(String pch04TepPath,int dataSize) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method '_setModel'");
+    }
 }
