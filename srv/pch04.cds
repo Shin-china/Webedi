@@ -82,6 +82,7 @@ extend service TableService {
         KEY PO_NO,                     // UMC発注番号
         KEY D_NO,                      // 明細番号 
         KEY INV_NO,                    // 发票号
+        INV_MONTH,                 //检收月
         TAX_RATE,                      // INV税率
         @title: '{i18n>PCH04_UNIT_PRICE}'
         UNIT_PRICE,
@@ -107,7 +108,6 @@ extend service TableService {
         NO_DETAILS,
         PRICE_AMOUNT,
         TOTAL_AMOUNT,
-        INV_MONTH,                     //检收月
         Company_Code,
         SUPPLIER || INV_MONTH  as DOWNLOADID      : String(100),
  
@@ -131,6 +131,7 @@ extend service TableService {
     ![distinct] {
         KEY SUPPLIER,
         KEY INV_NO,
+        INV_MONTH,
         NO_DETAILS,            // UMC発注番号
         TAX_RATE,                  // INV税率
         MAT_ID,                    // 品目コード
@@ -146,7 +147,6 @@ extend service TableService {
         TOTAL_AMOUNT_IN_YEN,
         CURRENCY,
         Company_Code,
-        INV_MONTH,
         case 
             when CURRENCY = 'JPY' then cast(PRICE_AMOUNT as Decimal(18,3))
             when CURRENCY in ('USD', 'EUR') then cast(floor(PRICE_AMOUNT * EXCHANGE) as Decimal(18,0))
@@ -208,14 +208,18 @@ extend service TableService {
         select from PCH_T04_PAYMENT_UNIT t1
         left join PCH_T04_PAYMENT_SUM_FZ1 t2
         on t1.SUPPLIER = t2.SUPPLIER
+        and t1.INV_MONTH = t2.INV_MONTH
         left join PCH_T04_PAYMENT_SUM_FZ2 t3
         on t1.SUPPLIER = t3.SUPPLIER 
+        and t1.INV_MONTH = t3.INV_MONTH
         left join PCH_T04_PAYMENT_SUM_FZ3 t4
         on t1.SUPPLIER = t4.SUPPLIER
+        and t1.INV_MONTH = t4.INV_MONTH
                                 
     distinct {
         KEY t1.SUPPLIER,
         KEY t1.INV_NO,
+        KEY t1.INV_MONTH,
         COALESCE(t2.TOTAL_PRICE_AMOUNT_8, 0)   as TOTAL_PRICE_AMOUNT_8: Decimal(18, 3),
         COALESCE(t3.TOTAL_PRICE_AMOUNT_10, 0)  as TOTAL_PRICE_AMOUNT_10: Decimal(18, 3),
         COALESCE(t4.TOTAL_PRICE_AMOUNT_NOT, 0) as TOTAL_PRICE_AMOUNT_NOT: Decimal(18, 3),
@@ -228,6 +232,7 @@ extend service TableService {
     distinct {
         KEY t1.SUPPLIER,
         KEY t1.INV_NO,
+        KEY t1.INV_MONTH,
         TOTAL_PRICE_AMOUNT_8,
         FLOOR(TOTAL_PRICE_AMOUNT_8 * 0.08) AS CONSUMPTION_TAX_8: Decimal(15, 0),  // 计算消費税計(8%対象)
         TOTAL_PRICE_AMOUNT_10,
@@ -240,6 +245,7 @@ extend service TableService {
     distinct {
         KEY t1.SUPPLIER,
         KEY t1.INV_NO,
+        KEY t1.INV_MONTH,
         TOTAL_PRICE_AMOUNT_8,
         CONSUMPTION_TAX_8 ,     // 计算消費税計(8%対象)
         TOTAL_PRICE_AMOUNT_10,
@@ -254,6 +260,7 @@ extend service TableService {
     distinct {
         KEY t1.SUPPLIER,
         KEY t1.INV_NO,
+        KEY t1.INV_MONTH,
         TOTAL_PRICE_AMOUNT_8,
         CONSUMPTION_TAX_8 ,     // 计算消費税計(8%対象)
         TOTAL_PRICE_AMOUNT_10,
@@ -269,6 +276,7 @@ extend service TableService {
     distinct {
         KEY t1.SUPPLIER,
         KEY t1.INV_NO,
+        KEY t1.INV_MONTH,
         TOTAL_PRICE_AMOUNT_8,
         CONSUMPTION_TAX_8 ,               // 计算消費税計(8%対象)
         TOTAL_PRICE_AMOUNT_10,
@@ -279,21 +287,25 @@ extend service TableService {
         TOTAL_PAYMENT_AMOUNT_8_END + TOTAL_PAYMENT_AMOUNT_10_END + TOTAL_PRICE_AMOUNT_NOT as TOTAL_PAYMENT_AMOUNT_FINAL : Decimal(18, 3),     // 総合計
 
     }
+
      entity PCH_T04_PAYMENT_SUM_HJ6 as
         select from PCH_T04_PAYMENT_SUM_HJ5 t1
         left join PCH_T04_PAYMENT_SUM t2
         on t1.SUPPLIER = t2.SUPPLIER
         and t1.INV_NO = t2.INV_NO
+        and t1.INV_MONTH = t2.INV_MONTH
         and t2.SUPPLIER is not null
         left join PCH_T04_PAYMENT_UNIT t3
         on t1.SUPPLIER = t3.SUPPLIER
         and t1.INV_NO = t3.INV_NO
+        AND t1.INV_MONTH = t3.INV_MONTH
         and t3.SUPPLIER is not null
                                 
     distinct {
         KEY t1.SUPPLIER,
         KEY t1.INV_NO,
         KEY t3.DOWNLOADID,
+        t3.INV_MONTH,                        // 検収月
         TOTAL_PRICE_AMOUNT_8,             // 仕入金額計(8%対象)
         CONSUMPTION_TAX_8 ,               // 计算消費税計(8%対象)
         TOTAL_PAYMENT_AMOUNT_8_END,       // 计算税込支払金額(8%対象)
@@ -312,11 +324,10 @@ extend service TableService {
         t2.BASE_AMOUNT_EXCLUDING_TAX,        // 基準通貨金額税抜
         t2.TAX_RATE,                         // INV税率
         t2.Company_Code,
-
         t2.PO_TRACK_NO,                      // 備考
         t2.INV_BASE_DATE,                    // 支払日
         t3.LOG_NO,                           // 登録番号
-        t3.INV_MONTH,                        // 検収月
+
 
         case 
         when t2.Company_Code = '1400' then 'ＵＭＣ・Ｈエレクトロニクス株式会社'
@@ -342,6 +353,71 @@ extend service TableService {
         t3.SUPPLIER_DESCRIPTION,             // 仕入先名称
 
     }
+
+
+    //  entity PCH_T04_PAYMENT_SUM_HJ6 as
+    //     select from PCH_T04_PAYMENT_UNIT t3
+    //     left join PCH_T04_PAYMENT_SUM t2
+    //     on t3.SUPPLIER = t2.SUPPLIER
+    //     and t3.INV_NO = t2.INV_NO
+    //     and t3.SUPPLIER is not null
+    //     left join PCH_T04_PAYMENT_SUM_HJ5 t1
+    //     on t3.SUPPLIER = t1.SUPPLIER
+    //     and t3.INV_NO = t1.INV_NO
+    //     and t3.SUPPLIER is not null
+                                
+    // distinct {
+    //     KEY t3.SUPPLIER,
+    //     KEY t3.INV_NO,
+    //     KEY t3.DOWNLOADID,
+    //     t3.INV_MONTH,                        // 検収月
+    //     TOTAL_PRICE_AMOUNT_8,             // 仕入金額計(8%対象)
+    //     CONSUMPTION_TAX_8 ,               // 计算消費税計(8%対象)
+    //     TOTAL_PAYMENT_AMOUNT_8_END,       // 计算税込支払金額(8%対象)
+    //     TOTAL_PRICE_AMOUNT_10,            // 仕入金額計(10%対象)
+    //     CONSUMPTION_TAX_10 ,              // 计算消費税計(10%対象)
+    //     TOTAL_PAYMENT_AMOUNT_10_END,      // 计算税込支払金額(10%対象)
+    //     TOTAL_PRICE_AMOUNT_NOT,           // 対象外金額
+    //     TOTAL_PAYMENT_AMOUNT_FINAL,       // 総合計
+    //     t2.NO_DETAILS,                       // 発注\明細NO
+    //     t2.MAT_ID,                           // 品目コード
+    //     t2.MAT_DESC,                         // 品目名称
+    //     t2.GR_DATE,                          // 入荷日
+    //     t2.QUANTITY,                         // 仕入単位数
+    //     t2.UNIT_PRICE,                       // 基準通貨単価
+    //     t2.UNIT_PRICE_IN_YEN,                // 基準通貨単価
+    //     t2.BASE_AMOUNT_EXCLUDING_TAX,        // 基準通貨金額税抜
+    //     t2.TAX_RATE,                         // INV税率
+    //     t2.Company_Code,
+    //     t2.PO_TRACK_NO,                      // 備考
+    //     t2.INV_BASE_DATE,                    // 支払日
+    //     t3.LOG_NO,                           // 登録番号
+
+
+    //     case 
+    //     when t2.Company_Code = '1400' then 'ＵＭＣ・Ｈエレクトロニクス株式会社'
+    //     when t2.Company_Code = '1100' then 'ユー・エム・シー・エレクトロニクス株式会社'
+    //     else null
+    //     end as Company_Name : String(50),
+
+    //     CONCAT(
+    //         SUBSTRING(t3.INV_MONTH, 1, 4),  // 提取年份
+    //         '年', 
+    //         SUBSTRING(t3.INV_MONTH, 5, 2)   // 提取月份
+    //     ) as INV_MONTH_FORMATTED : String,
+
+    //     concat(
+    //         concat(
+    //             substring(cast(current_date as String), 1, 4), '/'
+    //         ),
+    //         concat(
+    //             substring(cast(current_date as String), 6, 2), '/'
+    //         )
+    //         ) || substring(cast(current_date as String), 9, 2) as CURRENT_DAY : String, // 発行日
+
+    //     t3.SUPPLIER_DESCRIPTION,             // 仕入先名称
+
+    // }
 
     action PCH04_SENDEMAIL(parms : String) returns String;
     action PCH04_EXCELDOWNLOAD(parms : String) returns LargeBinary;

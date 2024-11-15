@@ -17,19 +17,31 @@ var _objectCommData = {
 
     return Controller.extend("umc.app.controller.pch.pch05_account_l", {
         formatter : formatter,
+        // onInit: function () {
+        //     this._LocalData = this.getOwnerComponent().getModel("local");
+        //     this._oDataModel = this.getOwnerComponent().getModel();
+        //     this._ResourceBundle = this.getOwnerComponent().getModel("i18n").getResourceBundle();
+        //     this._oDataModel.attachBatchRequestCompleted(function (oEvent) {
+        //         this._setBusy(false);
+        //         var errors = this._LocalData.getProperty("/errors");
+        //         if (errors) {
+        //             // 处理错误
+        //         }
+        //         this._LocalData.setProperty("/errors", "");
+        //     }.bind(this));
+        // },
+
         onInit: function () {
-            this._LocalData = this.getOwnerComponent().getModel("local");
-            this._oDataModel = this.getOwnerComponent().getModel();
-            this._ResourceBundle = this.getOwnerComponent().getModel("i18n").getResourceBundle();
-            this._oDataModel.attachBatchRequestCompleted(function (oEvent) {
-                this._setBusy(false);
-                var errors = this._LocalData.getProperty("/errors");
-                if (errors) {
-                    // 处理错误
-                }
-                this._LocalData.setProperty("/errors", "");
-            }.bind(this));
+
+            var oViewModel = new sap.ui.model.json.JSONModel({
+				// isButtonEnabled: false // 默认值为 true
+			});
+			this.getView().setModel(oViewModel, "viewModel");
+            // 初始化代码
+            // 这里可以添加其他初始化逻辑，比如绑定数据等
+            console.log("Controller initialized.");
         },
+
         onExport: function () {
             var oTable = this.getView().byId("detailTable");
             var aSelectedIndices = oTable.getSelectedIndices();
