@@ -49,17 +49,10 @@ public class Ifm02MstService {
                 o.setCdBy(value.getCreatedByUser());
                 o.setUpBy(value.getLastChangedByUser());
 
-                String dbMat = value.getBaseUnit();
+                String unittrans = sysD008Dao.getDnameByHcodeDcode("S4_UNIT_TEC_2_USER", value.getBaseUnit());
 
-                if (dbMat != null) {
+                o.setMatUnit(unittrans);
 
-                    String dbMatUser = sysD008Dao.getDnameByHcode("S4_UNIT_TEC_2_USER", dbMat);
-
-                    o.setMatUnit(dbMatUser);
-
-                }
-
-                // o.setMatUnit(value.getBaseUnit());
                 o.setMatType(value.getProductType());
                 o.setMatGroup(value.getProductGroup());
                 o.setManuCode(value.getManufacturerNumber());
@@ -73,19 +66,23 @@ public class Ifm02MstService {
                 o.setCustMaterial(value.getYY1_CUSTOMERMATERIAL_PRD());
                 MSTDao.modify(o);
 
-                T06MatPlant o2 = T06MatPlant.create();
+                if (value.get_ProductPlant().size() > 0) {
 
-                value.get_ProductPlant().get(0).getProductIsCriticalPrt();
+                    T06MatPlant o2 = T06MatPlant.create();
 
-                o2.setMatId(value.get_ProductPlant().get(0).getProduct());
-                o2.setPlantId(value.get_ProductPlant().get(0).getPlant());
-                if (value.get_ProductPlant().get(0).getProductIsCriticalPrt()) {
-                    o2.setImpComp("X");
-                } else {
-                    o2.setImpComp(" ");
+                    value.get_ProductPlant().get(0).getProductIsCriticalPrt();
+
+                    o2.setMatId(value.get_ProductPlant().get(0).getProduct());
+                    o2.setPlantId(value.get_ProductPlant().get(0).getPlant());
+                    if (value.get_ProductPlant().get(0).getProductIsCriticalPrt()) {
+                        o2.setImpComp("X");
+                    } else {
+                        o2.setImpComp(" ");
+                    }
+
+                    MSTDao.modifyt06(o2);
+
                 }
-
-                MSTDao.modifyt06(o2);
 
             }
 

@@ -42,10 +42,10 @@ sap.ui.define(["umc/app/Controller/BaseController", "sap/m/MessageToast"], funct
 
     onRebind: function (oEvent) {
       this._rowNoMap == null;
-      let sorts = ["QUO_NUMBER,QUO_ITEM"];
+      let sorts = ["SALES_D_NO","QUO_ITEM"];
       let ascs = [false]; //true desc false asc
       //手动添加排序
-      // this._onListRebinSort(oEvent, sorts, ascs);
+      this._onListRebinSort(oEvent, sorts, ascs);
     },
 
 
@@ -58,9 +58,11 @@ sap.ui.define(["umc/app/Controller/BaseController", "sap/m/MessageToast"], funct
             return false;
         }
         let para = [];
-        selectedData.forEach(item => {
-            let key = item.QUO_NUMBER;
-            para.push(key);
+      selectedData.forEach(item => {
+
+          let key1 = item.SALES_NUMBER;
+        
+            para.push(key1);
         });
         this._onPress(oEvent,"RouteView_pch10_d", this.unique(para).join(","));
       

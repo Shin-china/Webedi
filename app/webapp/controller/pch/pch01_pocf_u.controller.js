@@ -21,13 +21,8 @@ sap.ui.define([
 			oMessageManager.registerObject(this.getView(), true);
 
 			this.getRouter().getRoute("RouteCre_pch01").attachPatternMatched(this._onRouteMatched, this);
-
-			var oViewModel = new sap.ui.model.json.JSONModel({
-				isButtonEnabled: true // 默认值为 true
-			});
-			this.getView().setModel(oViewModel, "viewModel");
+			this.byId("_pch01runbutton").setEnabled(false); // 禁用保存按钮
 			
-
 			//  设置版本号
 			this._setOnInitNo("PCH01", ".20240812.01");
 		},
@@ -125,17 +120,18 @@ sap.ui.define([
 						// 更新画面上的model
 						jsonModel.setData(myArray.list);
 
-						// myArray.list.forEach(function (item) {
-						// 	if (item.SUCCESS == false) { // 根据实际数据结构判断是否存在错误字段
-						// 		hasError = true; // 后台检查有错误
-						// 	}
-						// });
+						myArray.list.forEach(function (item) {
+							if (item.SUCCESS == false) { // 根据实际数据结构判断是否存在错误字段
+								hasError = true; // 后台检查有错误
+							}
+						});
 
-						// if (hasError) {
-						// 	// that._setEditable(false);
-						// 	that.getView().getModel("viewModel").setProperty("/isButtonEnabled", false);
-						
-						// }
+						if (hasError) {
+
+							that.byId("_pch01runbutton").setEnabled(false); // 启用保存按钮
+						} else {
+							that.byId("_pch01runbutton").setEnabled(true); // 禁用保存按钮
+						}
 
 						that._setBusy(false);
 
@@ -149,24 +145,12 @@ sap.ui.define([
 				});
 			}
 
-			data.forEach(function (item) {
-
-				if (item.MSG_TEXT.length > 0) {
-					hasError = true;
-				}
-
-				if (hasError) {
-					// that._setEditable(false);
-					that.getView().getModel("viewModel").setProperty("/isButtonEnabled", false);
-				}
-			})
-
 		},
 
 		onSave: function () {
 			var that = this;
 			that._setBusy(true);
-	
+			
 			this._callCdsAction("/PCH01_SAVE_DATA", this.getData(), this).then((oData) => {
 			  var myArray = JSON.parse(oData.PCH01_SAVE_DATA);
 			  //that._setCnt(myArray.reTxt);
@@ -174,11 +158,21 @@ sap.ui.define([
 	
 			  jsonModel.setData(myArray.list);
 			  //设置为非创建
-			  that._setIsCreate(false);
+				that._setIsCreate(false);
+
+				that.onResend(jsonModel);
 	
-			  that._setBusy(false);
+				that._setBusy(false);
+				
 			});
-		  },
+		},
+		
+		onResend: function (jsonModel) {
+			
+            //调用po接口
+            this._invoPo(jsonModel.getData());
+
+    },
 
 		// excel上传
 		onFileChange: function (oEvent) {

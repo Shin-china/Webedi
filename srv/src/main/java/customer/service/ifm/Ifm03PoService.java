@@ -77,7 +77,7 @@ public class Ifm03PoService {
 
                     int dn = Integer.parseInt(Items.getPurchaseorderitem());
 
-                    if ("X".equals(Items.getPurchasingdocumentdeletioncode())
+                    if ("L".equals(Items.getPurchasingdocumentdeletioncode())
                             && PchDao.getByID2(Items.getPurchaseorder(), dn) == null) {
 
                         // 当前02表中没有本条，传进来的是删除标记还是x ，则不进行插入操作
@@ -86,7 +86,6 @@ public class Ifm03PoService {
                         T01PoH o = T01PoH.create();
 
                         T01PoH T01poExist = PchDao.getByID(Items.getPurchaseorder());
-
                         String supplier = Items.getSupplier().replaceFirst("^0+(?!$)", "");
 
                         // 头找到了
@@ -131,42 +130,45 @@ public class Ifm03PoService {
                         // 2.当前po下的所有明细不是都有删除标记
                         Boolean isDelflaghavechange = PchDao.getDelflaghavechange(Items);
 
+                        // 添加创建时间
+                        // o.setCreationdate(Items.getCreationdate());
+
+                        // 添加po创建人
+                        // o.setSapCdBy(Items.getCreatedbyuser());
+
                         o.setPoNo(Items.getPurchaseorder());
                         o.setPoBukrs(Items.getCompanycode());
 
                         try {
+                            LocalDate cddate = LocalDate.parse(Items.getCreationdate(), formatter);
+                            LocalDate poDate = LocalDate.parse(Items.getPurchaseorderdate(), formatter); // 转换字符串为 //
 
-                            LocalDate poDate = LocalDate.parse(Items.getPurchaseorderdate(), formatter); // 转换字符串为
-                                                                                                         // LocalDate
+                            o.setCdDate(cddate);
                             o.setPoDate(poDate);
 
                         } catch (DateTimeParseException e) {
-
                             System.out.println("日期格式无效: " + e.getMessage()); // 处理格式错误
-
                         }
-
                         // 去除前导 0 后的
                         o.setSupplier(supplier);
+                        o.setPocdby(Items.getCorrespncinternalreference());
+                        o.setSapCdBy(Items.getCreatedbyuser());
 
                         PchDao.modify(o);
                         // ------------------------------------------------------------------------------------以上是对t01的修改
 
                         T02PoD o2 = T02PoD.create();
                         o2.setPoNo(Items.getPurchaseorder());
-
                         o2.setDNo(dn);
-
                         o2.setMatId(Items.getMaterial());
-
                         o2.setPlantId(Items.getPlant());
                         o2.setPoDTxz01(Items.getPurchaseorderitemtext());
                         Items.getOrderquantity();
-
                         o2.setPoPurQty(new BigDecimal(Items.getOrderquantity()));
                         o2.setPoPurUnit(Items.getPurchaseorderquantityunit());
-
                         o2.setCurrency(Items.getDocumentcurrency());
+                        o2.setIntNumber(Items.getInternationalarticlenumber());
+                        o2.setPrBy(Items.getRequisitionername());
 
                         try {
 
@@ -178,10 +180,10 @@ public class Ifm03PoService {
 
                         }
 
-                    try {
-                        // 将字符串转换为 BigDecimal
-                        BigDecimal netpriceAmount = new BigDecimal(Items.getNetamount());
-                        BigDecimal netPriceQuantity = new BigDecimal(Items.getNetpricequantity());
+                        try {
+                            // 将字符串转换为 BigDecimal
+                            BigDecimal netpriceAmount = new BigDecimal(Items.getNetpriceamount());
+                            BigDecimal netPriceQuantity = new BigDecimal(Items.getNetpricequantity());
 
                             // 检查 netPriceQuantity 是否为 0，以避免除以 0 的情况
                             if (netPriceQuantity.compareTo(BigDecimal.ZERO) != 0) {
@@ -206,7 +208,7 @@ public class Ifm03PoService {
 
                         o2.setSupplierMat(Items.getSupplierMaterialNumber());
 
-                        if (Items.getPurchasingdocumentdeletioncode() == "X") {
+                        if (Items.getPurchasingdocumentdeletioncode().equals("L")) {
 
                             dele = true;
                         }
@@ -256,11 +258,14 @@ public class Ifm03PoService {
                                 // 全部明细都有删除标记
                                 supplierDeleteMap.put(supplier, "全部明细都有删除标记，肯定是删除");
 
+                            } else {
+                                // 部分明细有删除标记
+                                supplierUpdateMap.put(supplier, "部分明细有删除标记，肯定是更新");
+
                             }
                         }
                     }
                 }
-
                 // 创建发信
                 if (supplierCreatMap.size() > 0) {
                     for (Map.Entry<String, String> entry : supplierCreatMap.entrySet()) {
@@ -340,6 +345,7 @@ public class Ifm03PoService {
                 return "同步失败";
 
             }
+
         } catch (Exception e) {
 
             e.printStackTrace();

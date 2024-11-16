@@ -11,19 +11,20 @@ xmlns:mvc="sap.ui.core.mvc"
 xmlns:form="sap.ui.layout.form"
 xmlns:fb="sap.ui.comp.filterbar">
 
+
 	<Panel id="fileUpload" expandable="true" expanded="true" headerText="{pch>PCH01_TITLE}" width="95rem" class="sapUiResponsiveMargin">
 		<!--上传文件-->
 		<unified:FileUploader id="fileUploader" sameFilenameAllowed="true" buttonText="{pch>U_B_SELECT}" fileType="xlsx,xls" change="onFileChange" width="40rem" />
 	</Panel>
 
-	<Panel id="idpanel1" expandable="true" expanded="true" headerText="{pch>U_RESULT}" width="auto" class="sapUiResponsiveMargin">
+	<Panel id="idpanel1" expandable="true" expanded="true" headerText="{pch>U_RESULT}" width="auto" class="sapUiResponsiveMargin" >
 		<t:Table id="tableUploadData" rows="{path: 'workInfo>/'}" class="sapUiSizeCompact" selectionMode='MultiToggle' threshold="20">
 			<t:extension>
 				<OverflowToolbar id="idoverflowtooblar1">	
 					<Text id="idtext1" text="{/logInfo}"/>
 					<ToolbarSpacer id="idtoolbarspacer1"/>
-					<Button id="_IDGenButton2" text="{pch>U_B_CHECK}" press="onCheck" enabled="true"/>
-					<Button id="_IDGenButton3" text="{pch>U_B_RUN}" press="onSave" enabled="{viewModel>/isButtonEnabled}"/>	
+					<Button id="_IDGenButton2" text="{pch>U_B_CHECK}" press="onCheck" />
+					<Button id="_pch01runbutton" text="{pch>U_B_RUN}" press="onSave"  />	
 					<Button id="Export" icon="sap-icon://excel-attachment" type="Transparent" press="onExport" enabled="{=${local>/excelSet}.length > 0}" text="{pch>U_B_EXPORTEXCEL}" tooltip="{pch>U_B_EXPORTEXCEL}"/>
 				</OverflowToolbar>
 			</t:extension>

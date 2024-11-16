@@ -195,7 +195,7 @@ entity T07_QUOTATION_D : cuid, IF_CUID_FILED { //
   @title: '{i18n>CURRENCY}' CURRENCY                     : String(3); //通貨
   @title: '{i18n>PRICE}' PRICE                           : Decimal(18, 5); //単価
   @title: '{i18n>PRICE_CONTROL}' PRICE_CONTROL           : String(1); //Date of pricing control(価格有効日：発注時or納入時)
-  @title: '{i18n>LEAD_TIME}' LEAD_TIME                   : Date; //LT（日数）
+  @title: '{i18n>LEAD_TIME}' LEAD_TIME                   : Integer; //LT（日数）
   @title: '{i18n>MOQ}' MOQ                               : String(50); //MOQ
   @title: '{i18n>UNIT}' UNIT                             : String(50); //Base Unit of Measure(単位：pc or kgなど)
   @title: '{i18n>SPQ}' SPQ                               : String(50); //SPQ(Rounding：MOQの次の発注単位)

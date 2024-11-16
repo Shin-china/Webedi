@@ -59,7 +59,7 @@ public class JobMonotor {
     public void poolMonitor3() throws IOException {
 
         // IF041 po同期 自开发
-        System.out.println("MST Sync run");
+        System.out.println("PO Sync run");
         ifm03PoService.syncPo();
         System.out.println("JobMonotor  run");
     }
@@ -68,7 +68,7 @@ public class JobMonotor {
     public void poolMonitor4() throws IOException {
 
         // IF065 フォーキャスト連携
-        System.out.println("pr Sync run");
+        System.out.println("PR Sync run");
         ifm04PrService.syncPr();
         System.out.println("JobMonotor  run");
     }
