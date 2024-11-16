@@ -265,11 +265,11 @@ public class Pch04Handler implements EventHandler {
         list.add(new Pch04());
         dataList.setList(list);
 
-        ArrayList<Pch04> list = dataList.getList();
-        list.add(new Pch04());
-        list.add(new Pch04());
-        list.add(new Pch04());
-        dataList.setList(list);
+        // ArrayList<Pch04> list = dataList.getList();
+        // list.add(new Pch04());
+        // list.add(new Pch04());
+        // list.add(new Pch04());
+        // dataList.setList(list);
 
         InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(UWebConstants.PCH04_TEP_PATH);
 
