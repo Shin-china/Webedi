@@ -232,17 +232,26 @@ public class Pch07Service {
             // 取第一个 Item
             JSONObject firstItem = itemsArray.getJSONObject(0);
 
-            // 获取 LeadTime 字符串
-            String leadTimeStr = firstItem.getString("Materialplanneddeliverydurn");
+            // // 检查字符串是否有效
+            // if (leadTimeStr != null && !leadTimeStr.isEmpty() && !leadTimeStr.equals("0")) {
+            //     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+            //     LocalDate leadTime = LocalDate.parse(leadTimeStr, formatter);
+            //     // t07QuotationD2.setLeadTime(leadTime);
+            // } else {
+            //     // 处理无效值的情况，例如设置为 null 或者提供默认值
+            //     t07QuotationD2.setLeadTime(null); // 或者根据需要设置默认值
+            // }
 
-            // 检查字符串是否有效
-            if (leadTimeStr != null && !leadTimeStr.isEmpty() && !leadTimeStr.equals("0")) {
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-                LocalDate leadTime = LocalDate.parse(leadTimeStr, formatter);
-                t07QuotationD2.setLeadTime(leadTime);
+            // 从 JSON 获取 DEC3 类型的值为 BigDecimal
+            BigDecimal leadTimeValue = firstItem.getBigDecimal("Materialplanneddeliverydurn");
+
+            // 检查值是否有效
+            if (leadTimeValue != null) {
+                // 将 BigDecimal 转换为 int 并设置
+                t07QuotationD2.setLeadTime(leadTimeValue.intValue());
             } else {
-                // 处理无效值的情况，例如设置为 null 或者提供默认值
-                t07QuotationD2.setLeadTime(null); // 或者根据需要设置默认值
+                // 如果值为 null，设置为默认值或 null
+                t07QuotationD2.setLeadTime(null); // 或者设置为 0
             }
 
             // 设置 Qty
@@ -256,6 +265,7 @@ public class Pch07Service {
             t07QuotationD2.setPrice(priceBigDecimal);
 
             // 获取 Baseunit 并设置到表字段中
+         
             t07QuotationD2.setUnit(firstItem.getString("Baseunit"));
             t07QuotationD2.setOriginalCou(firstItem.getString("Suppliercertorigincountry"));
             t07QuotationD2.setPriceControl(firstItem.getString("Pricingdatecontrol"));

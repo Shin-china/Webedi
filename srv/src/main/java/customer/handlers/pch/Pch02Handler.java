@@ -33,6 +33,7 @@ import customer.dao.sys.IFSManageDao;
 import customer.odata.S4OdataTools;
 import customer.service.pch.Pch06Service;
 import customer.service.pch.PchService;
+import customer.task.JobMonotor;
 import customer.tool.Eenvironment;
 import customer.tool.StringTool;
 
@@ -51,8 +52,16 @@ public class Pch02Handler implements EventHandler {
     @Autowired
     private IFSManageDao ifsManageDao;
 
+    @Autowired
+    private JobMonotor jobMonotor;
+
+    
+
     @On(event = PCH02ConfirmationREQUESTContext.CDS_NAME)
     public void onPCH02ConfirmationREQUEST(PCH02ConfirmationREQUESTContext context) {
+
+    //    jobMonotor.poolMonitor3();
+
         try {
             // 从前端参数中获取字符串
             String parms = context.getParms();

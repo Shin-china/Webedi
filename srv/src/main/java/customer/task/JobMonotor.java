@@ -8,6 +8,8 @@ import customer.service.ifm.Ifm02MstService;
 // import customer.service.ifm.Ifm03PoService;
 import customer.service.ifm.Ifm03PoService;
 import customer.service.ifm.Ifm04PrService;
+// import customer.service.ifm.Ifm05PrService;
+import customer.service.ifm.Ifm05PayService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,6 +37,9 @@ public class JobMonotor {
 
     @Autowired
     private Ifm04PrService ifm04PrService;
+
+    @Autowired
+    private Ifm05PayService ifm05PayService;
 
     @Scheduled(cron = "0 0/5 * * * ?")
     public void poolMonitor() throws IOException {
@@ -71,6 +76,15 @@ public class JobMonotor {
         System.out.println("PR Sync run");
         ifm04PrService.syncPr();
         System.out.println("JobMonotor  run");
+    }
+
+    @Scheduled(cron = "0 0/30 * * * ?")
+    public void poolMonitor5() throws IOException {
+
+        // // IF042 PO支払通知同期
+        // System.out.println("pr Sync run");
+        // ifm05PayService.syncPay();
+        // System.out.println("JobMonotor  run");
     }
 
 }
