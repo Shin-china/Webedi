@@ -112,11 +112,12 @@ sap.ui.define(
                     that
                       ._createPDFDow(_that, _sResponse, _xdpTemplateID, token)
                       .then(
-                        function () {
+                        function (blob) {
                           //打印回写处理
                           if (_printBackFuncation) {
                             that.printBackAction(_that, _data, _printBackFuncation, _smartTableId, entityInModelID);
                           }
+                          resolve(blob); 
                         },
                         function (error) {
                           //异常MSG处理
