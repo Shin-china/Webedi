@@ -89,7 +89,7 @@ public class Pch07 {
     private String PRICE_CONTROL; // Date of pricing control
 
     @JSONField(name = "LEAD_TIME")
-    private String LEAD_TIME; // LT（日数）
+    private Integer LEAD_TIME; // LT（日数）
 
     @JSONField(name = "MOQ")
     private String MOQ; // MOQ

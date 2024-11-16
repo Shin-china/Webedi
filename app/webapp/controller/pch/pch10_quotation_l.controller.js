@@ -75,26 +75,57 @@ sap.ui.define(["umc/app/Controller/BaseController", "sap/m/MessageToast"], funct
 
       let selectedData = this._getSelectedIndicesDatasByTable("detailTable10");
       if (selectedData.length == 0) {
-          MessageToast.show("選択されたデータがありません、データを選択してください。");
-          return false;
+        MessageToast.show("選択されたデータがありません、データを選択してください。");
+        return false;
       }
 
-      var pList = Array();
-      selectedData.forEach(odata => {
-        var p = {
 
-          Quo_No: odata.QUO_NUMBER
+      var sal_Numset = new Set(selectedData.map(data => data.SALES_NUMBER));
+      if (sal_Numset.size != 0) {
 
-        };
+        var Sal_Num = sal_Numset.values().next().value;
+        var entity = "/PCH_T06_QUOTATION_H";
 
-        pList.push(p);
-        
-			})
+        this._readHead(Sal_Num, null, entity).then(oHeadData => {
 
-      this._callCdsAction("/PCH10_GR_SEND",  { params: JSON.stringify(pList) }, this).then(oData => {
+          let H_status = oHeadData.results[0].STATUS;
+
+          if (H_status == "5") {
+
+            MessageToast.show("購買見積番号" + Sal_Num + "に対して、ステータスは完了となりましたので、送信できません。");
+          
+            return false;
+
+          }
+          
+
+          var pList = Array();
+          selectedData.forEach(odata => {
+            var p = {
+
+              Quo_No: odata.SALES_NUMBER
+
+            };
+
+            pList.push(p);
+              
+            })
+
+            this._callCdsAction("/PCH10_GR_SEND",  { params: JSON.stringify(pList) }, this).then(oData => {
 
 
-      });
+            });
+
+
+          
+        });
+
+  
+      };
+      
+
+
+
       
     },
 
@@ -122,6 +153,29 @@ sap.ui.define(["umc/app/Controller/BaseController", "sap/m/MessageToast"], funct
 					break;
 				}
 			});
+    },
+
+    _readHead: function (a,b, entity) {
+          var that = this;
+          return new Promise(function (resolve, reject) {
+            that.getModel().read(entity, {
+                filters: [
+                  
+                new sap.ui.model.Filter({
+                  path: "SALES_NUMBER",
+                  value1: a,
+                  operator: sap.ui.model.FilterOperator.EQ,
+                }),
+                  
+              ],
+              success: function (oData) {
+                resolve(oData);
+              },
+              error: function (oError) {
+                reject(oError);
+              },
+            });
+          });
     },
     
   });

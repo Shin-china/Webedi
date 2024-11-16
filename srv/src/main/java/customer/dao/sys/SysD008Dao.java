@@ -81,19 +81,21 @@ public class SysD008Dao extends Dao {
         return null;
     }
 
-    public String getDnameByHcode(String h_code, String mat) {
+    public String getDnameByHcodeDcode(String h_code, String d_code) {
 
         Optional<T08ComOpD> listOf = db.run(
                 Select.from(Sys_.T08_COM_OP_D)
-                        .where(o -> o.H_CODE().eq(h_code).and(o.D_CODE().eq(mat))))
+                        .where(o -> o.H_CODE().eq(h_code).and(o.D_CODE().eq(d_code))))
 
                 .first(T08ComOpD.class);
 
-        if (listOf != null) {
+        if (listOf.isPresent()) {
 
             return listOf.get().getDName();
 
         }
-        return null;
+
+        return d_code;
+
     }
 }

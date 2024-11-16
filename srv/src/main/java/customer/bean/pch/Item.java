@@ -32,6 +32,9 @@ public class Item {
     private String Plainlongtext;
     private String Schedulelinedeliverydate;
     private String SupplierMaterialNumber;
+    private String Internationalarticlenumber;
+    private String Requisitionername;
+    private String Correspncinternalreference;
 
     private List<Confirmation> Confirmation = new ArrayList<Confirmation>();
 

@@ -89,7 +89,7 @@ public class Pch08Detail {
     private String PRICE_CONTROL;
 
     @JSONField(name = "LEAD_TIME")
-    private LocalDate LEAD_TIME;
+    private Integer LEAD_TIME;
 
     @JSONField(name = "MOQ")
     private String  MOQ;

@@ -32,9 +32,11 @@ public class Pch10Handler implements EventHandler {
 
         for (int i = 0; i < jsonArray.size(); i++) {
             JSONObject jsonObject = jsonArray.getJSONObject(i);
-            String quo_no = jsonObject.getString("Quo_No");
+            String sal_Num = jsonObject.getString("Quo_No");
 
-            pch10Service.setQuostatus(quo_no);
+
+            //通过quo_no获取客户信息，并设置客户的报价单状态
+            pch10Service.setQuostatus(sal_Num);
 
             context.setResult("1");
 

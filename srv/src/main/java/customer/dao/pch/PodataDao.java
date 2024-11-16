@@ -78,9 +78,10 @@ public class PodataDao extends Dao {
 
     public LocalDate getLastDeliveryDate(int lastdn, String lastpo) {
 
+        BigDecimal c0 = BigDecimal.ZERO;
         // 从数据库中选择 PO_NO 和 D_NO 匹配的记录，且 RelevantQuantity 不为空
         List<T03PoC> results = db.run(Select.from(Pch_.T03_PO_C)
-                .where(po -> po.PO_NO().eq(lastpo).and(po.D_NO().eq(lastdn)).and(po.RelevantQuantity().isNotNull())))
+                .where(po -> po.PO_NO().eq(lastpo).and(po.D_NO().eq(lastdn)).and(po.RelevantQuantity().gt(c0))))
                 .listOf(T03PoC.class);
 
         // 找到最大 DELIVERY_DATE
