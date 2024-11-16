@@ -10,7 +10,9 @@ extend service TableService {
             left join PCH.T07_QUOTATION_D as T02
                 on(
                      T01.QUO_NUMBER = T02.QUO_NUMBER
+
                 )
+
 
             distinct {
                 key T02.QUO_NUMBER,
@@ -74,8 +76,8 @@ extend service TableService {
                     T02.UMC_COMMENT_2,
                     T02.STATUS,
                     T02.SUPPLIER_MAT
-
             }
+            where T02.DEL_FLAG <> 'Y' and T02.DEL_FLAG <> 'y';
 //                 action PCH07_CHECK_DATA(shelfJson : String) returns String;
 //                 action PCH07_SAVE_DATA(shelfJson : String) returns String;
 

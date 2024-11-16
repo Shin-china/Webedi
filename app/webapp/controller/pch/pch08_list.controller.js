@@ -219,13 +219,15 @@ sap.ui.define([
                 (oData) => {
 
 
-                    var myArray = JSON.parse(oData.PCH08_SAVE_DATA);
+                    var oResult = JSON.parse(oData.PCH08_SAVE_DATA);
                     this._localModel.setProperty("/show", true);
                     this._localModel.setProperty("/save", false);
-                    if (myArray.err) {
+                    if (oResult.err) {
                         this._localModel.setProperty("/show", false);
                         this._localModel.setProperty("/save", true);
-                        that.MessageTools._addMessage(this.MessageTools._getI18nTextInModel("pch", myArray.reTxt, this.getView()), null, 1, this.getView());
+                        that.MessageTools._addMessage(this.MessageTools._getI18nTextInModel("pch", oResult.reTxt, this.getView()), null, 1, this.getView());
+                    }else{
+                        sap.m.MessageToast.show(that._ResourceBundle.getText("SAVE_SUCCESS"));
                     }
                     that._setBusy(false);
 
