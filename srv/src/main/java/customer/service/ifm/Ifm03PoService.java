@@ -271,7 +271,7 @@ public class Ifm03PoService {
                     for (Map.Entry<String, String> entry : supplierCreatMap.entrySet()) {
 
                         MailJson mailJson = MailJson.create();
-                        List<T08ComOpD> emailadd = sysd008dao.getmailaddByHcodeV1(H_CODE, entry.getValue());
+                        List<T08ComOpD> emailadd = sysd008dao.getmailaddByHcodeV1(H_CODE, entry.getKey());
                         if (emailadd != null) {
                             mailJson.setTemplateId("UWEB_M004_C");
                             mailJson.setMailTo(emailadd.get(0).getValue02());
@@ -295,7 +295,7 @@ public class Ifm03PoService {
                 if (supplierUpdateMap.size() > 0) {
                     for (Map.Entry<String, String> entry : supplierUpdateMap.entrySet()) {
                         MailJson mailJson = MailJson.create();
-                        List<T08ComOpD> emailadd = sysd008dao.getmailaddByHcodeV1(H_CODE, entry.getValue());
+                        List<T08ComOpD> emailadd = sysd008dao.getmailaddByHcodeV1(H_CODE, entry.getKey());
                         if (emailadd != null) {
                             mailJson.setTemplateId("UWEB_M004_U");
                             mailJson.setMailTo(emailadd.get(0).getValue02());
@@ -319,7 +319,7 @@ public class Ifm03PoService {
                 if (supplierDeleteMap.size() > 0) {
                     for (Map.Entry<String, String> entry : supplierDeleteMap.entrySet()) {
                         MailJson mailJson = MailJson.create();
-                        List<T08ComOpD> emailadd = sysd008dao.getmailaddByHcodeV1(H_CODE, entry.getValue());
+                        List<T08ComOpD> emailadd = sysd008dao.getmailaddByHcodeV1(H_CODE, entry.getKey());
                         if (emailadd != null) {
                             mailJson.setTemplateId("UWEB_M004_D");
                             mailJson.setMailTo(emailadd.get(0).getValue02());
