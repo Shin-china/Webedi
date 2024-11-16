@@ -174,15 +174,14 @@ public class PurchaseDataDao extends Dao {
         BigDecimal PoPurQty = new BigDecimal(items.getOrderquantity());
         BigDecimal amount = new BigDecimal(items.getNetamount());
 
-        if (isExist.getPoNo() != items.getPurchaseorder()
-                || !isExist.getDNo().equals(dn)
-                || !isExist.getPoPurQty().equals(PoPurQty)
-                || isExist.getPoDDate().isEqual(deliveryDate)
-                || isExist.getDelAmount().equals(amount)
+        // isExist.getPoNo() != items.getPurchaseorder()
+        // || !isExist.getDNo().equals(dn)
         // 删除flag，单独考虑
         // || isExist.getDelFlag() != items.getPurchasingdocumentdeletioncode()
-
-        ) {
+        if (!isExist.getPoPurQty().equals(PoPurQty)
+                || !isExist.getPoDDate().isEqual(deliveryDate)
+                || isExist.getDelAmount().compareTo(amount) != 0) {
+                    
             return true; // 只要有一个值不一样，返回 true
         }
 

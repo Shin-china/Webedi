@@ -94,15 +94,15 @@ public class Ifm03PoService {
                             // 但是明细没找到，也是创建
                             Boolean T02podnExist = (PchDao.getByID2(Items.getPurchaseorder(), dn)) != null;
 
-                            if (T02podnExist) {
+                            if (!T02podnExist) {
 
-                                supplierCreatMap.put(supplier, "头没找到，肯定是创建");
+                                supplierCreatMap.put(supplier, "来自99行，头找到了，但是明细没找到，创建发信对象");
 
                             }
 
                         } else { // 头没找到，创建
 
-                            supplierCreatMap.put(supplier, "头没找到，肯定是创建");
+                            supplierCreatMap.put(supplier, "来自105行，头没找到，创建发信对象");
 
                         }
 
@@ -115,7 +115,7 @@ public class Ifm03PoService {
 
                             if (!supplierUpdateMap.containsKey(supplier)) {
 
-                                supplierUpdateMap.put(supplier, "四个字段其中有修改，肯定是更新");// delflag 单独考虑。
+                                supplierUpdateMap.put(supplier, "来自118行，四个字段其中有修改，肯定是更新");// delflag 单独考虑。
 
                             }
                             ;
@@ -256,11 +256,11 @@ public class Ifm03PoService {
 
                             if (isalldele) {
                                 // 全部明细都有删除标记
-                                supplierDeleteMap.put(supplier, "全部明细都有删除标记，肯定是删除");
+                                supplierDeleteMap.put(supplier, "来自159行，全部明细都有删除标记，肯定是删除");
 
                             } else {
                                 // 部分明细有删除标记
-                                supplierUpdateMap.put(supplier, "部分明细有删除标记，肯定是更新");
+                                supplierUpdateMap.put(supplier, "来自263行，部分明细有删除标记，肯定是更新");
 
                             }
                         }
