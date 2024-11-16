@@ -1,6 +1,8 @@
 package customer.handlers.pch;
 
 import java.io.ByteArrayOutputStream;
+
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -31,8 +33,14 @@ import customer.bean.tmpl.Pch05;
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.annotation.ExcelProperty;
+import com.alibaba.excel.metadata.Head;
+import com.alibaba.excel.metadata.data.CellData;
+import com.alibaba.excel.metadata.data.WriteCellData;
+import com.alibaba.excel.write.handler.CellWriteHandler;
 import com.alibaba.excel.write.metadata.WriteSheet;
 import com.alibaba.excel.write.metadata.fill.FillConfig;
+import com.alibaba.excel.write.metadata.holder.WriteSheetHolder;
+import com.alibaba.excel.write.metadata.holder.WriteTableHolder;
 import com.alibaba.fastjson.JSON;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -261,10 +269,24 @@ public class Pch04Handler implements EventHandler {
         // Excel写入数据
         ExcelWriter excelWriter = null;
         try {
+            // Add by stanley
+            CellWriteHandler cellWriteHandler = new CellWriteHandler() {
+                @Override
+                public void afterCellDispose(WriteSheetHolder writeSheetHolder, WriteTableHolder writeTableHolder,
+                        List<WriteCellData<?>> cellDataList, Cell cell, Head head, Integer relativeRowIndex,
+                        Boolean isHead) {
+                    if (!isHead) {
+                        if (cell.getColumnIndex() == 4 && relativeRowIndex == 0) {
+                            cell.setCellValue("ceshi");
+                        }
+
+                    }
+                }
+            };
+            // End Add
             ByteArrayOutputStream os = new ByteArrayOutputStream();
             excelWriter = EasyExcel.write(os).withTemplate(inputStream).inMemory(true).build();
-            WriteSheet writeSheet = EasyExcel.writerSheet().build();
-
+            WriteSheet writeSheet = EasyExcel.writerSheet().registerWriteHandler(cellWriteHandler).build();
             // map组合数据
             HashMap<String, String> otherData = new HashMap<>();
             otherData.put("TOTAL_PRICE_AMOUNT_8", dataList.getList().get(0).getTOTAL_PRICE_AMOUNT_8());
@@ -287,8 +309,10 @@ public class Pch04Handler implements EventHandler {
 
             // excelWriter.write(os, writeSheet)
             excelWriter.fill(dataList.getList(), fileConfig, writeSheet);
+
             // 重新计算公式
             Workbook workbook = excelWriter.writeContext().writeWorkbookHolder().getWorkbook();
+
             // 调用
             workbook.getCreationHelper().createFormulaEvaluator().evaluateAll();
             // 填充
@@ -308,20 +332,20 @@ public class Pch04Handler implements EventHandler {
         context.setResult(bytes);
     }
 
-    private void _relModel(String pch04TepPath,int dataSize) {
+    private void _relModel(String pch04TepPath, int dataSize) {
 
         List<String> data = new ArrayList<>();
         data.add("支払通知エクセルファイル");
-        
+
         EasyExcel.write(pch04TepPath).sheet("支払通知エクセルファイル");
         // .doWrite(data,writeSheet->{
 
-        //     writeSheet.setFixedIndexes(0,0);//将A1作为
-        //     return writeSheet;
+        // writeSheet.setFixedIndexes(0,0);//将A1作为
+        // return writeSheet;
         // });
     }
 
-    private void _setModel(String pch04TepPath,int dataSize) {
+    private void _setModel(String pch04TepPath, int dataSize) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method '_setModel'");
     }

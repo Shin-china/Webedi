@@ -35,7 +35,8 @@
     "ui5-middleware-livereload": "latest",
     "ui5-task-zipper": "^0.5.0"
   },
-  "dependencies": { 
+  "dependencies": {
+    "app": "file:",
     "ui5-middleware-cfdestination": "^3.3.11"
   },
   "ui5": {
