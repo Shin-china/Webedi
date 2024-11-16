@@ -218,6 +218,7 @@ sap.ui.define([
 				delete sExcelJson[0]; // 删除第一行
 
 				var aExcelData = [];
+				var aDynamicData = [];
 				//rebuild json
 				sExcelJson.forEach(row=>{
 					var length = row.length;
@@ -280,17 +281,49 @@ sap.ui.define([
 					oItem['UMC_COMMENT_2'] = row[55];
 					oItem['SUPPLIER_MAT'] = row[56];
 
-					for(var i = 56; i < length; i++){
-						if(row[i] && Number(row[i]) > 0){
-							oItem["QTY_" + (i - 55)] = row[i];
+					var oDynamicData = {};
+					oDynamicData["QUO_NUMBER"] = row[0];
+					oDynamicData["QUO_ITEM"] = row[1];
+					oDynamicData["NO"] = row[2];
+
+					var iIndex = 0;
+					for(var i = 58; i < length; i+=2){
+						iIndex++;
+						let sValue = row[i];
+						
+						if(!sValue){
+							continue;
 						}
 
-						if(row[i] && Number(row[i]) > 0){
-							oItem["PRICE_" + (i - 55)] = row[i];
+						let nValue = Number(sValue);
+						if(isNaN(nValue) || nValue <= 0){
+							continue;
+						} 
+						
+						oItem["QTY_" + iIndex] = nValue; 
+						oDynamicData["QTY_" + iIndex] = oItem["QTY_" + iIndex];
+					}
+
+					iIndex = 0;
+					for(var i = 59; i < length; i+=2){
+						iIndex++;
+						let sValue = row[i];
+						
+						if(!sValue){
+							continue;
 						}
+
+						let nValue = Number(sValue);
+						if(isNaN(nValue) || nValue <= 0){
+							continue;
+						} 
+						
+						oItem["PRICE_" + iIndex] = nValue; 
+						oDynamicData["PRICE_" + iIndex] = oItem["PRICE_" + iIndex];
 					}
 
 					aExcelData.push(oItem);
+					aDynamicData.push(oDynamicData);
 				});
 
 				var jsonS = aExcelData;//JSON.stringify(aExcelData);
