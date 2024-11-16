@@ -20,6 +20,7 @@ sap.ui.define([
             this.MessageTools._clearMessage();
             this.MessageTools._initoMessageManager(this);
             this._ResourceBundle = this.getOwnerComponent().getModel("i18n").getResourceBundle();
+            this._PchResourceBundle = this.getOwnerComponent().getModel("pch").getResourceBundle();
             this._localModel = new sap.ui.model.json.JSONModel();
             this._localModel.setData({
                 "show": true,
@@ -227,7 +228,7 @@ sap.ui.define([
                         this._localModel.setProperty("/save", true);
                         that.MessageTools._addMessage(this.MessageTools._getI18nTextInModel("pch", oResult.reTxt, this.getView()), null, 1, this.getView());
                     }else{
-                        sap.m.MessageToast.show(that._ResourceBundle.getText("SAVE_SUCCESS"));
+                        sap.m.MessageToast.show(that._PchResourceBundle.getText("SAVE_SUCCESS"));
                     }
                     that._setBusy(false);
 
