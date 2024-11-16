@@ -259,16 +259,15 @@ public class Pch04Handler implements EventHandler {
             }
 
         }
-        // 先改写模板文件，再生成excel
-        // this._setModel(UWebConstants.PCH04_TEP_PATH ,dataList.size()+2);
-        // 再将模板改回去
-        // this._relModel(UWebConstants.PCH04_TEP_PATH ,dataList.size()+2);
-        // 获取模板文件
+
         InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(UWebConstants.PCH04_TEP_PATH);
 
         // Excel写入数据
         ExcelWriter excelWriter = null;
         try {
+
+            // 数据总行数变量
+            int dataRowCount = dataList.getList().size(); 
             // Add by stanley
             CellWriteHandler cellWriteHandler = new CellWriteHandler() {
                 @Override
@@ -276,8 +275,11 @@ public class Pch04Handler implements EventHandler {
                         List<WriteCellData<?>> cellDataList, Cell cell, Head head, Integer relativeRowIndex,
                         Boolean isHead) {
                     if (!isHead) {
-                        if (cell.getColumnIndex() == 4 && relativeRowIndex == 0) {
-                            cell.setCellValue("ceshi");
+
+                        int targetRowIndex = dataRowCount + 2; // 数据行数 + 2
+
+                        if (cell.getColumnIndex() == 4 && relativeRowIndex == targetRowIndex) {
+                            cell.setCellValue("※送付後一定期間内に誤りのある旨の連絡がない場合には記載内容のとおり確認があったものとする");
                         }
 
                     }
@@ -306,6 +308,8 @@ public class Pch04Handler implements EventHandler {
             // 填充完后需要换行
             FillConfig fileConfig = FillConfig.builder().forceNewRow(true).build();
             // 写入数据
+
+            
 
             // excelWriter.write(os, writeSheet)
             excelWriter.fill(dataList.getList(), fileConfig, writeSheet);
