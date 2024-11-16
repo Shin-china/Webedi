@@ -250,6 +250,21 @@ sap.ui.define([
 }
         
             if (IdList) {
+
+                // 提取 IdList 的前几位，去掉后 6 位字符
+                let processedIdList = IdList.map(id => id.slice(0, -6));
+
+                // 从 IdList 的每个 ID 中提取最后 6 位，并拆分成年份和月份
+                let yearMonthList = IdList.map(id => {
+                    let lastSix = id.slice(-6); // 提取最后 6 位
+                    let year = lastSix.slice(0, 4); // 前 4 位是年份
+                    let month = lastSix.slice(4);  // 后 2 位是月份
+                    return `${year}年${month}月度`; // 拼接为指定格式
+                });
+
+                 // 使用处理后的第一个值和年份-月份信息生成文件名
+                var fileName = `${processedIdList[0]}_${yearMonthList[0]}UMC支払通知書`;
+
                 that.PrintTool._getPrintDataInfo(that, IdList, "/PCH_T04_PAYMENT_SUM_HJ6", "DOWNLOADID").then((J) => {
                     // oData = this.jsonDateToString(oData);  
 					J.results.forEach(function (row) {
@@ -272,9 +287,9 @@ sap.ui.define([
                         that.PrintTool._detailSelectPrintDow(that, sResponse, "test02/test05", J, null, null, null, null).then((oData) => {
 
                         var sapPo = {
-                            po: IdList,
+                            po: IdList[0],
                             tpye: "PCH04",
-                            fileName: "月度UMC支払通知書",
+                            fileName: fileName,
                         }
                         //打印pdf后写表共通
                         that.PrintTool.printBackActionPo(that,oData,sapPo)
@@ -350,11 +365,24 @@ sap.ui.define([
                 let options = { compact: true, ignoreComment: true, spaces: 4 };
                 var IdList = that._TableDataList("detailTable", 'DOWNLOADID');
 
+                
+
                 if (IdList) {
                     that.PrintTool._getPrintDataInfo(that, IdList, "/PCH_T04_PAYMENT_SUM_HJ6", "DOWNLOADID").then((oData) => {
                
+                    // 提取 IdList 的前几位，去掉后 6 位字符
+                    let processedIdList = IdList.map(id => id.slice(0, -6));
 
-                    var fileName = `仕入先コード_月度UMC支払通知書.xlsx`;
+                    // 从 IdList 的每个 ID 中提取最后 6 位，并拆分成年份和月份
+                    let yearMonthList = IdList.map(id => {
+                        let lastSix = id.slice(-6); // 提取最后 6 位
+                        let year = lastSix.slice(0, 4); // 前 4 位是年份
+                        let month = lastSix.slice(4);  // 后 2 位是月份
+                        return `${year}年${month}月度`; // 拼接为指定格式
+                    });
+
+                     // 使用处理后的第一个值和年份-月份信息生成文件名
+                    var fileName = `${processedIdList[0]}_${yearMonthList[0]}UMC支払通知書.xlsx`;
 
 					that._callCdsAction("/PCH04_EXCELDOWNLOAD", that._getDataDow(oData), that).then((J) => {
 						const downloadLink = document.createElement("a");

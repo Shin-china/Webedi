@@ -17,19 +17,6 @@ var _objectCommData = {
 
     return Controller.extend("umc.app.controller.pch.pch05_account_l", {
         formatter : formatter,
-        // onInit: function () {
-        //     this._LocalData = this.getOwnerComponent().getModel("local");
-        //     this._oDataModel = this.getOwnerComponent().getModel();
-        //     this._ResourceBundle = this.getOwnerComponent().getModel("i18n").getResourceBundle();
-        //     this._oDataModel.attachBatchRequestCompleted(function (oEvent) {
-        //         this._setBusy(false);
-        //         var errors = this._LocalData.getProperty("/errors");
-        //         if (errors) {
-        //             // 处理错误
-        //         }
-        //         this._LocalData.setProperty("/errors", "");
-        //     }.bind(this));
-        // },
 
         onInit: function () {
 
@@ -83,49 +70,10 @@ var _objectCommData = {
                 oEvent.preventDefault(); // 取消导出操作
                 return;
             }
-            // // 获取选中的数据
-            // var aSelectedData = aSelectedIndices.map(function (index) {
-            //     return oTable.getContextByIndex(index).getObject();
-            // });
-            // // 检查 TAX_CODE 是否相同
-            // var taxCodes = aSelectedData.map(function (oData) {
-            //     return oData.TAX_CODE;
-            // });
 
                 // 获取导出设置
                 var oSettings = oEvent.getParameter("exportSettings");
 
-            //     // 确保设置数据源
-            //     // oSettings.dataSource = aSelectedData; // 设置数据源为选中的数据
-        
-            // oSettings.workbook.columns = [
-            //     // 第一组字段的标题
-            //     // { label: "ヘッダデータ", property: "headerData", colspan: 11 }, // 合并的标题
-            //     // 第一组字段
-            //     // { label: "*請求書ID", property: "INVOICEID" },
-            //     { label: "*会社コード(4)", property: "PO_BUKRS" },
-            //     { label: "*取引(1)1=請求書、2=クレジットメモ", property: "TRANSACTION" },
-            //     { label: "*請求元(10)", property: "SUPPLIER" },
-            //     { label: "参照(16)", property: "REFERENCE" },
-            //     { label: "*伝票日付", property: "LASTDATE" },
-            //     { label: "*転記日付", property: "LASTDATE" },
-            //     { label: "*伝票タイプ", property: "DOCUMENTTYPE" },
-            //     { label: "伝票ヘッダテキスト(25)", property: "HEADERTEXT" },
-            //     { label: "*通貨(5)", property: "CURRENCY" },
-            //     { label: "*伝票通貨での請求書総額", property: "DIFF_TAX_AMOUNT" },
-            //     { label: "税率定義の日付", property: "LASTDATE" },
-            
-            //     // 第二组字段的标题
-            //     // { label: "G/L勘定明細", property: "glAccountDetails", colspan: 7 }, // 合并的标题
-            //     // 第二组字段
-            //     { label: "*会社コード(4)", property: "PO_BUKRS" },
-            //     { label: "勘定(10)", property: "ACCOUNT" },
-            //     { label: "明細テキスト", property: "DETAILTEXT" },
-            //     { label: "借方/貸方フラグ(1)s=借方 H=貸方", property: "SHKZG_FLAG" },
-            //     { label: "金額(伝票通貨)", property: "DIFF_TAX_AMOUNT" },
-            //     { label: "税コード(2)", property: "" },
-            //     { label: "伝票通貨での課税基準額", property: "TAX_BASE_AMOUNT" }
-            // ];
                 var oDate = new Date();
                 var sDate = oDate.toISOString().slice(0, 10).replace(/-/g, '');
                 var sTime = oDate.toTimeString().slice(0, 8).replace(/:/g, '');
