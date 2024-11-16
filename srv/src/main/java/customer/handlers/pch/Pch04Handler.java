@@ -260,6 +260,12 @@ public class Pch04Handler implements EventHandler {
 
         }
 
+        ArrayList<Pch04> list = dataList.getList();
+        list.add(new Pch04());
+        list.add(new Pch04());
+        list.add(new Pch04());
+        dataList.setList(list);
+
         InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(UWebConstants.PCH04_TEP_PATH);
 
         // Excel写入数据
@@ -267,7 +273,7 @@ public class Pch04Handler implements EventHandler {
         try {
 
             // 数据总行数变量
-            int dataRowCount = dataList.getList().size(); 
+            int dataRowCount = dataList.getList().size() - 3; 
             // Add by stanley
             CellWriteHandler cellWriteHandler = new CellWriteHandler() {
                 @Override
@@ -278,8 +284,8 @@ public class Pch04Handler implements EventHandler {
 
                         int targetRowIndex = dataRowCount + 2; // 数据行数 + 2
 
-                        if (cell.getColumnIndex() == 4 && relativeRowIndex == targetRowIndex) {
-                            cell.setCellValue("※送付後一定期間内に誤りのある旨の連絡がない場合には記載内容のとおり確認があったものとする");
+                        if (cell.getColumnIndex() == 3 && relativeRowIndex == targetRowIndex) {
+                            cell.setCellValue(UWebConstants.PCH04_TEP_EXCEL_MSG);
                         }
 
                     }

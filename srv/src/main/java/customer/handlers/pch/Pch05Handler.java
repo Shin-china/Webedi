@@ -31,6 +31,8 @@ import customer.bean.tmpl.test;
 import customer.service.pch.PchService;
 import customer.service.sys.EmailServiceFun;
 import cds.gen.tableservice.PCH05SENDEMAILContext;
+import cds.gen.tableservice.PCH05CANCELContext;
+import cds.gen.tableservice.PCH05CONFIRMContext;
 import customer.bean.tmpl.Pch05List;
 import customer.bean.tmpl.Pch05;
 
@@ -207,6 +209,34 @@ public class Pch05Handler implements EventHandler {
     context.setResult("success");
 
   }
+
+  //  /**
+  //  * 
+  //  * @param context
+  //  */
+  // @On(event = "PCH05_CONFIRM")
+  // public void confirm(PCH05CONFIRMContext context) {
+
+  //   String invno = context.getParms();
+  //   pchService.setinvdateconfirm(invno);
+
+  //   context.setResult("success");
+
+  // }
+
+  //  /**
+  //  * 
+  //  * @param context
+  //  */
+  // @On(event = "PCH05_CANCEL")
+  // public void cancel(PCH05CANCELContext context) {
+
+  //   String invno = context.getParms();
+  //   pchService.setinvdatecancel(invno);
+
+  //   context.setResult("success");
+
+  // }
 
       // Excel 导出测试
   @On(event = "PCH05_EXCELDOWNLOAD")
