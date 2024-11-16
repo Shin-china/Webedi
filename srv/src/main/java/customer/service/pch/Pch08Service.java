@@ -1,16 +1,15 @@
 package customer.service.pch;
 
 import cds.gen.pch.T02PoD;
+import cds.gen.pch.T06QuotationH;
 import cds.gen.pch.T07QuotationD;
 
+import customer.bean.pch.Pch08;
 import customer.bean.pch.Pch08DataList;
 import customer.bean.pch.PchQuoH;
 import customer.bean.pch.PchQuoItem;
-import customer.dao.pch.Pch01saveDao;
-import customer.dao.pch.Pch08Dao;
-import customer.dao.pch.PchD002;
-import customer.dao.pch.PchD003;
-import customer.dao.pch.PchD007;
+import customer.comm.tool.DateTools;
+import customer.dao.pch.*;
 import customer.tool.StringTool;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,18 +55,27 @@ public class Pch08Service {
     public void detailsSave(Pch08DataList list) throws ParseException {
         // 如果没有错误
         // 修改po明细状态
-        hs.keySet().forEach(value -> {
-            String[] split = value.split(",");
-            T02PoD byID = Pch01saveDao.getByID(split[0], Integer.parseInt(split[1]));
-            byID.setStatus("2");
-            pchD002.updateD002(byID);
-            // 如果没有错误，
-            // 删除对应的pch03数据
-            // 没有减少数量才能删除
-            pchD003.deleteD002ByPoDno(split[0], Integer.parseInt(split[1]));
-            // 修改pch03对应的减少数量
-            // pch08Dao.updatePch08();
+//        hs.keySet().forEach(value -> {
+//            String[] split = value.split(",");
+//            T02PoD byID = Pch01saveDao.getByID(split[0], Integer.parseInt(split[1]));
+//            byID.setStatus("2");
+//            pchD002.updateD002(byID);
+//            // 如果没有错误，
+//            // 删除对应的pch03数据
+//            // 没有减少数量才能删除
+//            pchD003.deleteD002ByPoDno(split[0], Integer.parseInt(split[1]));
+//            // 修改pch03对应的减少数量
+//            // pch08Dao.updatePch08();
+//        });
+
+        list.getList().forEach(value -> {
+            T06QuotationH t06 = extractT06Data(value);
+            List<T07QuotationD> items = extractT07Data(value);
+
+            pch08Dao.updatePch08(t06, items);
+
         });
+
 
         // for (Pch06 iterable_element : list.getList()) {
         // // 没有减少数量才能追加
@@ -92,6 +100,91 @@ public class Pch08Service {
         // }
         //
         // }
+    }
+
+    public T06QuotationH extractT06Data(Pch08 pch08) {
+        T06QuotationH t06 = pch08Dao.getT06ByQuoNumber(pch08.getQUO_NUMBER());
+        if (t06 == null) {
+            return null;
+        }
+
+        t06.setStatus("2");
+        t06.setUpTime(DateTools.getInstantNow());
+        t06.setUpBy(pch08Dao.getUserId());
+
+        return t06;
+    }
+
+    public List<T07QuotationD> extractT07Data(Pch08 pch08) {
+        List<T07QuotationD> items = pch08Dao.getT07ByQuoNumber(pch08.getQUO_NUMBER());
+        if (items == null) {
+            return null;
+        }
+
+        items.forEach(value -> {
+            value.setStatus("2");
+            value.setUpTime(DateTools.getInstantNow());
+            value.setUpBy(pch08Dao.getUserId());
+            value.setRefrenceNo(pch08.getREFRENCE_NO());
+            value.setMaterialNumber(pch08.getMATERIAL_NUMBER());
+            value.setCustMaterial(pch08.getCUST_MATERIAL());
+            value.setManufactMaterial(pch08.getMANUFACT_MATERIAL());
+            value.setAttachment(pch08.getAttachment());
+            value.setMaterial(pch08.getMaterial());
+            value.setMaker(pch08.getMAKER());
+            value.setUwebUser(pch08.getUWEB_USER());
+
+            if (pch08.getBP_NUMBER() !=null) {
+                value.setBpNumber(Integer.parseInt(pch08.getBP_NUMBER()));
+            }
+
+            value.setPersonNo1(pch08.getPERSON_NO1());
+            value.setPersonNo2(pch08.getPERSON_NO2());
+            value.setPersonNo3(pch08.getPERSON_NO3());
+            value.setPersonNo4(pch08.getPERSON_NO4());
+            value.setPersonNo5(pch08.getPERSON_NO5());
+
+            value.setYlp(pch08.getYLP());
+            value.setManul(pch08.getYLP());
+            value.setManufactCode(pch08.getMANUFACT_CODE());
+            value.setCustomerMmodel(pch08.getCUSTOMER_MMODEL());
+            value.setMidQf(pch08.getMID_QF());
+            value.setSmallQf(pch08.getSMALL_QF());
+            value.setOtherQf(pch08.getOTHER_QF());
+            value.setCurrency(pch08.getCURRENCY());
+            value.setPriceControl(pch08.getPRICE_CONTROL());
+            value.setLeadTime(pch08.getLEAD_TIME());
+            value.setMoq(pch08.getMOQ());
+            value.setUnit(pch08.getUNIT());
+            value.setSpq(pch08.getSPQ());
+            value.setKbxt(pch08.getKBXT());
+            value.setProductWeight(pch08.getPRODUCT_WEIGHT());
+            value.setOriginalCou(pch08.getORIGINAL_COU());
+            value.setEol(pch08.getEOL());
+            value.setIsboi(pch08.getISBOI());
+            value.setIncoterms(pch08.getIncoterms());
+            value.setIncotermsText(pch08.getIncoterms_Text());
+            value.setMemo1(pch08.getMEMO1());
+            value.setMemo2(pch08.getMEMO2());
+            value.setMemo3(pch08.getMEMO3());
+            value.setSl(pch08.getSL());
+            value.setTz(pch08.getTZ());
+            value.setRmaterial(pch08.getRMATERIAL());
+            value.setRmaterialCurrency(pch08.getRMATERIAL_CURRENCY());
+
+            if (pch08.getRMATERIAL_PRICE() != null) {
+                value.setRmaterialPrice(BigDecimal.valueOf(pch08.getRMATERIAL_PRICE()));
+            }
+
+            value.setRmaterialLt(pch08.getRMATERIAL_LT());
+            value.setRmaterialMoq(pch08.getRMATERIAL_MOQ());
+            value.setRmaterialKbxt(pch08.getRMATERIAL_KBXT());
+            value.setUmcComment1(pch08.getUMC_COMMENT_1());
+            value.setUmcComment2(pch08.getUMC_COMMENT_2());
+
+        });
+
+        return items;
     }
 
     /*

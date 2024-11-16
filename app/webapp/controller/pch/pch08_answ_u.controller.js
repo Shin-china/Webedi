@@ -230,56 +230,58 @@ sap.ui.define([
 					oItem['CUSTOMER'] = row[4];
 					oItem['MACHINE_TYPE'] = row[5];
 					oItem['QUANTITY'] = row[6];
-					oItem['VALIDATE_START'] = row[7];
-					oItem['VALIDATE_END'] = row[8];
-					oItem['MATERIAL_NUMBER'] = row[9];
-					oItem['CUST_MATERIAL'] = row[10];
-					oItem['MANUFACT_MATERIAL'] = row[11];
-					oItem['Attachment'] = row[12];
-					oItem['Material'] = row[13];
-					oItem['MAKER'] = row[14];
-					oItem['UWEB_USER'] = row[15];
-					oItem['BP_NUMBER'] = row[16];
-					oItem['PERSON_NO1'] = row[17];
-					oItem['PERSON_NO2'] = row[18];
-					oItem['PERSON_NO3'] = row[19];
-					oItem['PERSON_NO4'] = row[20];
-					oItem['PERSON_NO5'] = row[21];
-					oItem['YLP'] = row[22];
-					oItem['MANUL'] = row[23];
-					oItem['MANUFACT_CODE'] = row[24];
-					oItem['CUSTOMER_MMODEL'] = row[25];
-					oItem['MID_QF'] = row[26];
-					oItem['SMALL_QF'] = row[27];
-					oItem['OTHER_QF'] = row[28];
-					oItem['CURRENCY'] = row[29];
-					oItem['PRICE'] = row[30];
-					oItem['PRICE_CONTROL'] = row[31];
-					oItem['LEAD_TIME'] = row[32];
-					oItem['MOQ'] = row[33];
-					oItem['UNIT'] = row[34];
-					oItem['SPQ'] = row[35];
-					oItem['KBXT'] = row[36];
-					oItem['PRODUCT_WEIGHT'] = row[37];
-					oItem['ORIGINAL_COU'] = row[38];
-					oItem['EOL'] = row[39];
-					oItem['ISBOI'] = row[40];
-					oItem['Incoterms'] = row[41];
-					oItem['Incoterms_Text'] = row[42];
-					oItem['MEMO1'] = row[43];
-					oItem['MEMO2'] = row[44];
-					oItem['MEMO3'] = row[45];
-					oItem['SL'] = row[46];
-					oItem['TZ'] = row[47];
-					oItem['RMATERIAL'] = row[48];
-					oItem['RMATERIAL_CURRENCY'] = row[49];
-					oItem['RMATERIAL_PRICE'] = row[50];
-					oItem['RMATERIAL_LT'] = row[51];
-					oItem['RMATERIAL_MOQ'] = row[52];
-					oItem['RMATERIAL_KBXT'] = row[53];
-					oItem['UMC_COMMENT_1'] = row[54];
-					oItem['UMC_COMMENT_2'] = row[55];
-					oItem['SUPPLIER_MAT'] = row[56];
+					oItem['Item'] = row[7];
+					oItem['TIME'] = row[8];
+					oItem['LOCATION'] = row[9];
+					oItem['VALIDATE_START'] = row[10];
+					oItem['VALIDATE_END'] = row[11];
+					oItem['MATERIAL_NUMBER'] = row[12];
+					oItem['CUST_MATERIAL'] = row[13];
+					oItem['MANUFACT_MATERIAL'] = row[14];
+					oItem['Attachment'] = row[15];
+					oItem['Material'] = row[16];
+					oItem['MAKER'] = row[17];
+					oItem['UWEB_USER'] = row[18];
+					oItem['BP_NUMBER'] = row[19];
+					oItem['PERSON_NO1'] = row[20];
+					oItem['PERSON_NO2'] = row[21];
+					oItem['PERSON_NO3'] = row[22];
+					oItem['PERSON_NO4'] = row[23];
+					oItem['PERSON_NO5'] = row[24];
+					oItem['YLP'] = row[25];
+					oItem['MANUL'] = row[26];
+					oItem['MANUFACT_CODE'] = row[27];
+					oItem['CUSTOMER_MMODEL'] = row[28];
+					oItem['MID_QF'] = row[29];
+					oItem['SMALL_QF'] = row[30];
+					oItem['OTHER_QF'] = row[31];
+					oItem['CURRENCY'] = row[32];
+					oItem['PRICE_CONTROL'] = row[33];
+					oItem['LEAD_TIME'] = row[34];
+					oItem['MOQ'] = row[35];
+					oItem['UNIT'] = row[36];
+					oItem['SPQ'] = row[37];
+					oItem['KBXT'] = row[38];
+					oItem['PRODUCT_WEIGHT'] = row[39];
+					oItem['ORIGINAL_COU'] = row[40];
+					oItem['EOL'] = row[41];
+					oItem['ISBOI'] = row[42];
+					oItem['Incoterms'] = row[43];
+					oItem['Incoterms_Text'] = row[44];
+					oItem['MEMO1'] = row[45];
+					oItem['MEMO2'] = row[46];
+					oItem['MEMO3'] = row[47];
+					oItem['SL'] = row[48];
+					oItem['TZ'] = row[49];
+					oItem['RMATERIAL'] = row[50];
+					oItem['RMATERIAL_CURRENCY'] = row[51];
+					oItem['RMATERIAL_PRICE'] = row[52];
+					oItem['RMATERIAL_LT'] = row[53];
+					oItem['RMATERIAL_MOQ'] = row[54];
+					oItem['RMATERIAL_KBXT'] = row[55];
+					oItem['UMC_COMMENT_1'] = row[56];
+					oItem['UMC_COMMENT_2'] = row[57];
+					oItem['SUPPLIER_MAT'] = row[58];
 
 					var oDynamicData = {};
 					oDynamicData["QUO_NUMBER"] = row[0];
@@ -341,8 +343,8 @@ sap.ui.define([
 						newRow.VALIDATE_END = that.__formatExcelDate(newRow.VALIDATE_END);
 					}
 
-					if (newRow.LEAD_TIME) {
-						newRow.LEAD_TIME = that.__formatExcelDate(newRow.LEAD_TIME);
+					if (newRow.TIME) {
+						newRow.TIME = that.__formatExcelDate(newRow.TIME);
 					}
 
 					return newRow;
@@ -394,8 +396,8 @@ sap.ui.define([
 					row.VALIDATE_END = new Date(row.VALIDATE_END);
 				}
 
-				if(row.LEAD_TIME && row.LEAD_TIME!== ''){
-					row.LEAD_TIME = new Date(row.LEAD_TIME);
+				if(row.TIME && row.TIME!== ''){
+					row.TIME = new Date(row.TIME);
 				}
 			})
 
@@ -406,7 +408,7 @@ sap.ui.define([
 
                 var property = oColumn.getTemplate().getBindingPath("text");
 
-                if (property === 'VALIDATE_START' || property === 'VALIDATE_END' || property === 'LEAD_TIME') {
+                if (property === 'VALIDATE_START' || property === 'VALIDATE_END' || property === 'TIME') {
                     sFormat = sDateFormat;
                     sType = 'date';
                 } else {

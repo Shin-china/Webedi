@@ -25,7 +25,7 @@
             </smartFilterBar:SmartFilterBar>
         </f:content>
     </f:DynamicPageHeader>
-    <smartTable:SmartTable id="ID" enableAutoColumnWidth="true" entitySet="PCH08_LIST" ignoredFields="" initiallyVisibleFields="QUO_NUMBER,QUO_ITEM,NO,REFRENCE_NO,CUSTOMER,MACHINE_TYPE,QUANTITY,VALIDATE_START,VALIDATE_END,MATERIAL_NUMBER,CUST_MATERIAL,MANUFACT_MATERIAL,Attachment,Material,MAKER,UWEB_USER,BP_NUMBER,PERSON_NO1,PERSON_NO2,PERSON_NO3,PERSON_NO4,PERSON_NO5,YLP,MANUL,MANUFACT_CODE,CUSTOMER_MMODEL,MID_QF,SMALL_QF,OTHER_QF,CURRENCY,PRICE_CONTROL,LEAD_TIME,MOQ,UNIT,SPQ,KBXT,PRODUCT_WEIGHT,ORIGINAL_COU,EOL,ISBOI,Incoterms,Incoterms_Text,MEMO1,MEMO2,MEMO3,SL,TZ,RMATERIAL,RMATERIAL_CURRENCY,RMATERIAL_PRICE,RMATERIAL_LT,RMATERIAL_MOQ,RMATERIAL_KBXT,UMC_COMMENT_1,UMC_COMMENT_2,STATUS" requestAtLeastFields="QUO_NUMBER,Material" smartFilterId="smartFilterBar" enableExport="false" editable="{localModel>/save}" useVariantManagement="true" useTablePersonalisation="true" header="{pch>PCH08_LISTVIEW_TITLE}" showRowCount="true" persistencyKey="pch08_SmartTableAnalytical_Explored" enableAutoBinding="true">
+    <smartTable:SmartTable id="ID" enableAutoColumnWidth="true" entitySet="PCH08_LIST" ignoredFields="" initiallyVisibleFields="QUO_NUMBER,QUO_ITEM,NO,REFRENCE_NO,CUSTOMER,MACHINE_TYPE,QUANTITY,Item,TIME,LOCATION,VALIDATE_START,VALIDATE_END,MATERIAL_NUMBER,CUST_MATERIAL,MANUFACT_MATERIAL,Attachment,Material,MAKER,UWEB_USER,BP_NUMBER,PERSON_NO1,PERSON_NO2,PERSON_NO3,PERSON_NO4,PERSON_NO5,YLP,MANUL,MANUFACT_CODE,CUSTOMER_MMODEL,MID_QF,SMALL_QF,OTHER_QF,CURRENCY,PRICE_CONTROL,LEAD_TIME,MOQ,UNIT,SPQ,KBXT,PRODUCT_WEIGHT,ORIGINAL_COU,EOL,ISBOI,Incoterms,Incoterms_Text,MEMO1,MEMO2,MEMO3,SL,TZ,RMATERIAL,RMATERIAL_CURRENCY,RMATERIAL_PRICE,RMATERIAL_LT,RMATERIAL_MOQ,RMATERIAL_KBXT,UMC_COMMENT_1,UMC_COMMENT_2,STATUS" requestAtLeastFields="QUO_NUMBER,Material" smartFilterId="smartFilterBar" enableExport="false" editable="{localModel>/save}" useVariantManagement="true" useTablePersonalisation="true" header="{pch>PCH08_LISTVIEW_TITLE}" showRowCount="true" persistencyKey="pch08_SmartTableAnalytical_Explored" enableAutoBinding="true">
         <smartTable:customToolbar>
             <OverflowToolbar id="overFlowToolbar">
                 <ToolbarSpacer id="toolbarSpacer" />
@@ -33,7 +33,7 @@
                 <Button id="exportButton" text="{pch>U_B_EXPORTEXCEL}" press="onExport" />
                 <Button id="editButton" text="{pch>PCH03_BUTTON_EDI}" enabled="{localModel>/show}" tooltip="{pch>PCH03_BUTTON_EDI}" press="onEdit" />
                 <Button id="saveButton" text="{pch>PCH03_BUTTON_SAV}" enabled="{localModel>/save}" tooltip="{pch>PCH03_BUTTON_SAV}" press="onSave" />
-                <Button id="confirmButton" text="{pch>PCH03_BUTTON_QUE}" tooltip="{pch>PCH03_BUTTON_QUE}" press="onConfirm" />
+                <!-- <Button id="confirmButton" text="{pch>PCH03_BUTTON_QUE}" tooltip="{pch>PCH03_BUTTON_QUE}" press="onConfirm" /> -->
             </OverflowToolbar>
         </smartTable:customToolbar>
         <table:Table id="listTable" visibleRowCount="15" rowActionCount="1" selectionMode="MultiToggle" alternateRowColors="true" fixedColumnCount="0" threshold="20">
@@ -151,6 +151,58 @@
                     </table:label>
                     <table:template>
                         <Text id="textQuantity" text="{QUANTITY}" />
+                    </table:template>
+                </table:Column>
+                <table:Column id="colItem" width="10rem" sortProperty="Item" filterProperty="Item">
+                    <table:customData>
+                        <core:CustomData key="p13nData" value="{
+                                columnKey: 'Item',
+                                leadingProperty: 'Item',
+                                sortProperty: 'Item',
+                                filterProperty: 'Item'
+                            }" />
+                    </table:customData>
+                    <table:label>
+                        <Label id="labelItem" text="{pch>PCH08_Item}" />
+                    </table:label>
+                    <table:template>
+                        <Text id="textItem" text="{Item}" />
+                    </table:template>
+                </table:Column>
+                <table:Column id="colTime" width="10rem" sortProperty="TIME" filterProperty="TIME">
+                    <table:customData>
+                        <core:CustomData key="p13nData" value="{
+                                columnKey: 'TIME',
+                                leadingProperty: 'TIME',
+                                sortProperty: 'TIME',
+                                filterProperty: 'TIME'
+                            }" />
+                    </table:customData>
+                    <table:label>
+                        <Label id="labelTime" text="{pch>PCH08_TIME}" />
+                    </table:label>
+                    <table:template>
+                        <DatePicker id="textTime" value="{'path': 'TIME','type':'sap.ui.model.type.Date',
+						'formatOptions': {
+							'pattern': 'yyyy-MM-dd'
+						}}" editable="false" />
+                    </table:template>
+                </table:Column>
+
+                                <table:Column id="colLocation" width="10rem" sortProperty="LOCATION" filterProperty="LOCATION">
+                    <table:customData>
+                        <core:CustomData key="p13nData" value="{
+                                columnKey: 'LOCATION',
+                                leadingProperty: 'LOCATION',
+                                sortProperty: 'LOCATION',
+                                filterProperty: 'LOCATION'
+                            }" />
+                    </table:customData>
+                    <table:label>
+                        <Label id="labelLocation" text="{pch>PCH08_LOCATION}" />
+                    </table:label>
+                    <table:template>
+                        <Text id="textLocation" text="{LOCATION}" />
                     </table:template>
                 </table:Column>
                 <table:Column id="colValidateStart" width="10rem" sortProperty="VALIDATE_START" filterProperty="VALIDATE_START">
@@ -640,7 +692,16 @@
                         <Label id="labelKbxt" text="{pch>PCH08_KBXT}" />
                     </table:label>
                     <table:template>
-                        <smartField:SmartField id="textKbxt" value="{KBXT}" editable="{localModel>/save}" />
+                        <!-- <smartField:SmartField id="textKbxt" value="{KBXT}" editable="{localModel>/save}" /> -->
+                         <ComboBox id="id.KBXT" editable="{localModel>/save}" value="{KBXT}">
+                            <items>
+                                <core:Item key="テーピング" text="テーピング" />
+                                <core:Item key="トレイ" text="トレイ" />
+                                <core:Item key="スティック" text="スティック" />
+                                <core:Item key="袋/箱詰め" text="袋/箱詰め" />
+                                <core:Item key="その他" text="その他" />
+                            </items>
+                         </ComboBox>
                     </table:template>
                 </table:Column>
                 <table:Column id="colProductWeight" width="10rem" sortProperty="PRODUCT_WEIGHT" filterProperty="PRODUCT_WEIGHT">
@@ -965,7 +1026,7 @@
                         <Text id="textSupplierMat" text="{SUPPLIER_MAT}"  />
                     </table:template>
                 </table:Column>
-                <table:Column id="colStatus" width="10rem" sortProperty="STATUS" filterProperty="STATUS">
+                <!-- <table:Column id="colStatus" width="10rem" sortProperty="STATUS" filterProperty="STATUS">
                     <table:customData>
                         <core:CustomData key="p13nData" value="{
                                 columnKey: 'STATUS',
@@ -980,7 +1041,7 @@
                     <table:template>
                         <Text id="textStatus" text="{STATUS}"  />
                     </table:template>
-                </table:Column>
+                </table:Column> -->
             </table:columns>
 
             <table:footer>

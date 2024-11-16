@@ -107,7 +107,7 @@ sap.ui.define([
 
                     var property = oColumn.getTemplate().getBindingPath("text") || oColumn.getTemplate().mBindingInfos.value.parts[0].path;
 
-                    if (property === 'VALIDATE_START' || property === 'VALIDATE_END') {
+                    if (property === 'VALIDATE_START' || property === 'VALIDATE_END' || property === 'TIME') {
                         sFormat = sDateFormat;
                         sType = 'date';
                     } else {
@@ -200,8 +200,7 @@ sap.ui.define([
                 var oItem = oTable.getContextByIndex(iIndex).getObject();
                 oItem.VALIDATE_START = that.__formatDate(oItem.VALIDATE_START);
                 oItem.VALIDATE_END = that.__formatDate(oItem.VALIDATE_END);
-                //oItem.LEAD_TIME = that.__formatDate(oItem.LEAD_TIME);
-
+                oItem.TIME = that.__formatDate(oItem.TIME); 
 
                 aPostItem.push(oItem);
             });
