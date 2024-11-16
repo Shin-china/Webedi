@@ -269,7 +269,16 @@ sap.ui.define([
                     console.log(sResponse);
                     that.setSysConFig().then(res => {
                         // 调用打印方法
-                        that.PrintTool._detailSelectPrintDow(that, sResponse, "test02/test05", J, null, null, null, null);
+                        that.PrintTool._detailSelectPrintDow(that, sResponse, "test02/test05", J, null, null, null, null).then((oData) => {
+
+                        var sapPo = {
+                            po: IdList,
+                            tpye: "PCH04",
+                            fileName: "月度UMC支払通知書",
+                        }
+                        //打印pdf后写表共通
+                        that.PrintTool.printBackActionPo(that,oData,sapPo)
+                    })
                     });
                 });
             }});
