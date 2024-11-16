@@ -15,6 +15,8 @@ import cds.gen.tableservice.PCH04SENDEMAILContext;
 import cds.gen.tableservice.PCH04EXCELDOWNLOADContext;
 import cds.gen.tableservice.PchT04PaymentSumHj6;
 import cds.gen.tableservice.PchT04PaymentSumHj6_;
+import cds.gen.tableservice.PchT04PaymentUnit;
+import cds.gen.tableservice.PchT04PaymentUnit_;
 import cds.gen.tableservice.TableService_;
 import cds.gen.MailBody;
 import cds.gen.MailJson;
@@ -163,6 +165,32 @@ public class Pch04Handler implements EventHandler {
             data1.setUnitPriceInYen(stripTrailingZeros(data1.getUnitPriceInYen()));
             data1.setBaseAmountExcludingTax(stripTrailingZeros(data1.getBaseAmountExcludingTax()));
             data1.setTaxRate(stripTrailingZeros(data1.getTaxRate()));
+
+        });
+    }
+
+    /**
+     * 
+     * 检查抬头 工厂 检查明细
+     * 
+     * @param context       传入上下文
+     * @param d012MoveActHs 传入画面输入值
+     */
+    @After(entity = PchT04PaymentUnit_.CDS_NAME, event = "READ")
+    public void afterReadPchT04PaymentUnit(CdsReadEventContext context, Stream<PchT04PaymentUnit> datas2) {
+
+        datas2.forEach(data2 -> {
+
+            data2.setTaxRate(stripTrailingZeros(data2.getTaxRate()));
+            data2.setUnitPrice(stripTrailingZeros(data2.getUnitPrice()));
+            data2.setExchange(stripTrailingZeros(data2.getExchange()));
+            data2.setQuantity(stripTrailingZeros(data2.getQuantity()));
+            data2.setPriceAmount(stripTrailingZeros(data2.getPriceAmount()));
+            data2.setTotalAmount(stripTrailingZeros(data2.getTotalAmount()));
+            data2.setUnitPriceInYen(stripTrailingZeros(data2.getUnitPriceInYen()));
+            data2.setTotalAmountInYen(stripTrailingZeros(data2.getTotalAmountInYen()));
+            data2.setPriceAmount10(stripTrailingZeros(data2.getPriceAmount10()));
+            data2.setPriceAmount8(stripTrailingZeros(data2.getPriceAmount8()));
 
         });
     }

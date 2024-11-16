@@ -31,6 +31,7 @@ public class UWebConstants {
 	public final static String USD = "USD"; // 美元元
 	public final static String EUR = "EUR"; // 欧元元
 
+
 	public final static String PCH04_TEP_PATH = "template/支払通知照会.xlsx"; // exc模板路径
-	public final static String PCH04_TEP_EXCEL_MSG = "※送付後一定期間内に誤りのある旨の連絡がない場合には記載内容のとおり確認があったものとする";
+	public final static String PCH04_TEP_EXCEL_MSG ="※送付後一定期間内に誤りのある旨の連絡がない場合には記載内容のとおり確認があったものとする";
 }
