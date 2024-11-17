@@ -178,7 +178,7 @@ public class ObjectStoreHandler implements EventHandler {
 
         });
         System.out.println("返回成功" + JSONObject.toJSONString(pch06List));
-        context.setResult(pch06List);
+        context.setResult(JSONObject.toJSONString(pch06List));
     }
 
     // IFM055 購買見積依頼送信
