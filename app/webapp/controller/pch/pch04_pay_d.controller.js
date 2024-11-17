@@ -393,7 +393,15 @@ sap.ui.define([
 						downloadLink.click();
 						that._setBusy(false); 
 					})
-                
+
+                    // var sapPo = {
+                    //     po: IdList[0],
+                    //     tpye: "PCH04",
+                    //     fileName: fileName,
+                    // }
+                    // //打印pdf后写表共通
+                    // that.PrintTool.printBackActionPo(that,oData,sapPo)
+                    
             })};
         });
 
