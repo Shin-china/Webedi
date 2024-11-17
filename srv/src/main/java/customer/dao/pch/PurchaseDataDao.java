@@ -90,6 +90,7 @@ public class PurchaseDataDao extends Dao {
         if (d) {
 
             o2.setPoType("D");
+            o2.setDelFlag("Y");
 
         }
 
@@ -106,6 +107,7 @@ public class PurchaseDataDao extends Dao {
         if (d) {
 
             o2.setPoType("D");
+            o2.setDelFlag("Y");
 
         }
 
@@ -181,7 +183,7 @@ public class PurchaseDataDao extends Dao {
         if (!isExist.getPoPurQty().equals(PoPurQty)
                 || !isExist.getPoDDate().isEqual(deliveryDate)
                 || isExist.getDelAmount().compareTo(amount) != 0) {
-                    
+
             return true; // 只要有一个值不一样，返回 true
         }
 
@@ -190,6 +192,23 @@ public class PurchaseDataDao extends Dao {
     }
 
     public Boolean getDelflaghavechange(Item items) {
+        Integer dn = Integer.parseInt(items.getPurchaseorderitem());
+        String delFlag = "N";
+
+        if (items.getPurchasingdocumentdeletioncode().equals("L")) {
+            delFlag = "Y";
+        }
+
+        T02PoD isExist = getByID2(items.getPurchaseorder(), dn);
+        if (isExist == null) {
+
+        } else {
+
+            if (!isExist.getDelFlag().equals(delFlag)) {
+                return true;
+            }
+
+        }
 
         return false;
 
