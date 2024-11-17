@@ -263,6 +263,22 @@ public class Ifm03PoService {
 
                             }
                         }
+
+                        // 如果deleflag 是 删除，也应该判断一下 是不是所有的都是删除
+                        if ("L".equals(Items.getPurchasingdocumentdeletioncode())) {
+                            Boolean isalldele1 = PchDao.getdelbyPO(Items.getPurchaseorder());
+
+                            if (isalldele1) {
+                                // 全部明细都有删除标记
+                                supplierDeleteMap.put(supplier, "来自159行，全部明细都有删除标记，肯定是删除");
+
+                            } else {
+                                // 部分明细有删除标记
+                                supplierUpdateMap.put(supplier, "来自263行，部分明细有删除标记，肯定是更新");
+
+                            }
+                        }
+
                     }
                 }
                 // 创建发信
