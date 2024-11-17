@@ -34,8 +34,6 @@ service Common {
     action s3uploadAttachment(attachmentJson : array of attachmentJson) returns String;//S3 Insert Attachment
     action s3DownloadAttachment(attachmentJson : array of attachmentJson) returns LargeBinary;//S3 Insert Attachment
 
-    action pch06BatchImport(pch06 : array of PCH_T06_QUOTATION_H)               returns String; //IFM054 購買見積依頼受信
-    action pch06BatchSending(json : String)               returns String; //IFM055 購買見積結果送信
-    
+
 
 }
