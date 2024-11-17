@@ -109,6 +109,11 @@ public class PurchaseDataDao extends Dao {
             o2.setPoType("D");
             o2.setDelFlag("Y");
 
+        } else {
+
+            o2.setPoType("U");
+            o2.setDelFlag("N");
+
         }
 
         o2.setStatus("1");
