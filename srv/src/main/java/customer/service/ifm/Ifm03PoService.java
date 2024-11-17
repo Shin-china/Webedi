@@ -63,8 +63,6 @@ public class Ifm03PoService {
 
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
 
-                Boolean dele = false;
-
                 Map<String, String> supplierCreatMap = new HashMap<>();
                 Map<String, String> supplierUpdateMap = new HashMap<>();
                 Map<String, String> supplierDeleteMap = new HashMap<>();
@@ -74,6 +72,7 @@ public class Ifm03PoService {
                 String H_CODE = "MM0004";
 
                 for (Item Items : sapPchRoot.getItems()) {
+                    Boolean dele = false;
 
                     int dn = Integer.parseInt(Items.getPurchaseorderitem());
 
