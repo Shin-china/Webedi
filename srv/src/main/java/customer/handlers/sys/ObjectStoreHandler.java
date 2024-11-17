@@ -135,8 +135,8 @@ public class ObjectStoreHandler implements EventHandler {
 
             try {
                 // 获取購買見積番号
-                // pchT06QuotationH.setQuoNumber(docNoDao.getPJNo(1));
-                pchT06QuotationH.setQuoNumber("1006");
+                pchT06QuotationH.setQuoNumber(docNoDao.getPJNo(1));
+                // pchT06QuotationH.setQuoNumber("1006");
             } catch (Exception e) {
                 e.printStackTrace();
             }
