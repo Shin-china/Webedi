@@ -7,7 +7,9 @@ sap.ui.define([
     "umc/app/model/formatter",
     "sap/ui/export/Spreadsheet",
     "sap/ui/model/json/JSONModel",
-], function (Controller, MessageToast, MessageBox, BusyDialog, formatter, Spreadsheet, JSONModel) {
+    "sap/ui/model/Filter",
+    "sap/ui/model/FilterOperator",
+], function (Controller, MessageToast, MessageBox, BusyDialog, formatter, Spreadsheet, JSONModel, Filter, FilterOperator) {
     "use strict";
 
     return Controller.extend("umc.app.controller.pch.pch08_list", {
@@ -48,7 +50,7 @@ sap.ui.define([
 
             //动态列
             var sKeys = '';
-            var sResult = ''; 
+            var sResult = '';
             var iMaxTotal = 0;
             var aExport = [];
             aSelectedData.forEach(row => {
@@ -67,14 +69,14 @@ sap.ui.define([
                 sResult = json;
 
                 //拼接动态对象
-                aSelectedData.forEach(data=>{
+                aSelectedData.forEach(data => {
                     var oExportData = data;
 
-                    var oQtyInfo = sResult.filter(e=>{
+                    var oQtyInfo = sResult.filter(e => {
                         return e.QUO_NO == data.QUO_NUMBER;
                     });
 
-                    if(!oQtyInfo || oQtyInfo.length == 0){
+                    if (!oQtyInfo || oQtyInfo.length == 0) {
                         aExport.push(oExportData);
                         return;
                     }
@@ -84,19 +86,19 @@ sap.ui.define([
                         if (!iMax) {
                             return;
                         }
-    
+
                         if (iMax > iMaxTotal) {
                             iMaxTotal = iMax;
                         }
-    
-                        for (var i = 1; i <= iMax; i++) { 
+
+                        for (var i = 1; i <= iMax; i++) {
                             var sQty = 'QTY_' + i;
-                            oExportData[sQty] = item[sQty]; 
+                            oExportData[sQty] = item[sQty];
 
                             var sPrice = 'PRICE_' + i;
                             oExportData[sPrice] = item[sPrice];
                         }
-                    }) 
+                    })
 
                     aExport.push(oExportData);
                 })
@@ -202,7 +204,7 @@ sap.ui.define([
                 var oItem = oTable.getContextByIndex(iIndex).getObject();
                 oItem.VALIDATE_START = that.__formatDate(oItem.VALIDATE_START);
                 oItem.VALIDATE_END = that.__formatDate(oItem.VALIDATE_END);
-                oItem.TIME = that.__formatDate(oItem.TIME); 
+                oItem.TIME = that.__formatDate(oItem.TIME);
 
                 aPostItem.push(oItem);
             });
@@ -228,7 +230,7 @@ sap.ui.define([
                         this._localModel.setProperty("/show", false);
                         this._localModel.setProperty("/save", true);
                         that.MessageTools._addMessage(this.MessageTools._getI18nTextInModel("pch", oResult.reTxt, this.getView()), null, 1, this.getView());
-                    }else{
+                    } else {
                         sap.m.MessageToast.show(that._PchResourceBundle.getText("SAVE_SUCCESS"));
                     }
                     that._setBusy(false);
@@ -343,11 +345,11 @@ sap.ui.define([
             return [...new Set(arr)];
         },
 
-        onCloseAttachmentDialog:function(){
+        onCloseAttachmentDialog: function () {
             this._closeDialog(this, 'idAttachmentDialog');
         },
 
-        onFileChange:function(oEvent){
+        onFileChange: function (oEvent) {
             var oFile = oEvent.getParameter("files")[0];
             if (!oFile) {
                 return;
@@ -355,29 +357,30 @@ sap.ui.define([
 
             var oAttachmentModel = this.getView().getModel("attachment");
 
-            if(!oAttachmentModel){
+            if (!oAttachmentModel) {
                 return;
             }
 
             var sQuoNumber = oAttachmentModel.getProperty("/QUO_NUMBER");
-            if(!sQuoNumber){
+            if (!sQuoNumber) {
                 sap.m.MessageToast.show(this._PchResourceBundle.getText("QUO_NUMBER_IS_NULL"));
                 return;
             }
 
-            var oReader = new FileReader(); 
+            var oReader = new FileReader();
             oReader.readAsDataURL(oFile);
             this._BusyDialog.open();
-            oReader.onload = function (e) {
-                debugger;
-                let oFileData = e.target.result; 
+            var that = this;
+            oReader.onload = function (e) { 
+                let oFileData = e.target.result;
+                let sContent = oFileData.substring(oFileData.indexOf("base64,") + 7);
                 var oUploadData = {};
                 oUploadData = {
-                    "object":sQuoNumber,
-                    "object_type":"pch08",
-                    "file_type": oFile.type,
-                    "file_name": oFile.name,
-                    "value": oFileData
+                    "object": sQuoNumber,
+                    "object_type": "pch08",
+                    "file_type": oFile.name.substring(oFile.name.lastIndexOf(".") + 1),
+                    "file_name": oFile.name.substring(0, oFile.name.lastIndexOf(".")),
+                    "value": sContent
                 };
                 let oAttachmentObj = {
                     "attachmentJson": oUploadData
@@ -392,40 +395,40 @@ sap.ui.define([
                     crossDomain: true,
                     responseType: 'blob',
                     data: JSON.stringify(oAttachmentObj),
-                    success: function (base64) {
-                      debugger;
-                      console.log("上传成功");
+                    success: function (base64) { 
+                        that.getView().getModel().refresh();
+                        console.log("上传成功");
                     }
                 })
 
-                
+
                 this.byId("idFileUploader").clear();
                 this._BusyDialog.close();
             }.bind(this);
         },
 
-        onDestroyAttachmentDialog:function(oEvent){
+        onDestroyAttachmentDialog: function (oEvent) {
             this._destroyDialog(oEvent);
         },
 
-        onOpenAttachmentDialog:function(){
+        onOpenAttachmentDialog: function () {
             var oTable = this.byId("listTable");
 
-            if(!oTable){
+            if (!oTable) {
                 return;
             }
 
             const aIndex = oTable.getSelectedIndices();
 
-            if(aIndex.length !== 1){
+            if (aIndex.length !== 1) {
                 sap.m.MessageToast.show(this._PchResourceBundle.getText("SELECT_ONE_RECORD"));
                 return;
-            } 
+            }
 
             let oSelectData = oTable.getContextByIndex(aIndex[0]).getObject();
 
             var sQuoNumber = oSelectData.QUO_NUMBER;
-            if(!sQuoNumber){
+            if (!sQuoNumber) {
                 sap.m.MessageToast.show(this._PchResourceBundle.getText("QUO_NUMBER_IS_NULL"));
                 return;
             }
@@ -444,19 +447,44 @@ sap.ui.define([
             });
         },
 
-        onDeleteAttachment:function(oEvent){
+        onDeleteAttachment: function (oEvent) {
             var oTable = this.byId("id.AttachmentTable");
 
-            if(!oTable){
+            if (!oTable) {
                 return;
             }
 
             const aIndex = oTable.getSelectedIndices();
 
-            if(aIndex.length !== 1){
+            if (aIndex.length !== 1) {
                 sap.m.MessageToast.show(this._PchResourceBundle.getText("SELECT_AT_LEAST_ONE_RECORD"));
                 return;
-            } 
+            }
+
+            var that = this;
+ 
+            for (var i = 0; i < aIndex.length; i++) {
+                var oBindingContext = oTable.getContextByIndex(aIndex[i]);
+                var oData = oBindingContext.getObject();
+                var sAttachmentId = oData.ID;
+                var oAttachmentObj = {
+                    "key": sAttachmentId
+                };
+
+                $.ajax({
+                    url: "srv/odata/v4/Common/deleteS3Object",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    async: false,
+                    crossDomain: true,
+                    data: JSON.stringify(oAttachmentObj),
+                    success: function (base64) {
+                        that.getView().getModel().refresh();
+                    }
+                })
+
+            }
         },
 
         _closeDialog: function (oContext, sDialogId) {
@@ -465,12 +493,97 @@ sap.ui.define([
             oDialog.destroy();
         },
 
-        _destroyDialog : function(oEvent){
+        _destroyDialog: function (oEvent) {
             var oSource = oEvent.getSource();
-            if(oSource){
+            if (oSource) {
                 oSource.destroy();
             }
-        }
+        },
+
+        onBeforeBindAttachment: function (oEvent) {
+            var oParameters = oEvent.getParameter("bindingParams");
+            var oAttachmentModel = this.getView().getModel("attachment");
+
+            //Filter
+            if (oAttachmentModel) {
+                var sQuoNumber = oAttachmentModel.getProperty("/QUO_NUMBER");
+                if (sQuoNumber !== '') {
+                    oParameters.filters.push(new sap.ui.model.Filter(
+                        "OBJECT",
+                        sap.ui.model.FilterOperator.EQ,
+                        sQuoNumber
+                    ))
+                }
+            }
+
+            oParameters.filters.push(new sap.ui.model.Filter(
+                "OBJECT_TYPE",
+                sap.ui.model.FilterOperator.EQ,
+                "pch08"
+            ));
+
+        },
+
+        onDownloadAttachment: function (oEvent) {
+            var oTable = this.byId("id.AttachmentTable");
+            var that = this;
+
+            if (!oTable) {
+                return;
+            }
+
+            const aIndex = oTable.getSelectedIndices();
+
+            if (aIndex.length !== 1) {
+                sap.m.MessageToast.show(this._PchResourceBundle.getText("SELECT_AT_LEAST_ONE_RECORD"));
+                return;
+            }
+
+            for (var i = 0; i < aIndex.length; i++) {
+                var oBindingContext = oTable.getContextByIndex(aIndex[i]);
+                var oAttachment = oBindingContext.getObject();
+                var sId = oAttachment.ID;
+                if (sId) {
+                    var att_type = "";
+                    var downloadJson = { attachmentJson:[{
+                        object:"download",
+                        value: oAttachment.OBJECT_LINK
+                    }]}
+                    switch(oAttachment.FILE_TYPE){
+                        case "pdf":
+                            att_type = "application/pdf";
+                            break;
+                        case "csv" || "txt":
+                            att_type = "text/plain";
+                            break;  
+                        case "xls" || "xlsx":
+                            att_type = "application/vnd.ms-excel";
+                            break;
+                    }
+                }
+
+            } 
+
+
+            $.ajax({
+                url:"srv/odata/v4/Common/s3DownloadAttachment",
+                type:"POST",
+                contentType: "application/json; charset=utf-8",
+                dataType:"json",
+                async:false,
+                crossDomain:true,
+                responseType:'blob',
+                data:JSON.stringify(downloadJson),
+                success:function(base64){
+                    const downloadLink = document.createElement("a");
+                    const blob = that._base64Blob(base64.value,att_type);
+                    const blobUrl = URL.createObjectURL(blob);
+                    downloadLink.href = blobUrl;
+                    downloadLink.download = oAttachment.FILE_NAME + "." + oAttachment.FILE_TYPE;
+                    downloadLink.click();
+                }
+            })
+        } 
 
     });
 });
