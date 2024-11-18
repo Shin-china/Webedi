@@ -69,7 +69,7 @@
 		<f:content>
 
 
-			<smartTable:SmartTable id="smartTable" enableAutoColumnWidth="true" showFullScreenButton="true" persistencyKey="mst02_receiptprintTable" ignoredFields="ID,USER_TYPE,PLANT_ID" entitySet="PCH_T03_PO_ITEM" requestAtLeastFields="ID,USER_TYPE,PLANT_ID"  smartFilterId="smartFilterBar" beforeExport="onBeforeExport" enableExport="true" useVariantManagement="true" useTablePersonalisation="true"  initiallyVisibleFields="PO_TYPE,PO_NO,D_NO,MAT_ID,PO_D_TXZ01,PO_PUR_QTY,PO_PUR_UNIT,STATUS,ZABC,SUPPLIER,SUPPLIER_MAT,CD_BY,CURRENCY,DEL_PRICE,UNIT_PRICE,DEL_AMOUNT,PO_DATE,PO_D_DATE,MEMO,USER_TYPE" tableType="Table" showRowCount="true" beforeRebindTable="onRebind" placeToolbarInTable="true" header="{com>TITLE_RESULT}" enableAutoBinding="false">
+			<smartTable:SmartTable id="smartTable" enableAutoColumnWidth="true" showFullScreenButton="true" persistencyKey="mst02_receiptprintTable" ignoredFields="ID,USER_TYPE,PLANT_ID" entitySet="PCH_T03_PO_ITEM" requestAtLeastFields="ID,USER_TYPE,PLANT_ID,STORAGE_LOC,STORAGE_TXT"  smartFilterId="smartFilterBar" beforeExport="onBeforeExport" enableExport="true" useVariantManagement="true" useTablePersonalisation="true"  initiallyVisibleFields="PO_TYPE_NAME,PO_NO,D_NO,MAT_ID,PO_D_TXZ01,PO_PUR_QTY,PO_PUR_UNIT,STATUS_NAME,ZABC1_NAME,SUPPLIER,SUPPLIER_MAT,CD_BY,CURRENCY,DEL_PRICE,UNIT_PRICE,DEL_AMOUNT,PO_DATE,PO_D_DATE,MEMO,USER_TYPE" tableType="Table" showRowCount="true" beforeRebindTable="onRebind" placeToolbarInTable="true" header="{com>TITLE_RESULT}" enableAutoBinding="false">
 
 				<smartTable:customToolbar>
 				<OverflowToolbar id="ID_header">

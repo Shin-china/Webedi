@@ -289,7 +289,7 @@ extend service TableService {
                     when 'E' then T08.NAME
                     when 'F' then T08.NAME
                     when 'W' then T08.NAME
-                    else 'C' end as ZABC1_NAME : String(10), //ABC区分 E：Email F：Fax  W：Web edi
+                    else 'その他' end as ZABC1_NAME : String(10), //ABC区分 E：Email F：Fax  W：Web edi
                 T02.PO_D_TXZ01, // 品目テキスト
                 T02.PO_PUR_QTY, // 発注数量
                 T02.PO_PUR_UNIT, // 単位
@@ -299,6 +299,8 @@ extend service TableService {
                 T02.DEL_AMOUNT, // 発注金額（値）
                 T02.MEMO, // 備考
                 Tu.USER_TYPE, // 用户type
+                T02.STORAGE_LOC,
+                T02.STORAGE_TXT
         }
     where
                 Tu.USER_TYPE = '2'
@@ -328,45 +330,48 @@ extend service TableService {
 
 
             distinct {
-                @title: '{i18n>PO_NO_DNO}'
-                key T01.PO_NO || RIGHT('00000' || T02.D_NO, 5) as ID : String(100),
-                key T01.PO_NO, // 発注番号
-                key T02.D_NO, // 明細番号
-                    T01.SUPPLIER, // 仕入先コード
-                    T02.SUPPLIER_MAT, // 仕入先品目コード
-                    T02.MAT_ID, // 品目コード
-                    T02.PO_TYPE, // 発注区分  C：新規 U：変更 D：削除
-                    T01.PO_DATE, //発注日
-                    T02.STATUS, // ステータス  01：送信済　02：照会済
-                    T02.CD_BY, //登録者
-                    T02.PO_D_DATE, //所要日付
-                    T02.PLANT_ID,
-                     @title: '{i18n>ZABC1}'
-                       case T04.ZABC
+                   @title: '{i18n>PO_NO_DNO}'
+            key T01.PO_NO || RIGHT('00000' || T02.D_NO, 5) as ID   : String(100),
+            key T01.PO_NO, // 発注番号
+            key T02.D_NO, // 明細番号
+                T01.SUPPLIER, // 仕入先コード
+                T02.SUPPLIER_MAT, // 仕入先品目コード
+                T02.MAT_ID, // 品目コード
+                T02.PO_TYPE, // 発注区分  C：新規 U：変更 D：削除
+
+                T01.PO_DATE, //発注日
+                T02.STATUS, // ステータス  01：送信済　02：照会済
+                
+                T02.CD_BY, //登録者
+                T02.PO_D_DATE, //所要日付
+                T02.PLANT_ID,
+                @title: '{i18n>ZABC1}'
+                     case T04.ZABC
                     when 'E' then 'E'
                     when 'F' then 'F'
                     when 'W' then 'W'
-                    else 'C' end as ZABC : String(10), //ABC区分 E：Email F：Fax  W：Web edi
-                    @title: '{i18n>PO_TYPE}'
-                    T06.NAME  as PO_TYPE_NAME : String(10),// 発注区分名称
-                    @title: '{i18n>STATUS}'
-                    T07.NAME as STATUS_NAME : String(10), // ステータス  01：送信済　02：照会済
-                    @title: '{i18n>ZABC1}'
-                    case T04.ZABC
+                    else 'C' end as ZABC : String(5), //ABC区分 E：Email F：Fax  W：Web edi
+                @title: '{i18n>PO_TYPE}'
+                T06.NAME  as PO_TYPE_NAME,// 発注区分名称
+                @title: '{i18n>STATUS}'
+                T07.NAME as STATUS_NAME, // ステータス  01：送信済　02：照会済
+                @title: '{i18n>ZABC1}'
+                 case T04.ZABC
                     when 'E' then T08.NAME
                     when 'F' then T08.NAME
                     when 'W' then T08.NAME
-                    else 'C' end as ZABC1_NAME : String(10), //ABC区分 E：Email F：Fax  W：Web edi
-                    T02.PO_D_TXZ01, // 品目テキスト
-                    T02.PO_PUR_QTY, // 発注数量
-                    T02.PO_PUR_UNIT, // 単位
-                    T02.CURRENCY, // 通貨
-                    T02.DEL_PRICE, // 発注単価（値）
-                    T02.UNIT_PRICE, // 価格単位
-                    T02.DEL_AMOUNT, // 発注金額（値）
-                    T02.MEMO, // 備考
-                     Tu.USER_TYPE, // 用户type
-
+                    else 'その他' end as ZABC1_NAME : String(10), //ABC区分 E：Email F：Fax  W：Web edi
+                T02.PO_D_TXZ01, // 品目テキスト
+                T02.PO_PUR_QTY, // 発注数量
+                T02.PO_PUR_UNIT, // 単位
+                T02.CURRENCY, // 通貨
+                T02.DEL_PRICE, // 発注単価（値）
+                T02.UNIT_PRICE, // 価格単位
+                T02.DEL_AMOUNT, // 発注金額（値）
+                T02.MEMO, // 備考
+                Tu.USER_TYPE, // 用户type
+                T02.STORAGE_LOC,
+                T02.STORAGE_TXT
             }
             where
                 Tu.USER_TYPE = '1';

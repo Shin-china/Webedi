@@ -1,57 +1,47 @@
 package customer.handlers.sys;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
 
-import com.alibaba.excel.EasyExcel;
-import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.util.StringUtils;
-import com.alibaba.excel.write.metadata.WriteSheet;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.alibaba.excel.write.metadata.fill.FillConfig;
-
 import com.google.common.io.ByteStreams;
 import com.sap.cds.services.handler.EventHandler;
 import com.sap.cds.services.handler.annotations.On;
 import com.sap.cds.services.handler.annotations.ServiceName;
 
 import cds.gen.AttachmentJson;
-import cds.gen.common.*;
+import cds.gen.common.Common_;
+import cds.gen.common.GetS3ListContext;
+import cds.gen.common.Pch06BatchImportContext;
+import cds.gen.common.Pch06BatchSendingContext;
+import cds.gen.common.PchT06QuotationH;
+import cds.gen.common.PchT07QuotationD;
+import cds.gen.common.S3DownloadAttachmentContext;
+import cds.gen.common.S3uploadAttachmentContext;
+import cds.gen.pch.T06QuotationH;
+import cds.gen.pch.T07QuotationD;
 import cds.gen.sys.T13Attachment;
-import cds.gen.tableservice.EXCELTESTContext;
 import customer.bean.com.CommMsg;
 import customer.bean.com.UmcConstants;
-import customer.bean.sys.Ifm054Bean;
-import customer.bean.tmpl.test;
 import customer.comm.tool.StringTool;
 import customer.dao.pch.PchD006;
 import customer.dao.pch.PchD007;
-import customer.dao.pch.PchD008Dao;
 import customer.dao.sys.DocNoDao;
 import customer.dao.sys.T13AttachmentDao;
-import customer.service.ifm.Ifm01BpService;
 import customer.service.sys.ObjectStoreService;
 import customer.tool.UniqueIDTool;
 import software.amazon.awssdk.core.ResponseBytes;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.model.S3Object;
-import cds.gen.pch.T07QuotationD;
-import cds.gen.pch.T06QuotationH;
 
 @Component
 @ServiceName(Common_.CDS_NAME)
@@ -186,7 +176,7 @@ public class ObjectStoreHandler implements EventHandler {
 
         });
         System.out.println("返回成功" + JSONObject.toJSONString(pch06List));
-        context.setResult(pch06List);
+        //context.setResult(JSONObject.toJSONString(pch06List));
     }
 
     // IFM055 購買見積依頼送信

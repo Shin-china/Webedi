@@ -104,15 +104,18 @@ init
 			}
 
 		},
-		_setHeaderModel: function (headers) {
-		    
-			headers.splice(4, 0, 55);
+		_setHeaderModel: function () {
+			let keys = ["obj1","obj1","PO_TYPE_NAME","obj1","ID","obj1","PO_DATE","PO_D_DATE","メーカー","MAT_ID","PO_D_TXZ01","UMC共通品番(SAP品番)","顧客品番","メーカー品番","PO_PUR_UNIT","CURRENCY","PO_PUR_QTY","DEL_PRICE","発注金額","MEMO","備考２","得意先コード","資産元","STORAGE_LOC","STORAGE_TXT","検査区分","発注担当者","依頼者","棚番号","調整依頼コメント","納品先郵便番号","納品先住所１","納品先住所２","納品先住所３","納品先住所４","納品先電話番号","納品先ＦＡＸ","納品日","納品数"]
+			// headers.shift();
+			return keys;
+			// headers.splice(4, 0, 55);
 		},
 		_setHeaderData: function (csvContent) {
 			let headers = ["項目","確認区分","ステータス","システム管理番号","発注番号","海外PO番号","発注日","納期","メーカー","品目番号","品目名称","UMC共通品番(SAP品番)","顧客品番","メーカー品番","単位","通貨","発注数","発注単価","発注金額","備考１","備考２","得意先コード","資産元","納入先コード","納品先名","検査区分","発注担当者","依頼者","棚番号","調整依頼コメント","納品先郵便番号","納品先住所１","納品先住所２","納品先住所３","納品先住所４","納品先電話番号","納品先ＦＡＸ","納品日","納品数"]
 
 			
 		    csvContent += headers.join(",") + "\n";
+			return csvContent;
 		},
 		onCsvdow: function (oEvt) {
 			// 假设你的数据模型是JSONModel，并且已经绑定到了SmartTable  
@@ -121,22 +124,34 @@ init
 			this._AfterDigLogCheck().then((selectedIndices) => {
 				// 构建CSV内容  
 				var csvContent = "data:text/csv;charset=utf-8,";
-				var headers = Object.keys(selectedIndices[0]); // 假设所有条目的结构都相同，取第一条的键作为表头  
+				// var headers = Object.keys(selectedIndices[0]); // 假设所有条目的结构都相同，取第一条的键作为表头  
 				//设置头的模板
-				that._setHeaderModel(headers);
+				var headers = that._setHeaderModel();
 
 				
-				headers.shift();
+
 
 				//头部数据写入一行
-				that._setHeaderData(csvContent);
+				csvContent = that._setHeaderData(csvContent);
 
 				// csvContent += headers.join(",") + "\n";  
 
 				selectedIndices.forEach(function (row) {
 					var values = headers.map(function (header) {
+						let re = ""
+						//如果取不出来就是
+						if(row[header] === null || row[header] === undefined){
+							return re = ""
+						}else{
+							if("PO_DATE" == header || "PO_D_DATE" == header){
+								re = that.CommTools._formatToYYYYMMDD(row[header]);
+							}else{
+								re = '"' + row[header] + '"'
+							}
+						    
+						}
 
-						return (row[header] === null || row[header] === undefined) ? "" : '"' + row[header] + '"';
+						return re;
 
 
 					});
