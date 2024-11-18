@@ -392,6 +392,28 @@ sap.ui.define([
                         downloadLink.download = fileName; // 使用动态生成的文件名
 						downloadLink.click();
 						that._setBusy(false); 
+                        //Convert Base64 to Blob
+                        var mailObj = { attachmentJson:{
+                            object: "pch04test",
+                            object_type:"PCH04",
+                            value:J.PCH04_EXCELDOWNLOAD,
+                            file_type:"xls",
+                            file_name:"test.xls"
+                          }}
+                    
+                        $.ajax({
+                            url: "srv/odata/v4/Common/s3uploadAttachment",
+                            type: "POST",
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+                            async: false,
+                            crossDomain: true,
+                            responseType: 'blob',
+                            data: JSON.stringify(mailObj),
+                            success: function (base64) {
+                              console.log("上传成功");
+                            }
+                        })
 					})
 
                     // var sapPo = {
