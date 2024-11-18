@@ -89,7 +89,7 @@ public class ObjectStoreHandler implements EventHandler {
                     t13.setObject(attachment.getObject());
                     t13.setFileName(attachment.getFileName());
                     t13.setFileType(attachment.getFileType());
-                    t13.setObjectType("PCH03");
+                    // t13.setObjectType("PCH03");
                     t13.setId(uuidd);
                     t13.setObjectType(attachment.getObjectType());
                     t13.setObjectLink(msg.getMsgTxt());
