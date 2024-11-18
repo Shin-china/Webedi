@@ -64,7 +64,7 @@ sap.ui.define([
                     });
                     let column2 = new sap.ui.table.Column({
                         label: new sap.m.Label({ text: "数量" + i }),
-                        template: new sap.m.Input({ value: qty, editable: "{=${" + qtyFlag + "} === undefined || ${" + qtyFlag + "} === null || ${" + qtyFlag + "} === ''  ? false : true}" })
+                        template: new sap.m.Input({ value: qty, editable: false })
                     });
                     this.getView().byId("dataTable").addColumn(column1);
                     this.getView().byId("dataTable").addColumn(column2);
