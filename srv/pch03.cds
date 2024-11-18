@@ -285,7 +285,11 @@ extend service TableService {
                 @title: '{i18n>STATUS}'
                 T07.NAME as STATUS_NAME, // ステータス  01：送信済　02：照会済
                 @title: '{i18n>ZABC1}'
-                T08.NAME  as ZABC1_NAME,//ABC区分 E：Email F：Fax  W：Web edi
+                 case T04.ZABC
+                    when 'E' then T08.NAME
+                    when 'F' then T08.NAME
+                    when 'W' then T08.NAME
+                    else 'C' end as ZABC1_NAME : String(10), //ABC区分 E：Email F：Fax  W：Web edi
                 T02.PO_D_TXZ01, // 品目テキスト
                 T02.PO_PUR_QTY, // 発注数量
                 T02.PO_PUR_UNIT, // 単位
@@ -342,13 +346,17 @@ extend service TableService {
                     when 'E' then 'E'
                     when 'F' then 'F'
                     when 'W' then 'W'
-                    else 'C' end as ZABC : String(5), //ABC区分 E：Email F：Fax  W：Web edi
+                    else 'C' end as ZABC : String(10), //ABC区分 E：Email F：Fax  W：Web edi
                     @title: '{i18n>PO_TYPE}'
-                    T06.NAME  as PO_TYPE_NAME,// 発注区分名称
+                    T06.NAME  as PO_TYPE_NAME : String(10),// 発注区分名称
                     @title: '{i18n>STATUS}'
-                    T07.NAME as STATUS_NAME, // ステータス  01：送信済　02：照会済
+                    T07.NAME as STATUS_NAME : String(10), // ステータス  01：送信済　02：照会済
                     @title: '{i18n>ZABC1}'
-                    T08.NAME  as ZABC1_NAME,//ABC区分 E：Email F：Fax  W：Web edi
+                    case T04.ZABC
+                    when 'E' then T08.NAME
+                    when 'F' then T08.NAME
+                    when 'W' then T08.NAME
+                    else 'C' end as ZABC1_NAME : String(10), //ABC区分 E：Email F：Fax  W：Web edi
                     T02.PO_D_TXZ01, // 品目テキスト
                     T02.PO_PUR_QTY, // 発注数量
                     T02.PO_PUR_UNIT, // 単位
