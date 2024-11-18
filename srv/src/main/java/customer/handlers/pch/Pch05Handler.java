@@ -218,8 +218,8 @@ public class Pch05Handler implements EventHandler {
   @On(event = "PCH05_CONFIRM")
   public void confirm(PCH05CONFIRMContext context) {
 
-    String invno = context.getParms();
-    JSONArray jsonArray = JSONArray.parseArray(invno);
+    String supp = context.getParms();
+    JSONArray jsonArray = JSONArray.parseArray(supp);
     for (int i = 0; i < jsonArray.size(); i++) {
       String object = (String)jsonArray.get(0);
      
@@ -239,8 +239,8 @@ public class Pch05Handler implements EventHandler {
   @On(event = "PCH05_CANCEL")
   public void confirm(PCH05CANCELContext context) {
 
-    String invno = context.getParms();
-    JSONArray jsonArray = JSONArray.parseArray(invno);
+    String supp = context.getParms();
+    JSONArray jsonArray = JSONArray.parseArray(supp);
     for (int i = 0; i < jsonArray.size(); i++) {
       String object = (String)jsonArray.get(0);
      

@@ -17,7 +17,7 @@ sap.ui.define([
         onInit: function () {
 
             var oViewModel = new sap.ui.model.json.JSONModel({
-				isButtonEnabled: false // 默认值为 true
+				// isButtonEnabled: false // 默认值为 true
 			});
 			this.getView().setModel(oViewModel, "viewModel");
             // 初始化代码
@@ -30,11 +30,11 @@ sap.ui.define([
             var that = this;
             var oTable = this.getView().byId("detailTable");
 
-            var aSelectedIndices =this._TableDataList("detailTable","INV_NO")         
+            var aSelectedIndices =this._TableDataList("detailTable","SUPPLIER")         
            
             if (aSelectedIndices) {
                 // 启用 onResend 按钮，通过更新 viewModel
-                this.getView().getModel("viewModel").setProperty("/isButtonEnabled", true);
+                // this.getView().getModel("viewModel").setProperty("/isButtonEnabled", true);
                 var par = {parms:JSON.stringify(aSelectedIndices)};
 
                 this._callCdsAction("/PCH05_CONFIRM",  par, this)
@@ -43,7 +43,7 @@ sap.ui.define([
                         this.getModel().refresh(true); //刷新数据
                     })
                                 // 设置标志为已确认
-                this.isConfirmed = true;
+                // this.isConfirmed = true;
                 
             }
         
@@ -51,18 +51,17 @@ sap.ui.define([
 
         },
 
-
         onCancel: function () {
             var that = this;
             var oTable = this.getView().byId("detailTable");
 
 
-            var aSelectedIndices =this._TableDataList("detailTable","INV_NO");
+            var aSelectedIndices =this._TableDataList("detailTable","SUPPLIER");
            
             if (aSelectedIndices) {
                 // 启用 onResend 按钮，通过更新 viewModel
                 
-                this.getView().getModel("viewModel").setProperty("/isButtonEnabled", false);
+                // this.getView().getModel("viewModel").setProperty("/isButtonEnabled", false);
                 var par = {parms:JSON.stringify(aSelectedIndices)};
                 var that = this;
     
@@ -71,24 +70,10 @@ sap.ui.define([
                 this._callCdsAction("/PCH05_CANCEL",  par, this)
                     .then((oData) => {
                         sap.m.MessageToast.show("インボイス解除成功！");
-                        this.isConfirmed = false; // 取消确认状态
+                        // this.isConfirmed = false; // 取消确认状态
                         
-                        // // 更新 viewModel 或其他属性
-                        // this.getView().getModel("viewModel").setProperty("/isButtonEnabled", true); // 重新启用按钮
-
-                        // // 假设 myArray.list 是最新的列表数据
-                        // var jsonModel = this.getView().getModel("jsonModel"); // 获取 JSONModel
-                        // jsonModel.setData(myArray.list); // 更新模型数据
-
-                        // // 强制刷新表格绑定
-                        // var oTableBinding = oTable.getBinding("items");
-                        // if (oTableBinding) {
-                        //     oTableBinding.refresh(); // 强制刷新表格绑定
-                        // }
                         this.getModel().refresh(true); //刷新数据
                     })
-
-                   
 
             }
         
@@ -99,6 +84,12 @@ sap.ui.define([
         
         onResend: function () {
 			var that = this;
+
+            // 调用检查逻辑
+            if (!this.checkSelectedSuppliers()) {
+                return; // 如果检查不通过，则终止执行
+            }
+
             var oTable = this.getView().byId("detailTable");
             var aSelectedIndices = oTable.getSelectedIndices();
 
@@ -112,43 +103,6 @@ sap.ui.define([
                 // 将日期格式调整为 YYYY/MM/DD
                 return formattedDate.replace(/\//g, '/'); // 保证分隔符为 /
               }
-   
-            // 检查是否有选中的数据
-            if (aSelectedIndices.length === 0) {
-                MessageToast.show("選択されたデータがありません、データを選択してください。");
-                return;
-            }
-
-            var oModel = this.getView().getModel();
-            var oCommonModel = this.getView().getModel("Common"); // 获取公共模型
-            var aEmailParams = [];
-
-                // 遍历选中的行，提取所需数据
-                var aSelectedData = aSelectedIndices.map(function (iIndex) {
-                    return oTable.getContextByIndex(iIndex).getObject();
-                });    
-
-                 // 检查 SUPPLIER 是否相同
-                var supplierSet = new Set(aSelectedData.map(data => data.SUPPLIER));
-                if (supplierSet.size > 1) {
-                    MessageBox.error("複数の取引先がまとめて配信することができませんので、1社の取引先を選択してください。");
-                    return;
-                }
-       
-                // 检查是否有选中的数据
-                if (aSelectedIndices.length === 0) {
-                    MessageToast.show("選択されたデータがありません、データを選択してください。");
-                    return;
-                }
-    
-                        // 检查 SUPPLIER 是否相同
-                        var supplierSet = new Set(aSelectedData.map(data => data.SUPPLIER));
-                        if (supplierSet.size > 1) {
-                            MessageBox.error("複数の取引先がまとめて配信することができませんので、1社の取引先を選択してください。");
-                            return;
-                        }
-
-
 
 				let options = { compact: true, ignoreComment: true, spaces: 4 };
 				var IdList = that._TableDataList("detailTable", 'SUPPLIER')
@@ -304,11 +258,16 @@ sap.ui.define([
                 MessageBox.error("複数の取引先がまとめて配信することができませんので、1社の取引先を選択してください。");
                 return false;
             }
-        
-            return true; // 检查通过
+
+            var supplierdes = new Set(aSelectedData.map(data => data.SUPPLIER_DESCRIPTION));
+            // 检查是否没有 "確認" 的记录
+            if (!supplierdes.has("確定")) {
+                sap.m.MessageBox.error("「インボイス確定」処理未実施の時は、[Send Mail」及び、「Print」を不可とする");
+                return false; // 如果没有 "確定"，报错并停止导出
+            }
+
+            return true;
         }
-        
-        
 
     });
 });

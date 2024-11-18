@@ -82,8 +82,8 @@
                 <ToolbarSpacer id="myToolbarSpacer"/>
                 <Button id="confirm" text="{pch>U05_B_CONFIRM}" press="onConfirm" enabled="true"/>
 				<Button id="cancel"  text="{pch>U05_B_CANCEL}"  press="onCancel"  enabled="true"/>	
-                <OverflowToolbarButton id="resendButton"   icon="sap-icon://email"          text="{pch>PCH05_BUTTON_RESEND}" tooltip="{pch>PCH05_BUTTON_RESEND}" press="onResend" enabled="{viewModel>/isButtonEnabled}"/>
-                <OverflowToolbarButton id="downloadPdfBtn" icon="sap-icon://pdf-attachment" text="{pch>PCH05_BUTTON_PDF}"    tooltip="{pch>PCH05_BUTTON_PDF}"    press="onExportToPDF" enabled="{viewModel>/isButtonEnabled}"/>
+                <OverflowToolbarButton id="resendButton"   icon="sap-icon://email"          text="{pch>PCH05_BUTTON_RESEND}" tooltip="{pch>PCH05_BUTTON_RESEND}" press="onResend" enabled="true"/>
+                <OverflowToolbarButton id="downloadPdfBtn" icon="sap-icon://pdf-attachment" text="{pch>PCH05_BUTTON_PDF}"    tooltip="{pch>PCH05_BUTTON_PDF}"    press="onExportToPDF" enabled="true"/>
                 
             </OverflowToolbar>
         </smartTable:customToolbar>

@@ -73,7 +73,7 @@ public class PchService {
         Map<String, Object> data = new HashMap<>();
         data.put("SUPPLIER_DESCRIPTION", UmcConstants.PCH05_CONFIRM);
         Map<String, Object> keys = new HashMap<>();
-        keys.put("INV_NO", object);
+        keys.put("SUPPLIER", object);
         // 数据是否被修改修改标记
 
         pchD004.updateMap(data, keys);
@@ -85,7 +85,7 @@ public class PchService {
         Map<String, Object> data = new HashMap<>();
         data.put("SUPPLIER_DESCRIPTION", UmcConstants.PCH05_CANCEL);
         Map<String, Object> keys = new HashMap<>();
-        keys.put("INV_NO", object);
+        keys.put("SUPPLIER", object);
         // 数据是否被修改修改标记
 
         pchD004.updateMap(data, keys);
