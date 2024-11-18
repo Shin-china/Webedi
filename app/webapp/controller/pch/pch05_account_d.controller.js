@@ -29,68 +29,73 @@ sap.ui.define([
         onConfirm: function () {
             var that = this;
             var oTable = this.getView().byId("detailTable");
-            var aSelectedIndices = oTable.getSelectedIndices();
-        
-            if (aSelectedIndices.length === 0) {
-                sap.m.MessageToast.show("请选择至少一行数据！");
-                return;
+
+            var aSelectedIndices =this._TableDataList("detailTable","INV_NO")         
+           
+            if (aSelectedIndices) {
+                // 启用 onResend 按钮，通过更新 viewModel
+                this.getView().getModel("viewModel").setProperty("/isButtonEnabled", true);
+                var par = {parms:JSON.stringify(aSelectedIndices)};
+
+                this._callCdsAction("/PCH05_CONFIRM",  par, this)
+                    .then((oData) => {
+                        sap.m.MessageToast.show("インボイス確定成功！");
+                        this.getModel().refresh(true); //刷新数据
+                    })
+                                // 设置标志为已确认
+                this.isConfirmed = true;
+                
             }
         
-            // 设置标志为已确认
-            this.isConfirmed = true;
-        
-            // 启用 onResend 按钮，通过更新 viewModel
-            this.getView().getModel("viewModel").setProperty("/isButtonEnabled", true);
-        
-            // // 调用 CDS Action
-            // var data = this.getData(oTable, aSelectedIndices);
-            // this._callCdsAction("/PCH05_CONFIRM", data, this)
-            //     .then((oData) => {
-            //         sap.m.MessageToast.show("确认成功！");
-            //     })
-            //     .catch((error) => {
-            //         sap.m.MessageToast.show("确认失败，请重试！");
-            //         console.error(error);
-            //     });
+            // 调用 CDS Action
+
         },
-        
-        // // 定义 getData 方法
-        // getData: function (oTable, aSelectedIndices) {
-        //     var aData = [];
-        //     aSelectedIndices.forEach((index) => {
-        //         var oRowData = oTable.getContextByIndex(index).getObject(); // 获取选中行数据
-        //         aData.push(oRowData.INV_NO); // 假设 INV_NO 是你需要的数据
-        //     });
-        
-        //     return {
-        //         invno: aData // 返回包含 INV_NO 列表的对象，调整为符合 CDS Action 接口的数据格式
-        //     };
-        // },
-        
 
-        // 取消按钮点击事件
+
         onCancel: function () {
-
             var that = this;
             var oTable = this.getView().byId("detailTable");
-            var aSelectedIndices = oTable.getSelectedIndices();
-		
-            // 将 isButtonEnabled 设置为 false，使 onResend 按钮不可用
-            this.isConfirmed = false; // 取消确认状态
-            this.getView().getModel("viewModel").setProperty("/isButtonEnabled", false);
 
-            // // 调用 CDS Action
-            // this._callCdsAction("/PCH05_CANCEL", this._getData(), this)
-            // .then(function (oData) {
-            //     sap.m.MessageToast.show("操作成功！");
-            //     that.getView().getModel().refresh();  // 刷新表格数据
-            // })
-            // .catch(function (error) {
-            //     sap.m.MessageToast.show("操作失败，请重试。");
-            //     console.error(error);
-            // });
+
+            var aSelectedIndices =this._TableDataList("detailTable","INV_NO");
+           
+            if (aSelectedIndices) {
+                // 启用 onResend 按钮，通过更新 viewModel
+                
+                this.getView().getModel("viewModel").setProperty("/isButtonEnabled", false);
+                var par = {parms:JSON.stringify(aSelectedIndices)};
+                var that = this;
+    
+                var jsonModel = that.getModel("viewModel");
+                var data = jsonModel.getData();
+                this._callCdsAction("/PCH05_CANCEL",  par, this)
+                    .then((oData) => {
+                        sap.m.MessageToast.show("インボイス解除成功！");
+                        this.isConfirmed = false; // 取消确认状态
+                        
+                        // // 更新 viewModel 或其他属性
+                        // this.getView().getModel("viewModel").setProperty("/isButtonEnabled", true); // 重新启用按钮
+
+                        // // 假设 myArray.list 是最新的列表数据
+                        // var jsonModel = this.getView().getModel("jsonModel"); // 获取 JSONModel
+                        // jsonModel.setData(myArray.list); // 更新模型数据
+
+                        // // 强制刷新表格绑定
+                        // var oTableBinding = oTable.getBinding("items");
+                        // if (oTableBinding) {
+                        //     oTableBinding.refresh(); // 强制刷新表格绑定
+                        // }
+                        this.getModel().refresh(true); //刷新数据
+                    })
+
+                   
+
+            }
         
+            // // 调用 CDS Action
+
         },
+
         
         onResend: function () {
 			var that = this;
