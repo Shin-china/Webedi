@@ -20,6 +20,7 @@ import com.sap.cds.services.handler.annotations.ServiceName;
 
 import cds.gen.AttachmentJson;
 import cds.gen.common.Common_;
+import cds.gen.common.DeleteS3ObjectContext;
 import cds.gen.common.GetS3ListContext;
 import cds.gen.common.Pch06BatchImportContext;
 import cds.gen.common.Pch06BatchSendingContext;
@@ -176,7 +177,7 @@ public class ObjectStoreHandler implements EventHandler {
 
         });
         System.out.println("返回成功" + JSONObject.toJSONString(pch06List));
-        //context.setResult(JSONObject.toJSONString(pch06List));
+        // context.setResult(JSONObject.toJSONString(pch06List));
     }
 
     // IFM055 購買見積依頼送信
