@@ -5,15 +5,17 @@ sap.ui.define([
     "sap/m/MessageBox",
     "sap/m/BusyDialog",
     "umc/app/model/formatter",
+    "umc/app/model/customFormatter",
     "sap/ui/export/Spreadsheet",
     "sap/ui/model/json/JSONModel",
     "sap/ui/model/Filter",
     "sap/ui/model/FilterOperator"
-], function (Controller, MessageToast, MessageBox, BusyDialog, formatter, Spreadsheet, JSONModel, Filter, FilterOperator) {
+], function (Controller, MessageToast, MessageBox, BusyDialog, formatter, customFormatter, Spreadsheet, JSONModel, Filter, FilterOperator) {
     "use strict";
 
     return Controller.extend("umc.app.controller.pch.pch08_list", {
         formatter: formatter, // 将格式化器分配给控制器
+        customFormatter: customFormatter, 
 
         onInit: function () {
             // 初始化代码
@@ -379,7 +381,7 @@ sap.ui.define([
                     "object": sQuoNumber,
                     "object_type": "PCH08",
                     "file_type": btoa(oFile.type),
-                    "file_name": oFile.name.substring(0, oFile.name.lastIndexOf(".")),
+                    "file_name": oFile.name,
                     "value": sContent
                 };
                 let oAttachmentObj = {
@@ -454,21 +456,25 @@ sap.ui.define([
                 return;
             }
 
-            const aIndex = oTable.getSelectedIndices();
+            var aIndex = oTable.getSelectedIndices();
 
-            if (aIndex.length !== 1) {
+            if (aIndex.length < 1) {
                 sap.m.MessageToast.show(this._PchResourceBundle.getText("SELECT_AT_LEAST_ONE_RECORD"));
                 return;
             }
 
             var that = this;
-
+            var aKey = [];
             for (var i = 0; i < aIndex.length; i++) {
                 var oBindingContext = oTable.getContextByIndex(aIndex[i]);
                 var oData = oBindingContext.getObject();
                 var sAttachmentId = oData.ID;
+                aKey.push(sAttachmentId);
+            }
+
+            for (var i = 0; i < aKey.length; i++) {
                 var oAttachmentObj = {
-                    "key": sAttachmentId
+                    "key": aKey[i]
                 };
 
                 $.ajax({

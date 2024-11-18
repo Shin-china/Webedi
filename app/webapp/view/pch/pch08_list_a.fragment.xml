@@ -12,7 +12,7 @@
             <!-- <Panel id="idFileUploadPanel" expandable="true" expanded="true" headerText="{pch>UPLOAD_TEXT}" width="auto"> -->
             <unified:FileUploader id="idFileUploader" change="onFileChange" width="60%" class="sapUiSmallMargin"/>
             <!-- </Panel> -->
-            <smartTable:SmartTable id="id.AttachmentSmartTable"  enableAutoBinding="true" ignoredFields="" initiallyVisibleFields="ID,OBJECT,OBJECT_TYPE,FILE_NAME,FILE_TYPE,OBJECT_LINK" enableAutoColumnWidth="true" entitySet="SYS_T13_ATTACHMENT" beforeRebindTable="onBeforeBindAttachment">
+            <smartTable:SmartTable id="id.AttachmentSmartTable" header="{pch>ATTACHMENT}" showRowCount="true"  enableAutoBinding="true" ignoredFields="" initiallyVisibleFields="ID,OBJECT,OBJECT_TYPE,FILE_NAME,FILE_TYPE,OBJECT_LINK" enableAutoColumnWidth="true" entitySet="SYS_T13_ATTACHMENT" beforeRebindTable="onBeforeBindAttachment">
                 <smarttable:customToolbar>
                     <OverflowToolbar id="idAttachmentOverFlowToolbar">
                         <ToolbarSpacer id="idAttachmentToolbarSpacer" />
@@ -21,7 +21,7 @@
                 </smarttable:customToolbar>
 
 
-                <table:Table id="id.AttachmentTable" visibleRowCount="5" rowActionCount="1" selectionMode="MultiToggle" alternateRowColors="true" fixedColumnCount="0" threshold="20">
+                <table:Table id="id.AttachmentTable" visibleRowCount="10" rowActionCount="1" selectionMode="MultiToggle" alternateRowColors="true" fixedColumnCount="0" threshold="20">
 
                     <table:columns>
                         <table:Column id="colID" width="12rem" sortProperty="ID" filterProperty="ID" visible="false">
@@ -41,7 +41,7 @@
                             </table:template>
                         </table:Column>
 
-                        <table:Column id="idFileName" width="100%" sortProperty="FILE_NAME" filterProperty="FILE_NAME" >
+                        <table:Column id="idFileName" width="60%" sortProperty="FILE_NAME" filterProperty="FILE_NAME" >
                             <table:customData>
                                 <core:CustomData key="p13nData" value="{
                                         columnKey: 'FILE_NAME',
@@ -59,7 +59,7 @@
                         </table:Column>
 
 
-                        <table:Column id="idFileType" width="6rem" sortProperty="FILE_TYPE" filterProperty="FILE_TYPE" visible="false" >
+                        <table:Column id="idFileType" width="40%" sortProperty="FILE_TYPE" filterProperty="FILE_TYPE"  >
                             <table:customData>
                                 <core:CustomData key="p13nData" value="{
                                         columnKey: 'FILE_TYPE',
@@ -72,7 +72,7 @@
                                 <Label id="labelFileType" text="{pch>FILE_TYPE}" />
                             </table:label>
                             <table:template>
-                                <Text id="textFileType" text="{path:'FILE_TYPE', formatter:'.formatter.formatMimeType'}" />
+                                <Text id="textFileType" text="{path:'FILE_TYPE', formatter:'.customFormatter.formatMimeType'}" />
                             </table:template>
                         </table:Column>
 
