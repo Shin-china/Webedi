@@ -104,7 +104,17 @@ init
 			}
 
 		},
-		_csvdow: function (oEvt) {
+		_setHeaderModel: function (headers) {
+		    
+			headers.splice(4, 0, 55);
+		},
+		_setHeaderData: function (csvContent) {
+			let headers = ["項目","確認区分","ステータス","システム管理番号","発注番号","海外PO番号","発注日","納期","メーカー","品目番号","品目名称","UMC共通品番(SAP品番)","顧客品番","メーカー品番","単位","通貨","発注数","発注単価","発注金額","備考１","備考２","得意先コード","資産元","納入先コード","納品先名","検査区分","発注担当者","依頼者","棚番号","調整依頼コメント","納品先郵便番号","納品先住所１","納品先住所２","納品先住所３","納品先住所４","納品先電話番号","納品先ＦＡＸ","納品日","納品数"]
+
+			
+		    csvContent += headers.join(",") + "\n";
+		},
+		onCsvdow: function (oEvt) {
 			// 假设你的数据模型是JSONModel，并且已经绑定到了SmartTable  
 			var that = this;
 			//设置通用dialog
@@ -112,7 +122,15 @@ init
 				// 构建CSV内容  
 				var csvContent = "data:text/csv;charset=utf-8,";
 				var headers = Object.keys(selectedIndices[0]); // 假设所有条目的结构都相同，取第一条的键作为表头  
+				//设置头的模板
+				that._setHeaderModel(headers);
+
+				
 				headers.shift();
+
+				//头部数据写入一行
+				that._setHeaderData(csvContent);
+
 				// csvContent += headers.join(",") + "\n";  
 
 				selectedIndices.forEach(function (row) {
