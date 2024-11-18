@@ -6,7 +6,7 @@
     xmlns:table="sap.ui.table"
     xmlns:smartFilterBar="sap.ui.comp.smartfilterbar"
     xmlns:smartTable="sap.ui.comp.smarttable">
-    <Dialog id="idAttachmentDialog" contentWidth="60%" contentHeight="40%" title="{pch>ATTACHMENT}" afterClose="onDestroyAttachmentDialog">
+    <Dialog id="idAttachmentDialog" contentWidth="60%" contentHeight="50%" title="{pch>ATTACHMENT}" afterClose="onDestroyAttachmentDialog">
 
         <content>
             <!-- <Panel id="idFileUploadPanel" expandable="true" expanded="true" headerText="{pch>UPLOAD_TEXT}" width="auto"> -->
@@ -24,7 +24,7 @@
                 <table:Table id="id.AttachmentTable" visibleRowCount="5" rowActionCount="1" selectionMode="MultiToggle" alternateRowColors="true" fixedColumnCount="0" threshold="20">
 
                     <table:columns>
-                        <table:Column id="colID" width="12rem" sortProperty="ID" filterProperty="ID">
+                        <table:Column id="colID" width="12rem" sortProperty="ID" filterProperty="ID" visible="false">
                             <table:customData>
                                 <core:CustomData key="p13nData" value="{
                                         columnKey: 'ID',
@@ -41,7 +41,7 @@
                             </table:template>
                         </table:Column>
 
-                        <table:Column id="idFileName" width="12rem" sortProperty="FILE_NAME" filterProperty="FILE_NAME">
+                        <table:Column id="idFileName" width="20rem" sortProperty="FILE_NAME" filterProperty="FILE_NAME">
                             <table:customData>
                                 <core:CustomData key="p13nData" value="{
                                         columnKey: 'FILE_NAME',
@@ -59,7 +59,7 @@
                         </table:Column>
 
 
-                        <table:Column id="idFileType" width="6rem" sortProperty="FILE_TYPE" filterProperty="FILE_TYPE">
+                        <table:Column id="idFileType" width="6rem" sortProperty="FILE_TYPE" filterProperty="FILE_TYPE" visible="false">
                             <table:customData>
                                 <core:CustomData key="p13nData" value="{
                                         columnKey: 'FILE_TYPE',
@@ -72,12 +72,12 @@
                                 <Label id="labelFileType" text="{pch>FILE_TYPE}" />
                             </table:label>
                             <table:template>
-                                <Text id="textFileType" text="{FILE_TYPE}" />
+                                <Text id="textFileType" text="{path:'FILE_TYPE', formatter:'formatter.formatMimeType'}" />
                             </table:template>
                         </table:Column>
 
 
-                        <table:Column id="idObjectLink" width="12rem" sortProperty="OBJECT_LINK" filterProperty="OBJECT_LINK">
+                        <table:Column id="idObjectLink" width="12rem" sortProperty="OBJECT_LINK" filterProperty="OBJECT_LINK" visible="false">
                             <table:customData>
                                 <core:CustomData key="p13nData" value="{
                                         columnKey: 'OBJECT_LINK',
@@ -94,7 +94,7 @@
                             </table:template>
                         </table:Column> 
 
-                    <table:Column id="idObject" width="12rem" sortProperty="OBJECT" filterProperty="OBJECT">
+                    <table:Column id="idObject" width="12rem" sortProperty="OBJECT" filterProperty="OBJECT" visible="false">
                         <table:customData>
                             <core:CustomData key="p13nData" value="{
                                     columnKey: 'OBJECT',

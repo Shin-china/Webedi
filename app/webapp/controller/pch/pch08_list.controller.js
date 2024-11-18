@@ -8,7 +8,7 @@ sap.ui.define([
     "sap/ui/export/Spreadsheet",
     "sap/ui/model/json/JSONModel",
     "sap/ui/model/Filter",
-    "sap/ui/model/FilterOperator",
+    "sap/ui/model/FilterOperator"
 ], function (Controller, MessageToast, MessageBox, BusyDialog, formatter, Spreadsheet, JSONModel, Filter, FilterOperator) {
     "use strict";
 
@@ -371,14 +371,14 @@ sap.ui.define([
             oReader.readAsDataURL(oFile);
             this._BusyDialog.open();
             var that = this;
-            oReader.onload = function (e) { 
+            oReader.onload = function (e) {
                 let oFileData = e.target.result;
                 let sContent = oFileData.substring(oFileData.indexOf("base64,") + 7);
                 var oUploadData = {};
                 oUploadData = {
                     "object": sQuoNumber,
-                    "object_type": "pch08",
-                    "file_type": oFile.name.substring(oFile.name.lastIndexOf(".") + 1),
+                    "object_type": "PCH08",
+                    "file_type": btoa(oFile.type),
                     "file_name": oFile.name.substring(0, oFile.name.lastIndexOf(".")),
                     "value": sContent
                 };
@@ -395,7 +395,7 @@ sap.ui.define([
                     crossDomain: true,
                     responseType: 'blob',
                     data: JSON.stringify(oAttachmentObj),
-                    success: function (base64) { 
+                    success: function (base64) {
                         that.getView().getModel().refresh();
                         console.log("上传成功");
                     }
@@ -462,7 +462,7 @@ sap.ui.define([
             }
 
             var that = this;
- 
+
             for (var i = 0; i < aIndex.length; i++) {
                 var oBindingContext = oTable.getContextByIndex(aIndex[i]);
                 var oData = oBindingContext.getObject();
@@ -519,8 +519,10 @@ sap.ui.define([
             oParameters.filters.push(new sap.ui.model.Filter(
                 "OBJECT_TYPE",
                 sap.ui.model.FilterOperator.EQ,
-                "pch08"
+                "PCH08"
             ));
+
+            oParameters.parameters.select = oParameters.parameters.select + ",FILE_TYPE,ID,OBJECT_LINK,OBJECT_TYPE";
 
         },
 
@@ -532,58 +534,41 @@ sap.ui.define([
                 return;
             }
 
-            const aIndex = oTable.getSelectedIndices();
 
-            if (aIndex.length !== 1) {
-                sap.m.MessageToast.show(this._PchResourceBundle.getText("SELECT_AT_LEAST_ONE_RECORD"));
-                return;
-            }
-
-            for (var i = 0; i < aIndex.length; i++) {
-                var oBindingContext = oTable.getContextByIndex(aIndex[i]);
-                var oAttachment = oBindingContext.getObject();
-                var sId = oAttachment.ID;
-                if (sId) {
-                    var att_type = "";
-                    var downloadJson = { attachmentJson:[{
-                        object:"download",
+            var oBindingContext = oEvent.oSource.getBindingContext();
+            var oAttachment = oBindingContext.getObject();
+            var sId = oAttachment.ID;
+            var sType = '';
+            if (sId) {
+                var downloadJson = {
+                    attachmentJson: [{
+                        object: "download",
                         value: oAttachment.OBJECT_LINK
-                    }]}
-                    switch(oAttachment.FILE_TYPE){
-                        case "pdf":
-                            att_type = "application/pdf";
-                            break;
-                        case "csv" || "txt":
-                            att_type = "text/plain";
-                            break;  
-                        case "xls" || "xlsx":
-                            att_type = "application/vnd.ms-excel";
-                            break;
-                    }
+                    }]
                 }
-
-            } 
+                sType = atob(oAttachment.FILE_TYPE);
+            }
 
 
             $.ajax({
-                url:"srv/odata/v4/Common/s3DownloadAttachment",
-                type:"POST",
+                url: "srv/odata/v4/Common/s3DownloadAttachment",
+                type: "POST",
                 contentType: "application/json; charset=utf-8",
-                dataType:"json",
-                async:false,
-                crossDomain:true,
-                responseType:'blob',
-                data:JSON.stringify(downloadJson),
-                success:function(base64){
+                dataType: "json",
+                async: false,
+                crossDomain: true,
+                responseType: 'blob',
+                data: JSON.stringify(downloadJson),
+                success: function (base64) {
                     const downloadLink = document.createElement("a");
-                    const blob = that._base64Blob(base64.value,att_type);
+                    const blob = that._base64Blob(base64.value, sType);
                     const blobUrl = URL.createObjectURL(blob);
                     downloadLink.href = blobUrl;
-                    downloadLink.download = oAttachment.FILE_NAME + "." + oAttachment.FILE_TYPE;
+                    downloadLink.download = oAttachment.FILE_NAME;
                     downloadLink.click();
                 }
             })
-        } 
+        }
 
     });
 });
