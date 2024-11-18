@@ -44,6 +44,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
@@ -210,33 +211,47 @@ public class Pch05Handler implements EventHandler {
 
   }
 
-  //  /**
-  //  * 
-  //  * @param context
-  //  */
-  // @On(event = "PCH05_CONFIRM")
-  // public void confirm(PCH05CONFIRMContext context) {
+   /**
+   * 
+   * @param context
+   */
+  @On(event = "PCH05_CONFIRM")
+  public void confirm(PCH05CONFIRMContext context) {
 
-  //   String invno = context.getParms();
-  //   pchService.setinvdateconfirm(invno);
+    String invno = context.getParms();
+    JSONArray jsonArray = JSONArray.parseArray(invno);
+    for (int i = 0; i < jsonArray.size(); i++) {
+      String object = (String)jsonArray.get(0);
+     
+      System.out.println(object);
+      pchService.setinvdateconfirm(object);
+    }
+  
 
-  //   context.setResult("success");
+    context.setResult("success");
 
-  // }
+  }
 
-  //  /**
-  //  * 
-  //  * @param context
-  //  */
-  // @On(event = "PCH05_CANCEL")
-  // public void cancel(PCH05CANCELContext context) {
+   /**
+   * 
+   * @param context
+   */
+  @On(event = "PCH05_CANCEL")
+  public void confirm(PCH05CANCELContext context) {
 
-  //   String invno = context.getParms();
-  //   pchService.setinvdatecancel(invno);
+    String invno = context.getParms();
+    JSONArray jsonArray = JSONArray.parseArray(invno);
+    for (int i = 0; i < jsonArray.size(); i++) {
+      String object = (String)jsonArray.get(0);
+     
+      System.out.println(object);
+      pchService.setinvdatecancel(object);
+    }
+  
 
-  //   context.setResult("success");
+    context.setResult("success");
 
-  // }
+  }
 
       // Excel 导出测试
   @On(event = "PCH05_EXCELDOWNLOAD")
