@@ -92,7 +92,7 @@ public class DocNoDao extends Dao {
 	 */
 	private String getDocIndexNo(T06DocNo index, String format) {
 		String str = NumberTool.format(index.getDocIndex().toString(), format);
-		return index.getDocPrefex() + index.getDocDate() + str;
+		return str;
 	}
 
 	/**

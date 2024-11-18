@@ -12,6 +12,7 @@ import customer.comm.tool.DateTools;
 import customer.dao.pch.*;
 import customer.tool.StringTool;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -69,10 +70,12 @@ public class Pch08Service {
 //        });
 
         list.getList().forEach(value -> {
-            T06QuotationH t06 = extractT06Data(value);
-            List<T07QuotationD> items = extractT07Data(value);
+            //T06QuotationH t06 = extractT06Data(value);
+            List<T07QuotationD> oldItems = getOldT07Data(value);
+            List<T07QuotationD> newItems = extractT07Data(value);
 
-            pch08Dao.updatePch08(t06, items);
+
+            pch08Dao.updatePch08(oldItems, newItems);
 
         });
 
@@ -108,83 +111,94 @@ public class Pch08Service {
             return null;
         }
 
-        t06.setStatus("2");
+        t06.setStatus("3");
         t06.setUpTime(DateTools.getInstantNow());
         t06.setUpBy(pch08Dao.getUserId());
 
         return t06;
     }
 
+    public List<T07QuotationD> getOldT07Data(Pch08 pch08) {
+        return pch08Dao.getT07ByQuoNumber(pch08.getQUO_NUMBER());
+    }
+
     public List<T07QuotationD> extractT07Data(Pch08 pch08) {
-        List<T07QuotationD> items = pch08Dao.getT07ByQuoNumber(pch08.getQUO_NUMBER());
+        List<T07QuotationD> items = getOldT07Data(pch08);
         if (items == null) {
             return null;
         }
 
+        List<T07QuotationD> newItems = new ArrayList<>();
+
         items.forEach(value -> {
-            value.setStatus("2");
-            value.setUpTime(DateTools.getInstantNow());
-            value.setUpBy(pch08Dao.getUserId());
-            value.setRefrenceNo(pch08.getREFRENCE_NO());
-            value.setMaterialNumber(pch08.getMATERIAL_NUMBER());
-            value.setCustMaterial(pch08.getCUST_MATERIAL());
-            value.setManufactMaterial(pch08.getMANUFACT_MATERIAL());
-            value.setAttachment(pch08.getAttachment());
-            value.setMaterial(pch08.getMaterial());
-            value.setMaker(pch08.getMAKER());
-            value.setUwebUser(pch08.getUWEB_USER());
+            T07QuotationD t07New = T07QuotationD.create();
+            BeanUtils.copyProperties(value, t07New);
+
+            t07New.setId(null); //Create New data
+            t07New.setStatus("3");
+            t07New.setUpTime(DateTools.getInstantNow());
+            t07New.setUpBy(pch08Dao.getUserId());
+            t07New.setRefrenceNo(pch08.getREFRENCE_NO());
+            t07New.setMaterialNumber(pch08.getMATERIAL_NUMBER());
+            t07New.setCustMaterial(pch08.getCUST_MATERIAL());
+            t07New.setManufactMaterial(pch08.getMANUFACT_MATERIAL());
+            t07New.setAttachment(pch08.getAttachment());
+            t07New.setMaterial(pch08.getMaterial());
+            t07New.setMaker(pch08.getMAKER());
+            t07New.setUwebUser(pch08.getUWEB_USER());
 
             if (pch08.getBP_NUMBER() !=null) {
-                value.setBpNumber(Integer.parseInt(pch08.getBP_NUMBER()));
+                t07New.setBpNumber(Integer.parseInt(pch08.getBP_NUMBER()));
             }
 
-            value.setPersonNo1(pch08.getPERSON_NO1());
-            value.setPersonNo2(pch08.getPERSON_NO2());
-            value.setPersonNo3(pch08.getPERSON_NO3());
-            value.setPersonNo4(pch08.getPERSON_NO4());
-            value.setPersonNo5(pch08.getPERSON_NO5());
+            t07New.setPersonNo1(pch08.getPERSON_NO1());
+            t07New.setPersonNo2(pch08.getPERSON_NO2());
+            t07New.setPersonNo3(pch08.getPERSON_NO3());
+            t07New.setPersonNo4(pch08.getPERSON_NO4());
+            t07New.setPersonNo5(pch08.getPERSON_NO5());
 
-            value.setYlp(pch08.getYLP());
-            value.setManul(pch08.getYLP());
-            value.setManufactCode(pch08.getMANUFACT_CODE());
-            value.setCustomerMmodel(pch08.getCUSTOMER_MMODEL());
-            value.setMidQf(pch08.getMID_QF());
-            value.setSmallQf(pch08.getSMALL_QF());
-            value.setOtherQf(pch08.getOTHER_QF());
-            value.setCurrency(pch08.getCURRENCY());
-            value.setPriceControl(pch08.getPRICE_CONTROL());
-            value.setLeadTime(pch08.getLEAD_TIME());
-            value.setMoq(pch08.getMOQ());
-            value.setUnit(pch08.getUNIT());
-            value.setSpq(pch08.getSPQ());
-            value.setKbxt(pch08.getKBXT());
-            value.setProductWeight(pch08.getPRODUCT_WEIGHT());
-            value.setOriginalCou(pch08.getORIGINAL_COU());
-            value.setEol(pch08.getEOL());
-            value.setIsboi(pch08.getISBOI());
-            value.setIncoterms(pch08.getIncoterms());
-            value.setIncotermsText(pch08.getIncoterms_Text());
-            value.setMemo1(pch08.getMEMO1());
-            value.setMemo2(pch08.getMEMO2());
-            value.setMemo3(pch08.getMEMO3());
-            value.setSl(pch08.getSL());
-            value.setTz(pch08.getTZ());
-            value.setRmaterial(pch08.getRMATERIAL());
-            value.setRmaterialCurrency(pch08.getRMATERIAL_CURRENCY());
+            t07New.setYlp(pch08.getYLP());
+            t07New.setManul(pch08.getYLP());
+            t07New.setManufactCode(pch08.getMANUFACT_CODE());
+            t07New.setCustomerMmodel(pch08.getCUSTOMER_MMODEL());
+            t07New.setMidQf(pch08.getMID_QF());
+            t07New.setSmallQf(pch08.getSMALL_QF());
+            t07New.setOtherQf(pch08.getOTHER_QF());
+            t07New.setCurrency(pch08.getCURRENCY());
+            t07New.setPriceControl(pch08.getPRICE_CONTROL());
+            t07New.setLeadTime(pch08.getLEAD_TIME());
+            t07New.setMoq(pch08.getMOQ());
+            t07New.setUnit(pch08.getUNIT());
+            t07New.setSpq(pch08.getSPQ());
+            t07New.setKbxt(pch08.getKBXT());
+            t07New.setProductWeight(pch08.getPRODUCT_WEIGHT());
+            t07New.setOriginalCou(pch08.getORIGINAL_COU());
+            t07New.setEol(pch08.getEOL());
+            t07New.setIsboi(pch08.getISBOI());
+            t07New.setIncoterms(pch08.getIncoterms());
+            t07New.setIncotermsText(pch08.getIncoterms_Text());
+            t07New.setMemo1(pch08.getMEMO1());
+            t07New.setMemo2(pch08.getMEMO2());
+            t07New.setMemo3(pch08.getMEMO3());
+            t07New.setSl(pch08.getSL());
+            t07New.setTz(pch08.getTZ());
+            t07New.setRmaterial(pch08.getRMATERIAL());
+            t07New.setRmaterialCurrency(pch08.getRMATERIAL_CURRENCY());
 
             if (pch08.getRMATERIAL_PRICE() != null) {
-                value.setRmaterialPrice(BigDecimal.valueOf(pch08.getRMATERIAL_PRICE()));
+                t07New.setRmaterialPrice(BigDecimal.valueOf(pch08.getRMATERIAL_PRICE()));
             }
 
-            value.setRmaterialLt(pch08.getRMATERIAL_LT());
-            value.setRmaterialMoq(pch08.getRMATERIAL_MOQ());
-            value.setRmaterialKbxt(pch08.getRMATERIAL_KBXT());
-            value.setUmcComment1(pch08.getUMC_COMMENT_1());
-            value.setUmcComment2(pch08.getUMC_COMMENT_2());
+            t07New.setRmaterialLt(pch08.getRMATERIAL_LT());
+            t07New.setRmaterialMoq(pch08.getRMATERIAL_MOQ());
+            t07New.setRmaterialKbxt(pch08.getRMATERIAL_KBXT());
+            t07New.setUmcComment1(pch08.getUMC_COMMENT_1());
+            t07New.setUmcComment2(pch08.getUMC_COMMENT_2());
 
+            newItems.add(t07New);
         });
 
-        return items;
+        return newItems;
     }
 
     /*

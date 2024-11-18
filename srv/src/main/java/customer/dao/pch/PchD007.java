@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import customer.dao.common.Dao;
 import customer.tool.DateTools;
+import customer.tool.UniqueIDTool;
 
 import com.sap.cds.ql.Insert;
 import com.sap.cds.ql.Select;
@@ -16,7 +17,6 @@ import org.springframework.stereotype.Repository;
 
 import cds.gen.pch.T07QuotationD;
 import cds.gen.pch.Pch_;
-
 
 @Repository
 public class PchD007 extends Dao {
@@ -41,7 +41,9 @@ public class PchD007 extends Dao {
         logger.info("=================插入pchd07表号码" + "================");
         o.setCdBy(getUserId());
         o.setCdTime(getNow());
-
+        if (o.getId() == null) {
+            o.setId(UniqueIDTool.getUUID());
+        }
         o.setCdDate(DateTools.getLocalDate(o.getCdTime()));
         o.setCdDateTime(DateTools.getTimeAsString(o.getCdTime()));
 
@@ -51,7 +53,8 @@ public class PchD007 extends Dao {
     public List<T07QuotationD> getList(String quoNum) {
         return db.run(
                 Select.from(Pch_.T07_QUOTATION_D)
-                        .where(o -> o.QUO_NUMBER().eq(quoNum)))
+                        .where(o -> o.QUO_NUMBER().eq(quoNum)
+                                .and(o.DEL_FLAG().eq("N")))) // 追加删除标志
                 .listOf(T07QuotationD.class);
     }
 

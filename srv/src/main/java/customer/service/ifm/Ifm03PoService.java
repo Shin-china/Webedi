@@ -8,10 +8,12 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionMessage.ItemsBuilder;
 import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSON;
@@ -63,17 +65,17 @@ public class Ifm03PoService {
 
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
 
-                Boolean dele = false;
-
                 Map<String, String> supplierCreatMap = new HashMap<>();
                 Map<String, String> supplierUpdateMap = new HashMap<>();
                 Map<String, String> supplierDeleteMap = new HashMap<>();
 
                 Collection<MailJson> mailJsonList = new ArrayList<>();
+                HashSet<String> PoDelSet = new HashSet<>();
 
                 String H_CODE = "MM0004";
 
                 for (Item Items : sapPchRoot.getItems()) {
+                    Boolean dele = false;
 
                     int dn = Integer.parseInt(Items.getPurchaseorderitem());
 
@@ -96,13 +98,15 @@ public class Ifm03PoService {
 
                             if (!T02podnExist) {
 
-                                supplierCreatMap.put(supplier, "来自99行，头找到了，但是明细没找到，创建发信对象");
+                                supplierCreatMap.put(supplier, "来自99行，头找到了，但是明细没找到，创建发信对象" + Items.getPurchaseorder()
+                                        + Items.getPurchaseorderitem());
 
                             }
 
                         } else { // 头没找到，创建
 
-                            supplierCreatMap.put(supplier, "来自105行，头没找到，创建发信对象");
+                            supplierCreatMap.put(supplier, "来自105行，头没找到，创建发信对象" + Items.getPurchaseorder()
+                                    + Items.getPurchaseorderitem());
 
                         }
 
@@ -115,7 +119,8 @@ public class Ifm03PoService {
 
                             if (!supplierUpdateMap.containsKey(supplier)) {
 
-                                supplierUpdateMap.put(supplier, "来自118行，四个字段其中有修改，肯定是更新");// delflag 单独考虑。
+                                supplierUpdateMap.put(supplier, "来自118行，四个字段其中有修改，肯定是更新" + Items.getPurchaseorder()
+                                        + Items.getPurchaseorderitem());// delflag 单独考虑。
 
                             }
                             ;
@@ -252,20 +257,42 @@ public class Ifm03PoService {
 
                         // 首先是，dele被修改的情况下再继续。
                         if (isDelflaghavechange) {
-                            Boolean isalldele = PchDao.getdelbyPO(Items.getPurchaseorder());
 
-                            if (isalldele) {
-                                // 全部明细都有删除标记
-                                supplierDeleteMap.put(supplier, "来自159行，全部明细都有删除标记，肯定是删除");
+                            PoDelSet.add(Items.getPurchaseorder());
 
-                            } else {
-                                // 部分明细有删除标记
-                                supplierUpdateMap.put(supplier, "来自263行，部分明细有删除标记，肯定是更新");
+                            // Boolean isalldele = PchDao.getdelbyPO(Items.getPurchaseorder());
 
-                            }
+                            // if (isalldele) {
+                            // // 全部明细都有删除标记
+                            // supplierDeleteMap.put(supplier, "来自159行，全部明细都有删除标记，肯定是删除" +
+                            // Items.getPurchaseorder()
+                            // + Items.getPurchaseorderitem());
+
+                            // } else {
+                            // // 部分明细有删除标记
+                            // supplierUpdateMap.put(supplier, "来自263行，部分明细有删除标记，肯定是更新" +
+                            // Items.getPurchaseorder()
+                            // + Items.getPurchaseorderitem());
+
+                            // }
                         }
                     }
                 }
+
+                for (String poDel : PoDelSet) {
+                    String supplier = PchDao.getSupplierByPO(poDel);
+
+                    Boolean isalldele = PchDao.getdelbyPO(poDel);
+                    if (isalldele) {
+                        // 全部明细都有删除标记
+                        supplierDeleteMap.put(supplier, "来自287行，全部明细都有删除标记，肯定是删除");
+
+                    } else {
+                        // 部分明细有删除标记 ，但是删除标记更新了，所以也是更新。
+                        supplierUpdateMap.put(supplier, "来自290行，部分明细有删除标记，肯定是更新");
+                    }
+                }
+
                 // 创建发信
                 if (supplierCreatMap.size() > 0) {
                     for (Map.Entry<String, String> entry : supplierCreatMap.entrySet()) {

@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import customer.dao.common.Dao;
 import customer.tool.DateTools;
+import customer.tool.UniqueIDTool;
 import io.vavr.collection.Seq;
 
 import com.sap.cds.ql.Delete;
@@ -61,6 +62,9 @@ public class PchD006 extends Dao {
         logger.info("=================插入pchd06表号码" + "================");
         o.setCdBy(getUserId());
         o.setCdTime(getNow());
+        if (o.getId() == null) {
+            o.setId(UniqueIDTool.getUUID());
+        }
 
         o.setCdDate(DateTools.getLocalDate(o.getCdTime()));
         o.setCdDateTime(DateTools.getTimeAsString(o.getCdTime()));
@@ -73,6 +77,19 @@ public class PchD006 extends Dao {
         Optional<T06QuotationH> first = db
                 .run(Select.from(Pch_.T06_QUOTATION_H).columns(o -> o._all(), o -> o.TO_ITEMS().expand())
                         .where(o -> o.QUO_NUMBER().eq(quoNumber)))
+                .first(T06QuotationH.class);
+
+        if (first.isPresent()) {
+            return first.get();
+        }
+        return null;
+    }
+
+    // dao层获取传入的QUO_NUMBER所有明细以及头表
+    public T06QuotationH getByIdOnle(String id) {
+        Optional<T06QuotationH> first = db
+                .run(Select.from(Pch_.T06_QUOTATION_H)
+                        .where(o -> o.ID().eq(id)))
                 .first(T06QuotationH.class);
 
         if (first.isPresent()) {

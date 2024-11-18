@@ -90,5 +90,7 @@ service TableService {
 
   //Excel测试用
   action EXCEL_TEST(content : String)         returns LargeBinary; //Excel测试用
-
+    action pch06BatchImport(json : String)               returns String; //IFM054 購買見積依頼受信
+    action pch06BatchSending(json : String)               returns String; //IFM055 購買見積結果送信
+    
 }

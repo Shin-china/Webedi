@@ -25,131 +25,62 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.excel.write.metadata.fill.FillConfig;
 
+import customer.bean.sys.Ifm054Bean;
+import customer.dao.pch.PchD006;
+import customer.dao.pch.PchD007;
+import customer.dao.sys.DocNoDao;
+
 import com.google.common.io.ByteStreams;
 import com.sap.cds.services.handler.EventHandler;
 import com.sap.cds.services.handler.annotations.On;
 import com.sap.cds.services.handler.annotations.ServiceName;
-
+import cds.gen.tableservice.PchT06QuotationH;
+import cds.gen.tableservice.PchT07QuotationD;
+import cds.gen.tableservice.Pch06BatchImportContext;
+import cds.gen.tableservice.Pch06BatchSendingContext;
+import cds.gen.tableservice.TableService_;
 import cds.gen.AttachmentJson;
 import cds.gen.common.*;
-import cds.gen.sys.T13Attachment;
-import cds.gen.tableservice.EXCELTESTContext;
-import customer.bean.com.CommMsg;
-import customer.bean.com.UmcConstants;
-import customer.bean.sys.Ifm054Bean;
-import customer.bean.tmpl.test;
-import customer.comm.tool.StringTool;
-import customer.dao.pch.PchD006;
-import customer.dao.pch.PchD007;
-import customer.dao.pch.PchD008Dao;
-import customer.dao.sys.DocNoDao;
-import customer.dao.sys.T13AttachmentDao;
-import customer.service.ifm.Ifm01BpService;
-import customer.service.sys.ObjectStoreService;
-import customer.tool.UniqueIDTool;
-import software.amazon.awssdk.core.ResponseBytes;
-import software.amazon.awssdk.core.sync.RequestBody;
-import software.amazon.awssdk.services.s3.model.S3Object;
-import cds.gen.pch.T07QuotationD;
 import cds.gen.pch.T06QuotationH;
+import cds.gen.pch.T07QuotationD;
 
 @Component
-@ServiceName(Common_.CDS_NAME)
-public class ObjectStoreHandler implements EventHandler {
+@ServiceName(TableService_.CDS_NAME)
+public class SendService implements EventHandler {
 
     @Autowired
-    private ObjectStoreService objectStoreService;
+    PchD006 PchD006;
     @Autowired
-    private PchD006 PchD006;
-    @Autowired
-    private PchD007 PchD007;
-    @Autowired
-    private T13AttachmentDao t13AttachmentDao;
+    PchD007 PchD007;
     @Autowired
     DocNoDao docNoDao;
-
-    @On(event = "getS3List")
-    public void getObjects(GetS3ListContext context) {
-        List<S3Object> s3Objects = objectStoreService.getS3List();
-        context.setResult("sucess");
-    }
-
-    @On(event = "s3uploadAttachment")
-    public void s3UploadAttachment(S3uploadAttachmentContext context) throws IOException {
-
-        Collection<AttachmentJson> attachments = context.getAttachmentJson();
-        for (AttachmentJson attachment : attachments) {
-            if (attachment.getFileName() != "" && attachment.getValue() != null) {
-                String uuidd = UniqueIDTool.getUUID();
-                String fieldId = uuidd + "." + attachment.getFileType();
-                CommMsg msg = objectStoreService.uploadFile(fieldId, RequestBody
-                        .fromBytes(ByteStreams.toByteArray(StringTool.base2InputStream(attachment.getValue()))));
-                if (msg.getMsgType().equals(UmcConstants.IF_STATUS_S)) {
-                    T13Attachment t13 = T13Attachment.create();
-                    t13.setObject(attachment.getObject());
-                    t13.setFileName(attachment.getFileName());
-                    t13.setFileType(attachment.getFileType());
-                    t13.setObjectType("PCH03");
-                    t13.setId(uuidd);
-                    t13.setObjectType(attachment.getObjectType());
-                    t13.setObjectLink(msg.getMsgTxt());
-                    t13AttachmentDao.insertAttachment(t13);
-                }
-
-            }
-        }
-
-        context.setResult("success");
-    }
-
-    @On(event = "s3DownloadAttachment")
-    public void s3DownloadAttachment(S3DownloadAttachmentContext context) throws IOException {
-        Collection<AttachmentJson> attachments = context.getAttachmentJson();
-        ResponseBytes msg = null;
-
-        for (AttachmentJson attachment : attachments) {
-            if (attachment.getObject().equals("download")) {
-                msg = objectStoreService.downLoadRes(attachment.getValue());
-            } else if (attachment.getObject().equals("template")) {
-                msg = objectStoreService.downTempRes(attachment.getValue());
-            }
-
-        }
-        byte[] bytes = msg.asByteArray();
-        context.setResult(bytes);
-    }
 
     // IFM054 購買見積依頼受信+送信
     @On(event = "pch06BatchImport")
     public void pch06BatchImport(Pch06BatchImportContext context) {
         // 获取uqmc传入的t06数据
-        // 获取
-        System.out.println(JSONObject.toJSONString(context.getPch06()));
-        // System.out.println(context.getJson());
+        System.out.println(context.getJson());
 
-        // Ifm054Bean list = JSON.parseObject(context.getJson(), Ifm054Bean.class);
+        Ifm054Bean list = JSON.parseObject(context.getJson(), Ifm054Bean.class);
 
         // 将 Collection 转换为 Listpch06BatchImport
-        List<PchT06QuotationH> pch06List = new ArrayList<>(context.getPch06());
+        List<PchT06QuotationH> pch06List = list.getPch06();
         pch06List.forEach(pchT06QuotationH -> {
 
             try {
                 // 获取購買見積番号
-                // pchT06QuotationH.setQuoNumber(docNoDao.getPJNo(1));
-                pchT06QuotationH.setQuoNumber("1006");
+                pchT06QuotationH.setQuoNumber(docNoDao.getPJNo(1));
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
             // 插入头标，首先删除原key值数据
             T06QuotationH t06QuotationH = T06QuotationH.create();
-
             // 复制类属性
             BeanUtils.copyProperties(pchT06QuotationH, t06QuotationH);
-            // 如果已经存在则更新，如果不存在则插入
-            T06QuotationH byID = PchD006.getByIdOnle(t06QuotationH.getId());
             t06QuotationH.setToItems(null);
-            t06QuotationH.remove("TO_ITEMS");
+            // 如果已经存在则更新，如果不存在则插入
+            T06QuotationH byID = PchD006.getByID(t06QuotationH.getSalesNumber(), t06QuotationH.getQuoVersion());
             if (byID != null) {
                 PchD006.update(t06QuotationH);
             } else {
@@ -166,9 +97,10 @@ public class ObjectStoreHandler implements EventHandler {
 
                 // // 复制类属性
                 BeanUtils.copyProperties(pchT07QuotationD, t07QuotationD);
+
                 // // 如果已经存在则更新，如果不存在则插入
                 T07QuotationD byID2 = PchD007.getByT07Id(t07QuotationD.getId());
-
+                t07QuotationD.setToHead(null);
                 if (byID2 != null) {
                     PchD007.update(t07QuotationD);
                 } else {
@@ -177,8 +109,8 @@ public class ObjectStoreHandler implements EventHandler {
             });
 
         });
-        System.out.println("返回成功" + JSONObject.toJSONString(pch06List));
-        context.setResult(JSONObject.toJSONString(pch06List));
+
+        context.setResult("成功");
     }
 
     // IFM055 購買見積依頼送信

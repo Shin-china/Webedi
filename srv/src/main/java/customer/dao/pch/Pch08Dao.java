@@ -4,6 +4,7 @@ import cds.gen.pch.Pch_;
 import cds.gen.pch.T06QuotationH;
 import cds.gen.pch.T07QuotationD;
 import com.sap.cds.Result;
+import com.sap.cds.ql.Insert;
 import com.sap.cds.ql.Select;
 import com.sap.cds.ql.Update;
 import customer.dao.common.Dao;
@@ -50,26 +51,39 @@ public class Pch08Dao extends Dao {
     public List<T07QuotationD> getT07ByQuoNumber(String quoNumber) {
         List<T07QuotationD> listOf = db.run(
                 Select.from(Pch_.T07_QUOTATION_D)
-                     .where(o -> o.QUO_NUMBER().eq(quoNumber)))
+                     .where(o -> o.QUO_NUMBER().eq(quoNumber).and(o.DEL_FLAG().eq("N"))
+                     ))
              .listOf(T07QuotationD.class);
         return listOf;
     }
 
     // 修改t06, t07
-    public void updatePch08(T06QuotationH h, List<T07QuotationD> items) {
-
-        if(items != null) {
-            items.forEach(d -> {
+    public void updatePch08(List<T07QuotationD> oldItems, List<T07QuotationD> newItems) {
+        //删除旧数据
+        if(oldItems != null) {
+            oldItems.forEach(d -> {
                 d.setUpTime(getNow());
                 d.setUpBy(this.getUserId());
+                d.setDelFlag("Y");
                 logger.info("修改T07QuotationD" + d.getQuoNumber() + "行号：" + d.getQuoItem());
                 db.run(Update.entity(Pch_.T07_QUOTATION_D).data(d));
             });
         }
 
-        if(h != null) {
-            db.run(Update.entity(Pch_.T06_QUOTATION_H).data(h));
+        // 插入新数据
+        if(newItems!= null) {
+            newItems.forEach(d -> {
+                d.setUpTime(getNow());
+                d.setUpBy(this.getUserId());
+                logger.info("新建T07QuotationD" + d.getQuoNumber() + "行号：" + d.getQuoItem());
+                db.run(Insert.into(Pch_.T07_QUOTATION_D).entry(d));
+            });
         }
+
+
+//        if(h != null) {
+//            db.run(Update.entity(Pch_.T06_QUOTATION_H).data(h));
+//        }
 
     }
 }
