@@ -39,14 +39,26 @@
 						<smartFilterBar:ControlConfiguration id="SUPPLIER" index="1" key="SUPPLIER"  visibleInAdvancedArea="true"   />
 						<smartFilterBar:ControlConfiguration id="SUPPLIER_MAT" index="2" key="SUPPLIER_MAT"  visibleInAdvancedArea="true"   />	
 						<smartFilterBar:ControlConfiguration id="PO_NO" index="3" key="PO_NO"  visibleInAdvancedArea="true"  />	
-						<smartFilterBar:ControlConfiguration id="D_NO" index="4" key="D_NO"  visibleInAdvancedArea="true" />	
+						<smartFilterBar:ControlConfiguration id="ID" index="4" key="ID"  visibleInAdvancedArea="true" />	
 						<smartFilterBar:ControlConfiguration id="PO_TYPE" index="5" key="PO_TYPE"  visibleInAdvancedArea="true"  filterType='single' controlType="dropDownList"/>	
 						<smartFilterBar:ControlConfiguration id="MAT_ID" index="6" key="MAT_ID"  visibleInAdvancedArea="true" />	
 						<smartFilterBar:ControlConfiguration id="PO_DATE" index="7" key="PO_DATE"  visibleInAdvancedArea="true" />	
 						<smartFilterBar:ControlConfiguration id="STATUS" index="8" key="STATUS"  visibleInAdvancedArea="true"  filterType='single' controlType="dropDownList"/>	
 						<smartFilterBar:ControlConfiguration id="CD_BY" index="9" key="CD_BY"  visibleInAdvancedArea="true" />	
 						<smartFilterBar:ControlConfiguration id="PO_D_DATE" index="10" key="PO_D_DATE"  visibleInAdvancedArea="true" />	
-						<smartFilterBar:ControlConfiguration id="ZABC" index="11" key="ZABC"  visibleInAdvancedArea="true"  filterType='single' controlType="dropDownList"/>	
+						<smartFilterBar:ControlConfiguration id="ZABC" index="11" key="ZABC"  visibleInAdvancedArea="true"  filterType='multiple' controlType="dropDownList"/>	
+						<smartFilterBar:ControlConfiguration id="MEMO" index="11" key="MEMO"  visible="false" />	
+						<smartFilterBar:ControlConfiguration id="D_NO" index="11" key="D_NO"  visible="false" />	
+						<smartFilterBar:ControlConfiguration id="PLANT_ID" index="11" key="PLANT_ID"  visible="false" />	
+						<smartFilterBar:ControlConfiguration id="PO_D_TXZ01" index="11" key="PO_D_TXZ01"  visible="false" />	
+						<smartFilterBar:ControlConfiguration id="PO_PUR_QTY" index="11" key="PO_PUR_QTY"  visible="false" />	
+						<smartFilterBar:ControlConfiguration id="PO_PUR_UNIT" index="11" key="PO_PUR_UNIT"  visible="false" />	
+						<smartFilterBar:ControlConfiguration id="CURRENCY" index="11" key="CURRENCY"  visible="false" />	
+						<smartFilterBar:ControlConfiguration id="DEL_PRICE" index="11" key="DEL_PRICE"  visible="false" />	
+						<smartFilterBar:ControlConfiguration id="UNIT_PRICE" index="11" key="UNIT_PRICE"  visible="false" />	
+						<smartFilterBar:ControlConfiguration id="DEL_AMOUNT" index="11" key="DEL_AMOUNT"  visible="false" />	
+						<smartFilterBar:ControlConfiguration id="USER_TYPE" index="11" key="USER_TYPE"  visible="false" />	
+
 
 						</smartFilterBar:controlConfiguration>
 					</smartFilterBar:SmartFilterBar>

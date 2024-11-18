@@ -136,7 +136,7 @@ extend service TableService {
             on T07.MAT_ID = T02.MAT_ID
   
         distinct {
-            key T01.PO_NO || T02.D_NO as ID      : String(100),
+            key T01.PO_NO || RIGHT('00000' || T02.D_NO, 5) as ID      : String(100),
             key T01.PO_NO, // 発注番号
             key T02.D_NO, // 明細番号
 
@@ -251,7 +251,8 @@ extend service TableService {
             and Tu.BP_NUMBER = T01.SUPPLIER
 
           {
-            key T01.PO_NO || T02.D_NO as ID   : String(100),
+            @title: '{i18n>PO_NO_DNO}'
+            key T01.PO_NO || RIGHT('00000' || T02.D_NO, 5) as ID   : String(100),
             key T01.PO_NO, // 発注番号
             key T02.D_NO, // 明細番号
                 T01.SUPPLIER, // 仕入先コード
@@ -263,6 +264,7 @@ extend service TableService {
                 T02.CD_BY, //登録者
                 T02.PO_D_DATE, //所要日付
                 T02.PLANT_ID,
+                @title: '{i18n>ZABC1}'
                      case T04.ZABC
                     when 'E' then 'E'
                     when 'F' then 'F'
@@ -300,7 +302,8 @@ extend service TableService {
 
 
             distinct {
-                key T01.PO_NO || T02.D_NO as ID : String(100),
+                @title: '{i18n>PO_NO_DNO}'
+                key T01.PO_NO || RIGHT('00000' || T02.D_NO, 5) as ID : String(100),
                 key T01.PO_NO, // 発注番号
                 key T02.D_NO, // 明細番号
                     T01.SUPPLIER, // 仕入先コード
@@ -312,6 +315,7 @@ extend service TableService {
                     T02.CD_BY, //登録者
                     T02.PO_D_DATE, //所要日付
                     T02.PLANT_ID,
+                     @title: '{i18n>ZABC1}'
                        case T04.ZABC
                     when 'E' then 'E'
                     when 'F' then 'F'
@@ -339,7 +343,7 @@ extend service TableService {
 
 }
 
-annotate TableService.PCH_T03_PO_ITEM with @(Capabilities: {FilterRestrictions: {NonFilterableProperties: [ID]}});
+annotate TableService.PCH_T03_PO_ITEM with @(Capabilities: {FilterRestrictions: {NonFilterableProperties: []}});
 
 annotate TableService.PCH_T03_PO_ITEM with {
 
