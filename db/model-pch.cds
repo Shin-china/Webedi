@@ -77,7 +77,7 @@ entity T04_PAYMENT_H : IF_CUID_FILED { //付款申请表抬头表
   @title: '{i18n>GL_YEAR}' key GL_YEAR                                                    : Integer; //采购订单明细行号
                                @title: '{i18n>SUPPLIER}' SUPPLIER                         : String(10); //采购订单明细行号
                                @title: '{i18n>SUPPLIER_DESCRIPTION}' SUPPLIER_DESCRIPTION : String(100); //采购订单明细行号
-                               @title: '{i18n>INV_DATE}' INV_DATE                         : Date; //采购订单明细行号
+                               @title: '{i18n>INV_DATE}' INV_DATE                         : String(20); //采购订单明细行号
                                @title: '{i18n>INV_BASE_DATE}' INV_BASE_DATE               : Date; //采购订单明细行号
                                @title: '{i18n>INV_POST_DATE}' INV_POST_DATE               : Date; //采购订单明细行号
                                @title: '{i18n>SEND_FLAG}' SEND_FLAG                       : String(1); //采购订单明细行号
