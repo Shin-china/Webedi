@@ -162,7 +162,7 @@ sap.ui.define([
                     let sResponse = json2xml(oData, options);
 						console.log(sResponse)
 						that.setSysConFig().then(res => {
-							that.PrintTool._detailSelectPrintEmil(that, sResponse, "test02/test03", oData, null, null, null, null).then(()=>{
+							that.PrintTool._detailSelectPrintEmil(that, sResponse, "test02/test03", oData, null,"買掛金明細", null, null).then(()=>{
 								that.PrintTool.getImageBase64(that._blob).then((odata)=>{
 
 								var mailobj = {

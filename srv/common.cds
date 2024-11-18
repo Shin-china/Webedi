@@ -16,9 +16,9 @@ type mailBody     :{
 }
 
 type attachmentJson :{
-  object            : String(20);
+  object            : String(40);
   value             : LargeString;
-  file_type         : String(20);
+  file_type         : String(64);
   file_name         : String(50);
   object_type       : String(10);
 }

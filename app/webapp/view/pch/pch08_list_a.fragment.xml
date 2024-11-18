@@ -1,0 +1,38 @@
+<c:FragmentDefinition xmlns:rowmodes="sap.ui.table.rowmodes" xmlns:smarttable="sap.ui.comp.smarttable"
+    xmlns="sap.m"
+    xmlns:c="sap.ui.core"
+    xmlns:unified="sap.ui.unified"
+    xmlns:table="sap.ui.table"
+    xmlns:smartTable="sap.ui.comp.smarttable">
+    <Dialog id="idAttachmentDialog" contentWidth="60%" contentHeight="40%" title="{pch>ATTACHMENT}" afterClose="onDestroyAttachmentDialog">
+
+        <content>
+            <!-- <Panel id="idFileUploadPanel" expandable="true" expanded="true" headerText="{pch>UPLOAD_TEXT}" width="auto"> -->
+            <unified:FileUploader id="idFileUploader" fileType="xlsx,xls" change="onFileChange" width="60%" class="sapUiSmallMargin"/>
+            <!-- </Panel> -->
+
+            <!-- <smarttable:SmartTable id="id.AttachmentSmartTable" tableType="Table" entitySet="ZC_ATTACHMENT">
+                <smarttable:customToolbar>
+                    <OverflowToolbar id="overFlowToolbar">
+                        <ToolbarSpacer id="toolbarSpacer" />
+                        <Button id="id.DeleteButton" text="{pch>DELETE}" press="onDeleteAttachment"></Button>
+                    </OverflowToolbar>
+                </smarttable:customToolbar>
+            </smarttable:SmartTable>
+
+            <table:Table id="id.AttachmentTable" visibleRowCount="5" rowActionCount="1" selectionMode="MultiToggle" alternateRowColors="true" fixedColumnCount="0" threshold="20">
+                <table:rowMode>
+                    <rowmodes:Auto id="id.AttachmentAuto" minRowCount="5"></rowmodes:Auto>
+                </table:rowMode>
+                <table:columns>
+
+                </table:columns>
+            </table:Table> -->
+        </content>
+
+        <endButton>
+            <Button id="id.CloseButton" text="{pch>CLOSE}" type="Transparent" press="onCloseAttachmentDialog" />
+        </endButton>
+    </Dialog>
+
+</c:FragmentDefinition>

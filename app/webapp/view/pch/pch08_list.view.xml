@@ -34,6 +34,8 @@
                 <Button id="editButton" text="{pch>PCH03_BUTTON_EDI}" enabled="{localModel>/show}" tooltip="{pch>PCH03_BUTTON_EDI}" press="onEdit" />
                 <Button id="saveButton" text="{pch>PCH03_BUTTON_SAV}" enabled="{localModel>/save}" tooltip="{pch>PCH03_BUTTON_SAV}" press="onSave" />
                 <!-- <Button id="confirmButton" text="{pch>PCH03_BUTTON_QUE}" tooltip="{pch>PCH03_BUTTON_QUE}" press="onConfirm" /> -->
+                <Button id="id.UBAttachment" text="{pch>ATTACHMENT}" press="onOpenAttachmentDialog" />
+
             </OverflowToolbar>
         </smartTable:customToolbar>
         <table:Table id="listTable" visibleRowCount="15" rowActionCount="1" selectionMode="MultiToggle" alternateRowColors="true" fixedColumnCount="0" threshold="20">

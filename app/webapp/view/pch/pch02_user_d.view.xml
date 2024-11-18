@@ -60,7 +60,7 @@
     
 
     <smartTable:SmartTable id="ID" enableAutoColumnWidth="true" entitySet="PCH_T02_USER" 
-        ignoredFields="SEQ,NO_DETAILS,KEYID,DEL_FLAG,SUPPLIER"  requestAtLeastFields="SEQ"  initiallyVisibleFields="STATUS,PO_NO,D_NO,MAT_ID,PO_D_TXZ01,PO_PUR_QTY,PO_PUR_UNIT,SUPPLIER_MAT,DELIVERY_DATE,QUANTITY,DEL_PRICE,DEL_AMOUNT,MEMO,STORAGE_NAME,ExtNumber" 
+        ignoredFields="SEQ,NO_DETAILS,KEYID,DEL_FLAG,SUPPLIER"  requestAtLeastFields="SEQ,DEL_FLAG"  initiallyVisibleFields="STATUS,PO_NO,D_NO,MAT_ID,PO_D_TXZ01,PO_PUR_QTY,PO_PUR_UNIT,SUPPLIER_MAT,DELIVERY_DATE,QUANTITY,DEL_PRICE,DEL_AMOUNT,MEMO,STORAGE_NAME,ExtNumber" 
         smartFilterId="smartFilterBar" enableExport="true" beforeExport="onBeforeExport" 
         useVariantManagement="true" useTablePersonalisation="true" header="{pch>TITLE_RESULT}" showRowCount="true" persistencyKey="pch02_SmartTableAnalytical_Explored" enableAutoBinding="false">
         
