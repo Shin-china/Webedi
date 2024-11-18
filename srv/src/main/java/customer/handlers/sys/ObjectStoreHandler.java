@@ -102,6 +102,14 @@ public class ObjectStoreHandler implements EventHandler {
         context.setResult("success");
     }
 
+    @On(event = "deleteS3Object")
+    public void deleteS3Object(DeleteS3ObjectContext context) {
+        String keyName = context.getKey();
+        CommMsg msg = objectStoreService.deleteRes(keyName);
+
+        context.setResult(msg.getMsgTxt());
+    }
+
     @On(event = "s3DownloadAttachment")
     public void s3DownloadAttachment(S3DownloadAttachmentContext context) throws IOException {
         Collection<AttachmentJson> attachments = context.getAttachmentJson();

@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
+import com.sap.cds.ql.Delete;
 import com.sap.cds.ql.Insert;
 import com.sap.cds.ql.Select;
 
@@ -33,6 +34,19 @@ public class T13AttachmentDao extends Dao {
         }
 
         db.run(Insert.into(Sys_.T13_ATTACHMENT).entry(attachment));
+    }
+
+    // Delete Attachment
+    public void deleteAttachment(String uuiddString) {
+        db.run(Delete.from(Sys_.T13_ATTACHMENT)
+                .where(o -> o.ID().eq(uuiddString)));
+    }
+
+    // Get Attachment name on S3
+    public String getFileName(String uuiddString) {
+        Optional<T13Attachment> fileName = db.run(Select.from(Sys_.T13_ATTACHMENT).where(o -> o.ID().eq(uuiddString)))
+                .first(T13Attachment.class);
+        return fileName.get().getObjectLink();
     }
 
 }
