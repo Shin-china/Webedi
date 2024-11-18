@@ -284,7 +284,7 @@ sap.ui.define([
                     console.log(sResponse);
                     that.setSysConFig().then(res => {
                         // 调用打印方法
-                        that.PrintTool._detailSelectPrintDow(that, sResponse, "test02/test05", J, null, null, null, null).then((oData) => {
+                        that.PrintTool._detailSelectPrintDow(that, sResponse, "test02/test05", J, null,"支払通知書", null, null).then((oData) => {
 
                         var sapPo = {
                             po: IdList[0],
@@ -382,7 +382,7 @@ sap.ui.define([
                     });
 
                      // 使用处理后的第一个值和年份-月份信息生成文件名
-                    var fileName = `${processedIdList[0]}_${yearMonthList[0]}UMC支払通知書.xlsx`;
+                    var fileName = `${processedIdList[0]}_${yearMonthList[0]}UMC支払通知書`;
 
 					that._callCdsAction("/PCH04_EXCELDOWNLOAD", that._getDataDow(oData), that).then((J) => {
 						const downloadLink = document.createElement("a");
@@ -394,11 +394,11 @@ sap.ui.define([
 						that._setBusy(false); 
                         //Convert Base64 to Blob
                         var mailObj = { attachmentJson:{
-                            object: "pch04test",
+                            object: IdList[0],
                             object_type:"PCH04",
                             value:J.PCH04_EXCELDOWNLOAD,
                             file_type:"xls",
-                            file_name:"test.xls"
+                            file_name:fileName
                           }}
                     
                         $.ajax({

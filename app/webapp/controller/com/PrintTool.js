@@ -601,6 +601,12 @@ sap.ui.define(
 				case "test03/test1":
 					downloadName = "納品書";
 					break;
+        case "test02/test05":
+          downloadName = "支払通知書";
+          break;
+        case "test02/test03":
+          downloadName = "買掛金明細";
+          break;
 				case "MMSS_REP03/MMSS_REP03":
 					downloadName = "不良現品票";
 					break;

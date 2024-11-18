@@ -97,15 +97,15 @@ sap.ui.define([
                 return oTable.getContextByIndex(iIndex).getObject();
             });
 
-            // 检查是否有 STATUS 为 "2.反映済" 的数据
-            var bHasReflected = aSelectedData.some(function (oData) {
-                return oData.STATUS === "2";
-            });
+            // // 检查是否有 STATUS 为 "2.反映済" 的数据
+            // var bHasReflected = aSelectedData.some(function (oData) {
+            //     return oData.STATUS === "2";
+            // });
 
-            if (bHasReflected) {
-                sap.m.MessageToast.show("反映済された情報なので、再送信できません。"); // 显示错误消息
-                return; // 终止后续操作
-            }
+            // if (bHasReflected) {
+            //     sap.m.MessageToast.show("反映済された情報なので、再送信できません。"); // 显示错误消息
+            //     return; // 终止后续操作
+            // }
 
             //调用po接口
             this._invoPo(aSelectedData);

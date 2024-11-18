@@ -1426,7 +1426,7 @@ sap.ui.define([
                     SEQ: String(oData.SEQ).padStart(4, '0'),             // 序号，转换为字符串并补足 4 位
                     DELIVERYDATE: sFormattedDate,                        // 交货日期，格式为 YYYY-MM-DD
                     QUANTITY: String(oData.QUANTITY).padStart(13, '0'),  // 交货数量，转换为字符串并补足 13 位
-                    DELFLAG: oData.DELFLAG || ""                         // 删除标识，确保为字符串
+                    DELFLAG: oData.DEL_FLAG                              // 删除标识，确保为字符串
                 };
             });
         },
