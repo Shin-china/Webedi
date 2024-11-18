@@ -299,6 +299,8 @@ extend service TableService {
                 T02.DEL_AMOUNT, // 発注金額（値）
                 T02.MEMO, // 備考
                 Tu.USER_TYPE, // 用户type
+                T02.STORAGE_LOC,
+                T02.STORAGE_TXT
         }
     where
                 Tu.USER_TYPE = '2'
@@ -348,9 +350,9 @@ extend service TableService {
                     when 'W' then 'W'
                     else 'C' end as ZABC : String(10), //ABC区分 E：Email F：Fax  W：Web edi
                     @title: '{i18n>PO_TYPE}'
-                    T06.NAME  as PO_TYPE_NAME : String(10),// 発注区分名称
+                    T06.NAME  as PO_TYPE_NAME : String(2),// 発注区分名称
                     @title: '{i18n>STATUS}'
-                    T07.NAME as STATUS_NAME : String(10), // ステータス  01：送信済　02：照会済
+                    T07.NAME as STATUS_NAME : String(3), // ステータス  01：送信済　02：照会済
                     @title: '{i18n>ZABC1}'
                     case T04.ZABC
                     when 'E' then T08.NAME

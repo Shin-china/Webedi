@@ -23,7 +23,17 @@ sap.ui.define(["sap/base/i18n/ResourceBundle", "sap/ui/model/resource/ResourceMo
         },
       });
     },
-
+      /**
+       *将日期格式化为YYYYMMDD
+       * @param {日期} _date
+       */
+       _formatToYYYYMMDD: function (_date) {
+        const year = _date.getFullYear();
+        const month = String(_date.getMonth() + 1).padStart(2, '0'); // 月份从0开始，加1后补零
+        const day = String(_date.getDate()).padStart(2, '0'); // 补零
+ 
+        return `${year}/${month}/${day}`;
+      },
     //导出Excel-日期时间格式化
     _setExcelFormatDateTime(setting, i, fieldId) {
       if (fieldId === setting.workbook.columns[i].property) {
