@@ -267,12 +267,10 @@ extend service TableService {
                 T02.SUPPLIER_MAT, // 仕入先品目コード
                 T02.MAT_ID, // 品目コード
                 T02.PO_TYPE, // 発注区分  C：新規 U：変更 D：削除
-                @title: '{i18n>PO_TYPE}'
-                T06.NAME  as PO_TYPE_NAME,// 発注区分名称
+
                 T01.PO_DATE, //発注日
                 T02.STATUS, // ステータス  01：送信済　02：照会済
-                @title: '{i18n>STATUS}'
-                T07.NAME as STATUS_NAME, // ステータス  01：送信済　02：照会済
+                
                 T02.CD_BY, //登録者
                 T02.PO_D_DATE, //所要日付
                 T02.PLANT_ID,
@@ -282,6 +280,10 @@ extend service TableService {
                     when 'F' then 'F'
                     when 'W' then 'W'
                     else 'C' end as ZABC : String(5), //ABC区分 E：Email F：Fax  W：Web edi
+                @title: '{i18n>PO_TYPE}'
+                T06.NAME  as PO_TYPE_NAME,// 発注区分名称
+                @title: '{i18n>STATUS}'
+                T07.NAME as STATUS_NAME, // ステータス  01：送信済　02：照会済
                 @title: '{i18n>ZABC1}'
                 T08.NAME  as ZABC1_NAME,//ABC区分 E：Email F：Fax  W：Web edi
                 T02.PO_D_TXZ01, // 品目テキスト
@@ -313,6 +315,12 @@ extend service TableService {
             join view.SYS_T09_USER_2_PLANT t09
                 on  t09.PLANT_ID = T02.PLANT_ID
                 and t09.USER_ID  = Tu.USER_ID
+            left join view.PO_TYPE_POP T06
+                on T02.PO_TYPE = T06.VALUE
+            left join view.PCH03_STATUS_POP T07
+                on T02.STATUS = T07.VALUE
+            left join view.MST_BP_ZABC_POP T08
+                on T04.ZABC = T08.VALUE
 
 
             distinct {
@@ -335,6 +343,12 @@ extend service TableService {
                     when 'F' then 'F'
                     when 'W' then 'W'
                     else 'C' end as ZABC : String(5), //ABC区分 E：Email F：Fax  W：Web edi
+                    @title: '{i18n>PO_TYPE}'
+                    T06.NAME  as PO_TYPE_NAME,// 発注区分名称
+                    @title: '{i18n>STATUS}'
+                    T07.NAME as STATUS_NAME, // ステータス  01：送信済　02：照会済
+                    @title: '{i18n>ZABC1}'
+                    T08.NAME  as ZABC1_NAME,//ABC区分 E：Email F：Fax  W：Web edi
                     T02.PO_D_TXZ01, // 品目テキスト
                     T02.PO_PUR_QTY, // 発注数量
                     T02.PO_PUR_UNIT, // 単位
