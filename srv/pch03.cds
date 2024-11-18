@@ -289,7 +289,7 @@ extend service TableService {
                     when 'E' then T08.NAME
                     when 'F' then T08.NAME
                     when 'W' then T08.NAME
-                    else 'C' end as ZABC1_NAME : String(10), //ABC区分 E：Email F：Fax  W：Web edi
+                    else 'その他' end as ZABC1_NAME : String(10), //ABC区分 E：Email F：Fax  W：Web edi
                 T02.PO_D_TXZ01, // 品目テキスト
                 T02.PO_PUR_QTY, // 発注数量
                 T02.PO_PUR_UNIT, // 単位
@@ -356,7 +356,7 @@ extend service TableService {
                     when 'E' then T08.NAME
                     when 'F' then T08.NAME
                     when 'W' then T08.NAME
-                    else 'C' end as ZABC1_NAME : String(10), //ABC区分 E：Email F：Fax  W：Web edi
+                    else 'その他' end as ZABC1_NAME : String(10), //ABC区分 E：Email F：Fax  W：Web edi
                     T02.PO_D_TXZ01, // 品目テキスト
                     T02.PO_PUR_QTY, // 発注数量
                     T02.PO_PUR_UNIT, // 単位
