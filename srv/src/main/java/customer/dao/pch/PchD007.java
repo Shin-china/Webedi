@@ -53,7 +53,8 @@ public class PchD007 extends Dao {
     public List<T07QuotationD> getList(String quoNum) {
         return db.run(
                 Select.from(Pch_.T07_QUOTATION_D)
-                        .where(o -> o.QUO_NUMBER().eq(quoNum)))
+                        .where(o -> o.QUO_NUMBER().eq(quoNum)
+                                .and(o.DEL_FLAG().eq("N")))) // 追加删除标志
                 .listOf(T07QuotationD.class);
     }
 
