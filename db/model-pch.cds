@@ -49,6 +49,7 @@ entity T02_PO_D : IF_CUID_FILED { //采购订单行
                              @title: '{i18n>MEMO}' MEMO                 : String(1000); //Remark(Header)
                              @title: '{i18n>INT_NUMBER}' INT_NUMBER     : String(18); //海外番号
                              @title: '{i18n>PR_BY}' PR_BY               : String(50); //購買依頼者
+                            @title: '{i18n>PRINT_TIMES}' PRINT_TIMES             : Integer default 0; //打印次数     >0  已经打印
                              TO_HEAD                                    : Association to one T01_PO_H //采购订单抬头表
                                                                             on TO_HEAD.PO_NO = PO_NO;
                              TO_MAT                                     : Association to one MST.T01_SAP_MAT //品目
