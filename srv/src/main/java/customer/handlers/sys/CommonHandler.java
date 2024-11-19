@@ -62,7 +62,7 @@ public class CommonHandler implements EventHandler {
 
     // IFM054 購買見積依頼受信+送信
     @On(event = "pch06BatchImport")
-    public void pch06BatchImport(Pch06BatchImportContext context) {
+    public void pch06BatchImport(Pch06BatchImportContext context) throws Exception {
         // 获取uqmc传入的t06数据
         // 获取
         System.out.println(JSONObject.toJSONString(context.getPch06()));
@@ -71,7 +71,8 @@ public class CommonHandler implements EventHandler {
         // Ifm054Bean list = JSON.parseObject(context.getJson(), Ifm054Bean.class);
 
         // 将 Collection 转换为 Listpch06BatchImport
-        List<PchT06QuotationH> pch06List = new ArrayList<>(context.getPch06());
+        ArrayList<PchT06QuotationH> pch06List = new ArrayList<>(context.getPch06());
+        ArrayList<cds.gen.pch.T06QuotationH> pch06List2 = new ArrayList<>();
         pch06List.forEach(pchT06QuotationH -> {
 
             try {
@@ -89,7 +90,7 @@ public class CommonHandler implements EventHandler {
             BeanUtils.copyProperties(pchT06QuotationH, t06QuotationH);
             // 如果已经存在则更新，如果不存在则插入
             T06QuotationH byID = PchD006.getByIdOnle(t06QuotationH.getId());
-            ;
+            pch06List2.add(t06QuotationH);
             t06QuotationH.remove("TO_ITEMS");
             if (byID != null) {
                 PchD006.update(t06QuotationH);
@@ -118,8 +119,30 @@ public class CommonHandler implements EventHandler {
             });
 
         });
-        System.out.println("返回成功" + JSONObject.toJSONString(pch06List));
-        // context.setResult(JSONObject.toJSONString(pch06List));
+
+        String msg = sendService.sendPost(pch06List2);
+        System.out.println(msg);
+
+        context.setResult(msg);
+    }
+
+    // IFM055 購買見積依頼送信
+    @On(event = "pch06BatchSending")
+    public void pch06BatchSending(Pch06BatchSendingContext context) throws Exception {
+        ArrayList<T06QuotationH> pch06List = new ArrayList<>();
+
+        try {
+            pch06List = sendService.getJson(context.getJson());
+
+            // 调用接口传值
+
+        } catch (Exception e) {
+            context.setResult("失败");
+        }
+        String msg = sendService.sendPost(pch06List);
+        System.out.println(msg);
+
+        context.setResult(msg);
     }
 
 }

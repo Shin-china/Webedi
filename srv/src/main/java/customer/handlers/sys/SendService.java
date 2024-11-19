@@ -7,7 +7,9 @@ import java.io.InputStream;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,19 +31,11 @@ import customer.bean.sys.Ifm054Bean;
 import customer.dao.pch.PchD006;
 import customer.dao.pch.PchD007;
 import customer.dao.sys.DocNoDao;
+import customer.dao.sys.IFSManageDao;
+import customer.odata.BaseMoveService;
 
-import com.google.common.io.ByteStreams;
-import com.sap.cds.services.handler.EventHandler;
-import com.sap.cds.services.handler.annotations.On;
-import com.sap.cds.services.handler.annotations.ServiceName;
-import cds.gen.tableservice.PchT06QuotationH;
-import cds.gen.tableservice.PchT07QuotationD;
-import cds.gen.tableservice.Pch06BatchSendingContext;
-import cds.gen.tableservice.TableService_;
-import cds.gen.AttachmentJson;
-import cds.gen.common.*;
 import cds.gen.pch.T06QuotationH;
-import cds.gen.pch.T07QuotationD;
+import cds.gen.sys.T11IfManager;
 
 @Component
 public class SendService {
@@ -52,6 +46,10 @@ public class SendService {
     PchD007 PchD007;
     @Autowired
     DocNoDao docNoDao;
+    @Autowired
+    BaseMoveService base;
+    @Autowired
+    private IFSManageDao ifsManageDao;
 
     // 发送t06数据，传入json,返回ArrayList<T06QuotationH>
     public ArrayList<T06QuotationH> getJson(String json) {
@@ -68,4 +66,26 @@ public class SendService {
         return pch06List;
 
     }
+
+    public String sendPost(ArrayList<T06QuotationH> pch06List) throws Exception {
+        HashMap<String, Object> retMap = new HashMap<String, Object>();
+        retMap.put("pch06", pch06List);
+        // 获取 Web Service 配置信息
+        T11IfManager webServiceConfig = ifsManageDao.getByCode("IFM050");
+
+        // 调用送信接口
+        String postMove = base.postMove(webServiceConfig, retMap, null);
+
+        // 使用fastjson将字符串转换为JSONObject
+
+        String re = getJsonObject2(postMove);
+        return re;
+    }
+
+    private String getJsonObject2(String postMove) {
+        JSONObject jsonObject2 = JSONObject.parseObject(postMove);
+
+        return (String) jsonObject2.get("value");
+    }
+
 }
