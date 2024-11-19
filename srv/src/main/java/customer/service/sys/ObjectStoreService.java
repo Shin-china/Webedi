@@ -11,11 +11,14 @@ import cds.gen.sys.T12Config;
 import customer.bean.com.CommMsg;
 import customer.bean.com.UmcConstants;
 import customer.dao.sys.T12ConfigDao;
+import customer.dao.sys.T13AttachmentDao;
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.core.ResponseBytes;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
+import software.amazon.awssdk.services.s3.model.DeleteObjectResponse;
 import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 import software.amazon.awssdk.services.s3.model.GetObjectResponse;
 import software.amazon.awssdk.services.s3.model.ListObjectsRequest;
@@ -38,7 +41,8 @@ public class ObjectStoreService {
     @Autowired
     private T12ConfigDao Config;
 
-    // Consu
+    @Autowired
+    private T13AttachmentDao t13AttachmentDao;
 
     // Initialization S3 Client
     public void initS3Client() {
@@ -147,5 +151,32 @@ public class ObjectStoreService {
 
         return por;
 
+    }
+
+    // 删除对象
+    public CommMsg deleteRes(String keyName) throws S3Exception {
+        S3Client s3Client = getS3Client();
+
+        // get id
+        String fileName = t13AttachmentDao.getFileName(keyName);
+        CommMsg msg = new CommMsg();
+
+        DeleteObjectRequest deleteObjectRequest = DeleteObjectRequest.builder().bucket(S3_BUCKET).key(fileName).build();
+        DeleteObjectResponse por = s3Client.deleteObject(deleteObjectRequest);
+        if (por != null && por.sdkHttpResponse() != null) {
+            if (por.sdkHttpResponse().isSuccessful()) {
+                t13AttachmentDao.deleteAttachment(keyName);
+                msg.setMsgType(UmcConstants.IF_STATUS_S);
+                msg.setMsgTxt("Delete Success");
+            } else {
+                if (por.sdkHttpResponse().statusText().isPresent()) {
+                    msg.setMsgTxt(por.sdkHttpResponse().statusText().get());
+                }
+            }
+        } else {
+            msg.setMsgTxt("S3 Have no return ");
+        }
+
+        return msg;
     }
 }

@@ -416,6 +416,16 @@ sap.ui.define([], function () {
       checkUserPermission2: function (userType) {
             return  userType == '2';
           },
+
+      /**
+       * 格式化mime类型
+       * @param {*} mimeType
+       * @returns
+       * 
+       */
+      formatMimeType: function(mimeType){
+        return atob(mimeType);
+      }
     };
   });
   

@@ -273,6 +273,7 @@ public class Pch07Service {
             t07QuotationD2.setIncoterms(firstItem.getString("Incotermsclassification"));
             t07QuotationD2.setIncotermsText(firstItem.getString("Incotermslocation1"));
             t07QuotationD2.setCurrency(firstItem.getString("Currency"));
+            t07QuotationD2.setSupplierMat(firstItem.getString("SupplierMaterialNumber"));
 
         }
 

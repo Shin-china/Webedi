@@ -1,33 +1,136 @@
-<c:FragmentDefinition xmlns:rowmodes="sap.ui.table.rowmodes" xmlns:smarttable="sap.ui.comp.smarttable"
+<core:FragmentDefinition xmlns:rowmodes="sap.ui.table.rowmodes"
+    xmlns:smarttable="sap.ui.comp.smarttable"
     xmlns="sap.m"
-    xmlns:c="sap.ui.core"
+    xmlns:core="sap.ui.core"
     xmlns:unified="sap.ui.unified"
     xmlns:table="sap.ui.table"
+    xmlns:smartFilterBar="sap.ui.comp.smartfilterbar"
     xmlns:smartTable="sap.ui.comp.smarttable">
-    <Dialog id="idAttachmentDialog" contentWidth="60%" contentHeight="40%" title="{pch>ATTACHMENT}" afterClose="onDestroyAttachmentDialog">
+    <Dialog id="idAttachmentDialog" contentWidth="60%" contentHeight="50%" title="{pch>ATTACHMENT}" afterClose="onDestroyAttachmentDialog">
 
         <content>
             <!-- <Panel id="idFileUploadPanel" expandable="true" expanded="true" headerText="{pch>UPLOAD_TEXT}" width="auto"> -->
-            <unified:FileUploader id="idFileUploader" fileType="xlsx,xls" change="onFileChange" width="60%" class="sapUiSmallMargin"/>
+            <unified:FileUploader id="idFileUploader" change="onFileChange" width="60%" class="sapUiSmallMargin"/>
             <!-- </Panel> -->
-
-            <!-- <smarttable:SmartTable id="id.AttachmentSmartTable" tableType="Table" entitySet="ZC_ATTACHMENT">
+            <smartTable:SmartTable id="id.AttachmentSmartTable" header="{pch>ATTACHMENT}" showRowCount="true"  enableAutoBinding="true" ignoredFields="" initiallyVisibleFields="ID,OBJECT,OBJECT_TYPE,FILE_NAME,FILE_TYPE,OBJECT_LINK" enableAutoColumnWidth="true" entitySet="SYS_T13_ATTACHMENT" beforeRebindTable="onBeforeBindAttachment">
                 <smarttable:customToolbar>
-                    <OverflowToolbar id="overFlowToolbar">
-                        <ToolbarSpacer id="toolbarSpacer" />
+                    <OverflowToolbar id="idAttachmentOverFlowToolbar">
+                        <ToolbarSpacer id="idAttachmentToolbarSpacer" />
                         <Button id="id.DeleteButton" text="{pch>DELETE}" press="onDeleteAttachment"></Button>
                     </OverflowToolbar>
                 </smarttable:customToolbar>
-            </smarttable:SmartTable>
 
-            <table:Table id="id.AttachmentTable" visibleRowCount="5" rowActionCount="1" selectionMode="MultiToggle" alternateRowColors="true" fixedColumnCount="0" threshold="20">
-                <table:rowMode>
-                    <rowmodes:Auto id="id.AttachmentAuto" minRowCount="5"></rowmodes:Auto>
-                </table:rowMode>
-                <table:columns>
 
+                <table:Table id="id.AttachmentTable" visibleRowCount="10" rowActionCount="1" selectionMode="MultiToggle" alternateRowColors="true" fixedColumnCount="0" threshold="20">
+
+                    <table:columns>
+                        <table:Column id="colID" width="12rem" sortProperty="ID" filterProperty="ID" visible="false">
+                            <table:customData>
+                                <core:CustomData key="p13nData" value="{
+                                        columnKey: 'ID',
+                                        leadingProperty: 'ID',
+                                        sortProperty: 'id',
+                                        filterProperty: 'id'
+                                    }" />
+                            </table:customData>
+                            <table:label>
+                                <Label id="labelID" text="{pch>ID}" />
+                            </table:label>
+                            <table:template>
+                                <Text id="textID" text="{ID}" />
+                            </table:template>
+                        </table:Column>
+
+                        <table:Column id="idFileName" width="60%" sortProperty="FILE_NAME" filterProperty="FILE_NAME" >
+                            <table:customData>
+                                <core:CustomData key="p13nData" value="{
+                                        columnKey: 'FILE_NAME',
+                                        leadingProperty: 'FILE_NAME',
+                                        sortProperty: 'FILE_NAME',
+                                        filterProperty: 'FILE_NAME'
+                                    }" />
+                            </table:customData>
+                            <table:label>
+                                <Label id="labelFileName" text="{pch>FILE_NAME}" />
+                            </table:label>
+                            <table:template>
+                                <Link id="textFileName" text="{FILE_NAME}" press="onDownloadAttachment"/>
+                            </table:template>
+                        </table:Column>
+
+
+                        <table:Column id="idFileType" width="40%" sortProperty="FILE_TYPE" filterProperty="FILE_TYPE"  >
+                            <table:customData>
+                                <core:CustomData key="p13nData" value="{
+                                        columnKey: 'FILE_TYPE',
+                                        leadingProperty: 'FILE_TYPE',
+                                        sortProperty: 'FILE_TYPE',
+                                        filterProperty: 'FILE_TYPE'
+                                    }" />
+                            </table:customData>
+                            <table:label>
+                                <Label id="labelFileType" text="{pch>FILE_TYPE}" />
+                            </table:label>
+                            <table:template>
+                                <Text id="textFileType" text="{path:'FILE_TYPE', formatter:'.customFormatter.formatMimeType'}" />
+                            </table:template>
+                        </table:Column>
+
+
+                        <table:Column id="idObjectLink" width="12rem" sortProperty="OBJECT_LINK" filterProperty="OBJECT_LINK" visible="false">
+                            <table:customData>
+                                <core:CustomData key="p13nData" value="{
+                                        columnKey: 'OBJECT_LINK',
+                                        leadingProperty: 'OBJECT_LINK',
+                                        sortProperty: 'OBJECT_LINK',
+                                        filterProperty: 'OBJECT_LINK'
+                                    }" />
+                            </table:customData>
+                            <table:label>
+                                <Label id="labelObjectLink" text="{pch>OBJECT_LINK}" />
+                            </table:label>
+                            <table:template>
+                                <Text id="textObjectLink" text="{OBJECT_LINK}" />
+                            </table:template>
+                        </table:Column> 
+
+                    <table:Column id="idObject" width="12rem" sortProperty="OBJECT" filterProperty="OBJECT" visible="false">
+                        <table:customData>
+                            <core:CustomData key="p13nData" value="{
+                                    columnKey: 'OBJECT',
+                                    leadingProperty: 'OBJECT',
+                                    sortProperty: 'OBJECT',
+                                    filterProperty: 'OBJECT'
+                                }" />
+                        </table:customData>
+                        <table:label>
+                            <Label id="labelObject" text="{pch>OBJECT}" />
+                        </table:label>
+                        <table:template>
+                            <Text id="textObject" text="{OBJECT}" />
+                        </table:template>
+                    </table:Column>
+
+                    <table:Column id="idObjectType" width="12rem" sortProperty="OBJECT_TYPE" filterProperty="OBJECT_TYPE" visible="false">
+                        <table:customData>
+                            <core:CustomData key="p13nData" value="{
+                                    columnKey: 'OBJECT_TYPE',
+                                    leadingProperty: 'OBJECT_TYPE',
+                                    sortProperty: 'OBJECT_TYPE',
+                                    filterProperty: 'OBJECT_TYPE'
+                                }" />
+                        </table:customData>
+                        <table:label>
+                            <Label id="labelObjectType" text="{pch>OBJECT_TYPE}" />
+                        </table:label>
+                        <table:template>
+                            <Text id="textObjectType" text="{OBJECT_TYPE}" />
+                        </table:template>
+                    </table:Column> 
                 </table:columns>
-            </table:Table> -->
+
+                </table:Table>
+            </smartTable:SmartTable>
         </content>
 
         <endButton>
@@ -35,4 +138,4 @@
         </endButton>
     </Dialog>
 
-</c:FragmentDefinition>
+</core:FragmentDefinition>

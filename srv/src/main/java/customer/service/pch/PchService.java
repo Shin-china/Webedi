@@ -67,29 +67,29 @@ public class PchService {
         pchD004.updateMap(data, keys);
     }
 
-    // // 根据传入的INV_NO明细状态
-    // public void setinvdateconfirm(String invno) {
+    // 根据传入的INV_NO明细状态
+    public void setinvdateconfirm(String object) {
 
-    //     Map<String, Object> data = new HashMap<>();
-    //     data.put("INV_DATE", UmcConstants.PCH05_CONFIRM);
-    //     Map<String, Object> keys = new HashMap<>();
-    //     keys.put("INV_NO", invno);
-    //     // 数据是否被修改修改标记
+        Map<String, Object> data = new HashMap<>();
+        data.put("SUPPLIER_DESCRIPTION", UmcConstants.PCH05_CONFIRM);
+        Map<String, Object> keys = new HashMap<>();
+        keys.put("SUPPLIER", object);
+        // 数据是否被修改修改标记
 
-    //     pchD004.updateMap(data, keys);
-    // }
+        pchD004.updateMap(data, keys);
+    }
 
-    // // 根据传入的INV_NO明细状态
-    // public void setinvdatecancel(String invno) {
+    // 根据传入的INV_NO明细状态
+    public void setinvdatecancel(String object) {
 
-    //     Map<String, Object> data = new HashMap<>();
-    //     data.put("INV_DATE", UmcConstants.PCH05_CANCEL);
-    //     Map<String, Object> keys = new HashMap<>();
-    //     keys.put("INV_NO", invno);
-    //     // 数据是否被修改修改标记
+        Map<String, Object> data = new HashMap<>();
+        data.put("SUPPLIER_DESCRIPTION", UmcConstants.PCH05_CANCEL);
+        Map<String, Object> keys = new HashMap<>();
+        keys.put("SUPPLIER", object);
+        // 数据是否被修改修改标记
 
-    //     pchD004.updateMap(data, keys);
-    // }
+        pchD004.updateMap(data, keys);
+    }
 
     public BigDecimal getSysD006(String string) {
         return BigDecimal.ONE;
