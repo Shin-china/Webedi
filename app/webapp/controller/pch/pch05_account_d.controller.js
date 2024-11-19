@@ -84,14 +84,32 @@ sap.ui.define([
         
         onResend: function () {
 			var that = this;
+            var oTable = this.getView().byId("detailTable");
+            var aSelectedIndices = oTable.getSelectedIndices();
 
             // 调用检查逻辑
             if (!this.checkSelectedSuppliers()) {
                 return; // 如果检查不通过，则终止执行
             }
 
+            // 遍历选中的行，提取所需数据
+            var aSelectedData = aSelectedIndices.map(function (iIndex) {
+                return oTable.getContextByIndex(iIndex).getObject();
+            });    
+
+             // 检查 SUPPLIER 是否相同
+            var supplierSet = new Set(aSelectedData.map(data => data.SUPPLIER));
+            if (supplierSet.size > 1) {
+                MessageBox.error("複数の仕入先がまとめて配信することができませんので、1社の仕入先を選択してください。");
+                return;
+            }
+
             var oTable = this.getView().byId("detailTable");
             var aSelectedIndices = oTable.getSelectedIndices();
+            // 假设您在这里定义邮件内容模板
+            var H_CODE = "MM0008";
+            var SUPPLIER = supplierSet.values().next().value;
+            var entity = "/SYS_T08_COM_OP_D";
 
             
              // 将日期字符串转换为指定格式
@@ -118,6 +136,12 @@ sap.ui.define([
     
                     });
 
+                    this._readHead(H_CODE, SUPPLIER, entity).then((oHeadData) => {
+                        let mail = oHeadData.results && oHeadData.results.length > 0 ? 
+                        oHeadData.results.map(result => result.VALUE02).join(", ") : '';            
+                    let absama = oHeadData.results && oHeadData.results.length > 0 ? 
+                        oHeadData.results.map(result => result.VALUE03 + " 様").join("  ") : '';
+
                     let sResponse = json2xml(oData, options);
 						console.log(sResponse)
 						that.setSysConFig().then(res => {
@@ -127,11 +151,7 @@ sap.ui.define([
 								var mailobj = {
 									emailJson: {
 										TEMPLATE_ID: "UWEB_M008",
-										// MAIL_TO: "xiaoyue.wang@sh.shin-china.com",
-                                        MAIL_TO: [
-                                            "xiaoyue.wang@sh.shin-china.com",
-                                            "huifang.ji@sh.shin-china.com"
-                                        ].join(", "), // 使用逗号和空格连接
+                                        MAIL_TO: [mail].join(", "), 
 										MAIL_BODY: [
 										{
 											object: "filename_1",
@@ -146,9 +166,13 @@ sap.ui.define([
 									}
 								};
 
-								let newModel = this.getView().getModel("Common");
-								let oBind = newModel.bindList("/sendEmail");
-								oBind.create(mailobj);
+								// let newModel = this.getView().getModel("Common");
+								// let oBind = newModel.bindList("/sendEmail");
+                                // that._sendEmail(mailobj);
+								// oBind.create(mailobj);
+
+                                    this._sendEmail(mailobj);
+									this._setBusy(false);
 
                                 that._callCdsAction(_objectCommData._entity, { parms: IdList[0] }, that).then((data) => {
 
@@ -160,9 +184,41 @@ sap.ui.define([
 						})
 					})
 				}				
+    )}},
+
+    _readHead: function (a,b, entity) {
+        var that = this;
+        return new Promise(function (resolve, reject) {
+          that.getModel().read(entity, {
+              filters: [
+                
+              new sap.ui.model.Filter({
+                path: "H_CODE",
+                value1: a,
+                operator: sap.ui.model.FilterOperator.EQ,
+              }),
+              new sap.ui.model.Filter({
+                path: "VALUE01",
+                value1: b,
+                operator: sap.ui.model.FilterOperator.EQ,
+              }),
+
+              new sap.ui.model.Filter({
+                path: "DEL_FLAG",
+                value1: "X",
+                operator: sap.ui.model.FilterOperator.NE,
+              }),
+
+            ],
+            success: function (oData) {
+              resolve(oData);
             },
-
-
+            error: function (oError) {
+              reject(oError);
+            },
+          });
+        });
+      },
             
 
             onBeforeExport: function (oEvent) {
