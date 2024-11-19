@@ -18,9 +18,10 @@ type mailBody     :{
 type attachmentJson :{
   object            : String(40);
   value             : LargeString;
-  file_type         : String(64);
+  file_type         : LargeString;
   file_name         : String(50);
   object_type       : String(10);
+  mime_type         : LargeString;
 }
 service Common {
 
