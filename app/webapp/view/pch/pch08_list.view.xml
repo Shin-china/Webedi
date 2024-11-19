@@ -13,6 +13,7 @@
     xmlns:uxap="sap.uxap">
     
     <f:DynamicPageHeader id="DynamicPageHeader" pinnable="true">
+        
         <f:content>
             <smartFilterBar:SmartFilterBar id="smartFilterBar" entitySet="PCH08_LIST" persistencyKey="PCH08_LIST" showFilterConfiguration="false">
                 <smartFilterBar:controlConfiguration>
@@ -32,6 +33,8 @@
                 </smartFilterBar:controlConfiguration>
             </smartFilterBar:SmartFilterBar>
         </f:content>
+
+ 
     </f:DynamicPageHeader>
     <smartTable:SmartTable id="ID" enableAutoColumnWidth="true" beforeRebindTable="onBeforeRebindList" entitySet="PCH08_LIST" ignoredFields="" initiallyVisibleFields="QUO_NUMBER,QUO_ITEM,NO,REFRENCE_NO,CUSTOMER,MACHINE_TYPE,QUANTITY,Item,TIME,LOCATION,VALIDATE_START,VALIDATE_END,MATERIAL_NUMBER,CUST_MATERIAL,MANUFACT_MATERIAL,Attachment,Material,MAKER,UWEB_USER,BP_NUMBER,PERSON_NO1,PERSON_NO2,PERSON_NO3,PERSON_NO4,PERSON_NO5,YLP,MANUL,MANUFACT_CODE,CUSTOMER_MMODEL,MID_QF,SMALL_QF,OTHER_QF,CURRENCY,PRICE_CONTROL,LEAD_TIME,MOQ,UNIT,SPQ,KBXT,PRODUCT_WEIGHT,ORIGINAL_COU,EOL,ISBOI,Incoterms,Incoterms_Text,MEMO1,MEMO2,MEMO3,SL,TZ,RMATERIAL,RMATERIAL_CURRENCY,RMATERIAL_PRICE,RMATERIAL_LT,RMATERIAL_MOQ,RMATERIAL_KBXT,UMC_COMMENT_1,UMC_COMMENT_2,STATUS" requestAtLeastFields="QUO_NUMBER,Material" smartFilterId="smartFilterBar" enableExport="false" editable="{localModel>/save}" useVariantManagement="true" useTablePersonalisation="true" header="{pch>PCH08_LISTVIEW_TITLE}" showRowCount="true" persistencyKey="pch08_SmartTableAnalytical_Explored" enableAutoBinding="true">
         <smartTable:customToolbar>
