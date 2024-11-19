@@ -30,7 +30,7 @@ public class Pch07Handler implements EventHandler {
     // check数据
     @On(event = "PCH07_CHECK_DATA")
     public void checkData(PCH07CheckDATAContext context) {
-        Pch07DataList list = JSON.parseObject(context.getshelfJson(), Pch07DataList.class);
+        Pch07DataList list = JSON.parseObject(context.getShelfJson(), Pch07DataList.class);
     Pch07Service.detailsCheck(list);
     context.setResult(JSON.toJSONString(list));
     }
@@ -38,7 +38,7 @@ public class Pch07Handler implements EventHandler {
       // 保存数据
   @On(event = "PCH07_SAVE_DATA")
     public void saveData(PCH07SaveDATAContext context) throws Exception{
-      Pch07DataList list = JSON.parseObject(context.getshelfJson(), Pch07DataList.class);
+      Pch07DataList list = JSON.parseObject(context.getShelfJson(), Pch07DataList.class);
       Pch07Service.detailsSave(list);
       context.setResult(JSON.toJSONString(list));
   }
