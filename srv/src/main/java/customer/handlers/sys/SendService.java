@@ -33,8 +33,10 @@ import customer.dao.pch.PchD007;
 import customer.dao.sys.DocNoDao;
 import customer.dao.sys.IFSManageDao;
 import customer.odata.BaseMoveService;
-
+import cds.gen.common.PchT06QuotationH;
+import cds.gen.common.PchT07QuotationD;
 import cds.gen.pch.T06QuotationH;
+import cds.gen.pch.T07QuotationD;
 import cds.gen.sys.T11IfManager;
 
 @Component
@@ -88,4 +90,48 @@ public class SendService {
         return (String) jsonObject2.get("value");
     }
 
+    public void extracted(ArrayList<PchT06QuotationH> pch06List, ArrayList<cds.gen.pch.T06QuotationH> pch06List2) {
+        pch06List.forEach(pchT06QuotationH -> {
+
+            // 获取購買見積番号
+            // pchT06QuotationH.setQuoNumber(docNoDao.getPJNo(1));
+            pchT06QuotationH.setQuoNumber("1006");
+
+            // 插入头标，首先删除原key值数据
+            T06QuotationH t06QuotationH = T06QuotationH.create();
+
+            // 复制类属性
+            BeanUtils.copyProperties(pchT06QuotationH, t06QuotationH);
+            // 如果已经存在则更新，如果不存在则插入
+            T06QuotationH byID = PchD006.getByIdOnle(t06QuotationH.getId());
+            pch06List2.add(t06QuotationH);
+            t06QuotationH.remove("TO_ITEMS");
+            if (byID != null) {
+                PchD006.update(t06QuotationH);
+            } else {
+                PchD006.insert(t06QuotationH);
+            }
+
+            // 插入明细
+            List<PchT07QuotationD> toItems = pchT06QuotationH.getToItems();
+            toItems.forEach(pchT07QuotationD -> {
+                // 获取購買見積番号
+                pchT07QuotationD.setQuoNumber(pchT06QuotationH.getQuoNumber());
+
+                T07QuotationD t07QuotationD = T07QuotationD.create();
+
+                // // 复制类属性
+                BeanUtils.copyProperties(pchT07QuotationD, t07QuotationD);
+                // // 如果已经存在则更新，如果不存在则插入
+                T07QuotationD byID2 = PchD007.getByT07Id(t07QuotationD.getId());
+
+                if (byID2 != null) {
+                    PchD007.update(t07QuotationD);
+                } else {
+                    PchD007.insert(t07QuotationD);
+                }
+            });
+
+        });
+    }
 }

@@ -73,54 +73,16 @@ public class CommonHandler implements EventHandler {
         // 将 Collection 转换为 Listpch06BatchImport
         ArrayList<PchT06QuotationH> pch06List = new ArrayList<>(context.getPch06());
         ArrayList<cds.gen.pch.T06QuotationH> pch06List2 = new ArrayList<>();
-        pch06List.forEach(pchT06QuotationH -> {
+        String msg = "";
+        try {
+            // 提取数据，插入表中
+            sendService.extracted(pch06List, pch06List2);
 
-            try {
-                // 获取購買見積番号
-                // pchT06QuotationH.setQuoNumber(docNoDao.getPJNo(1));
-                pchT06QuotationH.setQuoNumber("1006");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            msg = sendService.sendPost(pch06List2);
+        } catch (Exception e) {
+            msg = UmcConstants.ERROR;
+        }
 
-            // 插入头标，首先删除原key值数据
-            T06QuotationH t06QuotationH = T06QuotationH.create();
-
-            // 复制类属性
-            BeanUtils.copyProperties(pchT06QuotationH, t06QuotationH);
-            // 如果已经存在则更新，如果不存在则插入
-            T06QuotationH byID = PchD006.getByIdOnle(t06QuotationH.getId());
-            pch06List2.add(t06QuotationH);
-            t06QuotationH.remove("TO_ITEMS");
-            if (byID != null) {
-                PchD006.update(t06QuotationH);
-            } else {
-                PchD006.insert(t06QuotationH);
-            }
-
-            // 插入明细
-            List<PchT07QuotationD> toItems = pchT06QuotationH.getToItems();
-            toItems.forEach(pchT07QuotationD -> {
-                // 获取購買見積番号
-                pchT07QuotationD.setQuoNumber(pchT06QuotationH.getQuoNumber());
-
-                T07QuotationD t07QuotationD = T07QuotationD.create();
-
-                // // 复制类属性
-                BeanUtils.copyProperties(pchT07QuotationD, t07QuotationD);
-                // // 如果已经存在则更新，如果不存在则插入
-                T07QuotationD byID2 = PchD007.getByT07Id(t07QuotationD.getId());
-
-                if (byID2 != null) {
-                    PchD007.update(t07QuotationD);
-                } else {
-                    PchD007.insert(t07QuotationD);
-                }
-            });
-
-        });
-
-        String msg = sendService.sendPost(pch06List2);
         System.out.println(msg);
 
         context.setResult(msg);

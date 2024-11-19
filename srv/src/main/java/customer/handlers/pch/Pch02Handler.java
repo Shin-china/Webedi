@@ -76,12 +76,14 @@ public class Pch02Handler implements EventHandler {
                 // 调用 Web Service 的 get 方法
                 String response = S4OdataTools.post(webServiceConfig, parameters, null);
                 JSONObject object = JSONObject.parseObject(response);
-                // 确认成功后修改po明细状态
-                pchService.updatePch03(context.getParms());
                 System.out.println(StringTool.convertGBKToUTF8(object.getString("message")));
-                // 将 Web Service 的响应结果返回给前台
-
-                // context.setResult(StringTool.convertGBKToUTF8(object.getString("message")));
+                // 获取 Web Service 返回的 status 字段
+                String status = object.getString("status"); 
+                // 判断 status 是否为 "200"
+                if ("200".equals(status)) {
+                    // 如果 status 为 "200"，表示成功，执行 PO 明细状态更新
+                    pchService.updatePch03(context.getParms());
+                }
                 context.setResult(object.getString("message"));
             } else {
                 // 如果没有找到配置，返回错误信息
