@@ -577,6 +577,12 @@ sap.ui.define([
         },
 
         onBeforeRebindList: function (oEvent) {
+
+            var oModel = this.getView().getModel();
+            if(oModel.hasPendingChanges()){
+                oModel.resetChanges();
+            }
+
             var oParameters = oEvent.getParameter("bindingParams");
             var oComboStatus = this.byId("idStatusMultiComboBox");
 
