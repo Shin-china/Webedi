@@ -13,7 +13,7 @@ extend service TableService {
 
                 ) 
             inner join (select max(ID) AS ID, QUO_NUMBER, QUO_ITEM from PCH.T07_QUOTATION_D as T03
-                group by T03.QUO_NUMBER, QUO_ITEM ) AS T04 on T02.ID = T04.ID
+              where DEL_FLAG = 'N'  group by T03.QUO_NUMBER, QUO_ITEM ) AS T04 on T02.ID = T04.ID
 
             distinct {
                 key T02.QUO_NUMBER,

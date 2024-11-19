@@ -574,7 +574,28 @@ sap.ui.define([
                     downloadLink.click();
                 }
             })
-        }
+        },
+
+        onBeforeRebindList: function (oEvent) {
+            var oParameters = oEvent.getParameter("bindingParams");
+            var oComboStatus = this.byId("idStatusMultiComboBox");
+
+            //Filter
+            if (oComboStatus) {
+                var aKeys = oComboStatus.getSelectedKeys();
+                if (aKeys && aKeys.length > 0) {
+                    aKeys.forEach(e=>{
+                        oParameters.filters.push(new sap.ui.model.Filter(
+                            "STATUS",
+                            sap.ui.model.FilterOperator.EQ,
+                            e
+                        ))
+                    });
+                    
+                }
+            }
+           
+        },
 
     });
 });

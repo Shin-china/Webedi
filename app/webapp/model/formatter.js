@@ -425,6 +425,35 @@ sap.ui.define([], function () {
        */
       formatMimeType: function(mimeType){
         return atob(mimeType);
+      },
+
+      /**
+       * 格式化pch08状态
+       * @param {*} Status
+       * @returns
+       */
+      formatPch08Status: function(sStatus){
+        var sStatusText = "";
+        switch(sStatus){
+          case "2":
+            sStatusText = "送信済（未回答）";
+            break;
+          case "3":
+            sStatusText = "回答済";
+            break;
+          case "4":
+            sStatusText = "再送信（依頼中）";
+            break;
+          default:
+            sStatusText = "";
+            break;
+        }
+
+        if(sStatusText === ""){
+          return sStatusText;
+        }else{
+          return sStatusText + "（" + sStatus + "）";
+        }
       }
     };
   });

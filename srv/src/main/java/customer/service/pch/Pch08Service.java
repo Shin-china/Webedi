@@ -319,10 +319,19 @@ public class Pch08Service {
                 String qty = o.getString("QTY_" + i);
                 String price = o.getString("PRICE_" + i);
                 T07QuotationD t07 = d007Dao.getByT07Id(t07Id);
-                if (t07 != null) {
-                    t07.setQty(qty == null ? BigDecimal.ZERO : new BigDecimal(qty));
-                    t07.setPrice(price == null ? BigDecimal.ZERO : new BigDecimal(price));
+                T07QuotationD t07New = d007Dao.getByT07Id(t07Id);
+
+                if(t07 != null) {
+                    t07.setDelFlag("N");
                     d007Dao.update(t07);
+                }
+
+                if (t07New != null) {
+                    t07New.setQty(qty == null ? BigDecimal.ZERO : new BigDecimal(qty));
+                    t07New.setPrice(price == null ? BigDecimal.ZERO : new BigDecimal(price));
+                    t07New.setId(null);
+                    t07New.setStatus("3");
+                    d007Dao.insert(t07New);
                 }
             }
         }
