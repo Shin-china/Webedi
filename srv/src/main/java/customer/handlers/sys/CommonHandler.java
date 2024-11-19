@@ -122,21 +122,4 @@ public class CommonHandler implements EventHandler {
         // context.setResult(JSONObject.toJSONString(pch06List));
     }
 
-    // IFM055 購買見積依頼送信
-    @On(event = "pch06BatchSending")
-    public void pch06BatchSending(Pch06BatchSendingContext context) {
-        ArrayList<T06QuotationH> pch06List = new ArrayList<>();
-
-        try {
-            pch06List = sendService.getJson(context.getJson());
-
-            // 调用接口传值
-
-        } catch (Exception e) {
-            context.setResult("失败");
-        }
-
-        context.setResult(JSON.toJSONString(pch06List));
-    }
-
 }
