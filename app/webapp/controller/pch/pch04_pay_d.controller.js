@@ -152,7 +152,7 @@ sap.ui.define([
                     console.log(oData)
                     // 确保oData不为null并且有返回的结果
                     if (oData && oData.result && oData.result === "sucess") {
-                        MessageToast.show("メールが正常に送信されました。");
+                        MessageToast.show("メールは送付されました");
                     } else {
                         MessageBox.error("メール送信に失敗しました。エラー: " + (oData.result || "不明なエラー"));
                     }

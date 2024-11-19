@@ -158,7 +158,7 @@ public class Pch08Service {
             t07New.setPersonNo5(pch08.getPERSON_NO5());
 
             t07New.setYlp(pch08.getYLP());
-            t07New.setManul(pch08.getYLP());
+            t07New.setManul(pch08.getMANUL());
             t07New.setManufactCode(pch08.getMANUFACT_CODE());
             t07New.setCustomerMmodel(pch08.getCUSTOMER_MMODEL());
             t07New.setMidQf(pch08.getMID_QF());
@@ -322,7 +322,9 @@ public class Pch08Service {
                 T07QuotationD t07New = d007Dao.getByT07Id(t07Id);
 
                 if(t07 != null) {
-                    t07.setDelFlag("N");
+                    t07.setDelFlag("Y");
+                    t07.setUpTime(DateTools.getInstantNow());
+                    t07.setUpBy(pch08Dao.getUserId());
                     d007Dao.update(t07);
                 }
 
@@ -331,6 +333,7 @@ public class Pch08Service {
                     t07New.setPrice(price == null ? BigDecimal.ZERO : new BigDecimal(price));
                     t07New.setId(null);
                     t07New.setStatus("3");
+                    t07New.setDelFlag("N");
                     d007Dao.insert(t07New);
                 }
             }

@@ -114,4 +114,6 @@ extend service TableService {
         }
 
     action PCH10_GR_SEND(params : String) returns String;
+    action pch06BatchSending(json : String)               returns String; //IFM055 購買見積結果送信
+    
 };
