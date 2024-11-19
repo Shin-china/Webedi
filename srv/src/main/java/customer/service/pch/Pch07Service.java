@@ -127,26 +127,6 @@ public class Pch07Service {
                 continue;
             }
 
-            // // 2. 检查供应商 ID (BP_NUMBER -> BP_ID)
-            // T03SapBp bpid = mstD003.getByID(bpno);
-            // if (bpid == null || "Y".equals(bpid.getDelFlag())) {
-            // item.setSUCCESS(false);
-            // item.setMESSAGE("仕入先" + bpno + "が登録されていません。チェックしてください。");
-            // item.setRESULT("失敗");
-            // item.setI_CON("sap-icon://error");
-            // item.setSTATUS("Error");
-            // }else {
-            // item.setSUCCESS(true);
-            // item.setRESULT("成功");
-            // item.setI_CON("sap-icon://sys-enter-2");
-            // item.setSTATUS("Success");
-            // }
-
-            // if (!item.getSUCCESS()) {
-            // // 如果前面已经失败，直接跳过后续检查
-            // continue;
-            // }
-
             // 3. 检查日期格式 (VALIDATE_START, VALIDATE_END)
             if (!isValidDateFormat(valstart) || !isValidDateFormat(valend)) {
                 item.setSUCCESS(false);
@@ -231,16 +211,6 @@ public class Pch07Service {
         if (itemsArray != null && itemsArray.size() > 0) {
             // 取第一个 Item
             JSONObject firstItem = itemsArray.getJSONObject(0);
-
-            // // 检查字符串是否有效
-            // if (leadTimeStr != null && !leadTimeStr.isEmpty() && !leadTimeStr.equals("0")) {
-            //     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-            //     LocalDate leadTime = LocalDate.parse(leadTimeStr, formatter);
-            //     // t07QuotationD2.setLeadTime(leadTime);
-            // } else {
-            //     // 处理无效值的情况，例如设置为 null 或者提供默认值
-            //     t07QuotationD2.setLeadTime(null); // 或者根据需要设置默认值
-            // }
 
             // 从 JSON 获取 DEC3 类型的值为 BigDecimal
             BigDecimal leadTimeValue = firstItem.getBigDecimal("Materialplanneddeliverydurn");

@@ -91,14 +91,14 @@ public class Pch04Handler implements EventHandler {
             mailJsonList.add(mailJson);
         }
 
-        // 调用邮件发送服务
-        try {
+         // 调用邮件发送服务
+         try {
             emailServiceFun.sendEmailFun(mailJsonList);
             // 设置操作结果
-            context.setResult(JSON.toJSONString("メール送信に成功しました。"));
+            context.setResult(JSON.toJSONString("メールは送付されました"));
         } catch (Exception e) {
             // 处理发送邮件的异常
-            context.setResult(JSON.toJSONString("メール送信に失敗しました。エラー: " + e.getMessage()));
+
         }
     }
 

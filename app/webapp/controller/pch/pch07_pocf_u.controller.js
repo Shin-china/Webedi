@@ -222,25 +222,19 @@ sap.ui.define([
 		},
 
 		onSave: function () {
+
 			var that = this;
 			that._setBusy(true);
-		
-			// 检查按钮是否可用
-			if (that.getView().getModel("viewModel").getProperty("/isButtonEnabled")) {
-				this._callCdsAction("/PCH07_SAVE_DATA", this.getData(), this).then((oData) => {
-					var myArray = JSON.parse(oData.PCH07_SAVE_DATA);
-					var jsonModel = that.getModel("workInfo");
-		
-					jsonModel.setData(myArray.list);
-					that._setIsCreate(false);
-					that._setBusy(false);
-				});
-			} else {
-				// 如果按钮不可用，显示提示
+			
+			this._callCdsAction("/PCH07_SAVE_DATA", this.getData(), this).then((oData) => {
+				var myArray = JSON.parse(oData.PCH07_SAVE_DATA);
+				var jsonModel = that.getModel("workInfo");
+	
+				jsonModel.setData(myArray.list);
+				that._setIsCreate(false);
 				that._setBusy(false);
-				sap.m.MessageToast.show("请先完成检查并确保所有项成功。");
-			}
-
+				
+			});
 		},
 		
 		// excel上传
@@ -420,6 +414,7 @@ sap.ui.define([
 			getData: function () {
 				var jsondata = this.getModel("workInfo").getData();
 				var a = JSON.stringify({ list: jsondata });
+				
 				var oPrams = {
 				  shelfJson: a,
 				};

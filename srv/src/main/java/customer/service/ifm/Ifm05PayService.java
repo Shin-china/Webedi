@@ -52,7 +52,7 @@ public class Ifm05PayService {
                 o.setInvNo(suplist.getSupplierinvoice());
                 o.setGlYear(suplist.getFiscalyear());
                 o.setSupplier(suplist.getInvoicingparty());
-                o.setInvDate(suplist.getDocumentdate());
+                // o.setInvDate(suplist.getDocumentdate());
                 o.setInvPostDate(suplist.getPostingdate());
                 o.setExchange(suplist.getExchangerate());
                 o.setInvBaseDate(suplist.getDuecalculationbasedate());

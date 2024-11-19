@@ -11,7 +11,7 @@ public class SupList {
     private String Supplierinvoice;
     private Integer Fiscalyear;
     private String Invoicingparty;
-    private LocalDate Documentdate;
+    private String Documentdate;
     private LocalDate Postingdate;
     private BigDecimal Exchangerate;
     private LocalDate Duecalculationbasedate;
