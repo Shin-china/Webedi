@@ -369,6 +369,9 @@ sap.ui.define([
                 return;
             }
 
+            let sQuoItem = oAttachmentModel.getProperty("/QUO_ITEM");
+            let sObject = sQuoNumber+'_'+sQuoItem;
+
             var oReader = new FileReader();
             oReader.readAsDataURL(oFile);
             this._BusyDialog.open();
@@ -378,7 +381,7 @@ sap.ui.define([
                 let sContent = oFileData.substring(oFileData.indexOf("base64,") + 7);
                 var oUploadData = {};
                 oUploadData = {
-                    "object": sQuoNumber,
+                    "object": sObject,
                     "object_type": "PCH08",
                     "file_type": btoa(oFile.type),
                     "file_name": oFile.name,
@@ -512,14 +515,16 @@ sap.ui.define([
 
             //Filter
             if (oAttachmentModel) {
-                var sQuoNumber = oAttachmentModel.getProperty("/QUO_NUMBER");
+                let sQuoNumber = oAttachmentModel.getProperty("/QUO_NUMBER");
+                let sQuoItem = oAttachmentModel.getProperty("/QUO_ITEM");
+                let sFilter = sQuoNumber+'_'+sQuoItem;
                 if (sQuoNumber !== '') {
                     oParameters.filters.push(new sap.ui.model.Filter(
                         "OBJECT",
                         sap.ui.model.FilterOperator.EQ,
-                        sQuoNumber
+                        sFilter
                     ))
-                }
+                } 
             }
 
             oParameters.filters.push(new sap.ui.model.Filter(
