@@ -1404,7 +1404,27 @@ sap.ui.define([
 
           },
 
+          /**发送邮件 */
+          _sendEmail: function (mailobj) {
+  
+            $.ajax({
+              url: "srv/odata/v4/Common/sendEmail",
+              type: "POST",
+              contentType: "application/json; charset=utf-8",
+              dataType: "json",
+              async: false,
+              crossDomain: true,
+              responseType: 'blob',
+              data: mailobj,
+              success: function (data) {
+                sap.m.MessageToast.show(this.MessageTools._getI18nTextInModel("com", "email_msg_s", this.getView()))
+              },
+              error: function (error) {
+                sap.m.MessageToast.show("error");
+              },
+            })
 
+          },
 
           /**
            * po接口辅助方法

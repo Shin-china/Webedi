@@ -507,13 +507,7 @@ init
 			}
 
 		},
-		/**发送邮件 */
-		_sendEmail: function (mailobj) {
-			let newModel = this.getView().getModel("Common");
-			let oBind = newModel.bindList("/sendEmail");
-			oBind.create(mailobj);
 
-		},
 		_newNPSprinEmil(myMap, that, item, list) {
 			let options = { compact: true, ignoreComment: true, spaces: 4 };
 			var that = this;
