@@ -421,7 +421,7 @@ sap.ui.define([
 				var jsondata = this.getModel("workInfo").getData();
 				var a = JSON.stringify({ list: jsondata });
 				var oPrams = {
-				  ShelfJson: a,
+				  shelfJson: a,
 				};
 				return oPrams;
 			  },

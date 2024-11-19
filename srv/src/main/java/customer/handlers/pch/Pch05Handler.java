@@ -221,7 +221,7 @@ public class Pch05Handler implements EventHandler {
     String supp = context.getParms();
     JSONArray jsonArray = JSONArray.parseArray(supp);
     for (int i = 0; i < jsonArray.size(); i++) {
-      String object = (String)jsonArray.get(0);
+      String object = (String)jsonArray.get(i);
      
       System.out.println(object);
       pchService.setinvdateconfirm(object);
@@ -242,7 +242,7 @@ public class Pch05Handler implements EventHandler {
     String supp = context.getParms();
     JSONArray jsonArray = JSONArray.parseArray(supp);
     for (int i = 0; i < jsonArray.size(); i++) {
-      String object = (String)jsonArray.get(0);
+      String object = (String)jsonArray.get(i);
      
       System.out.println(object);
       pchService.setinvdatecancel(object);

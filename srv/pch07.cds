@@ -33,7 +33,7 @@ extend service TableService {
             }
             GROUP BY PLANT_ID,MATERIAL_NUMBER,CUST_MATERIAL;
 
-            action PCH07_CHECK_DATA(ShelfJson : String) returns String;
-            action PCH07_SAVE_DATA(ShelfJson : String) returns String;
+            action PCH07_CHECK_DATA(shelfJson : String) returns String;
+            action PCH07_SAVE_DATA(shelfJson : String) returns String;
 
 };
