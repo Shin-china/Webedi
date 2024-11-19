@@ -158,7 +158,7 @@ public class Pch08Service {
             t07New.setPersonNo5(pch08.getPERSON_NO5());
 
             t07New.setYlp(pch08.getYLP());
-            t07New.setManul(pch08.getYLP());
+            t07New.setManul(pch08.getMANUL());
             t07New.setManufactCode(pch08.getMANUFACT_CODE());
             t07New.setCustomerMmodel(pch08.getCUSTOMER_MMODEL());
             t07New.setMidQf(pch08.getMID_QF());
