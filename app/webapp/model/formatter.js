@@ -424,6 +424,9 @@ sap.ui.define([], function () {
        * 
        */
       formatMimeType: function(mimeType){
+        if(mimeType === null || mimeType === undefined || mimeType === ""){
+          return "";
+        }
         return atob(mimeType);
       },
 
