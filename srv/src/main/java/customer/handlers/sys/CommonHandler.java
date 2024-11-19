@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -36,6 +38,7 @@ import cds.gen.pch.T06QuotationH;
 import cds.gen.pch.T07QuotationD;
 import cds.gen.sys.T13Attachment;
 import customer.bean.com.UmcConstants;
+import customer.dao.pch.Pch08Dao;
 import customer.dao.pch.PchD006;
 import customer.dao.pch.PchD007;
 import customer.dao.sys.DocNoDao;
@@ -59,6 +62,7 @@ public class CommonHandler implements EventHandler {
     DocNoDao docNoDao;
     @Autowired
     SendService sendService;
+    private static final Logger logger = LoggerFactory.getLogger(CommonHandler.class);
 
     // IFM054 購買見積依頼受信+送信
     @On(event = "pch06BatchImport")
@@ -92,18 +96,20 @@ public class CommonHandler implements EventHandler {
     @On(event = "pch06BatchSending")
     public void pch06BatchSending(Pch06BatchSendingContext context) throws Exception {
         ArrayList<T06QuotationH> pch06List = new ArrayList<>();
-
+        String msg = "";
         try {
             pch06List = sendService.getJson(context.getJson());
 
             // 调用接口传值
+            if (pch06List != null && pch06List.size() > 0) {
+                msg = sendService.sendPost(pch06List);
+                System.out.println(msg);
+            }
 
         } catch (Exception e) {
-            context.setResult("失败");
+            logger.info(UmcConstants.ERROR + e.getMessage());
+            context.setResult(UmcConstants.ERROR + e.getMessage());
         }
-        String msg = sendService.sendPost(pch06List);
-        System.out.println(msg);
-
         context.setResult(msg);
     }
 

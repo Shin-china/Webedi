@@ -51,7 +51,7 @@ public class BaseMoveService {
 		String tokenUrl = info.getExpand();
 		String authorization = "";
 		// 如果可以获取token
-		if (StringUtils.isEmpty(tokenUrl)) {
+		if (StringUtils.isNotBlank(tokenUrl)) {
 			String userDetail = info.getSapuser();
 			String token = getToken(tokenUrl, userDetail);
 
@@ -60,8 +60,9 @@ public class BaseMoveService {
 
 		Map<String, String> result = HttpClientUtil.sendPost(url, authorization, map); // 调用SCP服务接口
 		/** end 调用SCP服务接口 */
-		if (result.get(UmcConstants.ERROR) != null) { // 调用接口报错 抛出提示
-			logger.error("调用SCP服务接口报错");
+		if (result.get(UmcConstants.ERROR) != null) {
+			String string = result.get(UmcConstants.ERROR);// 调用接口报错 抛出提示
+			logger.error(string);
 		}
 		String obj = result.get(UmcConstants.SUCCESS);
 

@@ -12,7 +12,7 @@ extend service TableService {
                 on T01.QUO_NUMBER = T02.QUO_NUMBER
            
             {
-                KEY T01.PLANT_ID,                   // プラント
+                KEY T02.PLANT_ID,                   // プラント
                 KEY T02.MATERIAL_NUMBER,            // SAP品目コード
                 KEY T02.CUST_MATERIAL,              // 顧客品目コード
                     T01.QUO_NUMBER,                 // 販売見積バージョン
