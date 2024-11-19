@@ -552,7 +552,7 @@ sap.ui.define([
                         value: oAttachment.OBJECT_LINK
                     }]
                 }
-                sType = atob(oAttachment.FILE_TYPE);
+                sType = oAttachment.FILE_TYPE;
             }
 
 
