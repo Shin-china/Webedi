@@ -25,61 +25,72 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.excel.write.metadata.fill.FillConfig;
 
-import customer.bean.sys.Ifm054Bean;
-import customer.dao.pch.PchD006;
-import customer.dao.pch.PchD007;
-import customer.dao.sys.DocNoDao;
-
 import com.google.common.io.ByteStreams;
 import com.sap.cds.services.handler.EventHandler;
 import com.sap.cds.services.handler.annotations.On;
 import com.sap.cds.services.handler.annotations.ServiceName;
-import cds.gen.tableservice.PchT06QuotationH;
-import cds.gen.tableservice.PchT07QuotationD;
-import cds.gen.tableservice.Pch06BatchImportContext;
-import cds.gen.tableservice.Pch06BatchSendingContext;
-import cds.gen.tableservice.TableService_;
+
 import cds.gen.AttachmentJson;
 import cds.gen.common.*;
 import cds.gen.pch.T06QuotationH;
 import cds.gen.pch.T07QuotationD;
+import cds.gen.sys.T13Attachment;
+import customer.bean.com.UmcConstants;
+import customer.dao.pch.PchD006;
+import customer.dao.pch.PchD007;
+import customer.dao.sys.DocNoDao;
+import customer.dao.sys.T13AttachmentDao;
+import customer.odata.BaseMoveService;
+import customer.service.sys.ObjectStoreService;
 
 @Component
-public class SendService {
+@ServiceName(Common_.CDS_NAME)
+public class CommonHandler implements EventHandler {
 
     @Autowired
-    PchD006 PchD006;
+    private ObjectStoreService objectStoreService;
     @Autowired
-    PchD007 PchD007;
+    private PchD006 PchD006;
+    @Autowired
+    private PchD007 PchD007;
+    @Autowired
+    private T13AttachmentDao t13AttachmentDao;
     @Autowired
     DocNoDao docNoDao;
+    @Autowired
+    SendService sendService;
 
     // IFM054 購買見積依頼受信+送信
     @On(event = "pch06BatchImport")
     public void pch06BatchImport(Pch06BatchImportContext context) {
         // 获取uqmc传入的t06数据
-        System.out.println(context.getJson());
+        // 获取
+        System.out.println(JSONObject.toJSONString(context.getPch06()));
+        // System.out.println(context.getJson());
 
-        Ifm054Bean list = JSON.parseObject(context.getJson(), Ifm054Bean.class);
+        // Ifm054Bean list = JSON.parseObject(context.getJson(), Ifm054Bean.class);
 
         // 将 Collection 转换为 Listpch06BatchImport
-        List<PchT06QuotationH> pch06List = list.getPch06();
+        List<PchT06QuotationH> pch06List = new ArrayList<>(context.getPch06());
         pch06List.forEach(pchT06QuotationH -> {
 
             try {
                 // 获取購買見積番号
-                pchT06QuotationH.setQuoNumber(docNoDao.getQuoNumber(pchT06QuotationH.getPlantId(), 1));
+                // pchT06QuotationH.setQuoNumber(docNoDao.getPJNo(1));
+                pchT06QuotationH.setQuoNumber("1006");
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
             // 插入头标，首先删除原key值数据
             T06QuotationH t06QuotationH = T06QuotationH.create();
+
             // 复制类属性
             BeanUtils.copyProperties(pchT06QuotationH, t06QuotationH);
-            t06QuotationH.setToItems(null);
             // 如果已经存在则更新，如果不存在则插入
-            T06QuotationH byID = PchD006.getByID(t06QuotationH.getSalesNumber(), t06QuotationH.getQuoVersion());
+            T06QuotationH byID = PchD006.getByIdOnle(t06QuotationH.getId());
+            ;
+            t06QuotationH.remove("TO_ITEMS");
             if (byID != null) {
                 PchD006.update(t06QuotationH);
             } else {
@@ -96,10 +107,9 @@ public class SendService {
 
                 // // 复制类属性
                 BeanUtils.copyProperties(pchT07QuotationD, t07QuotationD);
-
                 // // 如果已经存在则更新，如果不存在则插入
                 T07QuotationD byID2 = PchD007.getByT07Id(t07QuotationD.getId());
-                t07QuotationD.setToHead(null);
+
                 if (byID2 != null) {
                     PchD007.update(t07QuotationD);
                 } else {
@@ -108,8 +118,8 @@ public class SendService {
             });
 
         });
-
-        context.setResult("成功");
+        System.out.println("返回成功" + JSONObject.toJSONString(pch06List));
+        // context.setResult(JSONObject.toJSONString(pch06List));
     }
 
     // IFM055 購買見積依頼送信
@@ -118,21 +128,7 @@ public class SendService {
         ArrayList<T06QuotationH> pch06List = new ArrayList<>();
 
         try {
-            String json = context.getJson();
-            if (StringUtils.isBlank(json)) {
-
-            } else {
-                // 直接从上下文中获取参数
-                JSONArray jsonArray = JSONArray.parseArray(context.getJson());
-                // 根据传入的po和po明细修改po明细状态
-                // 获取要传入的字符串
-                for (int i = 0; i < jsonArray.size(); i++) {
-                    JSONObject jsonObject = jsonArray.getJSONObject(i);
-                    T06QuotationH t06QuotationH = PchD006.get(jsonObject.getString("QUO_NUMBER"));
-                    pch06List.add(t06QuotationH);
-                    // pchService.setPoStu(po, dNo);
-                }
-            }
+            pch06List = sendService.getJson(context.getJson());
 
             // 调用接口传值
 
@@ -143,20 +139,4 @@ public class SendService {
         context.setResult(JSON.toJSONString(pch06List));
     }
 
-    // 发送t06数据，传入json,返回ArrayList<T06QuotationH>
-    public ArrayList<T06QuotationH> getJson(String json) {
-        ArrayList<T06QuotationH> pch06List = new ArrayList<>();
-        // 直接从上下文中获取参数
-        JSONArray jsonArray = JSONArray.parseArray(json);
-        // 根据传入的po和po明细修改po明细状态
-        // 获取要传入的字符串
-        for (int i = 0; i < jsonArray.size(); i++) {
-            JSONObject jsonObject = jsonArray.getJSONObject(i);
-            T06QuotationH t06QuotationH = PchD006.get(jsonObject.getString("QUO_NUMBER"));
-            pch06List.add(t06QuotationH);
-            // pchService.setPoStu(po, dNo);
-        }
-        return pch06List;
-
-    }
 }

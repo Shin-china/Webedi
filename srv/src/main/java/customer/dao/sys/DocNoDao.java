@@ -41,6 +41,31 @@ public class DocNoDao extends Dao {
 	private final static String DOC_NO_PROJECT2 = "00000"; // 見積案件No.
 
 	/**
+	 * QUO_NUMBER 購買見積番号
+	 * 
+	 * @param SALES_ORGANIZATION
+	 * @param count
+	 * @return
+	 * @throws Exception
+	 */
+	public String getQuoNumber(String plantId, int count)
+			throws Exception {
+
+		String code = "PROJECT_UWH";
+		// if
+		// code = "PROJECT_UWE";
+		// code = "PROJECT_UWH";
+		// 是否一次取多条
+		// 販売組織＝1100の場合、UWE；それ以外はUWH
+		if ("1100".equals(plantId)) {
+			code = "PROJECT_UWE";
+		}
+		T06DocNo index = this.getIndex(code, count);
+		// 取得发番编辑
+		return getDocIndexNo(index, DOC_NO_PROJECT);
+	}
+
+	/**
 	 * 得到見積案件No.
 	 * 
 	 * @param SALES_ORGANIZATION 販売組織
@@ -61,26 +86,6 @@ public class DocNoDao extends Dao {
 		T06DocNo index = this.getIndex(code, count);
 		// 取得发番编辑
 		return 1 + NumberTool.format(index.getDocIndex().toString(), DOC_NO_PROJECT2);
-	}
-
-	/**
-	 * 得到見積番号No.
-	 * 
-	 * @param SALES_ORGANIZATION 販売組織
-	 * @param count              条数默认1条
-	 * 
-	 * @return 番号
-	 */
-	public String getPJNo(int count)
-			throws Exception {
-
-		String code = "PROJECT_NO";
-		// 是否一次取多条
-		// 販売組織＝1100の場合、UQJ；それ以外はREQ
-
-		T06DocNo index = this.getIndexNotNy(code, count);
-		// 取得发番编辑
-		return getDocIndexNo(index, DOC_NO_PROJECT);
 	}
 
 	/**
