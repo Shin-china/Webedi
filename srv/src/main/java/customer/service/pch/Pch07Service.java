@@ -8,7 +8,10 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Set;
 
 // import org.apache.tomcat.util.openssl.pem_password_cb;
@@ -83,7 +86,7 @@ public class Pch07Service {
             String custMaterial = item.getCUST_MATERIAL();
             String manu = item.getMANUFACT_MATERIAL();
 
-            // 先检查 MATERIAL_NUMBER 和 CUST_MATERIAL 字段是否至少有一个有值
+            // 先检查 MATERIAL_NUMBER 和 CUST_MATERIAL 和 MANUFACT_MATERIAL 字段是否至少有一个有值
             if ((matno == null || matno.isEmpty()) && (custMaterial == null || custMaterial.isEmpty())
                     && (manu == null || manu.isEmpty())) {
                 // 如果三个字段都为空，报错
@@ -149,6 +152,8 @@ public class Pch07Service {
         HashMap<String, String> noMap = new HashMap<>();
         // 最大明细值
         HashMap<String, String> dNoMap = new HashMap<>();
+        //no
+        LinkedHashMap<String, String> noMap1 = new LinkedHashMap<>();
 
         for (Pch07 data : list.getList()) {
 
@@ -167,14 +172,21 @@ public class Pch07Service {
                 int dNoInt = Integer.parseInt(dNo);
                 dNoInt++;
                 dNoMap.put(key, String.valueOf(dNoInt));
+                noMap1.put(key,noMap1.get(key));
             }
             // 如果不存在则创建noMap和从1开始的最大明细值
             else {
                 // 番号
-                String no = docDao.getPJNo(plant, 1);
+                String no = docDao.getQuoNumber(plant, 1);
                 noMap.put(key, no);
                 // 最大明细值
                 dNoMap.put(key, "1");
+                if(noMap1.isEmpty()){
+                    noMap1.put(key,"1");
+                }else{
+                    String lastValue = this.getTail(noMap1).getValue();
+                    noMap1.put(key,lastValue+1);
+                }
             }
 
             data.setQUO_NUMBER(noMap.get(key));
@@ -188,6 +200,7 @@ public class Pch07Service {
             data.setMESSAGE("購買見積は成功にアップロードしました");
             data.setQUO_NUMBER(data.getQUO_NUMBER());
             data.setQUO_ITEM(data.getQUO_ITEM());
+            data.setNO(noMap1.get(key));
         }
     }
 
@@ -297,7 +310,7 @@ public class Pch07Service {
         t06QuotationH.setValidateEnd(validateEnd);
 
         t06QuotationH.setQuoNumber(data.getQUO_NUMBER());
-        t06QuotationH.setPlantId(data.getPLANT_ID());
+        // t06QuotationH.setPlantId(data.getPLANT_ID());
 
         pchD006.insert(t06QuotationH);
     }
@@ -316,5 +329,14 @@ public class Pch07Service {
         String response = S4OdataTools.post(webServiceConfig, JSON.toJSONString(ar), null);
         return response;
 
+    }
+
+    public <K, V> Entry<K, V> getTail(LinkedHashMap<K, V> map) {
+        Iterator<Entry<K, V>> iterator = map.entrySet().iterator();
+        Entry<K, V> tail = null;
+        while (iterator.hasNext()) {
+            tail = iterator.next();
+        }
+        return tail;
     }
 }
