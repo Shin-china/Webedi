@@ -57,6 +57,15 @@ public class Pch08Dao extends Dao {
         return listOf;
     }
 
+    public List<T07QuotationD> getT07ByQuoNumberItem(String quoNumber, Integer quoItem) {
+        List<T07QuotationD> listOf = db.run(
+                Select.from(Pch_.T07_QUOTATION_D)
+                   .where(o -> o.QUO_NUMBER().eq(quoNumber).and(o.DEL_FLAG().eq("N")).and(o.QUO_ITEM().eq(quoItem))
+                  ))
+           .listOf(T07QuotationD.class);
+        return listOf;
+    }
+
     // 修改t06, t07
     public void updatePch08(List<T07QuotationD> oldItems, List<T07QuotationD> newItems) {
         //删除旧数据

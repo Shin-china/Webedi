@@ -15,7 +15,7 @@ sap.ui.define([
 
     return Controller.extend("umc.app.controller.pch.pch08_list", {
         formatter: formatter, // 将格式化器分配给控制器
-        customFormatter: customFormatter, 
+        customFormatter: customFormatter,
 
         onInit: function () {
             // 初始化代码
@@ -57,9 +57,9 @@ sap.ui.define([
             var aExport = [];
             aSelectedData.forEach(row => {
                 if (sKeys === "") {
-                    sKeys = row.QUO_NUMBER;
+                    sKeys = row.QUO_NUMBER + '-' + row.QUO_ITEM;
                 } else {
-                    sKeys = sKeys + "," + row.QUO_NUMBER;
+                    sKeys = sKeys + "," + row.QUO_NUMBER + '-' + row.QUO_ITEM;
                 }
             })
 
@@ -71,6 +71,7 @@ sap.ui.define([
                 sResult = json;
 
                 //拼接动态对象
+                let iMaxPersonSize = 0, iMaxQtySize = 0, iMaxPersonSizeTotal = 0, iMaxQtySizeTotal = 0;
                 aSelectedData.forEach(data => {
                     var oExportData = data;
 
@@ -83,17 +84,31 @@ sap.ui.define([
                         return;
                     }
 
+
                     oQtyInfo.forEach(item => {
-                        let iMax = item["MAX"];
-                        if (!iMax) {
+                        let iMaxPersonSize = item["PERSON_SIZE"];
+                        if (!iMaxPersonSize) {
+                            return;
+                        }
+                        if (iMaxPersonSize > iMaxPersonSizeTotal) {
+                            iMaxPersonSizeTotal = iMaxPersonSize;
+                        }
+
+                        for (var i = 1; i <= iMaxPersonSize; i++) {
+                            var sPerson = 'PERSON_' + i;
+                            oExportData[sPerson] = item[sPerson];
+                        }
+
+                        let iMaxQtySize = item["QUANTITY_SIZE"];
+                        if (!iMaxQtySize) {
                             return;
                         }
 
-                        if (iMax > iMaxTotal) {
-                            iMaxTotal = iMax;
+                        if (iMaxQtySize > iMaxQtySizeTotal) {
+                            iMaxQtySizeTotal = iMaxQtySize;
                         }
 
-                        for (var i = 1; i <= iMax; i++) {
+                        for (var i = 1; i <= iMaxQtySize; i++) {
                             var sQty = 'QTY_' + i;
                             oExportData[sQty] = item[sQty];
 
@@ -103,7 +118,7 @@ sap.ui.define([
                     })
 
                     aExport.push(oExportData);
-                })
+                });
 
                 var aColumns = oTable.getColumns().map(function (oColumn) {
                     var sDateFormat = 'yyyy-MM-dd';
@@ -113,7 +128,7 @@ sap.ui.define([
 
                     var property = oColumn.getTemplate().getBindingPath("text") || oColumn.getTemplate().mBindingInfos.value.parts[0].path;
 
-                    if (property === 'VALIDATE_START' || property === 'VALIDATE_END' || property === 'TIME') {
+                    if (property === 'VALIDATE_START' || property === 'VALIDATE_END') {
                         sFormat = sDateFormat;
                         sType = 'date';
                     } else {
@@ -133,7 +148,18 @@ sap.ui.define([
                 });
 
                 //动态列数据
-                for (var i = 1; i <= iMaxTotal; i++) {
+                for (var i = 1; i <= iMaxPersonSizeTotal; i++) {
+                    var sPerson = 'PERSON_' + i;
+                    aColumns.push({
+                        label: "員数_" + i,
+                        type: 'string',
+                        property: sPerson,
+                        width: 13,
+                        format: ''
+                    });
+                }
+
+                for (var i = 1; i <= iMaxQtySizeTotal; i++) {
                     var sQty = 'QTY_' + i;
                     var sPrice = 'PRICE_' + i;
                     aColumns.push({
@@ -174,7 +200,8 @@ sap.ui.define([
                     .finally(function () {
                         oSheet.destroy();
                     });
-            });
+            }
+            );
         },
 
         onEdit: function () {
@@ -331,7 +358,7 @@ sap.ui.define([
             }
             let para = [];
             selectedData.forEach(item => {
-                let key = item.QUO_NUMBER;
+                let key = item.QUO_NUMBER + '-' + item.QUO_ITEM;
                 para.push(key);
             });
             this._onPress(oEvent, "RouteView_pch08", this.unique(para).join(","));
@@ -370,7 +397,7 @@ sap.ui.define([
             }
 
             let sQuoItem = oAttachmentModel.getProperty("/QUO_ITEM");
-            let sObject = sQuoNumber+'_'+sQuoItem;
+            let sObject = sQuoNumber + '_' + sQuoItem;
 
             var oReader = new FileReader();
             oReader.readAsDataURL(oFile);
@@ -517,14 +544,14 @@ sap.ui.define([
             if (oAttachmentModel) {
                 let sQuoNumber = oAttachmentModel.getProperty("/QUO_NUMBER");
                 let sQuoItem = oAttachmentModel.getProperty("/QUO_ITEM");
-                let sFilter = sQuoNumber+'_'+sQuoItem;
+                let sFilter = sQuoNumber + '_' + sQuoItem;
                 if (sQuoNumber !== '') {
                     oParameters.filters.push(new sap.ui.model.Filter(
                         "OBJECT",
                         sap.ui.model.FilterOperator.EQ,
                         sFilter
                     ))
-                } 
+                }
             }
 
             oParameters.filters.push(new sap.ui.model.Filter(
@@ -584,7 +611,7 @@ sap.ui.define([
         onBeforeRebindList: function (oEvent) {
 
             var oModel = this.getView().getModel();
-            if(oModel.hasPendingChanges()){
+            if (oModel.hasPendingChanges()) {
                 oModel.resetChanges();
             }
 
@@ -595,17 +622,17 @@ sap.ui.define([
             if (oComboStatus) {
                 var aKeys = oComboStatus.getSelectedKeys();
                 if (aKeys && aKeys.length > 0) {
-                    aKeys.forEach(e=>{
+                    aKeys.forEach(e => {
                         oParameters.filters.push(new sap.ui.model.Filter(
                             "STATUS",
                             sap.ui.model.FilterOperator.EQ,
                             e
                         ))
                     });
-                    
+
                 }
             }
-           
+
         },
 
     });

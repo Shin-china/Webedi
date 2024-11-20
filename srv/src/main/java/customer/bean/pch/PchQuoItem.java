@@ -6,9 +6,8 @@ public class PchQuoItem {
 
     private BigDecimal qty;
     private BigDecimal price;
-    private Integer personNo;
     private String quoNumber;
-    private String quoItem;
+    private Integer quoItem;
     private String t07Id;
 
     public BigDecimal getQty() {
@@ -35,14 +34,6 @@ public class PchQuoItem {
         this.t07Id = t07Id;
     }
 
-    public Integer getPersonNo() {
-        return personNo;
-    }
-
-    public void setPersonNo(Integer personNo) {
-        this.personNo = personNo;
-    }
-
     public String getQuoNumber() {
         return quoNumber;
     }
@@ -51,11 +42,11 @@ public class PchQuoItem {
         this.quoNumber = quoNumber;
     }
 
-    public String getQuoItem() {
+    public Integer getQuoItem() {
         return quoItem;
     }
 
-    public void setQuoItem(String quoItem) {
+    public void setQuoItem(Integer quoItem) {
         this.quoItem = quoItem;
     }
 }

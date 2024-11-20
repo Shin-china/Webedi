@@ -20,7 +20,8 @@ sap.ui.define([
 
             this.getRouter().getRoute("RouteView_pch08").attachPatternMatched(this._onRouteMatched, this);
 
-
+            this._maxPersonSize = 0;
+            this._maxQtySize = 0;
         },
 
         _onRouteMatched: function (oEvent) {
@@ -35,13 +36,26 @@ sap.ui.define([
 
                 // 清空
                 data.length = 0;
-                let rowNo = [];
-                json.forEach(item => {
-                    rowNo.push(item.MAX)
-                })
+                // let rowNo = [];
+                // json.forEach(item => {
+                //     rowNo.push(item.MAX)
+                // })
 
-                let maxNum = Math.max.apply(null, rowNo);
-                this._maxNum = maxNum;
+                // let maxNum = Math.max.apply(null, rowNo); 
+                this._maxPersonSize = 0;
+                this._maxQtySize = 0;
+
+                json.forEach(item=>{
+                    if(item.PERSON_SIZE > this._maxPersonSize){
+                        this._maxPersonSize = item.PERSON_SIZE;
+                    }
+
+                    if(item.QUANTITY_SIZE > this._maxQtySize){
+                        this._maxQtySize = item.QUANTITY_SIZE;
+                    }
+                });
+
+                //this._maxNum = maxNum;
                 // 清除旧列 重新生成
                 let oldTable = this.getView().byId("dataTable");
                 let oldColumns = oldTable.getColumns();
@@ -49,12 +63,29 @@ sap.ui.define([
                     oldTable.removeColumn(c)
                 })
                 let quoNoColumn = new sap.ui.table.Column({ label: new sap.m.Label({ text: "購買見積番号" }), template: new sap.m.Input({ value: '{QUO_NO}', editable: false }) });
-                let matColumn = new sap.ui.table.Column({ label: new sap.m.Label({ text: "品名" }), template: new sap.m.Input({ value: '{MAT}', editable: false }) });
+                let quoItemColumn = new sap.ui.table.Column({ label: new sap.m.Label({ text: "管理No" }), template: new sap.m.Input({ value: '{QUO_ITEM}', editable: false }) });
+                let matColumn = new sap.ui.table.Column({ label: new sap.m.Label({ text: "SAP品番" }), template: new sap.m.Input({ value: '{MATERIAL_NUMBER}', editable: false }) });
+                let custMatColumn = new sap.ui.table.Column({ label: new sap.m.Label({ text: "顧客品番" }), template: new sap.m.Input({ value: '{CUST_MATERIAL}', editable: false }) });
+                let manufactMatColumn = new sap.ui.table.Column({ label: new sap.m.Label({ text: "メーカー品番" }), template: new sap.m.Input({ value: '{MANUFACT_MATERIAL}', editable: false }) });
                 this.getView().byId("dataTable").addColumn(quoNoColumn);
+                this.getView().byId("dataTable").addColumn(quoItemColumn);
                 this.getView().byId("dataTable").addColumn(matColumn);
-                // 加列 i:列
-                for (let i = 1; i <= maxNum; i++) {
-                    let qtyFlag = "QTY_" + i;
+                this.getView().byId("dataTable").addColumn(custMatColumn);
+                this.getView().byId("dataTable").addColumn(manufactMatColumn);
+
+                //员数列
+                for (let i = 1; i <= this._maxPersonSize; i++) { 
+                    let personFlag = "PERSON_" + i;
+                    let person = "{PERSON_" + i + "}";
+                    let column = new sap.ui.table.Column({
+                        label: new sap.m.Label({ text: "員数" + i }),
+                        template: new sap.m.Input({ value: person, editable: "{=${" + personFlag + "} === undefined || ${" + personFlag + "} === null || ${" + personFlag + "} === ''  ? false : true}" })
+                    });
+                    this.getView().byId("dataTable").addColumn(column);
+                }
+
+                // 加列 i:数量列
+                for (let i = 1; i <= this._maxQtySize; i++) { 
                     let priceFlag = "PRICE_" + i;
                     let price = "{PRICE_" + i + "}";
                     let qty = "{QTY_" + i + "}";
@@ -97,13 +128,37 @@ sap.ui.define([
                     type: 'string'
                 },
                 {
-                    label: '品名', 
-                    property: 'MAT',
+                    label: '管理No', 
+                    property: 'QUO_ITEM',
                     type: 'string'
+                },
+                {
+                    label: 'SAP品番',
+                    property: 'MATERIAL_NUMBER',
+                    type:'string'
+                },
+                {
+                    label: '顧客品番',
+                    property: 'CUST_MATERIAL',
+                    type:'string'
+                },
+                {
+                    label: 'メーカー品番',
+                    property: 'MANUFACT_MATERIAL',
+                    type:'string'
                 }
 
             ];
-            for (let i = 1; i <= this._maxNum; i++) {
+
+            for (let i = 1; i <= this._maxPersonSize; i++) {
+                aColumns.push({
+                    label: '員数' + i,
+                    property: 'PERSON_' + i,
+                    type: 'number'
+                });
+            }
+
+            for (let i = 1; i <= this._maxQtySize; i++) {
 
                 aColumns.push({ 
                     label: '数量' + i ,
@@ -137,22 +192,6 @@ sap.ui.define([
                 sap.m.MessageToast.show("Export failed");
             });
         },
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
         onEdit: function () {
