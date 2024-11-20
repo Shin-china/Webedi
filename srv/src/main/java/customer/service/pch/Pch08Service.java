@@ -4,10 +4,8 @@ import cds.gen.pch.T02PoD;
 import cds.gen.pch.T06QuotationH;
 import cds.gen.pch.T07QuotationD;
 
-import customer.bean.pch.Pch08;
-import customer.bean.pch.Pch08DataList;
-import customer.bean.pch.PchQuoH;
-import customer.bean.pch.PchQuoItem;
+import com.alibaba.fastjson.TypeReference;
+import customer.bean.pch.*;
 import customer.comm.tool.DateTools;
 import customer.dao.pch.*;
 import customer.tool.StringTool;
@@ -54,20 +52,6 @@ public class Pch08Service {
      * 保存pch06，修改pch07表
      */
     public void detailsSave(Pch08DataList list) throws ParseException {
-        // 如果没有错误
-        // 修改po明细状态
-//        hs.keySet().forEach(value -> {
-//            String[] split = value.split(",");
-//            T02PoD byID = Pch01saveDao.getByID(split[0], Integer.parseInt(split[1]));
-//            byID.setStatus("2");
-//            pchD002.updateD002(byID);
-//            // 如果没有错误，
-//            // 删除对应的pch03数据
-//            // 没有减少数量才能删除
-//            pchD003.deleteD002ByPoDno(split[0], Integer.parseInt(split[1]));
-//            // 修改pch03对应的减少数量
-//            // pch08Dao.updatePch08();
-//        });
 
         list.getList().forEach(value -> {
             //T06QuotationH t06 = extractT06Data(value);
@@ -78,31 +62,6 @@ public class Pch08Service {
             pch08Dao.updatePch08(oldItems, newItems);
 
         });
-
-
-        // for (Pch06 iterable_element : list.getList()) {
-        // // 没有减少数量才能追加
-        // if (iterable_element.getRQ() == null) {
-        // T03PoC t03PoC = T03PoC.create();
-        // t03PoC.setPoNo(iterable_element.getPO_NO());
-        // t03PoC.setDNo(iterable_element.getD_NO());
-        // t03PoC.setSeq(iterable_element.getSEQ());
-        // t03PoC.setDeliveryDate(DateTools.Iso86012Date(iterable_element.getDELIVERY_DATE()));
-        // t03PoC.setQuantity(iterable_element.getQUANTITY());
-        // t03PoC.setStatus("2");
-        // t03PoC.setExtNumber(iterable_element.getExtNumber());
-        //
-        // pchD003.insertD003(t03PoC);
-        // } else {
-        // // 有减少数量则修改
-        // T03PoC byID = pchD003.getByID(iterable_element.getPO_NO(),
-        // iterable_element.getD_NO(),
-        // iterable_element.getSEQ());
-        // byID.setQuantity(byID.getRelevantQuantity());
-        // pchD003.updateD003(byID);
-        // }
-        //
-        // }
     }
 
     public T06QuotationH extractT06Data(Pch08 pch08) {
@@ -150,12 +109,6 @@ public class Pch08Service {
             if (pch08.getBP_NUMBER() !=null) {
                 t07New.setBpNumber(Integer.parseInt(pch08.getBP_NUMBER()));
             }
-
-//            t07New.setPersonNo1(pch08.getPERSON_NO1());
-//            t07New.setPersonNo2(pch08.getPERSON_NO2());
-//            t07New.setPersonNo3(pch08.getPERSON_NO3());
-//            t07New.setPersonNo4(pch08.getPERSON_NO4());
-//            t07New.setPersonNo5(pch08.getPERSON_NO5());
 
             t07New.setYlp(pch08.getYLP());
             t07New.setManul(pch08.getMANUL());
@@ -243,67 +196,174 @@ public class Pch08Service {
     }
 
     public List<LinkedHashMap<String, Object>> getDetailData(String param) {
-
-        String[] arr = param.split(",");
-        List<LinkedHashMap<String, Object>> reList = new ArrayList<>();
-        List<PchQuoH> headList = new ArrayList<>();
-
-        for (String quoNum : arr) {
-
-            List<T07QuotationD> t07List = d007Dao.getList(quoNum);
-            // 根据物料号分组 每个物料一行
-            Map<String, List<T07QuotationD>> tempMap = t07List.stream()
-                    .filter(t07 -> !StringTool.isEmpty(t07.getMaterial()))
-                    .collect(Collectors.groupingBy(T07QuotationD::getMaterial));
-
-            Set<String> keySet = tempMap.keySet();
-            for (String mat : keySet) {
-                PchQuoH head = new PchQuoH();
-                List<PchQuoItem> itemList = new ArrayList<>();
-                head.setQuoNo(quoNum);
-                head.setMaterial(mat);
-                List<T07QuotationD> list = tempMap.get(mat);
-                for (T07QuotationD t07 : list) {
-                    PchQuoItem item = new PchQuoItem();
-                    item.setPrice(t07.getPrice());
-                    item.setQty(t07.getQty());
-                    item.setT07Id(t07.getId());
-                    itemList.add(item);
-                }
-                head.setList(itemList);
-                headList.add(head);
-            }
-
-            //按机种+物料做key
-
-
+        List<Pch08DetailParam> detailParams;
+        try {
+            detailParams = JSONArray.parseObject(param, new TypeReference<>() {
+            });
         }
-        for (PchQuoH h : headList) {
-            LinkedHashMap<String, Object> m = new LinkedHashMap<>();
-            m.put("QUO_NO", h.getQuoNo());
-            m.put("MAT", h.getMaterial());
-            Integer i = 1;
-            List<PchQuoItem> list = h.getList();
-            for (int j = 0; j < list.size(); j++) {
-                m.put("QTY_" + i, list.get(j).getQty());
-                m.put("PRICE_" + i, list.get(j).getPrice());
-                m.put("KEY_" + i, list.get(j).getT07Id());
-
-                if (j == list.size() - 1) {
-                    m.put("MAX", i);
-                }
-                i++;
-            }
-            // for (PchQuoItem item : h.getList()) {
-
-            // i++;
-            // }
-            reList.add(m);
+        catch (Exception e){
+            return new ArrayList<>();
         }
 
-        return reList;
+        if (detailParams == null || detailParams.isEmpty()) {
+            return new ArrayList<>();
+        }
+
+
+//        List<PchQuoH> headList = new ArrayList<>();
+//        T07QuotationD t07Item = null;
+//        String materialNumber = "";
+//        String custMaterial = "";
+//        String manufactMaterial = "";
+//        String sapMaterial = "";
+//        String devMaterial = "";
+//
+//        Map<String,Map<String, List<PchQuoItem>>> dataMap = new HashMap<>();
+//
+//        for (String quoNum : arr) {
+//
+//            List<T07QuotationD> t07List = d007Dao.getList(quoNum);
+//            // 根据物料号分组 每个物料一行
+//            Map<String, List<T07QuotationD>> tempMap = t07List.stream()
+//                    .filter(t07 -> !StringTool.isEmpty(t07.getMaterial()))
+//                    .collect(Collectors.groupingBy(T07QuotationD::getMaterial));
+//
+//            Set<String> keySet = tempMap.keySet();
+////            for (String mat : keySet) {
+////                PchQuoH head = new PchQuoH();
+////                List<PchQuoItem> itemList = new ArrayList<>();
+////                head.setQuoNo(quoNum);
+////                head.setMaterial(mat);
+////                List<T07QuotationD> list = tempMap.get(mat);
+////                for (T07QuotationD t07 : list) {
+////                    PchQuoItem item = new PchQuoItem();
+////                    item.setPrice(t07.getPrice());
+////                    item.setQty(t07.getQty());
+////                    item.setT07Id(t07.getId());
+////                    itemList.add(item);
+////                }
+////                head.setList(itemList);
+////                headList.add(head);
+////            }
+//
+//            //按机种+物料做key
+//            for (int i = 0; i < t07List.size(); i++) {
+//                t07Item = t07List.get(i);
+//                materialNumber = t07Item.getMaterialNumber() != null ? t07Item.getMaterialNumber() : "";
+//                custMaterial = t07Item.getCustMaterial()!= null? t07Item.getCustMaterial() : "";
+//                manufactMaterial = t07Item.getManufactMaterial()!= null? t07Item.getManufactMaterial() : "";
+//                sapMaterial = t07Item.getSapMatId() != null? t07Item.getSapMatId() : "";
+//                devMaterial = t07Item.getDevelopMat() != null? t07Item.getDevelopMat() : "";
+//
+//                String machineKey = sapMaterial + devMaterial;
+//                String materialKey = materialNumber + custMaterial + manufactMaterial;
+//
+//                //case 1: 机种不同, 物料相同：员数拆分，数量合并
+//                if (dataMap.containsKey(machineKey)) {
+//                    Map<String, List<PchQuoItem>> temp = dataMap.get(materialKey);
+//                    if (temp.containsKey(machineKey)) {
+//                        List<PchQuoItem> itemList = temp.get(machineKey);
+//                        itemList.add(t07Item);
+//                    } else {
+//                        List<PchQuoItem> itemList = new ArrayList<>();
+//                        itemList.add(t07Item);
+//                        temp.put(machineKey, itemList);
+//                    }
+//                } else {
+//                    List<PchQuoItem> newItemList = new ArrayList<>();
+//                    PchQuoItem newItem = new PchQuoItem();
+//                    newItem.setQty(t07Item.getQty());
+//                    newItem.setPrice(t07Item.getPrice());
+//                    newItem.setQuoNumber(t07Item.getQuoNumber());
+//                    newItem.setT07Id(t07Item.getId());
+//                    newItem.setQuoItem(t07Item.getQuoItem());
+//                    newItem.setPersonNo(t07Item.getPersonNo1());
+//                    newItemList.add()
+//                }
+//            }
+//
+//
+//        }
+//        for (PchQuoH h : headList) {
+//            LinkedHashMap<String, Object> m = new LinkedHashMap<>();
+//            m.put("QUO_NO", h.getQuoNo());
+//            m.put("MAT", h.getMaterial());
+//            Integer i = 1;
+//            List<PchQuoItem> list = h.getList();
+//            for (int j = 0; j < list.size(); j++) {
+//                m.put("QTY_" + i, list.get(j).getQty());
+//                m.put("PRICE_" + i, list.get(j).getPrice());
+//                m.put("KEY_" + i, list.get(j).getT07Id());
+//
+//                if (j == list.size() - 1) {
+//                    m.put("MAX", i);
+//                }
+//                i++;
+//            }
+//            reList.add(m);
+//        }
+//
+//        return reList;
+        return null;
 
     }
+
+//    public List<LinkedHashMap<String, Object>> getDetailData(String param) {
+//
+//        String[] arr = param.split(",");
+//        List<LinkedHashMap<String, Object>> reList = new ArrayList<>();
+//        List<PchQuoH> headList = new ArrayList<>();
+//
+//        for (String quoNum : arr) {
+//
+//            List<T07QuotationD> t07List = d007Dao.getList(quoNum);
+//            // 根据物料号分组 每个物料一行
+//            Map<String, List<T07QuotationD>> tempMap = t07List.stream()
+//                    .filter(t07 -> !StringTool.isEmpty(t07.getMaterial()))
+//                    .collect(Collectors.groupingBy(T07QuotationD::getMaterial));
+//
+//            Set<String> keySet = tempMap.keySet();
+//            for (String mat : keySet) {
+//                PchQuoH head = new PchQuoH();
+//                List<PchQuoItem> itemList = new ArrayList<>();
+//                head.setQuoNo(quoNum);
+//                head.setMaterial(mat);
+//                List<T07QuotationD> list = tempMap.get(mat);
+//                for (T07QuotationD t07 : list) {
+//                    PchQuoItem item = new PchQuoItem();
+//                    item.setPrice(t07.getPrice());
+//                    item.setQty(t07.getQty());
+//                    item.setT07Id(t07.getId());
+//                    itemList.add(item);
+//                }
+//                head.setList(itemList);
+//                headList.add(head);
+//            }
+//
+//
+//        }
+//        for (PchQuoH h : headList) {
+//            LinkedHashMap<String, Object> m = new LinkedHashMap<>();
+//            m.put("QUO_NO", h.getQuoNo());
+//            m.put("MAT", h.getMaterial());
+//            Integer i = 1;
+//            List<PchQuoItem> list = h.getList();
+//            for (int j = 0; j < list.size(); j++) {
+//                m.put("QTY_" + i, list.get(j).getQty());
+//                m.put("PRICE_" + i, list.get(j).getPrice());
+//                m.put("KEY_" + i, list.get(j).getT07Id());
+//
+//                if (j == list.size() - 1) {
+//                    m.put("MAX", i);
+//                }
+//                i++;
+//            }
+//            reList.add(m);
+//        }
+//
+//        return reList;
+//
+//    }
 
     public void updateDetail(String param) {
         JSONArray array = JSON.parseArray(param);
