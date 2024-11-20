@@ -10,7 +10,7 @@
     "clearCoverage": "shx rm -rf coverage",
     "lint": "eslint ./webapp/**/*.js && prettier --plugin-search-dir=. --check ./webapp/**/*.{js,xml} --no-error-on-unmatched-pattern",
     "lint-fix": "eslint ./webapp/**/*.js --fix && prettier --plugin-search-dir=. --write ./webapp/**/*.{js,xml} --no-error-on-unmatched-pattern",
-    "build:apps": "ui5 build --config=ui5.yaml --clean-dest --dest dist --include-task=generateManifestBundle",
+    "build:apps": "ui5 build --config=ui5.yaml --clean-dest --dest router/webapp --include-task=generateManifestBundle",
     "build:cf": "ui5 build preload --clean-dest --config ui5-deploy.yaml --include-task=generateCachebusterInfo",
     "build:mta": "rimraf resources mta_archives && mbt build",
     "deploy": "fiori cfDeploy",

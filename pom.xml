@@ -1,6 +1,5 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>customer</groupId>
@@ -9,18 +8,17 @@
 	<packaging>pom</packaging>
 
 	<name>umc-webedi parent</name>
-<properties>
-		<!-- OUR VERSION -->
-		<revision>1.0.0-SNAPSHOT</revision>
+	<properties>
 
-		<!-- DEPENDENCIES VERSION -->
-		<jdk.version>17</jdk.version>
+
+		<revision>1.0.0-SNAPSHOT</revision>
+		<jdk.version>20</jdk.version>
 		<cds.services.version>2.4.1</cds.services.version>
-		<spring.boot.version>3.2.6</spring.boot.version>
-		<cds.install-cdsdk.version>7.9.3</cds.install-cdsdk.version>
-        <sap.cloud.sdk.version>5.7.0</sap.cloud.sdk.version>
+		<spring.boot.version>3.1.12</spring.boot.version>
+		<cds.install-cdsdk.version>7.4.0</cds.install-cdsdk.version>
 		<cds.install-node.downloadUrl>https://nodejs.org/dist/</cds.install-node.downloadUrl>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<sap.cloud.sdk.version>5.7.0</sap.cloud.sdk.version>
 
 	</properties>
 
@@ -32,20 +30,20 @@
 	<dependencyManagement>
 		<dependencies>
 			<!-- CDS SERVICES -->
-	          <dependency>
-                <groupId>com.sap.cds</groupId>
-                <artifactId>cds-services-bom</artifactId>
-                <version>${cds.services.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-           <dependency>
-                <groupId>com.sap.cloud.sdk</groupId>
-                <artifactId>sdk-bom</artifactId>
-                <version>5.7.0</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
+			<dependency>
+				<groupId>com.sap.cds</groupId>
+				<artifactId>cds-services-bom</artifactId>
+				<version>${cds.services.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.sap.cloud.sdk</groupId>
+				<artifactId>sdk-bom</artifactId>
+				<version>5.7.0</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
 
 			<!-- EasyExcel -->
 			<dependency>
@@ -64,33 +62,33 @@
 				<version>3.3.2</version>
 			</dependency>
 
-        <!-- POI导入导出 -->
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi</artifactId>
-            <version>4.1.2</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi-ooxml</artifactId>
-            <version>4.1.2</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi-ooxml-schemas</artifactId>
-            <version>4.1.2</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-collections4</artifactId>
-            <version>4.1</version>
-        </dependency>
- 
-        <dependency>
-            <groupId>cglib</groupId>
-            <artifactId>cglib</artifactId>
-            <version>3.1</version>
-		</dependency>
+			<!-- POI导入导出 -->
+			<dependency>
+				<groupId>org.apache.poi</groupId>
+				<artifactId>poi</artifactId>
+				<version>4.1.2</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.poi</groupId>
+				<artifactId>poi-ooxml</artifactId>
+				<version>4.1.2</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.poi</groupId>
+				<artifactId>poi-ooxml-schemas</artifactId>
+				<version>4.1.2</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-collections4</artifactId>
+				<version>4.1</version>
+			</dependency>
+
+			<dependency>
+				<groupId>cglib</groupId>
+				<artifactId>cglib</artifactId>
+				<version>3.1</version>
+			</dependency>
 			<!-- MAIL TEMPLATE -->
 			<dependency>
 				<groupId>org.springframework.boot</groupId>
@@ -114,19 +112,19 @@
 				<groupId>software.amazon.awssdk</groupId>
 				<artifactId>s3control</artifactId>
 			</dependency>
-			
+
 			<!-- End -->
 
 			<dependency>
 				<groupId>org.postgresql</groupId>
 				<artifactId>postgresql</artifactId>
 				<version>42.2.10</version>
-			  </dependency>
+			</dependency>
 
-			  <dependency>
+			<dependency>
 				<groupId>org.projectlombok</groupId>
 				<artifactId>lombok</artifactId>
-			  </dependency>
+			</dependency>
 			<!-- SPRING BOOT -->
 			<dependency>
 				<groupId>org.springframework.boot</groupId>

@@ -142,26 +142,27 @@ sap.ui.define([
                     }
                 };
                 
+            // let newModel = this.getView().getModel("Common");
+            // let oBind = newModel.bindList("/sendEmail");
 
-      
-            let newModel = this.getView().getModel("Common");
-            let oBind = newModel.bindList("/sendEmail");
+            this._sendEmail(mailobj);
+			this._setBusy(false);
             // oBind.create(mailobj);
-            let a =oBind.create(mailobj, {
-                success: function (oData) {
-                    console.log(oData)
-                    // 确保oData不为null并且有返回的结果
-                    if (oData && oData.result && oData.result === "sucess") {
-                        MessageToast.show("メールは送付されました");
-                    } else {
-                        MessageBox.error("メール送信に失敗しました。エラー: " + (oData.result || "不明なエラー"));
-                    }
-                },
-                error: function (oError) {
-                    console.log(oError)
-                    MessageBox.error("メール送信に失敗しました。エラー: " + oError.message);
-                }
-            });
+            // let a =oBind.create(mailobj, {
+            //     success: function (oData) {
+            //         console.log(oData)
+            //         // 确保oData不为null并且有返回的结果
+            //         if (oData && oData.result && oData.result === "sucess") {
+            //             MessageToast.show("メールは送付されました");
+            //         } else {
+            //             MessageBox.error("メール送信に失敗しました。エラー: " + (oData.result || "不明なエラー"));
+            //         }
+            //     },
+            //     error: function (oError) {
+            //         console.log(oError)
+            //         MessageBox.error("メール送信に失敗しました。エラー: " + oError.message);
+            //     }
+            // });
         });
     },
 

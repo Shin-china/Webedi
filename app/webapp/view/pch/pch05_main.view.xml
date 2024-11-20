@@ -4,10 +4,10 @@
             <IconTabBar id="idIconTabBar" expanded="{device>/isNoPhone}" class="sapUiResponsiveContentPadding">
                 <items>
                     <IconTabFilter id="idIconTabFilterDetailView" text="買掛金明細レポート" key="detailView">
-                        <mvc:XMLView id="idXMLViewDetail" viewName="umc.app.view.pch.pch05_account_d"/>
+                        <mvc:XMLView id="idXMLViewDetail" height="40em" viewName="umc.app.view.pch.pch05_account_d"/>
                     </IconTabFilter>
                     <IconTabFilter id="idIconTabFilterListView" text="差額レポート" key="listView">
-                        <mvc:XMLView id="idXMLViewList" viewName="umc.app.view.pch.pch05_account_l"/>
+                        <mvc:XMLView id="idXMLViewList" height="40em" viewName="umc.app.view.pch.pch05_account_l"/>
                     </IconTabFilter>
                 </items>
             </IconTabBar>

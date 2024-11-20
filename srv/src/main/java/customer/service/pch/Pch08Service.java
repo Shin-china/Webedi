@@ -151,11 +151,11 @@ public class Pch08Service {
                 t07New.setBpNumber(Integer.parseInt(pch08.getBP_NUMBER()));
             }
 
-            t07New.setPersonNo1(pch08.getPERSON_NO1());
-            t07New.setPersonNo2(pch08.getPERSON_NO2());
-            t07New.setPersonNo3(pch08.getPERSON_NO3());
-            t07New.setPersonNo4(pch08.getPERSON_NO4());
-            t07New.setPersonNo5(pch08.getPERSON_NO5());
+//            t07New.setPersonNo1(pch08.getPERSON_NO1());
+//            t07New.setPersonNo2(pch08.getPERSON_NO2());
+//            t07New.setPersonNo3(pch08.getPERSON_NO3());
+//            t07New.setPersonNo4(pch08.getPERSON_NO4());
+//            t07New.setPersonNo5(pch08.getPERSON_NO5());
 
             t07New.setYlp(pch08.getYLP());
             t07New.setManul(pch08.getMANUL());
@@ -247,6 +247,7 @@ public class Pch08Service {
         String[] arr = param.split(",");
         List<LinkedHashMap<String, Object>> reList = new ArrayList<>();
         List<PchQuoH> headList = new ArrayList<>();
+
         for (String quoNum : arr) {
 
             List<T07QuotationD> t07List = d007Dao.getList(quoNum);
@@ -272,6 +273,9 @@ public class Pch08Service {
                 head.setList(itemList);
                 headList.add(head);
             }
+
+            //按机种+物料做key
+
 
         }
         for (PchQuoH h : headList) {

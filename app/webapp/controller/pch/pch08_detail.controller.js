@@ -161,7 +161,7 @@ sap.ui.define([
             console.log(data)
             this._callCdsAction("/PCH08_EDIT_DETAIL", params, this).then(oData => {
                 if (oData.PCH08_EDIT_DETAIL == "success") {
-                    sap.m.MessageBox.success("修改成功!");
+                    sap.m.MessageBox.success("単価は更新されました。");
                 }
                 this.getModel().refresh(true);
             })
