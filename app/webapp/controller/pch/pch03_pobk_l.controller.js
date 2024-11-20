@@ -313,7 +313,7 @@ init
 						progress: 0,
 						pdfUrl: [],
 						zip: zip,
-						zipFolder: zip.folder("納品書"),
+						zipFolder: zip.folder(),
 						zipFile: [],
 
 					};
@@ -355,7 +355,7 @@ init
 						progress: 0,
 						pdfUrl: [],
 						zip: zip,
-						zipFolder: zip.folder("納品書"),
+						zipFolder: zip.folder(),
 						zipFile: [],
 
 					};
@@ -602,7 +602,7 @@ init
 						progress: 0,
 						pdfUrl: [],
 						zip: zip,
-						zipFolder: zip.folder("注文書・指定納品書"),
+						zipFolder: zip.folder(),
 						zipFile: [],
 
 					};
