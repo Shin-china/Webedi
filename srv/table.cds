@@ -93,7 +93,8 @@ service TableService {
       CD_TIME,
       CD_BY,
       OBJECT_LINK,
-      FILE_TYPE
+      FILE_TYPE,
+      OBJECT_TYPE
     }
     where
       OBJECT_TYPE IN ('PCH04','PCH03');
