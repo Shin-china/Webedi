@@ -145,7 +145,8 @@ entity T06_QUOTATION_H : cuid, IF_CUID_FILED { //
                                                      on  TO_ITEMS.SALES_NUMBER = SALES_NUMBER
                                                      and TO_ITEMS.QUO_NUMBER   = QUO_NUMBER
                                                      and TO_ITEMS.QUO_VERSION  = QUO_VERSION;
-
+  TO_ITEMS_PO                                       : Composition of many T07_QUOTATION_D
+                                                     on TO_ITEMS_PO.QUO_NUMBER   = QUO_NUMBER
 }
 
 entity T07_QUOTATION_D : cuid, IF_CUID_FILED { //
