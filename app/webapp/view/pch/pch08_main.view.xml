@@ -1,5 +1,10 @@
-<mvc:View controllerName="umc.app.controller.pch.pch08_main" xmlns:mvc="sap.ui.core.mvc" displayBlock="true" xmlns="sap.m">
+<mvc:View xmlns:f="sap.f" controllerName="umc.app.controller.pch.pch08_main" xmlns:mvc="sap.ui.core.mvc" displayBlock="true" xmlns="sap.m">
     <Page id="idPage" title="{pch>PCH08_TITLE}" showHeader="true" showFooter="false" titleAlignment="Center" titleLevel="H1">
+        <f:DynamicPageTitle id="idPch02UploadDynamicPageTitle" >
+               <f:navigationActions>
+                    <Button id="idHome4Button" icon="sap-icon://home" tooltip="nav-back" press="navToHome"/>
+                </f:navigationActions>
+        </f:DynamicPageTitle>
         <content>
             <IconTabBar id="idIconTabBar" expanded="{device>/isNoPhone}" class="sapUiResponsiveContentPadding">
                 <items>
