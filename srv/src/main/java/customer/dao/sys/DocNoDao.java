@@ -85,7 +85,7 @@ public class DocNoDao extends Dao {
 
 		T06DocNo index = this.getIndex(code, count);
 		// 取得发番编辑
-		return 1 + NumberTool.format(index.getDocIndex().toString(), DOC_NO_PROJECT2);
+		return getDocIndexNo(index, DOC_NO_PROJECT);
 	}
 
 	/**
@@ -97,7 +97,7 @@ public class DocNoDao extends Dao {
 	 */
 	private String getDocIndexNo(T06DocNo index, String format) {
 		String str = NumberTool.format(index.getDocIndex().toString(), format);
-		return str;
+		return index.getDocPrefex() + "-" + index.getDocDate() + "-" + str;
 	}
 
 	/**

@@ -11,6 +11,12 @@ xmlns:mvc="sap.ui.core.mvc"
 xmlns:form="sap.ui.layout.form"
 xmlns:fb="sap.ui.comp.filterbar">
 
+    <f:DynamicPageTitle id="idPch07UploadDynamicPageTitle" >
+               <f:navigationActions>
+                    <Button id="idHome4Button" icon="sap-icon://home" tooltip="nav-back" press="navToHome"/>
+                </f:navigationActions>
+        </f:DynamicPageTitle>
+
 	<Panel id="fileUpload" expandable="true" expanded="true" headerText="{pch>PCH07_Title}" width="95rem" class="sapUiResponsiveMargin">
 	    <!--下载模板-->
         <Button id="downloadTemplateButton" text="{pch>U_B_DOWNLOAD_TEMPLATE}" press="onSampleExport" icon="sap-icon://download" type="Transparent"/>

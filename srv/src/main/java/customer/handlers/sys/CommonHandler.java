@@ -62,7 +62,7 @@ public class CommonHandler implements EventHandler {
 
     // IFM054 購買見積依頼受信+送信
     @On(event = "pch06BatchImport")
-    public void pch06BatchImport(Pch06BatchImportContext context) {
+    public void pch06BatchImport(Pch06BatchImportContext context) throws Exception {
         // 获取uqmc传入的t06数据
         // 获取
         System.out.println(JSONObject.toJSONString(context.getPch06()));
@@ -71,55 +71,40 @@ public class CommonHandler implements EventHandler {
         // Ifm054Bean list = JSON.parseObject(context.getJson(), Ifm054Bean.class);
 
         // 将 Collection 转换为 Listpch06BatchImport
-        List<PchT06QuotationH> pch06List = new ArrayList<>(context.getPch06());
-        pch06List.forEach(pchT06QuotationH -> {
+        ArrayList<PchT06QuotationH> pch06List = new ArrayList<>(context.getPch06());
+        ArrayList<cds.gen.pch.T06QuotationH> pch06List2 = new ArrayList<>();
+        String msg = "";
+        try {
+            // 提取数据，插入表中
+            sendService.extracted(pch06List, pch06List2);
 
-            try {
-                // 获取購買見積番号
-                // pchT06QuotationH.setQuoNumber(docNoDao.getPJNo(1));
-                pchT06QuotationH.setQuoNumber("1006");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            msg = sendService.sendPost(pch06List2);
+        } catch (Exception e) {
+            msg = UmcConstants.ERROR;
+        }
 
-            // 插入头标，首先删除原key值数据
-            T06QuotationH t06QuotationH = T06QuotationH.create();
+        System.out.println(msg);
 
-            // 复制类属性
-            BeanUtils.copyProperties(pchT06QuotationH, t06QuotationH);
-            // 如果已经存在则更新，如果不存在则插入
-            T06QuotationH byID = PchD006.getByIdOnle(t06QuotationH.getId());
-            ;
-            t06QuotationH.remove("TO_ITEMS");
-            if (byID != null) {
-                PchD006.update(t06QuotationH);
-            } else {
-                PchD006.insert(t06QuotationH);
-            }
+        context.setResult(msg);
+    }
 
-            // 插入明细
-            List<PchT07QuotationD> toItems = pchT06QuotationH.getToItems();
-            toItems.forEach(pchT07QuotationD -> {
-                // 获取購買見積番号
-                pchT07QuotationD.setQuoNumber(pchT06QuotationH.getQuoNumber());
+    // IFM055 購買見積依頼送信
+    @On(event = "pch06BatchSending")
+    public void pch06BatchSending(Pch06BatchSendingContext context) throws Exception {
+        ArrayList<T06QuotationH> pch06List = new ArrayList<>();
 
-                T07QuotationD t07QuotationD = T07QuotationD.create();
+        try {
+            pch06List = sendService.getJson(context.getJson());
 
-                // // 复制类属性
-                BeanUtils.copyProperties(pchT07QuotationD, t07QuotationD);
-                // // 如果已经存在则更新，如果不存在则插入
-                T07QuotationD byID2 = PchD007.getByT07Id(t07QuotationD.getId());
+            // 调用接口传值
 
-                if (byID2 != null) {
-                    PchD007.update(t07QuotationD);
-                } else {
-                    PchD007.insert(t07QuotationD);
-                }
-            });
+        } catch (Exception e) {
+            context.setResult("失败");
+        }
+        String msg = sendService.sendPost(pch06List);
+        System.out.println(msg);
 
-        });
-        System.out.println("返回成功" + JSONObject.toJSONString(pch06List));
-        // context.setResult(JSONObject.toJSONString(pch06List));
+        context.setResult(msg);
     }
 
 }

@@ -2,6 +2,7 @@ package customer.handlers.sys;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Collection;
 import java.util.List;
 
@@ -72,14 +73,17 @@ public class ObjectStoreHandler implements EventHandler {
         for (AttachmentJson attachment : attachments) {
             if (attachment.getFileName() != "" && attachment.getValue() != null) {
                 String uuidd = UniqueIDTool.getUUID();
-                String fieldId = uuidd + "." + attachment.getFileType();
+                final Base64.Decoder decoder = Base64.getDecoder();
+                String fileType = new String(decoder.decode(attachment.getFileType()), "UTF-8");
+                // String fieldId = uuidd + "." + attachment.getFileType();
+                String fieldId = uuidd;
                 CommMsg msg = objectStoreService.uploadFile(fieldId, RequestBody
                         .fromBytes(ByteStreams.toByteArray(StringTool.base2InputStream(attachment.getValue()))));
                 if (msg.getMsgType().equals(UmcConstants.IF_STATUS_S)) {
                     T13Attachment t13 = T13Attachment.create();
                     t13.setObject(attachment.getObject());
                     t13.setFileName(attachment.getFileName());
-                    t13.setFileType(attachment.getFileType());
+                    t13.setFileType(fileType);
                     // t13.setObjectType("PCH03");
                     t13.setId(uuidd);
                     t13.setObjectType(attachment.getObjectType());

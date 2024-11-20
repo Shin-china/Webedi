@@ -24,7 +24,7 @@
                     </smartFilterBar:SmartFilterBar>
                 </f:content>
             </f:DynamicPageHeader>
-            <smartTable:SmartTable id="ID" enableAutoColumnWidth="true" entitySet="PCH08_LIST" ignoredFields="" initiallyVisibleFields="QUO_NUMBER,QUO_ITEM,NO,REFRENCE_NO,CUSTOMER,MACHINE_TYPE,QUANTITY,VALIDATE_START,VALIDATE_END,MATERIAL_NUMBER,CUST_MATERIAL,MANUFACT_MATERIAL,Attachment,Material,MAKER,UWEB_USER,BP_NUMBER,PERSON_NO1,PERSON_NO2,PERSON_NO3,PERSON_NO4,PERSON_NO5,YLP,MANUL,MANUFACT_CODE,CUSTOMER_MMODEL,MID_QF,SMALL_QF,OTHER_QF,CURRENCY,PRICE,PRICE_CONTROL,LEAD_TIME,MOQ,UNIT,SPQ,KBXT,PRODUCT_WEIGHT,ORIGINAL_COU,EOL,ISBOI,Incoterms,Incoterms_Text,MEMO1,MEMO2,MEMO3,SL,TZ,RMATERIAL,RMATERIAL_CURRENCY,RMATERIAL_PRICE,RMATERIAL_LT,RMATERIAL_MOQ,RMATERIAL_KBXT,UMC_COMMENT_1,UMC_COMMENT_2,STATUS" requestAtLeastFields="" smartFilterId="smartFilterBar" enableExport="false" editable="{localModel>/save}" useVariantManagement="true" useTablePersonalisation="true" header="{pch>PCH08_LISTVIEW_TITLE}" showRowCount="true" persistencyKey="pch08_SmartTableAnalytical_Explored" enableAutoBinding="true">
+            <smartTable:SmartTable id="ID" enableAutoColumnWidth="true" entitySet="PCH08_LIST" ignoredFields="" initiallyVisibleFields="QUO_NUMBER,QUO_ITEM,NO,REFRENCE_NO,CUSTOMER,MACHINE_TYPE,QUANTITY,VALIDATE_START,VALIDATE_END,MATERIAL_NUMBER,CUST_MATERIAL,MANUFACT_MATERIAL,Attachment,Material,MAKER,UWEB_USER,BP_NUMBER,YLP,MANUL,MANUFACT_CODE,CUSTOMER_MMODEL,MID_QF,SMALL_QF,OTHER_QF,CURRENCY,PRICE,PRICE_CONTROL,LEAD_TIME,MOQ,UNIT,SPQ,KBXT,PRODUCT_WEIGHT,ORIGINAL_COU,EOL,ISBOI,Incoterms,Incoterms_Text,MEMO1,MEMO2,MEMO3,SL,TZ,RMATERIAL,RMATERIAL_CURRENCY,RMATERIAL_PRICE,RMATERIAL_LT,RMATERIAL_MOQ,RMATERIAL_KBXT,UMC_COMMENT_1,UMC_COMMENT_2,STATUS" requestAtLeastFields="" smartFilterId="smartFilterBar" enableExport="false" editable="{localModel>/save}" useVariantManagement="true" useTablePersonalisation="true" header="{pch>PCH08_LISTVIEW_TITLE}" showRowCount="true" persistencyKey="pch08_SmartTableAnalytical_Explored" enableAutoBinding="true">
                 <smartTable:customToolbar>
                     <OverflowToolbar id="overFlowToolbar">
                         <ToolbarSpacer id="toolbarSpacer" />
@@ -311,7 +311,7 @@
                                 <Text id="textBp" text="{BP_NUMBER}" />
                             </table:template>
                         </table:Column>
-                        <table:Column id="colPersonNo1" width="10rem" sortProperty="PERSON_NO1" filterProperty="PERSON_NO1">
+                        <!-- <table:Column id="colPersonNo1" width="10rem" sortProperty="PERSON_NO1" filterProperty="PERSON_NO1">
                             <table:customData>
                                 <core:CustomData key="p13nData" value="{
                                         columnKey: 'PERSON_NO1',
@@ -390,7 +390,7 @@
                             <table:template>
                                 <Text id="textPersonNo5" text="{PERSON_NO5}" />
                             </table:template>
-                        </table:Column>
+                        </table:Column> -->
                         <table:Column id="colYlp" width="10rem" sortProperty="YLP" filterProperty="YLP">
                             <table:customData>
                                 <core:CustomData key="p13nData" value="{

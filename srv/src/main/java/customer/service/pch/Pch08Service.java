@@ -151,14 +151,14 @@ public class Pch08Service {
                 t07New.setBpNumber(Integer.parseInt(pch08.getBP_NUMBER()));
             }
 
-            t07New.setPersonNo1(pch08.getPERSON_NO1());
-            t07New.setPersonNo2(pch08.getPERSON_NO2());
-            t07New.setPersonNo3(pch08.getPERSON_NO3());
-            t07New.setPersonNo4(pch08.getPERSON_NO4());
-            t07New.setPersonNo5(pch08.getPERSON_NO5());
+//            t07New.setPersonNo1(pch08.getPERSON_NO1());
+//            t07New.setPersonNo2(pch08.getPERSON_NO2());
+//            t07New.setPersonNo3(pch08.getPERSON_NO3());
+//            t07New.setPersonNo4(pch08.getPERSON_NO4());
+//            t07New.setPersonNo5(pch08.getPERSON_NO5());
 
             t07New.setYlp(pch08.getYLP());
-            t07New.setManul(pch08.getYLP());
+            t07New.setManul(pch08.getMANUL());
             t07New.setManufactCode(pch08.getMANUFACT_CODE());
             t07New.setCustomerMmodel(pch08.getCUSTOMER_MMODEL());
             t07New.setMidQf(pch08.getMID_QF());

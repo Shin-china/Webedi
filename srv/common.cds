@@ -18,9 +18,10 @@ type mailBody     :{
 type attachmentJson :{
   object            : String(40);
   value             : LargeString;
-  file_type         : String(64);
+  file_type         : LargeString;
   file_name         : String(50);
   object_type       : String(10);
+  mime_type         : LargeString;
 }
 service Common {
 
@@ -35,7 +36,7 @@ service Common {
     action s3DownloadAttachment(attachmentJson : array of attachmentJson) returns LargeBinary;//S3 Insert Attachment
     action deleteS3Object(key : String) returns String;//S3 Insert Attachment
 
-    action pch06BatchImport(pch06 : array of PCH_T06_QUOTATION_H)               returns array of PCH_T06_QUOTATION_H; //IFM054 購買見積依頼受信
+    action pch06BatchImport(pch06 : array of PCH_T06_QUOTATION_H)               returns String; //IFM054 購買見積依頼受信
     action pch06BatchSending(json : String)               returns String; //IFM055 購買見積結果送信
     
 

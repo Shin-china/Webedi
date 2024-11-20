@@ -93,6 +93,8 @@ sap.ui.define([
                 return;
             }
 
+            // var IdList = that._TableDataList("detailTable", 'NO_DETAILS');
+
             var aSelectedData = aSelectedIndices.map(function (iIndex) {
                 return oTable.getContextByIndex(iIndex).getObject();
             });

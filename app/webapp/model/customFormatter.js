@@ -8,6 +8,9 @@ sap.ui.define([], function () {
        * 
        */
       formatMimeType: function(mimeType){
+        if(mimeType === "" || mimeType === null){
+          return "";
+        }
         return atob(mimeType);
       },
 

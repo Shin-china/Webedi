@@ -37,8 +37,8 @@
             <l:VerticalLayout id="_IDGenVerticalLayout1">
                 <OverflowToolbar id="ID_header">
                     <ToolbarSpacer id="idtoolbarspacer1"/>
-                    <m:Button id="Button1" text="修改" icon="sap-icon://edit" press="onEdit"/>
-                    <m:Button id="Button2" text="Export" icon="sap-icon://download" press="onExport"/>
+                    <m:Button id="Button1" text="{pch>U_B_SAVE}" icon="sap-icon://edit" press="onEdit"/>
+                    <m:Button id="Button2" text="{pch>U_B_EXPORTEXCEL}" icon="sap-icon://download" press="onExport"/>
                 </OverflowToolbar>
                 <table:Table id="dataTable" rows="{path: '/dataList'}" selectionMode="None">
                     <!-- <table:columns>

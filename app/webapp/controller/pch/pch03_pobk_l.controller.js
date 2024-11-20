@@ -124,42 +124,7 @@ init
 			this._AfterDigLogCheck().then((selectedIndices) => {
 				// 构建CSV内容  
 				var csvContent = "data:text/csv;charset=utf-8,";
-				// var headers = Object.keys(selectedIndices[0]); // 假设所有条目的结构都相同，取第一条的键作为表头  
-				//设置头的模板
-				var headers = that._setHeaderModel();
-
-				
-
-
-				//头部数据写入一行
-				csvContent = that._setHeaderData(csvContent);
-
-				// csvContent += headers.join(",") + "\n";  
-
-				selectedIndices.forEach(function (row) {
-					var values = headers.map(function (header) {
-						let re = ""
-						//如果取不出来就是
-						if(row[header] === null || row[header] === undefined){
-							return re = ""
-						}else{
-							if("PO_DATE" == header || "PO_D_DATE" == header){
-								re = that.CommTools._formatToYYYYMMDD(row[header]);
-							}else{
-								re = '"' + row[header] + '"'
-							}
-						    
-						}
-
-						return re;
-
-
-					});
-
-					csvContent += values.join(",") + "\n";
-
-
-				});
+				csvContent = that._getCsvData(selectedIndices,csvContent);
 
 				// 触发下载  
 				var encodedUri = encodeURI(csvContent);
@@ -189,7 +154,7 @@ init
 			var that = this;
 			//有输入true则需要判读是否已经发送过邮件，且提示框内容不一样
 			this._AfterDigLogCheck(true).then((selectedIndices) => {
-				var csvContent = that._getCsvData(selectedIndices);
+				var csvContent = that._getCsvData(selectedIndices,"");
 				var tempName = "";
 				// 创建一个新的Map对象  用作判断key值对应po对应的明细数据
 				let myMap = new Map();
@@ -243,14 +208,14 @@ init
 											value: mySuppliMap.get(item) // 使用替换后的邮件内容
 										},
 
-										// {
-										// 	object: "filename_2",
-										// 	value: "test.csv"
-										// },
-										// {
-										// 	object: "filecontent_2",
-										// 	value: csvContent
-										// }
+										{
+											object: "filename_2",
+											value: "data.csv"
+										},
+										{
+											object: "filecontent_2",
+											value: csvContent
+										}
 									]
 								}
 							};
@@ -294,29 +259,31 @@ init
 			})
 		},
 
-		_getCsvData: function (selectedIndices) {
+		_getCsvData: function (selectedIndices,csvContent) {
 			var that = this;
-			var csvContent = "";
 			if (selectedIndices) {
-				// 构建CSV内容  
-				// var csvContent = "data:text/csv;charset=utf-8,";
-
-				var headers = Object.keys(selectedIndices[0]); // 假设所有条目的结构都相同，取第一条的键作为表头  
-				headers.shift();
-				// csvContent += headers.join(",") + "\n";  
-
-				selectedIndices.forEach(function (row) {
-					var values = headers.map(function (header) {
-
-						return (row[header] === null || row[header] === undefined) ? "" : '"' + row[header] + '"';
-
-
-					});
-
-					csvContent += values.join(",") + "\n";
-
-
-				});
+							//设置头的模板
+							var headers = that._setHeaderModel();
+							//头部数据写入一行
+							csvContent = that._setHeaderData(csvContent);
+			
+							selectedIndices.forEach(function (row) {
+								var values = headers.map(function (header) {
+									let re = ""
+									//如果取不出来就是
+									if(row[header] === null || row[header] === undefined){
+										return re = ""
+									}else{
+										if("PO_DATE" == header || "PO_D_DATE" == header){
+											re = that.CommTools._formatToYYYYMMDD(row[header]);
+										}else{
+											re = '"' + row[header] + '"'
+										}
+									}
+									return re;
+								});
+								csvContent += values.join(",") + "\n";
+							});
 			}
 			return csvContent;
 		},
@@ -507,13 +474,7 @@ init
 			}
 
 		},
-		/**发送邮件 */
-		_sendEmail: function (mailobj) {
-			let newModel = this.getView().getModel("Common");
-			let oBind = newModel.bindList("/sendEmail");
-			oBind.create(mailobj);
 
-		},
 		_newNPSprinEmil(myMap, that, item, list) {
 			let options = { compact: true, ignoreComment: true, spaces: 4 };
 			var that = this;

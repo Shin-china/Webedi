@@ -11,7 +11,7 @@
     xmlns:smartform="sap.ui.comp.smartform" 
     xmlns:mvc="sap.ui.core.mvc" 
     xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
-    xmlns:uxap="sap.uxap">
+    xmlns:uxap="sap.uxap" >
 
 
         <f:DynamicPageHeader id="DynamicPageHeader" pinnable="true">

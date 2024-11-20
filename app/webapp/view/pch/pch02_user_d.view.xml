@@ -11,7 +11,8 @@
     xmlns:smartform="sap.ui.comp.smartform" 
     xmlns:mvc="sap.ui.core.mvc" 
     xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
-    xmlns:uxap="sap.uxap">
+    xmlns:uxap="sap.uxap" >
+    
 
       <f:DynamicPageTitle id="DynamicPageTitle">
     <f:heading>
@@ -60,7 +61,7 @@
     
 
     <smartTable:SmartTable id="ID" enableAutoColumnWidth="true" entitySet="PCH_T02_USER" 
-        ignoredFields="SEQ,NO_DETAILS,KEYID,DEL_FLAG,SUPPLIER"  requestAtLeastFields="SEQ,DEL_FLAG"  initiallyVisibleFields="STATUS,PO_NO,D_NO,MAT_ID,PO_D_TXZ01,PO_PUR_QTY,PO_PUR_UNIT,SUPPLIER_MAT,DELIVERY_DATE,QUANTITY,DEL_PRICE,DEL_AMOUNT,MEMO,STORAGE_NAME,ExtNumber" 
+        ignoredFields="SEQ,NO_DETAILS,KEYID,DEL_FLAG,SUPPLIER"  requestAtLeastFields="SEQ,DEL_FLAG,NO_DETAILS"  initiallyVisibleFields="STATUS,PO_NO,D_NO,MAT_ID,PO_D_TXZ01,PO_PUR_QTY,PO_PUR_UNIT,SUPPLIER_MAT,DELIVERY_DATE,QUANTITY,DEL_PRICE,DEL_AMOUNT,MEMO,STORAGE_NAME,ExtNumber" 
         smartFilterId="smartFilterBar" enableExport="true" beforeExport="onBeforeExport" 
         useVariantManagement="true" useTablePersonalisation="true" header="{pch>TITLE_RESULT}" showRowCount="true" persistencyKey="pch02_SmartTableAnalytical_Explored" enableAutoBinding="false">
         
@@ -71,7 +72,7 @@
             </OverflowToolbar>
         </smartTable:customToolbar>
         
-        <table:Table id="detailTable" rowMode="Auto" rowActionCount="1" selectionMode="MultiToggle" alternateRowColors="true" fixedColumnCount="0" threshold="20">
+        <table:Table id="detailTable" rowMode="Auto" visibleRowCount="10" rowActionCount="1" selectionMode="MultiToggle" alternateRowColors="true" fixedColumnCount="0" threshold="20">
             <table:columns>
 
             <!-- <table:Column id="colLink" width="6rem">
