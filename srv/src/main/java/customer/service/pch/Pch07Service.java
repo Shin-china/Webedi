@@ -225,17 +225,17 @@ public class Pch07Service {
             // 取第一个 Item
             JSONObject firstItem = itemsArray.getJSONObject(0);
 
-            // 从 JSON 获取 DEC3 类型的值为 BigDecimal
-            BigDecimal leadTimeValue = firstItem.getBigDecimal("Materialplanneddeliverydurn");
+            // // 从 JSON 获取 DEC3 类型的值为 BigDecimal
+            // BigDecimal leadTimeValue = firstItem.getBigDecimal("Materialplanneddeliverydurn");
 
-            // 检查值是否有效
-            if (leadTimeValue != null) {
-                // 将 BigDecimal 转换为 int 并设置
-                t07QuotationD2.setLeadTime(leadTimeValue.intValue());
-            } else {
-                // 如果值为 null，设置为默认值或 null
-                t07QuotationD2.setLeadTime(null); // 或者设置为 0
-            }
+            // // 检查值是否有效
+            // if (leadTimeValue != null) {
+            //     // 将 BigDecimal 转换为 int 并设置
+            //     t07QuotationD2.setLeadTime(leadTimeValue.intValue());
+            // } else {
+            //     // 如果值为 null，设置为默认值或 null
+            //     t07QuotationD2.setLeadTime(null); // 或者设置为 0
+            // }
 
             // 设置 Qty
             Double qtyDouble = data.getQTY();
@@ -250,6 +250,7 @@ public class Pch07Service {
             // 获取 Baseunit 并设置到表字段中
          
             t07QuotationD2.setUnit(firstItem.getString("Baseunit"));
+            t07QuotationD2.setLeadTime(firstItem.getString("Materialplanneddeliverydurn"));
             t07QuotationD2.setOriginalCou(firstItem.getString("Suppliercertorigincountry"));
             t07QuotationD2.setPriceControl(firstItem.getString("Pricingdatecontrol"));
             t07QuotationD2.setMoq(firstItem.getString("Minimumpurchaseorderquantity"));
