@@ -32,17 +32,17 @@ public class PchD006 extends Dao {
 
     private static final Logger logger = LoggerFactory.getLogger(PchD006.class);
 
-    public T06QuotationH getByID(String PLANT_ID) {
-        Optional<T06QuotationH> result = db.run(
-                Select.from(Pch_.T06_QUOTATION_H)
-                        .where(o -> o.PLANT_ID().eq(PLANT_ID)))
-                .first(T06QuotationH.class);
+    // public T06QuotationH getByID(String PLANT_ID) {
+    //     Optional<T06QuotationH> result = db.run(
+    //             Select.from(Pch_.T06_QUOTATION_H)
+    //                     .where(o -> o.PLANT_ID().eq(PLANT_ID)))
+    //             .first(T06QuotationH.class);
 
-        if (result.isPresent()) {
-            return result.get();
-        }
-        return null;
-    }
+    //     if (result.isPresent()) {
+    //         return result.get();
+    //     }
+    //     return null;
+    // }
 
     public T06QuotationH getByID(String saNum, String ver) {
         Optional<T06QuotationH> result = db.run(
