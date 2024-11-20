@@ -289,7 +289,7 @@ sap.ui.define([
 
                         var sapPo = {
                             po: IdList[0],
-                            tpye: "PCH04",
+                            type: "PCH04",
                             fileName: fileName,
                         }
                         //打印pdf后写表共通
@@ -398,8 +398,8 @@ sap.ui.define([
                             object: IdList[0],
                             object_type:"PCH04",
                             value:J.PCH04_EXCELDOWNLOAD,
-                            file_type:"xls",
-                            file_name:fileName
+                            file_type:btoa(blob.type),
+                            file_name:fileName+".xlsx"
                           }}
                     
                         $.ajax({

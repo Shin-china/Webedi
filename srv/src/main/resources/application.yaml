@@ -51,8 +51,8 @@ cds:
   drafts:
     deletionTimeout: 1D
   security:
-   # authentication:
-    #  mode: never    #访问CDS不需要登录
+    authentication:
+      mode: never    #访问CDS不需要登录
     mock:
       users:
         - name: tom

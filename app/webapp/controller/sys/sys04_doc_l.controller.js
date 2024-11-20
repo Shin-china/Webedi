@@ -83,7 +83,7 @@ sap.ui.define([
 				data:JSON.stringify(downloadJson),
 				success:function(base64){
 					const downloadLink = document.createElement("a");
-					const blob = that._base64Blob(base64.value,att_type);
+					const blob = that._base64Blob(base64.value,data.FILE_TYPE);
 					const blobUrl = URL.createObjectURL(blob);
 					downloadLink.href = blobUrl;
 					downloadLink.download = data.FILE_NAME + "." + data.FILE_TYPE;
