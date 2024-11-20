@@ -247,6 +247,7 @@ public class Pch08Service {
         String[] arr = param.split(",");
         List<LinkedHashMap<String, Object>> reList = new ArrayList<>();
         List<PchQuoH> headList = new ArrayList<>();
+
         for (String quoNum : arr) {
 
             List<T07QuotationD> t07List = d007Dao.getList(quoNum);
@@ -272,6 +273,9 @@ public class Pch08Service {
                 head.setList(itemList);
                 headList.add(head);
             }
+
+            //按机种+物料做key
+
 
         }
         for (PchQuoH h : headList) {

@@ -36,6 +36,8 @@ extend service TableService {
                     T02.MAKER,
                     T02.UWEB_USER,
                     T02.BP_NUMBER,
+                    T02.DEVELOP_MAT,
+                    T02.SAP_MAT_ID,
 //                    T02.PERSON_NO1,
 //                    T02.PERSON_NO2,
 //                    T02.PERSON_NO3,
