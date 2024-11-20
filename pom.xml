@@ -9,17 +9,16 @@
 
 	<name>umc-webedi parent</name>
 	<properties>
-		<!-- OUR VERSION -->
-		<revision>1.0.0-SNAPSHOT</revision>
 
-		<!-- DEPENDENCIES VERSION -->
-		<jdk.version>17</jdk.version>
+
+		<revision>1.0.0-SNAPSHOT</revision>
+		<jdk.version>20</jdk.version>
 		<cds.services.version>2.4.1</cds.services.version>
-		<spring.boot.version>3.2.6</spring.boot.version>
-		<cds.install-cdsdk.version>7.9.3</cds.install-cdsdk.version>
-		<sap.cloud.sdk.version>5.7.0</sap.cloud.sdk.version>
+		<spring.boot.version>3.1.12</spring.boot.version>
+		<cds.install-cdsdk.version>7.4.0</cds.install-cdsdk.version>
 		<cds.install-node.downloadUrl>https://nodejs.org/dist/</cds.install-node.downloadUrl>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<sap.cloud.sdk.version>5.7.0</sap.cloud.sdk.version>
 
 	</properties>
 
