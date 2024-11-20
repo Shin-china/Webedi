@@ -1,7 +1,11 @@
 package customer.bean.tmpl;
 
+import java.util.Date;
+
 import com.alibaba.excel.annotation.ExcelProperty;
+import com.alibaba.excel.annotation.format.DateTimeFormat;
 import com.alibaba.excel.annotation.write.style.ContentRowHeight;
+import com.alibaba.excel.annotation.write.style.ContentStyle;
 import com.alibaba.excel.annotation.write.style.HeadRowHeight;
 
 import lombok.Data;
@@ -22,10 +26,14 @@ public class Pch05 {
     private String SUPPLIER;
     @ExcelProperty(index = 4, value = "参照(16)")
     private String REFERENCE;
+    @DateTimeFormat("yyyy/M/dd")
+    @ContentStyle(dataFormat = 14)
     @ExcelProperty(index = 5, value = "*伝票日付")
-    private String LASTDATE;
+    private Date LASTDATE;
+    @DateTimeFormat("yyyy/M/dd")
+    @ContentStyle(dataFormat = 14)
     @ExcelProperty(index = 6, value = "*転記日付")
-    private String LASTDATE1;
+    private Date LASTDATE1;
     @ExcelProperty(index = 7, value = "*伝票タイプ")
     private String DOCUMENTTYPE;
     @ExcelProperty(index = 8, value = "伝票ヘッダテキスト(25)")
@@ -34,8 +42,10 @@ public class Pch05 {
     private String CURRENCY;
     @ExcelProperty(index = 10, value = "*伝票通貨での請求書総額")
     private String DIFF_TAX_AMOUNT;
+    @DateTimeFormat("yyyy/M/dd")
+    @ContentStyle(dataFormat = 14)
     @ExcelProperty(index = 11, value = "税率定義の日付")
-    private String LASTDATE2;
+    private Date LASTDATE2;
     @ExcelProperty(index = 12, value = "*会社コード(4)")
     private String PO_BUKRS1;
     @ExcelProperty(index = 13, value = "勘定(10)")

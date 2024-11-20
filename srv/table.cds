@@ -96,8 +96,6 @@ service TableService {
       FILE_TYPE,
       OBJECT_TYPE
     }
-    where
-      OBJECT_TYPE IN ('PCH04','PCH03');
 
   //画面
   action PCH01_CHECK_DATA(shelfJson : String) returns String; //棚番一括アップロード画面：对于上传数据check

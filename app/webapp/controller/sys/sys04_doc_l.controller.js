@@ -111,7 +111,11 @@ sap.ui.define([
             }
             
             return new Blob(byteArrays, {type: mimeType}); 
-        }
+        },
+		onBeforeRebindList:function(oEvent){
+            let oBindingParams = oEvent.getParameter("bindingParams");
+			oBindingParams.filters.push(new sap.ui.model.Filter("OBJECT_TYPE", "NE", "PCH08"));
+		}
 
 	});
 });
