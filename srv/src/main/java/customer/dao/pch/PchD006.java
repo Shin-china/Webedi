@@ -75,7 +75,7 @@ public class PchD006 extends Dao {
     // dao层获取传入的QUO_NUMBER所有明细以及头表
     public T06QuotationH get(String quoNumber) {
         Optional<T06QuotationH> first = db
-                .run(Select.from(Pch_.T06_QUOTATION_H).columns(o -> o._all(), o -> o.TO_ITEMS().expand())
+                .run(Select.from(Pch_.T06_QUOTATION_H).columns(o -> o._all(), o -> o.TO_ITEMS_PO().expand())
                         .where(o -> o.QUO_NUMBER().eq(quoNumber)))
                 .first(T06QuotationH.class);
 
