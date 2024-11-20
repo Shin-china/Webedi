@@ -63,14 +63,14 @@ sap.ui.define([
 				object:"download",
 				value: data.OBJECT_LINK
 			}]}
-			switch(data.FILE_TYPE){
-				case "pdf":
-					att_type = "application/pdf";
-					break;
-				case "csv" || "txt":
-					att_type = "text/plain";
-					break;	
-			}
+			// switch(data.FILE_TYPE){
+			// 	case "pdf":
+			// 		att_type = "application/pdf";
+			// 		break;
+			// 	case "csv" || "txt":
+			// 		att_type = "text/plain";
+			// 		break;	
+			// }
 
 			$.ajax({
 				url:"srv/odata/v4/Common/s3DownloadAttachment",
@@ -86,7 +86,7 @@ sap.ui.define([
 					const blob = that._base64Blob(base64.value,data.FILE_TYPE);
 					const blobUrl = URL.createObjectURL(blob);
 					downloadLink.href = blobUrl;
-					downloadLink.download = data.FILE_NAME + "." + data.FILE_TYPE;
+					downloadLink.download = data.FILE_NAME;
 					downloadLink.click();
 				}
 			})
