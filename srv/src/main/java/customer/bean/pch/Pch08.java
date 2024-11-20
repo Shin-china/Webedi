@@ -58,20 +58,8 @@ public class Pch08 {
     @JSONField(name = "BP_NUMBER")
     private String BP_NUMBER;
 
-    @JSONField(name = "PERSON_NO1")
-    private Integer PERSON_NO1;
-
-    @JSONField(name = "PERSON_NO2")
-    private Integer PERSON_NO2;
-
-    @JSONField(name = "PERSON_NO3")
-    private Integer  PERSON_NO3;
-
-    @JSONField(name = "PERSON_NO4")
-    private Integer PERSON_NO4;
-
-    @JSONField(name = "PERSON_NO5")
-    private Integer   PERSON_NO5;
+    @JSONField(name = "PERSON_NO")
+    private Integer PERSON_NO;
 
     @JSONField(name = "YLP")
     private String YLP;
@@ -104,7 +92,7 @@ public class Pch08 {
     private String PRICE_CONTROL;
 
     @JSONField(name = "LEAD_TIME")
-    private Integer LEAD_TIME;
+    private String LEAD_TIME;
 
     @JSONField(name = "MOQ")
     private String  MOQ;
