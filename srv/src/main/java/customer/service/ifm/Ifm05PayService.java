@@ -75,8 +75,8 @@ public class Ifm05PayService {
                 p.setTotalAmount(suplist.getTotalamount());
                 p.setCostCenter(suplist.getCostcenter());
                 p.setGlAccount(suplist.getGlaccount());
-                p.setPoTrackNo(suplist.getGlaccount());
-                p.setPrBy(suplist.getCostcenter());
+                p.setPoTrackNo(suplist.getRequirementtracking());
+                p.setPrBy(suplist.getRequisitionername());
                 p.setPurchaseGroup(suplist.getPurchasinggroup());
                 p.setPurchaseGroupDesc(suplist.getPurchasinggroupname());
                 p.setPlantId(suplist.getPlant());
