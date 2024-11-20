@@ -11,6 +11,8 @@ sap.ui.define([
     "sap/m/MessageToast",
     "umc/app/controller/com/CheckTools",
     "umc/app/controller/com/PrintTool",
+    "sap/ui/model/Filter",
+    "sap/ui/model/FilterOperator",
 
 ], function(
 	Controller,
@@ -22,7 +24,7 @@ sap.ui.define([
 	MessageTools,
 	CommTools,
 	Boolean,
-	MessageToast, CheckTools, PrintTool
+	MessageToast, CheckTools, PrintTool,Filter,FilterOperator
 ) {
 	"use strict";
 
@@ -919,7 +921,48 @@ sap.ui.define([
             });
           });
         },
-  
+          /**
+         * 指定service 获取CDS 数据
+         * @param {* 对应的view} _entity
+         * @param {* where 参数 过滤器} _filters
+         * @returns
+         */
+          _getDataInfo:  function (_that, selectedIndices, entityPath4Print, propertyInEntity4Filter, entityInModelID) {
+            var that = _that;
+            // get filter
+            var filtersOr = [];
+            for (var i = 0; i < selectedIndices.length; i++) {
+              var j = selectedIndices[i];
+              filtersOr.push(
+                new Filter({
+                  path: propertyInEntity4Filter,
+                  operator: FilterOperator.EQ,
+                  value1: j,
+                })
+              );
+            }
+            // Query Print Information
+            return new Promise(function (resolve, reject) {
+              var sPath = entityPath4Print;
+              // filters
+              var mParameter = {
+                success: function (oData) {
+                  resolve(oData);
+                },
+                error: function (oError) {
+                  reject(oError);
+                },
+                filters: [
+                  new Filter({
+                    filters: filtersOr,
+                    and: false,
+                  }),
+                ],
+              };
+              var oModel = entityInModelID == null || entityInModelID == "" ? that.getModel() : that.getModel(entityInModelID);
+              oModel.read(sPath, mParameter);
+            });
+          },
         //通过id获取单表的全部非草稿数据,考虑共用
         _readEntryByIdData: function (entity, id) {
           var that = this;

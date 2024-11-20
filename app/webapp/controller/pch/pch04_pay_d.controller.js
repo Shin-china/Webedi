@@ -237,6 +237,7 @@ sap.ui.define([
         
             let options = { compact: true, ignoreComment: true, spaces: 4 };
             var IdList = that._TableDataList("detailTable", 'DOWNLOADID');
+            
             // 获取前台输入的 INV_MONTH 和 SUPPLIER
             // var invMonth = this.getView().byId("INV_MONTH").getValue(); 
 
