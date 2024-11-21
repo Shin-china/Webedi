@@ -46,6 +46,7 @@
                 <Button id="saveButton" text="{pch>PCH03_BUTTON_SAV}" enabled="{localModel>/save}" tooltip="{pch>PCH03_BUTTON_SAV}" press="onSave" />
                 <!-- <Button id="confirmButton" text="{pch>PCH03_BUTTON_QUE}" tooltip="{pch>PCH03_BUTTON_QUE}" press="onConfirm" /> -->
                 <Button id="id.UBAttachment" text="{pch>ATTACHMENT}" press="onOpenAttachmentDialog" />
+                <!-- <Button id="id.UBTemplate" text="{pch>PCH08_UPLOAD_TEMPLATE}" press="onDownloadTemplate" /> -->
 
             </OverflowToolbar>
         </smartTable:customToolbar>

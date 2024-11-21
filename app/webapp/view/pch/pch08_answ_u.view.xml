@@ -134,22 +134,7 @@ xmlns:fb="sap.ui.comp.filterbar">
                         <Text id="_IDGenTextMachineType" text="{workInfo>MACHINE_TYPE}" />
                     </table:template>
                 </table:Column>
-                <table:Column id="_IDGenColQuantity" width="10rem" sortProperty="QUANTITY" filterProperty="QUANTITY">
-                    <table:customData>
-                        <core:CustomData key="p13nData" value="{
-                                columnKey: 'QUANTITY',
-                                leadingProperty: 'QUANTITY',
-                                sortProperty: 'QUANTITY',
-                                filterProperty: 'QUANTITY'
-                            }" />
-                    </table:customData>
-                    <table:label>
-                        <Label id="_IDGenLabelQuantity" text="{pch>PCH08_QUANTITY}" />
-                    </table:label>
-                    <table:template>
-                        <Text id="_IDGenTextQuantity" text="{workInfo>QUANTITY}" />
-                    </table:template>
-                </table:Column>
+
                 <table:Column id="colGenItem" width="10rem" sortProperty="Item" filterProperty="Item">
                     <table:customData>
                         <core:CustomData key="p13nData" value="{
@@ -377,70 +362,7 @@ xmlns:fb="sap.ui.comp.filterbar">
                         <Text id="_IDGenTextPersonNo1" text="{workInfo>PERSON_NO1}" />
                     </table:template>
                 </table:Column>
-                <table:Column id="_IDGenColPersonNo2" width="10rem" sortProperty="PERSON_NO2" filterProperty="PERSON_NO2">
-                    <table:customData>
-                        <core:CustomData key="p13nData" value="{
-                                columnKey: 'PERSON_NO2',
-                                leadingProperty: 'PERSON_NO2',
-                                sortProperty: 'PERSON_NO2',
-                                filterProperty: 'PERSON_NO2'
-                            }" />
-                    </table:customData>
-                    <table:label>
-                        <Label id="_IDGenLabelPersonNo2" text="{pch>PCH08_PERSON_NO2}" />
-                    </table:label>
-                    <table:template>
-                        <Text id="_IDGenTextPersonNo2" text="{workInfo>PERSON_NO2}" />
-                    </table:template>
-                </table:Column>
-                <table:Column id="_IDGenColPersonNo3" width="10rem" sortProperty="PERSON_NO3" filterProperty="PERSON_NO3">
-                    <table:customData>
-                        <core:CustomData key="p13nData" value="{
-                                columnKey: 'PERSON_NO3',
-                                leadingProperty: 'PERSON_NO3',
-                                sortProperty: 'PERSON_NO3',
-                                filterProperty: 'PERSON_NO3'
-                            }" />
-                    </table:customData>
-                    <table:label>
-                        <Label id="_IDGenLabelPersonNo3" text="{pch>PCH08_PERSON_NO3}" />
-                    </table:label>
-                    <table:template>
-                        <Text id="_IDGenTextPersonNo3" text="{workInfo>PERSON_NO3}" />
-                    </table:template>
-                </table:Column>
-                <table:Column id="_IDGenColPersonNo4" width="10rem" sortProperty="PERSON_NO4" filterProperty="PERSON_NO4">
-                    <table:customData>
-                        <core:CustomData key="p13nData" value="{
-                                columnKey: 'PERSON_NO4',
-                                leadingProperty: 'PERSON_NO4',
-                                sortProperty: 'PERSON_NO4',
-                                filterProperty: 'PERSON_NO4'
-                            }" />
-                    </table:customData>
-                    <table:label>
-                        <Label id="_IDGenLabelPersonNo4" text="{pch>PCH08_PERSON_NO4}" />
-                    </table:label>
-                    <table:template>
-                        <Text id="_IDGenTextPersonNo4" text="{workInfo>PERSON_NO4}" />
-                    </table:template>
-                </table:Column>
-                <table:Column id="_IDGenColPersonNo5" width="10rem" sortProperty="PERSON_NO5" filterProperty="PERSON_NO5">
-                    <table:customData>
-                        <core:CustomData key="p13nData" value="{
-                                columnKey: 'PERSON_NO5',
-                                leadingProperty: 'PERSON_NO5',
-                                sortProperty: 'PERSON_NO5',
-                                filterProperty: 'PERSON_NO5'
-                            }" />
-                    </table:customData>
-                    <table:label>
-                        <Label id="_IDGenLabelPersonNo5" text="{pch>PCH08_PERSON_NO5}" />
-                    </table:label>
-                    <table:template>
-                        <Text id="_IDGenTextPersonNo5" text="{workInfo>PERSON_NO5}" />
-                    </table:template>
-                </table:Column>
+                
                 <table:Column id="_IDGenColYlp" width="10rem" sortProperty="YLP" filterProperty="YLP">
                     <table:customData>
                         <core:CustomData key="p13nData" value="{
@@ -569,6 +491,24 @@ xmlns:fb="sap.ui.comp.filterbar">
                         <Text id="_IDGenTextCurrency" text="{workInfo>CURRENCY}" />
                     </table:template>
                 </table:Column>
+
+                <table:Column id="_IDGenColQuantity" width="10rem" sortProperty="QUANTITY" filterProperty="QUANTITY">
+                    <table:customData>
+                        <core:CustomData key="p13nData" value="{
+                                columnKey: 'QUANTITY',
+                                leadingProperty: 'QUANTITY',
+                                sortProperty: 'QUANTITY',
+                                filterProperty: 'QUANTITY'
+                            }" />
+                    </table:customData>
+                    <table:label>
+                        <Label id="_IDGenLabelQuantity" text="{pch>PCH08_QUANTITY}" />
+                    </table:label>
+                    <table:template>
+                        <Text id="_IDGenTextQuantity" text="{workInfo>QUANTITY}" />
+                    </table:template>
+                </table:Column>
+
                 <table:Column id="_IDGenColPrice" width="10rem" sortProperty="PRICE" filterProperty="PRICE">
                     <table:customData>
                         <core:CustomData key="p13nData" value="{

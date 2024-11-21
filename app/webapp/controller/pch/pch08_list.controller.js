@@ -204,6 +204,175 @@ sap.ui.define([
             );
         },
 
+        onDownloadTemplate: function () {
+            var oTable = this.getView().byId("listTable");
+            var aSelectedIndices = oTable.getSelectedIndices();
+            if (aSelectedIndices.length === 0) {
+                sap.m.MessageToast.show("選択されたデータがありません、データを選択してください。");
+                return;
+            }
+            var aSelectedData = aSelectedIndices.map(function (iIndex) {
+                return oTable.getContextByIndex(iIndex).getObject();
+            });
+            if (aSelectedData.length === 0) {
+                sap.m.MessageToast.show("選択されたデータがありません、データを選択してください。");
+                return;
+            }
+
+            //动态列
+            var sKeys = '';
+            var sResult = '';
+            var iMaxTotal = 0;
+            var aExport = [];
+            aSelectedData.forEach(row => {
+                if (sKeys === "") {
+                    sKeys = row.QUO_NUMBER + '-' + row.QUO_ITEM;
+                } else {
+                    sKeys = sKeys + "," + row.QUO_NUMBER + '-' + row.QUO_ITEM;
+                }
+            })
+
+            var params = { param: sKeys };
+
+            this._callCdsAction("/PCH08_SHOW_DETAIL", params, this).then((oData) => {
+                let json = JSON.parse(oData.PCH08_SHOW_DETAIL);
+                console.log(json)
+                sResult = json;
+
+                //拼接动态对象
+                let iMaxPersonSize = 0, iMaxQtySize = 0, iMaxPersonSizeTotal = 0, iMaxQtySizeTotal = 0;
+                aSelectedData.forEach(data => {
+                    var oExportData = data;
+
+                    var oQtyInfo = sResult.filter(e => {
+                        return e.QUO_NO == data.QUO_NUMBER;
+                    });
+
+                    if (!oQtyInfo || oQtyInfo.length == 0) {
+                        aExport.push(oExportData);
+                        return;
+                    }
+
+
+                    oQtyInfo.forEach(item => {
+                        let iMaxPersonSize = item["PERSON_SIZE"];
+                        if (!iMaxPersonSize) {
+                            return;
+                        }
+                        if (iMaxPersonSize > iMaxPersonSizeTotal) {
+                            iMaxPersonSizeTotal = iMaxPersonSize;
+                        }
+
+                        for (var i = 1; i <= iMaxPersonSize; i++) {
+                            var sPerson = 'PERSON_' + i;
+                            oExportData[sPerson] = item[sPerson];
+                        }
+
+                        let iMaxQtySize = item["QUANTITY_SIZE"];
+                        if (!iMaxQtySize) {
+                            return;
+                        }
+
+                        if (iMaxQtySize > iMaxQtySizeTotal) {
+                            iMaxQtySizeTotal = iMaxQtySize;
+                        }
+
+                        for (var i = 1; i <= iMaxQtySize; i++) {
+                            var sQty = 'QTY_' + i;
+                            oExportData[sQty] = item[sQty];
+
+                            var sPrice = 'PRICE_' + i;
+                            oExportData[sPrice] = item[sPrice];
+                        }
+                    })
+
+                    aExport.push(oExportData);
+                });
+
+                var aColumns = oTable.getColumns().map(function (oColumn) {
+                    var sDateFormat = 'yyyy-MM-dd';
+                    var sFormat = '';
+                    var sType = '';
+                    var sLabel = '';
+
+                    var property = oColumn.getTemplate().getBindingPath("text") || oColumn.getTemplate().mBindingInfos.value.parts[0].path;
+
+                    if (property === 'VALIDATE_START' || property === 'VALIDATE_END') {
+                        sFormat = sDateFormat;
+                        sType = 'date';
+                    } else {
+                        sFormat = '';
+                        sType = 'string';
+                    }
+
+
+                    return {
+
+                        label: sLabel || oColumn.getLabel().getText(),
+                        type: sType,
+                        property: oColumn.getTemplate().getBindingPath("text") || oColumn.getTemplate().mBindingInfos.value.parts[0].path,
+                        width: parseFloat(oColumn.getWidth()),
+                        format: sFormat
+                    };
+                });
+
+                //动态列数据
+                for (var i = 1; i <= iMaxPersonSizeTotal; i++) {
+                    var sPerson = 'PERSON_' + i;
+                    aColumns.push({
+                        label: "員数_" + i,
+                        type: 'string',
+                        property: sPerson,
+                        width: 13,
+                        format: ''
+                    });
+                }
+
+                for (var i = 1; i <= iMaxQtySizeTotal; i++) {
+                    var sQty = 'QTY_' + i;
+                    var sPrice = 'PRICE_' + i;
+                    aColumns.push({
+                        label: "数量_" + i,
+                        type: 'string',
+                        property: sQty,
+                        width: 13,
+                        format: ''
+                    });
+
+                    aColumns.push({
+                        label: "単価_" + i,
+                        type: 'string',
+                        property: sPrice,
+                        width: 13,
+                        format: ''
+                    });
+
+                }
+
+                var oSettings = {
+                    dataSource: aExport,
+                    workbook: {
+                        columns: aColumns,
+
+                        context: {
+                            sheetName: "購買見積回答"
+                        }
+                    }
+                };
+
+                var oSheet = new sap.ui.export.Spreadsheet(oSettings);
+                oSheet.attachBeforeExport(this.onBeforeExport.bind(this));
+                oSheet.build()
+                    .then(function () {
+                        sap.m.MessageToast.show(this._ResourceBundle.getText("exportFinished"));
+                    })
+                    .finally(function () {
+                        oSheet.destroy();
+                    });
+            }
+            );
+        },
+
         onEdit: function () {
             this._localModel.setProperty("/show", false);
             this._localModel.setProperty("/save", true);
