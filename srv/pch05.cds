@@ -368,19 +368,23 @@ extend service TableService {
             T02.CALC_8_PRICE_AMOUNT_TOTAL,
             T02.CALC_10_PRICE_AMOUNT_TOTAL,
 
-            CONCAT(
-                SUBSTRING(T01.INV_MONTH, 1, 4),  // 提取年份
-                '年', 
-                SUBSTRING(T01.INV_MONTH, 5, 2),  // 提取月份
-                '月'
-            ) as INV_MONTH_FORMATTED : String,
+            // CONCAT(
+            //     SUBSTRING(T01.INV_MONTH, 1, 4),  // 提取年份
+            //     '年', 
+            //     SUBSTRING(T01.INV_MONTH, 5, 2),  // 提取月份
+            //     '月'
+            // ) as INV_MONTH_FORMATTED : String,
+
+            SUBSTRING(T01.INV_MONTH, 1, 4) || '年' || SUBSTRING(T01.INV_MONTH, 5, 2) || '月' AS INV_MONTH_FORMATTED : String,
 
             // 计算每个 SUPPLIER 的条数
             COUNT(*) OVER (PARTITION BY T01.SUPPLIER) as TOTAL_COUNT : Integer, // 按照 SUPPLIER 维度计算条数
             COALESCE(T02.TOTAL_AMOUNT_8_TOTAL, 0) + COALESCE(T02.TOTAL_AMOUNT_10_TOTAL, 0) as TOTAL_TOTAL_AMOUNT : Decimal(15, 2), // 計上金額总合计
             COALESCE(T02.SAP_TAX_AMOUNT_8_TOTAL, 0) + COALESCE(T02.SAP_TAX_AMOUNT_10_TOTAL, 0) as TOTAL_TAX_AMOUNT : Decimal(15, 2), // 消費税額总合计
 
-             CONCAT('(', CONCAT(T01.SUPPLIER, ')')) as SUPPLIER_1 : String
+            //  CONCAT('(', CONCAT(T01.SUPPLIER, ')')) as SUPPLIER_1 : String
+            '(' || T01.SUPPLIER || ')' AS SUPPLIER_1 : String
+
                 
         }
 
@@ -484,14 +488,25 @@ extend service TableService {
                 else null 
             end as TAX_BASE_AMOUNT : Decimal(15,0), // 税基金额         
 
+            // TO_CHAR(
+            //     CAST(
+            //         TO_DATE(CONCAT(
+            //             EXTRACT(YEAR FROM CURRENT_DATE), '-', 
+            //             EXTRACT(MONTH FROM CURRENT_DATE) + 1, '-01'
+            //         ), 'YYYY-MM-DD') - 1 AS Date
+            //     ), 'YYYY/MM/DD'
+            // ) as LASTDATE : String,
+
             TO_CHAR(
                 CAST(
-                    TO_DATE(CONCAT(
-                        EXTRACT(YEAR FROM CURRENT_DATE), '-', 
-                        EXTRACT(MONTH FROM CURRENT_DATE) + 1, '-01'
-                    ), 'YYYY-MM-DD') - 1 AS Date
-                ), 'YYYY/MM/DD'
-            ) as LASTDATE : String,
+                    TO_DATE(
+                        EXTRACT(YEAR FROM CURRENT_DATE) || '-' || 
+                        (EXTRACT(MONTH FROM CURRENT_DATE) + 1) || '-01', 
+                        'YYYY-MM-DD'
+                    ) - 1 AS Date
+                ), 
+                'YYYY/MM/DD'
+            ) AS LASTDATE : String,
 
             '' as REFERENCE: String,                         // REFERENCE 字段赋值为 null
             '' as DETAILTEXT: String,                        // DETAILTEXT 字段赋值为 null
