@@ -30,3 +30,6 @@ hs_err*
 app/router/node_modules/*
 app/router/webapp/*
 Makefile_*.mta
+
+# added by cds
+.cdsrc-private.json

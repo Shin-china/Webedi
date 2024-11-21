@@ -3,7 +3,7 @@
   "authenticationMethod": "route",
   "routes": [
     {
-      "source": "^/srv-api/(.*)$",
+      "source": "^/srv/(.*)$",
       "target": "$1",
       "destination": "uweb_umce_qas_api",
       "authenticationType": "xsuaa",
@@ -27,7 +27,7 @@
       "authenticationType": "none"
     },
     {
-      "source": "^/webapp/srv-api/(.*)$",
+      "source": "^/webapp/srv/(.*)$",
       "target": "$1",
       "destination": "uweb_umce_qas_api",
       "authenticationType": "xsuaa",
