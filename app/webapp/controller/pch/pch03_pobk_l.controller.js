@@ -403,7 +403,7 @@ init
 				let sResponse = json2xml(oData, options);
 				console.log(sResponse)
 
-				that.PrintTool._detailSelectPrintDowS(that, sResponse, "test03/test2", oData, null, "注文書", null, null, null).then((oData) => {
+				that.PrintTool._detailSelectPrintDowS(that, sResponse, "test03/test2", oData, null, null, null, null, null).then((oData) => {
 					//po=po+podno
 					var sapPo = {
 						po: item[0],
@@ -517,7 +517,7 @@ init
 				console.log(sResponse)
 
 				// that.PrintTool._detailSelectPrint(that, sResponse, "test/test", oData, null, null, null, null)
-				that.PrintTool._detailSelectPrintDowS(that, sResponse, "test03/test1", oData, null, "納品書", null, null, null).then((oData) => {
+				that.PrintTool._detailSelectPrintDowS(that, sResponse, "test03/test1", oData, null, null, null, null, null).then((oData) => {
 					var sapPo = {
 						po:  myMap.get(item),
 						tpye: "PCH03",

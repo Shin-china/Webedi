@@ -369,7 +369,7 @@ public class Ifm03PoService {
 
             } else {
 
-                return "同步失败";
+                return "MMSS IF CONFIG IS ERROR";
 
             }
 
@@ -381,7 +381,7 @@ public class Ifm03PoService {
 
         }
         System.out.println("po接口测试结束");
-        return "同步成功";
+        return "POはUWEBに同期されました。";
 
     }
 

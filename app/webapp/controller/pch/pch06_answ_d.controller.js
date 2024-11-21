@@ -85,7 +85,7 @@ sap.ui.define([
 			that._setBusy(true);
 			this._callCdsAction("/PCH06_TQ", null, this).then(
 				function (oData) {
-				  var str = oData.PCH02_CONFIRMATION_REQUEST;
+				  var str = oData.PCH06_TQ;
 				  that._setBusy(false);
 				  sap.m.MessageToast.show(str);
 				},
