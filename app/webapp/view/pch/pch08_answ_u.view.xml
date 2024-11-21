@@ -85,6 +85,26 @@ xmlns:fb="sap.ui.comp.filterbar">
 					</table:template>
 				</table:Column>
 
+                <table:Column id="_IDGenColumnSalesNumber" width="10rem" sortProperty="SALES_NUMBER" filterProperty="SALES_NUMBER">
+					<table:customData>
+						<core:CustomData key="p13nData" value='\{"columnKey":"SALES_NUMBER", "leadingProperty":"SALES_NUMBER"}'/>
+					</table:customData>
+					<Label id="_IDGenLabelSalesNumber" text="{pch>PCH10_SALES_NUMBER}"/>
+					<table:template>
+						<Text id="_IDGenTextSalesNumber" text="{workInfo>SALES_NUMBER}"/>
+					</table:template>
+				</table:Column>
+
+				<table:Column id="_IDGenColumnSalesDNo" width="10rem" sortProperty="SALES_D_NO" filterProperty="SALES_D_NO">
+					<table:customData>
+						<core:CustomData key="p13nData" value='\{"columnKey":"SALES_D_NO", "leadingProperty":"SALES_D_NO"}'/>
+					</table:customData>
+					<Label id="_IDGenLabelSalesDNo" text="{pch>PCH10_SALES_D_NO}"/>
+					<table:template>
+						<Text id="_IDGenTextSalesDNo" text="{workInfo>SALES_D_NO}"/>
+					</table:template>
+				</table:Column>
+
 				<table:Column id="_IDGenColReferenceNo" width="10rem" sortProperty="REFRENCE_NO" filterProperty="REFRENCE_NO">
                     <table:customData>
                         <core:CustomData key="p13nData" value="{
@@ -346,22 +366,6 @@ xmlns:fb="sap.ui.comp.filterbar">
                         <Text id="_IDGenTextBp" text="{workInfo>BP_NUMBER}" />
                     </table:template>
                 </table:Column>
-                <table:Column id="_IDGenColPersonNo1" width="10rem" sortProperty="PERSON_NO1" filterProperty="PERSON_NO1">
-                    <table:customData>
-                        <core:CustomData key="p13nData" value="{
-                                columnKey: 'PERSON_NO1',
-                                leadingProperty: 'PERSON_NO1',
-                                sortProperty: 'PERSON_NO1',
-                                filterProperty: 'PERSON_NO1'
-                            }" />
-                    </table:customData>
-                    <table:label>
-                        <Label id="_IDGenLabelPersonNo1" text="{pch>PCH08_PERSON_NO1}" />
-                    </table:label>
-                    <table:template>
-                        <Text id="_IDGenTextPersonNo1" text="{workInfo>PERSON_NO1}" />
-                    </table:template>
-                </table:Column>
                 
                 <table:Column id="_IDGenColYlp" width="10rem" sortProperty="YLP" filterProperty="YLP">
                     <table:customData>
@@ -525,6 +529,24 @@ xmlns:fb="sap.ui.comp.filterbar">
                         <Text id="_IDGenTextPrice" text="{workInfo>PRICE}"  />
                     </table:template>
                 </table:Column>
+
+                <table:Column id="_IDGenColPersonNo1" width="10rem" sortProperty="PERSON_NO1" filterProperty="PERSON_NO1">
+                    <table:customData>
+                        <core:CustomData key="p13nData" value="{
+                                columnKey: 'PERSON_NO1',
+                                leadingProperty: 'PERSON_NO1',
+                                sortProperty: 'PERSON_NO1',
+                                filterProperty: 'PERSON_NO1'
+                            }" />
+                    </table:customData>
+                    <table:label>
+                        <Label id="_IDGenLabelPersonNo1" text="{pch>PCH08_PERSON_NO1}" />
+                    </table:label>
+                    <table:template>
+                        <Text id="_IDGenTextPersonNo1" text="{workInfo>PERSON_NO1}" />
+                    </table:template>
+                </table:Column>
+
                 <table:Column id="_IDGenColPriceControl" width="10rem" sortProperty="PRICE_CONTROL" filterProperty="PRICE_CONTROL">
                     <table:customData>
                         <core:CustomData key="p13nData" value="{

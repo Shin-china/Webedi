@@ -10,6 +10,7 @@ import com.sap.cds.services.handler.annotations.ServiceName;
 import customer.bean.pch.Pch08DataList;
 
 import customer.bean.pch.Pch08Template;
+import customer.bean.pch.Pch08UploadResult;
 import customer.service.pch.Pch08Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ResourceBundleMessageSource;
@@ -79,6 +80,13 @@ public class Pch08Handler implements EventHandler {
         String param = context.getParam();
         List<Pch08Template> dataList = pch08Service.downloadTemplate(param);
         context.setResult(JSON.toJSONString(dataList));
+    }
+
+    @On(event = PCH08UPLOADContext.CDS_NAME)
+    public void upload(PCH08UPLOADContext context) {
+        String param = context.getParam();
+        List<Pch08UploadResult> resultList = pch08Service.upload(param);
+        context.setResult(JSON.toJSONString(resultList));
     }
 
 }

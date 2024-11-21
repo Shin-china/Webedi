@@ -72,15 +72,4 @@ public class PchD008Dao extends Dao {
         db.run(Insert.into(Pch_.T08_UPLOAD).entry(o));
     }
 
-    public void queryTemplateData(List<Pch08DetailParam> params ){
-        List<String> quoNumberList = params.stream().map(Pch08DetailParam::getQUO_NUMBER).toList();
-        List<Integer> quoItemList = params.stream().map(Pch08DetailParam::getQUO_ITEM).toList();
-        Result itemResult = db.run(Select.from(PchT07QuotationD_.class).where(e->e.QUO_NUMBER().in(quoNumberList)
-                .and(e.QUO_ITEM().in(quoItemList))));
-        List<PchT07QuotationD> itemList =  itemResult.listOf(PchT07QuotationD.class);
-
-        Result headResult = db.run(Select.from(Pch_.T06_QUOTATION_H).where(e->e.QUO_NUMBER().in(quoNumberList)));
-        List<T06QuotationH> headerList  = headResult.listOf(T06QuotationH.class);
-    }
-
 }

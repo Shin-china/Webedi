@@ -3,15 +3,21 @@ package customer.dao.pch;
 import cds.gen.pch.Pch_;
 import cds.gen.pch.T06QuotationH;
 import cds.gen.pch.T07QuotationD;
+import cds.gen.tableservice.PchT07QuotationD;
+import cds.gen.tableservice.PchT07QuotationD_;
 import com.sap.cds.Result;
 import com.sap.cds.ql.Insert;
 import com.sap.cds.ql.Select;
 import com.sap.cds.ql.Update;
+import customer.bean.pch.Pch08DetailParam;
+import customer.bean.pch.Pch08QueryResult;
+import customer.bean.pch.Pch08Template;
 import customer.dao.common.Dao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -94,5 +100,20 @@ public class Pch08Dao extends Dao {
 //            db.run(Update.entity(Pch_.T06_QUOTATION_H).data(h));
 //        }
 
+    }
+
+    public Pch08QueryResult queryTemplateData(List<Pch08DetailParam> params ){
+        List<String> quoNumberList = params.stream().map(Pch08DetailParam::getQUO_NUMBER).toList();
+        List<Integer> quoItemList = params.stream().map(Pch08DetailParam::getQUO_ITEM).toList();
+        Result itemResult = db.run(Select.from(PchT07QuotationD_.class).where(e->e.QUO_NUMBER().in(quoNumberList)
+                .and(e.QUO_ITEM().in(quoItemList))
+                .and(e.DEL_FLAG().eq("N"))
+        ));
+        List<T07QuotationD> itemList =  itemResult.listOf(T07QuotationD.class);
+
+        Result headResult = db.run(Select.from(Pch_.T06_QUOTATION_H).where(e->e.QUO_NUMBER().in(quoNumberList)));
+        List<T06QuotationH> headerList  = headResult.listOf(T06QuotationH.class);
+
+        return new Pch08QueryResult(headerList, itemList);
     }
 }

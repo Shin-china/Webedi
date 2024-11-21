@@ -572,6 +572,84 @@ public class Pch08Service {
            return new ArrayList<>();
         }
 
+        Pch08QueryResult queryResult = pch08Dao.queryTemplateData(detailParams);
+        List<T06QuotationH> headerList = queryResult.getHeaderList();
+        List<T07QuotationD> itemList = queryResult.getItemList();
+
+        if (headerList == null || itemList == null) {
+            return new ArrayList<>();
+        }
+
+        for(T07QuotationD item : itemList){
+            Pch08Template template = new Pch08Template();
+            T06QuotationH header = headerList.stream().filter(e->e.getQuoNumber().equals(item.getQuoNumber())).findFirst().get();
+            template.setQUO_NUMBER(item.getQuoNumber());
+            template.setQUO_ITEM(item.getQuoItem());
+            template.setSALES_NUMBER(item.getSalesNumber());
+            template.setSALES_D_NO(item.getSalesDNo());
+            template.setNO(item.getNo());
+            template.setQUANTITY(header.getQuantity());
+            template.setREFRENCE_NO(item.getRefrenceNo());
+            template.setCUSTOMER(header.getCustomer());
+            template.setMACHINE_TYPE(header.getMachineType());
+            template.setVALIDATE_START(header.getValidateStart());
+            template.setVALIDATE_END(header.getValidateEnd());
+            template.setITEM(header.getItem());
+            template.setTIME(header.getTime());
+            template.setLOCATION(header.getLocation());
+            template.setMATERIAL_NUMBER(item.getMaterialNumber());
+            template.setCUST_MATERIAL(item.getCustMaterial());
+            template.setMANUFACT_MATERIAL(item.getManufactMaterial());
+            template.setAttachment(item.getAttachment());
+            template.setMaterial(item.getMaterial());
+            template.setMAKER(item.getMaker());
+            template.setUWEB_USER(item.getUwebUser());
+            template.setBP_NUMBER(item.getBpNumber());
+            template.setPERSON_NO1(item.getPersonNo1());
+            template.setYLP(item.getYlp());
+            template.setMANUL(item.getManul());
+            template.setMANUFACT_CODE(item.getManufactCode());
+            template.setCUSTOMER_MMODEL(item.getCustomerMmodel());
+            template.setMID_QF(item.getMidQf());
+            template.setSMALL_QF(item.getSmallQf());
+            template.setOTHER_QF(item.getOtherQf());
+            template.setCURRENCY(item.getCurrency());
+            template.setQTY(item.getQty());
+            template.setPRICE(item.getPrice());
+            template.setPRICE_CONTROL(item.getPriceControl());
+            template.setLEAD_TIME(item.getLeadTime());
+            template.setMOQ(item.getMoq());
+            template.setUNIT(item.getUnit());
+            template.setSPQ(item.getSpq());
+            template.setKBXT(item.getKbxt());
+            template.setPRODUCT_WEIGHT(item.getProductWeight());
+            template.setORIGINAL_COU(item.getOriginalCou());
+            template.setEOL(item.getEol());
+            template.setISBOI(item.getIsboi());
+            template.setIncoterms(item.getIncoterms());
+            template.setIncoterms_Text(item.getIncotermsText());
+            template.setMEMO1(item.getMemo1());
+            template.setMEMO2(item.getMemo2());
+            template.setMEMO3(item.getMemo3());
+            template.setSL(item.getSl());
+            template.setTZ(item.getTz());
+            template.setRMATERIAL(item.getRmaterial());
+            template.setRMATERIAL_CURRENCY(item.getRmaterialCurrency());
+            template.setRMATERIAL_PRICE(item.getRmaterialPrice());
+            template.setRMATERIAL_LT(item.getRmaterialLt());
+            template.setRMATERIAL_MOQ(item.getRmaterialMoq());
+            template.setRMATERIAL_KBXT(item.getRmaterialKbxt());
+            template.setUMC_COMMENT_1(item.getUmcComment1());
+            template.setUMC_COMMENT_2(item.getUmcComment2());
+
+            resultList.add(template);
+        }
+
+        return resultList;
+    }
+
+    public List<Pch08UploadResult> upload(String param){
+        List<Pch08UploadResult> resultList = new ArrayList<>();
 
 
         return resultList;
