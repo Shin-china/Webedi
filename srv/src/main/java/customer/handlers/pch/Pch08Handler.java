@@ -82,10 +82,17 @@ public class Pch08Handler implements EventHandler {
         context.setResult(JSON.toJSONString(dataList));
     }
 
-    @On(event = PCH08UPLOADContext.CDS_NAME)
-    public void upload(PCH08UPLOADContext context) {
+    @On(event = PCH08UploadCHECKContext.CDS_NAME)
+    public void uploadCheck(PCH08UploadCHECKContext context) {
         String param = context.getParam();
-        List<Pch08UploadResult> resultList = pch08Service.upload(param);
+        List<Pch08UploadResult> resultList = pch08Service.upload(param, true);
+        context.setResult(JSON.toJSONString(resultList));
+    }
+
+    @On(event = PCH08UploadEXECUTEContext.CDS_NAME)
+    public void uploadExecute(PCH08UploadEXECUTEContext context) {
+        String param = context.getParam();
+        List<Pch08UploadResult> resultList = pch08Service.upload(param, false);
         context.setResult(JSON.toJSONString(resultList));
     }
 

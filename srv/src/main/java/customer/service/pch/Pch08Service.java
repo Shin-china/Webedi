@@ -648,9 +648,14 @@ public class Pch08Service {
         return resultList;
     }
 
-    public List<Pch08UploadResult> upload(String param){
+    public List<Pch08UploadResult> upload(String param, boolean isTestRun){
         List<Pch08UploadResult> resultList = new ArrayList<>();
+        try{
+            Pch08Template uploadData = JSONObject.parseObject(param, Pch08Template.class);
 
+        }catch (Exception e){
+            return resultList;
+        }
 
         return resultList;
     }
