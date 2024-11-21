@@ -407,7 +407,7 @@ init
 					//po=po+podno
 					var sapPo = {
 						po: item[0],
-						tpye: "PCH03",
+						type: "PCH03",
 						fileName: "注文書",
 					}
 					//打印pdf后写表共通
@@ -520,7 +520,7 @@ init
 				that.PrintTool._detailSelectPrintDowS(that, sResponse, "test03/test1", oData, null, null, null, null, null).then((oData) => {
 					var sapPo = {
 						po:  myMap.get(item),
-						tpye: "PCH03",
+						type: "PCH03",
 						fileName: "納品書",
 					}
 

@@ -78,13 +78,13 @@ public class JobMonotor {
         System.out.println("JobMonotor  run");
     }
 
-    @Scheduled(cron = "0 0/30 * * * ?")
+    @Scheduled(cron = "0 0/5 * * * ?")
     public void poolMonitor5() throws IOException {
 
-        // // IF042 PO支払通知同期
-        // System.out.println("pr Sync run");
-        // ifm05PayService.syncPay();
-        // System.out.println("JobMonotor run");
+        // IF042 PO支払通知同期
+        System.out.println("pr Sync run");
+        ifm05PayService.syncPay();
+        System.out.println("JobMonotor run");
     }
 
 }

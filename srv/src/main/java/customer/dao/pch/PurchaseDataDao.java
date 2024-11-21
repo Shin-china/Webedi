@@ -17,6 +17,8 @@ import cds.gen.pch.Pch_;
 import cds.gen.pch.T01PoH;
 import cds.gen.pch.T02PoD;
 import cds.gen.pch.T03PoC;
+import cds.gen.pch.T04PaymentH;
+import cds.gen.pch.T05PaymentD;
 import cds.gen.pch.T09Forcast;
 import customer.bean.pch.Item;
 import customer.bean.pch.Items;
@@ -298,6 +300,75 @@ public class PurchaseDataDao extends Dao {
 
         }
 
+        return null;
+
+    }
+
+    public void modifyT04(T04PaymentH o) {
+        T04PaymentH isExist = getT04ByID(o.getInvNo(), o.getGlYear());
+        if (isExist == null) {
+            insertT04(o);
+        } else {
+            updateT04(o);
+        }
+
+    }
+
+    private void updateT04(T04PaymentH o) {
+        o.setUpTime(getNow());
+        db.run(Update.entity(Pch_.T04_PAYMENT_H).entry(o));
+
+    }
+
+    private void insertT04(T04PaymentH o) {
+        o.setCdTime(getNow());
+        db.run(Insert.into(Pch_.T04_PAYMENT_H).entry(o));
+
+    }
+
+    private T04PaymentH getT04ByID(String invNo, Integer glYear) {
+
+        Optional<T04PaymentH> result = db
+                .run(Select.from(Pch_.T04_PAYMENT_H)
+                        .where(o -> o.INV_NO().eq(invNo).and(o.GL_YEAR().eq(glYear))))
+                .first(T04PaymentH.class);
+        if (result.isPresent()) {
+
+            return result.get();
+
+        }
+        return null;
+    }
+
+    public void modifyT05(T05PaymentD p) {
+        T05PaymentD isExist = getT05ByID(p.getInvNo(), p.getGlYear(), p.getItemNo());
+        if (isExist == null) {
+            insertT05(p);
+        } else {
+            updateT05(p);
+        }
+    }
+
+    private void updateT05(T05PaymentD p) {
+        p.setUpTime(getNow());
+        db.run(Update.entity(Pch_.T05_PAYMENT_D).entry(p));
+    }
+
+    private void insertT05(T05PaymentD p) {
+        p.setCdTime(getNow());
+        db.run(Insert.into(Pch_.T05_PAYMENT_D).entry(p));
+    }
+
+    private T05PaymentD getT05ByID(String invNo, Integer glYear, Integer itemNo) {
+        Optional<T05PaymentD> result = db
+                .run(Select.from(Pch_.T05_PAYMENT_D)
+                        .where(o -> o.INV_NO().eq(invNo).and(o.GL_YEAR().eq(glYear)).and(o.ITEM_NO().eq(itemNo))))
+                .first(T05PaymentD.class);
+        if (result.isPresent()) {
+
+            return result.get();
+
+        }
         return null;
 
     }

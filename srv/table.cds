@@ -14,7 +14,7 @@ service TableService {
   entity SYS_T02_ROLE            as projection on SYS.T02_ROLE;
   entity SYS_T04_USER_2_ROLE     as projection on SYS.T04_USER_2_ROLE;
   entity SYS_T06_DOC_NO          as projection on SYS.T06_DOC_NO;
-  entity SYS_T13_ATTACHMENT      as projection on SYS.T13_ATTACHMENT;
+  //entity SYS_T13_ATTACHMENT      as projection on SYS.T13_ATTACHMENT;
   entity MST_T01_SAP_MAT         as projection on MST.T01_SAP_MAT;
   entity MST_T02_SAP_PLANT       as projection on MST.T02_SAP_PLANT;
   entity MST_T03_SAP_BP          as projection on MST.T03_SAP_BP;
@@ -83,6 +83,19 @@ service TableService {
       USER_ID = (
             select user from USER_CODE
           );
+
+  entity SYS_T13_ATTACHMENT  as 
+    select from SYS.T13_ATTACHMENT {
+      key ID,
+      OBJECT,
+      OBJECT_VERSION,
+      FILE_NAME,
+      CD_TIME,
+      CD_BY,
+      OBJECT_LINK,
+      FILE_TYPE,
+      OBJECT_TYPE
+    }
 
   //画面
   action PCH01_CHECK_DATA(shelfJson : String) returns String; //棚番一括アップロード画面：对于上传数据check

@@ -164,7 +164,8 @@ public class Pch07Service {
 
             // 首先找有没有之前这个noMap的值
             String key = plant + matno + cust + manu;
-
+            String no = docDao.getQuoNumber(plant, 1);
+            String fullkey = key + no;
             if (noMap.containsKey(key)) {
                 // 如果存在则取出最大明细值进行+1
 
@@ -172,20 +173,19 @@ public class Pch07Service {
                 int dNoInt = Integer.parseInt(dNo);
                 dNoInt++;
                 dNoMap.put(key, String.valueOf(dNoInt));
-                noMap1.put(key,noMap1.get(key));
+                noMap1.put(fullkey,noMap1.get(fullkey));
             }
             // 如果不存在则创建noMap和从1开始的最大明细值
             else {
                 // 番号
-                String no = docDao.getQuoNumber(plant, 1);
                 noMap.put(key, no);
                 // 最大明细值
                 dNoMap.put(key, "1");
+
                 if(noMap1.isEmpty()){
-                    noMap1.put(key,"1");
+                    noMap1.put(fullkey,"1");
                 }else{
-                    String lastValue = this.getTail(noMap1).getValue();
-                    noMap1.put(key,lastValue+1);
+                    noMap1.put(fullkey, "1");         
                 }
             }
 
@@ -195,12 +195,11 @@ public class Pch07Service {
             // 需要采番的情况创建T06
             this.createT06(data);
 
+
+            data.setMESSAGE("購買見積は成功にアップロードしました");
+            data.setNO(noMap1.get(fullkey));
             // 创建T07
             this.createT07(data);
-            data.setMESSAGE("購買見積は成功にアップロードしました");
-            data.setQUO_NUMBER(data.getQUO_NUMBER());
-            data.setQUO_ITEM(data.getQUO_ITEM());
-            data.setNO(noMap1.get(key));
         }
     }
 
@@ -225,18 +224,6 @@ public class Pch07Service {
             // 取第一个 Item
             JSONObject firstItem = itemsArray.getJSONObject(0);
 
-            // // 从 JSON 获取 DEC3 类型的值为 BigDecimal
-            // BigDecimal leadTimeValue = firstItem.getBigDecimal("Materialplanneddeliverydurn");
-
-            // // 检查值是否有效
-            // if (leadTimeValue != null) {
-            //     // 将 BigDecimal 转换为 int 并设置
-            //     t07QuotationD2.setLeadTime(leadTimeValue.intValue());
-            // } else {
-            //     // 如果值为 null，设置为默认值或 null
-            //     t07QuotationD2.setLeadTime(null); // 或者设置为 0
-            // }
-
             // 设置 Qty
             Double qtyDouble = data.getQTY();
             BigDecimal qtyBigDecimal = qtyDouble != null ? BigDecimal.valueOf(qtyDouble) : null;
@@ -247,8 +234,7 @@ public class Pch07Service {
             BigDecimal priceBigDecimal = (priceStr != null && !priceStr.isEmpty()) ? new BigDecimal(priceStr) : null;
             t07QuotationD2.setPrice(priceBigDecimal);
 
-            // 获取 Baseunit 并设置到表字段中
-         
+            // 获取 Baseunit 并设置到表字段中        
             t07QuotationD2.setUnit(firstItem.getString("Baseunit"));
             t07QuotationD2.setLeadTime(firstItem.getString("Materialplanneddeliverydurn"));
             t07QuotationD2.setOriginalCou(firstItem.getString("Suppliercertorigincountry"));
@@ -257,7 +243,7 @@ public class Pch07Service {
             t07QuotationD2.setIncoterms(firstItem.getString("Incotermsclassification"));
             t07QuotationD2.setIncotermsText(firstItem.getString("Incotermslocation1"));
             t07QuotationD2.setCurrency(firstItem.getString("Currency"));
-            t07QuotationD2.setSupplierMat(firstItem.getString("SupplierMaterialNumber"));
+            t07QuotationD2.setSupplierMat(firstItem.getString("Suppliermaterialnumber"));
 
         }
 
@@ -266,8 +252,7 @@ public class Pch07Service {
         t07QuotationD2.setMaterialNumber(data.getMATERIAL_NUMBER());
         t07QuotationD2.setInitialObj(data.getINITIAL_OBJ());
         t07QuotationD2.setStatus("1");
-        // t07QuotationD2.setMaterial(number.getMatName());
-        // t07QuotationD2.setMaker(number.getManuCode());
+        t07QuotationD2.setNo(Integer.parseInt(data.getNO()));
 
             // 处理与 number 相关的逻辑
             if (number != null && number.getMatName() != null && !number.getMatName().isEmpty()) {
@@ -292,6 +277,8 @@ public class Pch07Service {
         t07QuotationD2.setCustMaterial(data.getCUST_MATERIAL());
         t07QuotationD2.setManufactMaterial(data.getMANUFACT_MATERIAL());
         t07QuotationD2.setSalesNumber(data.getSALES_NUMBER());
+        t07QuotationD2.setPlantId(data.getPLANT_ID());
+        // t06QuotationH.setPlantId(data.getPLANT_ID());
 
         pchD007.insert(t07QuotationD2);
     }
@@ -311,7 +298,6 @@ public class Pch07Service {
         t06QuotationH.setValidateEnd(validateEnd);
 
         t06QuotationH.setQuoNumber(data.getQUO_NUMBER());
-        // t06QuotationH.setPlantId(data.getPLANT_ID());
 
         pchD006.insert(t06QuotationH);
     }

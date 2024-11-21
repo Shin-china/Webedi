@@ -43,4 +43,7 @@ public class SupList {
     private String Purchasinggroupname;
     private String Accountingdocument;
 
+
+    
+
 }
