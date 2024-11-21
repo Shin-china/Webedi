@@ -20,7 +20,7 @@
     "@prettier/plugin-xml": "latest",
     "@sap/cds-dk": "^7",
     "@sap/ui5-builder-webide-extension": "^1.1.8",
-    "@ui5/cli": "^3.9.2",
+    "@ui5/cli": "^3.11.5",
     "eslint": "latest",
     "karma": "^6.4.2",
     "karma-chrome-launcher": "^3.2.0",
