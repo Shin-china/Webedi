@@ -11,7 +11,7 @@ xmlns:mvc="sap.ui.core.mvc"
 xmlns:form="sap.ui.layout.form"
 xmlns:fb="sap.ui.comp.filterbar">
 
-	<Panel id="fileUpload" expandable="true" expanded="true" headerText="{pch>PCH08_TITLE}" width="95rem" class="sapUiResponsiveMargin">
+	<Panel id="fileUpload" expandable="true" expanded="true" headerText="{pch>PCH08_TITLE}" width="auto" class="sapUiResponsiveMargin">
 	    <!--下载模板-->
         <!-- <Button id="downloadTemplateButton" text="{pch>PCH08_UPLOAD_TEMPLATE}" press="onDownloadTemplate" icon="sap-icon://download" type="Transparent"/> -->
 		<!--上传文件-->
@@ -19,13 +19,13 @@ xmlns:fb="sap.ui.comp.filterbar">
 	</Panel>
 
 	<Panel id="idpanel1" expandable="true" expanded="true" headerText="{pch>U07_RESULT}" width="auto" class="sapUiResponsiveMargin">
-		<table:Table id="tableUploadData" rows="{path: 'workInfo>/'}" class="sapUiSizeCompact" selectionMode='MultiToggle' threshold="20">
+		<table:Table id="tableUploadData" fixedColumnCount="4" rows="{path: 'workInfo>/'}" class="sapUiSizeCompact" selectionMode='MultiToggle' threshold="20">
 			<table:extension>
 				<OverflowToolbar id="idoverflowtooblar1">	
 					<Text id="idtext1" text="{/logInfo}"/>
 					<ToolbarSpacer id="idtoolbarspacer1"/>
-					<Button id="_IDGenButton2" text="{pch>U07_B_CHECK}" press="onCheck" enabled="true"/>
-					<Button id="_IDGenButton3" text="{pch>U07_B_RUN}" press="onSave" enabled="{viewModel>/isButtonEnabled}"/>	
+					<Button id="_IDGenButton2" text="{pch>U07_B_CHECK}" press="onUploadCheck" enabled="true"/>
+					<Button id="_IDGenButton3" text="{pch>U07_B_RUN}" press="onUploadExecute" enabled="{viewModel>/isButtonEnabled}"/>	
 					<Button id="Export" icon="sap-icon://excel-attachment" type="Transparent" press="onExport" enabled="{=${local>/excelSet}.length > 0}" text="{pch>U07_B_EXPORTEXCEL}" tooltip="{pch>U07_B_EXPORTEXCEL}"/>
 				</OverflowToolbar>
 			</table:extension>
@@ -35,17 +35,17 @@ xmlns:fb="sap.ui.comp.filterbar">
 				<table:Column id="Status" width="6rem" sortProperty="STATUS" filterProperty="STATUS" hAlign="Center">
 					<Label id="_IDGenLabel1" text="{pch>U07_STATUS}"/>
 					<table:template>
-						<ObjectStatus id="_IDGenObjectStatus1" icon="{workInfo>I_CON}" state="{workInfo>STATUS}" />
+						<ObjectStatus id="_IDGenObjectStatus1" icon="{workInfo>ICON}" state="{workInfo>STATUS}" />
 					</table:template>
 				</table:Column>
 
 				<!-- 实行结果 -->
-				<table:Column id="Result" width="10rem" sortProperty="RESULT" filterProperty="RESULT">
+				<!-- <table:Column id="Result" width="10rem" sortProperty="RESULT" filterProperty="RESULT">
 					<Label id="_IDGenLabel2" text="{pch>U07_RESULT}"/>
 					<table:template>
 						<Text id="_IDGenText3" text="{workInfo>RESULT}" />
 					</table:template>
-				</table:Column>
+				</table:Column> -->
 
 				<!-- 結果内容 -->
 				<table:Column id="Message" width="15rem" sortProperty="MESSAGE" filterProperty="MESSAGE">

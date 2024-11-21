@@ -50,7 +50,7 @@
 
             </OverflowToolbar>
         </smartTable:customToolbar>
-        <table:Table id="listTable" visibleRowCount="15" rowActionCount="1" selectionMode="MultiToggle" alternateRowColors="true" fixedColumnCount="0" threshold="20">
+        <table:Table id="listTable" visibleRowCount="15" rowActionCount="1" selectionMode="MultiToggle" alternateRowColors="true" fixedColumnCount="3" threshold="20">
             <table:columns>
                 <table:Column id="colQuoNumber" width="10rem" sortProperty="QUO_NUMBER" filterProperty="QUO_NUMBER">
                     <table:customData>

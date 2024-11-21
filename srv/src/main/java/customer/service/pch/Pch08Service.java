@@ -481,6 +481,8 @@ public class Pch08Service {
                     t07New.setId(null);
                     t07New.setStatus("3");
                     t07New.setDelFlag("N");
+                    t07New.setUpTime(DateTools.getInstantNow());
+                    t07New.setUpBy(pch08Dao.getUserId());
                     d007Dao.insert(t07New);
                 }
             }
@@ -504,6 +506,8 @@ public class Pch08Service {
             d007Dao.update(t07);
 
             t07New.setPersonNo1(personNo);
+            t07New.setUpTime(DateTools.getInstantNow());
+            t07New.setUpBy(pch08Dao.getUserId());
             t07New.setPrice(price);
             t07New.setId(null);
             t07New.setStatus("3");
@@ -648,16 +652,159 @@ public class Pch08Service {
         return resultList;
     }
 
-    public List<Pch08UploadResult> upload(String param, boolean isTestRun){
-        List<Pch08UploadResult> resultList = new ArrayList<>();
+    public Pch08UploadResult upload(String param, boolean isTestRun){
+        Pch08Template uploadData;
+        Pch08UploadResult checkResult = new Pch08UploadResult();
         try{
-            Pch08Template uploadData = JSONObject.parseObject(param, Pch08Template.class);
-
+            uploadData = JSONObject.parseObject(param, Pch08Template.class);
         }catch (Exception e){
-            return resultList;
+            checkResult.setSTATUS("E");
+            checkResult.setMESSAGE("データエラー");
+            return checkResult;
         }
 
-        return resultList;
+        if (uploadData == null){
+            checkResult.setSTATUS("E");
+            checkResult.setMESSAGE("データエラー");
+            return checkResult;
+        }
+
+        checkResult = uploadCheck(uploadData);
+
+        if (checkResult != null && checkResult.getSTATUS().equals("E")){
+            return checkResult;
+        }
+
+        if (isTestRun){
+            return checkResult;
+        }
+
+        //update db
+        String id = pch08Dao.getT07QuotationId(checkResult.getQUO_NUMBER(), checkResult.getQUO_ITEM(),
+                checkResult.getSALES_NUMBER(), checkResult.getSALES_D_NO());
+
+        T07QuotationD t07 = d007Dao.getByT07Id(id);
+        T07QuotationD t07New = T07QuotationD.create();
+        BeanUtils.copyProperties(t07, t07New);
+
+        t07.setDelFlag("Y");
+        t07.setUpTime(DateTools.getInstantNow());
+        t07.setUpBy(pch08Dao.getUserId());
+        d007Dao.update(t07);
+
+        t07New.setId(null);
+        t07New.setUpTime(DateTools.getInstantNow());
+        t07New.setUpBy(pch08Dao.getUserId());
+        t07New.setStatus("3");
+        t07New.setDelFlag("N");
+        t07New.setYlp(uploadData.getYLP());
+        t07New.setManul(uploadData.getMANUL());
+        t07New.setManufactCode(uploadData.getMANUFACT_CODE());
+        t07New.setCustomerMmodel(uploadData.getCUSTOMER_MMODEL());
+        t07New.setMidQf(uploadData.getMID_QF());
+        t07New.setSmallQf(uploadData.getSMALL_QF());
+        t07New.setOtherQf(uploadData.getOTHER_QF());
+        t07New.setCurrency(uploadData.getCURRENCY());
+        t07New.setQty(uploadData.getQTY());
+        t07New.setPrice(uploadData.getPRICE());
+        t07New.setPriceControl(uploadData.getPRICE_CONTROL());
+        t07New.setLeadTime(uploadData.getLEAD_TIME());
+        t07New.setMoq(uploadData.getMOQ());
+        t07New.setUnit(uploadData.getUNIT());
+        t07New.setSpq(uploadData.getSPQ());
+        t07New.setKbxt(uploadData.getKBXT());
+        t07New.setProductWeight(uploadData.getPRODUCT_WEIGHT());
+        t07New.setOriginalCou(uploadData.getORIGINAL_COU());
+        t07New.setEol(uploadData.getEOL());
+        t07New.setIsboi(uploadData.getISBOI());
+        t07New.setIncoterms(uploadData.getIncoterms());
+        t07New.setIncotermsText(uploadData.getIncoterms_Text());
+        t07New.setMemo1(uploadData.getMEMO1());
+        t07New.setMemo2(uploadData.getMEMO2());
+        t07New.setMemo3(uploadData.getMEMO3());
+        t07New.setSl(uploadData.getSL());
+        t07New.setTz(uploadData.getTZ());
+        t07New.setRmaterial(uploadData.getRMATERIAL());
+        t07New.setRmaterialCurrency(uploadData.getRMATERIAL_CURRENCY());
+        t07New.setRmaterialPrice(uploadData.getRMATERIAL_PRICE());
+        t07New.setRmaterialLt(uploadData.getRMATERIAL_LT());
+        t07New.setRmaterialMoq(uploadData.getRMATERIAL_MOQ());
+        t07New.setRmaterialKbxt(uploadData.getRMATERIAL_KBXT());
+        t07New.setPersonNo1(uploadData.getPERSON_NO1());
+        d007Dao.insert(t07New);
+
+        return checkResult;
+    }
+
+    public Pch08UploadResult uploadCheck(Pch08Template uploadData){
+        Pch08UploadResult uploadResult = new Pch08UploadResult();
+
+        String customer = uploadData.getCUSTOMER();
+        String quoNumber = uploadData.getQUO_NUMBER();
+        Integer quoItem = uploadData.getQUO_ITEM();
+        String salesNumber = uploadData.getSALES_NUMBER();
+        String salesDNo = uploadData.getSALES_D_NO();
+
+        uploadResult.setQUO_NUMBER(quoNumber);
+        uploadResult.setQUO_ITEM(quoItem);
+        uploadResult.setSALES_NUMBER(salesNumber);
+        uploadResult.setSALES_D_NO(salesDNo);
+
+        if (quoNumber == null || quoNumber.isEmpty()){
+            uploadResult.setSTATUS("E");
+            uploadResult.setMESSAGE("購買見積番号は空欄です");
+            return uploadResult;
+        }
+
+        if (quoItem == null){
+            uploadResult.setSTATUS("E");
+            uploadResult.setMESSAGE("管理Noは空欄です");
+            return uploadResult;
+        }
+
+        if (salesNumber == null || salesNumber.isEmpty()){
+            uploadResult.setSTATUS("E");
+            uploadResult.setMESSAGE("販売見積案件は空欄です");
+            return uploadResult;
+        }
+
+        if (salesDNo == null || salesDNo.isEmpty()){
+            uploadResult.setSTATUS("E");
+            uploadResult.setMESSAGE("販売見積案件明細は空欄です");
+            return uploadResult;
+        }
+
+        if (customer == null || customer.isEmpty()){
+            uploadResult.setSTATUS("E");
+            uploadResult.setMESSAGE("客先は空欄です");
+            return uploadResult;
+        }
+
+        BigDecimal price = uploadData.getPRICE();
+        if (price == null){
+            uploadResult.setSTATUS("E");
+            uploadResult.setMESSAGE("单价は空欄です");
+            return uploadResult;
+        }
+
+        Integer personNo = uploadData.getPERSON_NO1();
+        if (personNo == null){
+            uploadResult.setSTATUS("E");
+            uploadResult.setMESSAGE("员数は空欄です");
+            return uploadResult;
+        }
+
+        //判断采购报价单+销售订单的组合是否存在
+        String id = pch08Dao.getT07QuotationId(quoNumber, quoItem, salesNumber, salesDNo);
+        if (id == null || id.isEmpty()){
+            uploadResult.setSTATUS("E");
+            uploadResult.setMESSAGE("購買見積番号、管理No、販売見積案件、販売見積案件明細は存在しません");
+            return uploadResult;
+        }
+
+        uploadResult.setSTATUS("S");
+        uploadResult.setMESSAGE("成功");
+        return uploadResult;
     }
 
 }

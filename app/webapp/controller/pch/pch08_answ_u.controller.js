@@ -241,6 +241,11 @@ sap.ui.define([
 				// 通过 XLSX 将sheet转为json  要转的oSheet，header标题，range起始行（1：第二行开始）
 				var jsonS = XLSX.utils.sheet_to_json(oSheet, { header: header, range: 1, raw: true });
 
+				jsonS.forEach(row=>{
+					row.STATUS = 'Information';
+					row.ICON = 'sap-icon://pending';
+				})
+
 				// const sConvertedData = jsonS.map(row => {
 				// 	const newRow = { ...row };
 
@@ -301,10 +306,6 @@ sap.ui.define([
 				if (row.VALIDATE_END && row.VALIDATE_END !== '') {
 					row.VALIDATE_END = new Date(row.VALIDATE_END);
 				}
-
-				if (row.TIME && row.TIME !== '') {
-					row.TIME = new Date(row.TIME);
-				}
 			})
 
 			var aColumns = oTable.getColumns().map(function (oColumn) {
@@ -314,7 +315,7 @@ sap.ui.define([
 
 				var property = oColumn.getTemplate().getBindingPath("text");
 
-				if (property === 'VALIDATE_START' || property === 'VALIDATE_END' || property === 'TIME') {
+				if (property === 'VALIDATE_START' || property === 'VALIDATE_END') {
 					sFormat = sDateFormat;
 					sType = 'date';
 				} else {
@@ -385,6 +386,65 @@ sap.ui.define([
 			};
 			return oPrams;
 		},
+
+		onUploadCheck: function (oEvent) {
+			this._uploadData(true);
+		},
+
+		onUploadExecute: function(oEvent){
+			this._uploadData(false);
+		},
+
+		_uploadData :function(bTestRun){
+			var that = this;
+			that._setBusy(true);
+			that._setEditable(true);
+
+			var jsonModel = that.getModel("workInfo");
+			var aData = jsonModel.getData();
+
+			// 1. 检查模板是否有数据
+			if (aData.length === undefined) {
+				sap.m.MessageBox.alert(that.MessageTools._getI18nTextInModel("pch", "PCH01_MSG_FILE_BLANK", this.getView()));
+				that._setBusy(false);
+				return;
+			}
+
+			const oTable = this.getView().byId("tableUploadData");
+			const aSelectedIndices = oTable.getSelectedIndices();
+
+			if (aSelectedIndices.length === 0) {
+				sap.m.MessageToast.show("選択されたデータがありません、データを選択してください。"); 
+				return;
+			}
+
+			const sAction = bTestRun? "PCH08_UPLOAD_CHECK" : "PCH08_UPLOAD_EXECUTE";
+			const sActionPath = `/${sAction}`;
+			 
+			//2. Param长度有限制，必须循环一条条调用
+			for(var i = 0; i < aSelectedIndices.length; i++){ 
+				var sPost = { param : JSON.stringify(aData[aSelectedIndices[i]])}
+				let sBindPath = `/${i}`;
+				this._callCdsAction(sActionPath, sPost, this).then((oData) => {
+					var sResult = JSON.parse(oData[sAction]);
+					
+					if(sResult.STATUS === 'E'){
+						jsonModel.getContext(sBindPath).setProperty('STATUS','Error');
+						jsonModel.getContext(sBindPath).setProperty('ICON', 'sap-icon://error'); 
+					}else{
+						jsonModel.getContext(sBindPath).setProperty('STATUS','Success');
+						jsonModel.getContext(sBindPath).setProperty('ICON', 'sap-icon://message-success');
+					}
+
+					jsonModel.getContext(sBindPath).setProperty('MESSAGE', sResult.MESSAGE);
+
+					jsonModel.setData(aData);
+					that._setIsCreate(false);
+
+					that._setBusy(false);
+				});
+			}
+		}
 
 
 	});
