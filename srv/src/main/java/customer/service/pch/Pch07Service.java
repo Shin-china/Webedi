@@ -164,7 +164,8 @@ public class Pch07Service {
 
             // 首先找有没有之前这个noMap的值
             String key = plant + matno + cust + manu;
-
+            String no = docDao.getQuoNumber(plant, 1);
+            String fullkey = key + no;
             if (noMap.containsKey(key)) {
                 // 如果存在则取出最大明细值进行+1
 
@@ -172,24 +173,19 @@ public class Pch07Service {
                 int dNoInt = Integer.parseInt(dNo);
                 dNoInt++;
                 dNoMap.put(key, String.valueOf(dNoInt));
-                noMap1.put(key,noMap1.get(key));
+                noMap1.put(fullkey,noMap1.get(fullkey));
             }
             // 如果不存在则创建noMap和从1开始的最大明细值
             else {
                 // 番号
-                String no = docDao.getQuoNumber(plant, 1);
                 noMap.put(key, no);
                 // 最大明细值
                 dNoMap.put(key, "1");
+
                 if(noMap1.isEmpty()){
-                    noMap1.put(key,"1");
+                    noMap1.put(fullkey,"1");
                 }else{
-                    String lastValue = this.getTail(noMap1).getValue();
-                    // 将 String 转换为 Integer
-                    int lastValueInt = Integer.parseInt(lastValue);
-                    // 加 1 后存回 noMap1
-                    noMap1.put(key, String.valueOf(lastValueInt + 1));
-                    // noMap1.put(key,lastValue+1);
+                    noMap1.put(fullkey, "1");         
                 }
             }
 
@@ -201,7 +197,7 @@ public class Pch07Service {
 
 
             data.setMESSAGE("購買見積は成功にアップロードしました");
-            data.setNO(noMap1.get(key));
+            data.setNO(noMap1.get(fullkey));
             // 创建T07
             this.createT07(data);
         }
@@ -247,7 +243,7 @@ public class Pch07Service {
             t07QuotationD2.setIncoterms(firstItem.getString("Incotermsclassification"));
             t07QuotationD2.setIncotermsText(firstItem.getString("Incotermslocation1"));
             t07QuotationD2.setCurrency(firstItem.getString("Currency"));
-            t07QuotationD2.setSupplierMat(firstItem.getString("SupplierMaterialNumber"));
+            t07QuotationD2.setSupplierMat(firstItem.getString("Suppliermaterialnumber"));
 
         }
 

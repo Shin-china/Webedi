@@ -57,8 +57,9 @@ extend service TableService {
                 T03.LOG_NO,                        // 登録番号
                 T03.POSTCODE,                      // 郵便番号
                 T03.PLACE_NAME || '' || T03.REGIONS as ADRESS : String(255), // 仕入先のアドレス    
-                T05.PO_NO || REPEAT('0', 5 - LENGTH(CAST(T05.D_NO AS String))) || CAST(T05.D_NO AS String) as NO_DETAILS : String(15), // 注番
+                // T05.PO_NO || REPEAT('0', 5 - LENGTH(CAST(T05.D_NO AS String))) || CAST(T05.D_NO AS String) as NO_DETAILS : String(15), // 注番
                 T05.SHKZG,                         // 借方/貸方フラグ
+                T05.PO_NO || T05.D_NO as NO_DETAILS : String(15), // 購買伝票\明細NO	
 
                 CASE 
                     WHEN T05.SHKZG = 'S' THEN T05.PRICE_AMOUNT    // 借方为正
