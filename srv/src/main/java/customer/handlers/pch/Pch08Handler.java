@@ -19,6 +19,7 @@ import java.text.ParseException;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 @Component
 @ServiceName(TableService_.CDS_NAME)
@@ -61,7 +62,7 @@ public class Pch08Handler implements EventHandler {
 
     @On(event = PCH08ShowDETAILContext.CDS_NAME)
     public void showDetail(PCH08ShowDETAILContext context) {
-        List<LinkedHashMap<String, Object>> detailData = pch08Service.getDetailData(context.getParam());
+        List<Map<String, Object>> detailData = pch08Service.getDetailData(context.getParam());
         context.setResult(JSON.toJSONString(detailData));
     }
 

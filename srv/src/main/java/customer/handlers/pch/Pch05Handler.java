@@ -1,4 +1,5 @@
 package customer.handlers.pch;
+
 import java.io.ByteArrayOutputStream;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -145,7 +146,8 @@ public class Pch05Handler implements EventHandler {
    * @param d012MoveActHs 传入画面输入值
    */
   @After(entity = PchT05AccountDetailDisplay3_.CDS_NAME, event = "READ")
-  public void afterReadPchT05AccountDetailDisplay3(CdsReadEventContext context, Stream<PchT05AccountDetailDisplay3> datas2) {
+  public void afterReadPchT05AccountDetailDisplay3(CdsReadEventContext context,
+      Stream<PchT05AccountDetailDisplay3> datas2) {
 
     datas2.forEach(data2 -> {
 
@@ -211,7 +213,7 @@ public class Pch05Handler implements EventHandler {
 
   }
 
-   /**
+  /**
    * 
    * @param context
    */
@@ -221,18 +223,17 @@ public class Pch05Handler implements EventHandler {
     String supp = context.getParms();
     JSONArray jsonArray = JSONArray.parseArray(supp);
     for (int i = 0; i < jsonArray.size(); i++) {
-      String object = (String)jsonArray.get(i);
-     
+      String object = (String) jsonArray.get(i);
+
       System.out.println(object);
       pchService.setinvdateconfirm(object);
     }
-  
 
     context.setResult("success");
 
   }
 
-   /**
+  /**
    * 
    * @param context
    */
@@ -242,35 +243,34 @@ public class Pch05Handler implements EventHandler {
     String supp = context.getParms();
     JSONArray jsonArray = JSONArray.parseArray(supp);
     for (int i = 0; i < jsonArray.size(); i++) {
-      String object = (String)jsonArray.get(i);
-     
+      String object = (String) jsonArray.get(i);
+
       System.out.println(object);
       pchService.setinvdatecancel(object);
     }
-  
 
     context.setResult("success");
 
   }
 
-      // Excel 导出测试
+  // Excel 导出测试
   @On(event = "PCH05_EXCELDOWNLOAD")
   public void exportExcel(PCH05EXCELDOWNLOADContext context) throws IOException {
     // String content = context.getContent();
     byte[] bytes = null;
-    Pch05List dataList = JSON.parseObject(context.getParms(),Pch05List.class);
+    Pch05List dataList = JSON.parseObject(context.getParms(), Pch05List.class);
 
     // 检查 dataList 是否为空，并且确保它的 list 字段存在
     if (dataList != null && dataList.getList() != null) {
       // 遍历 Pch05List 中的每一项（每个 item 为 Pch05List 的一个记录）
       for (Pch05 item : dataList.getList()) {
-          // 将 Pch05List 中的字段值赋给其他字段
-          item.setPO_BUKRS1(item.getPO_BUKRS());  // 赋值 PO_BUKRS1
-          item.setLASTDATE1(item.getLASTDATE());  // 将 LASTDATE 的值赋给 LASTDATE1
-          item.setLASTDATE2(item.getLASTDATE());  // 将 LASTDATE 的值赋给 LASTDATE2
-          item.setDIFF_TAX_AMOUNT1(item.getDIFF_TAX_AMOUNT()); // 赋值 DIFF_TAX_AMOUNT1
+        // 将 Pch05List 中的字段值赋给其他字段
+        item.setPO_BUKRS1(item.getPO_BUKRS()); // 赋值 PO_BUKRS1
+        item.setLASTDATE1(item.getLASTDATE()); // 将 LASTDATE 的值赋给 LASTDATE1
+        item.setLASTDATE2(item.getLASTDATE()); // 将 LASTDATE 的值赋给 LASTDATE2
+        item.setDIFF_TAX_AMOUNT1(item.getDIFF_TAX_AMOUNT()); // 赋值 DIFF_TAX_AMOUNT1
       }
-  }
+    }
 
     // 获取模板文件
     InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("template/消費税差額差処理.xlsx");
@@ -306,6 +306,5 @@ public class Pch05Handler implements EventHandler {
 
     context.setResult(bytes);
   }
-
 
 }

@@ -14,7 +14,7 @@ sap.ui.define(
 
     return {
       /**
-       * 账票打印
+       * 账票打印，正常打印不下载
        * @param {*} _that 打印画面
        * @param {* 打印数据} _sResponse 【json2xml 格式数据】
        * @param {* 模板} _xdpTemplateID
@@ -81,7 +81,7 @@ sap.ui.define(
         });
       },
       /**
-       * 账票下载不打印
+       * 账票下载不打印，正常下载不打印
        * @param {*} _that 打印画面
        * @param {* 打印数据} _sResponse 【json2xml 格式数据】
        * @param {* 模板} _xdpTemplateID
@@ -89,7 +89,7 @@ sap.ui.define(
        * @param {* 打印回写处理方法} _printBackFuncation
        * @param {* pdf下载名字} _name
        */
-      _detailSelectPrintDow: function (_that, _sResponse, _xdpTemplateID, _data, _printBackFuncation,_name, _smartTableId, entityInModelID,count) {
+      _detailSelectPrintDow: function (_that, _sResponse, _xdpTemplateID, _data, _printBackFuncation,_name, _smartTableId, entityInModelID) {
             var that = this;
             var zip = new JSZipSync();
     				_that.printTaskPdf = {
@@ -98,7 +98,7 @@ sap.ui.define(
               progress : 0,
               pdfUrl: [],
               zip : zip,
-              zipFolder : zip.folder(_name),
+              zipFolder : zip.folder(),
               zipFile : [],
               
             };
@@ -110,7 +110,7 @@ sap.ui.define(
                   function (token) {
                     //生成pdf
                     that
-                      ._createPDFDow(_that, _sResponse, _xdpTemplateID, token)
+                      ._createPDFDow(_that, _sResponse, _xdpTemplateID, token,_name)
                       .then(
                         function (blob) {
                           //打印回写处理
@@ -250,7 +250,7 @@ sap.ui.define(
                 function (token) {
                   //生成pdf
                   that
-                    ._createPDFDow(_that, _sResponse, _xdpTemplateID, token)
+                    ._createPDFDow(_that, _sResponse, _xdpTemplateID, token,_name)
                     .then(
                       function (blob) {
                         //打印回写处理
@@ -534,7 +534,7 @@ sap.ui.define(
      * @param {*} dataXML
      * @param {*} accessToken
     ==============================*/
-    _createPDFDow: function (_that, dataXML, xdpTemplateID, accessToken) {
+    _createPDFDow: function (_that, dataXML, xdpTemplateID, accessToken,_name) {
       var that = this;
       return new Promise(
         function (resolve, reject) {
@@ -577,7 +577,12 @@ sap.ui.define(
               _that._blob =blob;
               var _pdfurl = URL.createObjectURL(blob);
               if (_that.printTaskPdf) {
-								_that.printTaskPdf.pdfUrl.push({ url: _pdfurl, name: that._getDownloadName(xdpTemplateID) });
+                if(_name){
+                  _that.printTaskPdf.pdfUrl.push({ url: _pdfurl, name: _name });
+                }else{
+                  _that.printTaskPdf.pdfUrl.push({ url: _pdfurl, name: that._getDownloadName(xdpTemplateID) });
+                }
+
 								resolve(blob);
 								return;
 							}
@@ -607,15 +612,6 @@ sap.ui.define(
         case "test02/test03":
           downloadName = "買掛金明細";
           break;
-				case "MMSS_REP03/MMSS_REP03":
-					downloadName = "不良現品票";
-					break;
-				case "MMSS_REP09/MMSS_REP09":
-					downloadName = "原反欠点返却票";
-					break;
-				case "MMSS_REP10/MMSS_REP10":
-					downloadName = "在庫管理票";
-					break;
 			}
 			var date = new Date();
 			return downloadName + date.toJSON().replaceAll("-", "").replaceAll("T", "").replaceAll(":", "").replaceAll(".", "").replaceAll("Z", "") + ".pdf";
@@ -655,8 +651,8 @@ sap.ui.define(
         object: _data.po,
         object_type:_data.type,
         value:odata,
-        file_type:"pdf",
-        file_name:_data.fileName
+        file_type:btoa(_blob.type),
+        file_name:_data.fileName+".pdf"
       }}
 
 			$.ajax({

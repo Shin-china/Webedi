@@ -5,8 +5,14 @@ sap.ui.define([
     "sap/ui/export/Spreadsheet"
 ], function (Controller, Filter, formatter, Spreadsheet) {
     "use strict";
+
+    var _objectCommData = {
+        _entity: "/PCH_T02_USER",
+    };
+
     return Controller.extend("umc.app.controller.pch.pch02_user_d", {
         formatter: formatter,
+  
 
         onInit: function () {
             this.getView().unbindElement();
@@ -85,6 +91,7 @@ sap.ui.define([
         },        
 
         onResend: function () {
+            var that = this;
             var oTable = this.getView().byId("detailTable");
             var aSelectedIndices = oTable.getSelectedIndices();
 
@@ -92,16 +99,17 @@ sap.ui.define([
                 sap.m.MessageToast.show(this._ResourceBundle.getText("選択されたデータがありません、データを選択してください")); // 提示未选择数据
                 return;
             }
-
-            // var IdList = that._TableDataList("detailTable", 'NO_DETAILS');
+            var IdList = that._TableDataList("detailTable", 'NO_DETAILS');
+            if (IdList) {
+            that._getDataInfo(that, IdList, "/PCH_T02_USER", "NO_DETAILS").then((J) => {
 
             var aSelectedData = aSelectedIndices.map(function (iIndex) {
                 return oTable.getContextByIndex(iIndex).getObject();
             });
 
-            // 检查是否有 STATUS 为 "2.反映済" 的数据
-            var bHasReflected = aSelectedData.some(function (oData) {
-                return oData.STATUS === "2";
+            // 检查J.results中的数据是否有STATUS为"2"
+            var bHasReflected = J.results.some(function (oData) {
+                return oData.STATUS === "2"; // 检查J.results中的每项数据的STATUS字段
             });
 
             if (bHasReflected) {
@@ -110,8 +118,9 @@ sap.ui.define([
             }
 
             //调用po接口
-            this._invoPo(aSelectedData);
-
+            this._invoPo(J.results);
+            });
+            };
     },
 
 

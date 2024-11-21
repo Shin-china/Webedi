@@ -286,8 +286,13 @@ sap.ui.define([
                     let sResponse = json2xml(oData, options);
                     console.log(sResponse);
                     that.setSysConFig().then(res => {
+                    var oDate = new Date();
+                    var sDate = oDate.toISOString().slice(0, 10).replace(/-/g, '');
+                    var sTime = oDate.toTimeString().slice(0, 8).replace(/:/g, '');
+                    // 设置文件名为当前日期和时间
+                    var fileName = `買掛金明細_${sDate}${sTime}.pdf`;
                         // 调用打印方法
-                        that.PrintTool._detailSelectPrintDow(that, sResponse, "test02/test03", oData, null, null, null, null);
+                        that.PrintTool._detailSelectPrintDow(that, sResponse, "test02/test03", oData, null, fileName, null, null);
                     });
                 });
             }

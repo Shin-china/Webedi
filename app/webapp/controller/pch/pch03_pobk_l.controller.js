@@ -313,7 +313,7 @@ init
 						progress: 0,
 						pdfUrl: [],
 						zip: zip,
-						zipFolder: zip.folder("納品書"),
+						zipFolder: zip.folder(),
 						zipFile: [],
 
 					};
@@ -355,7 +355,7 @@ init
 						progress: 0,
 						pdfUrl: [],
 						zip: zip,
-						zipFolder: zip.folder("納品書"),
+						zipFolder: zip.folder(),
 						zipFile: [],
 
 					};
@@ -407,7 +407,7 @@ init
 					//po=po+podno
 					var sapPo = {
 						po: item[0],
-						tpye: "PCH03",
+						type: "PCH03",
 						fileName: "注文書",
 					}
 					//打印pdf后写表共通
@@ -520,7 +520,7 @@ init
 				that.PrintTool._detailSelectPrintDowS(that, sResponse, "test03/test1", oData, null, "納品書", null, null, null).then((oData) => {
 					var sapPo = {
 						po:  myMap.get(item),
-						tpye: "PCH03",
+						type: "PCH03",
 						fileName: "納品書",
 					}
 
@@ -602,7 +602,7 @@ init
 						progress: 0,
 						pdfUrl: [],
 						zip: zip,
-						zipFolder: zip.folder("注文書・指定納品書"),
+						zipFolder: zip.folder(),
 						zipFile: [],
 
 					};

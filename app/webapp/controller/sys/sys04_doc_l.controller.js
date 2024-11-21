@@ -63,14 +63,14 @@ sap.ui.define([
 				object:"download",
 				value: data.OBJECT_LINK
 			}]}
-			switch(data.FILE_TYPE){
-				case "pdf":
-					att_type = "application/pdf";
-					break;
-				case "csv" || "txt":
-					att_type = "text/plain";
-					break;	
-			}
+			// switch(data.FILE_TYPE){
+			// 	case "pdf":
+			// 		att_type = "application/pdf";
+			// 		break;
+			// 	case "csv" || "txt":
+			// 		att_type = "text/plain";
+			// 		break;	
+			// }
 
 			$.ajax({
 				url:"srv/odata/v4/Common/s3DownloadAttachment",
@@ -83,10 +83,10 @@ sap.ui.define([
 				data:JSON.stringify(downloadJson),
 				success:function(base64){
 					const downloadLink = document.createElement("a");
-					const blob = that._base64Blob(base64.value,att_type);
+					const blob = that._base64Blob(base64.value,data.FILE_TYPE);
 					const blobUrl = URL.createObjectURL(blob);
 					downloadLink.href = blobUrl;
-					downloadLink.download = data.FILE_NAME + "." + data.FILE_TYPE;
+					downloadLink.download = data.FILE_NAME;
 					downloadLink.click();
 				}
 			})
@@ -111,7 +111,11 @@ sap.ui.define([
             }
             
             return new Blob(byteArrays, {type: mimeType}); 
-        }
+        },
+		onBeforeRebindList:function(oEvent){
+            let oBindingParams = oEvent.getParameter("bindingParams");
+			oBindingParams.filters.push(new sap.ui.model.Filter("OBJECT_TYPE", "NE", "PCH08"));
+		}
 
 	});
 });
