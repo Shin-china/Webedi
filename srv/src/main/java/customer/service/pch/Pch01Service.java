@@ -341,6 +341,7 @@ public class Pch01Service extends Service {
                     pchD008.insert(t08Upload);
 
                 }
+                s.setSEQ(seq);
 
                 list.setErr(false);// 有无错误
                 list.setReTxt("insert success");// 返回消息

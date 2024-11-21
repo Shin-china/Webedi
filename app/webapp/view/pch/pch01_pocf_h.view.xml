@@ -4,10 +4,10 @@
 			<IconTabBar id="idIconTabBarNoIcons" expanded="{device>/isNoPhone}" class="sapUiResponsiveContentPadding">
 				<items>
                 	<IconTabFilter  id="idIconTabFilter2" text="{pch>PCH01_TAB_DISPLAY}" key="result1">
-						<mvc:XMLView id="idXMLView2" viewName="umc.app.view.pch.pch01_pocf_d"/>
+						<mvc:XMLView id="idXMLView2" height="35em" viewName="umc.app.view.pch.pch01_pocf_d"/>
 					</IconTabFilter>
 					<IconTabFilter id="idIconTabFilter1" text="{pch>PCH01_TAB_UOLOAD}" key="result2">
-						<mvc:XMLView id="idXMLView1" viewName="umc.app.view.pch.pch01_pocf_u"/>
+						<mvc:XMLView id="idXMLView1" height="40em" viewName="umc.app.view.pch.pch01_pocf_u"/>
 					</IconTabFilter>
 				</items>
 			</IconTabBar>
