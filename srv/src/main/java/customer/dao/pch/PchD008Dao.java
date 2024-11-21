@@ -3,6 +3,12 @@ package customer.dao.pch;
 import java.util.List;
 import java.util.Optional;
 
+import cds.gen.pch.*;
+import cds.gen.tableservice.Pch08List_;
+import cds.gen.tableservice.PchT07QuotationD;
+import cds.gen.tableservice.PchT07QuotationD_;
+import com.sap.cds.Result;
+import customer.bean.pch.Pch08DetailParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -10,10 +16,6 @@ import org.springframework.stereotype.Repository;
 import com.sap.cds.ql.Insert;
 import com.sap.cds.ql.Select;
 
-import cds.gen.pch.Pch_;
-import cds.gen.pch.T03PoC;
-import cds.gen.pch.T07QuotationD;
-import cds.gen.pch.T08Upload;
 import cds.gen.sys.Sys_;
 import cds.gen.sys.T08ComOpD;
 import customer.dao.common.Dao;
@@ -68,6 +70,17 @@ public class PchD008Dao extends Dao {
         o.setCdDate(DateTools.getLocalDate(o.getCdTime()));
         o.setCdDateTime(DateTools.getTimeAsString(o.getCdTime()));
         db.run(Insert.into(Pch_.T08_UPLOAD).entry(o));
+    }
+
+    public void queryTemplateData(List<Pch08DetailParam> params ){
+        List<String> quoNumberList = params.stream().map(Pch08DetailParam::getQUO_NUMBER).toList();
+        List<Integer> quoItemList = params.stream().map(Pch08DetailParam::getQUO_ITEM).toList();
+        Result itemResult = db.run(Select.from(PchT07QuotationD_.class).where(e->e.QUO_NUMBER().in(quoNumberList)
+                .and(e.QUO_ITEM().in(quoItemList))));
+        List<PchT07QuotationD> itemList =  itemResult.listOf(PchT07QuotationD.class);
+
+        Result headResult = db.run(Select.from(Pch_.T06_QUOTATION_H).where(e->e.QUO_NUMBER().in(quoNumberList)));
+        List<T06QuotationH> headerList  = headResult.listOf(T06QuotationH.class);
     }
 
 }

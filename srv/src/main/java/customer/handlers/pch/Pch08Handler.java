@@ -9,6 +9,7 @@ import com.sap.cds.services.handler.annotations.On;
 import com.sap.cds.services.handler.annotations.ServiceName;
 import customer.bean.pch.Pch08DataList;
 
+import customer.bean.pch.Pch08Template;
 import customer.service.pch.Pch08Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ResourceBundleMessageSource;
@@ -71,6 +72,13 @@ public class Pch08Handler implements EventHandler {
         String param = context.getParam();
         pch08Service.updateDetail(param);
         context.setResult("success");
+    }
+
+    @On(event = PCH08DownloadTEMPLATEContext.CDS_NAME)
+    public void downloadTemplate(PCH08DownloadTEMPLATEContext context) {
+        String param = context.getParam();
+        List<Pch08Template> dataList = pch08Service.downloadTemplate(param);
+        context.setResult(JSON.toJSONString(dataList));
     }
 
 }

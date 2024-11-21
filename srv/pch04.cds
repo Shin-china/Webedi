@@ -335,20 +335,28 @@ extend service TableService {
         else null
         end as Company_Name : String(50),
 
-        CONCAT(
-            SUBSTRING(t3.INV_MONTH, 1, 4),  // 提取年份
-            '年', 
-            SUBSTRING(t3.INV_MONTH, 5, 2)   // 提取月份
-        ) as INV_MONTH_FORMATTED : String,
+        // CONCAT(
+        //     SUBSTRING(t3.INV_MONTH, 1, 4),  // 提取年份
+        //     '年', 
+        //     SUBSTRING(t3.INV_MONTH, 5, 2)   // 提取月份
+        // ) as INV_MONTH_FORMATTED : String,
 
-        concat(
-            concat(
-                substring(cast(current_date as String), 1, 4), '/'
-            ),
-            concat(
-                substring(cast(current_date as String), 6, 2), '/'
-            )
-            ) || substring(cast(current_date as String), 9, 2) as CURRENT_DAY : String, // 発行日
+        SUBSTRING(t3.INV_MONTH, 1, 4) || '年' || SUBSTRING(t3.INV_MONTH, 5, 2) AS INV_MONTH_FORMATTED : String,
+
+
+        // concat(
+        //     concat(
+        //         substring(cast(current_date as String), 1, 4), '/'
+        //     ),
+        //     concat(
+        //         substring(cast(current_date as String), 6, 2), '/'
+        //     )
+        //     ) || substring(cast(current_date as String), 9, 2) as CURRENT_DAY : String, // 発行日
+
+        substring(cast(current_date as String), 1, 4) || '/' ||
+        substring(cast(current_date as String), 6, 2) || '/' ||
+        substring(cast(current_date as String), 9, 2) as CURRENT_DAY : String,
+
 
         t3.SUPPLIER_DESCRIPTION,             // 仕入先名称
 

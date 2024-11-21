@@ -34,8 +34,41 @@ sap.ui.define([
 		},
 
 		onDownloadTemplate: function () {
-			var sUrl = "/path/to/your/template/file.xlsx"; // 模板文件的路径
-			sap.m.URLHelper.redirect(sUrl, true); // 通过 URLHelper 重定向到文件 URL，进行下载
+			// var sUrl = "/path/to/your/template/file.xlsx"; // 模板文件的路径
+			// sap.m.URLHelper.redirect(sUrl, true); // 通过 URLHelper 重定向到文件 URL，进行下载
+			var oExportModel = new sap.ui.model.json.JSONModel([]);
+			var aColumns = [];
+			var aExport=[];
+			var oData = {};
+			oData.QUO_NUMBER = "";
+			aExport.push(oData);
+			aColumns.push({
+				label: "QUO_NUMBER",
+				type: "string",
+				property:"QUO_NUMBER",
+				width: 10
+			});
+
+			var oSettings = {
+				dataSource: aExport,
+				workbook: {
+					columns: aColumns,
+
+					context: {
+						sheetName: "購買見積回答"
+					}
+				}
+			};
+
+			var oSheet = new sap.ui.export.Spreadsheet(oSettings); 
+
+			oSheet.build()
+				.then(function () {
+					sap.m.MessageToast.show(this._ResourceBundle.getText("exportFinished"));
+				})
+				.finally(function () {
+					oSheet.destroy();
+				});
 		},
 
 
@@ -205,13 +238,13 @@ sap.ui.define([
 				// 	'RMATERIAL_PRICE', 'RMATERIAL_LT', 'RMATERIAL_MOQ', 'RMATERIAL_KBXT', 'UMC_COMMENT_1', 'UMC_COMMENT_2', 'SUPPLIER_MAT'];
 				// // 通过 XLSX 将sheet转为json  要转的oSheet，header标题，range起始行（1：第二行开始）
 				// var jsonS = XLSX.utils.sheet_to_json(oSheet, { header: header, range: 1, raw: true });
-			  
+
 				var sExcelJson = XLSX.utils.sheet_to_json(oSheet, {
 					header: 1,  // 使用数组形式
 					defval: null  // 空值处理
 				});
 
-				if(!sExcelJson || sExcelJson === ''){
+				if (!sExcelJson || sExcelJson === '') {
 					return;
 				}
 
@@ -220,7 +253,7 @@ sap.ui.define([
 				var aExcelData = [];
 				var aDynamicData = [];
 				//rebuild json
-				sExcelJson.forEach(row=>{
+				sExcelJson.forEach(row => {
 					var length = row.length;
 					var oItem = {};
 					oItem["QUO_NUMBER"] = row[0];
@@ -289,38 +322,38 @@ sap.ui.define([
 					oDynamicData["NO"] = row[2];
 
 					var iIndex = 0;
-					for(var i = 58; i < length; i+=2){
+					for (var i = 58; i < length; i += 2) {
 						iIndex++;
 						let sValue = row[i];
-						
-						if(!sValue){
+
+						if (!sValue) {
 							continue;
 						}
 
 						let nValue = Number(sValue);
-						if(isNaN(nValue) || nValue <= 0){
+						if (isNaN(nValue) || nValue <= 0) {
 							continue;
-						} 
-						
-						oItem["QTY_" + iIndex] = nValue; 
+						}
+
+						oItem["QTY_" + iIndex] = nValue;
 						oDynamicData["QTY_" + iIndex] = oItem["QTY_" + iIndex];
 					}
 
 					iIndex = 0;
-					for(var i = 59; i < length; i+=2){
+					for (var i = 59; i < length; i += 2) {
 						iIndex++;
 						let sValue = row[i];
-						
-						if(!sValue){
+
+						if (!sValue) {
 							continue;
 						}
 
 						let nValue = Number(sValue);
-						if(isNaN(nValue) || nValue <= 0){
+						if (isNaN(nValue) || nValue <= 0) {
 							continue;
-						} 
-						
-						oItem["PRICE_" + iIndex] = nValue; 
+						}
+
+						oItem["PRICE_" + iIndex] = nValue;
 						oDynamicData["PRICE_" + iIndex] = oItem["PRICE_" + iIndex];
 					}
 
@@ -331,15 +364,15 @@ sap.ui.define([
 				var jsonS = aExcelData;//JSON.stringify(aExcelData);
 
 				debugger;
-				
-				const sConvertedData = jsonS.map(row => {
-					const newRow = { ...row };  
 
-					if (newRow.VALIDATE_START) { 
-						newRow.VALIDATE_START = that.__formatExcelDate(newRow.VALIDATE_START); 
+				const sConvertedData = jsonS.map(row => {
+					const newRow = { ...row };
+
+					if (newRow.VALIDATE_START) {
+						newRow.VALIDATE_START = that.__formatExcelDate(newRow.VALIDATE_START);
 					}
 
-					if (newRow.VALIDATE_END) { 
+					if (newRow.VALIDATE_END) {
 						newRow.VALIDATE_END = that.__formatExcelDate(newRow.VALIDATE_END);
 					}
 
@@ -356,15 +389,15 @@ sap.ui.define([
 		},
 
 		__formatExcelDate: function (date) {
-			if(!date || date === ''){
+			if (!date || date === '') {
 				return;
 			}
 
 			const excelEpoch = new Date(1899, 11, 30);
-			const msPerDay = 24 * 60 * 60 * 1000; 
+			const msPerDay = 24 * 60 * 60 * 1000;
 			const dNewDate = new Date(excelEpoch.getTime() + (date * msPerDay));
 			const sNewdate = dNewDate.toISOString().split("T")[0];
-			
+
 			return sNewdate;
 		},
 
@@ -379,63 +412,63 @@ sap.ui.define([
 			}
 
 			var aSelectedData = aSelectedIndices.map(function (iIndex) {
-                return oTable.getContextByIndex(iIndex).getObject();
-            });
+				return oTable.getContextByIndex(iIndex).getObject();
+			});
 
-            if (aSelectedData.length === 0) {
-                sap.m.MessageToast.show("選択されたデータがありません、データを選択してください。");
-                return;
-            }
+			if (aSelectedData.length === 0) {
+				sap.m.MessageToast.show("選択されたデータがありません、データを選択してください。");
+				return;
+			}
 
-			aSelectedData.forEach(row=>{
-				if(row.VALIDATE_START && row.VALIDATE_START!== ''){
+			aSelectedData.forEach(row => {
+				if (row.VALIDATE_START && row.VALIDATE_START !== '') {
 					row.VALIDATE_START = new Date(row.VALIDATE_START);
 				}
 
-				if(row.VALIDATE_END && row.VALIDATE_END!== ''){
+				if (row.VALIDATE_END && row.VALIDATE_END !== '') {
 					row.VALIDATE_END = new Date(row.VALIDATE_END);
 				}
 
-				if(row.TIME && row.TIME!== ''){
+				if (row.TIME && row.TIME !== '') {
 					row.TIME = new Date(row.TIME);
 				}
 			})
 
 			var aColumns = oTable.getColumns().map(function (oColumn) {
-                var sDateFormat = 'yyyy-MM-dd';
-                var sFormat = '';
-                var sType = '';
+				var sDateFormat = 'yyyy-MM-dd';
+				var sFormat = '';
+				var sType = '';
 
-                var property = oColumn.getTemplate().getBindingPath("text");
+				var property = oColumn.getTemplate().getBindingPath("text");
 
-                if (property === 'VALIDATE_START' || property === 'VALIDATE_END' || property === 'TIME') {
-                    sFormat = sDateFormat;
-                    sType = 'date';
-                } else {
-                    sFormat = '';
-                    sType = 'string';
-                }
+				if (property === 'VALIDATE_START' || property === 'VALIDATE_END' || property === 'TIME') {
+					sFormat = sDateFormat;
+					sType = 'date';
+				} else {
+					sFormat = '';
+					sType = 'string';
+				}
 
 
-                return {
-                    label: oColumn.getLabel().getText(),
-                    type: sType,
-                    property: oColumn.getTemplate().getBindingPath("text"),
-                    width: parseFloat(oColumn.getWidth()),
-                    format: sFormat
-                };
-            });
+				return {
+					label: oColumn.getLabel().getText(),
+					type: sType,
+					property: oColumn.getTemplate().getBindingPath("text"),
+					width: parseFloat(oColumn.getWidth()),
+					format: sFormat
+				};
+			});
 
 			var oSettings = {
-                dataSource: aSelectedData,
-                workbook: {
-                    columns: aColumns,
+				dataSource: aSelectedData,
+				workbook: {
+					columns: aColumns,
 
-                    context: {
-                        sheetName: "購買見積登録"
-                    }
-                }
-            };
+					context: {
+						sheetName: "購買見積登録"
+					}
+				}
+			};
 
 			var oSheet = new sap.ui.export.Spreadsheet(oSettings);
 			oSheet.attachBeforeExport(this.onBeforeExport.bind(this));
