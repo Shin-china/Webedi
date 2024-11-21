@@ -238,12 +238,12 @@ public class Pch07Service {
             t07QuotationD2.setUnit(firstItem.getString("Baseunit"));
             t07QuotationD2.setLeadTime(firstItem.getString("Materialplanneddeliverydurn"));
             t07QuotationD2.setOriginalCou(firstItem.getString("Suppliercertorigincountry"));
+            t07QuotationD2.setSupplierMat(firstItem.getString("Suppliermaterialnumber"));
             t07QuotationD2.setPriceControl(firstItem.getString("Pricingdatecontrol"));
             t07QuotationD2.setMoq(firstItem.getString("Minimumpurchaseorderquantity"));
             t07QuotationD2.setIncoterms(firstItem.getString("Incotermsclassification"));
             t07QuotationD2.setIncotermsText(firstItem.getString("Incotermslocation1"));
-            t07QuotationD2.setCurrency(firstItem.getString("Currency"));
-            t07QuotationD2.setSupplierMat(firstItem.getString("Suppliermaterialnumber"));
+            t07QuotationD2.setCurrency(firstItem.getString("Currency"));         
 
         }
 
