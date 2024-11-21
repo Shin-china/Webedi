@@ -173,7 +173,13 @@ public class Pch07Service {
                 int dNoInt = Integer.parseInt(dNo);
                 dNoInt++;
                 dNoMap.put(key, String.valueOf(dNoInt));
-                noMap1.put(fullkey,noMap1.get(fullkey));
+                // noMap1.put(fullkey,noMap1.get(fullkey));
+                // 检查 noMap1 是否包含 fullkey，不包含时赋值为 1
+                if (noMap1.containsKey(fullkey)) {
+                    noMap1.put(fullkey, noMap1.get(fullkey));
+                } else {
+                    noMap1.put(fullkey, "1");
+                }
             }
             // 如果不存在则创建noMap和从1开始的最大明细值
             else {

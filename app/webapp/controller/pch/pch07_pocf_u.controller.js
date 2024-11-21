@@ -224,7 +224,7 @@ sap.ui.define([
 		onSave: function () {
 
 			var that = this;
-			that._setBusy(true);
+			that.getView().setBusy(true);
 			
 			this._callCdsAction("/PCH07_SAVE_DATA", this.getData(), this).then((oData) => {
 				var myArray = JSON.parse(oData.PCH07_SAVE_DATA);
@@ -232,7 +232,7 @@ sap.ui.define([
 	
 				jsonModel.setData(myArray.list);
 				that._setIsCreate(false);
-				that._setBusy(false);
+				that.getView().setBusy(false);
 				
 			});
 		},
