@@ -553,4 +553,28 @@ public class Pch08Service {
         }
     }
 
+    public List<Pch08Template> downloadTemplate(String param){
+        String[] paramKeys = param.split(",");
+        List<Pch08DetailParam> detailParams = new ArrayList<>();
+        List<Pch08Template> resultList = new ArrayList<>();
+
+        for (String quoKey : paramKeys) {
+            int index = quoKey.lastIndexOf("-");
+            if (index == -1) {
+                continue;
+            }
+            String quoNumber = quoKey.substring(0, index);
+            Integer quoItem = Integer.parseInt(quoKey.substring(index + 1));
+            detailParams.add(new Pch08DetailParam(quoNumber, quoItem));
+        }
+
+        if (detailParams.isEmpty()) {
+           return new ArrayList<>();
+        }
+
+
+
+        return resultList;
+    }
+
 }

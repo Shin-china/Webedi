@@ -6,11 +6,20 @@ import java.util.ArrayList;
 
 public class Pch01List {
     private ArrayList<Pch01> list = new ArrayList<Pch01>();
-    //返回成功失败件数
+    // 返回成功失败件数
     private String reTxt;
-    //返回是否有错误:有值指有错误
+    // 返回是否有错误:有值指有错误
     private boolean err;
-     
+
+    private Integer seq;
+
+    public Integer getSeq() {
+        return seq;
+    }
+
+    public void setSeq(Integer seq) {
+        this.seq = seq;
+    }
 
     /**
      * @return the list
@@ -41,6 +50,5 @@ public class Pch01List {
     public void setErr(Boolean err) {
         this.err = err;
     }
-
 
 }

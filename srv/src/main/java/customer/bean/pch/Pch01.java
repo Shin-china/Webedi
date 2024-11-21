@@ -28,6 +28,9 @@ public class Pch01 {
     @JSONField(name = "D_NO")
     private Integer D_NO;
 
+    @JSONField(name = "SEQ")
+    private Integer SEQ;
+
     @JSONField(name = "MAT_ID")
     private String MAT_ID;
 
@@ -60,6 +63,14 @@ public class Pch01 {
 
     @JSONField(name = "ExtNumber")
     private String ExtNumber;
+
+    public Integer getSEQ() {
+        return SEQ;
+    }
+
+    public void setSEQ(Integer sEQ) {
+        SEQ = sEQ;
+    }
 
     public String getExtNumber() {
         return ExtNumber;
