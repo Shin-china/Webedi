@@ -39,7 +39,10 @@ extend service TableService {
                     T02.STORAGE_LOC || '' || T02.STORAGE_TXT as STORAGE_NAME : String(255), // 納品先名
                     T02.DEL_FLAG,           // 削除フラグ
                     T03.ExtNumber,          // 参照
-                    T02.PO_NO || REPEAT('0', 5 - LENGTH(CAST(T02.D_NO AS String))) || CAST(T02.D_NO AS String) as NO_DETAILS : String(15), // 購買伝票\明細NO								
+                    // T02.PO_NO || REPEAT('0', 5 - LENGTH(CAST(T02.D_NO AS String))) || CAST(T02.D_NO AS String) as NO_DETAILS : String(15), // 購買伝票\明細NO		
+                    // T02.PO_NO || LPAD(CAST(T02.D_NO AS String), 5, '0') AS NO_DETAILS : String(15),
+                    T02.PO_NO || T02.D_NO as NO_DETAILS : String(15), // 購買伝票\明細NO	
+						
 
             }
 
@@ -59,7 +62,8 @@ extend service TableService {
                     T01.MAT_ID,             // 品目コード
                     T01.QUANTITY,           // 納品数
                     T01.ExtNumber,          // 参照
-                    T01.PO_NO || REPEAT('0', 5 - LENGTH(CAST(T01.D_NO AS String))) || CAST(T01.D_NO AS String) as NO_DETAILS : String(15), // 購買伝票\明細NO								
+                    // T01.PO_NO || REPEAT('0', 5 - LENGTH(CAST(T01.D_NO AS String))) || CAST(T01.D_NO AS String) as NO_DETAILS : String(15), // 購買伝票\明細NO			
+                    T01.PO_NO || T01.D_NO as NO_DETAILS : String(15), // 購買伝票\明細NO					
                     T01.MAT_NAME,			// テキスト（短）											
                     T01.PLANT_ID,			// プラント						
                     T01.LOCATION_ID,		// 保管場所						
