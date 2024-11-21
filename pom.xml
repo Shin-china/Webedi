@@ -17,9 +17,12 @@
 		<spring.boot.version>3.1.12</spring.boot.version>
 		<cds.install-cdsdk.version>7.4.0</cds.install-cdsdk.version>
 		<cds.install-node.downloadUrl>https://nodejs.org/dist/</cds.install-node.downloadUrl>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<sap.cloud.sdk.version>5.7.0</sap.cloud.sdk.version>
 
+		<sap.cloud.sdk.version>5.7.0</sap.cloud.sdk.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<!-- 解决编译时中文乱码-->
+		<maven.compiler.encoding>UTF-8</maven.compiler.encoding>
 	</properties>
 
 
