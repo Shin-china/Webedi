@@ -6,18 +6,14 @@ import lombok.Data;
 
 public class SapSupRoot {
 
-    private ArrayList<SupList> SupList;
+    private ArrayList<SupList> Items;
 
-    public ArrayList<SupList> getSupList() {
-        return SupList;
+    public ArrayList<SupList> getItems() {
+        return Items;
     }
 
-    public void setSupList(ArrayList<SupList> supList) {
-        SupList = supList;
+    public void setItems(ArrayList<SupList> items) {
+        this.Items = items;
     }
-
-
-
-
 
 }
