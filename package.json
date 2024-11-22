@@ -22,6 +22,8 @@
   "scripts": {
     "undeploy": "cf undeploy usapbe --delete-services --delete-service-keys --delete-service-brokers",
     "build": "rimraf resources mta_archives && mbt build --mtar archive",
-    "deploy": "cf deploy mta_archives/archive.mtar --retries 1"
+    "deploy": "cf deploy mta_archives/archive.mtar --retries 1",
+    "build:ui": "run-s build:uimodule",
+    "build:uimodule": "ui5 build --config=ui5.yaml --clean-dest --dest router/webapp"
   }
 }

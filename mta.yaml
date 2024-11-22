@@ -30,7 +30,7 @@ modules:
         properties:
           srv-url: ${default-url}
     requires:
-      - name: uweb-umce-qas-db
+      - name: uweb-umce-qas-hdi
       - name: uweb-umce-qas-auth
       - name: uweb-umce-qas-getDestination
       - name: app-api
@@ -61,8 +61,20 @@ modules:
         properties:
           url: ${default-url}
 
+  - name: uweb-dev-db-deployer
+    type: hdb
+    path: db
+    parameters:
+      buildpack: nodejs_buildpack
+    build-parameters:
+      builder: custom
+      commands:
+        - npm run build
+    requires:
+      - name: uweb-umce-qas-hdi
+
 resources:
-  - name: uweb-umce-qas-db
+  - name: uweb-umce-qas-hdi
     type: com.sap.xs.hdi-container
     parameters:
       service: hana

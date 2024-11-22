@@ -5,7 +5,6 @@
   "description": "An SAP Fiori application.",
   "scripts": {
     "start": "ui5 serve --config=ui5.yaml   --accept-remote-connections --open index.html",
-    "local": "node node_modules/@sap/approuter/approuter.js",
     "build:ui": "run-s build:apps",
     "clearCoverage": "shx rm -rf coverage",
     "lint": "eslint ./webapp/**/*.js && prettier --plugin-search-dir=. --check ./webapp/**/*.{js,xml} --no-error-on-unmatched-pattern",
