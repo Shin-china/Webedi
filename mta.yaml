@@ -69,7 +69,7 @@ resources:
       service-plan: hdi-shared
       config:
         database_id: 12ec245b-968d-4e8e-b95f-4b18335e2bd8
-        schema: uweb_umce_qas
+        schema: uweb_umch_qas
   - name: uweb-umch-qas-auth
     type: org.cloudfoundry.managed-service
     parameters:
