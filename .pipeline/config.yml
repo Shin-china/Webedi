@@ -1,13 +1,21 @@
+---
 general:
   buildTool: "mta"
 service:
   buildToolVersion: "MBTJ17N18"
+  stages:
+    Acceptance:
+      cfCredentialsId: "cfdeploy"
 stages:
   Build:
     mavenExecuteStaticCodeChecks: false
     npmExecuteLint: false
   Acceptance:
-    cloudFoundryDeploy: false
+    cfApiEndpoint: "https://api.cf.jp10.hana.ondemand.com"
+    cfOrg: "UMC Electronics Co., Ltd._s01-test"
+    cfSpace: "DEV"
+    deployType: "blue-green"
+    cloudFoundryDeploy: true
     npmExecuteEndToEndTests: false
   Malware Scan:
     malwareExecuteScan: false
@@ -22,5 +30,7 @@ stages:
 steps:
   mtaBuild:
     source: mta_umceq
+  cloudFoundryDeploy:
+    mtaDeployParameters: "-f --version-rule ALL"
   artifactPrepareVersion:
     versioningType: "cloud_noTag"
