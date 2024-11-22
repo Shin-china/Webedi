@@ -20,6 +20,7 @@ import com.alibaba.fastjson.JSON;
 
 import cds.gen.MailBody;
 import cds.gen.MailJson;
+import cds.gen.mst.T03SapBp;
 import cds.gen.pch.T01PoH;
 import cds.gen.pch.T02PoD;
 import cds.gen.pch.T03PoC;
@@ -28,6 +29,7 @@ import cds.gen.sys.T11IfManager;
 import customer.bean.pch.Confirmation;
 import customer.bean.pch.Item;
 import customer.bean.pch.SapPchRoot;
+import customer.dao.mst.MstD003;
 import customer.dao.pch.PurchaseDataDao;
 import customer.dao.sys.IFSManageDao;
 import customer.dao.sys.SysD008Dao;
@@ -39,6 +41,9 @@ public class Ifm03PoService {
 
     @Autowired
     private PurchaseDataDao PchDao;
+
+    @Autowired
+    private MstD003 MSTDao;
 
     @Autowired
     private IFSManageDao ifsManageDao;
@@ -89,7 +94,7 @@ public class Ifm03PoService {
 
                         T01PoH T01poExist = PchDao.getByID(Items.getPurchaseorder());
                         String supplier = Items.getSupplier().replaceFirst("^0+(?!$)", "");
-
+                        String PoComp = Items.getCompanycode();
                         // 头找到了
                         if (T01poExist != null) {
 
@@ -98,14 +103,15 @@ public class Ifm03PoService {
 
                             if (!T02podnExist) {
 
-                                supplierCreatMap.put(supplier, "来自99行，头找到了，但是明细没找到，创建发信对象" + Items.getPurchaseorder()
-                                        + Items.getPurchaseorderitem());
+                                supplierCreatMap.put(PoComp + supplier,
+                                        "来自99行，头找到了，但是明细没找到，创建发信对象" + Items.getPurchaseorder()
+                                                + Items.getPurchaseorderitem());
 
                             }
 
                         } else { // 头没找到，创建
 
-                            supplierCreatMap.put(supplier, "来自105行，头没找到，创建发信对象" + Items.getPurchaseorder()
+                            supplierCreatMap.put(PoComp + supplier, "来自105行，头没找到，创建发信对象" + Items.getPurchaseorder()
                                     + Items.getPurchaseorderitem());
 
                         }
@@ -117,10 +123,11 @@ public class Ifm03PoService {
 
                         if (isUpdateObj) {
 
-                            if (!supplierUpdateMap.containsKey(supplier)) {
+                            if (!supplierUpdateMap.containsKey(PoComp + supplier)) {
 
-                                supplierUpdateMap.put(supplier, "来自118行，四个字段其中有修改，肯定是更新" + Items.getPurchaseorder()
-                                        + Items.getPurchaseorderitem());// delflag 单独考虑。
+                                supplierUpdateMap.put(PoComp + supplier,
+                                        "来自118行，四个字段其中有修改，肯定是更新" + Items.getPurchaseorder()
+                                                + Items.getPurchaseorderitem());// delflag 单独考虑。
 
                             }
                             ;
@@ -281,15 +288,16 @@ public class Ifm03PoService {
 
                 for (String poDel : PoDelSet) {
                     String supplier = PchDao.getSupplierByPO(poDel);
+                    String PoComp = PchDao.getPoCompByPO(poDel);
 
                     Boolean isalldele = PchDao.getdelbyPO(poDel);
                     if (isalldele) {
                         // 全部明细都有删除标记
-                        supplierDeleteMap.put(supplier, "来自287行，全部明细都有删除标记，肯定是删除");
+                        supplierDeleteMap.put(PoComp + supplier, "来自287行，全部明细都有删除标记，肯定是删除");
 
                     } else {
                         // 部分明细有删除标记 ，但是删除标记更新了，所以也是更新。
-                        supplierUpdateMap.put(supplier, "来自290行，部分明细有删除标记，肯定是更新");
+                        supplierUpdateMap.put(PoComp + supplier, "来自290行，部分明细有删除标记，肯定是更新");
                     }
                 }
 
@@ -297,11 +305,36 @@ public class Ifm03PoService {
                 if (supplierCreatMap.size() > 0) {
                     for (Map.Entry<String, String> entry : supplierCreatMap.entrySet()) {
 
+                        // 获取供应商的键
+                        String supplierKey = entry.getKey();
+
+                        // 拆分公司代码和供应商代码
+                        String companyCode = supplierKey.substring(0, 4); // 前四位是公司代码
+                        String supplier = supplierKey.substring(4); // 后面是供应商代码
+
                         MailJson mailJson = MailJson.create();
-                        List<T08ComOpD> emailadd = sysd008dao.getmailaddByHcodeV1(H_CODE, entry.getKey());
+                        List<T08ComOpD> emailadd = sysd008dao.getmailaddByHcodeV1(H_CODE, supplier);
                         if (emailadd != null) {
-                            mailJson.setTemplateId("UWEB_M004_C");
-                            mailJson.setMailTo(emailadd.get(0).getValue02());
+
+                            // 将所有邮件地址合并为一个字符串
+                            StringBuilder mailToBuilder = new StringBuilder();
+                            for (T08ComOpD email : emailadd) {
+                                mailToBuilder.append(email.getValue02()).append(";"); // 使用分号分隔
+                            }
+
+                            // 去掉最后一个分号
+                            if (mailToBuilder.length() > 0) {
+                                mailToBuilder.setLength(mailToBuilder.length() - 1);
+                            }
+
+                            // 根据公司代码设置模板 ID
+                            if ("1100".equals(companyCode)) {
+                                mailJson.setTemplateId("UWEB_M004_C_UMCE");
+                            } else if ("1400".equals(companyCode)) {
+                                mailJson.setTemplateId("UWEB_M004_C_UMCH");
+                            }
+
+                            mailJson.setMailTo(mailToBuilder.toString());
                             mailJson.setMailBody(createMailBody(emailadd)); // 设置邮件内容（MailBody）
                             // 添加到邮件列表
                             mailJsonList.add(mailJson);
@@ -321,11 +354,38 @@ public class Ifm03PoService {
                 // 更新发信
                 if (supplierUpdateMap.size() > 0) {
                     for (Map.Entry<String, String> entry : supplierUpdateMap.entrySet()) {
+
+                        // 获取供应商的键
+                        String supplierKey = entry.getKey();
+
+                        // 拆分公司代码和供应商代码
+                        String companyCode = supplierKey.substring(0, 4); // 前四位是公司代码
+                        String supplier = supplierKey.substring(4); // 后面是供应商代码
+
                         MailJson mailJson = MailJson.create();
-                        List<T08ComOpD> emailadd = sysd008dao.getmailaddByHcodeV1(H_CODE, entry.getKey());
+                        List<T08ComOpD> emailadd = sysd008dao.getmailaddByHcodeV1(H_CODE, supplier);
                         if (emailadd != null) {
-                            mailJson.setTemplateId("UWEB_M004_U");
-                            mailJson.setMailTo(emailadd.get(0).getValue02());
+
+                            // 将所有邮件地址合并为一个字符串
+                            StringBuilder mailToBuilder = new StringBuilder();
+                            for (T08ComOpD email : emailadd) {
+                                mailToBuilder.append(email.getValue02()).append(";"); // 使用分号分隔
+                            }
+
+                            // 去掉最后一个分号
+                            if (mailToBuilder.length() > 0) {
+                                mailToBuilder.setLength(mailToBuilder.length() - 1);
+                            }
+
+                            // 根据公司代码设置模板 ID
+                            if ("1100".equals(companyCode)) {
+                                mailJson.setTemplateId("UWEB_M004_U_UMCE");
+                            } else if ("1400".equals(companyCode)) {
+                                mailJson.setTemplateId("UWEB_M004_U_UMCH");
+                            }
+
+                            // mailJson.setTemplateId("UWEB_M004_U");
+                            mailJson.setMailTo(mailToBuilder.toString());
                             mailJson.setMailBody(createMailBody(emailadd)); // 设置邮件内容（MailBody）
                             // 添加到邮件列表
                             mailJsonList.add(mailJson);
@@ -345,11 +405,37 @@ public class Ifm03PoService {
                 // 删除发信
                 if (supplierDeleteMap.size() > 0) {
                     for (Map.Entry<String, String> entry : supplierDeleteMap.entrySet()) {
+
+                        // 获取供应商的键
+                        String supplierKey = entry.getKey();
+
+                        String companyCode = supplierKey.substring(0, 4); // 前四位是公司代码
+                        String supplier = supplierKey.substring(4); // 后面是供应商代码
+
                         MailJson mailJson = MailJson.create();
-                        List<T08ComOpD> emailadd = sysd008dao.getmailaddByHcodeV1(H_CODE, entry.getKey());
+                        List<T08ComOpD> emailadd = sysd008dao.getmailaddByHcodeV1(H_CODE, supplier);
                         if (emailadd != null) {
-                            mailJson.setTemplateId("UWEB_M004_D");
-                            mailJson.setMailTo(emailadd.get(0).getValue02());
+
+                            // 将所有邮件地址合并为一个字符串
+                            StringBuilder mailToBuilder = new StringBuilder();
+                            for (T08ComOpD email : emailadd) {
+                                mailToBuilder.append(email.getValue02()).append(";"); // 使用分号分隔
+                            }
+
+                            // 去掉最后一个分号
+                            if (mailToBuilder.length() > 0) {
+                                mailToBuilder.setLength(mailToBuilder.length() - 1);
+                            }
+
+                            // 根据公司代码设置模板 ID
+                            if ("1100".equals(companyCode)) {
+                                mailJson.setTemplateId("UWEB_M004_D_UMCE");
+                            } else if ("1400".equals(companyCode)) {
+                                mailJson.setTemplateId("UWEB_M004_D_UMCH");
+                            }
+
+                            // mailJson.setTemplateId("UWEB_M004_D");
+                            mailJson.setMailTo(mailToBuilder.toString());
                             mailJson.setMailBody(createMailBody(emailadd)); // 设置邮件内容（MailBody）
                             // 添加到邮件列表
                             mailJsonList.add(mailJson);
@@ -388,11 +474,27 @@ public class Ifm03PoService {
     // 创建 MailBody 的集合
     private Collection<MailBody> createMailBody(List<T08ComOpD> emailadd) {
         Collection<MailBody> bodies = new ArrayList<>();
+
         MailBody body = MailBody.create();
+
+        String bpName = getBpName(emailadd.get(0).getValue01());
+
         body.setObject("vendor"); // 根据具体需求设置
-        body.setValue(emailadd.get(0).getValue03()); // 使用参数内容
+        body.setValue(bpName); // 使用参数内容
         bodies.add(body);
         return bodies;
+    }
+
+    // 根据 BP_ID 获取 BP_NAME
+    private String getBpName(String BP_ID) {
+
+        T03SapBp T03 = MSTDao.getByID(BP_ID);
+
+        if (T03 != null) {
+            return T03.getBpName1();
+        }
+
+        return null;
     }
 
 }
