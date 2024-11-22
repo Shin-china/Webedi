@@ -1,11 +1,11 @@
 _schema-version: "3.1"
-ID: uweb-umce-qas
+ID: uweb-umch-qas
 version: 1.0.0-SNAPSHOT
 description: "A simple CAP project."
 parameters:
   enable-parallel-deployments: true
 modules:
-  - name: uweb-umce-qas-srv
+  - name: uweb-umch-qas-srv
     type: java
     path: srv
     parameters:
@@ -30,14 +30,14 @@ modules:
         properties:
           srv-url: ${default-url}
     requires:
-      - name: uweb-umce-qas-hdi
-      - name: uweb-umce-qas-auth
-      - name: uweb-umce-qas-getDestination
+      - name: uweb-umch-qas-hdi
+      - name: uweb-umch-qas-auth
+      - name: uweb-umch-qas-getDestination
       - name: app-api
         properties:
           CDS_MULTITENANCY_APPUI_URL: ~{url}
 
-  - name: uweb-umce-qas
+  - name: uweb-umch-qas
     type: approuter.nodejs
     path: app\router
     parameters:
@@ -51,9 +51,9 @@ modules:
           name: srv-api # must be used in xs-app.json as well
           url: ~{srv-url}
           forwardAuthToken: true
-      - name: uweb-umce-qas-auth
-      - name: uweb-umce-qas-html5-repo-runtime
-      - name: uweb-umce-qas-getDestination
+      - name: uweb-umch-qas-auth
+      - name: uweb-umch-qas-html5-repo-runtime
+      - name: uweb-umch-qas-getDestination
         parameters:
           content-target: true
     provides:
@@ -62,29 +62,29 @@ modules:
           url: ${default-url}
 
 resources:
-  - name: uweb-umce-qas-hdi
+  - name: uweb-umch-qas-hdi
     type: com.sap.xs.hdi-container
     parameters:
       service: hana
       service-plan: hdi-shared
       config:
-        database_id: f960a815-d87e-418e-86d6-1d97ee39b3c6
+        database_id: 12ec245b-968d-4e8e-b95f-4b18335e2bd8
         schema: uweb_umce_qas
-  - name: uweb-umce-qas-auth
+  - name: uweb-umch-qas-auth
     type: org.cloudfoundry.managed-service
     parameters:
       service: xsuaa
       service-plan: application
       path: ./xs-security.json
       config:
-        xsappname: uweb-umce-qas-auth
+        xsappname: uweb-umch-qas-auth
         tenant-mode: dedicated
-  - name: uweb-umce-qas-getDestination
+  - name: uweb-umch-qas-getDestination
     parameters:
       service-plan: lite
       service: destination
     type: org.cloudfoundry.managed-service
-  - name: uweb-umce-qas-html5-repo-runtime
+  - name: uweb-umch-qas-html5-repo-runtime
     parameters:
       service-plan: app-runtime
       service: html5-apps-repo
