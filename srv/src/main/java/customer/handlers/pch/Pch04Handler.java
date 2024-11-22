@@ -270,25 +270,6 @@ public class Pch04Handler implements EventHandler {
                 String grDateString = item.getGR_DATE();
                 String invBaseDateString = item.getINV_BASE_DATE();
 
-                // 获取 NoDetails 字段并补充前导零
-                String noDetails = item.getNO_DETAILS(); // 使用实例调用非静态方法
-                if (noDetails != null && noDetails.length() >= 10) {
-                    // 获取前10位
-                    String prefix = noDetails.substring(0, 10);
-                
-                    // 获取第11位及以后的部分
-                    String suffix = noDetails.length() > 10 ? noDetails.substring(10) : "";
-                
-                    // 补零到5位，从第11位开始补零
-                    String paddedSuffix = String.format("%05d", Integer.parseInt(suffix.isEmpty() ? "0" : suffix));
-                
-                    // 拼接前10位和补零后的后缀，确保总长度为15
-                    String paddedNoDetails = prefix + paddedSuffix;
-                
-                    // 设置回 NoDetails
-                    item.setNO_DETAILS(paddedNoDetails);
-                }
-
                 // 如果 GR_DATE 存在，解析并格式化它
                 if (grDateString != null && !grDateString.isEmpty()) {
                     try {

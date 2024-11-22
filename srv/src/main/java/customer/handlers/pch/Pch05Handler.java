@@ -52,6 +52,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.time.LocalDate;
+import java.util.Date;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
@@ -227,14 +229,12 @@ public class Pch05Handler implements EventHandler {
       data.setTaxBaseAmount(stripTrailingZeros(data.getTaxBaseAmount()));
       // data.setLastdate(data.getLastdate());
 
-      // // 获取当前日期
-      // LocalDate currentDate = LocalDate.now();
-      // // 计算当月的最后一天
-      // LocalDate lastDayOfMonth = currentDate.with(TemporalAdjusters.lastDayOfMonth());
-      // // 将格式化的日期存入变量
-      // String formattedLastDate = lastDayOfMonth.format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
-      // data.setLastdate(dateFormat.parse(formattedLastDate));
-
+      // 获取当前日期
+      LocalDate currentDate = LocalDate.now();
+      // 计算当月的最后一天
+      LocalDate lastDayOfMonth = currentDate.with(TemporalAdjusters.lastDayOfMonth());
+      // 将格式化的日期存入变量
+      data.setLastdate(lastDayOfMonth);
 
     });
   }
@@ -315,14 +315,6 @@ public class Pch05Handler implements EventHandler {
       // 遍历 Pch05List 中的每一项（每个 item 为 Pch05List 的一个记录）
       for (Pch05 item : dataList.getList()) {
 
-        // // 获取当前日期
-        // LocalDate currentDate = LocalDate.now();
-        // // 计算当月的最后一天
-        // LocalDate lastDayOfMonth = currentDate.with(TemporalAdjusters.lastDayOfMonth());
-        // // 将格式化的日期存入变量
-        // String formattedLastDate = lastDayOfMonth.format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
-        // item.setLASTDATE(formattedLastDate);
-        // 将 Pch05List 中的字段值赋给其他字段
         item.setPO_BUKRS1(item.getPO_BUKRS()); // 赋值 PO_BUKRS1
         item.setLASTDATE1(item.getLASTDATE()); // 将 LASTDATE 的值赋给 LASTDATE1
         item.setLASTDATE2(item.getLASTDATE()); // 将 LASTDATE 的值赋给 LASTDATE2
