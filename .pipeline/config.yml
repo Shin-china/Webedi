@@ -1,3 +1,26 @@
+general:
+  buildTool: "mta"
+service:
+  buildToolVersion: "MBTJ17N18"
+stages:
+  Build:
+    mavenExecuteStaticCodeChecks: false
+    npmExecuteLint: false
+  Acceptance:
+    cloudFoundryDeploy: false
+    npmExecuteEndToEndTests: false
+  Malware Scan:
+    malwareExecuteScan: false
+  Release:
+    tmsExport: false
+    tmsUpload: false
+    cloudFoundryDeploy: false
+  Additional Unit Tests:
+    npmExecuteScripts: false
+  Compliance:
+    sonarExecuteScan: false
 steps:
   mtaBuild:
     source: mta_umceq
+  artifactPrepareVersion:
+    versioningType: "cloud_noTag"
