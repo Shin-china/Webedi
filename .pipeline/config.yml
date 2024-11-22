@@ -2,7 +2,7 @@
 general:
   buildTool: "mta"
 service:
-  buildToolVersion: "MBTJ17N18"
+  buildToolVersion: "MBTJ21N18"
   stages:
     Acceptance:
       cfCredentialsId: "cfdeploy"
