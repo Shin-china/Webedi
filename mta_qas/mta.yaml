@@ -1,0 +1,91 @@
+_schema-version: "3.1"
+ID: uweb-umce-qas
+version: 1.0.0-SNAPSHOT
+description: "A simple CAP project."
+parameters:
+  enable-parallel-deployments: true
+modules:
+  - name: uweb-umce-qas-srv
+    type: java
+    path: srv
+    parameters:
+      buildpack: sap_java_buildpack
+      readiness-health-check-type: http
+      readiness-health-check-http-endpoint: /
+      enable-ssh: true
+      disk-quota: 1G #硬盘
+      memory: 4G #内存
+      zdm-mode: true #在零停机维护模式下运行蓝绿部署
+    properties:
+      SPRING_PROFILES_ACTIVE: cloud,sandbox
+      JBP_CONFIG_COMPONENTS: "jres: ['com.sap.xs.java.buildpack.jre.SAPMachineJRE']"
+      JBP_CONFIG_SAP_MACHINE_JRE: "{ use_offline_repository: false, version: 21.+ }"
+    build-parameters:
+      builder: custom
+      commands:
+        - mvn clean package -DskipTests=true
+      build-result: target/*-exec.jar
+    provides:
+      - name: srv-api # required by consumers of CAP services (e.g. approuter)
+        properties:
+          srv-url: ${default-url}
+    requires:
+      - name: uweb-umce-qas-db
+      - name: uweb-umce-qas-auth
+      - name: uweb-umce-qas-getDestination
+      - name: app-api
+        properties:
+          CDS_MULTITENANCY_APPUI_URL: ~{url}
+
+  - name: uweb-umce-qas
+    type: approuter.nodejs
+    path: app\router
+    parameters:
+      keep-existing-routes: true
+      disk-quota: 256M
+      memory: 256M
+    requires:
+      - name: srv-api
+        group: destinations
+        properties:
+          name: srv-api # must be used in xs-app.json as well
+          url: ~{srv-url}
+          forwardAuthToken: true
+      - name: uweb-umce-qas-auth
+      - name: uweb-umce-qas-html5-repo-runtime
+      - name: uweb-umce-qas-getDestination
+        parameters:
+          content-target: true
+    provides:
+      - name: app-api
+        properties:
+          url: ${default-url}
+
+resources:
+  - name: uweb-umce-qas-db
+    type: com.sap.xs.hdi-container
+    parameters:
+      service: hana
+      service-plan: hdi-shared
+      config:
+        database_id: f960a815-d87e-418e-86d6-1d97ee39b3c6
+        schema: uweb_umce_qas
+  - name: uweb-umce-qas-auth
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: xsuaa
+      service-plan: application
+      path: ./xs-security.json
+      config:
+        xsappname: uweb-umce-qas-auth
+        tenant-mode: dedicated
+  - name: uweb-umce-qas-getDestination
+    parameters:
+      service-plan: lite
+      service: destination
+    type: org.cloudfoundry.managed-service
+  - name: uweb-umce-qas-html5-repo-runtime
+    parameters:
+      service-plan: app-runtime
+      service: html5-apps-repo
+    type: org.cloudfoundry.managed-service
