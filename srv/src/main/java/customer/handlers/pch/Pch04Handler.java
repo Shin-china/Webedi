@@ -241,39 +241,6 @@ public class Pch04Handler implements EventHandler {
         });
     }
 
-    /**
-     * 
-     * 检查抬头 工厂 检查明细
-     * 
-     * @param context       传入上下文
-     * @param d012MoveActHs 传入画面输入值
-     */
-    @After(entity = PchT04PaymentSumHj6_.CDS_NAME, event = "READ")
-    public void afterReadPchT04PaymentSumHj6(CdsReadEventContext context, Stream<PchT04PaymentSumHj6> datas3) {
-
-        datas3.forEach(data3 -> {
-
-            // 获取 NoDetails 字段并补充前导零
-            String noDetails = data3.getNoDetails(); // 使用实例调用非静态方法
-            if (noDetails != null && noDetails.length() >= 10) {
-                // 获取前10位
-                String prefix = noDetails.substring(0, 10);
-            
-                // 获取第11位及以后的部分
-                String suffix = noDetails.length() > 10 ? noDetails.substring(10) : "";
-            
-                // 补零到5位，从第11位开始补零
-                String paddedSuffix = String.format("%05d", Integer.parseInt(suffix.isEmpty() ? "0" : suffix));
-            
-                // 拼接前10位和补零后的后缀，确保总长度为15
-                String paddedNoDetails = prefix + paddedSuffix;
-            
-                // 设置回 NoDetails
-                data3.setNoDetails(paddedNoDetails);
-            }
-
-        });
-    }
 
     /**
      * 处理金额字段，去除尾随零。
