@@ -17,7 +17,6 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
 import java.math.BigDecimal;
-import java.text.ParseException;
 import java.util.*;
 
 @Component
@@ -30,16 +29,13 @@ public class Pch08Service {
     @Autowired
     private PchD007 d007Dao;
 
-    HashMap<String, BigDecimal> hs = new HashMap<>();
-
     /*
      * pch08
      * 保存pch06，修改pch07表
      */
-    public void detailsSave(Pch08DataList list) throws ParseException {
+    public void detailsSave(Pch08DataList list) {
 
         list.getList().forEach(value -> {
-            //T06QuotationH t06 = extractT06Data(value);
             List<T07QuotationD> oldItems = getOldT07Data(value);
             List<T07QuotationD> newItems = extractT07Data(value);
 
@@ -47,19 +43,6 @@ public class Pch08Service {
             pch08Dao.updatePch08(oldItems, newItems);
 
         });
-    }
-
-    public T06QuotationH extractT06Data(Pch08 pch08) {
-        T06QuotationH t06 = pch08Dao.getT06ByQuoNumber(pch08.getQUO_NUMBER());
-        if (t06 == null) {
-            return null;
-        }
-
-        t06.setStatus("3");
-        t06.setUpTime(DateTools.getInstantNow());
-        t06.setUpBy(pch08Dao.getUserId());
-
-        return t06;
     }
 
     public List<T07QuotationD> getOldT07Data(Pch08 pch08) {
@@ -145,39 +128,6 @@ public class Pch08Service {
      */
     public void check(Pch08DataList list) {
 
-        // 通过key累加数量
-        // for (Pch08 iterable_element : list.getList()) {
-        // String poNo = iterable_element.getPO_NO();
-        // int poDNo = iterable_element.getD_NO();
-        // String key = poNo + "," + poDNo;
-        //
-        // BigDecimal qty = BigDecimal.ZERO;
-        // if (iterable_element.getRQ() != null) {
-        // qty = iterable_element.getRQ();
-        // } else {
-        // qty = iterable_element.getQUANTITY();
-        // }
-        //
-        // BigDecimal bigDecimal = hs.get(key);
-        // if (bigDecimal != null) {
-        // hs.put(key, qty.add(bigDecimal));
-        // } else {
-        // hs.put(key, qty);
-        // }
-        //
-        // }
-        // // 通过累加量进行判断
-        // hs.keySet().forEach(value -> {
-        // // 根据需要对 value 进行处理
-        // String[] split = value.split(",");
-        // T02PoD byID = Pch01saveDao.getByID(split[0], Integer.parseInt(split[1]));
-        // BigDecimal poPurQty = byID.getPoPurQty();
-        // if (poPurQty.compareTo(hs.get(value)) != 0) {
-        // list.setErr(true);
-        // list.setReTxt("PCH_06_ERROR_MSG1");
-        // }
-        // });
-
     }
 
     private Pch08Keys extractDetailKeys(T07QuotationD t07Item) {
@@ -221,8 +171,7 @@ public class Pch08Service {
         List<Map<String, Object>> resultList = new ArrayList<>();
 
 
-        for (int i = 0; i < detailParams.size(); i++) {
-            Pch08DetailParam detailParam = detailParams.get(i);
+        for (Pch08DetailParam detailParam : detailParams) {
             String quoNumber = detailParam.getQUO_NUMBER();
             Integer quoItem = detailParam.getQUO_ITEM();
 
@@ -242,8 +191,7 @@ public class Pch08Service {
             resultMap = new HashMap<>();
 
             //循环所有明细
-            for (int j = 0; j < t07Items.size(); j++) {
-                T07QuotationD t07Item = t07Items.get(j);
+            for (T07QuotationD t07Item : t07Items) {
                 Pch08Keys keys = extractDetailKeys(t07Item);
                 String machineKey = keys.getMachine();
                 String materialKey = keys.getMaterial();
@@ -264,8 +212,7 @@ public class Pch08Service {
             }
 
             //循环分组
-            for (int j = 0; j < t07Items.size(); j++) {
-                T07QuotationD t07Item = t07Items.get(j);
+            for (T07QuotationD t07Item : t07Items) {
                 Pch08Keys keys = extractDetailKeys(t07Item);
                 String materialKey = keys.getMaterial();
 
@@ -389,103 +336,14 @@ public class Pch08Service {
 
     }
 
-//    public List<LinkedHashMap<String, Object>> getDetailData(String param) {
-//
-//        String[] arr = param.split(",");
-//        List<LinkedHashMap<String, Object>> reList = new ArrayList<>();
-//        List<PchQuoH> headList = new ArrayList<>();
-//
-//        for (String quoNum : arr) {
-//
-//            List<T07QuotationD> t07List = d007Dao.getList(quoNum);
-//            // 根据物料号分组 每个物料一行
-//            Map<String, List<T07QuotationD>> tempMap = t07List.stream()
-//                    .filter(t07 -> !StringTool.isEmpty(t07.getMaterial()))
-//                    .collect(Collectors.groupingBy(T07QuotationD::getMaterial));
-//
-//            Set<String> keySet = tempMap.keySet();
-//            for (String mat : keySet) {
-//                PchQuoH head = new PchQuoH();
-//                List<PchQuoItem> itemList = new ArrayList<>();
-//                head.setQuoNo(quoNum);
-//                head.setMaterial(mat);
-//                List<T07QuotationD> list = tempMap.get(mat);
-//                for (T07QuotationD t07 : list) {
-//                    PchQuoItem item = new PchQuoItem();
-//                    item.setPrice(t07.getPrice());
-//                    item.setQty(t07.getQty());
-//                    item.setT07Id(t07.getId());
-//                    itemList.add(item);
-//                }
-//                head.setList(itemList);
-//                headList.add(head);
-//            }
-//
-//
-//        }
-//        for (PchQuoH h : headList) {
-//            LinkedHashMap<String, Object> m = new LinkedHashMap<>();
-//            m.put("QUO_NO", h.getQuoNo());
-//            m.put("MAT", h.getMaterial());
-//            Integer i = 1;
-//            List<PchQuoItem> list = h.getList();
-//            for (int j = 0; j < list.size(); j++) {
-//                m.put("QTY_" + i, list.get(j).getQty());
-//                m.put("PRICE_" + i, list.get(j).getPrice());
-//                m.put("KEY_" + i, list.get(j).getT07Id());
-//
-//                if (j == list.size() - 1) {
-//                    m.put("MAX", i);
-//                }
-//                i++;
-//            }
-//            reList.add(m);
-//        }
-//
-//        return reList;
-//
-//    }
-
     public void updateDetail(String param) {
         JSONArray array = JSON.parseArray(param);
 
-        for (int i = 0; i < array.size(); i++) {
-            JSONObject object = (JSONObject) array.get(i);
-            // size - 3 去除QuoNo,Mat,MAX 剩下的qty price key 三个为一组
-            //int count = (object.size() - 3) / 3;
+        for (Object o : array) {
+            JSONObject object = (JSONObject) o;
             int personSize = object.getIntValue("PERSON_SIZE");
             int qtySize = object.getIntValue("QUANTITY_SIZE");
             updateT07New(object, personSize, qtySize);
-        }
-    }
-
-    public void updateT07(JSONObject o, int size) {
-        for (int i = 1; i <= size; i++) {
-            if (o.getString("KEY_" + i) != null) {
-                String t07Id = o.getString("KEY_" + i);
-                String qty = o.getString("QTY_" + i);
-                String price = o.getString("PRICE_" + i);
-                T07QuotationD t07 = d007Dao.getByT07Id(t07Id);
-                T07QuotationD t07New = d007Dao.getByT07Id(t07Id);
-
-                if (t07 != null) {
-                    t07.setDelFlag("Y");
-                    t07.setUpTime(DateTools.getInstantNow());
-                    t07.setUpBy(pch08Dao.getUserId());
-                    d007Dao.update(t07);
-                }
-
-                if (t07New != null) {
-                    t07New.setQty(qty == null ? BigDecimal.ZERO : new BigDecimal(qty));
-                    t07New.setPrice(price == null ? BigDecimal.ZERO : new BigDecimal(price));
-                    t07New.setId(null);
-                    t07New.setStatus("3");
-                    t07New.setDelFlag("N");
-                    t07New.setUpTime(DateTools.getInstantNow());
-                    t07New.setUpBy(pch08Dao.getUserId());
-                    d007Dao.insert(t07New);
-                }
-            }
         }
     }
 
@@ -585,71 +443,79 @@ public class Pch08Service {
         }
 
         for(T07QuotationD item : itemList){
-            Pch08Template template = new Pch08Template();
-            T06QuotationH header = headerList.stream().filter(e->e.getQuoNumber().equals(item.getQuoNumber())).findFirst().get();
-            template.setQUO_NUMBER(item.getQuoNumber());
-            template.setQUO_ITEM(item.getQuoItem());
-            template.setSALES_NUMBER(item.getSalesNumber());
-            template.setSALES_D_NO(item.getSalesDNo());
-            template.setNO(item.getNo());
-            template.setQUANTITY(header.getQuantity());
-            template.setREFRENCE_NO(item.getRefrenceNo());
-            template.setCUSTOMER(header.getCustomer());
-            template.setMACHINE_TYPE(header.getMachineType());
-            template.setVALIDATE_START(header.getValidateStart());
-            template.setVALIDATE_END(header.getValidateEnd());
-            template.setITEM(header.getItem());
-            template.setTIME(header.getTime());
-            template.setLOCATION(header.getLocation());
-            template.setMATERIAL_NUMBER(item.getMaterialNumber());
-            template.setCUST_MATERIAL(item.getCustMaterial());
-            template.setMANUFACT_MATERIAL(item.getManufactMaterial());
-            template.setAttachment(item.getAttachment());
-            template.setMaterial(item.getMaterial());
-            template.setMAKER(item.getMaker());
-            template.setUWEB_USER(item.getUwebUser());
-            template.setBP_NUMBER(item.getBpNumber());
-            template.setPERSON_NO1(item.getPersonNo1());
-            template.setYLP(item.getYlp());
-            template.setMANUL(item.getManul());
-            template.setMANUFACT_CODE(item.getManufactCode());
-            template.setCUSTOMER_MMODEL(item.getCustomerMmodel());
-            template.setMID_QF(item.getMidQf());
-            template.setSMALL_QF(item.getSmallQf());
-            template.setOTHER_QF(item.getOtherQf());
-            template.setCURRENCY(item.getCurrency());
-            template.setQTY(item.getQty());
-            template.setPRICE(item.getPrice());
-            template.setPRICE_CONTROL(item.getPriceControl());
-            template.setLEAD_TIME(item.getLeadTime());
-            template.setMOQ(item.getMoq());
-            template.setUNIT(item.getUnit());
-            template.setSPQ(item.getSpq());
-            template.setKBXT(item.getKbxt());
-            template.setPRODUCT_WEIGHT(item.getProductWeight());
-            template.setORIGINAL_COU(item.getOriginalCou());
-            template.setEOL(item.getEol());
-            template.setISBOI(item.getIsboi());
-            template.setIncoterms(item.getIncoterms());
-            template.setIncoterms_Text(item.getIncotermsText());
-            template.setMEMO1(item.getMemo1());
-            template.setMEMO2(item.getMemo2());
-            template.setMEMO3(item.getMemo3());
-            template.setSL(item.getSl());
-            template.setTZ(item.getTz());
-            template.setRMATERIAL(item.getRmaterial());
-            template.setRMATERIAL_CURRENCY(item.getRmaterialCurrency());
-            template.setRMATERIAL_PRICE(item.getRmaterialPrice());
-            template.setRMATERIAL_LT(item.getRmaterialLt());
-            template.setRMATERIAL_MOQ(item.getRmaterialMoq());
-            template.setRMATERIAL_KBXT(item.getRmaterialKbxt());
-            template.setUMC_COMMENT_1(item.getUmcComment1());
-            template.setUMC_COMMENT_2(item.getUmcComment2());
+            headerList.stream().filter(e->e.getQuoNumber().equals(item.getQuoNumber()))
+                          .findFirst()
+                          .ifPresent(header->{
+                              Pch08Template template = setTemplateData(header, item);
+                              resultList.add(template);
+                          });
 
-            resultList.add(template);
         }
 
         return resultList;
+    }
+
+    private Pch08Template setTemplateData(T06QuotationH header, T07QuotationD item){
+        Pch08Template template = new Pch08Template();
+        template.setQUO_NUMBER(item.getQuoNumber());
+        template.setQUO_ITEM(item.getQuoItem());
+        template.setSALES_NUMBER(item.getSalesNumber());
+        template.setSALES_D_NO(item.getSalesDNo());
+        template.setNO(item.getNo());
+        template.setQUANTITY(header.getQuantity());
+        template.setREFRENCE_NO(item.getRefrenceNo());
+        template.setCUSTOMER(header.getCustomer());
+        template.setMACHINE_TYPE(header.getMachineType());
+        template.setVALIDATE_START(header.getValidateStart());
+        template.setVALIDATE_END(header.getValidateEnd());
+        template.setITEM(header.getItem());
+        template.setTIME(header.getTime());
+        template.setLOCATION(header.getLocation());
+        template.setMATERIAL_NUMBER(item.getMaterialNumber());
+        template.setCUST_MATERIAL(item.getCustMaterial());
+        template.setMANUFACT_MATERIAL(item.getManufactMaterial());
+        template.setAttachment(item.getAttachment());
+        template.setMaterial(item.getMaterial());
+        template.setMAKER(item.getMaker());
+        template.setUWEB_USER(item.getUwebUser());
+        template.setBP_NUMBER(item.getBpNumber());
+        template.setPERSON_NO1(item.getPersonNo1());
+        template.setYLP(item.getYlp());
+        template.setMANUL(item.getManul());
+        template.setMANUFACT_CODE(item.getManufactCode());
+        template.setCUSTOMER_MMODEL(item.getCustomerMmodel());
+        template.setMID_QF(item.getMidQf());
+        template.setSMALL_QF(item.getSmallQf());
+        template.setOTHER_QF(item.getOtherQf());
+        template.setCURRENCY(item.getCurrency());
+        template.setQTY(item.getQty());
+        template.setPRICE(item.getPrice());
+        template.setPRICE_CONTROL(item.getPriceControl());
+        template.setLEAD_TIME(item.getLeadTime());
+        template.setMOQ(item.getMoq());
+        template.setUNIT(item.getUnit());
+        template.setSPQ(item.getSpq());
+        template.setKBXT(item.getKbxt());
+        template.setPRODUCT_WEIGHT(item.getProductWeight());
+        template.setORIGINAL_COU(item.getOriginalCou());
+        template.setEOL(item.getEol());
+        template.setISBOI(item.getIsboi());
+        template.setIncoterms(item.getIncoterms());
+        template.setIncoterms_Text(item.getIncotermsText());
+        template.setMEMO1(item.getMemo1());
+        template.setMEMO2(item.getMemo2());
+        template.setMEMO3(item.getMemo3());
+        template.setSL(item.getSl());
+        template.setTZ(item.getTz());
+        template.setRMATERIAL(item.getRmaterial());
+        template.setRMATERIAL_CURRENCY(item.getRmaterialCurrency());
+        template.setRMATERIAL_PRICE(item.getRmaterialPrice());
+        template.setRMATERIAL_LT(item.getRmaterialLt());
+        template.setRMATERIAL_MOQ(item.getRmaterialMoq());
+        template.setRMATERIAL_KBXT(item.getRmaterialKbxt());
+        template.setUMC_COMMENT_1(item.getUmcComment1());
+        template.setUMC_COMMENT_2(item.getUmcComment2());
+        return template;
     }
 
     public Pch08UploadResult upload(String param, boolean isTestRun){
@@ -671,7 +537,11 @@ public class Pch08Service {
 
         checkResult = uploadCheck(uploadData);
 
-        if (checkResult != null && checkResult.getSTATUS().equals("E")){
+        if (checkResult == null){
+            return null;
+        }
+
+        if (checkResult.getSTATUS().equals("E")){
             return checkResult;
         }
 
@@ -732,6 +602,9 @@ public class Pch08Service {
         t07New.setRmaterialKbxt(uploadData.getRMATERIAL_KBXT());
         t07New.setPersonNo1(uploadData.getPERSON_NO1());
         d007Dao.insert(t07New);
+
+        checkResult.setSTATUS("S");
+        checkResult.setMESSAGE("実行成功");
 
         return checkResult;
     }
@@ -803,7 +676,7 @@ public class Pch08Service {
         }
 
         uploadResult.setSTATUS("S");
-        uploadResult.setMESSAGE("成功");
+        uploadResult.setMESSAGE("チェック成功");
         return uploadResult;
     }
 

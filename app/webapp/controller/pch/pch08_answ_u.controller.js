@@ -34,9 +34,6 @@ sap.ui.define([
 		},
 
 		onDownloadTemplate: function () {
-			// var sUrl = "/path/to/your/template/file.xlsx"; // 模板文件的路径
-			// sap.m.URLHelper.redirect(sUrl, true); // 通过 URLHelper 重定向到文件 URL，进行下载
-			var oExportModel = new sap.ui.model.json.JSONModel([]);
 			var aColumns = [];
 			var aExport=[];
 			var oData = {};
@@ -71,140 +68,8 @@ sap.ui.define([
 				});
 		},
 
-
-		uploadButtonPress(oEvent) {
-			this._viewCreateSet();
-			const model = this.getView().getModel("workInfo");
-			model.setData(oEvent.getParameter("rawData"));
-		},
-
 		_onRouteMatched: function (oEvent) {
 			//this._viewCreateSet(); 	
-		},
-
-		onCheck: function () {
-			var flgHeand = true;
-			var checkResult = true;
-
-			var that = this;
-			that._setBusy(true);
-			that._setEditable(true);
-
-			var jsonModel = that.getModel("workInfo");
-			var data = jsonModel.getData();
-
-			// 1. 检查模板是否有数据
-			if (jsonModel.oData.length === undefined) {
-				sap.m.MessageBox.alert(that.MessageTools._getI18nTextInModel("pch", "PCH01_MSG_FILE_BLANK", this.getView()));
-				that._setBusy(false);
-				return;
-			}
-
-			//2. 必输字段检查   ・必須入力データは「SAP品目コード」、「仕入先」、「プラント」、「数量」、「有効開始日付」、「有効終了日付」
-			var hasError = false;
-
-			data.forEach(function (item) {
-				var missingFields = [];
-
-				if (!item.MATERIAL_NUMBER || item.MATERIAL_NUMBER === "") {
-					//missingFields.push("SAP品目コード"); // SAP品目コード
-					missingFields.push("SAP品目コード");
-				}
-				if (!item.BP_NUMBER || item.BP_NUMBER === "") {
-					//missingFields.push("仕入先"); // 仕入先
-					missingFields.push("仕入先");
-				}
-				if (!item.PLANT_ID || item.PLANT_ID === "") {
-					//missingFields.push("プラント"); // プラント
-					missingFields.push("プラント");
-				}
-				if (!item.QTY || item.QTY === "") {
-					//missingFields.push("数量"); // 数量
-					missingFields.push("数量");
-				}
-				if (!item.VALIDATE_START || item.VALIDATE_START === "") {
-					//missingFields.push("有効開始日付"); // 有効開始日付
-					missingFields.push("有効開始日付");
-				}
-				if (!item.VALIDATE_END || item.VALIDATE_END === "") {
-					//missingFields.push("有効終了日付"); // 有効終了日付
-					missingFields.push("有効終了日付");
-				}
-
-				if (missingFields.length > 0) {
-					item.MSG_TEXT = missingFields.join("\n"); // 将错误消息设置到对应行的MSG_TEXT字段
-
-					item.STATE = "Error"; // 将状态设置为错误状态
-					item.I_CON = "sap-icon://error"; // 设置状态图标为错误图
-					jsonModel.refresh(); // 刷新模型以更新UI
-					that._setBusy(false);
-					hasError = true;//有错
-					return;
-				}
-			});
-			//如果 任意一行message里有消息，则弹出消息。
-			if (hasError) {
-				sap.m.MessageBox.alert(that.MessageTools._getI18nTextInModel("pch", "PCH01_MSG_FILED_BLANK", this.getView()));
-				that._setBusy(false);
-				return;
-			}
-
-			// 3. 如果所有检查都通过，调用服务
-			if (checkResult && flgHeand) {
-				this.getModel().callFunction("/PCH07_CHECK_DATA", {
-					method: "POST",
-					urlParameters: this.getData(),
-					success: function (result) {
-						// 取数据
-						var arr = result.PCH07_CHECK_DATA;
-						var myArray = JSON.parse(arr);
-
-						// 设置画面上总结
-						//that._setCnt(myArray.reTxt);
-
-						// 更新画面上的model
-						jsonModel.setData(myArray.list);
-
-						myArray.list.forEach(function (item) {
-							if (item.SUCCESS == false) { // 根据实际数据结构判断是否存在错误字段
-								hasError = true; // 后台检查有错误
-							}
-						});
-
-						if (hasError) {
-							// that._setEditable(false);
-							that.getView().getModel("viewModel").setProperty("/isButtonEnabled", false);
-
-						}
-
-						that._setBusy(false);
-
-					},
-
-					error: function (oError) {
-
-						that._setBusy(false);
-
-					}
-				});
-			}
-		},
-
-		onSave: function () {
-			var that = this;
-			that._setBusy(true);
-
-			this._callCdsAction("/PCH07_SAVE_DATA", this.getData(), this).then((oData) => {
-				var myArray = JSON.parse(oData.PCH01_SAVE_DATA);
-				//that._setCnt(myArray.reTxt);
-				var jsonModel = that.getModel("workInfo");
-
-				jsonModel.setData(myArray.list);
-				//设置为非创建
-				that._setIsCreate(false);
-
-				that._setBusy(false);
-			});
 		},
 
 		// excel上传
@@ -246,38 +111,11 @@ sap.ui.define([
 					row.ICON = 'sap-icon://pending';
 				})
 
-				// const sConvertedData = jsonS.map(row => {
-				// 	const newRow = { ...row };
-
-				// 	if (newRow.VALIDATE_START) {
-				// 		newRow.VALIDATE_START = that.__formatExcelDate(newRow.VALIDATE_START);
-				// 	}
-
-				// 	if (newRow.VALIDATE_END) {
-				// 		newRow.VALIDATE_END = that.__formatExcelDate(newRow.VALIDATE_END);
-				// 	}
-
-				// 	return newRow;
-				// });
-
-				//jsonModel.setData(sConvertedData);
 				jsonModel.setData(jsonS);
 			};
-			oReader.readAsBinaryString(oFile);
+			oReader.readAsArrayBuffer(oFile);
 		},
 
-		__formatExcelDate: function (date) {
-			if (!date || date === '') {
-				return;
-			}
-
-			const excelEpoch = new Date(1899, 11, 30);
-			const msPerDay = 24 * 60 * 60 * 1000;
-			const dNewDate = new Date(excelEpoch.getTime() + (date * msPerDay));
-			const sNewdate = dNewDate.toISOString().split("T")[0];
-
-			return sNewdate;
-		},
 
 		onExport: function (oEvent) {
 			var oTable = this.getView().byId("tableUploadData");
@@ -375,16 +213,6 @@ sap.ui.define([
 				// 设置文件名为当前日期和时间
 				oSettings.fileName = `購買見積登録_${sDate}${sTime}.xlsx`;
 			}
-		},
-
-
-		getData: function () {
-			var jsondata = this.getModel("workInfo").getData();
-			var a = JSON.stringify({ list: jsondata });
-			var oPrams = {
-				ShelfJson: a,
-			};
-			return oPrams;
 		},
 
 		onUploadCheck: function (oEvent) {
