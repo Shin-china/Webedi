@@ -7,7 +7,7 @@ parameters:
 modules:
   - name: uweb-umce-qas-srv
     type: java
-    path: srv
+    path: ..\srv
     parameters:
       buildpack: sap_java_buildpack
       readiness-health-check-type: http
@@ -39,7 +39,7 @@ modules:
 
   - name: uweb-umce-qas
     type: approuter.nodejs
-    path: app\router
+    path: ..\app\router_umceq
     parameters:
       keep-existing-routes: true
       disk-quota: 256M
@@ -75,7 +75,7 @@ resources:
     parameters:
       service: xsuaa
       service-plan: application
-      path: ./xs-security.json
+      path: ../xs-security.json
       config:
         xsappname: uweb-umce-qas-auth
         tenant-mode: dedicated
