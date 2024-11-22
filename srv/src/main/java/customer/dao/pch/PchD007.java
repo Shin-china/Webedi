@@ -29,10 +29,7 @@ public class PchD007 extends Dao {
                         .where(o -> o.MATERIAL_NUMBER().eq(MATERIAL_NUMBER)))
                 .first(T07QuotationD.class);
 
-        if (result.isPresent()) {
-            return result.get();
-        }
-        return null;
+        return result.orElse(null);
     }
 
     // 追加
@@ -68,10 +65,7 @@ public class PchD007 extends Dao {
                         .where(o -> o.ID().eq(t07Id)))
                 .first(T07QuotationD.class);
 
-        if (result.isPresent()) {
-            return result.get();
-        }
-        return null;
+        return result.orElse(null);
     }
 
 }
