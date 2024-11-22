@@ -1,4 +1,4 @@
-_schema-version: '3.1'
+_schema-version: "3.1"
 ID: uweb-dev
 version: 1.0.0-SNAPSHOT
 description: "A simple CAP project."
@@ -14,7 +14,7 @@ modules:
       readiness-health-check-http-endpoint: /
       enable-ssh: true
       disk-quota: 1G #硬盘
-      memory: 4G #内存
+      memory: 2G #内存
       zdm-mode: true #在零停机维护模式下运行蓝绿部署
     properties:
       SPRING_PROFILES_ACTIVE: cloud,sandbox

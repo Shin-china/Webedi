@@ -14,7 +14,7 @@ modules:
       readiness-health-check-http-endpoint: /
       enable-ssh: true
       disk-quota: 1G #硬盘
-      memory: 4G #内存
+      memory: 2G #内存
       zdm-mode: true #在零停机维护模式下运行蓝绿部署
     properties:
       SPRING_PROFILES_ACTIVE: cloud,sandbox
@@ -42,7 +42,7 @@ modules:
     path: app\router
     parameters:
       keep-existing-routes: true
-      disk-quota: 256M
+      disk-quota: 512M
       memory: 256M
     requires:
       - name: srv-api
@@ -66,10 +66,6 @@ modules:
     path: db
     parameters:
       buildpack: nodejs_buildpack
-    build-parameters:
-      builder: custom
-      commands:
-        - npm run build
     requires:
       - name: uweb-umce-qas-hdi
 
