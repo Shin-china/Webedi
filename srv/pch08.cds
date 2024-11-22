@@ -88,4 +88,6 @@ extend service TableService {
     action PCH08_SHOW_DETAIL(param : String) returns String;
     action PCH08_EDIT_DETAIL(param : String) returns String;
     action PCH08_DOWNLOAD_TEMPLATE(param : String) returns String;
+    action PCH08_UPLOAD_CHECK(param : String) returns String;
+    action PCH08_UPLOAD_EXECUTE(param : String) returns String;
 };

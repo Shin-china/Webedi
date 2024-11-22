@@ -45,6 +45,7 @@ public class Ifm05PayService {
 
             T11IfManager interfaceConfig = ifsManageDao.getByCode("IFM42");
 
+            
             if (interfaceConfig != null) {
 
                 String response = S4OdataTools.get(interfaceConfig, 1000, null, null);
@@ -90,6 +91,7 @@ public class Ifm05PayService {
                     p.setPurchaseGroup(suplist.getPurchasinggroup());
                     p.setPurchaseGroupDesc(suplist.getPurchasinggroupname());
                     p.setPlantId(suplist.getPlant());
+                    p.setCompanyCode(suplist.getCompanycode());
                     PchDao.modifyT05(p);
 
                 }

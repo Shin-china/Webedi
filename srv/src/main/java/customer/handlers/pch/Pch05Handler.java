@@ -93,6 +93,25 @@ public class Pch05Handler implements EventHandler {
       pchT05AccountDetail.setQuantity(stripTrailingZeros(pchT05AccountDetail.getQuantity()));
       pchT05AccountDetail.setTaxRate(stripTrailingZeros(pchT05AccountDetail.getTaxRate()));
 
+      // // 获取 NoDetails 字段并补充前导零
+      // String noDetails = pchT05AccountDetail.getNoDetails();
+      // if (noDetails != null && noDetails.length() >= 10) {
+      //     // 获取前10位
+      //     String prefix = noDetails.substring(0, 10);
+
+      //     // 获取第11位及以后的部分，如果没有就补充零
+      //     String suffix = noDetails.length() > 10 ? noDetails.substring(10) : "";
+
+      //     // 补充零，直到后缀长度为5（确保 NoDetails 字段的总长度为15）
+      //     String paddedSuffix = String.format("%1$-5s", suffix).replace(' ', '0');
+
+      //     // 拼接前缀和补充后的后缀，确保总长度为15
+      //     String paddedNoDetails = prefix + paddedSuffix.substring(0, 5); // 截取后缀至5位
+
+      //     // 设置回 NoDetails
+      //     pchT05AccountDetail.setNoDetails(paddedNoDetails);
+      // }
+
     });
   }
 

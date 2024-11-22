@@ -44,13 +44,12 @@
                 <Button id="exportButton" text="{pch>U_B_EXPORTEXCEL}" press="onExport" />
                 <Button id="editButton" text="{pch>PCH03_BUTTON_EDI}" enabled="{localModel>/show}" tooltip="{pch>PCH03_BUTTON_EDI}" press="onEdit" />
                 <Button id="saveButton" text="{pch>PCH03_BUTTON_SAV}" enabled="{localModel>/save}" tooltip="{pch>PCH03_BUTTON_SAV}" press="onSave" />
-                <!-- <Button id="confirmButton" text="{pch>PCH03_BUTTON_QUE}" tooltip="{pch>PCH03_BUTTON_QUE}" press="onConfirm" /> -->
                 <Button id="id.UBAttachment" text="{pch>ATTACHMENT}" press="onOpenAttachmentDialog" />
                 <!-- <Button id="id.UBTemplate" text="{pch>PCH08_UPLOAD_TEMPLATE}" press="onDownloadTemplate" /> -->
 
             </OverflowToolbar>
         </smartTable:customToolbar>
-        <table:Table id="listTable" visibleRowCount="15" rowActionCount="1" selectionMode="MultiToggle" alternateRowColors="true" fixedColumnCount="0" threshold="20">
+        <table:Table id="listTable" visibleRowCount="15" rowActionCount="1" selectionMode="MultiToggle" alternateRowColors="true" fixedColumnCount="3" threshold="20">
             <table:columns>
                 <table:Column id="colQuoNumber" width="10rem" sortProperty="QUO_NUMBER" filterProperty="QUO_NUMBER">
                     <table:customData>

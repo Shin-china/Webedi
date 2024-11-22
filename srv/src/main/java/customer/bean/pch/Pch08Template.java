@@ -3,6 +3,7 @@ package customer.bean.pch;
 import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Data
@@ -25,6 +26,9 @@ public class Pch08Template {
     @JSONField(name = "REFRENCE_NO")
     private String REFRENCE_NO;
 
+    @JSONField(name = "QUANTITY")
+    private String QUANTITY;
+
     @JSONField(name = "CUSTOMER")
     private String CUSTOMER;
 
@@ -36,6 +40,15 @@ public class Pch08Template {
 
     @JSONField(name = "VALIDATE_END")
     private LocalDate VALIDATE_END;
+
+    @JSONField(name = "TIME")
+    private String TIME;
+
+    @JSONField(name = "ITEM")
+    private String ITEM;
+
+    @JSONField(name = "LOCATION")
+    private String LOCATION;
 
     @JSONField(name = "MATERIAL_NUMBER")
     private String MATERIAL_NUMBER;
@@ -59,7 +72,7 @@ public class Pch08Template {
     private String UWEB_USER;
 
     @JSONField(name = "BP_NUMBER")
-    private String BP_NUMBER;
+    private Integer BP_NUMBER;
 
     @JSONField(name = "PERSON_NO1")
     private Integer PERSON_NO1;
@@ -88,11 +101,11 @@ public class Pch08Template {
     @JSONField(name = "CURRENCY")
     private String CURRENCY;
 
-    @JSONField(name = "QUANTITY")
-    private Double QUANTITY;
+    @JSONField(name = "QTY")
+    private BigDecimal QTY;
 
     @JSONField(name = "PRICE")
-    private Double PRICE;
+    private BigDecimal PRICE;
 
     @JSONField(name = "PRICE_CONTROL")
     private String PRICE_CONTROL;
@@ -152,7 +165,7 @@ public class Pch08Template {
     private String RMATERIAL_CURRENCY;
 
     @JSONField(name = "RMATERIAL_PRICE")
-    private Double RMATERIAL_PRICE;
+    private BigDecimal RMATERIAL_PRICE;
 
     @JSONField(name = "RMATERIAL_LT")
     private String RMATERIAL_LT;
