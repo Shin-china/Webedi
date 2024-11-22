@@ -42,23 +42,25 @@ public class Pch05 {
     private String CURRENCY;
     @ExcelProperty(index = 10, value = "*伝票通貨での請求書総額")
     private String DIFF_TAX_AMOUNT;
+    @ExcelProperty(index = 11, value = "明細テキスト(50)")
+    private String DETAILTEXT50;
     @DateTimeFormat("yyyy/M/dd")
     @ContentStyle(dataFormat = 14)
-    @ExcelProperty(index = 11, value = "税率定義の日付")
+    @ExcelProperty(index = 12, value = "税率定義の日付")
     private Date LASTDATE2;
-    @ExcelProperty(index = 12, value = "*会社コード(4)")
+    @ExcelProperty(index = 13, value = "*会社コード(4)")
     private String PO_BUKRS1;
-    @ExcelProperty(index = 13, value = "勘定(10)")
+    @ExcelProperty(index = 14, value = "勘定(10)")
     private String ACCOUNT;
-    @ExcelProperty(index = 14, value = "明細テキスト")
+    @ExcelProperty(index = 15, value = "明細テキスト")
     private String DETAILTEXT;
-    @ExcelProperty(index = 15, value = "借方/貸方フラグ(1)s=借方 H=貸方")
+    @ExcelProperty(index = 16, value = "借方/貸方フラグ(1)s=借方 H=貸方")
     private String SHKZG_FLAG;
-    @ExcelProperty(index = 16, value = "金額(伝票通貨)")
+    @ExcelProperty(index = 17, value = "金額(伝票通貨)")
     private String DIFF_TAX_AMOUNT1;
-    @ExcelProperty(index = 17, value = "税コード(2)")
+    @ExcelProperty(index = 18, value = "税コード(2)")
     private String TAX_CODE;
-    @ExcelProperty(index = 18, value = "伝票通貨での課税基準額")
+    @ExcelProperty(index = 19, value = "伝票通貨での課税基準額")
     private String TAX_BASE_AMOUNT;
 
 }

@@ -488,15 +488,6 @@ extend service TableService {
                 else null 
             end as TAX_BASE_AMOUNT : Decimal(15,0), // 税基金额         
 
-            // TO_CHAR(
-            //     CAST(
-            //         TO_DATE(CONCAT(
-            //             EXTRACT(YEAR FROM CURRENT_DATE), '-', 
-            //             EXTRACT(MONTH FROM CURRENT_DATE) + 1, '-01'
-            //         ), 'YYYY-MM-DD') - 1 AS Date
-            //     ), 'YYYY/MM/DD'
-            // ) as LASTDATE : String,
-
             TO_CHAR(
                 CAST(
                     TO_DATE(
@@ -509,10 +500,10 @@ extend service TableService {
             ) AS LASTDATE : String,
 
             '' as REFERENCE: String,                         // REFERENCE 字段赋值为 null
-            '' as DETAILTEXT: String,                        // DETAILTEXT 字段赋值为 null
+            '仮払消費税調整' as DETAILTEXT: String,           // DETAILTEXT 字段赋值为仮払消費税調整
             12600000 as ACCOUNT: String,                     // account 字段赋值为 12600000
             'RE' as DOCUMENTTYPE: String,                    // documentType 字段固定值为 'RE'
-            'TAX' as HEADERTEXT: String,                      // headertext 字段固定值为 'TAX'
+            '仮払消費税調整' as HEADERTEXT: String,           // headertext 字段固定值为仮払消費税調整
                 
             }
 
@@ -555,6 +546,7 @@ extend service TableService {
             T02.TAX_CODE,
             T03.TAX_BASE_AMOUNT,
             ROW_NUMBER() OVER () as INVOICEID: Integer,
+            '仮払消費税調整' as DETAILTEXT50: String,           // headertext 字段固定值为仮払消費税調整
 
         }
 
