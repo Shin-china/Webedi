@@ -36,12 +36,6 @@ sap.ui.define([
 
                 // 清空
                 data.length = 0;
-                // let rowNo = [];
-                // json.forEach(item => {
-                //     rowNo.push(item.MAX)
-                // })
-
-                // let maxNum = Math.max.apply(null, rowNo); 
                 this._maxPersonSize = 0;
                 this._maxQtySize = 0;
 
