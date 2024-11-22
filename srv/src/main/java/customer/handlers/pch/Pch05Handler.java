@@ -53,6 +53,7 @@ import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -93,24 +94,24 @@ public class Pch05Handler implements EventHandler {
       pchT05AccountDetail.setQuantity(stripTrailingZeros(pchT05AccountDetail.getQuantity()));
       pchT05AccountDetail.setTaxRate(stripTrailingZeros(pchT05AccountDetail.getTaxRate()));
 
-      // // 获取 NoDetails 字段并补充前导零
-      // String noDetails = pchT05AccountDetail.getNoDetails();
-      // if (noDetails != null && noDetails.length() >= 10) {
-      //     // 获取前10位
-      //     String prefix = noDetails.substring(0, 10);
-
-      //     // 获取第11位及以后的部分，如果没有就补充零
-      //     String suffix = noDetails.length() > 10 ? noDetails.substring(10) : "";
-
-      //     // 补充零，直到后缀长度为5（确保 NoDetails 字段的总长度为15）
-      //     String paddedSuffix = String.format("%1$-5s", suffix).replace(' ', '0');
-
-      //     // 拼接前缀和补充后的后缀，确保总长度为15
-      //     String paddedNoDetails = prefix + paddedSuffix.substring(0, 5); // 截取后缀至5位
-
-      //     // 设置回 NoDetails
-      //     pchT05AccountDetail.setNoDetails(paddedNoDetails);
-      // }
+      // 获取 NoDetails 字段并补充前导零
+      String noDetails = pchT05AccountDetail.getNoDetails();
+      if (noDetails != null && noDetails.length() >= 10) {
+        // 获取前10位
+        String prefix = noDetails.substring(0, 10);
+    
+        // 获取第11位及以后的部分
+        String suffix = noDetails.length() > 10 ? noDetails.substring(10) : "";
+    
+        // 补零到5位，从第11位开始补零
+        String paddedSuffix = String.format("%05d", Integer.parseInt(suffix.isEmpty() ? "0" : suffix));
+    
+        // 拼接前10位和补零后的后缀，确保总长度为15
+        String paddedNoDetails = prefix + paddedSuffix;
+    
+        // 设置回 NoDetails
+        pchT05AccountDetail.setNoDetails(paddedNoDetails);
+    }
 
     });
   }
@@ -140,6 +141,25 @@ public class Pch05Handler implements EventHandler {
       data1.setCalc10PriceAmountTotal(stripTrailingZeros(data1.getCalc10PriceAmountTotal()));
       data1.setTotalTotalAmount(stripTrailingZeros(data1.getTotalTotalAmount()));
       data1.setTotalTaxAmount(stripTrailingZeros(data1.getTotalTaxAmount()));
+
+      // 获取 NoDetails 字段并补充前导零
+      String noDetails = data1.getNoDetails();
+      if (noDetails != null && noDetails.length() >= 10) {
+        // 获取前10位
+        String prefix = noDetails.substring(0, 10);
+    
+        // 获取第11位及以后的部分
+        String suffix = noDetails.length() > 10 ? noDetails.substring(10) : "";
+    
+        // 补零到5位，从第11位开始补零
+        String paddedSuffix = String.format("%05d", Integer.parseInt(suffix.isEmpty() ? "0" : suffix));
+    
+        // 拼接前10位和补零后的后缀，确保总长度为15
+        String paddedNoDetails = prefix + paddedSuffix;
+    
+        // 设置回 NoDetails
+        data1.setNoDetails(paddedNoDetails);
+    }
 
     });
   }
@@ -184,6 +204,7 @@ public class Pch05Handler implements EventHandler {
     });
   }
 
+
   /**
    * PCH_T05_ACCOUNT_DETAIL_DISPLAY3
    * 检查抬头 工厂 检查明细
@@ -204,6 +225,16 @@ public class Pch05Handler implements EventHandler {
 
       data.setDiffTaxAmount(stripTrailingZeros(data.getDiffTaxAmount()));
       data.setTaxBaseAmount(stripTrailingZeros(data.getTaxBaseAmount()));
+      // data.setLastdate(data.getLastdate());
+
+      // // 获取当前日期
+      // LocalDate currentDate = LocalDate.now();
+      // // 计算当月的最后一天
+      // LocalDate lastDayOfMonth = currentDate.with(TemporalAdjusters.lastDayOfMonth());
+      // // 将格式化的日期存入变量
+      // String formattedLastDate = lastDayOfMonth.format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
+      // data.setLastdate(dateFormat.parse(formattedLastDate));
+
 
     });
   }
@@ -283,11 +314,20 @@ public class Pch05Handler implements EventHandler {
     if (dataList != null && dataList.getList() != null) {
       // 遍历 Pch05List 中的每一项（每个 item 为 Pch05List 的一个记录）
       for (Pch05 item : dataList.getList()) {
+
+        // // 获取当前日期
+        // LocalDate currentDate = LocalDate.now();
+        // // 计算当月的最后一天
+        // LocalDate lastDayOfMonth = currentDate.with(TemporalAdjusters.lastDayOfMonth());
+        // // 将格式化的日期存入变量
+        // String formattedLastDate = lastDayOfMonth.format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
+        // item.setLASTDATE(formattedLastDate);
         // 将 Pch05List 中的字段值赋给其他字段
         item.setPO_BUKRS1(item.getPO_BUKRS()); // 赋值 PO_BUKRS1
         item.setLASTDATE1(item.getLASTDATE()); // 将 LASTDATE 的值赋给 LASTDATE1
         item.setLASTDATE2(item.getLASTDATE()); // 将 LASTDATE 的值赋给 LASTDATE2
         item.setDIFF_TAX_AMOUNT1(item.getDIFF_TAX_AMOUNT()); // 赋值 DIFF_TAX_AMOUNT1
+
       }
     }
 
