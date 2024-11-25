@@ -62,7 +62,7 @@ modules:
           url: ${default-url}
 
 resources:
-  - name: uweb-umce-qas-db
+  - name: uweb-umce-qas-hdi
     type: com.sap.xs.hdi-container
     parameters:
       service: hana
