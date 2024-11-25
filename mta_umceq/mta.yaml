@@ -30,7 +30,7 @@ modules:
         properties:
           srv-url: ${default-url}
     requires:
-      - name: uweb-umce-qas-db
+      - name: uweb-umce-qas-hdi
       - name: uweb-umce-qas-auth
       - name: uweb-umce-qas-getDestination
       - name: app-api
