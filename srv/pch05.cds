@@ -58,7 +58,7 @@ extend service TableService {
                 end                                 as UNIT_PRICE   : Decimal(18, 5),
 
                 // T05.TAX_AMOUNT,                    // 消費税額
-                // T04.CE_DOC, // 差額伝票番号
+                T04.CE_DOC, // 差額伝票番号
                 T04.INV_BASE_DATE, // 支払い基準日
                 T05.GR_DATE, // 伝票日付
                 T08.VALUE01,
