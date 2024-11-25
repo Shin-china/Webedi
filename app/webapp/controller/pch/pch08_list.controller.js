@@ -325,6 +325,10 @@ sap.ui.define([
         },
 
         __formatDate: function (date) {
+            if (!date) {
+                return '';
+            }
+
             let newDate = new Date(date);
             return newDate.toISOString().split('T')[0];
         },
@@ -353,7 +357,7 @@ sap.ui.define([
                 var oItem = oTable.getContextByIndex(iIndex).getObject();
                 oItem.VALIDATE_START = that.__formatDate(oItem.VALIDATE_START);
                 oItem.VALIDATE_END = that.__formatDate(oItem.VALIDATE_END);
-                oItem.TIME = that.__formatDate(oItem.TIME);
+                //oItem.TIME = that.__formatDate(oItem.TIME);
 
                 aPostItem.push(oItem);
 

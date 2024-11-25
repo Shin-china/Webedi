@@ -155,20 +155,37 @@ xmlns:fb="sap.ui.comp.filterbar">
                     </table:template>
                 </table:Column>
 
-                <table:Column id="colGenItem" width="10rem" sortProperty="Item" filterProperty="Item">
+                 <table:Column id="_IDGenColQuantity" width="10rem" sortProperty="QUANTITY" filterProperty="QUANTITY">
                     <table:customData>
                         <core:CustomData key="p13nData" value="{
-                                columnKey: 'Item',
-                                leadingProperty: 'Item',
-                                sortProperty: 'Item',
-                                filterProperty: 'Item'
+                                columnKey: 'QUANTITY',
+                                leadingProperty: 'QUANTITY',
+                                sortProperty: 'QUANTITY',
+                                filterProperty: 'QUANTITY'
+                            }" />
+                    </table:customData>
+                    <table:label>
+                        <Label id="_IDGenLabelQuantity" text="{pch>PCH08_QUANTITY}" />
+                    </table:label>
+                    <table:template>
+                        <Text id="_IDGenTextQuantity" text="{workInfo>QUANTITY}" />
+                    </table:template>
+                </table:Column>               
+
+                <table:Column id="colGenItem" width="10rem" sortProperty="ITEM" filterProperty="ITEM">
+                    <table:customData>
+                        <core:CustomData key="p13nData" value="{
+                                columnKey: 'ITEM',
+                                leadingProperty: 'ITEM',
+                                sortProperty: 'ITEM',
+                                filterProperty: 'ITEM'
                             }" />
                     </table:customData>
                     <table:label>
                         <Label id="labelGenItem" text="{pch>PCH08_Item}" />
                     </table:label>
                     <table:template>
-                        <Text id="textGenItem" text="{workInfo>Item}" />
+                        <Text id="textGenItem" text="{workInfo>ITEM}" />
                     </table:template>
                 </table:Column>
 
@@ -496,20 +513,20 @@ xmlns:fb="sap.ui.comp.filterbar">
                     </table:template>
                 </table:Column>
 
-                <table:Column id="_IDGenColQuantity" width="10rem" sortProperty="QUANTITY" filterProperty="QUANTITY">
+                <table:Column id="_IDGenColQty" width="10rem" sortProperty="QTY" filterProperty="QTY">
                     <table:customData>
                         <core:CustomData key="p13nData" value="{
-                                columnKey: 'QUANTITY',
-                                leadingProperty: 'QUANTITY',
-                                sortProperty: 'QUANTITY',
-                                filterProperty: 'QUANTITY'
+                                columnKey: 'QTY',
+                                leadingProperty: 'QTY',
+                                sortProperty: 'QTY',
+                                filterProperty: 'QTY'
                             }" />
                     </table:customData>
                     <table:label>
-                        <Label id="_IDGenLabelQuantity" text="{pch>PCH08_QUANTITY}" />
+                        <Label id="_IDGenLabelQty" text="{pch>PCH08_QTY}" />
                     </table:label>
                     <table:template>
-                        <Text id="_IDGenTextQuantity" text="{workInfo>QUANTITY}" />
+                        <Text id="_IDGenTextQty" text="{workInfo>QTY}" />
                     </table:template>
                 </table:Column>
 

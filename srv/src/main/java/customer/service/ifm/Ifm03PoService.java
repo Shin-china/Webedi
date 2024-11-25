@@ -319,7 +319,7 @@ public class Ifm03PoService {
                             // 将所有邮件地址合并为一个字符串
                             StringBuilder mailToBuilder = new StringBuilder();
                             for (T08ComOpD email : emailadd) {
-                                mailToBuilder.append(email.getValue02()).append(";"); // 使用分号分隔
+                                mailToBuilder.append(email.getValue02()).append(","); // 使用分号分隔
                             }
 
                             // 去掉最后一个分号
@@ -369,7 +369,7 @@ public class Ifm03PoService {
                             // 将所有邮件地址合并为一个字符串
                             StringBuilder mailToBuilder = new StringBuilder();
                             for (T08ComOpD email : emailadd) {
-                                mailToBuilder.append(email.getValue02()).append(";"); // 使用分号分隔
+                                mailToBuilder.append(email.getValue02()).append(","); // 使用分号分隔
                             }
 
                             // 去掉最后一个分号
@@ -419,7 +419,7 @@ public class Ifm03PoService {
                             // 将所有邮件地址合并为一个字符串
                             StringBuilder mailToBuilder = new StringBuilder();
                             for (T08ComOpD email : emailadd) {
-                                mailToBuilder.append(email.getValue02()).append(";"); // 使用分号分隔
+                                mailToBuilder.append(email.getValue02()).append(","); // 使用分号分隔
                             }
 
                             // 去掉最后一个分号
