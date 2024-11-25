@@ -71,7 +71,7 @@ public class PchService {
     public void setinvdateconfirm(String object) {
 
         Map<String, Object> data = new HashMap<>();
-        data.put("INV_DATE", UmcConstants.PCH05_CONFIRM);
+        data.put("INV_CONFIRMATION", UmcConstants.PCH05_CONFIRM);
         Map<String, Object> keys = new HashMap<>();
         keys.put("SUPPLIER", object);
         // 数据是否被修改修改标记
@@ -83,7 +83,7 @@ public class PchService {
     public void setinvdatecancel(String object) {
 
         Map<String, Object> data = new HashMap<>();
-        data.put("INV_DATE", UmcConstants.PCH05_CANCEL);
+        data.put("INV_CONFIRMATION", UmcConstants.PCH05_CANCEL);
         Map<String, Object> keys = new HashMap<>();
         keys.put("SUPPLIER", object);
         // 数据是否被修改修改标记
