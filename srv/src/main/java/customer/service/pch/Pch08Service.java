@@ -612,7 +612,6 @@ public class Pch08Service {
     public Pch08UploadResult uploadCheck(Pch08Template uploadData){
         Pch08UploadResult uploadResult = new Pch08UploadResult();
 
-        String customer = uploadData.getCUSTOMER();
         String quoNumber = uploadData.getQUO_NUMBER();
         Integer quoItem = uploadData.getQUO_ITEM();
         String salesNumber = uploadData.getSALES_NUMBER();
