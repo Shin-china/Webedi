@@ -40,7 +40,6 @@
                 <smartFilterBar:ControlConfiguration key="PURCHASE_GROUP_DESC"  visible="false"  index="99"/>
                 <smartFilterBar:ControlConfiguration key="SEND_FLAG"  visible="false"  index="99"/>
                 <smartFilterBar:ControlConfiguration key="ADRESS"  visible="false"  index="99"/>
-                <smartFilterBar:ControlConfiguration key="CE_DOC"   visible="false"  index="99"/>
                 <smartFilterBar:ControlConfiguration key="COST_CENTER"  visible="false"  index="99"/>
                 <smartFilterBar:ControlConfiguration key="GL_ACCOUNT"      visible="false"  index="99"/>
                 <smartFilterBar:ControlConfiguration key="GL_YEAR"  visible="false"  index="99"/>
@@ -73,7 +72,7 @@
     </f:DynamicPageHeader>
 
     <smartTable:SmartTable id="ID" enableAutoColumnWidth="true" entitySet="PCH_T05_ACCOUNT_DETAIL" 
-        ignoredFields="INV_MONTH,ADRESS,NO_DETAILS,PO_BUKRS,POSTCODE,VALUE01,SHKZG,CE_DOC" requestAtLeastFields="SHKZG,TAX_AMOUNT,TOTAL_AMOUNT"   initiallyVisibleFields="INV_NO,GL_YEAR,ITEM_NO,PO_NO,D_NO,SUPPLIER,SUPPLIER_DESCRIPTION,INV_CONFIRMATION,PO_TRACK_NO,PR_BY,GL_ACCOUNT,COST_CENTER,PURCHASE_GROUP,PURCHASE_GROUP_DESC,CURRENCY,MAT_ID,QUANTITY,UNIT,MAT_DESC,TAX_CODE,TAX_RATE,INV_POST_DATE,SEND_FLAG,UNIT_PRICE,PRICE_AMOUNT,TAX_AMOUNT,TOTAL_AMOUNT,INV_BASE_DATE,GR_DATE,LOG_NO" 
+        ignoredFields="INV_MONTH,ADRESS,NO_DETAILS,PO_BUKRS,POSTCODE,VALUE01,SHKZG" requestAtLeastFields="SHKZG,TAX_AMOUNT,TOTAL_AMOUNT"   initiallyVisibleFields="INV_NO,GL_YEAR,ITEM_NO,PO_NO,D_NO,SUPPLIER,SUPPLIER_DESCRIPTION,INV_CONFIRMATION,PO_TRACK_NO,PR_BY,GL_ACCOUNT,COST_CENTER,PURCHASE_GROUP,PURCHASE_GROUP_DESC,CURRENCY,MAT_ID,QUANTITY,UNIT,MAT_DESC,TAX_CODE,TAX_RATE,INV_POST_DATE,SEND_FLAG,UNIT_PRICE,PRICE_AMOUNT,TAX_AMOUNT,TOTAL_AMOUNT,INV_BASE_DATE,GR_DATE,LOG_NO" 
         smartFilterId="smartFilterBar" enableExport="true" beforeExport="onBeforeExport" 
         useVariantManagement="true" useTablePersonalisation="true" header="{pch>TITLE_RESULT}" showRowCount="true" persistencyKey="pch05_SmartTableAnalytical_Explored" enableAutoBinding="false" >
         
@@ -186,18 +185,6 @@
         <Text id="textInvDate" text="{INV_CONFIRMATION}"/>
     </table:template>
 </table:Column>
-
-<!-- <table:Column id="colCeDoc" width="10rem" sortProperty="CE_DOC" filterProperty="CE_DOC">
-    <table:customData>
-        <core:CustomData key="p13nData" value='{"columnKey":"CE_DOC", "leadingProperty":"CE_DOC", "sortProperty":"CE_DOC", "filterProperty":"CE_DOC"}'/>
-    </table:customData>
-    <table:label>
-        <Label id="labelCeDoc" text="{pch>CE_DOC}"/>
-    </table:label>
-    <table:template>
-        <Text id="textCeDoc" text="{CE_DOC}"/>
-    </table:template>
-</table:Column> -->
 
 <table:Column id="colPoTrackNo" width="10rem" sortProperty="PO_TRACK_NO" filterProperty="PO_TRACK_NO">
     <table:customData>
