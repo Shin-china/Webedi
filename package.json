@@ -5,7 +5,6 @@
   "license": "ISC",
   "repository": "<Add your repository here>",
   "dependencies": {
-    "@cap-js/postgres": "1.8.0",
     "@sap/cds": "7.9.2",
     "@sap/cds-compiler": "4.9.4",
     "@sap/cds-dk": "7.9.3",
