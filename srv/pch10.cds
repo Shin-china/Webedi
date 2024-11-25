@@ -133,8 +133,9 @@ extend service TableService {
             on T02.ID = T04.ID
 
         distinct {
-            key T02.QUO_NUMBER,
-             T02.QUO_ITEM,
+            key T02.QUO_NUMBER as ID,
+                T02.QUO_NUMBER,
+                T02.QUO_ITEM,
                 T02.NO,
                 T02.REFRENCE_NO,
                 T02.MATERIAL_NUMBER,
