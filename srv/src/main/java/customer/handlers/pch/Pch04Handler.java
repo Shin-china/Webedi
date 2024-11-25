@@ -174,6 +174,25 @@ public class Pch04Handler implements EventHandler {
             data1.setBaseAmountExcludingTax(stripTrailingZeros(data1.getBaseAmountExcludingTax()));
             data1.setTaxRate(stripTrailingZeros(data1.getTaxRate()));
 
+             // 获取 NoDetails 字段并补充前导零
+             String noDetails = data1.getNoDetails(); // 使用实例调用非静态方法
+             if (noDetails != null && noDetails.length() >= 10) {
+                 // 获取前10位
+                 String prefix = noDetails.substring(0, 10);
+             
+                 // 获取第11位及以后的部分
+                 String suffix = noDetails.length() > 10 ? noDetails.substring(10) : "";
+             
+                 // 补零到5位，从第11位开始补零
+                 String paddedSuffix = String.format("%05d", Integer.parseInt(suffix.isEmpty() ? "0" : suffix));
+             
+                 // 拼接前10位和补零后的后缀，确保总长度为15
+                 String paddedNoDetails = prefix + paddedSuffix;
+             
+                 // 设置回 NoDetails
+                 data1.setNoDetails(paddedNoDetails);
+             }
+
         });
     }
 
@@ -200,8 +219,28 @@ public class Pch04Handler implements EventHandler {
             data2.setPriceAmount10(stripTrailingZeros(data2.getPriceAmount10()));
             data2.setPriceAmount8(stripTrailingZeros(data2.getPriceAmount8()));
 
+            // 获取 NoDetails 字段并补充前导零
+            String noDetails = data2.getNoDetails(); // 使用实例调用非静态方法
+            if (noDetails != null && noDetails.length() >= 10) {
+                // 获取前10位
+                String prefix = noDetails.substring(0, 10);
+            
+                // 获取第11位及以后的部分
+                String suffix = noDetails.length() > 10 ? noDetails.substring(10) : "";
+            
+                // 补零到5位，从第11位开始补零
+                String paddedSuffix = String.format("%05d", Integer.parseInt(suffix.isEmpty() ? "0" : suffix));
+            
+                // 拼接前10位和补零后的后缀，确保总长度为15
+                String paddedNoDetails = prefix + paddedSuffix;
+            
+                // 设置回 NoDetails
+                data2.setNoDetails(paddedNoDetails);
+            }
+
         });
     }
+
 
     /**
      * 处理金额字段，去除尾随零。
@@ -264,12 +303,6 @@ public class Pch04Handler implements EventHandler {
         list.add(new Pch04());
         list.add(new Pch04());
         dataList.setList(list);
-
-        // ArrayList<Pch04> list = dataList.getList();
-        // list.add(new Pch04());
-        // list.add(new Pch04());
-        // list.add(new Pch04());
-        // dataList.setList(list);
 
         InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(UWebConstants.PCH04_TEP_PATH);
 

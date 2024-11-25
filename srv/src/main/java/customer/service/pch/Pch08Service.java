@@ -612,7 +612,6 @@ public class Pch08Service {
     public Pch08UploadResult uploadCheck(Pch08Template uploadData){
         Pch08UploadResult uploadResult = new Pch08UploadResult();
 
-        String customer = uploadData.getCUSTOMER();
         String quoNumber = uploadData.getQUO_NUMBER();
         Integer quoItem = uploadData.getQUO_ITEM();
         String salesNumber = uploadData.getSALES_NUMBER();
@@ -647,11 +646,11 @@ public class Pch08Service {
             return uploadResult;
         }
 
-        if (customer == null || customer.isEmpty()){
-            uploadResult.setSTATUS("E");
-            uploadResult.setMESSAGE("客先は空欄です");
-            return uploadResult;
-        }
+//        if (customer == null || customer.isEmpty()){
+//            uploadResult.setSTATUS("E");
+//            uploadResult.setMESSAGE("客先は空欄です");
+//            return uploadResult;
+//        }
 
         BigDecimal price = uploadData.getPRICE();
         if (price == null){
@@ -660,12 +659,12 @@ public class Pch08Service {
             return uploadResult;
         }
 
-        Integer personNo = uploadData.getPERSON_NO1();
-        if (personNo == null){
-            uploadResult.setSTATUS("E");
-            uploadResult.setMESSAGE("员数は空欄です");
-            return uploadResult;
-        }
+//        Integer personNo = uploadData.getPERSON_NO1();
+//        if (personNo == null){
+//            uploadResult.setSTATUS("E");
+//            uploadResult.setMESSAGE("员数は空欄です");
+//            return uploadResult;
+//        }
 
         //判断采购报价单+销售订单的组合是否存在
         String id = pch08Dao.getT07QuotationId(quoNumber, quoItem, salesNumber, salesDNo);

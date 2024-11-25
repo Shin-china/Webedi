@@ -22,6 +22,7 @@ sap.ui.define([
 			oMessageManager.registerObject(this.getView(), true);
 
 			this.getRouter().getRoute("RouteCre_pch07").attachPatternMatched(this._onRouteMatched, this);
+            this._PchResourceBundle = this.getOwnerComponent().getModel("pch").getResourceBundle();
 
 			var oViewModel = new sap.ui.model.json.JSONModel({
 				isButtonEnabled: true // 默认值为 true
@@ -37,6 +38,7 @@ sap.ui.define([
 			var aColumns = [];
 			var aExport=[];
 			var oData = {};
+			var that = this;
 			oData.QUO_NUMBER = "";
 			aExport.push(oData);
 			aColumns.push({
@@ -61,7 +63,7 @@ sap.ui.define([
 
 			oSheet.build()
 				.then(function () {
-					sap.m.MessageToast.show(this._ResourceBundle.getText("exportFinished"));
+					sap.m.MessageToast.show(that._PchResourceBundle.getText("EXPORT_FINISHED"));
 				})
 				.finally(function () {
 					oSheet.destroy();
@@ -118,6 +120,7 @@ sap.ui.define([
 
 
 		onExport: function (oEvent) {
+			var that = this;
 			var oTable = this.getView().byId("tableUploadData");
 			var aSelectedIndices = oTable.getSelectedIndices();
 
@@ -186,7 +189,7 @@ sap.ui.define([
 			oSheet.attachBeforeExport(this.onBeforeExport.bind(this));
 			oSheet.build()
 				.then(function () {
-					sap.m.MessageToast.show(this._ResourceBundle.getText("exportFinished"));
+					sap.m.MessageToast.show(that._PchResourceBundle.getText("EXPORT_FINISHED"));
 				})
 				.finally(function () {
 					oSheet.destroy();

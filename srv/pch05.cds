@@ -754,24 +754,12 @@ extend service TableService {
                         null
                 end       as TAX_BASE_AMOUNT : Decimal(15, 0), // 税基金额
 
-                /**
-                                            TO_CHAR(
-                                                CAST(
-                                                    TO_DATE(
-                                                        EXTRACT(YEAR FROM CURRENT_DATE) || '-' ||
-                                                        (EXTRACT(MONTH FROM CURRENT_DATE) + 1) || '-01',
-                                                        'YYYY-MM-DD'
-                                                    ) - 1 AS Date
-                                                ),
-                                                'YYYY/MM/DD'
-                                            ) AS LASTDATE : String, */
-
-                ''        as LASTDATE        : String,
-                ''        as REFERENCE       : String, // REFERENCE 字段赋值为 null
-                '仮払消費税調整' as DETAILTEXT      : String, // DETAILTEXT 字段赋值为仮払消費税調整
-                12600000  as ACCOUNT         : String, // account 字段赋值为 12600000
-                'RE'      as DOCUMENTTYPE    : String, // documentType 字段固定值为 'RE'
-                '仮払消費税調整' as HEADERTEXT      : String, // headertext 字段固定值为仮払消費税調整
+                null      as LASTDATE          : Date,
+                ''        as REFERENCE         : String, // REFERENCE 字段赋值为 null
+                '仮払消費税調整' as DETAILTEXT  : String, // DETAILTEXT 字段赋值为仮払消費税調整
+                12600000  as ACCOUNT           : String, // account 字段赋值为 12600000
+                'RE'      as DOCUMENTTYPE      : String, // documentType 字段固定值为 'RE'
+                '仮払消費税調整' as HEADERTEXT  : String, // headertext 字段固定值为仮払消費税調整
 
         }
 

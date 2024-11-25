@@ -373,4 +373,17 @@ public class PurchaseDataDao extends Dao {
 
     }
 
+    public String getPoCompByPO(String poDel) {
+        Optional<T01PoH> result = db.run(Select.from(Pch_.T01_PO_H).where(o -> o.PO_NO().eq(poDel)))
+                .first(T01PoH.class);
+
+        if (result.isPresent()) {
+
+            return result.get().getPoBukrs();
+
+        }
+        ;
+        return null;
+    }
+
 }

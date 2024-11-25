@@ -23,8 +23,7 @@ sap.ui.define([
             console.log("Controller initialized.");
 
             this.MessageTools._clearMessage();
-            this.MessageTools._initoMessageManager(this);
-            this._ResourceBundle = this.getOwnerComponent().getModel("i18n").getResourceBundle();
+            this.MessageTools._initoMessageManager(this); 
             this._PchResourceBundle = this.getOwnerComponent().getModel("pch").getResourceBundle();
             this._localModel = new sap.ui.model.json.JSONModel();
             this._localModel.setData({
@@ -53,7 +52,6 @@ sap.ui.define([
             //动态列
             var sKeys = '';
             var sResult = '';
-            var iMaxTotal = 0;
             var aExport = [];
             aSelectedData.forEach(row => {
                 if (sKeys === "") {
@@ -63,8 +61,8 @@ sap.ui.define([
                 }
             })
 
+            var that = this;
             var params = { param: sKeys };
-
             this._callCdsAction("/PCH08_SHOW_DETAIL", params, this).then((oData) => {
                 let json = JSON.parse(oData.PCH08_SHOW_DETAIL);
                 console.log(json)
@@ -195,7 +193,7 @@ sap.ui.define([
                 oSheet.attachBeforeExport(this.onBeforeExport.bind(this));
                 oSheet.build()
                     .then(function () {
-                        sap.m.MessageToast.show(this._ResourceBundle.getText("exportFinished"));
+                        sap.m.MessageToast.show(that._PchResourceBundle.getText("EXPORT_FINISHED"));
                     })
                     .finally(function () {
                         oSheet.destroy();
@@ -221,8 +219,6 @@ sap.ui.define([
 
             //动态列
             var sKeys = '';
-            var sResult = '';
-            var aExport = [];
             aSelectedData.forEach(row => {
                 if (sKeys === "") {
                     sKeys = row.QUO_NUMBER + '-' + row.QUO_ITEM;
@@ -231,12 +227,11 @@ sap.ui.define([
                 }
             })
 
+            var that = this;
             var params = { param: sKeys };
-
             this._callCdsAction("/PCH08_DOWNLOAD_TEMPLATE", params, this).then((oData) => {
                 let json = JSON.parse(oData.PCH08_DOWNLOAD_TEMPLATE);
                 console.log(json)
-                sResult = json;
 
                 var aColumns = [
                     { label: '購買見積番号', property: 'QUO_NUMBER', type: 'string', width: 15 },
@@ -309,13 +304,13 @@ sap.ui.define([
                     workbook: {
                         columns: aColumns
                     },
-                    fileName: `購買見積回答_Template_${sDate}${sTime}.xlsx`
+                    fileName: `購買見積回答_${sDate}${sTime}.xlsx`
                 };
 
                 var oSheet = new sap.ui.export.Spreadsheet(oSettings);
                 oSheet.build()
                     .then(function () {
-                        sap.m.MessageToast.show(this._ResourceBundle.getText("exportFinished"));
+                        sap.m.MessageToast.show(that._PchResourceBundle.getText("EXPORT_FINISHED"));
                     })
                     .finally(function () {
                         oSheet.destroy();
@@ -330,6 +325,10 @@ sap.ui.define([
         },
 
         __formatDate: function (date) {
+            if (!date) {
+                return '';
+            }
+
             let newDate = new Date(date);
             return newDate.toISOString().split('T')[0];
         },
@@ -358,7 +357,7 @@ sap.ui.define([
                 var oItem = oTable.getContextByIndex(iIndex).getObject();
                 oItem.VALIDATE_START = that.__formatDate(oItem.VALIDATE_START);
                 oItem.VALIDATE_END = that.__formatDate(oItem.VALIDATE_END);
-                oItem.TIME = that.__formatDate(oItem.TIME);
+                //oItem.TIME = that.__formatDate(oItem.TIME);
 
                 aPostItem.push(oItem);
 
@@ -403,14 +402,6 @@ sap.ui.define([
 
         },
 
-        onConfirm: function () {
-
-        },
-
-        onRefrenceNoChange: function (oEvent) {
-            oEvent.oSource.getBindingContext().setProperty("CUSTOMER", "12345")
-        },
-
         onBeforeExport: function (oEvent) {
             var oTable = this.getView().byId("listTable");
             var aSelectedIndices = oTable.getSelectedIndices();
@@ -433,54 +424,6 @@ sap.ui.define([
             }
         },
 
-        onExportToPDF: function () {
-            var that = this;
-
-            // 调用检查逻辑
-            if (!this.checkSelectedSuppliers()) {
-                return; // 如果检查不通过，则终止执行
-            }
-
-            let options = { compact: true, ignoreComment: true, spaces: 4 };
-            var IdList = that._TableDataList("detailTable", 'SUPPLIER');
-
-            if (IdList) {
-                that.PrintTool._getPrintDataInfo(that, IdList, "/PCH_T05_ACCOUNT_DETAIL_EXCEL", "SUPPLIER").then((oData) => {
-                    let sResponse = json2xml(oData, options);
-                    console.log(sResponse);
-                    that.setSysConFig().then(res => {
-                        // 调用打印方法
-                        that.PrintTool._detailSelectPrintDow(that, sResponse, "test2/test3", oData, null, null, null, null);
-                    });
-                });
-            }
-        },
-
-        checkSelectedSuppliers: function () {
-            var oTable = this.getView().byId("detailTable");
-            var aSelectedIndices = oTable.getSelectedIndices();
-
-            // 检查是否有选中的数据
-            if (aSelectedIndices.length === 0) {
-                MessageToast.show("選択されたデータがありません、データを選択してください。");
-                return false;
-            }
-
-            // 遍历选中的行，提取所需数据
-            var aSelectedData = aSelectedIndices.map(function (iIndex) {
-                return oTable.getContextByIndex(iIndex).getObject();
-            });
-
-            // 检查 SUPPLIER 是否相同
-            var supplierSet = new Set(aSelectedData.map(data => data.SUPPLIER));
-            if (supplierSet.size > 1) {
-                MessageBox.error("複数の取引先がまとめて配信することができませんので、1社の取引先を選択してください。");
-                return false;
-            }
-
-            return true; // 检查通过
-        },
-
         getDetail: function (oEvent) {
 
             let that = this;
@@ -495,12 +438,6 @@ sap.ui.define([
                 para.push(key);
             });
             this._onPress(oEvent, "RouteView_pch08", this.unique(para).join(","));
-
-            // let params = { param: para };
-            // that._callCdsAction("/PCH08_SHOW_DETAIL", params, that).then((oData) => {
-            //     let json = JSON.parse(oData.PCH08_SHOW_DETAIL);
-            //     console.log(json)
-            //   });
         },
 
         unique: function (arr) {
