@@ -14,7 +14,7 @@ stages:
     cfApiEndpoint: "https://api.cf.jp10.hana.ondemand.com"
     cfOrg: "UMC Electronics Co., Ltd._s01-test"
     cfSpace: "DEV"
-    deployType: "blue-green"
+    deployType: "standard"
     cloudFoundryDeploy: true
     npmExecuteEndToEndTests: false
   Malware Scan:
