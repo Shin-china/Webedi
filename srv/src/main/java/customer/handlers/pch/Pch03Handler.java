@@ -210,9 +210,20 @@ public class Pch03Handler implements EventHandler {
         Boolean[] isPrint = new Boolean[1];
         isPrint[0] = false;
         pchd03List.forEach(pchd03 -> {
+            String type = "";
             // type
             String poSendPDFZWSType = pchService.getPoSendPDFZWSType(pchd03.getPoNo());
-            pchd03.setType(poSendPDFZWSType);
+            if (UmcConstants.ZWS_TYPE_3.equals(poSendPDFZWSType)) {
+                type = UmcConstants.ZWS_TYPE_3_NAME;
+            }
+            if (UmcConstants.ZWS_TYPE_1.equals(poSendPDFZWSType)) {
+                type = UmcConstants.ZWS_TYPE_1_NAME;
+            }
+            if (UmcConstants.ZWS_TYPE_2.equals(poSendPDFZWSType)) {
+                type = UmcConstants.ZWS_TYPE_2_NAME;
+            }
+            // 如果poSendPDFZWSType是REIUSSE
+            pchd03.setType(type);
             // 货币除了日元5其余2
             String currency = pchd03.getCurrency();
             // 発注金額 = 価格単位*発注数量 三位小数

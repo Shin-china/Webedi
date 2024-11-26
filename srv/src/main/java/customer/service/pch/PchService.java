@@ -166,7 +166,7 @@ public class PchService {
         }
         // 如果flag1为false，则说明明细都是D，则返回Dtype
         if (!flag1) {
-            return UmcConstants.DOC_D_STATUS_3;
+            return UmcConstants.ZWS_TYPE_3;
         }
         // 如果T10EmailSendLog中type有type为Y的则为type1，否则为type2
         if (t10 != null) {
