@@ -24,11 +24,14 @@ import cds.gen.MailBody;
 import cds.gen.MailJson;
 
 import customer.bean.tmpl.test;
+import customer.service.pch.PchService;
 import customer.service.sys.EmailServiceFun;
 import customer.tool.UWebConstants;
+import customer.bean.com.UmcConstants;
 import customer.bean.tmpl.Pch04;
 import customer.bean.tmpl.Pch04List;
 import customer.bean.tmpl.Pch05;
+import customer.dao.pch.PchD004;
 
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.ExcelWriter;
@@ -58,11 +61,15 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 
 @Component
 @ServiceName(TableService_.CDS_NAME)
 public class Pch04Handler implements EventHandler {
+
+    @Autowired
+    PchService pchService;
 
     @Autowired
     private EmailServiceFun emailServiceFun;
@@ -96,11 +103,27 @@ public class Pch04Handler implements EventHandler {
             emailServiceFun.sendEmailFun(mailJsonList);
             // 设置操作结果
             context.setResult(JSON.toJSONString("メールは送付されました"));
+
         } catch (Exception e) {
             // 处理发送邮件的异常
 
         }
+
     }
+
+    /**
+   * 
+   * @param context
+   */
+  @On(event = "PCH04_SENDEMAIL")
+  public void sendemail(PCH04SENDEMAILContext context) {
+
+    String suppli = context.getParms();
+    pchService.setSendflag(suppli);
+
+    context.setResult("success");
+
+  }
 
     // 创建 MailBody 的集合
     private Collection<MailBody> createMailBody(MailParam param) {

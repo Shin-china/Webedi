@@ -294,7 +294,7 @@
         </table:label>
         <table:template>
             <!-- <Text id="textSendFlag" text="{SEND_FLAG}"/> -->
-            <Text id="textSendFlag" text="{path: 'SEND_FLAG', formatter: '.formatter.formatSendFlag1'}"/>
+            <Text id="textSendFlag" text="{path: 'SEND_FLAG', formatter: '.formatter.formatSendFlag'}"/>
         </table:template>
     </table:Column>
 
