@@ -15,7 +15,8 @@ entity T01_SAP_MAT : IF_CUID_FILED { //物料基本信息
                               @title: '{i18n>MANU_MATERIAL}' MANU_MATERIAL     : String(40); //制造商物料编号
                               @title: '{i18n>CUST_MATERIAL}' CUST_MATERIAL     : String(40); //制造商物料编号
 
-
+                                TO_SAP_BP                           : Association to one T03_SAP_BP
+                                                                       on TO_SAP_BP.BP_ID = MANU_CODE;
 }
 
 entity T02_SAP_PLANT : IF_CUID_FILED { //工厂表
