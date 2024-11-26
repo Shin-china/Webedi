@@ -160,13 +160,18 @@ public class Pch03Handler implements EventHandler {
 
             // 公司固定值取出
 
-            pchd03.setZws1(pchd03.getPodno() + "\n" + pchd03.getCdBy());
-            pchd03.setZws2(pchd03.getSupplier() + "\n" + pchd03.getMatId());
-            pchd03.setZws3(pchd03.getManuCode());
+            pchd03.setZws1(pchd03.getPodno() + "\n" + pchd03.getSapCdBy());
+            pchd03.setZws2(pchd03.getSupplierMat() + "\n" + pchd03.getMatId());
+            pchd03.setZws3(pchd03.getManuMaterial());
             pchd03.setZws4(pchd03.getCop2() + "\n" + pchd03.getStorage());
             pchd03.setZws5(pchd03.getPoPurUnit() + "\n" + pchd03.getMemo());
-            pchd03.setZws6(prc.toString());
-            pchd03.setZws7(pchd03.getCop2());
+
+            if (pchd03.getDelPrice() != null && pchd03.getPoPurQty() != null) {
+                pchd03.setZws7(
+                        NumberTool.toScale(pchd03.getDelPrice().multiply(pchd03.getPoPurQty()), currency) + "");
+            }
+
+            pchd03.setZws6(pchd03.getDelPrice().toString());
             pchd03.setZws8(pchd03.getCurrency());
             pchd03.setZws9(DateTools.getCurrentDateString(pchd03.getPoDDate()));
 
@@ -176,7 +181,7 @@ public class Pch03Handler implements EventHandler {
 
             List<T08ComOpD> byList = pchD008Dao.getByList(UmcConstants.C_INFO);
             for (T08ComOpD t08ComOpD : byList) {
-                if (UmcConstants.C_INFO.equals(t08ComOpD.getDName())) {
+                if (UmcConstants.C_INFO_NAME.equals(t08ComOpD.getDName())) {
                     pchd03.setBpName12(t08ComOpD.getValue01());
                 }
                 if (UmcConstants.C_INFO_POSTCODE.equals(t08ComOpD.getDName())) {
@@ -207,6 +212,7 @@ public class Pch03Handler implements EventHandler {
     @After(entity = PchT03PoItem_.CDS_NAME, event = "READ")
     public void beforeReadD03(CdsReadEventContext context, Stream<PchT03PoItem> pchd03List) {
 
+        System.out.println("进入后台+++++++++++++++++++++++++++++++==");
         Boolean[] isPrint = new Boolean[1];
         isPrint[0] = false;
         pchd03List.forEach(pchd03 -> {
@@ -229,7 +235,10 @@ public class Pch03Handler implements EventHandler {
             // 発注金額 = 価格単位*発注数量 三位小数
             // 根据货币进行四舍五入
             pchd03.setIssuedamount(NumberTool.toScale(pchd03.getDelPrice().multiply(pchd03.getPoPurQty()), currency));
-
+            // 设置検査合区分
+            if (!StringTool.isEmpty(pchd03.getImpComp())) {
+                pchd03.setCheckOk("受入検査あり");
+            }
             // 得意先コード
             String matId = pchd03.getMatId();
             // matId不能位空，且不能小于2位

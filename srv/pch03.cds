@@ -3,7 +3,7 @@ using {TableService as view} from './table';
 extend service TableService {
     entity PCH_T03_PO_ITEM_PRINT as
         select from view.T01_PO_H as T01
-        left join view.T02_PO_D as T02
+         join view.T02_PO_D as T02
             on(
                 T01.PO_NO = T02.PO_NO
             )
@@ -15,11 +15,11 @@ extend service TableService {
         left join view.MST_T06_MAT_PLANT T06
             on T06.PLANT_ID = T02.PLANT_ID
             and T06.MAT_ID = T02.MAT_ID
-                left join view.MST_T01_SAP_MAT T07
+        left join view.MST_T01_SAP_MAT T07
             on T07.MAT_ID = T02.MAT_ID
   
         distinct {
-            key T01.PO_NO || RIGHT('00000' || T02.D_NO, 5)  as ID      : String(100),
+            key COALESCE(T01.PO_NO,'') || RIGHT('00000' || T02.D_NO, 5)  as ID      : String(100),
             key T01.PO_NO, // 発注番号
             key T02.D_NO, // 明細番号
 
@@ -64,6 +64,8 @@ extend service TableService {
                 T05.PLACE_NAME,
                 T06.IMP_COMP,//検査合区分
                 T07.MANU_CODE,
+                T02.SAP_CD_BY, // SAP担当者
+                T02.TO_MAT.MANU_MATERIAL,
 
                 '' as checkOk : String, // 検査合区分
                 '' as order_unit_price : String, // 発注単価
@@ -309,13 +311,13 @@ extend service TableService {
                  case T02.DOWN_FLAG
                     when 'Y' then '確認済'
                     else '未確認' end as DOWN_FLAG : String(10), //確認済みフラグ
-                    T02.TO_MAT.MANU_MATERIAL,
+                T02.TO_MAT.MANU_MATERIAL,
                 0 as ISSUEDAMOUNT  :  Decimal(18, 5),//csv 発注金額
                 '' as BP_ID : String(50),//得意先コード
                 '' as checkOk : String(50), // 検査合区分
                 '' as BYNAME : String(50), // 発注担当者,
                 T01.POCDBY , // 発注担当者
-                T01.SAP_CD_BY, // SAP担当者
+                T02.SAP_CD_BY, // SAP担当者
                 T02.INT_NUMBER,
                 T02.TO_MAT.CUST_MATERIAL,
                 T02.PR_BY,
@@ -395,17 +397,17 @@ extend service TableService {
                 T02.STORAGE_LOC,
                 T02.STORAGE_LOC || T02.STORAGE_TXT AS STORAGE_TXT: String(100),
                 '' as TYPE : String,//csv ステータス
-                T02.TO_MAT.TO_SAP_BP.BP_NAME1,
+                T02.TO_MAT.TO_SAP_BP.BP_NAME1,//メーカー
                  case T02.DOWN_FLAG
                     when 'Y' then '確認済'
                     else '未確認' end as DOWN_FLAG : String(10), //確認済みフラグ
-                    T02.TO_MAT.MANU_MATERIAL,
+                    T02.TO_MAT.MANU_MATERIAL, //メーカー品番
                 0 as ISSUEDAMOUNT  :  Decimal(18, 5),//csv 発注金額
                 '' as BP_ID : String(50),//得意先コード
                 '' as checkOk : String(50), // 検査合区分
                 '' as BYNAME : String(50), // 発注担当者,
                 T01.POCDBY , // 発注担当者
-                T01.SAP_CD_BY, // SAP担当者
+                T02.SAP_CD_BY, // SAP担当者
                 T02.INT_NUMBER,
                 T02.TO_MAT.CUST_MATERIAL,
                 T02.PR_BY,
