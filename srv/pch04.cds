@@ -30,7 +30,7 @@ extend service TableService {
         left join MST.T05_SAP_BP_PURCHASE AS M04
             on (
                 M04.SUPPLIER = T01.SUPPLIER
-                and M04.PURCHASE_ORG = T01.PO_ORG
+                and M04.PURCHASE_ORG = T01.PO_BUKRS
             )
 
     {
