@@ -221,10 +221,15 @@ public class Pch03Handler implements EventHandler {
 
             // 得意先コード
             String matId = pchd03.getMatId();
+            // matId不能位空，且不能小于2位
+            if (matId != null && matId.length() >= 2) {
+                String matIdLastTwo = matId.substring(matId.length() - 2);
+                T03SapBp bySearch = mstD003.getBySearch(matIdLastTwo);
+                if (bySearch != null)
+                    pchd03.setBpId(bySearch.getBpId());
+            }
+
             // 先获取品目最后两位
-            String matIdLastTwo = matId.substring(matId.length() - 2);
-            T03SapBp bySearch = mstD003.getBySearch(matIdLastTwo);
-            pchd03.setBpId(bySearch.getBpId());
 
             // 発注担当者
             String pocdby = pchd03.getPocdby();

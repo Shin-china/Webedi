@@ -307,7 +307,7 @@ extend service TableService {
                     when 'Y' then '確認済'
                     else '未確認' end as DOWN_FLAG : String(10), //確認済みフラグ
                     T02.TO_MAT.MANU_MATERIAL,
-                0 as ISSUEDAMOUNT  :  Decimal(18, 3),//csv 発注金額
+                0 as ISSUEDAMOUNT  :  Decimal(18, 5),//csv 発注金額
                 '' as BP_ID : String(50),//得意先コード
                 '' as checkOk : String(50), // 検査合区分
                 '' as BYNAME : String(50), // 発注担当者,
@@ -390,7 +390,7 @@ extend service TableService {
                     when 'Y' then '確認済'
                     else '未確認' end as DOWN_FLAG : String(10), //確認済みフラグ
                 T02.TO_MAT.MANU_MATERIAL,//メーカー品番
-                0 as ISSUEDAMOUNT  :  Decimal(18, 3),//csv 発注金額
+                0 as ISSUEDAMOUNT  :  Decimal(18, 5),//csv 発注金額
                 '' as BP_ID : String(50),//得意先コード
                 '' as checkOk : String(50), // 検査合区分
                 '' as BYNAME : String(50), // 発注担当者,
