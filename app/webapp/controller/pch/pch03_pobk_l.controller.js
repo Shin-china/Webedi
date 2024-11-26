@@ -105,7 +105,7 @@ sap.ui.define([
 
 		},
 		_setHeaderModel: function () {
-			let keys = ["obj1","obj1","PO_TYPE_NAME","obj1","ID","obj1","PO_DATE","PO_D_DATE","メーカー","MAT_ID","PO_D_TXZ01","UMC共通品番(SAP品番)","顧客品番","メーカー品番","PO_PUR_UNIT","CURRENCY","PO_PUR_QTY","DEL_PRICE","発注金額","MEMO","備考２","得意先コード","資産元","STORAGE_LOC","STORAGE_TXT","検査区分","発注担当者","依頼者","棚番号","調整依頼コメント","納品先郵便番号","納品先住所１","納品先住所２","納品先住所３","納品先住所４","納品先電話番号","納品先ＦＡＸ","納品日","納品数"]
+			let keys = ["obj1","DOWN_FLAG","TYPE","obj1","ID","INT_NUMBER","PO_DATE","PO_D_DATE","BP_NAME1","MAT_ID","PO_D_TXZ01","MAT_ID","CUST_MATERIAL","MANU_MATERIAL","PO_PUR_UNIT","CURRENCY","PO_PUR_QTY","DEL_PRICE","ISSUEDAMOUNT","MEMO","備考２","BP_ID","資産元","STORAGE_LOC","STORAGE_TXT","checkOk","BYNAME","依頼者","棚番号","調整依頼コメント","納品先郵便番号","納品先住所１","納品先住所２","納品先住所３","納品先住所４","納品先電話番号","納品先ＦＡＸ","納品日","納品数"]
 			// headers.shift();
 			return keys;
 			// headers.splice(4, 0, 55);
