@@ -16,6 +16,9 @@ sap.ui.define([
         onResend: function () {
             var oTable = this.getView().byId("detailTable");
             var aSelectedIndices = oTable.getSelectedIndices();
+
+            var that = this;
+            var IdList = that._TableDataList("detailTable", 'SUPPLIER');
    
             // 检查是否有选中的数据
             if (aSelectedIndices.length === 0) {
@@ -147,22 +150,11 @@ sap.ui.define([
 
             this._sendEmail(mailobj);
 			this._setBusy(false);
-            // oBind.create(mailobj);
-            // let a =oBind.create(mailobj, {
-            //     success: function (oData) {
-            //         console.log(oData)
-            //         // 确保oData不为null并且有返回的结果
-            //         if (oData && oData.result && oData.result === "sucess") {
-            //             MessageToast.show("メールは送付されました");
-            //         } else {
-            //             MessageBox.error("メール送信に失敗しました。エラー: " + (oData.result || "不明なエラー"));
-            //         }
-            //     },
-            //     error: function (oError) {
-            //         console.log(oError)
-            //         MessageBox.error("メール送信に失敗しました。エラー: " + oError.message);
-            //     }
-            // });
+            
+            this._callCdsAction("/PCH04_SENDEMAIL", { parms: IdList[0] }, that).then((data) => {
+				
+			});
+
         });
     },
 
