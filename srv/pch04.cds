@@ -38,7 +38,7 @@ extend service TableService {
         KEY T02.D_NO,                      // 明細番号 
         KEY T04.INV_NO,                    // 发票号
         T01.SUPPLIER,                      // 仕入先
-        T01.PO_ORG,                        // 購買組織
+        T01.PO_BUKRS,                      // 会社コード
         T04.SUPPLIER_DESCRIPTION,          // 業者名
         T05.MAT_ID,                        // 品目コード
         T05.MAT_DESC,                      // 品目名称
@@ -88,7 +88,7 @@ extend service TableService {
         UNIT_PRICE,
         EXCHANGE,                      // 換算レート
         SUPPLIER,                      // 仕入先
-        PO_ORG,                        // 購買組織
+        PO_BUKRS,                        // 会社コード
         SUPPLIER_DESCRIPTION,          // 業者名
         MAT_ID,                        // 品目コード
         MAT_DESC,                      // 品目名称

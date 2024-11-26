@@ -95,6 +95,7 @@ public class Ifm05PayService {
                     p.setShkzg(suplist.getDebitcreditcode());
                     p.setGrDate(suplist.getPostingdate2());
                     p.setTaxRate(suplist.getTaxrate());
+                    p.setMatDesc(suplist.getPurchaseorderitemtext());
                     PchDao.modifyT05(p);
 
                 }
