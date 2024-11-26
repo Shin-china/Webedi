@@ -64,6 +64,7 @@ public class Ifm05PayService {
                     o.setInvPostDate(suplist.getPostingdate1());
                     o.setExchange(suplist.getExchangerate());
                     o.setInvBaseDate(suplist.getDuecalculationbasedate());
+                    o.setSendFlag(suplist.getSendflag());
 
                     PchDao.modifyT04(o);
 
@@ -93,6 +94,7 @@ public class Ifm05PayService {
                     p.setCompanyCode(suplist.getCompanycode());
                     p.setShkzg(suplist.getDebitcreditcode());
                     p.setGrDate(suplist.getPostingdate2());
+                    p.setTaxRate(suplist.getTaxrate());
                     PchDao.modifyT05(p);
 
                 }

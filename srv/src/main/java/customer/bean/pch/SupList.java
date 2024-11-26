@@ -43,6 +43,8 @@ public class SupList {
     private String Companycode;
     private String Purchasinggroupname;
     private String Accountingdocument;
+    private BigDecimal Taxrate;
+    private String Sendflag;
 
 
     
