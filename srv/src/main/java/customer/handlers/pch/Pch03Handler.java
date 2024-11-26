@@ -237,6 +237,7 @@ public class Pch03Handler implements EventHandler {
             pchd03.setIssuedamount(NumberTool.toScale(pchd03.getDelPrice().multiply(pchd03.getPoPurQty()), currency));
             // 设置検査合区分
             if (!StringTool.isEmpty(pchd03.getImpComp())) {
+                // pchd03.setImpComp("受入検査あり");
                 pchd03.setCheckOk("受入検査あり");
             }
             // 得意先コード
