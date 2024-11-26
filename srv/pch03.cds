@@ -303,7 +303,7 @@ extend service TableService {
                 T02.MEMO, // 備考
                 Tu.USER_TYPE, // 用户type
                 T02.STORAGE_LOC,
-                T02.STORAGE_LOC || T02.STORAGE_TXT AS STORAGE_TXT: String(10),
+                T02.STORAGE_LOC || T02.STORAGE_TXT AS STORAGE_TXT: String(100),
                 '' as TYPE : String,//csv ステータス
                 T02.TO_MAT.TO_SAP_BP.BP_NAME1,
                  case T02.DOWN_FLAG
@@ -393,7 +393,7 @@ extend service TableService {
                 T02.MEMO, // 備考
                 Tu.USER_TYPE, // 用户type
                 T02.STORAGE_LOC,
-                T02.STORAGE_LOC || T02.STORAGE_TXT AS STORAGE_TXT: String(10),
+                T02.STORAGE_LOC || T02.STORAGE_TXT AS STORAGE_TXT: String(100),
                 '' as TYPE : String,//csv ステータス
                 T02.TO_MAT.TO_SAP_BP.BP_NAME1,
                  case T02.DOWN_FLAG
