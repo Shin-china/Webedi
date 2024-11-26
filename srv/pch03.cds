@@ -256,7 +256,9 @@ extend service TableService {
             on T02.STATUS = T07.VALUE
         left join view.MST_BP_ZABC_POP T08
             on T04.ZABC = T08.VALUE
-
+        left join view.MST_T06_MAT_PLANT T09
+            on T09.PLANT_ID = T02.PLANT_ID
+            and T09.MAT_ID = T02.MAT_ID
 
           {
             @title: '{i18n>PO_NO_DNO}'
@@ -274,6 +276,7 @@ extend service TableService {
                 T02.CD_BY, //登録者
                 T02.PO_D_DATE, //所要日付
                 T02.PLANT_ID,
+                
                 @title: '{i18n>ZABC1}'
                      case T04.ZABC
                     when 'E' then 'E'
@@ -300,7 +303,7 @@ extend service TableService {
                 T02.MEMO, // 備考
                 Tu.USER_TYPE, // 用户type
                 T02.STORAGE_LOC,
-                T02.STORAGE_TXT,
+                T02.STORAGE_LOC || T02.STORAGE_TXT AS STORAGE_TXT: String(10),
                 '' as TYPE : String,//csv ステータス
                 T02.TO_MAT.TO_SAP_BP.BP_NAME1,
                  case T02.DOWN_FLAG
@@ -315,6 +318,8 @@ extend service TableService {
                 T01.SAP_CD_BY, // SAP担当者
                 T02.INT_NUMBER,
                 T02.TO_MAT.CUST_MATERIAL,
+                T02.PR_BY,
+                T09.IMP_COMP,//検査合区分
         }
     where
                 Tu.USER_TYPE = '2'
@@ -341,10 +346,12 @@ extend service TableService {
                 on T02.STATUS = T07.VALUE
             left join view.MST_BP_ZABC_POP T08
                 on T04.ZABC = T08.VALUE
-
+        left join view.MST_T06_MAT_PLANT T09
+            on T09.PLANT_ID = T02.PLANT_ID
+            and T09.MAT_ID = T02.MAT_ID
 
             distinct {
-                   @title: '{i18n>PO_NO_DNO}'
+             @title: '{i18n>PO_NO_DNO}'
             key T01.PO_NO || RIGHT('00000' || T02.D_NO, 5) as ID   : String(100),
             key T01.PO_NO, // 発注番号
             key T02.D_NO, // 明細番号
@@ -359,6 +366,7 @@ extend service TableService {
                 T02.CD_BY, //登録者
                 T02.PO_D_DATE, //所要日付
                 T02.PLANT_ID,
+                
                 @title: '{i18n>ZABC1}'
                      case T04.ZABC
                     when 'E' then 'E'
@@ -385,22 +393,23 @@ extend service TableService {
                 T02.MEMO, // 備考
                 Tu.USER_TYPE, // 用户type
                 T02.STORAGE_LOC,
-                T02.STORAGE_TXT,
+                T02.STORAGE_LOC || T02.STORAGE_TXT AS STORAGE_TXT: String(10),
                 '' as TYPE : String,//csv ステータス
-                T02.TO_MAT.TO_SAP_BP.BP_NAME1,//メーカー
+                T02.TO_MAT.TO_SAP_BP.BP_NAME1,
                  case T02.DOWN_FLAG
                     when 'Y' then '確認済'
                     else '未確認' end as DOWN_FLAG : String(10), //確認済みフラグ
-                T02.TO_MAT.MANU_MATERIAL,//メーカー品番
+                    T02.TO_MAT.MANU_MATERIAL,
                 0 as ISSUEDAMOUNT  :  Decimal(18, 5),//csv 発注金額
                 '' as BP_ID : String(50),//得意先コード
                 '' as checkOk : String(50), // 検査合区分
                 '' as BYNAME : String(50), // 発注担当者,
-               T01.POCDBY , // 発注担当者
+                T01.POCDBY , // 発注担当者
                 T01.SAP_CD_BY, // SAP担当者
                 T02.INT_NUMBER,
                 T02.TO_MAT.CUST_MATERIAL,
-
+                T02.PR_BY,
+                T09.IMP_COMP,//検査合区分
             }
             where
                 Tu.USER_TYPE = '1';
