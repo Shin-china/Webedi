@@ -1,43 +1,91 @@
 sap.ui.define(["umc/app/Controller/BaseController", "sap/m/MessageToast"], function (Controller, MessageToast) {
   "use strict";
 
-  let _objectCommData = {
-    _entity: "/PCH_T06_QUOTATION_H", //此本页面操作的对象//绑定的数据源视图
-    _entity_d: "TO_ITEMS",
-    _items: "TO_ITEMS", // 展开数据"TO_ITEMS,TO_XXX,"
-    // _entityDarftEdit: "/INV_T09_MOVE_draftEdit", //草稿对象 编辑
-    // _entityDarft: "/INV_T09_MOVE_draftActivate", //激活
-    // _entityDetailDarft: "/TO_ITEMS", //草稿对象明细
-    // _darftTables: "tableservice_inv_T09_MOVE_drafts" + "," + "tableservice_inv_t08_re_d_drafts",
-  };
+  var _objectCommData = {
+		_entity: "/PCH10_LIST", //此本页面操作的对象//绑定的数据源视图
+		_aFilters: undefined
+
+	};
+  var myMap = new Map();
+  
+  // let _objectCommData = {
+  //   _entity: "/PCH10_LIST", //此本页面操作的对象//绑定的数据源视图
+  //   _entity_d: "PCH10_LIST",
+  //   _items: "PCH10_LIST", // 展开数据"TO_ITEMS,TO_XXX,"
+  //   // _entityDarftEdit: "/INV_T09_MOVE_draftEdit", //草稿对象 编辑
+  //   // _entityDarft: "/INV_T09_MOVE_draftActivate", //激活
+  //   // _entityDetailDarft: "/TO_ITEMS", //草稿对象明细
+  //   // _darftTables: "tableservice_inv_T09_MOVE_drafts" + "," + "tableservice_inv_t08_re_d_drafts",
+  // };
+
   return Controller.extend("umc.app.controller.pch.pch10_quotation_d", {
     onInit: function () {
       //  设置版本号
       this._setOnInitNo("PCH10", "20241024");
-      this.getRouter().getRoute("RouteView_pch10").attachPatternMatched(this._onRouteMatched, this);
+      this.getRouter().getRoute("RouteView_pch10").attachPatternMatched(this._onRouteMatched, this)
+      this._PchResourceBundle = this.getOwnerComponent().getModel("pch").getResourceBundle();
+      
+      this._localModel = new sap.ui.model.json.JSONModel();
+      this._localModel.setData({
+          "show": true,
+          "save": false
+      });
+      this.getView().setModel(this._localModel, "localModel");
 
       
     },
 
     _onRouteMatched: function (oEvent) {
-      //获取并设置权限数据
-      // this._setAuthByMenuAndUser("INV34");
-      let that = this;
+
+      var that = this;
+      that._setBusy(true);
+      
       let headID = oEvent.getParameter("arguments").headID;
-      console.log(headID);
-      this.getView().unbindElement();
-      this._headID = headID;
-      this._setEditable(false);
-      this._setEditableAuth(true);
-      this._setBusy(true);
-      this._setIsCreate(false);
-      // //初始化 msg
-      // this.MessageTools._clearMessage();
-      // this.MessageTools._initoMessageManager(this);
-      // // 编辑
-      this._onObjectMatchedCommon(oEvent, _objectCommData._entity, {}, _objectCommData._items, true, "smartTable");
-      // //this.byId("smartTable2").rebindTable();
-      // that.getModel().refresh(true);
+      var aFilters = headID;
+			_objectCommData._aFilters = aFilters;
+			var view = this.getView();
+			var jsonModel = view.getModel("workInfo");
+			view.setModel(jsonModel, undefined);
+			if (aFilters.length == 0) {
+				that._setBusy(false);
+				return;
+			}
+			this._readEntryByServiceAndEntity(_objectCommData._entity, aFilters, null).then((oData) => {
+
+				if (!jsonModel) {
+					jsonModel = new sap.ui.model.json.JSONModel();
+					view.setModel(jsonModel, "workInfo");
+        }
+        
+				jsonModel.setData(oData.results);
+				//更新seq数据
+				that._getSeq();
+				that._setBusy(false);
+        console.log(oData.results)
+        });
+
+
+
+
+
+      // //获取并设置权限数据
+      // // this._setAuthByMenuAndUser("INV34");
+      // let that = this;
+      // let headID = oEvent.getParameter("arguments").headID;
+      // console.log(headID);
+      // this.getView().unbindElement();
+      // this._headID = headID;
+      // this._setEditable(false);
+      // this._setEditableAuth(true);
+      // this._setBusy(true);
+      // this._setIsCreate(false);
+      // // //初始化 msg
+      // // this.MessageTools._clearMessage();
+      // // this.MessageTools._initoMessageManager(this);
+      // // // 编辑
+      // this._onObjectMatchedCommon(oEvent, _objectCommData._entity, {}, _objectCommData._items, true, "smartTable");
+      // // //this.byId("smartTable2").rebindTable();
+      // // that.getModel().refresh(true);
     },
 
     onRebind: function (oEvent) {
@@ -60,7 +108,7 @@ sap.ui.define(["umc/app/Controller/BaseController", "sap/m/MessageToast"], funct
         let para = [];
       selectedData.forEach(item => {
 
-          let key1 = item.SALES_NUMBER;
+          let key1 = item.QUO_NUMBER;
         
             para.push(key1);
         });
@@ -71,6 +119,11 @@ sap.ui.define(["umc/app/Controller/BaseController", "sap/m/MessageToast"], funct
         //     let json = JSON.parse(oData.PCH08_SHOW_DETAIL);
         //     console.log(json)
         //   });
+    },
+
+    onEdit: function () {
+      this._localModel.setProperty("/show", false);
+      this._localModel.setProperty("/save", true);
     },
 
     

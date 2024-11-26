@@ -235,7 +235,7 @@
             <t:template><Text text="{PERSON_NO1}"/></t:template>
         </t:Column>
 
-        <t:Column id="colPERSON_NO2" width="10rem" sortProperty="PERSON_NO2" filterProperty="PERSON_NO2">
+        <!-- <t:Column id="colPERSON_NO2" width="10rem" sortProperty="PERSON_NO2" filterProperty="PERSON_NO2">
             <t:customData>
                 <core:CustomData key="p13nData" value='\{"columnKey":"PERSON_NO2", "leadingProperty":"PERSON_NO2", "sortProperty":"PERSON_NO2", "filterProperty":"PERSON_NO2"}'/>
             </t:customData>
@@ -265,7 +265,7 @@
             </t:customData>
             <t:label><Label text="{pch>PCH10_PERSON_NO5}"/></t:label>
             <t:template><Text text="{PERSON_NO5}"/></t:template>
-        </t:Column>
+        </t:Column> -->
 
         <t:Column id="colYLP" width="10rem" sortProperty="YLP" filterProperty="YLP">
             <t:customData>
