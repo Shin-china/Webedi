@@ -228,7 +228,7 @@ public class Pch03Handler implements EventHandler {
             String currency = pchd03.getCurrency();
             // 発注金額 = 価格単位*発注数量 三位小数
             // 根据货币进行四舍五入
-            pchd03.setIssuedamount(NumberTool.toScale(pchd03.getUnitPrice().multiply(pchd03.getPoPurQty()), currency));
+            pchd03.setIssuedamount(NumberTool.toScale(pchd03.getDelPrice().multiply(pchd03.getPoPurQty()), currency));
 
             // 得意先コード
             String matId = pchd03.getMatId();

@@ -315,6 +315,7 @@ extend service TableService {
                 T01.SAP_CD_BY, // SAP担当者
                 T02.INT_NUMBER,
                 T02.TO_MAT.CUST_MATERIAL,
+                 T02.SUPPLIER_MAT,
         }
     where
                 Tu.USER_TYPE = '2'
@@ -400,6 +401,7 @@ extend service TableService {
                 T01.SAP_CD_BY, // SAP担当者
                 T02.INT_NUMBER,
                 T02.TO_MAT.CUST_MATERIAL,
+                  T02.SUPPLIER_MAT,
 
             }
             where
