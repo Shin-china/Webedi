@@ -420,7 +420,7 @@ extend service TableService {
     action PCH03_SENDEMAIL(parms : String) returns String;
     action PCH03_QUEREN(parms : String) returns String;
     action PCH03_GETTYPE(parms : String) returns String;
-    
+    action PCH03_PRINTHX(parms : String) returns String;
 
 }
 

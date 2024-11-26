@@ -180,4 +180,13 @@ public class PchService {
         }
     }
 
+    public void setT02PrintHx(String po, String dNo) {
+        T02PoD byID = pchD002.getByID(po, Integer.parseInt(dNo));
+        // 设置回写函数
+        byID.setDownFlag("Y");
+        // 修改
+        pchD002.updateD002(byID);
+
+    }
+
 }

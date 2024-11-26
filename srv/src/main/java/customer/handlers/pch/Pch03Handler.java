@@ -12,6 +12,7 @@ import com.sap.cds.services.handler.annotations.On;
 import com.sap.cds.services.handler.annotations.ServiceName;
 
 import cds.gen.tableservice.PCH03GETTYPEContext;
+import cds.gen.tableservice.PCH03PRINTHXContext;
 import cds.gen.tableservice.PCH03QUERENContext;
 import cds.gen.tableservice.PCH03SENDEMAILContext;
 import cds.gen.tableservice.PCH04SENDEMAILContext;
@@ -270,25 +271,6 @@ public class Pch03Handler implements EventHandler {
         });
     }
 
-    @On(event = PCH03SENDEMAILContext.CDS_NAME)
-    public void sendEmail(PCH03SENDEMAILContext context) {
-        // 直接从上下文中获取参数
-        String emailJsonParam = (String) context.get("parms"); // 根据上下文对象获取数据
-
-        ArrayList<MailJson> mailJsonList = new ArrayList<>();
-        // MailJso
-
-        // 调用邮件发送服务
-        try {
-            emailServiceFun.sendEmailFun(mailJsonList);
-            // 设置操作结果
-            context.setResult(JSON.toJSONString("メール送信に成功しました。"));
-        } catch (Exception e) {
-            // 处理发送邮件的异常
-
-        }
-    }
-
     @On(event = PCH03GETTYPEContext.CDS_NAME)
     public void getType(PCH03GETTYPEContext context) {
         // 获取po号
@@ -298,50 +280,18 @@ public class Pch03Handler implements EventHandler {
         context.setResult(type);
     }
 
-    // 创建 MailBody 的集合
-    private Collection<MailBody> createMailBody(MailParam param) {
-        Collection<MailBody> bodies = new ArrayList<>();
-        MailBody body = MailBody.create();
-        body.setObject("content"); // 根据具体需求设置
-        body.setValue(param.getEmailContent()); // 使用参数内容
-        bodies.add(body);
-        return bodies;
-    }
+    @On(event = "PCH03_PRINTHX")
+    public void setPrintHx(PCH03PRINTHXContext context) {
+        // 获取po号
+        JSONArray jsonArray = JSONArray.parseArray(context.getParms());
 
-    // 解析传入的 JSON 参数为 List<MailParam>
-    private List<MailParam> parseParams(String parms) {
-        Gson gson = new Gson();
-        Type mailParamListType = new TypeToken<List<MailParam>>() {
-        }.getType();
-        return gson.fromJson(parms, mailParamListType);
-    }
-
-    // 定义一个内部类，用于接收 JSON 数据
-    private static class MailParam {
-        private String INV_NO;
-        private String SUPPLIER_DESCRIPTION;
-        private String EMAIL_CONTENT;
-        private String TEMPLATE_ID; // 添加模板ID字段
-        private String MAIL_TO; // 添加收件人邮箱字段
-
-        public String getInvNo() {
-            return INV_NO;
+        for (int i = 0; i < jsonArray.size(); i++) {
+            JSONObject jsonObject = jsonArray.getJSONObject(i);
+            String string = jsonObject.getString("po");
+            String string2 = jsonObject.getString("dNo");
+            pchService.setT02PrintHx(string, string2);
         }
 
-        public String getSupplierDescription() {
-            return SUPPLIER_DESCRIPTION;
-        }
-
-        public String getEmailContent() {
-            return EMAIL_CONTENT;
-        }
-
-        public String getTemplateId() {
-            return TEMPLATE_ID;
-        }
-
-        public String getMailTo() {
-            return MAIL_TO;
-        }
+        context.setResult("success");
     }
 }

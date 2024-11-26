@@ -34,7 +34,7 @@ public class PchD002 extends Dao {
     private static final Logger logger = LoggerFactory.getLogger(PchD002.class);
 
     /**
-     * 根据删除po和dno删除03表
+     * 根据删除
      * 
      * @param po
      * @param dno

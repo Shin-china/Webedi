@@ -105,7 +105,7 @@ sap.ui.define([
 
 		},
 		_setHeaderModel: function () {
-			let keys = ["obj1","DOWN_FLAG","TYPE","obj1","ID","INT_NUMBER","PO_DATE","PO_D_DATE","BP_NAME1","SUPPLIER_MAT","PO_D_TXZ01","MAT_ID","CUST_MATERIAL","MANU_MATERIAL","PO_PUR_UNIT","CURRENCY","PO_PUR_QTY","DEL_PRICE","ISSUEDAMOUNT","MEMO","備考２","BP_ID","資産元","STORAGE_LOC","STORAGE_TXT","checkOk","BYNAME","依頼者","棚番号","調整依頼コメント","納品先郵便番号","納品先住所１","納品先住所２","納品先住所３","納品先住所４","納品先電話番号","納品先ＦＡＸ","納品日","納品数"]
+			let keys = ["obj1","DOWN_FLAG","TYPE","obj1","ID","INT_NUMBER","PO_DATE","PO_D_DATE","BP_NAME1","SUPPLIER_MAT","PO_D_TXZ01","MAT_ID","CUST_MATERIAL","MANU_MATERIAL","PO_PUR_UNIT","CURRENCY","PO_PUR_QTY","DEL_PRICE","ISSUEDAMOUNT","MEMO","備考２","BP_ID","資産元","STORAGE_LOC","STORAGE_TXT","checkOk","BYNAME","PR_BY","棚番号","調整依頼コメント","納品先郵便番号","納品先住所１","納品先住所２","納品先住所３","納品先住所４","納品先電話番号","納品先ＦＡＸ","納品日","納品数"]
 			// headers.shift();
 			return keys;
 			// headers.splice(4, 0, 55);
@@ -138,15 +138,29 @@ sap.ui.define([
 
 				//完成后是否更新确认,false不更新Y
 				that._isQuerenDb(selectedIndices, false);
+				that._isPrintHx(selectedIndices);
 				that._setBusy(false);
 			})
 
 		},
-		// onCreate: function (oEvent) {
-		// var oItem = oEvent.getSource();
-		// var oContext = oItem.getBindingContext();
-		// this._onPress(oEvent, "RouteCre_sys01");
-		// },
+		_getData(selectedIndices){
+			var pList = Array();
+			selectedIndices.forEach((odata) => {
+			    var p = {
+					po: odata.PO_NO,
+					dNo: odata.D_NO,
+				}
+				pList.push(p);
+			})
+			return {parms: JSON.stringify(pList)};
+			
+		},
+		_isPrintHx: function (selectedIndices) {
+			this._callCdsAction("/PCH03_PRINTHX", this._getData(selectedIndices), this).then((oData) => {
+			
+			})
+		
+		},
 		onBeforeExport: function (oEvt) {
 			var mExcelSettings = oEvt.getParameter("exportSettings");
 
