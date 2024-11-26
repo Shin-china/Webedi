@@ -396,8 +396,10 @@ extend service TableService {
                 '' as BP_ID : String(50),//得意先コード
                 '' as checkOk : String(50), // 検査合区分
                 '' as BYNAME : String(50), // 発注担当者,
-                T01.POCDBY , // 発注担当者
-                T01.SAP_CD_BY // SAP担当者
+               T01.POCDBY , // 発注担当者
+                T01.SAP_CD_BY, // SAP担当者
+                T02.INT_NUMBER,
+                T02.TO_MAT.CUST_MATERIAL,
 
             }
             where
