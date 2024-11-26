@@ -22,15 +22,18 @@ import cds.gen.tableservice.PchT03PoItem_;
 import cds.gen.tableservice.TableService_;
 import cds.gen.MailBody;
 import cds.gen.MailJson;
+import cds.gen.mst.T03SapBp;
 import cds.gen.pch.T10EmailSendLog;
 import cds.gen.sys.T08ComOpD;
 import customer.bean.com.UmcConstants;
 import customer.comm.tool.StringTool;
+import customer.dao.mst.MstD003;
 import customer.dao.pch.PchD008Dao;
 import customer.dao.pch.PchD010Dao;
 import customer.service.pch.PchService;
 import customer.service.sys.EmailServiceFun;
 import customer.tool.DateTools;
+import customer.tool.NumberTool;
 import customer.tool.UWebConstants;
 
 import com.alibaba.fastjson.JSON;
@@ -60,6 +63,8 @@ public class Pch03Handler implements EventHandler {
     PchD010Dao pchD010;
     @Autowired
     PchD008Dao pchD008Dao;
+    @Autowired
+    MstD003 mstD003;
 
     /**
      * 
@@ -109,11 +114,9 @@ public class Pch03Handler implements EventHandler {
             // 货币除了日元5其余2
             String currency = pchd03.getCurrency();
             if (unitPrice != null && delPrice != null && poPurQty != null) {
-                if (UWebConstants.JPY.equals(currency)) {
-                    prc = delPrice.divide(unitPrice, 5, RoundingMode.HALF_UP);
-                } else {
-                    prc = delPrice.divide(unitPrice, 2, RoundingMode.HALF_UP);
-                }
+                // 根据货币进行四舍五入
+                prc = NumberTool.toScale(delPrice.divide(unitPrice), currency);
+
                 // 税抜額
                 BigDecimal exclusive_tax_amount = poPurQty.multiply(prc);
                 // 税额
@@ -199,7 +202,7 @@ public class Pch03Handler implements EventHandler {
     /**
      * 
      * 打印前数据处理
-     * 
+     * PCH_T03_PO_ITEM
      */
     @After(entity = PchT03PoItem_.CDS_NAME, event = "READ")
     public void beforeReadD03(CdsReadEventContext context, Stream<PchT03PoItem> pchd03List) {
@@ -207,12 +210,37 @@ public class Pch03Handler implements EventHandler {
         Boolean[] isPrint = new Boolean[1];
         isPrint[0] = false;
         pchd03List.forEach(pchd03 -> {
+            // type
+            String poSendPDFZWSType = pchService.getPoSendPDFZWSType(pchd03.getPoNo());
+            pchd03.setType(poSendPDFZWSType);
+            // 货币除了日元5其余2
+            String currency = pchd03.getCurrency();
+            // 発注金額 = 価格単位*発注数量 三位小数
+            // 根据货币进行四舍五入
+            pchd03.setIssuedamount(NumberTool.toScale(pchd03.getUnitPrice().multiply(pchd03.getPoPurQty()), currency));
+
+            // 得意先コード
+            String matId = pchd03.getMatId();
+            // 先获取品目最后两位
+            String matIdLastTwo = matId.substring(matId.length() - 2);
+            T03SapBp bySearch = mstD003.getBySearch(matIdLastTwo);
+            pchd03.setBpId(bySearch.getBpId());
+
+            // 発注担当者
+            String pocdby = pchd03.getPocdby();
+            // 如果発注担当者为空或者全为数字
+            if (pocdby == null || pocdby.matches("\\d+")) {
+                pocdby = pchd03.getSapCdBy();
+            }
+            pchd03.setByname(pocdby);
+
             // 获取po
             String po = pchd03.getPoNo();
             // 获取明细编号
             String dNo = pchd03.getDNo() + "";
             // 设置前置零
             pchd03.setId(po + StringTool.leftPadWithZeros(dNo, 5));
+
         });
     }
 

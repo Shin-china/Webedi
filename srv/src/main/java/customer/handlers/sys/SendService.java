@@ -95,7 +95,12 @@ public class SendService {
 
             // 获取購買見積番号
             // pchT06QuotationH.setQuoNumber(docNoDao.getPJNo(1));
-            pchT06QuotationH.setQuoNumber("1006");
+
+            try {
+                pchT06QuotationH.setQuoNumber(docNoDao.getQuoNumber("", 1));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
             // 插入头标，首先删除原key值数据
             T06QuotationH t06QuotationH = T06QuotationH.create();

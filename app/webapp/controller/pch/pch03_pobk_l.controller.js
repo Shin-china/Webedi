@@ -37,8 +37,8 @@ sap.ui.define([
 		// this._onPress(oEvent, "RouteEdit_sys01", oContext.getObject().ID);
 		// },
 		/*==============================
-init
-==============================*/
+		init
+		==============================*/
 		_onRouteMatched: function (oEvent) {
 			var that = this;
 			//取得权限
@@ -122,17 +122,23 @@ init
 			var that = this;
 			//设置通用dialog
 			this._AfterDigLogCheck().then((selectedIndices) => {
-				// 构建CSV内容  
-				var csvContent = "data:text/csv;charset=utf-8,";
-				csvContent = that._getCsvData(selectedIndices,csvContent);
+				selectedIndices.forEach(function (row) {
+					// 构建CSV内容  
+					var csvContent = "data:text/csv;charset=utf-8,";
+					csvContent = that._getCsvData(row,csvContent);
 
-				// 触发下载  
-				var encodedUri = encodeURI(csvContent);
-				var link = document.createElement("a");
-				link.setAttribute("href", encodedUri);
-				link.setAttribute("download", "data.csv");
-				document.body.appendChild(link);
-				link.click();
+					// 触发下载  
+					var encodedUri = encodeURI(csvContent);
+					var link = document.createElement("a");
+					link.setAttribute("href", encodedUri);
+					link.setAttribute("download", that.CommTools.getCurrentTimeFormatted()+"_"+row.ID+".csv");
+					document.body.appendChild(link);
+					link.click();
+				})
+
+				
+
+
 				//完成后是否更新确认,false不更新Y
 				that._isQuerenDb(selectedIndices, false);
 				that._setBusy(false);
@@ -259,31 +265,31 @@ init
 			})
 		},
 
-		_getCsvData: function (selectedIndices,csvContent) {
+		_getCsvData: function (row, csvContent) {
 			var that = this;
-			if (selectedIndices) {
-							//设置头的模板
-							var headers = that._setHeaderModel();
-							//头部数据写入一行
-							csvContent = that._setHeaderData(csvContent);
-			
-							selectedIndices.forEach(function (row) {
-								var values = headers.map(function (header) {
-									let re = ""
-									//如果取不出来就是
-									if(row[header] === null || row[header] === undefined){
-										return re = ""
-									}else{
-										if("PO_DATE" == header || "PO_D_DATE" == header){
-											re = that.CommTools._formatToYYYYMMDD(row[header]);
-										}else{
-											re = '"' + row[header] + '"'
-										}
-									}
-									return re;
-								});
-								csvContent += values.join(",") + "\n";
-							});
+			if (row) {
+				//设置头的模板
+				var headers = that._setHeaderModel();
+				//头部数据写入一行
+				csvContent = that._setHeaderData(csvContent);
+
+
+				var values = headers.map(function (header) {
+					let re = ""
+					//如果取不出来就是
+					if (row[header] === null || row[header] === undefined) {
+						return re = ""
+					} else {
+						if ("PO_DATE" == header || "PO_D_DATE" == header) {
+							re = that.CommTools._formatToYYYYMMDD(row[header]);
+						} else {
+							re = '"' + row[header] + '"'
+						}
+					}
+					return re;
+				});
+				csvContent += values.join(",") + "\n";
+
 			}
 			return csvContent;
 		},

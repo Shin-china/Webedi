@@ -300,7 +300,19 @@ extend service TableService {
                 T02.MEMO, // 備考
                 Tu.USER_TYPE, // 用户type
                 T02.STORAGE_LOC,
-                T02.STORAGE_TXT
+                T02.STORAGE_TXT,
+                '' as TYPE : String,//csv ステータス
+                T02.TO_MAT.TO_SAP_BP.BP_NAME1,
+                 case T02.DOWN_FLAG
+                    when 'Y' then '確認済'
+                    else '未確認' end as DOWN_FLAG : String(10), //確認済みフラグ
+                    T02.TO_MAT.MANU_MATERIAL,
+                0 as ISSUEDAMOUNT  :  Decimal(18, 3),//csv 発注金額
+                '' as BP_ID : String(50),//得意先コード
+                '' as checkOk : String(50), // 検査合区分
+                '' as BYNAME : String(50), // 発注担当者,
+                T01.POCDBY , // 発注担当者
+                T01.SAP_CD_BY // SAP担当者
         }
     where
                 Tu.USER_TYPE = '2'
@@ -371,7 +383,20 @@ extend service TableService {
                 T02.MEMO, // 備考
                 Tu.USER_TYPE, // 用户type
                 T02.STORAGE_LOC,
-                T02.STORAGE_TXT
+                T02.STORAGE_TXT,
+                '' as TYPE : String,//csv ステータス
+                T02.TO_MAT.TO_SAP_BP.BP_NAME1,//メーカー
+                 case T02.DOWN_FLAG
+                    when 'Y' then '確認済'
+                    else '未確認' end as DOWN_FLAG : String(10), //確認済みフラグ
+                T02.TO_MAT.MANU_MATERIAL,//メーカー品番
+                0 as ISSUEDAMOUNT  :  Decimal(18, 3),//csv 発注金額
+                '' as BP_ID : String(50),//得意先コード
+                '' as checkOk : String(50), // 検査合区分
+                '' as BYNAME : String(50), // 発注担当者,
+                T01.POCDBY , // 発注担当者
+                T01.SAP_CD_BY // SAP担当者
+
             }
             where
                 Tu.USER_TYPE = '1';
