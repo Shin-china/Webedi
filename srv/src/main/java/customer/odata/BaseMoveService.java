@@ -43,6 +43,8 @@ public class BaseMoveService {
 		// logger.info(body);
 		// 获取接口url
 		String url = info.getUrl() + info.getServicepath();
+		System.out.println("url==" + url);
+		System.out.println("body==" + JSON.toJSONString(map));
 
 		// 调用MMSS服务 转记过账接口
 

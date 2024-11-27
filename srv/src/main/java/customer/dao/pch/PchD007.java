@@ -56,6 +56,7 @@ public class PchD007 extends Dao {
     }
 
     public void update(T07QuotationD o) {
+        logger.info("修改PCHD007" + o.getId());
         db.run(Update.entity(Pch_.T07_QUOTATION_D).entry(o));
     }
 
