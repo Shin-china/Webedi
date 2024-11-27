@@ -1,5 +1,5 @@
 <mvc:View controllerName="umc.app.controller.pch.pch10_quotation_h" xmlns:mvc="sap.ui.core.mvc" displayBlock="true" xmlns="sap.m">
-	<Page id="idPage1" showHeader="false" showFooter="true">
+	<Page id="idcph10page" title="{pch>PCH10_TITLE}" showHeader="true" showFooter="false" titleAlignment="Center" titleLevel="H1">
 		<content>
 			<IconTabBar id="idIconTabBarNoIcons" expanded="{device>/isNoPhone}" class="sapUiResponsiveContentPadding">
 				<items>

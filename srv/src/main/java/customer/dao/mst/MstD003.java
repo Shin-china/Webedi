@@ -24,7 +24,6 @@ import cds.gen.mst.Mst_;
 import cds.gen.mst.T01SapMat;
 import cds.gen.mst.T03SapBp;
 
-
 import java.time.Instant;
 
 @Repository
@@ -44,5 +43,15 @@ public class MstD003 extends Dao {
         return null;
     }
 
+    public T03SapBp getBySearch(String search) {
+        List<T03SapBp> listOf = db.run(
+                Select.from(Mst_.T03_SAP_BP)
+                        .where(o -> o.SEARCH2().eq(search)))
+                .listOf(T03SapBp.class);
 
+        if (listOf.size() > 0) {
+            return listOf.get(0);
+        }
+        return null;
+    }
 }

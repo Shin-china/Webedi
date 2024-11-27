@@ -16,8 +16,6 @@
     xmlns:upload="sap.m.upload"
     xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
 
-
-
     <f:DynamicPage id="dynamicPageId" headerExpanded="true" showFooter="true" busy="{localModel>/isBusy}">
         <f:title>
             <f:DynamicPageTitle id="DynamicPageTitle">
@@ -41,26 +39,8 @@
                     <m:Button id="Button2" text="Export" icon="sap-icon://download" press="onExport"/>
                 </OverflowToolbar>
                 <table:Table id="dataTable" rows="{path: '/dataList'}" selectionMode="None">
-
-
                 </table:Table>
             </l:VerticalLayout>
-
         </f:content>
-
-
-
-
-
-
-
-
-
-
-
-
-
     </f:DynamicPage>
-
-
 </mvc:View>

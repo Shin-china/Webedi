@@ -154,6 +154,10 @@ public class UmcConstants {
     public static final String ZWS_TYPE_1 = "IUSSE";
     public static final String ZWS_TYPE_2 = "REIUSSE";
     public static final String ZWS_TYPE_3 = "CANCEL";
+    // csv的常量
+    public static final String ZWS_TYPE_1_NAME = "新規";
+    public static final String ZWS_TYPE_2_NAME = "変更";
+    public static final String ZWS_TYPE_3_NAME = "削除";
 
     public static final String SUCCESS = "success";
     public static final String ERROR = "error";

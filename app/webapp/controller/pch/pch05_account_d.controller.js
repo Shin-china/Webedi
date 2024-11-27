@@ -8,7 +8,7 @@ sap.ui.define([
     "use strict";
 
     var _objectCommData = {
-		_entity: "/PCH_T05_FOREXCEL",
+		_entity: "/PCH05_SENDEMAIL",
 	};
 
     return Controller.extend("umc.app.controller.pch.pch05_pay_d", {
@@ -320,7 +320,7 @@ sap.ui.define([
                 return false;
             }
 
-            var invdate = new Set(aSelectedData.map(data => data.INV_DATE));
+            var invdate = new Set(aSelectedData.map(data => data.INV_CONFIRMATION));
             // 检查是否没有 "確認" 的记录
             if (!invdate.has("確定")) {
                 sap.m.MessageBox.error("「インボイス確定」処理未実施の時は、[Send Mail」及び、「Print」を不可とする");

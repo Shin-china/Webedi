@@ -37,8 +37,8 @@ sap.ui.define([
 		// this._onPress(oEvent, "RouteEdit_sys01", oContext.getObject().ID);
 		// },
 		/*==============================
-init
-==============================*/
+		init
+		==============================*/
 		_onRouteMatched: function (oEvent) {
 			var that = this;
 			//取得权限
@@ -105,7 +105,7 @@ init
 
 		},
 		_setHeaderModel: function () {
-			let keys = ["obj1","obj1","PO_TYPE_NAME","obj1","ID","obj1","PO_DATE","PO_D_DATE","メーカー","MAT_ID","PO_D_TXZ01","UMC共通品番(SAP品番)","顧客品番","メーカー品番","PO_PUR_UNIT","CURRENCY","PO_PUR_QTY","DEL_PRICE","発注金額","MEMO","備考２","得意先コード","資産元","STORAGE_LOC","STORAGE_TXT","検査区分","発注担当者","依頼者","棚番号","調整依頼コメント","納品先郵便番号","納品先住所１","納品先住所２","納品先住所３","納品先住所４","納品先電話番号","納品先ＦＡＸ","納品日","納品数"]
+			let keys = ["obj1","DOWN_FLAG","TYPE","obj1","ID","INT_NUMBER","PO_DATE","PO_D_DATE","BP_NAME1","SUPPLIER_MAT","PO_D_TXZ01","MAT_ID","CUST_MATERIAL","MANU_MATERIAL","PO_PUR_UNIT","CURRENCY","PO_PUR_QTY","DEL_PRICE","ISSUEDAMOUNT","MEMO","備考２","BP_ID","資産元","STORAGE_LOC","STORAGE_TXT","checkOk","BYNAME","PR_BY","棚番号","調整依頼コメント","納品先郵便番号","納品先住所１","納品先住所２","納品先住所３","納品先住所４","納品先電話番号","納品先ＦＡＸ","納品日","納品数"]
 			// headers.shift();
 			return keys;
 			// headers.splice(4, 0, 55);
@@ -122,28 +122,45 @@ init
 			var that = this;
 			//设置通用dialog
 			this._AfterDigLogCheck().then((selectedIndices) => {
-				// 构建CSV内容  
-				var csvContent = "data:text/csv;charset=utf-8,";
-				csvContent = that._getCsvData(selectedIndices,csvContent);
+				selectedIndices.forEach(function (row) {
+					// 构建CSV内容  
+					var csvContent = "data:text/csv;charset=utf-8,";
+					csvContent = that._getCsvData(row,csvContent);
 
-				// 触发下载  
-				var encodedUri = encodeURI(csvContent);
-				var link = document.createElement("a");
-				link.setAttribute("href", encodedUri);
-				link.setAttribute("download", "data.csv");
-				document.body.appendChild(link);
-				link.click();
+					// 触发下载  
+					var encodedUri = encodeURI(csvContent);
+					var link = document.createElement("a");
+					link.setAttribute("href", encodedUri);
+					link.setAttribute("download", that.CommTools.getCurrentTimeFormatted()+"_"+row.ID+".csv");
+					document.body.appendChild(link);
+					link.click();
+				})
+
 				//完成后是否更新确认,false不更新Y
 				that._isQuerenDb(selectedIndices, false);
+				that._isPrintHx(selectedIndices);
 				that._setBusy(false);
 			})
 
 		},
-		// onCreate: function (oEvent) {
-		// var oItem = oEvent.getSource();
-		// var oContext = oItem.getBindingContext();
-		// this._onPress(oEvent, "RouteCre_sys01");
-		// },
+		_getData(selectedIndices){
+			var pList = Array();
+			selectedIndices.forEach((odata) => {
+			    var p = {
+					po: odata.PO_NO,
+					dNo: odata.D_NO,
+				}
+				pList.push(p);
+			})
+			return {parms: JSON.stringify(pList)};
+			
+		},
+		_isPrintHx: function (selectedIndices) {
+			this._callCdsAction("/PCH03_PRINTHX", this._getData(selectedIndices), this).then((oData) => {
+			
+			})
+		
+		},
 		onBeforeExport: function (oEvt) {
 			var mExcelSettings = oEvt.getParameter("exportSettings");
 
@@ -259,31 +276,31 @@ init
 			})
 		},
 
-		_getCsvData: function (selectedIndices,csvContent) {
+		_getCsvData: function (row, csvContent) {
 			var that = this;
-			if (selectedIndices) {
-							//设置头的模板
-							var headers = that._setHeaderModel();
-							//头部数据写入一行
-							csvContent = that._setHeaderData(csvContent);
-			
-							selectedIndices.forEach(function (row) {
-								var values = headers.map(function (header) {
-									let re = ""
-									//如果取不出来就是
-									if(row[header] === null || row[header] === undefined){
-										return re = ""
-									}else{
-										if("PO_DATE" == header || "PO_D_DATE" == header){
-											re = that.CommTools._formatToYYYYMMDD(row[header]);
-										}else{
-											re = '"' + row[header] + '"'
-										}
-									}
-									return re;
-								});
-								csvContent += values.join(",") + "\n";
-							});
+			if (row) {
+				//设置头的模板
+				var headers = that._setHeaderModel();
+				//头部数据写入一行
+				csvContent = that._setHeaderData(csvContent);
+
+
+				var values = headers.map(function (header) {
+					let re = ""
+					//如果取不出来就是
+					if (row[header] === null || row[header] === undefined) {
+						return re = ""
+					} else {
+						if ("PO_DATE" == header || "PO_D_DATE" == header) {
+							re = that.CommTools._formatToYYYYMMDD(row[header]);
+						} else {
+							re = '"' + row[header] + '"'
+						}
+					}
+					return re;
+				});
+				csvContent += values.join(",") + "\n";
+
 			}
 			return csvContent;
 		},

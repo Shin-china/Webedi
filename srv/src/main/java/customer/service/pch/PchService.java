@@ -71,7 +71,7 @@ public class PchService {
     public void setinvdateconfirm(String object) {
 
         Map<String, Object> data = new HashMap<>();
-        data.put("INV_DATE", UmcConstants.PCH05_CONFIRM);
+        data.put("INV_CONFIRMATION", UmcConstants.PCH05_CONFIRM);
         Map<String, Object> keys = new HashMap<>();
         keys.put("SUPPLIER", object);
         // 数据是否被修改修改标记
@@ -83,7 +83,7 @@ public class PchService {
     public void setinvdatecancel(String object) {
 
         Map<String, Object> data = new HashMap<>();
-        data.put("INV_DATE", UmcConstants.PCH05_CANCEL);
+        data.put("INV_CONFIRMATION", UmcConstants.PCH05_CANCEL);
         Map<String, Object> keys = new HashMap<>();
         keys.put("SUPPLIER", object);
         // 数据是否被修改修改标记
@@ -166,7 +166,7 @@ public class PchService {
         }
         // 如果flag1为false，则说明明细都是D，则返回Dtype
         if (!flag1) {
-            return UmcConstants.DOC_D_STATUS_3;
+            return UmcConstants.ZWS_TYPE_3;
         }
         // 如果T10EmailSendLog中type有type为Y的则为type1，否则为type2
         if (t10 != null) {
@@ -178,6 +178,15 @@ public class PchService {
         } else {
             return UmcConstants.ZWS_TYPE_1;
         }
+    }
+
+    public void setT02PrintHx(String po, String dNo) {
+        T02PoD byID = pchD002.getByID(po, Integer.parseInt(dNo));
+        // 设置回写函数
+        byID.setDownFlag("Y");
+        // 修改
+        pchD002.updateD002(byID);
+
     }
 
 }

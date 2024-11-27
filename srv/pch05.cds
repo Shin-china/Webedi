@@ -27,7 +27,7 @@ extend service TableService {
                 T01.PO_BUKRS, // 会社コード
                 T05.ITEM_NO, // 請求書明細
                 T04.SUPPLIER_DESCRIPTION, // 仕入先名称
-                T04.INV_DATE, // インボイス
+                T04.INV_CONFIRMATION, // インボイス
                 T05.PO_TRACK_NO, // 購買依頼追跡番号
                 T05.PR_BY, // 購買依頼者
                 T05.GL_ACCOUNT, // G/L勘定
@@ -58,7 +58,7 @@ extend service TableService {
                 end                                 as UNIT_PRICE   : Decimal(18, 5),
 
                 // T05.TAX_AMOUNT,                    // 消費税額
-                T04.CE_DOC, // 差額伝票番号
+                // T04.CE_DOC, // 差額伝票番号
                 T04.INV_BASE_DATE, // 支払い基準日
                 T05.GR_DATE, // 伝票日付
                 T08.VALUE01,
@@ -126,7 +126,7 @@ extend service TableService {
                 T05.ITEM_NO, // 請求書明細
                 T05.PO_BUKRS, // 会社コード
                 T05.SUPPLIER_DESCRIPTION, // 仕入先名称
-                T05.INV_DATE, // インボイス
+                T05.INV_CONFIRMATION, // インボイス
                 T05.PO_TRACK_NO, // 購買依頼追跡番号
                 T05.PR_BY, // 購買依頼者
                 T05.GL_ACCOUNT, // G/L勘定

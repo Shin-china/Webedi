@@ -11,6 +11,8 @@ extend service TableService {
 
             key T01.ID,
                 T01.QUO_NUMBER,
+                T01.QUO_VERSION,
+                T01.SALES_NUMBER,
                 T01.CUSTOMER,
                 T01.MACHINE_TYPE,
                 T01.Item,
@@ -20,7 +22,7 @@ extend service TableService {
                 T01.VALIDATE_START,
                 T01.VALIDATE_END,
                 // T01.PLANT_ID,
-                T01.SALES_NUMBER,
+
                 T01.STATUS,
                 // T01.TOTAL_JPY,
                 // T01.TOTAL_USD,
@@ -109,7 +111,95 @@ extend service TableService {
                 T01.PLANT_ID
         }
 
-    action PCH10_GR_SEND(params : String) returns String;
-    action pch06BatchSending(json : String)               returns String; //IFM055 購買見積結果送信
-    
+    entity PCH10_LIST         as
+        select from PCH.T06_QUOTATION_H as T01
+        left join PCH.T07_QUOTATION_D as T02
+            on(
+                T01.QUO_NUMBER = T02.QUO_NUMBER
+
+            )
+        inner join (
+            select
+                max(ID) as ID,
+                QUO_NUMBER,
+                QUO_ITEM
+            from PCH.T07_QUOTATION_D as T03
+            where
+                DEL_FLAG = 'N'
+            group by
+                T03.QUO_NUMBER,
+                QUO_ITEM
+        ) as T04
+            on T02.ID = T04.ID
+
+        distinct {
+            key T02.QUO_NUMBER as ID,
+                T02.QUO_NUMBER,
+                T02.QUO_ITEM,
+                T02.NO,
+                T02.REFRENCE_NO,
+                T02.MATERIAL_NUMBER,
+                T02.CUST_MATERIAL,
+                T02.MANUFACT_MATERIAL,
+                T02.Attachment,
+                T02.Material,
+                T02.MAKER,
+                T02.UWEB_USER,
+                T02.BP_NUMBER,
+                //                    T02.PERSON_NO1,
+                //                    T02.PERSON_NO2,
+                //                    T02.PERSON_NO3,
+                //                    T02.PERSON_NO4,
+                //                    T02.PERSON_NO5,
+                T02.YLP,
+                T02.MANUL,
+                T02.MANUFACT_CODE,
+                T02.CUSTOMER_MMODEL,
+                T02.MID_QF,
+                T02.SMALL_QF,
+                T02.OTHER_QF,
+                T02.QTY,
+                T02.CURRENCY,
+                T02.PRICE,
+                T02.PRICE_CONTROL,
+                T02.LEAD_TIME,
+                T02.MOQ,
+                T02.UNIT,
+                T02.SPQ,
+                T02.KBXT,
+                T02.PRODUCT_WEIGHT,
+                T02.ORIGINAL_COU,
+                T02.EOL,
+                T02.ISBOI,
+                T02.Incoterms,
+                T02.Incoterms_Text,
+                T02.MEMO1,
+                T02.MEMO2,
+                T02.MEMO3,
+                T02.SL,
+                T02.TZ,
+                T02.RMATERIAL,
+                T02.RMATERIAL_CURRENCY,
+                T02.RMATERIAL_PRICE,
+                T02.RMATERIAL_LT,
+                T02.RMATERIAL_MOQ,
+                T02.RMATERIAL_KBXT,
+                T02.UMC_SELECTION,
+                T02.UMC_COMMENT_1,
+                T02.UMC_COMMENT_2,
+                T02.STATUS,
+                T02.INITIAL_OBJ,
+                T02.PLANT_ID,
+                T02.SUPPLIER_MAT
+        }
+        where
+                T02.DEL_FLAG <> 'Y'
+            and T02.DEL_FLAG <> 'y';
+    //                 action PCH07_CHECK_DATA(shelfJson : String) returns String;
+    //                 action PCH07_SAVE_DATA(shelfJson : String) returns String;
+
+
+    action PCH10_GR_SEND(params : String)   returns String;
+    action pch06BatchSending(json : String) returns String; //IFM055 購買見積結果送信
+
 };

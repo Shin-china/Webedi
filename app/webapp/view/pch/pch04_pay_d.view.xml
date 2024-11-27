@@ -45,7 +45,7 @@
                     <smartFilterBar:ControlConfiguration key="LOG_NO"      visible="false"  index="99"/>
                     <smartFilterBar:ControlConfiguration key="MAT_DESC"  visible="false"  index="99"/>
                     <smartFilterBar:ControlConfiguration key="NO_DETAILS"  visible="false"  index="99"/>
-                    <smartFilterBar:ControlConfiguration key="PO_ORG"  visible="false"  index="99"/>
+                    <smartFilterBar:ControlConfiguration key="PO_BUKRS"  visible="false"  index="99"/>
                     <smartFilterBar:ControlConfiguration key="PRICE_AMOUNT"  visible="false"  index="99"/>
                     <smartFilterBar:ControlConfiguration key="PRICE_AMOUNT_10"  visible="false"  index="99"/>
                     <smartFilterBar:ControlConfiguration key="PRICE_AMOUNT_8"   visible="false"  index="99"/>
@@ -86,7 +86,7 @@
   <!-- </f:DynamicPageHeader> -->
 
     <smartTable:SmartTable id="ID" enableAutoColumnWidth="true" entitySet="PCH_T04_PAYMENT_UNIT" 
-        ignoredFields="INV_MONTH,INV_NO,SHKZG,SUPPLIER_DESCRIPTION,ZABC,PO_ORG,LOG_NO,PRICE_AMOUNT,PRICE_AMOUNT_10,PRICE_AMOUNT_8,TOTAL_AMOUNT,Company_Code,D_NO,PO_NO,INV_POST_DATE"  requestAtLeastFields="DOWNLOADID,INV_MONTH,INV_NO,SHKZG,SUPPLIER_DESCRIPTION,ZABC,PO_ORG,LOG_NO,PRICE_AMOUNT,PRICE_AMOUNT_10,PRICE_AMOUNT_8,TOTAL_AMOUNT,Company_Code,D_NO,PO_NO,INV_POST_DATE" initiallyVisibleFields="SUPPLIER,NO_DETAILS,MAT_ID,MAT_DESC,GR_DATE,QUANTITY,UNIT_PRICE,CURRENCY,EXCHANGE,SUPPLIER_MAT,PO_TRACK_NO,TAX_RATE,INV_BASE_DATE,SEND_FLAG,TOTAL_AMOUNT_IN_YEN,UNIT_PRICE_IN_YEN"
+        ignoredFields="INV_MONTH,INV_NO,SHKZG,SUPPLIER_DESCRIPTION,ZABC,PO_BUKRS,LOG_NO,PRICE_AMOUNT,PRICE_AMOUNT_10,PRICE_AMOUNT_8,TOTAL_AMOUNT,Company_Code,D_NO,PO_NO,INV_POST_DATE"  requestAtLeastFields="DOWNLOADID,INV_MONTH,INV_NO,SHKZG,SUPPLIER_DESCRIPTION,ZABC,PO_BUKRS,LOG_NO,PRICE_AMOUNT,PRICE_AMOUNT_10,PRICE_AMOUNT_8,TOTAL_AMOUNT,Company_Code,D_NO,PO_NO,INV_POST_DATE" initiallyVisibleFields="SUPPLIER,NO_DETAILS,MAT_ID,MAT_DESC,GR_DATE,QUANTITY,UNIT_PRICE,CURRENCY,EXCHANGE,SUPPLIER_MAT,PO_TRACK_NO,TAX_RATE,INV_BASE_DATE,SEND_FLAG,TOTAL_AMOUNT_IN_YEN,UNIT_PRICE_IN_YEN"
         smartFilterId="smartFilterBar" enableExport="true" beforeExport="onBeforeExport" 
         useVariantManagement="true" useTablePersonalisation="true" header="{pch>TITLE_RESULT}" showRowCount="true" persistencyKey="pch02_SmartTableAnalytical_Explored" enableAutoBinding="false">
         
@@ -294,7 +294,7 @@
         </table:label>
         <table:template>
             <!-- <Text id="textSendFlag" text="{SEND_FLAG}"/> -->
-            <Text id="textSendFlag" text="{path: 'SEND_FLAG', formatter: '.formatter.formatSendFlag1'}"/>
+            <Text id="textSendFlag" text="{path: 'SEND_FLAG', formatter: '.formatter.formatSendFlag'}"/>
         </table:template>
     </table:Column>
 

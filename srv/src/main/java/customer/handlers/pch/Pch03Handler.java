@@ -12,6 +12,7 @@ import com.sap.cds.services.handler.annotations.On;
 import com.sap.cds.services.handler.annotations.ServiceName;
 
 import cds.gen.tableservice.PCH03GETTYPEContext;
+import cds.gen.tableservice.PCH03PRINTHXContext;
 import cds.gen.tableservice.PCH03QUERENContext;
 import cds.gen.tableservice.PCH03SENDEMAILContext;
 import cds.gen.tableservice.PCH04SENDEMAILContext;
@@ -22,15 +23,18 @@ import cds.gen.tableservice.PchT03PoItem_;
 import cds.gen.tableservice.TableService_;
 import cds.gen.MailBody;
 import cds.gen.MailJson;
+import cds.gen.mst.T03SapBp;
 import cds.gen.pch.T10EmailSendLog;
 import cds.gen.sys.T08ComOpD;
 import customer.bean.com.UmcConstants;
 import customer.comm.tool.StringTool;
+import customer.dao.mst.MstD003;
 import customer.dao.pch.PchD008Dao;
 import customer.dao.pch.PchD010Dao;
 import customer.service.pch.PchService;
 import customer.service.sys.EmailServiceFun;
 import customer.tool.DateTools;
+import customer.tool.NumberTool;
 import customer.tool.UWebConstants;
 
 import com.alibaba.fastjson.JSON;
@@ -60,6 +64,8 @@ public class Pch03Handler implements EventHandler {
     PchD010Dao pchD010;
     @Autowired
     PchD008Dao pchD008Dao;
+    @Autowired
+    MstD003 mstD003;
 
     /**
      * 
@@ -109,11 +115,9 @@ public class Pch03Handler implements EventHandler {
             // 货币除了日元5其余2
             String currency = pchd03.getCurrency();
             if (unitPrice != null && delPrice != null && poPurQty != null) {
-                if (UWebConstants.JPY.equals(currency)) {
-                    prc = delPrice.divide(unitPrice, 5, RoundingMode.HALF_UP);
-                } else {
-                    prc = delPrice.divide(unitPrice, 2, RoundingMode.HALF_UP);
-                }
+                // 根据货币进行四舍五入
+                prc = NumberTool.toScale(delPrice.divide(unitPrice), currency);
+
                 // 税抜額
                 BigDecimal exclusive_tax_amount = poPurQty.multiply(prc);
                 // 税额
@@ -157,13 +161,18 @@ public class Pch03Handler implements EventHandler {
 
             // 公司固定值取出
 
-            pchd03.setZws1(pchd03.getPodno() + "\n" + pchd03.getCdBy());
-            pchd03.setZws2(pchd03.getSupplier() + "\n" + pchd03.getMatId());
-            pchd03.setZws3(pchd03.getManuCode());
+            pchd03.setZws1(pchd03.getPodno() + "\n" + pchd03.getSapCdBy());
+            pchd03.setZws2(pchd03.getSupplierMat() + "\n" + pchd03.getMatId());
+            pchd03.setZws3(pchd03.getManuMaterial());
             pchd03.setZws4(pchd03.getCop2() + "\n" + pchd03.getStorage());
             pchd03.setZws5(pchd03.getPoPurUnit() + "\n" + pchd03.getMemo());
-            pchd03.setZws6(prc.toString());
-            pchd03.setZws7(pchd03.getCop2());
+
+            if (pchd03.getDelPrice() != null && pchd03.getPoPurQty() != null) {
+                pchd03.setZws7(
+                        NumberTool.toScale(pchd03.getDelPrice().multiply(pchd03.getPoPurQty()), currency) + "");
+            }
+
+            pchd03.setZws6(pchd03.getDelPrice().toString());
             pchd03.setZws8(pchd03.getCurrency());
             pchd03.setZws9(DateTools.getCurrentDateString(pchd03.getPoDDate()));
 
@@ -173,7 +182,7 @@ public class Pch03Handler implements EventHandler {
 
             List<T08ComOpD> byList = pchD008Dao.getByList(UmcConstants.C_INFO);
             for (T08ComOpD t08ComOpD : byList) {
-                if (UmcConstants.C_INFO.equals(t08ComOpD.getDName())) {
+                if (UmcConstants.C_INFO_NAME.equals(t08ComOpD.getDName())) {
                     pchd03.setBpName12(t08ComOpD.getValue01());
                 }
                 if (UmcConstants.C_INFO_POSTCODE.equals(t08ComOpD.getDName())) {
@@ -199,40 +208,67 @@ public class Pch03Handler implements EventHandler {
     /**
      * 
      * 打印前数据处理
-     * 
+     * PCH_T03_PO_ITEM
      */
     @After(entity = PchT03PoItem_.CDS_NAME, event = "READ")
     public void beforeReadD03(CdsReadEventContext context, Stream<PchT03PoItem> pchd03List) {
 
+        System.out.println("进入后台+++++++++++++++++++++++++++++++==");
         Boolean[] isPrint = new Boolean[1];
         isPrint[0] = false;
         pchd03List.forEach(pchd03 -> {
+            String type = "";
+            // type
+            String poSendPDFZWSType = pchService.getPoSendPDFZWSType(pchd03.getPoNo());
+            if (UmcConstants.ZWS_TYPE_3.equals(poSendPDFZWSType)) {
+                type = UmcConstants.ZWS_TYPE_3_NAME;
+            }
+            if (UmcConstants.ZWS_TYPE_1.equals(poSendPDFZWSType)) {
+                type = UmcConstants.ZWS_TYPE_1_NAME;
+            }
+            if (UmcConstants.ZWS_TYPE_2.equals(poSendPDFZWSType)) {
+                type = UmcConstants.ZWS_TYPE_2_NAME;
+            }
+            // 如果poSendPDFZWSType是REIUSSE
+            pchd03.setType(type);
+            // 货币除了日元5其余2
+            String currency = pchd03.getCurrency();
+            // 発注金額 = 価格単位*発注数量 三位小数
+            // 根据货币进行四舍五入
+            pchd03.setIssuedamount(NumberTool.toScale(pchd03.getDelPrice().multiply(pchd03.getPoPurQty()), currency));
+            // 设置検査合区分
+            if (!StringTool.isEmpty(pchd03.getImpComp())) {
+                // pchd03.setImpComp("受入検査あり");
+                pchd03.setCheckOk("受入検査あり");
+            }
+            // 得意先コード
+            String matId = pchd03.getMatId();
+            // matId不能位空，且不能小于2位
+            if (matId != null && matId.length() >= 2) {
+                String matIdLastTwo = matId.substring(matId.length() - 2);
+                T03SapBp bySearch = mstD003.getBySearch(matIdLastTwo);
+                if (bySearch != null)
+                    pchd03.setBpId(bySearch.getBpId());
+            }
+
+            // 先获取品目最后两位
+
+            // 発注担当者
+            String pocdby = pchd03.getPocdby();
+            // 如果発注担当者为空或者全为数字
+            if (pocdby == null || pocdby.matches("\\d+")) {
+                pocdby = pchd03.getSapCdBy();
+            }
+            pchd03.setByname(pocdby);
+
             // 获取po
             String po = pchd03.getPoNo();
             // 获取明细编号
             String dNo = pchd03.getDNo() + "";
             // 设置前置零
             pchd03.setId(po + StringTool.leftPadWithZeros(dNo, 5));
+
         });
-    }
-
-    @On(event = PCH03SENDEMAILContext.CDS_NAME)
-    public void sendEmail(PCH03SENDEMAILContext context) {
-        // 直接从上下文中获取参数
-        String emailJsonParam = (String) context.get("parms"); // 根据上下文对象获取数据
-
-        ArrayList<MailJson> mailJsonList = new ArrayList<>();
-        // MailJso
-
-        // 调用邮件发送服务
-        try {
-            emailServiceFun.sendEmailFun(mailJsonList);
-            // 设置操作结果
-            context.setResult(JSON.toJSONString("メール送信に成功しました。"));
-        } catch (Exception e) {
-            // 处理发送邮件的异常
-
-        }
     }
 
     @On(event = PCH03GETTYPEContext.CDS_NAME)
@@ -244,50 +280,18 @@ public class Pch03Handler implements EventHandler {
         context.setResult(type);
     }
 
-    // 创建 MailBody 的集合
-    private Collection<MailBody> createMailBody(MailParam param) {
-        Collection<MailBody> bodies = new ArrayList<>();
-        MailBody body = MailBody.create();
-        body.setObject("content"); // 根据具体需求设置
-        body.setValue(param.getEmailContent()); // 使用参数内容
-        bodies.add(body);
-        return bodies;
-    }
+    @On(event = "PCH03_PRINTHX")
+    public void setPrintHx(PCH03PRINTHXContext context) {
+        // 获取po号
+        JSONArray jsonArray = JSONArray.parseArray(context.getParms());
 
-    // 解析传入的 JSON 参数为 List<MailParam>
-    private List<MailParam> parseParams(String parms) {
-        Gson gson = new Gson();
-        Type mailParamListType = new TypeToken<List<MailParam>>() {
-        }.getType();
-        return gson.fromJson(parms, mailParamListType);
-    }
-
-    // 定义一个内部类，用于接收 JSON 数据
-    private static class MailParam {
-        private String INV_NO;
-        private String SUPPLIER_DESCRIPTION;
-        private String EMAIL_CONTENT;
-        private String TEMPLATE_ID; // 添加模板ID字段
-        private String MAIL_TO; // 添加收件人邮箱字段
-
-        public String getInvNo() {
-            return INV_NO;
+        for (int i = 0; i < jsonArray.size(); i++) {
+            JSONObject jsonObject = jsonArray.getJSONObject(i);
+            String string = jsonObject.getString("po");
+            String string2 = jsonObject.getString("dNo");
+            pchService.setT02PrintHx(string, string2);
         }
 
-        public String getSupplierDescription() {
-            return SUPPLIER_DESCRIPTION;
-        }
-
-        public String getEmailContent() {
-            return EMAIL_CONTENT;
-        }
-
-        public String getTemplateId() {
-            return TEMPLATE_ID;
-        }
-
-        public String getMailTo() {
-            return MAIL_TO;
-        }
+        context.setResult("success");
     }
 }

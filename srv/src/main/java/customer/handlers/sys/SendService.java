@@ -95,7 +95,12 @@ public class SendService {
 
             // 获取購買見積番号
             // pchT06QuotationH.setQuoNumber(docNoDao.getPJNo(1));
-            pchT06QuotationH.setQuoNumber("1006");
+
+            try {
+                pchT06QuotationH.setQuoNumber(docNoDao.getQuoNumber("", 1));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
             // 插入头标，首先删除原key值数据
             T06QuotationH t06QuotationH = T06QuotationH.create();
@@ -105,7 +110,7 @@ public class SendService {
             // 如果已经存在则更新，如果不存在则插入
             T06QuotationH byID = PchD006.getByIdOnle(t06QuotationH.getId());
             pch06List2.add(t06QuotationH);
-            t06QuotationH.remove("TO_ITEMS");
+            t06QuotationH.remove("TO_ITEMS_PO");
             if (byID != null) {
                 PchD006.update(t06QuotationH);
             } else {
@@ -113,25 +118,26 @@ public class SendService {
             }
 
             // 插入明细
-            List<PchT07QuotationD> toItems = pchT06QuotationH.getToItems();
-            toItems.forEach(pchT07QuotationD -> {
-                // 获取購買見積番号
-                pchT07QuotationD.setQuoNumber(pchT06QuotationH.getQuoNumber());
+            List<PchT07QuotationD> toItems = pchT06QuotationH.getToItemsPo();
+            if (toItems != null) {
+                toItems.forEach(pchT07QuotationD -> {
+                    // 获取購買見積番号
+                    pchT07QuotationD.setQuoNumber(pchT06QuotationH.getQuoNumber());
 
-                T07QuotationD t07QuotationD = T07QuotationD.create();
+                    T07QuotationD t07QuotationD = T07QuotationD.create();
 
-                // // 复制类属性
-                BeanUtils.copyProperties(pchT07QuotationD, t07QuotationD);
-                // // 如果已经存在则更新，如果不存在则插入
-                T07QuotationD byID2 = PchD007.getByT07Id(t07QuotationD.getId());
+                    // // 复制类属性
+                    BeanUtils.copyProperties(pchT07QuotationD, t07QuotationD);
+                    // // 如果已经存在则更新，如果不存在则插入
+                    T07QuotationD byID2 = PchD007.getByT07Id(t07QuotationD.getId());
 
-                if (byID2 != null) {
-                    PchD007.update(t07QuotationD);
-                } else {
-                    PchD007.insert(t07QuotationD);
-                }
-            });
-
+                    if (byID2 != null) {
+                        PchD007.update(t07QuotationD);
+                    } else {
+                        PchD007.insert(t07QuotationD);
+                    }
+                });
+            }
         });
     }
 }

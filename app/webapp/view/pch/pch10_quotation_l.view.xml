@@ -17,51 +17,45 @@
 	xmlns:unified="sap.ui.unified" 
 	xmlns:layout="sap.ui.layout" 
 	xmlns:t="sap.ui.table"
-	xmlns:smartField="sap.ui.comp.smartfield" >
+	xmlns:smartField="sap.ui.comp.smartfield" 
+  >
 
-<f:DynamicPageTitle id="DynamicPageTitle1">
-    
-      
-    <f:heading>
-      <Title id="Title" text="{pch>PCH10_TITLE1}"/>
-    </f:heading>
-    <f:navigationActions>
-      <Button id="_IDGenButton3" icon="sap-icon://nav-back" tooltip="nav-back" press="navTo('RouteMainView')"/>
-    </f:navigationActions>
-</f:DynamicPageTitle>
+  <f:DynamicPageTitle id="DynamicPageTitle1">
+      <f:heading>
+        <Title id="Title" text="{pch>PCH10_TITLE1}"/>
+      </f:heading>
+      <f:navigationActions>
+        <Button id="_IDGenButton3" icon="sap-icon://nav-back" tooltip="nav-back" press="navTo('RouteMainView')"/>
+      </f:navigationActions>
+  </f:DynamicPageTitle>
 
-<f:DynamicPageHeader id="DynamicPageHeader" pinnable="true">
-        <f:content>
+  <f:DynamicPageHeader id="DynamicPageHeader" pinnable="true">
+    <f:content>
+      <smartFilterBar:SmartFilterBar id="smartFilterBar" useToolbar="true" entitySet="PCH10_Header" persistencyKey="pch10_receiptprintFilterBar" showFilterConfiguration="true">
+        <smartFilterBar:controlConfiguration>
+          <smartFilterBar:ControlConfiguration id="sch_QUO_NUMBER" key="QUO_NUMBER" visibleInAdvancedArea="true"  index="1"/>
+          <smartFilterBar:ControlConfiguration id="sch_STATUS" key="STATUS" visibleInAdvancedArea="true" index="2"/>
+          <smartFilterBar:ControlConfiguration id="sch_CD_DATE" key="CD_DATE" visibleInAdvancedArea="true" index="3"/>
+          <smartFilterBar:ControlConfiguration id="sch_CD_BY" key="CD_BY" visibleInAdvancedArea="true" index="4"/>
+          <smartFilterBar:ControlConfiguration id="sch_VALIDATE_START" key="VALIDATE_START" visibleInAdvancedArea="true" index="5"/>
+          <smartFilterBar:ControlConfiguration id="sch_VALIDATE_END" key="VALIDATE_END" visibleInAdvancedArea="true" index="6"/>
+          <smartFilterBar:ControlConfiguration id="sch_PLANT_ID" key="PLANT_ID"  label="{pch>PCH10_PLANT}" visibleInAdvancedArea="true" index="7"/>
+          <smartFilterBar:ControlConfiguration id="sch_SALES_NUMBER" key="SALES_NUMBER"  label="{pch>PCH10_SALES_NUMBER}" visibleInAdvancedArea="true" index="8"/>
+          <smartFilterBar:ControlConfiguration id="sch_SUPPLIER_MAT" key="SUPPLIER_MAT"  label="{pch>PCH10_SUPPLIER_MAT}" visibleInAdvancedArea="true" index="9"/>
+          <smartFilterBar:ControlConfiguration id="sch_INITIAL_OBJ"  key="INITIAL_OBJ"  label="{pch>PCH10_INITIAL_OBJ}" visibleInAdvancedArea="true" index=""/>
+          
 
-    
-
-          <smartFilterBar:SmartFilterBar id="smartFilterBar" useToolbar="true" entitySet="PCH10_Header" persistencyKey="pch10_receiptprintFilterBar" showFilterConfiguration="true">
-            <smartFilterBar:controlConfiguration>
-
-              <smartFilterBar:ControlConfiguration id="sch_QUO_NUMBER" key="QUO_NUMBER" visibleInAdvancedArea="true"  index="1"/>
-              <smartFilterBar:ControlConfiguration id="sch_STATUS" key="STATUS" visibleInAdvancedArea="true" index="2"/>
-              <smartFilterBar:ControlConfiguration id="sch_CD_DATE" key="CD_DATE" visibleInAdvancedArea="true" index="3"/>
-              <smartFilterBar:ControlConfiguration id="sch_CD_BY" key="CD_BY" visibleInAdvancedArea="true" index="4"/>
-              <smartFilterBar:ControlConfiguration id="sch_VALIDATE_START" key="VALIDATE_START" visibleInAdvancedArea="true" index="5"/>
-              <smartFilterBar:ControlConfiguration id="sch_VALIDATE_END" key="VALIDATE_END" visibleInAdvancedArea="true" index="6"/>
-              <smartFilterBar:ControlConfiguration id="sch_PLANT_ID" key="PLANT_ID" visibleInAdvancedArea="true" index="7"/>
-
-            </smartFilterBar:controlConfiguration>
-          </smartFilterBar:SmartFilterBar>
-
-
-
+        </smartFilterBar:controlConfiguration>
+      </smartFilterBar:SmartFilterBar>
     </f:content>
-      </f:DynamicPageHeader>
+  </f:DynamicPageHeader>
 
-
-      <smartTable:SmartTable id="smartTable10" tableType="Table" showFullScreenButton="true" enableAutoColumnWidth="true" entitySet="PCH10_Header" requestAtLeastFields="ID,SALES_NUMBER" initiallyVisibleFields="CUSTOMER,MACHINE_TYPE,Item,QUANTITY,TIME,LOCATION,VALIDATE_START,VALIDATE_END,PLANT_ID" smartFilterId="smartFilterBar" enableExport="true" beforeExport="onBeforeExport" useVariantManagement="true" useTablePersonalisation="true" header="{com>TITLE_RESULT}" showRowCount="true" persistencyKey="pch10_SmartTableAnalytical_Explored" enableAutoBinding="true" beforeRebindTable="onRebind">
+      <smartTable:SmartTable id="smartTable10"  tableType="Table" showFullScreenButton="true" enableAutoColumnWidth="true" entitySet="PCH10_Header" requestAtLeastFields="ID" initiallyVisibleFields="QUO_NUMBER,QUO_VERSION,SALES_NUMBER,CUSTOMER,MACHINE_TYPE,Item,QUANTITY,TIME,LOCATION,VALIDATE_START,VALIDATE_END,PLANT_ID" smartFilterId="smartFilterBar" enableExport="true" beforeExport="onBeforeExport" useVariantManagement="true" useTablePersonalisation="true" header="{com>TITLE_RESULT}" showRowCount="true" persistencyKey="pch10_SmartTableAnalytical_Explored" enableAutoBinding="true" beforeRebindTable="onRebind">
         <smartTable:customToolbar>
           <OverflowToolbar id="_IDGenOverflowToolbar10">
             <content>
               <ToolbarSpacer id="_IDGenToolbarSpacer10"/>
               <Button id="_IDGenButton1" text="{pch>PCH10_SEND}" icon="sap-icon://accept" press="onSend" visible="{localModel>/PCH10_SEND}"/>
-              <Button id="_IDGenButton2" text="{pch>PCH10_LINK}" icon="sap-icon://add" press="onLink" visible="{localModel>/PCH10_LINK}" /> 
             </content>
           </OverflowToolbar>
         </smartTable:customToolbar>
@@ -76,5 +70,4 @@
           </table:rowActionTemplate>
         </table:Table>
       </smartTable:SmartTable>
-
 </mvc:View>

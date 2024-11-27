@@ -12,7 +12,8 @@ public class SupList {
     private Integer Fiscalyear;
     private String Invoicingparty;
     private String Documentdate;
-    private LocalDate Postingdate;
+    private LocalDate Postingdate1;
+    private LocalDate Postingdate2;
     private BigDecimal Exchangerate;
     private LocalDate Duecalculationbasedate;
     private String Invoicegrossamount;
@@ -42,6 +43,8 @@ public class SupList {
     private String Companycode;
     private String Purchasinggroupname;
     private String Accountingdocument;
+    private BigDecimal Taxrate;
+    private String Sendflag;
 
 
     

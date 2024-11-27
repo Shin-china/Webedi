@@ -66,6 +66,22 @@ sap.ui.define(["sap/base/i18n/ResourceBundle", "sap/ui/model/resource/ResourceMo
       }
       return new Date(myyear + "-" + mymonth + "-" + myweekday + "T00:00:00Z");
     },
+    /**
+     * 获取当前时间的YYYYMMDD時分秒
+     */
+     getCurrentTimeFormatted:function() {
+      const now = new Date();
+   
+      const year = now.getFullYear();
+      const month = String(now.getMonth() + 1).padStart(2, '0'); // 月份从0开始，所以要加1
+      const day = String(now.getDate()).padStart(2, '0');
+      const hours = String(now.getHours()).padStart(2, '0');
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      const seconds = String(now.getSeconds()).padStart(2, '0');
+   
+      const formattedTime = `${year}${month}${day}${hours}${minutes}${seconds}`;
+      return formattedTime;
+  },
     //修改画面日期格式->传后台时使用
     _getDateYYYYMMDD: function (accdate) {
       var date = new Date(accdate);

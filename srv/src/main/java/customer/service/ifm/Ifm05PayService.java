@@ -61,10 +61,10 @@ public class Ifm05PayService {
                     o.setInvNo(suplist.getSupplierinvoice());
                     o.setGlYear(suplist.getFiscalyear());
                     o.setSupplier(suplist.getInvoicingparty());
-                    // o.setInvDate(suplist.getDocumentdate());
-                    o.setInvPostDate(suplist.getPostingdate());
+                    o.setInvPostDate(suplist.getPostingdate1());
                     o.setExchange(suplist.getExchangerate());
                     o.setInvBaseDate(suplist.getDuecalculationbasedate());
+                    o.setSendFlag(suplist.getSendflag());
 
                     PchDao.modifyT04(o);
 
@@ -92,6 +92,10 @@ public class Ifm05PayService {
                     p.setPurchaseGroupDesc(suplist.getPurchasinggroupname());
                     p.setPlantId(suplist.getPlant());
                     p.setCompanyCode(suplist.getCompanycode());
+                    p.setShkzg(suplist.getDebitcreditcode());
+                    p.setGrDate(suplist.getPostingdate2());
+                    p.setTaxRate(suplist.getTaxrate());
+                    p.setMatDesc(suplist.getPurchaseorderitemtext());
                     PchDao.modifyT05(p);
 
                 }
