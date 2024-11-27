@@ -60,6 +60,16 @@ public class DateTools {
         return currentDate.format(DATE_FORMATTER); // 格式化为字符串
     }
 
+    // 获取当前日期并格式化为字符串yyyy/MM/dd
+    public static String getCurrentDateString(LocalDate data, String format) {
+        if (data == null) {
+            return null;
+        }
+        DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern(format);
+        LocalDate currentDate = data; // 获取当前日期
+        return currentDate.format(DATE_FORMATTER); // 格式化为字符串
+    }
+
     // 时间戳转换为时间 LocalDateTime(1606176000000) → datetime
     public static LocalDateTime longString2DateTime(String str, ZoneId zone) {
         if (str == null)

@@ -87,14 +87,7 @@
 				</smartTable:customToolbar>
 				<table:Table id="detailTable" rowMode="Auto"  rowActionCount="1">
 
-					<table:rowActionTemplate>
-						<table:RowAction id="RowAction">
-							<table:items>
-								<table:RowActionItem id="RowActionItem" type="Navigation" press="onPress"  icon="sap-icon://edit"/>
-							</table:items>
-						</table:RowAction>
-					</table:rowActionTemplate>
-
+				
 				</table:Table>
 
 

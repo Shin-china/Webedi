@@ -78,14 +78,12 @@ public class CommonHandler implements EventHandler {
         ArrayList<PchT06QuotationH> pch06List = new ArrayList<>(context.getPch06());
         ArrayList<cds.gen.pch.T06QuotationH> pch06List2 = new ArrayList<>();
         String msg = "";
-        try {
-            // 提取数据，插入表中
-            sendService.extracted(pch06List, pch06List2);
 
-            msg = sendService.sendPost(pch06List2);
-        } catch (Exception e) {
-            msg = UmcConstants.ERROR;
-        }
+        // 提取数据，插入表中
+        sendService.extracted(pch06List, pch06List2);
+        System.out.println("提取数据完成");
+
+        msg = sendService.sendPost(pch06List2);
 
         System.out.println(msg);
 
@@ -97,19 +95,15 @@ public class CommonHandler implements EventHandler {
     public void pch06BatchSending(Pch06BatchSendingContext context) throws Exception {
         ArrayList<T06QuotationH> pch06List = new ArrayList<>();
         String msg = "";
-        try {
-            pch06List = sendService.getJson(context.getJson());
 
-            // 调用接口传值
-            if (pch06List != null && pch06List.size() > 0) {
-                msg = sendService.sendPost(pch06List);
-                System.out.println(msg);
-            }
+        pch06List = sendService.getJson(context.getJson());
 
-        } catch (Exception e) {
-            logger.info(UmcConstants.ERROR + e.getMessage());
-            context.setResult(UmcConstants.ERROR + e.getMessage());
+        // 调用接口传值
+        if (pch06List != null && pch06List.size() > 0) {
+            msg = sendService.sendPost(pch06List);
+            System.out.println(msg);
         }
+
         context.setResult(msg);
     }
 

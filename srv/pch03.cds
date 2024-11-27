@@ -116,7 +116,8 @@ extend service TableService {
                 '' as TEL2 : String,
                 '' as FAX2 : String,
                 '' as TYPE : String,
-
+                '' as PO_D_DATE2 : String,
+                '' as PO_PUR_QTY2 : String,
                 
                 
         }

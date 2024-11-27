@@ -138,9 +138,15 @@ public class Pch03Handler implements EventHandler {
             }
             pchd03.setQrCode(pchService.getQrCode(pchd03));
 
+            pchd03.setPoPurQty(poPurQty);
+            // 納期格式化
+            pchd03.setPoDDate2(DateTools.getCurrentDateString(pchd03.getPoDDate(), "yyyy-MM-dd"));
+            // 数字格式化
+            pchd03.setPoPurQty2(numFromt(pchd03.getPoPurQty()));
+
             // 复制用作显示
             pchd03.setCop1(pchd03.getPodno());
-            pchd03.setCop2(pchd03.getPoPurQty() == null ? "" : pchd03.getPoPurQty().toString());
+            pchd03.setCop2(pchd03.getPoPurQty2() == null ? "" : pchd03.getPoPurQty2().toString());
             pchd03.setCop3(pchd03.getPodno());
             pchd03.setCop4(pchd03.getPodno());
             pchd03.setCop5(pchd03.getSupplierMat());
@@ -203,6 +209,17 @@ public class Pch03Handler implements EventHandler {
             pchd03.setType(poSendPDFZWSType);
 
         });
+    }
+
+    private String numFromt(BigDecimal poPurQty) {
+        // 获取小数部分
+        BigDecimal fractionalPart = poPurQty.subtract(poPurQty.setScale(0, RoundingMode.DOWN));
+
+        // 如果小数部分为0或不存在，则返回整数部分
+        if (fractionalPart.compareTo(BigDecimal.ZERO) == 0) {
+            return poPurQty.setScale(0, RoundingMode.DOWN).toString();
+        }
+        return poPurQty.toString();
     }
 
     /**

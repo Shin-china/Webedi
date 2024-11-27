@@ -665,7 +665,7 @@ sap.ui.define([
 						}
 						pList.push(p)
 					} else {
-						if ('2' == item.USER_TYPE || ('1' == item.USER_TYPE && item.ZABC != 'E' && item.ZABC != 'F' && item.ZABC != 'W')) {
+						if ('2' == item.USER_TYPE || ('1' == item.USER_TYPE &&  item.ZABC != 'W')) {
 						var p = {
 							po: item.PO_NO,
 							dNo: item.D_NO,
