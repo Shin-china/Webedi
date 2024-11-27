@@ -318,7 +318,7 @@ public class Pch08Service {
 
                 resultMap.put("PERSON_SIZE", personSize);
 
-                String[] materialArr = materialKey.split("::");
+                String[] materialArr = materialKey.split("::", -1);
                 if (materialArr.length == 3) {
                     resultMap.put("MATERIAL_NUMBER", materialArr[0]);
                     resultMap.put("CUST_MATERIAL", materialArr[1]);
