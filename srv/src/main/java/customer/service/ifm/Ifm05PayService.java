@@ -64,7 +64,16 @@ public class Ifm05PayService {
                     o.setInvPostDate(suplist.getPostingdate1());
                     o.setExchange(suplist.getExchangerate());
                     o.setInvBaseDate(suplist.getDuecalculationbasedate());
+                    o.setAmount(suplist.getInvoicegrossamount());
+                    o.setTaxAmount(suplist.getTaxamountheader());
+                    o.setHeaderText(suplist.getDocumentheadertext());
                     o.setSendFlag(suplist.getSendflag());
+                    o.setSupplierDescription(suplist.getSuppliername());
+                    o.setInvDate(suplist.getDocumentdate());
+
+                    // if(suplist.getSupplierinvoiceitem()==null){
+                    //     System.out.println("2222");
+                    // }
 
                     PchDao.modifyT04(o);
 

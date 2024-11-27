@@ -45,6 +45,10 @@ public class SupList {
     private String Accountingdocument;
     private BigDecimal Taxrate;
     private String Sendflag;
+    private BigDecimal Taxamountheader;
+    private String Documentheadertext;
+    private String Suppliername;
+
 
 
     
