@@ -95,6 +95,8 @@ extend service TableService {
                 '' as cop19 : String,
                 '' as cop20 : String,
                 '' as cop21 : String,
+                '' as cop22 : String,// 海外発注番号：
+                '' as cop23 : String,// 納入日：
 
                 '' as ZWS_1 : String,
                 '' as ZWS_2 : String,

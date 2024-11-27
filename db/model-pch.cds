@@ -49,7 +49,9 @@ entity T02_PO_D : IF_CUID_FILED { //采购订单行
                              @title: '{i18n>MEMO}' MEMO                 : String(1000); //Remark(Header)
                              @title: '{i18n>INT_NUMBER}' INT_NUMBER     : String(18); //海外番号
                              @title: '{i18n>PR_BY}' PR_BY               : String(50); //購買依頼者
-                            @title: '{i18n>PRINT_TIMES}' PRINT_TIMES             : Integer default 0; //打印次数     >0  已经打印
+                             @title: '{i18n>TAX_AMOUNT}' TAX_AMOUNT     : Decimal(18, 3); //税額
+                             @title: '{i18n>TAX_CODE}' TAX_CODE         : String(2); //税額
+                            @title: '{i18n>PRINT_TIMES}' PRINT_TIMES    : Integer default 0; //打印次数     >0  已经打印
                             @title: '{i18n>DOWN_FLAG}' DOWN_FLAG             : String(1) default 'N'; //下载标记    !=N  已经打印
                              TO_HEAD                                    : Association to one T01_PO_H //采购订单抬头表
                                                                             on TO_HEAD.PO_NO = PO_NO;
