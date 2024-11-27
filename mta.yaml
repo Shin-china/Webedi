@@ -61,14 +61,6 @@ modules:
         properties:
           url: ${default-url}
 
-  - name: uweb-dev-db-deployer
-    type: hdb
-    path: db
-    parameters:
-      buildpack: nodejs_buildpack
-    requires:
-      - name: uweb-umce-qas-hdi
-
 resources:
   - name: uweb-umce-qas-hdi
     type: com.sap.xs.hdi-container
