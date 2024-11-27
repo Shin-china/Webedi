@@ -86,6 +86,11 @@ entity T04_PAYMENT_H : IF_CUID_FILED { //付款申请表抬头表
                                @title: '{i18n>SEND_FLAG}' SEND_FLAG                       : String(1); //采购订单明细行号
                                @title: '{i18n>EXCHANGE}' EXCHANGE                         : Decimal(18, 3); //换算レ-ト
                                @title: '{i18n>CE_DOC}' CE_DOC                             : String(10); //差額伝票番号
+                               @title: '{i18n>FI_DOCUMENT}' FI_DOCUMENT                   : String(10); //会計伝票
+                               @title: '{i18n>TAX_AMOUNT}' TAX_AMOUNT                     : Decimal(18, 3); //税額
+                               @title: '{i18n>AMOUNT}' AMOUNT                             : Decimal(18, 3); //計上金額
+                               @title: '{i18n>HEADER_TEXT}' HEADER_TEXT                    : String(25); //ヘッダテキスト
+                              
                                TO_ITEMS                                                   : Association to many T05_PAYMENT_D //付款申请表行表
                                                                                               on  TO_ITEMS.INV_NO  = INV_NO
                                                                                               and TO_ITEMS.GL_YEAR = GL_YEAR;
