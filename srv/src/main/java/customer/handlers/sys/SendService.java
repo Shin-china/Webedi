@@ -91,16 +91,14 @@ public class SendService {
     }
 
     public void extracted(ArrayList<PchT06QuotationH> pch06List, ArrayList<cds.gen.pch.T06QuotationH> pch06List2) {
+        System.out.println("开始插入");
         pch06List.forEach(pchT06QuotationH -> {
 
             // 获取購買見積番号
             // pchT06QuotationH.setQuoNumber(docNoDao.getPJNo(1));
 
-            try {
-                pchT06QuotationH.setQuoNumber(docNoDao.getQuoNumber("", 1));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            // pchT06QuotationH.setQuoNumber(docNoDao.getQuoNumber("", 1));
+            pchT06QuotationH.setQuoNumber(pchT06QuotationH.getQuoNumber());
 
             // 插入头标，首先删除原key值数据
             T06QuotationH t06QuotationH = T06QuotationH.create();
@@ -110,7 +108,9 @@ public class SendService {
             // 如果已经存在则更新，如果不存在则插入
             T06QuotationH byID = PchD006.getByIdOnle(t06QuotationH.getId());
             pch06List2.add(t06QuotationH);
-            t06QuotationH.remove("TO_ITEMS_PO");
+            t06QuotationH.remove("TO_ITEM_PO");
+            t06QuotationH.remove("TO_ITEMS");
+
             if (byID != null) {
                 PchD006.update(t06QuotationH);
             } else {
@@ -118,7 +118,7 @@ public class SendService {
             }
 
             // 插入明细
-            List<PchT07QuotationD> toItems = pchT06QuotationH.getToItemsPo();
+            List<PchT07QuotationD> toItems = pchT06QuotationH.getToItemPo();
             if (toItems != null) {
                 toItems.forEach(pchT07QuotationD -> {
                     // 获取購買見積番号
