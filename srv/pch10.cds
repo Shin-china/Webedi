@@ -134,6 +134,7 @@ extend service TableService {
 
         distinct {
             key T02.QUO_NUMBER as ID,
+                T02.ID         as T02_ID,
                 T02.QUO_NUMBER,
                 T02.QUO_ITEM,
                 T02.NO,
@@ -190,7 +191,8 @@ extend service TableService {
                 T02.STATUS,
                 T02.INITIAL_OBJ,
                 T02.PLANT_ID,
-                T02.SUPPLIER_MAT
+                T02.SUPPLIER_MAT,
+                T02.CD_BY
         }
         where
                 T02.DEL_FLAG <> 'Y'
