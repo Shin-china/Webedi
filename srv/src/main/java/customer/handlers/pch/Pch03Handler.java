@@ -68,7 +68,7 @@ public class Pch03Handler implements EventHandler {
     MstD003 mstD003;
 
     /**
-     * 
+     *
      * @param context
      */
     @On(event = "PCH03_QUEREN")
@@ -90,12 +90,13 @@ public class Pch03Handler implements EventHandler {
     }
 
     /**
-     * 
+     *
      * 打印前数据处理
-     * 
+     *
      */
     @After(entity = PchT03PoItemPrint_.CDS_NAME, event = "READ")
-    public void beforeReadD03PDF(CdsReadEventContext context, Stream<PchT03PoItemPrint> pchd03List) {
+    public void beforeReadD03PDF(CdsReadEventContext context,
+            Stream<PchT03PoItemPrint> pchd03List) {
 
         Boolean[] isPrint = new Boolean[1];
         isPrint[0] = false;
@@ -116,20 +117,22 @@ public class Pch03Handler implements EventHandler {
             String currency = pchd03.getCurrency();
             if (unitPrice != null && delPrice != null && poPurQty != null) {
                 // 根据货币进行四舍五入
-                prc = NumberTool.toScale(delPrice.divide(unitPrice), currency);
+                // prc = NumberTool.toScale(delPrice.divide(unitPrice), currency);
 
-                // 税抜額
-                BigDecimal exclusive_tax_amount = poPurQty.multiply(prc);
                 // 税额
+                // 税抜額
+                BigDecimal exclusive_tax_amount = poPurQty.subtract(prc);
+
                 // 获取税率
-                BigDecimal sl = pchService.getSysD006("税率");
-                BigDecimal tax_amount = exclusive_tax_amount.multiply(sl);
+                // BigDecimal sl = pchService.getSysD006("税率");
+                // BigDecimal tax_amount = exclusive_tax_amount.multiply(sl);
+
                 // 税込額
-                BigDecimal inclusive_tax_amount = tax_amount.add(exclusive_tax_amount);
-                pchd03.setOrderUnitPrice(prc.toString());
-                pchd03.setExclusiveTaxAmount(exclusive_tax_amount.toString());
-                pchd03.setTaxAmount(tax_amount.toString());
-                pchd03.setInclusiveTaxAmount(inclusive_tax_amount.toString());
+                // BigDecimal inclusive_tax_amount = tax_amount.add(exclusive_tax_amount);
+                // pchd03.setOrderUnitPrice(prc.toString());
+                // pchd03.setExclusiveTaxAmount(exclusive_tax_amount.toString());
+                // pchd03.setTaxAmount(tax_amount.toString());
+                // pchd03.setInclusiveTaxAmount(inclusive_tax_amount.toString());
             }
 
             // 设置検査合区分
@@ -140,7 +143,8 @@ public class Pch03Handler implements EventHandler {
 
             pchd03.setPoPurQty(poPurQty);
             // 納期格式化
-            pchd03.setPoDDate2(DateTools.getCurrentDateString(pchd03.getPoDDate(), "yyyy-MM-dd"));
+            pchd03.setPoDDate2(DateTools.getCurrentDateString(pchd03.getPoDDate(),
+                    "yyyy-MM-dd"));
             // 数字格式化
             pchd03.setPoPurQty2(numFromt(pchd03.getPoPurQty()));
 
@@ -159,11 +163,13 @@ public class Pch03Handler implements EventHandler {
             pchd03.setCop12(pchd03.getSupplierMat());
             pchd03.setCop13(pchd03.getMatId());
 
-            pchd03.setCop14(pchd03.getPodno());
+            pchd03.setCop14(pchd03.getPoPurUnit());
             // pchd03.setCop15(pchd03.getPodno());
             pchd03.setCop16(pchd03.getPodno());
             pchd03.setCop17(pchd03.getCheckOk());
             pchd03.setCop17(pchd03.getCheckOk());
+            pchd03.setCop22("");
+            pchd03.setCop23("");
 
             // 公司固定值取出
 
@@ -175,7 +181,8 @@ public class Pch03Handler implements EventHandler {
 
             if (pchd03.getDelPrice() != null && pchd03.getPoPurQty() != null) {
                 pchd03.setZws7(
-                        NumberTool.toScale(pchd03.getDelPrice().multiply(pchd03.getPoPurQty()), currency) + "");
+                        NumberTool.toScale(pchd03.getDelPrice().multiply(pchd03.getPoPurQty()),
+                                currency) + "");
             }
 
             pchd03.setZws6(pchd03.getDelPrice().toString());
@@ -213,7 +220,8 @@ public class Pch03Handler implements EventHandler {
 
     private String numFromt(BigDecimal poPurQty) {
         // 获取小数部分
-        BigDecimal fractionalPart = poPurQty.subtract(poPurQty.setScale(0, RoundingMode.DOWN));
+        BigDecimal fractionalPart = poPurQty.subtract(poPurQty.setScale(0,
+                RoundingMode.DOWN));
 
         // 如果小数部分为0或不存在，则返回整数部分
         if (fractionalPart.compareTo(BigDecimal.ZERO) == 0) {
@@ -223,7 +231,7 @@ public class Pch03Handler implements EventHandler {
     }
 
     /**
-     * 
+     *
      * 打印前数据处理
      * PCH_T03_PO_ITEM
      */
@@ -252,7 +260,8 @@ public class Pch03Handler implements EventHandler {
             String currency = pchd03.getCurrency();
             // 発注金額 = 価格単位*発注数量 三位小数
             // 根据货币进行四舍五入
-            pchd03.setIssuedamount(NumberTool.toScale(pchd03.getDelPrice().multiply(pchd03.getPoPurQty()), currency));
+            pchd03.setIssuedamount(NumberTool.toScale(pchd03.getDelPrice().multiply(pchd03.getPoPurQty()),
+                    currency));
             // 设置検査合区分
             if (!StringTool.isEmpty(pchd03.getImpComp())) {
                 // pchd03.setImpComp("受入検査あり");

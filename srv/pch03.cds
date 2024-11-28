@@ -66,6 +66,8 @@ extend service TableService {
                 T07.MANU_CODE,
                 T02.SAP_CD_BY, // SAP担当者
                 T02.TO_MAT.MANU_MATERIAL,
+                T02.TAX_AMOUNT,//税額
+
 
                 '' as checkOk : String, // 検査合区分
                 '' as order_unit_price : String, // 発注単価

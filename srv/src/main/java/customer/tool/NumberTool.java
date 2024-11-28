@@ -46,9 +46,9 @@ public class NumberTool {
     BigDecimal prc = BigDecimal.ZERO;
     if (data != null) {
       if (UWebConstants.JPY.equals(currency)) {
-        prc = data.setScale(5);
+        prc = data.setScale(5, RoundingMode.UP);
       } else {
-        prc = data.setScale(2);
+        prc = data.setScale(2, RoundingMode.UP);
       }
     }
     return prc;
