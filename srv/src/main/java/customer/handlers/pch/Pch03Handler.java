@@ -110,18 +110,18 @@ public class Pch03Handler implements EventHandler {
             // 单价
             BigDecimal prc = BigDecimal.ZERO;
             // 设置税的四个
-            BigDecimal unitPrice = pchd03.getUnitPrice();
             BigDecimal delPrice = pchd03.getDelPrice();
             BigDecimal poPurQty = pchd03.getPoPurQty();
+            // 税额
+            BigDecimal taxAmount = pchd03.getTaxAmount();
             // 货币除了日元5其余2
             String currency = pchd03.getCurrency();
-            if (delPrice != null && poPurQty != null) {
+            if (delPrice != null && poPurQty != null && taxAmount != null) {
                 //// 税抜額
                 // 根据货币进行四舍五入
                 prc = NumberTool.toScale(delPrice.multiply(poPurQty), currency);
 
-                // 税额
-                BigDecimal taxAmount = pchd03.getTaxAmount();
+
                 // 税抜額
                 BigDecimal exclusive_tax_amount = prc;
 
@@ -131,7 +131,7 @@ public class Pch03Handler implements EventHandler {
 
                 // 税込額
                 BigDecimal inclusive_tax_amount = taxAmount.add(exclusive_tax_amount);
-                pchd03.setOrderUnitPrice(numFromt(pchd03.getDelAmount()));
+                pchd03.setOrderUnitPrice(numFromt(pchd03.getDelPrice()));
                 pchd03.setExclusiveTaxAmount(numFromt(exclusive_tax_amount));
                 pchd03.setTaxAmountView(numFromt(taxAmount));
                 pchd03.setInclusiveTaxAmount(numFromt(inclusive_tax_amount));
@@ -150,16 +150,29 @@ public class Pch03Handler implements EventHandler {
             // 数字格式化
             pchd03.setPoPurQty2(numFromt(pchd03.getPoPurQty()));
 
+            // 得意先コード
+            String matId = pchd03.getMatId();
+            // matId不能位空，且不能小于2位
+            if (matId != null && matId.length() >= 2) {
+                String matIdLastTwo = matId.substring(matId.length() - 2);
+                System.out.println("======="+matIdLastTwo);
+                T03SapBp bySearch = mstD003.getBySearch(matIdLastTwo);
+                if (bySearch != null)
+                    pchd03.setBpId(bySearch.getBpId());
+            }
+            String poSendPDFZWSType = pchService.getPoSendPDFZWSType(pchd03.getPoNo());
+            pchd03.setType(poSendPDFZWSType);
             // 复制用作显示
             pchd03.setCop1(pchd03.getPodno());
             pchd03.setCop2(pchd03.getPoPurQty2() == null ? "" : pchd03.getPoPurQty2().toString());
             pchd03.setCop3(pchd03.getPodno());
-            pchd03.setCop4(pchd03.getPodno());
+            // 納入日：
+            pchd03.setCop4(DateTools.getCurrentDateString(pchd03.getPoDDate(),"yyyy-MM-dd"));
             pchd03.setCop5(pchd03.getSupplierMat());
             pchd03.setCop6(pchd03.getMatId());
             pchd03.setCop7(pchd03.getStorage());
             pchd03.setCop8(pchd03.getCheckOk());
-            pchd03.setCop9(pchd03.getBpName1());
+            pchd03.setCop9(pchd03.getBpName1());//name1
             pchd03.setCop10(pchd03.getStorage());
             pchd03.setCop11(pchd03.getPodno());
             pchd03.setCop12(pchd03.getSupplierMat());
@@ -171,8 +184,9 @@ public class Pch03Handler implements EventHandler {
             pchd03.setCop17(pchd03.getCheckOk());
             pchd03.setCop17(pchd03.getCheckOk());
             pchd03.setCop22(pchd03.getIntNumber());//
-            pchd03.setCop23("");
 
+            pchd03.setCop24(pchd03.getPodno());//海外
+            pchd03.setCop25(pchd03.getIntNumber());//海外
             // 公司固定值取出
 
             pchd03.setZws1(pchd03.getPodno() + "\n" + pchd03.getSapCdBy());
@@ -214,8 +228,16 @@ public class Pch03Handler implements EventHandler {
                 }
 
             }
-            String poSendPDFZWSType = pchService.getPoSendPDFZWSType(pchd03.getPoNo());
-            pchd03.setType(poSendPDFZWSType);
+            //获取qrcode
+            String qrcode = "";
+            // 納入日：
+            //品目コード：
+            // 品名：
+            //P/N：
+            // 納入数：
+            //
+
+
 
         });
     }
