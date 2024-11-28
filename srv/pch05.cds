@@ -25,7 +25,8 @@ extend service TableService {
             key T05.PO_NO, // 購買伝票
             key T05.D_NO, // 明細
             key T04.SUPPLIER, // 仕入先
-                T01.PO_BUKRS, // 会社コード
+                // T01.PO_BUKRS, // 会社コード
+                T05.Company_Code,
                 T05.ITEM_NO, // 請求書明細
                 T04.SUPPLIER_DESCRIPTION, // 仕入先名称
                 T04.INV_CONFIRMATION, // インボイス
@@ -121,7 +122,7 @@ extend service TableService {
             key T05.D_NO, // 明細
             key T05.SUPPLIER, // 仕入先
                 T05.ITEM_NO, // 請求書明細
-                T05.PO_BUKRS, // 会社コード
+                T05.Company_Code, // 会社コード
                 T05.SUPPLIER_DESCRIPTION, // 仕入先名称
                 T05.INV_CONFIRMATION, // インボイス
                 T05.PO_TRACK_NO, // 購買依頼追跡番号
@@ -252,7 +253,7 @@ extend service TableService {
             key T01.PO_NO,
             key T01.D_NO,
             key T01.SUPPLIER,
-                T01.PO_BUKRS,
+                T01.Company_Code,
                 T01.INV_MONTH,
                 T01.CURRENCY,
                 T01.TAX_RATE,
@@ -323,11 +324,12 @@ extend service TableService {
             key T05.PO_NO, // 購買伝票
             key T05.D_NO, // 明細
             key T04.SUPPLIER, // 仕入先
-                T01.PO_BUKRS, // 会社コード
+                // T01.PO_BUKRS, // 会社コード
                 T05.ITEM_NO, // 請求書明細
                 T05.TAX_CODE, // 税コード
                 T05.TAX_RATE, // 税率
                 T05.CURRENCY, // 通貨コード
+                T05.Company_Code, // Company Code
                 T04.INV_POST_DATE, // 転記日付
                 T04.HEADER_TEXT,
                 T04.AMOUNT,
@@ -433,7 +435,8 @@ extend service TableService {
             key D_NO, // 明細
             key SUPPLIER, // 仕入先
                 ITEM_NO, // 請求書明細
-                PO_BUKRS, // 会社コード
+                // PO_BUKRS, // 会社コード
+                Company_Code, // Company Code
                 TAX_CODE, // 税コード
                 TAX_RATE, // 税率
                 INV_POST_DATE, // 転記日付
@@ -546,7 +549,7 @@ extend service TableService {
         select from PCH_T05_ACCOUNT_DETAIL_SUM
 
         distinct {
-            key PO_BUKRS,
+            key Company_Code, // Company Code,
             key SUPPLIER,
             key INV_MONTH,
                 SUM(CALC_10_PRICE_AMOUNT)    as CALC_10_PRICE_AMOUNT    : Decimal(15, 2),    // 10% 税抜金额
@@ -559,7 +562,7 @@ extend service TableService {
                 SUM(AMOUNT_HEADER_8)         as AMOUNT_HEADER_8         : Decimal(15, 2),    // 8%  SAP税额HEADER AMOUNT_HEADER
         }
         group by
-            PO_BUKRS,
+            Company_Code,
             SUPPLIER,
             INV_MONTH;
 
@@ -569,12 +572,12 @@ extend service TableService {
         left join PCH_T05_ACCOUNT_DETAIL as T03
             on  T02.SUPPLIER  = T03.SUPPLIER
             and T02.INV_MONTH = T03.INV_MONTH
-            and T02.PO_BUKRS  = T03.PO_BUKRS
+            and T02.Company_Code  = T03.Company_Code
 
         distinct {
             key T02.SUPPLIER,
             key T03.INV_MONTH,
-            key T03.PO_BUKRS,
+            key T03.Company_Code,
             key T03.INV_NO,
                 T03.PO_NO,
                 T03.D_NO,
@@ -677,7 +680,7 @@ extend service TableService {
             key INV_NO,
                 PO_NO,
                 D_NO,
-                PO_BUKRS,
+                Company_Code,
                 INV_MONTH,
                 CURRENCY,
                 TAX_RATE,
@@ -832,12 +835,12 @@ extend service TableService {
         left join PCH_T05_ACCOUNT_DETAIL_SUM_FINAL as T03
             on  T02.SUPPLIER  = T03.SUPPLIER
             and T02.INV_MONTH = T03.INV_MONTH
-            and T02.PO_BUKRS  = T03.PO_BUKRS
+            and T02.Company_Code  = T03.Company_Code
 
         distinct {
             key T02.SUPPLIER,
             key T02.INV_MONTH,
-            key T02.PO_BUKRS,
+            key T02.Company_Code,
                 T03.CURRENCY,
                 T02.CALC_10_PRICE_AMOUNT, // 10% 税抜金额
                 T02.CALC_8_PRICE_AMOUNT, // 8%  税抜金额
@@ -884,7 +887,7 @@ extend service TableService {
         distinct {
             key SUPPLIER,
             key INV_MONTH,
-            key PO_BUKRS,
+            key Company_Code,
             key CURRENCY,
                 SUM(RECALC_PRICE_AMOUNT_10)       as RECALC_PRICE_AMOUNT_10       : Decimal(15, 2), //再計算10％税額
                 SUM(RECALC_PRICE_AMOUNT_8)        as RECALC_PRICE_AMOUNT_8        : Decimal(15, 2), //再計算8％税額
@@ -894,7 +897,7 @@ extend service TableService {
                 SUM(TOTAL_8_TAX_INCLUDED_AMOUNT)  as TOTAL_8_TAX_INCLUDED_AMOUNT  : Decimal(15, 2) //合計8％税込金額
         }
         group by
-            PO_BUKRS,
+            Company_Code,
             SUPPLIER,
             INV_MONTH,
             CURRENCY;
@@ -905,16 +908,16 @@ extend service TableService {
         left join PCH_T05_ACCOUNT_DETAIL_DISPLAY2 as T02
             on  T01.SUPPLIER  = T02.SUPPLIER
             and T01.INV_MONTH = T02.INV_MONTH
-            and T01.PO_BUKRS  = T02.PO_BUKRS
+            and T01.Company_Code  = T02.Company_Code
         left join PCH_T05_ACCOUNT_DETAIL_DISPLAY as T03
             on  T01.SUPPLIER  = T03.SUPPLIER
             and T01.INV_MONTH = T03.INV_MONTH
-            and T01.PO_BUKRS  = T03.PO_BUKRS
+            and T01.Company_Code  = T03.Company_Code
 
         distinct {
             key T01.SUPPLIER,
             key T01.INV_MONTH,
-            key T01.PO_BUKRS,
+            key T01.Company_Code,
                 T02.CURRENCY,
                 T01.CALC_10_PRICE_AMOUNT, // 10% 税抜金额
                 T01.CALC_8_PRICE_AMOUNT, // 8%  税抜金额
@@ -1010,16 +1013,16 @@ extend service TableService {
         left join PCH_T05_ACCOUNT_DETAIL_DISPLAY as T02
             on  T01.SUPPLIER  = T02.SUPPLIER
             and T01.INV_MONTH = T02.INV_MONTH
-            and T01.PO_BUKRS  = T02.PO_BUKRS
+            and T01.Company_Code  = T02.Company_Code
         left join PCH_T05_ACCOUNT_DETAIL_DISPLAY3 as T03
             on  T02.SUPPLIER  = T03.SUPPLIER
             and T02.INV_MONTH = T03.INV_MONTH
-            and T02.PO_BUKRS  = T03.PO_BUKRS
+            and T02.Company_Code  = T03.Company_Code
 
         distinct {
             key T01.SUPPLIER,
             key T01.INV_MONTH,
-            key T01.PO_BUKRS,
+            key T01.Company_Code,
                 T02.CURRENCY,
                 T02.CALC_10_PRICE_AMOUNT, // 10% 税抜金额
                 T02.CALC_8_PRICE_AMOUNT, // 8%  税抜金额
