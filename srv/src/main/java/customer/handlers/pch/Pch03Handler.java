@@ -115,24 +115,26 @@ public class Pch03Handler implements EventHandler {
             BigDecimal poPurQty = pchd03.getPoPurQty();
             // 货币除了日元5其余2
             String currency = pchd03.getCurrency();
-            if (unitPrice != null && delPrice != null && poPurQty != null) {
+            if (delPrice != null && poPurQty != null) {
+                //// 税抜額
                 // 根据货币进行四舍五入
-                // prc = NumberTool.toScale(delPrice.divide(unitPrice), currency);
+                prc = NumberTool.toScale(delPrice.multiply(poPurQty), currency);
 
                 // 税额
+                BigDecimal taxAmount = pchd03.getTaxAmount();
                 // 税抜額
-                BigDecimal exclusive_tax_amount = poPurQty.subtract(prc);
+                BigDecimal exclusive_tax_amount = prc;
 
                 // 获取税率
                 // BigDecimal sl = pchService.getSysD006("税率");
                 // BigDecimal tax_amount = exclusive_tax_amount.multiply(sl);
 
                 // 税込額
-                // BigDecimal inclusive_tax_amount = tax_amount.add(exclusive_tax_amount);
-                // pchd03.setOrderUnitPrice(prc.toString());
-                // pchd03.setExclusiveTaxAmount(exclusive_tax_amount.toString());
-                // pchd03.setTaxAmount(tax_amount.toString());
-                // pchd03.setInclusiveTaxAmount(inclusive_tax_amount.toString());
+                BigDecimal inclusive_tax_amount = taxAmount.add(exclusive_tax_amount);
+                pchd03.setOrderUnitPrice(numFromt(pchd03.getDelAmount()));
+                pchd03.setExclusiveTaxAmount(numFromt(exclusive_tax_amount));
+                pchd03.setTaxAmountView(numFromt(taxAmount));
+                pchd03.setInclusiveTaxAmount(numFromt(inclusive_tax_amount));
             }
 
             // 设置検査合区分
@@ -168,7 +170,7 @@ public class Pch03Handler implements EventHandler {
             pchd03.setCop16(pchd03.getPodno());
             pchd03.setCop17(pchd03.getCheckOk());
             pchd03.setCop17(pchd03.getCheckOk());
-            pchd03.setCop22("");
+            pchd03.setCop22(pchd03.getIntNumber());//
             pchd03.setCop23("");
 
             // 公司固定值取出

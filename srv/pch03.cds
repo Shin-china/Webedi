@@ -72,7 +72,7 @@ extend service TableService {
                 '' as checkOk : String, // 検査合区分
                 '' as order_unit_price : String, // 発注単価
                 '' as exclusive_tax_amount : String, // 税抜額
-                '' as tax_amount : String, // 税額
+                '' as tax_amount_view : String, // 税額
                 '' as inclusive_tax_amount : String, // 税込額
                 '' as QR_CODE : String,
 
@@ -122,6 +122,8 @@ extend service TableService {
                 '' as TYPE : String,
                 '' as PO_D_DATE2 : String,
                 '' as PO_PUR_QTY2 : String,
+                T02.INT_NUMBER,//海外発注番号：
+                T02.PR_BY,//依頼者：
                 
                 
         }
