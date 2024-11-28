@@ -143,27 +143,27 @@
     </table:template>
 </table:Column>
 
-<table:Column id="colSapTaxAmount10" width="10rem" sortProperty="SAP_TAX_AMOUNT_10" filterProperty="SAP_TAX_AMOUNT_10">
+<table:Column id="colSapTaxAmount10" width="10rem" sortProperty="TAX_AMOUNT_HEADER_10_TOTAL" filterProperty="TAX_AMOUNT_HEADER_10_TOTAL">
     <table:customData>
-        <core:CustomData key="p13nData" value='{"columnKey":"SAP_TAX_AMOUNT_10", "leadingProperty":"SAP_TAX_AMOUNT_10", "sortProperty":"SAP_TAX_AMOUNT_10", "filterProperty":"SAP_TAX_AMOUNT_10"}'/>
+        <core:CustomData key="p13nData" value='{"columnKey":"TAX_AMOUNT_HEADER_10_TOTAL", "leadingProperty":"TAX_AMOUNT_HEADER_10_TOTAL", "sortProperty":"TAX_AMOUNT_HEADER_10_TOTAL", "filterProperty":"TAX_AMOUNT_HEADER_10_TOTAL"}'/>
     </table:customData>
     <table:label>
-        <Label id="labelSapTaxAmount10" text="{pch>SAP_TAX_AMOUNT_10}"/>
+        <Label id="labelSapTaxAmount10" text="{pch>TAX_AMOUNT_HEADER_10_TOTAL}"/>
     </table:label>
     <table:template>
-        <Text id="textSapTaxAmount10" text="{SAP_TAX_AMOUNT_10}"/>
+        <Text id="textSapTaxAmount10" text="{TAX_AMOUNT_HEADER_10_TOTAL}"/>
     </table:template>
 </table:Column>
 
-<table:Column id="colSapTaxAmount8" width="10rem" sortProperty="SAP_TAX_AMOUNT_8" filterProperty="SAP_TAX_AMOUNT_8">
+<table:Column id="colSapTaxAmount8" width="10rem" sortProperty="TAX_AMOUNT_HEADER_8_TOTAL" filterProperty="TAX_AMOUNT_HEADER_8_TOTAL">
     <table:customData>
-        <core:CustomData key="p13nData" value='{"columnKey":"SAP_TAX_AMOUNT_8", "leadingProperty":"SAP_TAX_AMOUNT_8", "sortProperty":"SAP_TAX_AMOUNT_8", "filterProperty":"SAP_TAX_AMOUNT_8"}'/>
+        <core:CustomData key="p13nData" value='{"columnKey":"TAX_AMOUNT_HEADER_8_TOTAL", "leadingProperty":"TAX_AMOUNT_HEADER_8_TOTAL", "sortProperty":"TAX_AMOUNT_HEADER_8_TOTAL", "filterProperty":"TAX_AMOUNT_HEADER_8_TOTAL"}'/>
     </table:customData>
     <table:label>
-        <Label id="labelSapTaxAmount8" text="{pch>SAP_TAX_AMOUNT_8}"/>
+        <Label id="labelSapTaxAmount8" text="{pch>TAX_AMOUNT_HEADER_8_TOTAL}"/>
     </table:label>
     <table:template>
-        <Text id="textSapTaxAmount8" text="{SAP_TAX_AMOUNT_8}"/>
+        <Text id="textSapTaxAmount8" text="{TAX_AMOUNT_HEADER_8_TOTAL}"/>
     </table:template>
 </table:Column>
 

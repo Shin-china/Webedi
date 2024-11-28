@@ -832,8 +832,8 @@ extend service TableService {
                 // T02.TAX_AMOUNT_HEADER_8,
                 // T02.AMOUNT_HEADER_10,
                 // T02.AMOUNT_HEADER_8,
-                T02.TAX_AMOUNT_HEADER_8 + T02.TAX_AMOUNT_HEADER_8 as TAX_AMOUNT_HEADER_8_TOTAL : Decimal(15, 2),
-                T02.TAX_AMOUNT_HEADER_10 + T02.TAX_AMOUNT_HEADER_10 as TAX_AMOUNT_HEADER_10_TOTAL : Decimal(15, 2)
+                T02.TAX_AMOUNT_HEADER_8 + T02.AMOUNT_HEADER_8 as TAX_AMOUNT_HEADER_8_TOTAL : Decimal(15, 2),
+                T02.TAX_AMOUNT_HEADER_10 + T02.AMOUNT_HEADER_10 as TAX_AMOUNT_HEADER_10_TOTAL : Decimal(15, 2)
 
         }
 
