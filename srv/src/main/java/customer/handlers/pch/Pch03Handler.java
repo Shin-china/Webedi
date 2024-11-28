@@ -183,12 +183,11 @@ public class Pch03Handler implements EventHandler {
             pchd03.setCop17(pchd03.getPrBy());
             pchd03.setCop18(pchd03.getPoPurUnit());
 
-            pchd03.setCop22(pchd03.getIntNumber());//
-
-            pchd03.setCop24(pchd03.getIntNumber());// 海外
+            pchd03.setCop24(pchd03.getPodno());// 海外
             pchd03.setCop25(pchd03.getIntNumber());// 海外
             pchd03.setCop27(pchd03.getIntNumber());// 海外
             pchd03.setCop28(pchd03.getIntNumber());// 海外
+            pchd03.setCop22(pchd03.getCop27());//
             pchd03.setCop19(pchd03.getCop27());
             // 公司固定值取出
 
@@ -234,8 +233,34 @@ public class Pch03Handler implements EventHandler {
             StringBuilder qrcode = getQrcode(pchd03);
             pchd03.setQrCode(qrcode.toString());
             pchd03.setCop26(qrcode.toString());
-
+            // jcs2设置
+            this.setJcs(pchd03);
         });
+    }
+
+    private void setJcs(PchT03PoItemPrint pchd03) {
+        pchd03.setJcs1(pchd03.getPodno());
+        pchd03.setJcs2(pchd03.getCop22());
+        pchd03.setJcs3(pchd03.getStorage());
+        pchd03.setJcs4(pchd03.getSapCdBy());
+        pchd03.setJcs5(pchd03.getCop1());
+        pchd03.setJcs6(pchd03.getSupplierMat());
+        pchd03.setJcs7(pchd03.getMatId());
+        pchd03.setJcs8(pchd03.getPoDTxz01());
+        pchd03.setJcs9(pchd03.getPoDDate2());
+        pchd03.setJcs10(pchd03.getPoPurQty2());
+        pchd03.setJcs11(pchd03.getCop2());
+        pchd03.setJcs12(pchd03.getPoPurUnit());
+        pchd03.setJcs13(pchd03.getOrderUnitPrice());
+        pchd03.setJcs14(pchd03.getTaxAmountView());
+        pchd03.setJcs15(pchd03.getExclusiveTaxAmount());
+        pchd03.setJcs16(pchd03.getInclusiveTaxAmount());
+        pchd03.setJcs17("");
+        pchd03.setJcs18(pchd03.getCheckOk());
+        pchd03.setJcs19(pchd03.getBpName1());
+        pchd03.setJcs20(pchd03.getCop3());
+        pchd03.setJcs21(pchd03.getCop24());
+
     }
 
     private StringBuilder getQrcode(PchT03PoItemPrint pchd03) {

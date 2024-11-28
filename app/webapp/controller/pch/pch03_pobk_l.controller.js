@@ -117,12 +117,36 @@ sap.ui.define([
 		    csvContent += headers.join(",") + "\n";
 			return csvContent;
 		},
+		/**
+		 * 将数据通过suppli分组
+		 * @param {*} csvContent 
+		 * @returns 
+		 */
+		_getSuppliList: function (csvContent) {
+			const groupedBySupplier = csvContent.reduce((acc, item) => {
+				// 如果累加器（acc）中还没有这个SUPPLIER，则初始化为一个空数组
+				if (!acc[item.SUPPLIER]) {
+					acc[item.SUPPLIER] = [];
+				}
+				// 将当前项添加到对应的SUPPLIER数组中
+				acc[item.SUPPLIER].push(item);
+				return acc;
+			}, {});
+			
+
+
+			return groupedBySupplier;
+		},
 		onCsvdow: function (oEvt) {
 			// 假设你的数据模型是JSONModel，并且已经绑定到了SmartTable  
 			var that = this;
 			//设置通用dialog
 			this._AfterDigLogCheck().then((selectedIndices) => {
-				selectedIndices.forEach(function (row) {
+				const groupedBySupplier =that._getSuppliList(selectedIndices);
+
+				Object.keys(groupedBySupplier).forEach(key => {
+					const row = groupedBySupplier[key];
+
 					// 构建CSV内容  
 					var csvContent = "data:text/csv;charset=utf-8,";
 					csvContent = that._getCsvData(row,csvContent);
@@ -131,7 +155,7 @@ sap.ui.define([
 					var encodedUri = encodeURI(csvContent);
 					var link = document.createElement("a");
 					link.setAttribute("href", encodedUri);
-					link.setAttribute("download", that.CommTools.getCurrentTimeFormatted()+"_"+row.ID+".csv");
+					link.setAttribute("download", that.CommTools.getCurrentTimeFormatted()+"_"+key+".csv");
 					document.body.appendChild(link);
 					link.click();
 				})
@@ -269,6 +293,8 @@ sap.ui.define([
 
 							
 
+							
+
 						})
 					})
 					that._isQuerenDb(selectedIndices, true);
@@ -276,31 +302,31 @@ sap.ui.define([
 			})
 		},
 
-		_getCsvData: function (row, csvContent) {
+		_getCsvData: function (selectedIndices,csvContent) {
 			var that = this;
-			if (row) {
-				//设置头的模板
-				var headers = that._setHeaderModel();
-				//头部数据写入一行
-				csvContent = that._setHeaderData(csvContent);
-
-
-				var values = headers.map(function (header) {
-					let re = ""
-					//如果取不出来就是
-					if (row[header] === null || row[header] === undefined) {
-						return re = ""
-					} else {
-						if ("PO_DATE" == header || "PO_D_DATE" == header) {
-							re = that.CommTools._formatToYYYYMMDD(row[header]);
-						} else {
-							re = '"' + row[header] + '"'
-						}
-					}
-					return re;
-				});
-				csvContent += values.join(",") + "\n";
-
+			if (selectedIndices) {
+							//设置头的模板
+							var headers = that._setHeaderModel();
+							//头部数据写入一行
+							csvContent = that._setHeaderData(csvContent);
+			
+							selectedIndices.forEach(function (row) {
+								var values = headers.map(function (header) {
+									let re = ""
+									//如果取不出来就是
+									if(row[header] === null || row[header] === undefined){
+										return re = ""
+									}else{
+										if("PO_DATE" == header || "PO_D_DATE" == header){
+											re = that.CommTools._formatToYYYYMMDD(row[header]);
+										}else{
+											re = '"' + row[header] + '"'
+										}
+									}
+									return re;
+								});
+								csvContent += values.join(",") + "\n";
+							});
 			}
 			return csvContent;
 		},
