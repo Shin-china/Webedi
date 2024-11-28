@@ -141,8 +141,8 @@ public class Pch05Handler implements EventHandler {
       data1.setSapTaxAmount10Total(stripTrailingZeros(data1.getSapTaxAmount10Total()));
       data1.setCalc8PriceAmountTotal(stripTrailingZeros(data1.getCalc8PriceAmountTotal()));
       data1.setCalc10PriceAmountTotal(stripTrailingZeros(data1.getCalc10PriceAmountTotal()));
-      // data1.setTotalTotalAmount(stripTrailingZeros(data1.getTotalTotalAmount()));
-      // data1.setTotalTaxAmount(stripTrailingZeros(data1.getTotalTaxAmount()));
+      data1.setTotalTotalAmount(stripTrailingZeros(data1.getTotalTotalAmount()));
+      data1.setTotalTaxAmount(stripTrailingZeros(data1.getTotalTaxAmount()));
 
       // 获取 NoDetails 字段并补充前导零
       String noDetails = data1.getNoDetails();
