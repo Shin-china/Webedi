@@ -289,6 +289,16 @@ extend service TableService {
                 COUNT( * ) over(
                     partition by T01.SUPPLIER
                 )                          as TOTAL_COUNT         : Integer, // 按照 SUPPLIER 维度计算条数
+                COALESCE(
+                    T02.TOTAL_AMOUNT_8_TOTAL, 0
+                )+COALESCE(
+                    T02.TOTAL_AMOUNT_10_TOTAL, 0
+                )                          as TOTAL_TOTAL_AMOUNT  : Decimal(15, 2), // 計上金額总合计
+                COALESCE(
+                    T02.SAP_TAX_AMOUNT_8_TOTAL, 0
+                )+COALESCE(
+                    T02.SAP_TAX_AMOUNT_10_TOTAL, 0
+                )                          as TOTAL_TAX_AMOUNT    : Decimal(15, 2), // 消費税額总合计
      
                 '(' || T01.SUPPLIER || ')' as SUPPLIER_1          : String
 
@@ -533,12 +543,12 @@ extend service TableService {
 
     entity PCH_T05_ACCOUNT_DETAIL_SUM_GRO   as
 
-        select from PCH_T05_ACCOUNT_DETAIL_SUM as T01
+        select from PCH_T05_ACCOUNT_DETAIL_SUM
 
         distinct {
-            key T01.PO_BUKRS,
-            key T01.SUPPLIER,
-            key T01.INV_MONTH,
+            key PO_BUKRS,
+            key SUPPLIER,
+            key INV_MONTH,
                 SUM(CALC_10_PRICE_AMOUNT)    as CALC_10_PRICE_AMOUNT    : Decimal(15, 2),    // 10% 税抜金额
                 SUM(CALC_8_PRICE_AMOUNT)     as CALC_8_PRICE_AMOUNT     : Decimal(15, 2),    // 8%  税抜金额
                 SUM(SAP_TAX_AMOUNT_10)       as SAP_TAX_AMOUNT_10       : Decimal(15, 2),    // 10% SAP税额
@@ -549,9 +559,9 @@ extend service TableService {
                 SUM(AMOUNT_HEADER_8)         as AMOUNT_HEADER_8         : Decimal(15, 2),    // 8%  SAP税额HEADER AMOUNT_HEADER
         }
         group by
-            T01.PO_BUKRS,
-            T01.SUPPLIER,
-            T01.INV_MONTH;
+            PO_BUKRS,
+            SUPPLIER,
+            INV_MONTH;
 
     entity PCH_T05_ACCOUNT_DETAIL_SUM_END   as
 
@@ -660,7 +670,7 @@ extend service TableService {
         }
 
     entity PCH_T05_ACCOUNT_DETAIL_SUM_FINAL as
-        select from PCH_T05_ACCOUNT_DETAIL_SUM_END as T03
+        select from PCH_T05_ACCOUNT_DETAIL_SUM_END 
 
         distinct {
             key SUPPLIER,
@@ -704,7 +714,7 @@ extend service TableService {
                             ) as                      Decimal(15, 0)
                         )
                     when
-                        T03.CURRENCY     in (
+                        CURRENCY     in (
                             'USD', 'EUR'
                         )
                         and TAX_RATE =  10
