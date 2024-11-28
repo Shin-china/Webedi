@@ -102,6 +102,12 @@ extend service TableService {
                 '' as cop24 : String,// podno
                 '' as cop25 : String,// 海外発注番号：
                 '' as cop26 : String,// qrcode
+                '' as cop27 : String,// 海外発注番号：
+                '' as cop28 : String,// 海外発注番号：
+
+
+
+
                 '' as ZWS_1 : String,
                 '' as ZWS_2 : String,
                 '' as ZWS_3 : String,

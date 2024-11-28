@@ -121,7 +121,6 @@ public class Pch03Handler implements EventHandler {
                 // 根据货币进行四舍五入
                 prc = NumberTool.toScale(delPrice.multiply(poPurQty), currency);
 
-
                 // 税抜額
                 BigDecimal exclusive_tax_amount = prc;
 
@@ -155,7 +154,7 @@ public class Pch03Handler implements EventHandler {
             // matId不能位空，且不能小于2位
             if (matId != null && matId.length() >= 2) {
                 String matIdLastTwo = matId.substring(matId.length() - 2);
-                System.out.println("======="+matIdLastTwo);
+                System.out.println("=======" + matIdLastTwo);
                 T03SapBp bySearch = mstD003.getBySearch(matIdLastTwo);
                 if (bySearch != null)
                     pchd03.setBpId(bySearch.getBpId());
@@ -167,26 +166,30 @@ public class Pch03Handler implements EventHandler {
             pchd03.setCop2(pchd03.getPoPurQty2() == null ? "" : pchd03.getPoPurQty2().toString());
             pchd03.setCop3(pchd03.getPodno());
             // 納入日：
-            pchd03.setCop4(DateTools.getCurrentDateString(pchd03.getPoDDate(),"yyyy-MM-dd"));
+            pchd03.setCop4(DateTools.getCurrentDateString(pchd03.getPoDDate(), "yyyy-MM-dd"));
             pchd03.setCop5(pchd03.getSupplierMat());
             pchd03.setCop6(pchd03.getMatId());
             pchd03.setCop7(pchd03.getStorage());
             pchd03.setCop8(pchd03.getCheckOk());
-            pchd03.setCop9(pchd03.getBpName1());//name1
+            pchd03.setCop9(pchd03.getBpName1());// name1
             pchd03.setCop10(pchd03.getStorage());
             pchd03.setCop11(pchd03.getPodno());
             pchd03.setCop12(pchd03.getSupplierMat());
             pchd03.setCop13(pchd03.getMatId());
 
-            pchd03.setCop14(pchd03.getPoPurUnit());
-            // pchd03.setCop15(pchd03.getPodno());
-            pchd03.setCop16(pchd03.getPodno());
-            pchd03.setCop17(pchd03.getCheckOk());
-            pchd03.setCop17(pchd03.getCheckOk());
+            pchd03.setCop14(pchd03.getCustMaterial());
+            pchd03.setCop15(pchd03.getBpId());
+            pchd03.setCop16(pchd03.getCheckOk());
+            pchd03.setCop17(pchd03.getPrBy());
+            pchd03.setCop18(pchd03.getPoPurUnit());
+
             pchd03.setCop22(pchd03.getIntNumber());//
 
-            pchd03.setCop24(pchd03.getPodno());//海外
-            pchd03.setCop25(pchd03.getIntNumber());//海外
+            pchd03.setCop24(pchd03.getIntNumber());// 海外
+            pchd03.setCop25(pchd03.getIntNumber());// 海外
+            pchd03.setCop27(pchd03.getIntNumber());// 海外
+            pchd03.setCop28(pchd03.getIntNumber());// 海外
+            pchd03.setCop19(pchd03.getCop27());
             // 公司固定值取出
 
             pchd03.setZws1(pchd03.getPodno() + "\n" + pchd03.getSapCdBy());
@@ -228,18 +231,39 @@ public class Pch03Handler implements EventHandler {
                 }
 
             }
-            //获取qrcode
-            String qrcode = "";
-            // 納入日：
-            //品目コード：
-            // 品名：
-            //P/N：
-            // 納入数：
-            //
-
-
+            StringBuilder qrcode = getQrcode(pchd03);
+            pchd03.setQrCode(qrcode.toString());
+            pchd03.setCop26(qrcode.toString());
 
         });
+    }
+
+    private StringBuilder getQrcode(PchT03PoItemPrint pchd03) {
+        // 获取qrcode
+        StringBuilder qrcode = new StringBuilder();
+        // 納入日：
+        qrcode.append(customer.tool.StringTool.padOrTruncate(pchd03.getPoDDate2(), 10));
+        // 品目コード：
+        qrcode.append(customer.tool.StringTool.padOrTruncate(pchd03.getCop5(), 40));
+        // 品名：
+        qrcode.append(customer.tool.StringTool.padOrTruncate(pchd03.getCop6(), 40));
+        // P/N：
+        qrcode.append(customer.tool.StringTool.padOrTruncate(pchd03.getCustMaterial(),
+                40));
+        // 納品場所：
+        qrcode.append(customer.tool.StringTool.padOrTruncate(pchd03.getStorage(),
+                40));
+        // 得意先：
+        qrcode.append(customer.tool.StringTool.padOrTruncate(pchd03.getBpId(), 10));
+        // 検査区分：
+        qrcode.append(customer.tool.StringTool.padOrTruncate(pchd03.getCheckOk(),
+                12));
+        // 依頼者：
+        qrcode.append(customer.tool.StringTool.padOrTruncate(pchd03.getPrBy(), 50));
+        // 海外発注番号：
+        qrcode.append(customer.tool.StringTool.padOrTruncate(pchd03.getIntNumber(),
+                18));
+        return qrcode;
     }
 
     private String numFromt(BigDecimal poPurQty) {
