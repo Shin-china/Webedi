@@ -19,10 +19,10 @@ import cds.gen.tableservice.PchT05AccountDetailDisplay3;
 import cds.gen.tableservice.PchT05AccountDetailDisplay3_;
 import cds.gen.tableservice.PchT05Forexcel;
 import cds.gen.tableservice.PchT05Forexcel_;
-import cds.gen.tableservice.PchT05AccountDetailExcel;
-import cds.gen.tableservice.PchT05AccountDetailExcel_;
-import cds.gen.tableservice.PchT05AccountDetail;
-import cds.gen.tableservice.PchT05AccountDetail_;
+import cds.gen.tableservice.PchT05AccountDetailExcel1;
+import cds.gen.tableservice.PchT05AccountDetailExcel1_;
+import cds.gen.tableservice.PchT05AccountDetail1;
+import cds.gen.tableservice.PchT05AccountDetail1_;
 import cds.gen.tableservice.TableService_;
 import cds.gen.MailBody;
 import cds.gen.MailJson;
@@ -69,102 +69,102 @@ public class Pch05Handler implements EventHandler {
   @Autowired
   PchService pchService;
 
-  /**
-   * 
-   * 检查抬头 工厂 检查明细
-   * 
-   * @param context       传入上下文
-   * @param d012MoveActHs 传入画面输入值
-   */
-  @After(entity = PchT05AccountDetail_.CDS_NAME, event = "READ")
-  public void afterReadPchT05AccountDetail(CdsReadEventContext context,
-      Stream<PchT05AccountDetail> pchT05AccountDetails) {
-    pchT05AccountDetails.forEach(pchT05AccountDetail -> {
-      String currency = pchT05AccountDetail.getCurrency();
+  // /**
+  //  * 
+  //  * 检查抬头 工厂 检查明细
+  //  * 
+  //  * @param context       传入上下文
+  //  * @param d012MoveActHs 传入画面输入值
+  //  */
+  // @After(entity = PchT05AccountDetail1_.CDS_NAME, event = "READ")
+  // public void afterReadPchT05AccountDetail(CdsReadEventContext context,
+  //     Stream<PchT05AccountDetail1> pchT05AccountDetail1s) {
+  //   pchT05AccountDetail1s.forEach(PchT05AccountDetail1_ -> {
+  //     String currency = PchT05AccountDetail1.getCurrency();
 
-      // 检查 currency 并根据需要设置字段精度
-      if ("JPY".equals(currency)) {
-        pchT05AccountDetail.setPriceAmount(scaleToInteger(pchT05AccountDetail.getPriceAmount()));
-        pchT05AccountDetail.setTaxAmount(scaleToInteger(pchT05AccountDetail.getTaxAmount()));
-        pchT05AccountDetail.setTotalAmount(scaleToInteger(pchT05AccountDetail.getTotalAmount()));
-      } else if ("USD".equals(currency) || "EUR".equals(currency)) {
-        pchT05AccountDetail.setPriceAmount(scaleToTwoDecimal(pchT05AccountDetail.getPriceAmount()));
-        pchT05AccountDetail.setTaxAmount(scaleToTwoDecimal(pchT05AccountDetail.getTaxAmount()));
-        pchT05AccountDetail.setTotalAmount(scaleToTwoDecimal(pchT05AccountDetail.getTotalAmount()));
-      }
+  //     // 检查 currency 并根据需要设置字段精度
+  //     if ("JPY".equals(currency)) {
+  //       PchT05AccountDetail1.setPriceAmount(scaleToInteger(PchT05AccountDetail1.getPriceAmount()));
+  //       PchT05AccountDetail1.setTaxAmount(scaleToInteger(PchT05AccountDetail1.getTaxAmount()));
+  //       PchT05AccountDetail1.setTotalAmount(scaleToInteger(PchT05AccountDetail1.getTotalAmount()));
+  //     } else if ("USD".equals(currency) || "EUR".equals(currency)) {
+  //       PchT05AccountDetail1.setPriceAmount(scaleToTwoDecimal(PchT05AccountDetail1.getPriceAmount()));
+  //       PchT05AccountDetail1.setTaxAmount(scaleToTwoDecimal(PchT05AccountDetail1.getTaxAmount()));
+  //       PchT05AccountDetail1.setTotalAmount(scaleToTwoDecimal(PchT05AccountDetail1.getTotalAmount()));
+  //     }
 
-      pchT05AccountDetail.setQuantity(stripTrailingZeros(pchT05AccountDetail.getQuantity()));
-      pchT05AccountDetail.setTaxRate(stripTrailingZeros(pchT05AccountDetail.getTaxRate()));
+  //     PchT05AccountDetail1.setQuantity(stripTrailingZeros(PchT05AccountDetail1.getQuantity()));
+  //     PchT05AccountDetail1.setTaxRate(stripTrailingZeros(PchT05AccountDetail1.getTaxRate()));
 
-      // 获取 NoDetails 字段并补充前导零
-      String noDetails = pchT05AccountDetail.getNoDetails();
-      if (noDetails != null && noDetails.length() >= 10) {
-        // 获取前10位
-        String prefix = noDetails.substring(0, 10);
+  //     // 获取 NoDetails 字段并补充前导零
+  //     String noDetails = PchT05AccountDetail1.getNoDetails();
+  //     if (noDetails != null && noDetails.length() >= 10) {
+  //       // 获取前10位
+  //       String prefix = noDetails.substring(0, 10);
     
-        // 获取第11位及以后的部分
-        String suffix = noDetails.length() > 10 ? noDetails.substring(10) : "";
+  //       // 获取第11位及以后的部分
+  //       String suffix = noDetails.length() > 10 ? noDetails.substring(10) : "";
     
-        // 补零到5位，从第11位开始补零
-        String paddedSuffix = String.format("%05d", Integer.parseInt(suffix.isEmpty() ? "0" : suffix));
+  //       // 补零到5位，从第11位开始补零
+  //       String paddedSuffix = String.format("%05d", Integer.parseInt(suffix.isEmpty() ? "0" : suffix));
     
-        // 拼接前10位和补零后的后缀，确保总长度为15
-        String paddedNoDetails = prefix + paddedSuffix;
+  //       // 拼接前10位和补零后的后缀，确保总长度为15
+  //       String paddedNoDetails = prefix + paddedSuffix;
     
-        // 设置回 NoDetails
-        pchT05AccountDetail.setNoDetails(paddedNoDetails);
-    }
+  //       // 设置回 NoDetails
+  //       PchT05AccountDetail1.setNoDetails(paddedNoDetails);
+  //   }
 
-    });
-  }
+  //   });
+  // }
 
-  /**
-   * 
-   * 检查抬头 工厂 检查明细
-   * 
-   * @param context       传入上下文
-   * @param d012MoveActHs 传入画面输入值
-   */
-  @After(entity = PchT05AccountDetailExcel_.CDS_NAME, event = "READ")
-  public void afterReadPchT05AccountDetailExcel(CdsReadEventContext context, Stream<PchT05AccountDetailExcel> datas1) {
+  // /**
+  //  * 
+  //  * 检查抬头 工厂 检查明细
+  //  * 
+  //  * @param context       传入上下文
+  //  * @param d012MoveActHs 传入画面输入值
+  //  */
+  // @After(entity = PchT05AccountDetailExcel1_.CDS_NAME, event = "READ")
+  // public void afterReadPchT05AccountDetailExcel1_(CdsReadEventContext context, Stream<PchT05AccountDetailExcel1_> datas1) {
 
-    datas1.forEach(data1 -> {
+  //   datas1.forEach(data1 -> {
 
-      data1.setQuantity(stripTrailingZeros(data1.getQuantity()));
-      data1.setTaxRate(stripTrailingZeros(data1.getTaxRate()));
-      data1.setUnitPrice(stripTrailingZeros(data1.getUnitPrice()));
-      data1.setPriceAmount(stripTrailingZeros(data1.getPriceAmount()));
-      data1.setPriceAmountTotal(stripTrailingZeros(data1.getPriceAmountTotal()));
-      data1.setTotalAmount8Total(stripTrailingZeros(data1.getTotalAmount8Total()));
-      data1.setTotalAmount10Total(stripTrailingZeros(data1.getTotalAmount10Total()));
-      data1.setSapTaxAmount8Total(stripTrailingZeros(data1.getSapTaxAmount8Total()));
-      data1.setSapTaxAmount10Total(stripTrailingZeros(data1.getSapTaxAmount10Total()));
-      data1.setCalc8PriceAmountTotal(stripTrailingZeros(data1.getCalc8PriceAmountTotal()));
-      data1.setCalc10PriceAmountTotal(stripTrailingZeros(data1.getCalc10PriceAmountTotal()));
-      data1.setTotalTotalAmount(stripTrailingZeros(data1.getTotalTotalAmount()));
-      data1.setTotalTaxAmount(stripTrailingZeros(data1.getTotalTaxAmount()));
+  //     data1.setQuantity(stripTrailingZeros(data1.getQuantity()));
+  //     data1.setTaxRate(stripTrailingZeros(data1.getTaxRate()));
+  //     data1.setUnitPrice(stripTrailingZeros(data1.getUnitPrice()));
+  //     data1.setPriceAmount(stripTrailingZeros(data1.getPriceAmount()));
+  //     data1.setPriceAmountTotal(stripTrailingZeros(data1.getPriceAmountTotal()));
+  //     data1.setTotalAmount8Total(stripTrailingZeros(data1.getTotalAmount8Total()));
+  //     data1.setTotalAmount10Total(stripTrailingZeros(data1.getTotalAmount10Total()));
+  //     data1.setSapTaxAmount8Total(stripTrailingZeros(data1.getSapTaxAmount8Total()));
+  //     data1.setSapTaxAmount10Total(stripTrailingZeros(data1.getSapTaxAmount10Total()));
+  //     data1.setCalc8PriceAmountTotal(stripTrailingZeros(data1.getCalc8PriceAmountTotal()));
+  //     data1.setCalc10PriceAmountTotal(stripTrailingZeros(data1.getCalc10PriceAmountTotal()));
+  //     data1.setTotalTotalAmount(stripTrailingZeros(data1.getTotalTotalAmount()));
+  //     data1.setTotalTaxAmount(stripTrailingZeros(data1.getTotalTaxAmount()));
 
-      // 获取 NoDetails 字段并补充前导零
-      String noDetails = data1.getNoDetails();
-      if (noDetails != null && noDetails.length() >= 10) {
-        // 获取前10位
-        String prefix = noDetails.substring(0, 10);
+  //     // 获取 NoDetails 字段并补充前导零
+  //     String noDetails = data1.getNoDetails();
+  //     if (noDetails != null && noDetails.length() >= 10) {
+  //       // 获取前10位
+  //       String prefix = noDetails.substring(0, 10);
     
-        // 获取第11位及以后的部分
-        String suffix = noDetails.length() > 10 ? noDetails.substring(10) : "";
+  //       // 获取第11位及以后的部分
+  //       String suffix = noDetails.length() > 10 ? noDetails.substring(10) : "";
     
-        // 补零到5位，从第11位开始补零
-        String paddedSuffix = String.format("%05d", Integer.parseInt(suffix.isEmpty() ? "0" : suffix));
+  //       // 补零到5位，从第11位开始补零
+  //       String paddedSuffix = String.format("%05d", Integer.parseInt(suffix.isEmpty() ? "0" : suffix));
     
-        // 拼接前10位和补零后的后缀，确保总长度为15
-        String paddedNoDetails = prefix + paddedSuffix;
+  //       // 拼接前10位和补零后的后缀，确保总长度为15
+  //       String paddedNoDetails = prefix + paddedSuffix;
     
-        // 设置回 NoDetails
-        data1.setNoDetails(paddedNoDetails);
-    }
+  //       // 设置回 NoDetails
+  //       data1.setNoDetails(paddedNoDetails);
+  //   }
 
-    });
-  }
+  //   });
+  // }
 
   /**
    * 处理金额字段，去除尾随零。

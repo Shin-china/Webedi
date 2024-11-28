@@ -24,7 +24,7 @@
 
     <f:DynamicPageHeader id="DynamicPageHeader" pinnable="true">
         <f:content>
-            <smartFilterBar:SmartFilterBar id="smartFilterBar" entitySet="PCH_T05_ACCOUNT_DETAIL" persistencyKey="PCH_T05_ACCOUNT_DETAIL" showFilterConfiguration="true">
+            <smartFilterBar:SmartFilterBar id="smartFilterBar" entitySet="PCH_T05_ACCOUNT_DETAIL1" persistencyKey="PCH_T05_ACCOUNT_DETAIL1" showFilterConfiguration="true">
                 <smartFilterBar:controlConfiguration>
 
                 <smartFilterBar:ControlConfiguration id="PCH_PO_BUKRS"      key="PO_BUKRS"             visibleInAdvancedArea="true" label="{pch>PO_BUKRS}"              index="1"/>
