@@ -9,9 +9,9 @@ extend service TableService {
 
      entity PCH_T05_ACCOUNT_DETAIL1           as
         select from PCH.T05_PAYMENT_D as T05
-        left join PCH.T04_PAYMENT_H as T04
+        inner join PCH.T04_PAYMENT_H as T04
             on T05.INV_NO = T04.INV_NO
-            and T04.HEADER_TEXT <> '仮払消費税調整'
+             and (T04.HEADER_TEXT <> '仮払消費税調整' OR T04.HEADER_TEXT IS NULL OR TRIM(T04.HEADER_TEXT) = '')
         left join PCH.T01_PO_H as T01
             on T05.PO_NO = T01.PO_NO
         left join MST.T03_SAP_BP as T03
