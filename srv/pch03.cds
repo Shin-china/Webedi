@@ -99,6 +99,7 @@ extend service TableService {
                 '' as cop21 : String,
                 '' as cop22 : String,// 海外発注番号：
                 '' as cop23 : String,// 納入日：
+                '' as cop24 : String,// podno
 
                 '' as ZWS_1 : String,
                 '' as ZWS_2 : String,
