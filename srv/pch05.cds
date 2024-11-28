@@ -697,6 +697,18 @@ extend service TableService {
                 AMOUNT_HEADER_8,
                 HEADER_TEXT,
                 SHKZG,
+                // TAX_AMOUNT_HEADER_8 + AMOUNT_HEADER_8 as TAX_AMOUNT_HEADER_8_TOTAL : Decimal(15, 2),
+                // TAX_AMOUNT_HEADER_10 + AMOUNT_HEADER_10 as TAX_AMOUNT_HEADER_10_TOTAL : Decimal(15, 2),
+
+                CASE 
+                    WHEN HEADER_TEXT = '仮払消費税調整' THEN AMOUNT_HEADER_8
+                    ELSE (TAX_AMOUNT_HEADER_8 + AMOUNT_HEADER_8)
+                END AS TAX_AMOUNT_HEADER_8_TOTAL : Decimal(15, 2),
+                
+                CASE 
+                    WHEN HEADER_TEXT = '仮払消費税調整' THEN AMOUNT_HEADER_10
+                    ELSE (TAX_AMOUNT_HEADER_10 + AMOUNT_HEADER_10)
+                END AS TAX_AMOUNT_HEADER_10_TOTAL : Decimal(15, 2),
 
                 case
                     when
@@ -764,28 +776,28 @@ extend service TableService {
                         )
                 end as RECALC_PRICE_AMOUNT_8        : Decimal(15, 2), // 再计算 8% 税额
 
-                // 消费税差额
-                case
-                    when
-                        TAX_RATE = 10
-                    then
-                        COALESCE(
-                            RECALC_PRICE_AMOUNT_10, 0
-                        )-COALESCE(
-                            SAP_TAX_AMOUNT_10, 0
-                        )
-                end as DIFF_TAX_AMOUNT_10           : Decimal(15, 2),
+                // // 消费税差额
+                // case
+                //     when
+                //         TAX_RATE = 10
+                //     then
+                //         COALESCE(
+                //             RECALC_PRICE_AMOUNT_10, 0
+                //         )-COALESCE(
+                //             SAP_TAX_AMOUNT_10, 0
+                //         )
+                // end as DIFF_TAX_AMOUNT_10           : Decimal(15, 2),
 
-                case
-                    when
-                        TAX_RATE = 8
-                    then
-                        COALESCE(
-                            RECALC_PRICE_AMOUNT_8, 0
-                        )-COALESCE(
-                            SAP_TAX_AMOUNT_8, 0
-                        )
-                end as DIFF_TAX_AMOUNT_8            : Decimal(15, 2),
+                // case
+                //     when
+                //         TAX_RATE = 8
+                //     then
+                //         COALESCE(
+                //             RECALC_PRICE_AMOUNT_8, 0
+                //         )-COALESCE(
+                //             SAP_TAX_AMOUNT_8, 0
+                //         )
+                // end as DIFF_TAX_AMOUNT_8            : Decimal(15, 2),
 
                 // 合计金额
                 case
@@ -833,17 +845,35 @@ extend service TableService {
                 T02.SAP_TAX_AMOUNT_8, // 8%  SAP税额
                 T03.RECALC_PRICE_AMOUNT_10, // 再計算10％税額
                 T03.RECALC_PRICE_AMOUNT_8, // 再計算8％税額
-                T03.DIFF_TAX_AMOUNT_10, // 10％消費税差額
-                T03.DIFF_TAX_AMOUNT_8, // 8％消費税差額
                 T03.TOTAL_10_TAX_INCLUDED_AMOUNT, // 合計10％税込金額
                 T03.TOTAL_8_TAX_INCLUDED_AMOUNT, // 合計8％税込金額
                 T03.TAX_CODE,
-                // T02.TAX_AMOUNT_HEADER_10,
-                // T02.TAX_AMOUNT_HEADER_8,
-                // T02.AMOUNT_HEADER_10,
-                // T02.AMOUNT_HEADER_8,
-                T02.TAX_AMOUNT_HEADER_8 + T02.AMOUNT_HEADER_8 as TAX_AMOUNT_HEADER_8_TOTAL : Decimal(15, 2),
-                T02.TAX_AMOUNT_HEADER_10 + T02.AMOUNT_HEADER_10 as TAX_AMOUNT_HEADER_10_TOTAL : Decimal(15, 2)
+                T03.TAX_AMOUNT_HEADER_8_TOTAL  : Decimal(15, 2),
+                T03.TAX_AMOUNT_HEADER_10_TOTAL : Decimal(15, 2),
+
+
+                // 消费税差额
+                case
+                    when
+                        TAX_RATE = 10
+                    then
+                        COALESCE(
+                            T03.TAX_AMOUNT_HEADER_10_TOTAL, 0
+                        )-COALESCE(
+                            T02.SAP_TAX_AMOUNT_10, 0
+                        )
+                end as DIFF_TAX_AMOUNT_10           : Decimal(15, 2),
+
+                case
+                    when
+                        TAX_RATE = 8
+                    then
+                        COALESCE(
+                            T03.TAX_AMOUNT_HEADER_8_TOTAL, 0
+                        )-COALESCE(
+                            T02.SAP_TAX_AMOUNT_8, 0
+                        )
+                end as DIFF_TAX_AMOUNT_8            : Decimal(15, 2),
 
         }
 
@@ -896,10 +926,6 @@ extend service TableService {
                 T02.DIFF_TAX_AMOUNT_8, // 8％消費税差額
                 T02.TOTAL_10_TAX_INCLUDED_AMOUNT, // 合計10％税込金額
                 T02.TOTAL_8_TAX_INCLUDED_AMOUNT, // 合計8％税込金額                
-                // T03.TAX_AMOUNT_HEADER_10,
-                // T03.TAX_AMOUNT_HEADER_8,
-                // T03.AMOUNT_HEADER_10,
-                // T03.AMOUNT_HEADER_8,
                 T03.TAX_AMOUNT_HEADER_8_TOTAL,
                 T03.TAX_AMOUNT_HEADER_10_TOTAL,
 
