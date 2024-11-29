@@ -478,6 +478,9 @@ public class Ifm03PoService {
         MailBody body = MailBody.create();
 
         String bpName = getBpName(emailadd.get(0).getValue01());
+        if (bpName == null || bpName.isEmpty()) {
+            bpName = " ";
+        }
 
         body.setObject("vendor"); // 根据具体需求设置
         body.setValue(bpName); // 使用参数内容
