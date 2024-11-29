@@ -18,6 +18,7 @@ import cds.gen.pch.T08Upload;
 import cds.gen.sys.Sys_;
 import cds.gen.sys.T07ComOpH;
 import cds.gen.sys.T08ComOpD;
+import customer.bean.com.UmcConstants;
 import customer.dao.common.Dao;
 import customer.tool.DateTools;
 
@@ -98,4 +99,27 @@ public class SysD008Dao extends Dao {
         return d_code;
 
     }
+
+    /**
+     * 通过供应商取得相应邮箱数据
+     * 
+     */
+    public String getEmailAddress(String supplier) {
+
+        Optional<T08ComOpD> listOf = db.run(
+                Select.from(Sys_.T08_COM_OP_D)
+                        .where(o -> o.H_CODE().eq(UmcConstants.T08_EMAIL_ADDRESS).and(o.D_CODE().eq(supplier))))
+
+                .first(T08ComOpD.class);
+
+        if (listOf.isPresent()) {
+
+            return listOf.get().getValue02();
+
+        }
+
+        return "";
+
+    }
+
 }

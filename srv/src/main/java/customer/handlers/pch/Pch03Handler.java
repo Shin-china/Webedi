@@ -327,6 +327,7 @@ public class Pch03Handler implements EventHandler {
             if (UmcConstants.ZWS_TYPE_2.equals(poSendPDFZWSType)) {
                 type = UmcConstants.ZWS_TYPE_2_NAME;
             }
+            pchd03.setEmailAddress(pchService.getEmailAddress(pchd03.getSupplier()));
             // 如果poSendPDFZWSType是REIUSSE
             pchd03.setType(type);
             // 货币除了日元5其余2

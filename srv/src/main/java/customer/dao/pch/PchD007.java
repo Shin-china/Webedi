@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import cds.gen.pch.T07QuotationD;
+import cds.gen.pch.T07QuotationD_;
 import cds.gen.pch.Pch_;
 
 @Repository
@@ -56,8 +57,11 @@ public class PchD007 extends Dao {
     }
 
     public void update(T07QuotationD o) {
+        o.setUpTime(getNow());
+        o.setUpBy(this.getUserId());
+
         logger.info("修改PCHD007" + o.getId());
-        db.run(Update.entity(Pch_.T07_QUOTATION_D).entry(o));
+        db.run(Update.entity(Pch_.T07_QUOTATION_D).data(o));
     }
 
     public T07QuotationD getByT07Id(String t07Id) {
@@ -66,7 +70,10 @@ public class PchD007 extends Dao {
                         .where(o -> o.ID().eq(t07Id)))
                 .first(T07QuotationD.class);
 
-        return result.orElse(null);
+        if (result.isPresent()) {
+            return result.get();
+        }
+        return null;
     }
 
 }

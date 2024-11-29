@@ -122,14 +122,14 @@ sap.ui.define([
 		 * @param {*} csvContent 
 		 * @returns 
 		 */
-		_getSuppliList: function (csvContent) {
+		_getObjiList: function (csvContent,s) {
 			const groupedBySupplier = csvContent.reduce((acc, item) => {
 				// 如果累加器（acc）中还没有这个SUPPLIER，则初始化为一个空数组
-				if (!acc[item.SUPPLIER]) {
-					acc[item.SUPPLIER] = [];
+				if (!acc[item[s]]) {
+					acc[item[s]] = [];
 				}
 				// 将当前项添加到对应的SUPPLIER数组中
-				acc[item.SUPPLIER].push(item);
+				acc[item[s]].push(item);
 				return acc;
 			}, {});
 			
@@ -137,12 +137,13 @@ sap.ui.define([
 
 			return groupedBySupplier;
 		},
+
 		onCsvdow: function (oEvt) {
 			// 假设你的数据模型是JSONModel，并且已经绑定到了SmartTable  
 			var that = this;
 			//设置通用dialog
 			this._AfterDigLogCheck().then((selectedIndices) => {
-				const groupedBySupplier =that._getSuppliList(selectedIndices);
+				const groupedBySupplier =that._getObjiList(selectedIndices, "SUPPLIER");
 
 				Object.keys(groupedBySupplier).forEach(key => {
 					const row = groupedBySupplier[key];
@@ -195,63 +196,55 @@ sap.ui.define([
 			var that = this;
 			//有输入true则需要判读是否已经发送过邮件，且提示框内容不一样
 			this._AfterDigLogCheck(true).then((selectedIndices) => {
-				var csvContent = that._getCsvData(selectedIndices,"");
-				var tempName = "";
-				// 创建一个新的Map对象  用作判断key值对应po对应的明细数据
-				let myMap = new Map();
-				// 创建一个新的Map对象  用作判断po是否状态
-				let myZABCMap = new Map();
-				// 创建一个新的Map对象  用作判断po是否状态
-				let mySuppliMap = new Map();
-				// 创建一个新的Map对象  用作判断po是否状态
-				let myPlantMap = new Map();
-				var PoList = that._TableDataList("detailTable", 'PO_NO')
-				//经过去重以后的po号
-				var uniqueIdList = [...new Set(PoList)];
-				//设置要打印pdf个数
-				_objectCommData._EmailPdfLen = 2
 
-				var IdList = that._TableDataList("detailTable", 'ID')
-				that._readSys("MM0002-1", "/SYS_T08_COM_OP_D").then((sys) => {
-					selectedIndices.forEach((item) => {
-						myMap.get(item.PO_NO) ? myMap.get(item.PO_NO).push(item.ID) : myMap.set(item.PO_NO, [item.ID]);
-						myZABCMap.get(item.PO_NO) ? myZABCMap.get(item.PO_NO) : myZABCMap.set(item.PO_NO, item.ZABC);
-						mySuppliMap.get(item.PO_NO) ? mySuppliMap.get(item.PO_NO) : mySuppliMap.set(item.PO_NO, item.SUPPLIER);
-						myPlantMap.get(item.PO_NO) ? myPlantMap.get(item.PO_NO) : myPlantMap.set(item.PO_NO, item.PLANT_ID,);
+				//将数据通过工厂分组
+				const plantList = that._getObjiList(selectedIndices, "PLANT_ID");
+
+				const plant1100 = plantList["1100"];
+				const plant1400 = plantList["1400"];
+				if(plant1100 &&plant1100.length > 0){
+					//循环1100的数据
+					plant1100.forEach((item) => {
+
+
 					})
+				}
+				if(plant1400 &&plant1400.length > 0){
+				//循环1400的数据
+				plant1400.forEach((item) => {
+					//通过供应商分组
 
-					//通过去重的po号取map数据进行打印
-					uniqueIdList.forEach((item) => {
-						//重置以打印个数
-						_objectCommData._EmailPdfCount = 0
-						that._callCdsAction(_objectCommData._entity4, { parms: item }, that).then((data) => {
-							if("1400" == myPlantMap.get(item)){
-								tempName = "UWEB_PCH03_P";
-							}else{
-							    if ("IUSSE" == data.PCH03_GETTYPE) {
-									tempName = "UWEB_PCH03_C";
-								}
-								if ("REIUSSE" == data.PCH03_GETTYPE) {
-									tempName = "UWEB_PCH03_U";
-								}
-								if ("CANCEL" == data.PCH03_GETTYPE) {
-									tempName = "UWEB_PCH03_D";
-								}
-							}
+					//将数据通过供应商分组
+					const groupedBySupplier = that._getObjiList(selectedIndices, "SUPPLIER");
+					Object.keys(groupedBySupplier).forEach(supplier => {
+						//所有供应商下的数据	
+						const obj1 = groupedBySupplier[supplier];
+
+							// 创建一个新的Map对象  用作判断key值对应po对应的明细数据
+							let myMap = new Map();
+							var poList = [];
 							
+							obj1.forEach((item) => {
+								poList.push(item.PO_NO);
+								myMap.get(item.PO_NO) ? myMap.get(item.PO_NO).push(item.ID) : myMap.set(item.PO_NO, [item.ID]);
+							})
+						//经过去重以后的po号
+						var uniqueIdList = [...new Set(poList)];
+							//获取csv
+							csvContent = that._getCsvData(obj1,"");
 							var mailobj = {
 								emailJson: {
-									TEMPLATE_ID: tempName,
-									MAIL_TO: sys.results[0].VALUE02,
+									TEMPLATE_ID: "UWEB_PCH03_P",
+									MAIL_TO: obj1[0].EMAIL_ADDRESS,
 									MAIL_BODY: [
 										{
 											object: "仕入先名称",
-											value: mySuppliMap.get(item) // 使用替换后的邮件内容
+											value: supplier // 使用替换后的邮件内容
 										},
 
 										{
 											object: "filename_2",
-											value: "data.csv"
+											value: that.CommTools.getCurrentTimeFormatted()+"_"+supplier+".csv"
 										},
 										{
 											object: "filecontent_2",
@@ -260,45 +253,174 @@ sap.ui.define([
 									]
 								}
 							};
+							//循环po通过po打印
+							for(var i=0;i<uniqueIdList.length;i++){
+								var item = uniqueIdList[i];
+								let obj = obj1[0].ZABC;
+								//EFwei全po打印
+								if (obj == "E" || obj == "F") {
+		
+									that._printZWSPrintEmail(that, [item], "/PCH_T03_PO_ITEM_PRINT", "PO_NO",mailobj).then((oData) => {
 
-							let obj = myZABCMap.get(item);
-							//EFwei全po打印
-							if (obj == "E" || obj == "F") {
-	
-								that._printZWSPrintEmail(that, [item], "/PCH_T03_PO_ITEM_PRINT", "PO_NO",mailobj).then((oData) => {
+										that._newNPSprinEmil(myMap, that, item, mailobj).then((oData) => {
 
-									that._newNPSprinEmil(myMap, that, item, mailobj).then((oData) => {
-
-										this._sendEmail(mailobj);
-										this._setBusy(false);
+											// this._sendEmail(mailobj);
+											// this._setBusy(false);
+										})
+		
 									})
-	
-								})
-	
-							}
-							//sonota和C部分明细打印
-							if (obj == "C" || obj == "W") {
-								that._printZWSPrintEmail(that, myMap.get(item), "/PCH_T03_PO_ITEM_PRINT", "ID",mailobj).then((oData) => {
+		
+								}
+								//sonota和C部分明细打印
+								if (obj == "C" || obj == "W") {
+									that._printZWSPrintEmail(that, myMap.get(item), "/PCH_T03_PO_ITEM_PRINT", "ID",mailobj).then((oData) => {
 
-									that._newNPSprinEmil(myMap, that, item, mailobj).then((oData) => {
+										that._newNPSprinEmil(myMap, that, item, mailobj).then((oData) => {
 
-										this._sendEmail(mailobj);
-										this._setBusy(false);
+											// this._sendEmail(mailobj);
+											// this._setBusy(false);
+										})
 									})
-	
-								})
-	
-	
-							}
+								}
 
+							}
 							
 
 							
-
-						})
 					})
-					that._isQuerenDb(selectedIndices, true);
 				})
+
+			}
+
+				// //将数据通过供应商分组
+				// const groupedBySupplier =that._getObjiList(selectedIndices, "SUPPLIER");
+				// Object.keys(groupedBySupplier).forEach(supplier => {
+				// 	that._readSys(supplier, "/SYS_T08_COM_OP_D").then((sys) => {
+				// 		const obj1 = groupedBySupplier[supplier];
+						
+
+
+
+
+						
+						
+				// 		//将数据通过type分组
+				// 		const typeList = that._getObjiList(obj1,"TYPE");
+				// 		Object.keys(typeList).forEach(type => {
+				// 			const obj2 = typeList[type];
+
+
+				// 		})
+
+
+
+				// 		row.forEach((item) => {
+				// 			myMap.get(item.PO_NO) ? myMap.get(item.PO_NO).push(item.ID) : myMap.set(item.PO_NO, [item.ID]);
+				// 			myZABCMap.get(item.PO_NO) ? myZABCMap.get(item.PO_NO) : myZABCMap.set(item.PO_NO, item.ZABC);
+				// 			mySuppliMap.get(item.PO_NO) ? mySuppliMap.get(item.PO_NO) : mySuppliMap.set(item.PO_NO, item.SUPPLIER);
+				// 			myPlantMap.get(item.PO_NO) ? myPlantMap.get(item.PO_NO) : myPlantMap.set(item.PO_NO, item.PLANT_ID,);
+				// 		})
+				// 		//经过去重以后的po号
+				// 		var uniqueIdList = [...new Set(PoList)];
+
+				// 		//通过去重的po号取map数据进行打印
+				// 		uniqueIdList.forEach((item) => {
+				// 			that._callCdsAction(_objectCommData._entity4, { parms: item }, that).then((data) => {
+				// 				if("1400" == myPlantMap.get(item)){
+				// 					tempName = "UWEB_PCH03_P";
+				// 				}else{
+				// 					if ("IUSSE" == data.PCH03_GETTYPE) {
+				// 						tempName = "UWEB_PCH03_C";
+				// 					}
+				// 					if ("REIUSSE" == data.PCH03_GETTYPE) {
+				// 						tempName = "UWEB_PCH03_U";
+				// 					}
+				// 					if ("CANCEL" == data.PCH03_GETTYPE) {
+				// 						tempName = "UWEB_PCH03_D";
+				// 					}
+				// 				}
+				// 			})
+				// 		})
+
+				// 		that._isQuerenDb(selectedIndices, true);
+				// 	})
+
+
+					
+				// })
+
+				// var csvContent = that._getCsvData(selectedIndices,"");
+				// var tempName = "";
+				// // 创建一个新的Map对象  用作判断key值对应po对应的明细数据
+				// let myMap = new Map();
+				// // 创建一个新的Map对象  用作判断po是否状态
+				// let myZABCMap = new Map();
+				// // 创建一个新的Map对象  用作判断po是否状态
+				// let mySuppliMap = new Map();
+				// // 创建一个新的Map对象  用作判断po是否状态
+				// let myPlantMap = new Map();
+				// var PoList = that._TableDataList("detailTable", 'PO_NO')
+				// //经过去重以后的po号
+				// var uniqueIdList = [...new Set(PoList)];
+				// //设置要打印pdf个数
+				// _objectCommData._EmailPdfLen = 2
+
+				// var IdList = that._TableDataList("detailTable", 'ID')
+				// that._readSys("MM0002-1", "/SYS_T08_COM_OP_D").then((sys) => {
+				// 	selectedIndices.forEach((item) => {
+				// 		myMap.get(item.PO_NO) ? myMap.get(item.PO_NO).push(item.ID) : myMap.set(item.PO_NO, [item.ID]);
+				// 		myZABCMap.get(item.PO_NO) ? myZABCMap.get(item.PO_NO) : myZABCMap.set(item.PO_NO, item.ZABC);
+				// 		mySuppliMap.get(item.PO_NO) ? mySuppliMap.get(item.PO_NO) : mySuppliMap.set(item.PO_NO, item.SUPPLIER);
+				// 		myPlantMap.get(item.PO_NO) ? myPlantMap.get(item.PO_NO) : myPlantMap.set(item.PO_NO, item.PLANT_ID,);
+				// 	})
+
+				// 	//通过去重的po号取map数据进行打印
+				// 	uniqueIdList.forEach((item) => {
+				// 		//重置以打印个数
+				// 		_objectCommData._EmailPdfCount = 0
+				// 		that._callCdsAction(_objectCommData._entity4, { parms: item }, that).then((data) => {
+				// 			if("1400" == myPlantMap.get(item)){
+				// 				tempName = "UWEB_PCH03_P";
+				// 			}else{
+				// 			    if ("IUSSE" == data.PCH03_GETTYPE) {
+				// 					tempName = "UWEB_PCH03_C";
+				// 				}
+				// 				if ("REIUSSE" == data.PCH03_GETTYPE) {
+				// 					tempName = "UWEB_PCH03_U";
+				// 				}
+				// 				if ("CANCEL" == data.PCH03_GETTYPE) {
+				// 					tempName = "UWEB_PCH03_D";
+				// 				}
+				// 			}
+							
+				// 			var mailobj = {
+				// 				emailJson: {
+				// 					TEMPLATE_ID: tempName,
+				// 					MAIL_TO: sys.results[0].VALUE02,
+				// 					MAIL_BODY: [
+				// 						{
+				// 							object: "仕入先名称",
+				// 							value: mySuppliMap.get(item) // 使用替换后的邮件内容
+				// 						},
+
+				// 						{
+				// 							object: "filename_2",
+				// 							value: "data.csv"
+				// 						},
+				// 						{
+				// 							object: "filecontent_2",
+				// 							value: csvContent
+				// 						}
+				// 					]
+				// 				}
+				// 			};
+
+					
+				// 		})
+				// 	})
+					
+				// })
+				that._isQuerenDb(selectedIndices, true);
 			})
 		},
 
@@ -422,7 +544,7 @@ sap.ui.define([
 					that.PrintTool.getImageBase64(oData).then((odata2) => {
 						list.emailJson.MAIL_BODY.push({
 							object: "filename_2",
-							value: "注文書.pdf"
+							value: that.CommTools.getCurrentTimeFormatted()+"_"+item+"注文書.pdf"
 						});
 						list.emailJson.MAIL_BODY.push({
 							object: "filecontent_2",
@@ -538,11 +660,11 @@ sap.ui.define([
 					//完成后是否更新确认,false不更新Y
 					that.PrintTool.getImageBase64(oData).then((odata2) => {
 						list.emailJson.MAIL_BODY.push({
-							object: "filename_1",
-							value: "納品書.pdf"
+							object: "filename_3",
+							value: that.CommTools.getCurrentTimeFormatted()+"_"+item+"納品書.pdf"
 						});
 						list.emailJson.MAIL_BODY.push({
-							object: "filecontent_1",
+							object: "filecontent_3",
 							value: odata2
 						});
 						resolve(true);
