@@ -37,6 +37,8 @@ import java.util.ArrayList;
 
 import java.util.LinkedHashMap;
 
+import customer.dao.sys.SysD008Dao;
+
 @Component
 public class PchService {
     @Autowired
@@ -47,6 +49,8 @@ public class PchService {
     PchD004 pchD004;
     @Autowired
     PchD010Dao pchD010;
+    @Autowired
+    SysD008Dao sysD008;
 
     // 根据传入的po和po明细修改po明细状态
     public void setPoStu(String po, String dNo) {
@@ -187,6 +191,10 @@ public class PchService {
         // 修改
         pchD002.updateD002(byID);
 
+    }
+
+    public String getEmailAddress(String supplier) {
+        return sysD008.getEmailAddress(supplier);
     }
 
 }

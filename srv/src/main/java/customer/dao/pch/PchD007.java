@@ -1,6 +1,8 @@
 package customer.dao.pch;
 
+import java.time.Instant;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import customer.dao.common.Dao;
@@ -10,6 +12,7 @@ import customer.tool.UniqueIDTool;
 import com.sap.cds.ql.Insert;
 import com.sap.cds.ql.Select;
 import com.sap.cds.ql.Update;
+import com.sap.cds.ql.cqn.CqnUpdate;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -76,4 +79,9 @@ public class PchD007 extends Dao {
         return null;
     }
 
+    public void update(Map<String, Object> data, Map<String, Object> keys) {
+        CqnUpdate update = Update.entity(Pch_.T07_QUOTATION_D, b -> b.matching(keys)).data(data);
+
+        db.run(update);
+    }
 }
