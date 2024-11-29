@@ -203,8 +203,30 @@ public class Pch05Handler implements EventHandler {
       data2.setTotal10TaxIncludedAmount(stripTrailingZeros(data2.getTotal10TaxIncludedAmount()));
       data2.setTotal8TaxIncludedAmount(stripTrailingZeros(data2.getTotal8TaxIncludedAmount()));
 
+    //   // 对每个字段进行处理
+    // data2.setCalc10PriceAmount(handleZeroValue(data2.getCalc10PriceAmount()));
+    // data2.setCalc8PriceAmount(handleZeroValue(data2.getCalc8PriceAmount()));
+    // data2.setSapTaxAmount10(handleZeroValue(data2.getSapTaxAmount10()));
+    // data2.setSapTaxAmount8(handleZeroValue(data2.getSapTaxAmount8()));
+    // data2.setRecalcPriceAmount10(handleZeroValue(data2.getRecalcPriceAmount10()));
+    // data2.setRecalcPriceAmount8(handleZeroValue(data2.getRecalcPriceAmount8()));
+    // data2.setDiffTaxAmount10(handleZeroValue(data2.getDiffTaxAmount10()));
+    // data2.setDiffTaxAmount8(handleZeroValue(data2.getDiffTaxAmount8()));
+    // data2.setTotal10TaxIncludedAmount(handleZeroValue(data2.getTotal10TaxIncludedAmount()));
+    // data2.setTotal8TaxIncludedAmount(handleZeroValue(data2.getTotal8TaxIncludedAmount()));
+
     });
   }
+
+//   /**
+//  * 处理字段值，若为 0 则返回 null，否则返回原值
+//  *
+//  * @param value 输入值
+//  * @return 处理后的值
+//  */
+// private BigDecimal handleZeroValue(BigDecimal value) {
+//   return (value != null && value.compareTo(BigDecimal.ZERO) == 0) ? null : value;
+// }
 
 
   /**
@@ -315,7 +337,7 @@ public class Pch05Handler implements EventHandler {
       // 遍历 Pch05List 中的每一项（每个 item 为 Pch05List 的一个记录）
       for (Pch05 item : dataList.getList()) {
 
-        item.setPO_BUKRS1(item.getPO_BUKRS()); // 赋值 PO_BUKRS1
+        item.setCOMPANY_CODE1(item.getCOMPANY_CODE()); // 赋值 Company_Code
         item.setLASTDATE1(item.getLASTDATE()); // 将 LASTDATE 的值赋给 LASTDATE1
         item.setLASTDATE2(item.getLASTDATE()); // 将 LASTDATE 的值赋给 LASTDATE2
         item.setDIFF_TAX_AMOUNT1(item.getDIFF_TAX_AMOUNT()); // 赋值 DIFF_TAX_AMOUNT1
