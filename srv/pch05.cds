@@ -311,8 +311,6 @@ extend service TableService {
         select from PCH.T05_PAYMENT_D as T05
         left join PCH.T04_PAYMENT_H as T04
             on T05.INV_NO = T04.INV_NO
-        left join PCH.T01_PO_H as T01
-            on T05.PO_NO = T01.PO_NO
         left join MST.T03_SAP_BP as T03
             on T04.SUPPLIER = T03.BP_ID
         left join SYS.T08_COM_OP_D as T08
@@ -321,9 +319,9 @@ extend service TableService {
         distinct {
             key T05.INV_NO, // 伝票番号
             key T05.GL_YEAR, // 会計年度
-            key T05.PO_NO, // 購買伝票
-            key T05.D_NO, // 明細
             key T04.SUPPLIER, // 仕入先
+                T05.PO_NO, // 購買伝票
+                T05.D_NO, // 明細
                 // T01.PO_BUKRS, // 会社コード
                 T05.ITEM_NO, // 請求書明細
                 T05.TAX_CODE, // 税コード
@@ -431,9 +429,9 @@ extend service TableService {
         distinct {
             key INV_NO, // 伝票番号
             key GL_YEAR, // 会計年度
-            key PO_NO, // 購買伝票
-            key D_NO, // 明細
             key SUPPLIER, // 仕入先
+                PO_NO, // 購買伝票
+                D_NO, // 明細
                 ITEM_NO, // 請求書明細
                 // PO_BUKRS, // 会社コード
                 Company_Code, // Company Code
