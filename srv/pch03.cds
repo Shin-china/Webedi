@@ -244,7 +244,7 @@ extend service TableService {
                 T02.TO_MAT.CUST_MATERIAL,//P/N：
                 T02.PR_BY,
                 T09.IMP_COMP,//検査合区分
-                '' as emailAddress : String(50), // 邮箱地址,
+                '' as EMAIL_ADDRESS : String(50), // 邮箱地址,
         }
     where
                 Tu.USER_TYPE = '2'
