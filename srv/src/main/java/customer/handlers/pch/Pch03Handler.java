@@ -95,7 +95,7 @@ public class Pch03Handler implements EventHandler {
      * @param context
      */
     @On(event = "PCH03_LOGDATA")
-    public void queRn(PCH03QUERENContext context) {
+    public void logData(PCH03QUERENContext context) {
         // 直接从上下文中获取参数
         JSONArray jsonArray = JSONArray.parseArray(context.getParms());
         ArrayList<String> list = new ArrayList<>();

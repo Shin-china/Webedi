@@ -117,7 +117,7 @@ public class PchService {
             t10.setDNo(Integer.parseInt(dNo));
             t10.setQuantity(byID.getPoPurQty());
             t10.setInputDate(byID.getPoDDate());
-            t10.setDelFlag(byID.getDelFlag());
+            t10.setDelPrice(byID.getDelPrice());
             t10.setPoType(byID.getPoType());
             // 如果t不为空，则进行写Y操作
             if (!StringTool.isEmpty(t)) {
@@ -195,6 +195,39 @@ public class PchService {
 
     public String getEmailAddress(String supplier) {
         return sysD008.getEmailAddress(supplier);
+    }
+
+    /**
+     * 判断po明细是否和履历表中的一致
+     * 
+     * @param jsonObject
+     * @return true则为一致或者为空，false则为不一致
+     */
+    public Boolean getT09LogData(JSONObject jsonObject) {
+        Boolean re = true;
+        String po = jsonObject.getString("po");
+        String dNo = jsonObject.getString("dNo");
+        T02PoD byID = pchD002.getByID(po, Integer.parseInt(dNo));
+        T10EmailSendLog byID2 = pchD010.getByID(po, Integer.parseInt(dNo));
+        if (byID != null && byID2 != null) {
+            if (UmcConstants.ADMIT_Y.equals(byID2.getType())) {
+                if (byID.getPoType() != byID2.getPoType()) {
+                    re = false;
+                }
+                if (byID.getPoPurQty().compareTo(byID2.getQuantity()) == 0) {
+                    re = false;
+                }
+                if (!byID.getPoDDate().isEqual(byID2.getInputDate())) {
+                    re = false;
+                }
+                if (byID.getDelPrice().compareTo(byID2.getDelPrice()) == 0) {
+                    re = false;
+                }
+            }
+
+        }
+        return re;
+
     }
 
 }
