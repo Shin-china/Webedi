@@ -162,7 +162,7 @@ sap.ui.define([
 				})
 
 				//完成后是否更新确认,false不更新Y
-				that._isQuerenDb(selectedIndices, false);
+				that._isQuerenDb(selectedIndices, true);
 				that._isPrintHx(selectedIndices);
 				that._setBusy(false);
 			})

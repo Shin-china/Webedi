@@ -1522,18 +1522,21 @@ sap.ui.define([
             var txt = that.MessageTools._getI18nTextInModel("com", "Dialog", that.getView())
             var list = [];
             
-            if(oData.results  != undefined ){
-                oData.results.forEach((item) => {
-                  if('Y' ==  item.TYPE){
-                  list.push(item.PO_NO)
+            
+              if ('1' == data[0].USER_TYPE) {
+                if(oData.results  != undefined ){
+                    oData.results.forEach((item) => {
+                      if('Y' ==  item.TYPE){
+                      list.push(item.PO_NO)
+                      }
+                  })
+      
+                  if(boo){
+                    if(list.length > 0){
+                      txt = that.MessageTools._getI18nMessage("Dialog2", list, that.getView())
+                    }
                   }
-              })
-  
-              if(boo){
-                if(list.length > 0){
-                  txt = that.MessageTools._getI18nMessage("Dialog2", list, that.getView())
                 }
-              }
             }
             
             sap.m.MessageBox.confirm(txt, {
