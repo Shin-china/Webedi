@@ -201,7 +201,7 @@ public class PchService {
      * 判断po明细是否和履历表中的一致
      * 
      * @param jsonObject
-     * @return true则为一致或者为空，false则为不一致
+     * @return true则为一致或者，false则为不一致,为空
      */
     public Boolean getT09LogData(JSONObject jsonObject) {
         Boolean re = true;
@@ -211,11 +211,11 @@ public class PchService {
         T10EmailSendLog byID2 = pchD010.getByID(po, Integer.parseInt(dNo));
         if (byID != null && byID2 != null) {
             if (UmcConstants.DELETE_YES.equals(byID2.getType())) {
-                if (byID.getPoType() != byID2.getPoType()) {
+                if (!byID.getPoType().equals(byID2.getPoType())) {
                     re = false;
                 }
                 if (byID.getPoPurQty() != null && byID2.getQuantity() != null
-                        && byID.getPoPurQty().compareTo(byID2.getQuantity()) == 0) {
+                        && byID.getPoPurQty().compareTo(byID2.getQuantity()) != 0) {
                     re = false;
                 }
                 if (byID.getPoDDate() != null && byID2.getInputDate() != null
@@ -223,11 +223,14 @@ public class PchService {
                     re = false;
                 }
                 if (byID.getDelPrice() != null && byID2.getDelPrice() != null
-                        && byID.getDelPrice().compareTo(byID2.getDelPrice()) == 0) {
+                        && byID.getDelPrice().compareTo(byID2.getDelPrice()) != 0) {
                     re = false;
                 }
             }
 
+        } else {
+            // 如果没有也为不一致
+            re = false;
         }
         return re;
 

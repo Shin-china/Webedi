@@ -107,7 +107,7 @@ public class Pch03Handler implements EventHandler {
             String dNo = jsonObject.getString("dNo");
             // 判断po明细是否和履历表中的一致
             Boolean boo = pchService.getT09LogData(jsonObject);
-            if (!boo) {
+            if (boo) {
                 list.add(po);
             }
 

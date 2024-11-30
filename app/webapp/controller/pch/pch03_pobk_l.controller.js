@@ -162,7 +162,7 @@ sap.ui.define([
 				})
 
 				//完成后是否更新确认,false不更新Y
-				that._isQuerenDb(selectedIndices, true);
+				that._isQuerenDb(selectedIndices, "csv");
 				that._isPrintHx(selectedIndices);
 				that._setBusy(false);
 			})
@@ -409,7 +409,7 @@ sap.ui.define([
 				// 	})
 					
 				// })
-				that._isQuerenDb(selectedIndices, true);
+				that._isQuerenDb(selectedIndices, "eml");
 			})
 		},
 
@@ -474,6 +474,7 @@ sap.ui.define([
 					that._onNPSprintTy(selectedIndices, uniqueIdList, myMap, myZABCMap, that, false);
 
 				}
+				that._isQuerenDb(selectedIndices, "nps");
 
 			})
 
@@ -483,7 +484,7 @@ sap.ui.define([
 			var that = this;
 
 			//设置通用dialog
-			this._AfterDigLogCheck().then((ObList) => {
+			this._AfterDigLogCheck(true).then((ObList) => {
 				// 创建一个新的Map对象  用作判断key值对应po对应的明细数据
 				let myMap = new Map();
 				// 创建一个新的Map对象  用作判断po是否状态
@@ -516,13 +517,14 @@ sap.ui.define([
 					that._onZWSprintTy(ObList, uniqueIdList, myMap, myZABCMap, that);
 
 				}
+				that._isQuerenDb(ObList,"zws");
 			})
 
 		},
 		_printZWSPrintEmail(that, item, cds, key,list) {
 			let options = { compact: true, ignoreComment: true, spaces: 4 };
 			return new Promise(function (resolve, reject) {
-			//打印前先获取打印数据
+			//打印前先获取打印数据npm
 			that.PrintTool._getPrintDataInfo(that, item, cds, key).then((oData) => {
 				let sResponse = json2xml(oData, options);
 				console.log(sResponse)
@@ -613,7 +615,6 @@ sap.ui.define([
 
 					})
 				
-					that._isQuerenDb(ObList, false);
 					that._setBusy(false);
 				
 			})
@@ -718,7 +719,6 @@ sap.ui.define([
 
 					})
 				}
-				that._isQuerenDb(ObList, false)
 				that._setBusy(false);
 
 			})
@@ -730,7 +730,7 @@ sap.ui.define([
 			var that = this;
 
 			//设置通用dialog
-			this._AfterDigLogCheck().then((selectedIndices) => {
+			this._AfterDigLogCheck(true).then((selectedIndices) => {
 				// 创建一个新的Map对象  用作判断key值对应po对应的明细数据
 				let myMap = new Map();
 				// 创建一个新的Map对象  用作判断po是否状态
@@ -764,7 +764,7 @@ sap.ui.define([
 
 					that._onNPSprintTy(selectedIndices, uniqueIdList, myMap, myZABCMap, that, false);
 
-					that._isQuerenDb(selectedIndices, false);
+					that._isQuerenDb(selectedIndices, "zws");
 				}
 			})
 		},
@@ -774,45 +774,65 @@ sap.ui.define([
 		 */
 		_querenDb(pList) {
 			var that = this;
-			that._callCdsAction(_objectCommData._entity2, { parms: JSON.stringify(pList) }, that).then(
+			if(pList.length>0){
+				that._callCdsAction(_objectCommData._entity2, { parms: JSON.stringify(pList) }, that).then(
 
-				function (odata) {
-					that.byId("smartTable").rebindTable();
-				},
-				function (error) {
-					that.MessageTools._addMessage(error.responseText, null, null, that.getView());
+					function (odata) {
+						that.byId("smartTable").rebindTable();
+					},
+					function (error) {
+						that.MessageTools._addMessage(error.responseText, null, null, that.getView());
+	
+					}
+				)
+			}
 
-				}
-			)
 		},
 
 		/**
 		 * 判断是否调用后台
 		 */
-		_isQuerenDb(tableList, boo) {
+		_isQuerenDb(tableList, str) {
 			var pList = Array();
 			tableList.forEach((item) => {
-				
-					//为true时，为邮件调用，false为下载调用
-					if (boo) {
+				if ("zws" == str) {
+					//如果是zws,条件：1且！=w，条件 2且=w
+					if ('2' == item.USER_TYPE && item.ZABC == 'W' || ('1' == item.USER_TYPE && item.ZABC != 'W')) {
 						var p = {
 							po: item.PO_NO,
 							dNo: item.D_NO,
 							t: "t"
 						}
 						pList.push(p)
-					} else {
-						if ('2' == item.USER_TYPE || ('1' == item.USER_TYPE &&  item.ZABC != 'W')) {
+					}else//如果是zws,条件：1且！=w，条件 只更新状态
+					if ('2' == item.USER_TYPE  || ('1' == item.USER_TYPE && item.ZABC != 'W')) {
+						var p = {
+							po: item.PO_NO,
+							dNo: item.D_NO,
+						}
+						pList.push(p)
+					}
+					
+				}
+				//为eml时，为邮件调用，false为下载调用
+				if ("eml" == str) {
+					var p = {
+						po: item.PO_NO,
+						dNo: item.D_NO,
+						t: "t"
+					}
+					pList.push(p)
+				}
+				if ("zws" != str && "eml" != str) {
+					if ('2' == item.USER_TYPE || ('1' == item.USER_TYPE && item.ZABC != 'W')) {
 						var p = {
 							po: item.PO_NO,
 							dNo: item.D_NO,
 
 						}
 						pList.push(p)
-						}
-	
 					}
-				
+				}
 			})
 			this._querenDb(pList)
 		},
