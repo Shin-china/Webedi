@@ -210,17 +210,20 @@ public class PchService {
         T02PoD byID = pchD002.getByID(po, Integer.parseInt(dNo));
         T10EmailSendLog byID2 = pchD010.getByID(po, Integer.parseInt(dNo));
         if (byID != null && byID2 != null) {
-            if (UmcConstants.ADMIT_Y.equals(byID2.getType())) {
+            if (UmcConstants.DELETE_YES.equals(byID2.getType())) {
                 if (byID.getPoType() != byID2.getPoType()) {
                     re = false;
                 }
-                if (byID.getPoPurQty().compareTo(byID2.getQuantity()) == 0) {
+                if (byID.getPoPurQty() != null && byID2.getQuantity() != null
+                        && byID.getPoPurQty().compareTo(byID2.getQuantity()) == 0) {
                     re = false;
                 }
-                if (!byID.getPoDDate().isEqual(byID2.getInputDate())) {
+                if (byID.getPoDDate() != null && byID2.getInputDate() != null
+                        && !byID.getPoDDate().isEqual(byID2.getInputDate())) {
                     re = false;
                 }
-                if (byID.getDelPrice().compareTo(byID2.getDelPrice()) == 0) {
+                if (byID.getDelPrice() != null && byID2.getDelPrice() != null
+                        && byID.getDelPrice().compareTo(byID2.getDelPrice()) == 0) {
                     re = false;
                 }
             }

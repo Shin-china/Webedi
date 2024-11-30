@@ -12,6 +12,7 @@ import com.sap.cds.services.handler.annotations.On;
 import com.sap.cds.services.handler.annotations.ServiceName;
 
 import cds.gen.tableservice.PCH03GETTYPEContext;
+import cds.gen.tableservice.PCH03LOGDATAContext;
 import cds.gen.tableservice.PCH03PRINTHXContext;
 import cds.gen.tableservice.PCH03QUERENContext;
 import cds.gen.tableservice.PCH03SENDEMAILContext;
@@ -95,7 +96,7 @@ public class Pch03Handler implements EventHandler {
      * @param context
      */
     @On(event = "PCH03_LOGDATA")
-    public void logData(PCH03QUERENContext context) {
+    public void logData(PCH03LOGDATAContext context) {
         // 直接从上下文中获取参数
         JSONArray jsonArray = JSONArray.parseArray(context.getParms());
         ArrayList<String> list = new ArrayList<>();

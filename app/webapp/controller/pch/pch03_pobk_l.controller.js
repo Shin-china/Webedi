@@ -168,20 +168,9 @@ sap.ui.define([
 			})
 
 		},
-		_getData(selectedIndices){
-			var pList = Array();
-			selectedIndices.forEach((odata) => {
-			    var p = {
-					po: odata.PO_NO,
-					dNo: odata.D_NO,
-				}
-				pList.push(p);
-			})
-			return {parms: JSON.stringify(pList)};
-			
-		},
+
 		_isPrintHx: function (selectedIndices) {
-			this._callCdsAction("/PCH03_PRINTHX", this._getData(selectedIndices), this).then((oData) => {
+			this._callCdsAction("/PCH03_PRINTHX", this._getDialogParm(selectedIndices), this).then((oData) => {
 			
 			})
 		
