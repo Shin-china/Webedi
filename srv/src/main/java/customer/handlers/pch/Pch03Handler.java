@@ -90,6 +90,32 @@ public class Pch03Handler implements EventHandler {
     }
 
     /**
+     * 判断po明细是否和履历表中的一致
+     * 
+     * @param context
+     */
+    @On(event = "PCH03_LOGDATA")
+    public void queRn(PCH03QUERENContext context) {
+        // 直接从上下文中获取参数
+        JSONArray jsonArray = JSONArray.parseArray(context.getParms());
+        ArrayList<String> list = new ArrayList<>();
+        // 根据传入的po和po明细修改po明细状态
+        for (int i = 0; i < jsonArray.size(); i++) {
+            JSONObject jsonObject = jsonArray.getJSONObject(i);
+            String po = jsonObject.getString("po");
+            String dNo = jsonObject.getString("dNo");
+            // 判断po明细是否和履历表中的一致
+            Boolean boo = pchService.getT09LogData(jsonObject);
+            if (!boo) {
+                list.add(po);
+            }
+
+        }
+
+        context.setResult(JSON.toJSONString(list));
+    }
+
+    /**
      *
      * 打印前数据处理
      *
