@@ -19,7 +19,8 @@ entity T01_PO_H : IF_CUID_FILED { //采购订单抬头
                               @title: '{i18n>CD_DATE_TIME}' CD_DATE_TIME             : String(10); //创建日时
                              TO_ITEMS                                 : Association to many T02_PO_D //采购订单行
                                                                           on TO_ITEMS.PO_NO = PO_NO;
-
+                             TO_SAP_BP                           : Association to one MST.T03_SAP_BP
+                                                                       on TO_SAP_BP.BP_ID = SUPPLIER;
 }
 
 entity T02_PO_D : IF_CUID_FILED { //采购订单行
@@ -57,6 +58,9 @@ entity T02_PO_D : IF_CUID_FILED { //采购订单行
                                                                             on TO_HEAD.PO_NO = PO_NO;
                              TO_MAT                                     : Association to one MST.T01_SAP_MAT //品目
                                                                             on TO_MAT.MAT_ID = MAT_ID;
+
+
+
 }
 
 entity T03_PO_C : IF_CUID_FILED { //采购订单确认表

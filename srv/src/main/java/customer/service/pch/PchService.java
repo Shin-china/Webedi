@@ -128,16 +128,16 @@ public class PchService {
         } else {
             T10EmailSendLog t10 = T10EmailSendLog.create();
 
-            t10.setQuantity(byID.getPoPurQty());
-            t10.setInputDate(byID.getPoDDate());
-            t10.setDelFlag(byID.getDelFlag());
-            t10.setPoType(byID.getPoType());
+            byID2.setQuantity(byID.getPoPurQty());
+            byID2.setInputDate(byID.getPoDDate());
+            byID2.setDelFlag(byID.getDelFlag());
+            byID2.setPoType(byID.getPoType());
             // 如果t不为空，则进行写Y操作
             if (!StringTool.isEmpty(t)) {
-                t10.setType("Y");
+                byID2.setType("Y");
             }
 
-            pchD010.update(t10);
+            pchD010.update(byID2);
         }
 
     }

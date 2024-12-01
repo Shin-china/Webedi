@@ -191,6 +191,7 @@ extend service TableService {
             key T02.D_NO, // 明細番号
                 T01.SUPPLIER, // 仕入先コード
                 T02.SUPPLIER_MAT, // 仕入先品目コード
+                T01.TO_SAP_BP.BP_NAME1 as PCH03_BP_NAME1,
                 T02.MAT_ID, // 品目コード
                 T02.PO_TYPE, // 発注区分  C：新規 U：変更 D：削除
 
@@ -283,6 +284,7 @@ extend service TableService {
             key T02.D_NO, // 明細番号
                 T01.SUPPLIER, // 仕入先コード
                 T02.SUPPLIER_MAT, // 仕入先品目コード
+                T01.TO_SAP_BP.BP_NAME1 as PCH03_BP_NAME1,
                 T02.MAT_ID, // 品目コード
                 T02.PO_TYPE, // 発注区分  C：新規 U：変更 D：削除
 

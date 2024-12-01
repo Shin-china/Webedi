@@ -185,6 +185,7 @@ sap.ui.define([
 			var that = this;
 			//有输入true则需要判读是否已经发送过邮件，且提示框内容不一样
 			this._AfterDigLogCheck(true).then((selectedIndices) => {
+				//
 
 				//将数据通过工厂分组
 				const plantList = that._getObjiList(selectedIndices, "PLANT_ID");
@@ -201,10 +202,17 @@ sap.ui.define([
 				if(plant1400 &&plant1400.length > 0){
 				//循环1400的数据
 				plant1400.forEach((item) => {
+					//获取supplierMap
+					var supplierObjMap = new Map();
+					var supplierLenMap = new Map();
+					var supplierCntMap = new Map();
 					//通过供应商分组
 
-					//将数据通过供应商分组
-					const groupedBySupplier = that._getObjiList(selectedIndices, "SUPPLIER");
+					//将工厂分过的数据通过供应商分组
+					const groupedBySupplier = that._getObjiList(item, "SUPPLIER");
+					//将mailobj对象设置到supplierLenMap中
+
+
 					Object.keys(groupedBySupplier).forEach(supplier => {
 						//所有供应商下的数据	
 						const obj1 = groupedBySupplier[supplier];
@@ -217,10 +225,10 @@ sap.ui.define([
 								poList.push(item.PO_NO);
 								myMap.get(item.PO_NO) ? myMap.get(item.PO_NO).push(item.ID) : myMap.set(item.PO_NO, [item.ID]);
 							})
-						//经过去重以后的po号
-						var uniqueIdList = [...new Set(poList)];
+							//经过去重以后的po号
+							var uniqueIdList = [...new Set(poList)];
 							//获取csv
-							csvContent = that._getCsvData(obj1,"");
+							var csvContent = that._getCsvData(obj1,"");
 							var mailobj = {
 								emailJson: {
 									TEMPLATE_ID: "UWEB_PCH03_P",
@@ -242,8 +250,14 @@ sap.ui.define([
 									]
 								}
 							};
+							//将mailobj对象设置到supplierObjMap中
+							supplierObjMap.set(supplier, mailobj);
+							supplierLenMap.set(supplier, uniqueIdList.length);
+							supplierCntMap.set(supplier, 0);
+
 							//循环po通过po打印
 							for(var i=0;i<uniqueIdList.length;i++){
+								
 								var item = uniqueIdList[i];
 								let obj = obj1[0].ZABC;
 								//EFwei全po打印
@@ -253,8 +267,11 @@ sap.ui.define([
 
 										that._newNPSprinEmil(myMap, that, item, mailobj).then((oData) => {
 
-											// this._sendEmail(mailobj);
-											// this._setBusy(false);
+
+											if(this._checkEmailaskPdf(supplierLenMap,supplierCntMap,supplier)){
+												this._sendEmail(mailobj);
+				
+											}
 										})
 		
 									})
@@ -265,9 +282,10 @@ sap.ui.define([
 									that._printZWSPrintEmail(that, myMap.get(item), "/PCH_T03_PO_ITEM_PRINT", "ID",mailobj).then((oData) => {
 
 										that._newNPSprinEmil(myMap, that, item, mailobj).then((oData) => {
-
-											// this._sendEmail(mailobj);
-											// this._setBusy(false);
+											if(this._checkEmailaskPdf(supplierLenMap,supplierCntMap,supplier)){
+												this._sendEmail(mailobj);
+				
+											}
 										})
 									})
 								}
@@ -620,13 +638,17 @@ sap.ui.define([
 			})
 
 		},
-		/* 全部取得后发送邮件 */
-		_checkEmailaskPdf: function (mailobj) {
-			_objectCommData._EmailPdfCount++;
+		/* 全部取得后发送邮件  返回true发送 */
+		_checkEmailaskPdf: function (supplierLenMap, supplierCntMap, supplier) {
 
-			if (_objectCommData._EmailPdfCount == _objectCommData._EmailPdfLen) {
-				this._sendEmail(mailobj);
+			
+			//将supplierCntMap中值+1
+			supplierCntMap.set(supplier, supplierCntMap.get(supplier) + 1);
+			if(supplierLenMap.get(supplier)==supplierCntMap.get(supplier)){
+				return true;
 			}
+
+			return false;
 
 		},
 
