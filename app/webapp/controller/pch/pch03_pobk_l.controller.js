@@ -14,7 +14,13 @@ sap.ui.define([
 		_EmailPdfLen: 0,
 		_EmailPdfCount: 0,
 	};
-
+	var _objecPrintData = {
+		_mailobj: "",//邮件内容 
+		_supplier: "",//供应商
+		_Len: 0, //这个供应商应该发送多少个po文件
+		_Cnt: 0,//这个供应商已经发送了多少个po文件
+		_poNo: "",//当前的po号
+	};
 	return Controller.extend("umc.app.controller.pch.pch03_pobk_l", {
 		formatter: formatter,
 
@@ -201,7 +207,7 @@ sap.ui.define([
 				}
 				if(plant1400 &&plant1400.length > 0){
 				//循环1400的数据
-				plant1400.forEach((item) => {
+				// plant1400.forEach((item) => {
 					//获取supplierMap
 					var supplierObjMap = new Map();
 					var supplierLenMap = new Map();
@@ -209,7 +215,7 @@ sap.ui.define([
 					//通过供应商分组
 
 					//将工厂分过的数据通过供应商分组
-					const groupedBySupplier = that._getObjiList(item, "SUPPLIER");
+					const groupedBySupplier = that._getObjiList(plant1400, "SUPPLIER");
 					//将mailobj对象设置到supplierLenMap中
 
 
@@ -250,6 +256,7 @@ sap.ui.define([
 									]
 								}
 							};
+							
 							//将mailobj对象设置到supplierObjMap中
 							supplierObjMap.set(supplier, mailobj);
 							supplierLenMap.set(supplier, uniqueIdList.length);
@@ -263,14 +270,14 @@ sap.ui.define([
 								//EFwei全po打印
 								if (obj == "E" || obj == "F") {
 		
-									that._printZWSPrintEmail(that, [item], "/PCH_T03_PO_ITEM_PRINT", "PO_NO",mailobj).then((oData) => {
+									that._printZWSPrintEmail(that, [item], "/PCH_T03_PO_ITEM_PRINT", "PO_NO",supplierObjMap,item,supplier).then((oData) => {
 
-										that._newNPSprinEmil(myMap, that, item, mailobj).then((oData) => {
+										that._newNPSprinEmil(myMap, that, oData, supplierObjMap).then((oData2) => {
 
 
-											if(this._checkEmailaskPdf(supplierLenMap,supplierCntMap,supplier)){
-												this._sendEmail(mailobj);
-				
+											if(this._checkEmailaskPdf(supplierLenMap,supplierCntMap,oData2[1])){
+												this._sendEmail(supplierObjMap.get(oData2[1]));
+												this._setBusy(false);
 											}
 										})
 		
@@ -279,12 +286,12 @@ sap.ui.define([
 								}
 								//sonota和C部分明细打印
 								if (obj == "C" || obj == "W") {
-									that._printZWSPrintEmail(that, myMap.get(item), "/PCH_T03_PO_ITEM_PRINT", "ID",mailobj).then((oData) => {
+									that._printZWSPrintEmail(that, myMap.get(item), "/PCH_T03_PO_ITEM_PRINT", "ID",supplierObjMap,item,supplier).then((oData) => {
 
-										that._newNPSprinEmil(myMap, that, item, mailobj).then((oData) => {
-											if(this._checkEmailaskPdf(supplierLenMap,supplierCntMap,supplier)){
-												this._sendEmail(mailobj);
-				
+										that._newNPSprinEmil(myMap, that, oData, supplierObjMap).then((oData2) => {
+											if(this._checkEmailaskPdf(supplierLenMap,supplierCntMap,oData2[1])){
+												this._sendEmail(supplierObjMap.get(oData2[1]));
+												this._setBusy(false);
 											}
 										})
 									})
@@ -295,7 +302,7 @@ sap.ui.define([
 
 							
 					})
-				})
+				// })
 
 			}
 
@@ -539,7 +546,7 @@ sap.ui.define([
 			})
 
 		},
-		_printZWSPrintEmail(that, item, cds, key,list) {
+		_printZWSPrintEmail(that, item, cds, key,list,name,supplier) {
 			let options = { compact: true, ignoreComment: true, spaces: 4 };
 			return new Promise(function (resolve, reject) {
 			//打印前先获取打印数据npm
@@ -551,15 +558,15 @@ sap.ui.define([
 
 					//完成后是否更新确认,false不更新Y
 					that.PrintTool.getImageBase64(oData).then((odata2) => {
-						list.emailJson.MAIL_BODY.push({
+						list.get(supplier).emailJson.MAIL_BODY.push({
 							object: "filename_2",
-							value: that.CommTools.getCurrentTimeFormatted()+"_"+item+"注文書.pdf"
+							value: that.CommTools.getCurrentTimeFormatted()+"_"+name+"注文書.pdf"
 						});
-						list.emailJson.MAIL_BODY.push({
+						list.get(supplier).emailJson.MAIL_BODY.push({
 							object: "filecontent_2",
 							value: odata2
 						});
-						resolve(true);
+						resolve([name,supplier]);
 					});
 				})
 
@@ -657,7 +664,7 @@ sap.ui.define([
 			var that = this;
 			return new Promise(function (resolve, reject) {
 			
-			that.PrintTool._getPrintDataInfo(that, myMap.get(item), "/PCH_T03_PO_ITEM_PRINT", "ID").then((oData) => {
+			that.PrintTool._getPrintDataInfo(that, myMap.get(item[0]), "/PCH_T03_PO_ITEM_PRINT", "ID").then((oData) => {
 				let sResponse = json2xml(oData, options);
 				console.log(sResponse);
 
@@ -671,15 +678,15 @@ sap.ui.define([
 					// that.PrintTool.printBackActionPo(that,sapPo)
 					//完成后是否更新确认,false不更新Y
 					that.PrintTool.getImageBase64(oData).then((odata2) => {
-						list.emailJson.MAIL_BODY.push({
+						list.get(item[1]).emailJson.MAIL_BODY.push({
 							object: "filename_3",
-							value: that.CommTools.getCurrentTimeFormatted()+"_"+item+"納品書.pdf"
+							value: that.CommTools.getCurrentTimeFormatted()+"_"+item[0]+"納品書.pdf"
 						});
-						list.emailJson.MAIL_BODY.push({
+						list.get(item[1]).emailJson.MAIL_BODY.push({
 							object: "filecontent_3",
 							value: odata2
 						});
-						resolve(true);
+						resolve(item);
 					});
 
 				});

@@ -210,6 +210,7 @@ public class Pch03Handler implements EventHandler {
             pchd03.setCop17(pchd03.getPrBy());
             pchd03.setCop18(pchd03.getPoPurUnit());
 
+            pchd03.setCop21(pchd03.getPodno());// 海外
             pchd03.setCop24(pchd03.getPodno());// 海外
             pchd03.setCop25(pchd03.getIntNumber());// 海外
             pchd03.setCop27(pchd03.getIntNumber());// 海外
