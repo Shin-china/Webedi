@@ -5,22 +5,22 @@ using {COMM.IF_CUID_FILED as IF_CUID_FILED} from './model-common';
 using {MST} from './model-mst';
 
 entity T01_PO_H : IF_CUID_FILED { //采购订单抬头
-  @title: '{i18n>PO_NO}' key PO_NO                                    : String(10) not null; //采购订单编号
-                             @title: '{i18n>PO_DATE}' PO_DATE         : Date; //発注日
-                             @title: '{i18n>SUPPLIER}' SUPPLIER       : String(10); //供应商
-                             @title: '{i18n>approvedate}' approvedate : Date; //承認日
-                             @title: '{i18n>PO_BUKRS}' PO_BUKRS       : String(4); //供应商
-                             @title: '{i18n>PO_ORG}' PO_ORG           : String(4); //供应商
-                             @title: '{i18n>PO_GROUP}' PO_GROUP       : String(3); //供应商
-                             @title: '{i18n>PO_BSTYP}' PO_BSTYP       : String(1); //PO Status
-                             @title: '{i18n>REMARK}' REMARK           : String(1000); //Remark(Header)
-                             @title: '{i18n>POCDBY}' POCDBY           : String(12); //自社参照
-                              @title: '{i18n>CD_DATE}' CD_DATE                       : Date; //创建日
-                              @title: '{i18n>CD_DATE_TIME}' CD_DATE_TIME             : String(10); //创建日时
-                             TO_ITEMS                                 : Association to many T02_PO_D //采购订单行
-                                                                          on TO_ITEMS.PO_NO = PO_NO;
-                             TO_SAP_BP                           : Association to one MST.T03_SAP_BP
-                                                                       on TO_SAP_BP.BP_ID = SUPPLIER;
+  @title: '{i18n>PO_NO}' key PO_NO                                      : String(10) not null; //采购订单编号
+                             @title: '{i18n>PO_DATE}' PO_DATE           : Date; //発注日
+                             @title: '{i18n>SUPPLIER}' SUPPLIER         : String(10); //供应商
+                             @title: '{i18n>approvedate}' approvedate   : Date; //承認日
+                             @title: '{i18n>PO_BUKRS}' PO_BUKRS         : String(4); //供应商
+                             @title: '{i18n>PO_ORG}' PO_ORG             : String(4); //供应商
+                             @title: '{i18n>PO_GROUP}' PO_GROUP         : String(3); //供应商
+                             @title: '{i18n>PO_BSTYP}' PO_BSTYP         : String(1); //PO Status
+                             @title: '{i18n>REMARK}' REMARK             : String(1000); //Remark(Header)
+                             @title: '{i18n>POCDBY}' POCDBY             : String(12); //自社参照
+                             @title: '{i18n>CD_DATE}' CD_DATE           : Date; //创建日
+                             @title: '{i18n>CD_DATE_TIME}' CD_DATE_TIME : String(10); //创建日时
+                             TO_ITEMS                                   : Association to many T02_PO_D //采购订单行
+                                                                            on TO_ITEMS.PO_NO = PO_NO;
+                             TO_SAP_BP                                  : Association to one MST.T03_SAP_BP
+                                                                            on TO_SAP_BP.BP_ID = SUPPLIER;
 }
 
 entity T02_PO_D : IF_CUID_FILED { //采购订单行
@@ -52,13 +52,12 @@ entity T02_PO_D : IF_CUID_FILED { //采购订单行
                              @title: '{i18n>PR_BY}' PR_BY               : String(50); //購買依頼者
                              @title: '{i18n>TAX_AMOUNT}' TAX_AMOUNT     : Decimal(18, 3); //税額
                              @title: '{i18n>TAX_CODE}' TAX_CODE         : String(2); //税額
-                            @title: '{i18n>PRINT_TIMES}' PRINT_TIMES    : Integer default 0; //打印次数     >0  已经打印
-                            @title: '{i18n>DOWN_FLAG}' DOWN_FLAG             : String(1) default 'N'; //下载标记    !=N  已经打印
+                             @title: '{i18n>PRINT_TIMES}' PRINT_TIMES   : Integer default 0; //打印次数     >0  已经打印
+                             @title: '{i18n>DOWN_FLAG}' DOWN_FLAG       : String(1) default 'N'; //下载标记    !=N  已经打印
                              TO_HEAD                                    : Association to one T01_PO_H //采购订单抬头表
                                                                             on TO_HEAD.PO_NO = PO_NO;
                              TO_MAT                                     : Association to one MST.T01_SAP_MAT //品目
                                                                             on TO_MAT.MAT_ID = MAT_ID;
-
 
 
 }
@@ -95,8 +94,8 @@ entity T04_PAYMENT_H : IF_CUID_FILED { //付款申请表抬头表
                                @title: '{i18n>FI_DOCUMENT}' FI_DOCUMENT                   : String(10); //会計伝票
                                @title: '{i18n>TAX_AMOUNT}' TAX_AMOUNT                     : Decimal(18, 3); //税額
                                @title: '{i18n>AMOUNT}' AMOUNT                             : Decimal(18, 3); //計上金額
-                               @title: '{i18n>HEADER_TEXT}' HEADER_TEXT                    : String(25); //ヘッダテキスト
-                              
+                               @title: '{i18n>HEADER_TEXT}' HEADER_TEXT                   : String(25); //ヘッダテキスト
+
                                TO_ITEMS                                                   : Association to many T05_PAYMENT_D //付款申请表行表
                                                                                               on  TO_ITEMS.INV_NO  = INV_NO
                                                                                               and TO_ITEMS.GL_YEAR = GL_YEAR;
@@ -158,18 +157,18 @@ entity T06_QUOTATION_H : cuid, IF_CUID_FILED { //
                                                      on  TO_ITEMS.SALES_NUMBER = SALES_NUMBER
                                                      and TO_ITEMS.QUO_NUMBER   = QUO_NUMBER
                                                      and TO_ITEMS.QUO_VERSION  = QUO_VERSION;
-  TO_ITEM_PO                                       : Composition of many T07_QUOTATION_D
-                                                     on TO_ITEM_PO.QUO_NUMBER   = QUO_NUMBER
+  TO_ITEM_PO                                     : Composition of many T07_QUOTATION_D
+                                                     on TO_ITEM_PO.QUO_NUMBER = QUO_NUMBER
 }
 
 entity T07_QUOTATION_D : cuid, IF_CUID_FILED { //
-  @title: '{i18n>QUO_ITEM}' SALES_NUMBER                 : String(20); //販売見積番号
-  @title: '{i18n>QUO_ITEM}' QUO_VERSION                  : String(5); //販売見積バージョン
-  @title: '{i18n>QUO_ITEM}' SALES_D_NO                   : String(5); //販売見積案件明細
+  @title: '{i18n>SALES_NUMBER}' SALES_NUMBER             : String(20); //販売見積番号
+  @title: '{i18n>QUO_VERSION}' QUO_VERSION               : String(5); //販売見積バージョン
+  @title: '{i18n>SALES_D_NO}' SALES_D_NO                 : String(5); //販売見積案件明細
   @title: '{i18n>QUO_NUMBER}' QUO_NUMBER                 : String(50); //購買見積番号
   @title: '{i18n>QUO_ITEM}' QUO_ITEM                     : Integer; //管理No
-  @title: '{i18n>QUO_ITEM}' SAP_MAT_ID                   : String(40); //SAP 品目（製品）
-  @title: '{i18n>QUO_ITEM}' DEVELOP_MAT                  : String(40); //開発品番
+  @title: '{i18n>SAP_MAT_ID}' SAP_MAT_ID                 : String(40); //SAP 品目（製品）
+  @title: '{i18n>DEVELOP_MAT}' DEVELOP_MAT               : String(40); //開発品番
   @title: '{i18n>NO}' NO                                 : Integer; //No.
   @title: '{i18n>REFRENCE_NO}' REFRENCE_NO               : String(50); //併記有無リファレンスNo
   @title: '{i18n>MATERIAL_NUMBER}' MATERIAL_NUMBER       : String(40); //SAP品番（任意）
