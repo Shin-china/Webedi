@@ -113,7 +113,7 @@ extend service TableService {
 
     entity PCH10_LIST         as
         select from PCH.T07_QUOTATION_D as T01
-        left outer join PCH.T06_QUOTATION_H as T02
+        left join PCH.T06_QUOTATION_H as T02
             on(
                     T01.QUO_NUMBER   = T02.QUO_NUMBER
                 and T01.SALES_NUMBER = T02.SALES_NUMBER
