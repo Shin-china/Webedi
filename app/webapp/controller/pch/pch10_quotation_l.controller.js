@@ -24,110 +24,132 @@ sap.ui.define(["umc/app/Controller/BaseController", "sap/m/MessageToast"], funct
       let ascs = [false]; //true desc false asc
       //手动添加排序
       this._onListRebinSort(oEvent, sorts, ascs);
-      //获取并设置权限数据
-      // this._setAuthByMenuAndUser("PCH10");
     },
 
     onPress: function (oEvent) {
       let oItem = oEvent.getSource();
       let oContext = oItem.getBindingContext();
       let object = oContext.getObject();
-      let QUO_NUMBER = object.QUO_NUMBER;
-      console.log(QUO_NUMBER);
-      this._onPress(oEvent, "RouteView_pch10", QUO_NUMBER);
+      let QUO_NUMBER = object.QUO_NUMBER || "";  // 如果为空，使用 "EMPTY"
+      let QUO_ITEM = object.QUO_ITEM || "";
+      let SALESNO = object.SALES_NUMBER || "";
+      let QUO_V = object.QUO_VERSION || "";
+
+      let headID = QUO_NUMBER + "|" + QUO_ITEM + "|" + SALESNO + "|" + QUO_V;
+
+      this._onPress(oEvent, "RouteView_pch10", headID);
     },
 
-    // onUpnPrint: function (oEvent) {
-    //   this.MessageTools._clearMessage();
-    //   //初始化系统配置参数
-    //   this.setSysConFig().then((sta) => {
-    //     if (sta) {
-    //       this.onUpnPrintCom(this, "detailTable", "smartTable");
-    //     }
-    //   });
-    // },
+    onResend: function () {
+			var that = this;
+            var oTable = this.getView().byId("detailTable10");
+            var aSelectedIndices = oTable.getSelectedIndices();
 
-    // sendSapFunction: function (isPost) {
-    //   var that = this;
-    //   this._setBusy(true);
-    //   var sHeaderObject = this.getView().getBindingContext().getObject();
-    //   var headId = sHeaderObject.ID;
-    //   this.onSendDetailCommon("detailTable", "INV34", "/INV34_GR_SEND", isPost).then((oData) => {
-    //     //刷新数据
-    //     if (oData.INV34_GR_SEND === "success") {
-    //       //that._bindViewDataByCreateKey(headId, _objectCommData._entity, _objectCommData._itmes, true, "smdetailTable");
-    //       that.getModel().refresh(true); //刷新数据
-    //       this.byId("detailTable").clearSelection();
-    //       //that.MessageTools._addMessage(that.MessageTools._getI18nText("MSG_SUCCESS_SEND", that.getView()), null, 3, that.getView());
-    //     }
-    //     that._setBusy(false);
-    //   });
-    // },
-    // /**
-    //  * 过账，取消过账
-    //  * @param {} oEvent
-    //  */
-
-    onSend: function (oEvent) {
-
-      var that = this;
-      that._setBusy(true);
-
-      let selectedData = this._getSelectedIndicesDatasByTable("detailTable10");
-      if (selectedData.length == 0) {
-        MessageToast.show("選択されたデータがありません、データを選択してください。");
-        return false;
-      }
-
-
-      var sal_Numset = new Set(selectedData.map(data => data.SALES_NUMBER));
-      if (sal_Numset.size != 0) {
-
-        var Sal_Num = sal_Numset.values().next().value;
-        var entity = "/PCH_T06_QUOTATION_H";
-
-        this._readHead(Sal_Num, null, entity).then(oHeadData => {
-
-          let H_status = oHeadData.results[0].STATUS;
-
-          if (H_status == "5") {
-
-            MessageToast.show("購買見積番号" + Sal_Num + "に対して、ステータスは完了となりましたので、送信できません。");
-          
-            return false;
-
-          }
-          
-
-          var pList = Array();
-          selectedData.forEach(odata => {
-            var p = {
-
-              Quo_No: odata.SALES_NUMBER
-
-            };
-
-            pList.push(p);
-              
-            })
-
-            this._callCdsAction("/PCH10_GR_SEND",  { params: JSON.stringify(pList) }, this).then(oData => {
-
-
-            });
-
-
-          
-        });
-
+            // 检查是否有选中的数据
+            if (aSelectedIndices.length === 0) {
+                MessageToast.show("選択されたデータがありません、データを選択してください。");
+                return;
+            }
   
-      };
-      
+            // 遍历选中的行，提取所需数据
+            var aSelectedData = aSelectedIndices.map(function (iIndex) {
+                return oTable.getContextByIndex(iIndex).getObject();
+            });  
+  
 
+            // 检查 SUPPLIER 是否相同
+            var CUSTOMERSet = new Set(aSelectedData.map(data => data.CUSTOMER));
+            if (CUSTOMERSet.size > 1) {
+                sap.m.MessageToast.show("選択されたデータがありません、データを選択してください。");
+                return;
+            }
 
+            if (CUSTOMERSet.size === 1) { 
+                var H_CODE = "MM0002";
+                var CUSTOMER = CUSTOMERSet.values().next().value;
+                var entity = "/SYS_T08_COM_OP_D";
 
-      
-    },
+                this._readHeademail(H_CODE, CUSTOMER, entity).then((oHeadData) => {
+                    let mail = oHeadData.results && oHeadData.results.length > 0 ? 
+                        oHeadData.results.map(result => result.VALUE02).join(", ") : '';            
+                    let mailobj = {
+                        emailJson: {
+                            TEMPLATE_ID: "UWEB_M002",
+                            MAIL_TO: [mail].join(", "), 
+                            MAIL_BODY: [
+                                { object: "vendor", value: supplierName },
+                            ]
+                        }
+                    };
+
+                    // 确保 this.getView() 是正确的
+                    let newModel = this.getView().getModel("Common");
+                    let oBind = newModel.bindList("/sendEmail");
+
+                    oBind.create(mailobj, {
+                        success: function (oData) {
+                            if (oData && oData.result && oData.result === "sucess") {
+                                MessageToast.show("メールが正常に送信されました。");
+                            } else {
+                                sap.m.MessageToast.show("メール送信に失敗しました。エラー: " + (oData.result || "不明なエラー"));
+                            }
+                        },
+                        error: function (oError) {
+                            sap.m.MessageToast.show("メール送信に失敗しました。エラー: " + oError.message);
+                        }
+                    });
+                });
+
+            }
+                
+            // 假设您在这里定义邮件内容模板
+            var supplierName = "";
+            var year = "";
+            var month = "";
+
+            aSelectedData.map(function (data) {
+                supplierName = data.NAME1 || "未指定"; // 默认值
+                
+                // 使用当前年月
+                var currentDate = new Date();
+                year = currentDate.getFullYear().toString(); // 当前年份
+                month = (currentDate.getMonth() + 1).toString().padStart(2, '0'); // 当前月份，确保是两位数格式
+            });
+        },
+
+        _readHeademail: function (a,b, entity) {
+          var that = this;
+          return new Promise(function (resolve, reject) {
+            that.getModel().read(entity, {
+                filters: [
+                  
+                new sap.ui.model.Filter({
+                  path: "H_CODE",
+                  value1: a,
+                  operator: sap.ui.model.FilterOperator.EQ,
+                }),
+                new sap.ui.model.Filter({
+                  path: "VALUE01",
+                  value1: b,
+                  operator: sap.ui.model.FilterOperator.EQ,
+                }),
+
+                new sap.ui.model.Filter({
+                  path: "DEL_FLAG",
+                  value1: "X",
+                  operator: sap.ui.model.FilterOperator.NE,
+                }),
+
+              ],
+              success: function (oData) {
+                resolve(oData);
+              },
+              error: function (oError) {
+                reject(oError);
+              },
+            });
+          });
+        },
 
     onBeforeExport: function (oEvent) {
 			var mExcelSettings = oEvent.getParameter("exportSettings");
@@ -140,43 +162,35 @@ sap.ui.define(["umc/app/Controller/BaseController", "sap/m/MessageToast"], funct
       
 			mExcelSettings.workbook.columns.forEach(function (oColumn) {
 				switch (oColumn.property) {
-				// case "SalesOrderDate":
-				// 	oColumn.type = sap.ui.export.EdmType.Date;
-				// 	break;
-				// case "NetAmount":
-				// 	oColumn.type = sap.ui.export.EdmType.Currency;
-				// 	oColumn.unitProperty = 'TransactionCurrency';
-				// 	oColumn.delimiter = true; //'true':display thousands separators,'false'/'default':no display
-				// 	oColumn.width = 20;
-				// 	break;
+
 				default:
 					break;
 				}
 			});
     },
 
-    _readHead: function (a,b, entity) {
-          var that = this;
-          return new Promise(function (resolve, reject) {
-            that.getModel().read(entity, {
-                filters: [
+    // _readHead: function (a,b, entity) {
+    //       var that = this;
+    //       return new Promise(function (resolve, reject) {
+    //         that.getModel().read(entity, {
+    //             filters: [
                   
-                new sap.ui.model.Filter({
-                  path: "SALES_NUMBER",
-                  value1: a,
-                  operator: sap.ui.model.FilterOperator.EQ,
-                }),
+    //             new sap.ui.model.Filter({
+    //               path: "SALES_NUMBER",
+    //               value1: a,
+    //               operator: sap.ui.model.FilterOperator.EQ,
+    //             }),
                   
-              ],
-              success: function (oData) {
-                resolve(oData);
-              },
-              error: function (oError) {
-                reject(oError);
-              },
-            });
-          });
-    },
+    //           ],
+    //           success: function (oData) {
+    //             resolve(oData);
+    //           },
+    //           error: function (oError) {
+    //             reject(oError);
+    //           },
+    //         });
+    //       });
+    // },
     
   });
 });

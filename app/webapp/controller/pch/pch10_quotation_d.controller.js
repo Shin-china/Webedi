@@ -2,8 +2,9 @@ sap.ui.define(["umc/app/Controller/BaseController", "sap/m/MessageToast"], funct
   "use strict";
 
   var _objectCommData = {
+
 		_entity: "/PCH10_LIST", //此本页面操作的对象//绑定的数据源视图
-		_aFilters: undefined
+		// _aFilters: []
 
 	};
   var myMap = new Map();
@@ -22,71 +23,124 @@ sap.ui.define(["umc/app/Controller/BaseController", "sap/m/MessageToast"], funct
     onInit: function () {
       //  设置版本号
       this._setOnInitNo("PCH10", "20241024");
+      this._setDefaultDataModel("TableService");
+
       this.getRouter().getRoute("RouteView_pch10").attachPatternMatched(this._onRouteMatched, this)
       this._PchResourceBundle = this.getOwnerComponent().getModel("pch").getResourceBundle();
-      
-      this._localModel = new sap.ui.model.json.JSONModel();
-      this._localModel.setData({
-          "show": true,
-          "save": false
-      });
-      this.getView().setModel(this._localModel, "localModel");
 
+      this.MessageTools._clearMessage();
+      this.MessageTools._initoMessageManager(this);
+      
+      // this._localModel = new sap.ui.model.json.JSONModel();
+      // this._localModel.setData({
+      //     "show": true,
+      //     "save": false
+      // });
+      // this.getView().setModel(this._localModel, "localModel");
+
+      // var view = this.getView();
+      // var jsonModel = view.getModel("workInfo");
+
+
+      // // 设置为不可编辑
+      // jsonModel.setData({
+      //     "show": true,
+      //     "save": false
+      // });
       
     },
 
     _onRouteMatched: function (oEvent) {
 
       var that = this;
-      that._setBusy(true);
-      
+      // that._setBusy(true);
+
+      this._setEditable(false);
+
       let headID = oEvent.getParameter("arguments").headID;
-      var aFilters = headID;
-			_objectCommData._aFilters = aFilters;
-			var view = this.getView();
-			var jsonModel = view.getModel("workInfo");
-			view.setModel(jsonModel, undefined);
-			if (aFilters.length == 0) {
-				that._setBusy(false);
-				return;
-			}
-			this._readEntryByServiceAndEntity(_objectCommData._entity, aFilters, null).then((oData) => {
+      // 拆分 headID 字符串
+      let [QUO_NUMBER, QUO_ITEM, SALES_NUMBER, QUO_VERSION] = headID.split("|");
 
-				if (!jsonModel) {
-					jsonModel = new sap.ui.model.json.JSONModel();
-					view.setModel(jsonModel, "workInfo");
-        }
+      QUO_NUMBER = (QUO_NUMBER === "") ? null : QUO_NUMBER;
+      QUO_ITEM = (QUO_ITEM === "") ? null : QUO_ITEM;
+      SALES_NUMBER = (SALES_NUMBER === "") ? null : SALES_NUMBER;
+      QUO_VERSION = (QUO_VERSION === "") ? null : QUO_VERSION;
+
+      this._aFilters = [];
+
+            if (QUO_NUMBER) {
+                this._aFilters.push(new sap.ui.model.Filter({
+                    path: "QUO_NUMBER",
+                    value1: QUO_NUMBER,
+                    operator: sap.ui.model.FilterOperator.EQ,
+                }));
+            }
+
+            if (QUO_ITEM) {
+                this._aFilters.push(new sap.ui.model.Filter({
+                    path: "QUO_ITEM",
+                    value1: QUO_ITEM,
+                    operator: sap.ui.model.FilterOperator.EQ,
+                }));
+            }
+
+            if (SALES_NUMBER) {
+                this._aFilters.push(new sap.ui.model.Filter({
+                    path: "SALES_NUMBER",
+                    value1: SALES_NUMBER,
+                    operator: sap.ui.model.FilterOperator.EQ,
+                }));
+            }
+
+            if (QUO_VERSION) {
+                this._aFilters.push(new sap.ui.model.Filter({
+                    path: "QUO_VERSION",
+                    value1: QUO_VERSION,
+                    operator: sap.ui.model.FilterOperator.EQ,
+                }));
+            }
+
+      var view = this.getView();
+      var jsonModel = view.getModel("workInfo");
+
+      return new Promise(function (resolve, reject) {
+
+        that.getModel().read("/PCH10_LIST", {
         
-				jsonModel.setData(oData.results);
-				//更新seq数据
-				that._getSeq();
-				that._setBusy(false);
-        console.log(oData.results)
-        });
+          // filters: [
 
+          //   new sap.ui.model.Filter({
+            
+          //     path: "QUO_NUMBER",
+            
+          //     value1: headID,
+            
+          //     operator: sap.ui.model.FilterOperator.EQ,
+            
+          //   }),
 
+          // ]
+          filters: that._aFilters
+          ,
+          success: function (oData) {
+                              oData.results.sort(function(a, b) {
+                      return a.SALES_D_NO - b.SALES_D_NO; // 升序排序
+                      // 如果需要降序排序，可以使用 b.SALES_D_NO - a.SALES_D_NO;
+                  });
 
+            jsonModel = new sap.ui.model.json.JSONModel();
+            view.setModel(jsonModel, "workInfo");
+            jsonModel.setData(oData.results);
 
+            resolve(oData);
 
-      // //获取并设置权限数据
-      // // this._setAuthByMenuAndUser("INV34");
-      // let that = this;
-      // let headID = oEvent.getParameter("arguments").headID;
-      // console.log(headID);
-      // this.getView().unbindElement();
-      // this._headID = headID;
-      // this._setEditable(false);
-      // this._setEditableAuth(true);
-      // this._setBusy(true);
-      // this._setIsCreate(false);
-      // // //初始化 msg
-      // // this.MessageTools._clearMessage();
-      // // this.MessageTools._initoMessageManager(this);
-      // // // 编辑
-      // this._onObjectMatchedCommon(oEvent, _objectCommData._entity, {}, _objectCommData._items, true, "smartTable");
-      // // //this.byId("smartTable2").rebindTable();
-      // // that.getModel().refresh(true);
-    },
+          },
+          error: function (oError) {
+            reject(oError);
+          },
+        })
+      })
+  },
 
     onRebind: function (oEvent) {
       this._rowNoMap == null;
@@ -95,116 +149,255 @@ sap.ui.define(["umc/app/Controller/BaseController", "sap/m/MessageToast"], funct
       //手动添加排序
       this._onListRebinSort(oEvent, sorts, ascs);
     },
-
-
+    
     getDetail: function (oEvent) { 
 
-        let that = this;
-        let selectedData = this._getSelectedIndicesDatasByTable("detailTable");
-        if (selectedData.length == 0) {
-            MessageToast.show("選択されたデータがありません、データを選択してください。");
-            return false;
-        }
+       let that = this;
+            var selectedIndices = this._TableList("tableUploadData"); // 获取选中行
+            if (selectedIndices.length == 0) {
+                sap.m.MessageToast.show("選択されたデータがありません、データを選択してください。");
+                return false;
+            }
         let para = [];
-      selectedData.forEach(item => {
-
-          let key1 = item.QUO_NUMBER;
-        
-            para.push(key1);
-        });
-        this._onPress(oEvent,"RouteView_pch10_d", this.unique(para).join(","));
+      selectedIndices.forEach(item => {
+                let key = item.QUO_NUMBER + '-' + item.QUO_ITEM;
+                para.push(key);
+      });
       
-        // let params = { param: para };
-        // that._callCdsAction("/PCH08_SHOW_DETAIL", params, that).then((oData) => {
-        //     let json = JSON.parse(oData.PCH08_SHOW_DETAIL);
-        //     console.log(json)
-        //   });
+      this._onPress(oEvent, "RouteView_pch10_d", this.unique(para).join(","));
+      
     },
 
+    /*==============================
+     编辑
+     ==============================*/
     onEdit: function () {
-      this._localModel.setProperty("/show", false);
-      this._localModel.setProperty("/save", true);
+
+			var that = this;
+			that._setEditable(true);
+      
     },
 
-    
+
+    /*==============================
+		保存
+		==============================*/
+		onSave: function (oEvent) {
+			var that = this;
+			// that._setBusy(true);
+			var view = this.getView();
+			//清除msg
+			this.MessageTools._clearMessage();
+
+			if (that._isCheckData()) {
+				var jsonModel = view.getModel("workInfo");
+				this._callCdsAction("/PCH10_SAVE_DATA", this._getData(), this).then((oData) => {
+
+
+					var myArray = JSON.parse(oData.PCH10_SAVE_DATA);
+					this._setEditable(false);
+					if (myArray.err) {
+						this._setEditable(true);
+						var rt = myArray.reTxt.split("||");
+						for (var i = 1; i < rt.length; i++) {
+
+							that.MessageTools._addMessages(this.MessageTools._getI18nTextInModel("pch", rt[i], this.getView()), null, 1, this.getView());
+						}
+
+          } else {
+            
+            return new Promise(function (resolve, reject) {
+
+              that.getModel().read("/PCH10_LIST", {
+                
+                filters: that._aFilters,
+                success: function (oData) {
+
+                  oData.results.sort(function(a, b) {
+                      return a.SALES_D_NO - b.SALES_D_NO; // 升序排序
+                      // 如果需要降序排序，可以使用 b.SALES_D_NO - a.SALES_D_NO;
+                  });
+
+                  jsonModel = new sap.ui.model.json.JSONModel();
+                  view.setModel(jsonModel, "workInfo");
+                  jsonModel.setData(oData.results);
+
+                },
+                error: function (oError) {
+                  reject(oError);
+                },
+              })
+            })
+					}
+					// that._setBusy(false);
+
+				});
+			} else {
+				// that._setBusy(false);
+			}
+		},
+
+    /*==============================
+		删除
+		==============================*/
+		onBPDel: function (oEvent) {
+			var that = this;
+			var view = this.getView();
+			var selectedIndices = this._TableList("tableUploadData"); // 获取选中行
+			var jsonModel = view.getModel("workInfo");
+
+			var datas = jsonModel.getData();
+			if (selectedIndices) {
+				selectedIndices.forEach((selectedIndex) => {
+					//如果删除只能删除新追加的
+            if (!selectedIndex.CD_BY) {
+              var T02_ID = selectedIndex.T02_ID
+              //根据id删除list
+              datas = datas.filter(odata =>
+                odata.T02_ID !== T02_ID
+              )
+              
+            } else {
+              that.MessageTools._addMessages(this.MessageTools._getI18nTextInModel("pch", "PCH_10_ERROR_MSG1", this.getView()), null, 1, this.getView());
+            }
+          });
+
+				jsonModel.setData(datas);
+			}
+		},
+
+    /*==============================
+		复制
+		==============================*/
+		onBPAdd: function (oEvent) {
+			var that = this;
+      var view = this.getView();
+      
+      that._setEditable(true);
+			var selectedIndices = this._TableList("tableUploadData"); // 获取选中行
+			var jsonModel = view.getModel("workInfo");
+
+      var datas = jsonModel.getData();
+
+
+      var MaxDN = 0;  // 默认从 1 开始
+          if (datas && datas.length > 0) {
+              MaxDN = Math.max(...datas.map(function (item) {
+                  return item.SALES_D_NO || 0; // 如果 SALES_D_NO 是 undefined 或 null，使用 0
+              })) + 1 ;
+          }
+      
+			if (selectedIndices) {
+				selectedIndices.forEach((selectedIndex) => {
+          let copiedIndex = JSON.parse(JSON.stringify(selectedIndex));
+          
+          // copiedIndex.QUO_NUMBER = null;     
+          // copiedIndex.QUO_ITEM = null;
+          // copiedIndex.SALES_NUMBER = null;
+          // copiedIndex.QUO_VERSION = null;
+          // copiedIndex.NO  = null;            
+          // copiedIndex.REFRENCE_NO    = null;   
+          copiedIndex.MATERIAL_NUMBER  = null;   
+          copiedIndex.CUST_MATERIAL = null;
+          copiedIndex.MANUFACT_MATERIAL = null;
+          copiedIndex.Attachment = null;
+          copiedIndex.Material = null;
+          copiedIndex.MAKER = null;
+					copiedIndex.CD_BY = null;
+          copiedIndex.CD_TIME = null;
+
+          copiedIndex.SALES_D_NO = MaxDN++;
+          
+          const uuid = this.generateUUID();
+          copiedIndex.T02_ID = uuid;
+          
+					datas.push(copiedIndex);
+				});
+				jsonModel.setData(datas);
+				//更新seq数据
+				// that._getSeq();
+			}
+		},
+
     unique: function (arr) {
         return [...new Set(arr)];
-      },  
+    },  
+    
+    // 生成UUID
+    generateUUID() {
+      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+          const r = Math.random() * 16 | 0;
+          const v = c === 'x' ? r : (r & 0x3 | 0x8);
+          return v.toString(16);
+      });
+    },
 
-    // onDelete: function () {
-    //   this.MessageTools._clearMessage();
-    //   let selectedIndices = this._getSelectedIndicesDatasByTable("detailTable");
-    //   if (selectedIndices.length === 0) {
-    //     sap.m.MessageBox.alert(this.MessageTools._getI18nText("MSG_ERR_NO_DATA_SELECTED", this.getView()));
-    //     this._setBusy(false);
-    //     return false;
-    //   }
-    //   let that = this;
-    //   let idJosn = "";
-    //   var sHeaderObject = this.getView().getBindingContext().getObject();
-    //   _objectCommData._headId = sHeaderObject.ID;
-    //   that._setBusy(true);
-    //   that._saveChanges().then(() => {
-    //     let selectedIndices = this._getSelectedIndicesDatasByTable("detailTable");
-    //     selectedIndices.forEach((index) => {
-    //       let receiveDetail = index;
-    //       //已发行UPN
-    //       idJosn = idJosn + "," + receiveDetail.ID;
-    //     });
-    //     let oPrams = { idStr: idJosn };
-    //     //删除明细行
-    //     if (selectedIndices.length > 0) {
-    //       this._callCdsAction("/INV34_deleteItems", oPrams, this).then((oData) => {
-    //         if (oData.INV34_deleteItems != "error") {
-    //           this.byId("detailTable").clearSelection();
+    /**
+		 * 判断保存前check,数据必输check
+		 * @returns 
+		 */
+		_isCheckData: function () {
+			var jsondata = this.getModel("workInfo").getData();
+			var boo = true;
+			if(jsondata.length){
+				jsondata.forEach((odata) => {
+					if (this.formatter._isNull(odata.QTY)) {
+						this.MessageTools._addMessages(this.MessageTools._getI18nTextInModel("pch", "PCH_06_ERROR_MSG4", this.getView()), null, 1, this.getView());
+						boo = false;
+					}
+					// if (this.formatter._isNull(odata.DELIVERY_DATE)) {
+					// 	this.MessageTools._addMessages(this.MessageTools._getI18nTextInModel("pch", "PCH_06_ERROR_MSG5", this.getView()), null, 1, this.getView());
+					// 	boo = false;
+					// }
+	
+				})
+			}else{boo =false;}
+		
+			return boo;
+    },
 
-    //           that._bindViewDataByCreateKey(_objectCommData._headId, _objectCommData._entity, _objectCommData._items, false, "smartTable");
-    //           this.getModel().refresh(true); //刷新数据
-    //         }
-    //       });
-    //     }
-    //   });
-    //   that._setBusy(false);
-    // },
+    		/**
+		 * 
+		 * @returns 
+		 */
+		_getData: function () {
+			var jsondata = this.getModel("workInfo").getData();
+			var a = JSON.stringify({ list: jsondata });
+			var oPrams = {
+				json: a,
+			};
+			return oPrams;
+    },
+    
 
-    // //品目情報显示
-    // onDetailMatRebind: function (oEvent) {
-    //   let headID = this._headID;
-    //   var oBindingParams = oEvent.getParameter("bindingParams");
-    //   var aFilters = oBindingParams.filters;
-    //   var Filter = new sap.ui.model.Filter("H_ID", "EQ", headID);
-    //   aFilters.push(Filter);
-    //   oBindingParams.filters = aFilters;
-    // },
+    fetchMaxSalesDNo() {
+      return new Promise(function (resolve, reject) {
+        var that = this;
+        const model = that.getModel(); // 假设 `that` 是全局上下文
+        const entitySet = "PCH10_LIST";
+        const filterKey = "QUO_NUMBER";
+        const filterValue = that.headID; // 假设 `headID` 是全局变量
 
-    // sendSapFunction: function (isPost) {
-    //   this.MessageTools._clearMessage();
-    //   var that = this;
-    //   this._setBusy(true);
-    //   var sHeaderObject = this.getView().getBindingContext().getObject();
-    //   var headId = sHeaderObject.ID;
-    //   this.onSendDetailCommon("detailTable", "INV34", "/INV34_GR_SEND", isPost).then((oData) => {
-    //     //刷新数据
-    //     if (oData.INV34_GR_SEND === "success") {
-    //       //that._bindViewDataByCreateKey(headId, _objectCommData._entity, _objectCommData._itmes, true, "smdetailTable");
-    //       that.getModel().refresh(true); //刷新数据
-    //       this.byId("detailTable").clearSelection();
-    //       //that.MessageTools._addMessage(that.MessageTools._getI18nText("MSG_SUCCESS_SEND", that.getView()), null, 3, that.getView());
-    //     }
-    //     that._setBusy(false);
-    //   });
-    // },
-    // /**
-    //  * 过账，取消过账
-    //  * @param {} oEvent
-    //  */
-    // onSend: function (oEvent) {
-    //   this.MessageTools._clearMessage();
-    //   this.onSendDetailCommon("detailTable", "INV34", "/INV34_GR_SEND", true, "smartTable");
-    // },
-    // onCancel: function (oEvent) {
-    //   this.MessageTools._clearMessage();
-    //   this.onSendDetailCommon("detailTable", "INV34", "/INV34_GR_SEND", false, "smartTable");
-    // },
+        model.read(`/${entitySet}`, {
+            filters: this._aFilters,
+            success: function (oData) {
+                if (oData && oData.results) {
+                    // 找到 `sales_d_no` 最大值
+                    const maxSalesDNo = oData.results.reduce((max, current) => {
+                        return Math.max(max, parseInt(current.sales_d_no, 10) || 0);
+                    }, 0); // 初始化为 0，防止空值
+
+                    resolve(maxSalesDNo);
+                } else {
+                    reject(new Error("No data returned or results are empty."));
+                }
+            },
+            error: function (oError) {
+                reject(oError);
+            },
+        });
+    });
+    }
+    
   });
 });

@@ -12,7 +12,7 @@
   xmlns:mvc="sap.ui.core.mvc"
   xmlns:uxap="sap.uxap"
   xmlns:table="sap.ui.table"
-  xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+  xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1" >
 
   <uxap:ObjectPageLayout id="_IDGenObjectPageLayout1" busy="{localModel>/isBusy}" showFooter="true">
 
@@ -31,64 +31,30 @@
         </uxap:actions> -->
       </uxap:ObjectPageHeader>
     </uxap:headerTitle>
-
-    <uxap:sections>
-      <uxap:ObjectPageSection id="_IDGenObjectPageSection" title="{com>TITLE_HEAD}">
-        <uxap:subSections>
-          <uxap:ObjectPageSubSection id="_IDGenObjectPageSubSection1" showTitle="false">
-            <uxap:blocks>
-
-              <l:VerticalLayout id="_IDGenVerticalLayout001" class="sapUiSmallMarginEnd">
-
-                <FlexBox id="_IDGenFlexBox1" wrap="Wrap" fitContainer="true">
-
-
-                  <l:VerticalLayout id="_IDGenVerticalLayout" class="sapUiSmallMarginEnd">
-                    <Label id="_IDGenLabel1" labelFor="QUO_NUMBER" text="{pch>PCH10_QUO_NUMBER}"/>
-                    <smartField:SmartField id="QUO_NUMBER" value="{QUO_NUMBER}" showLabel="false" width="10em" mandatory = "true" editable="{=${localModel>/editable} || false}"/>
-                  </l:VerticalLayout>
-								   <!-- <l:VerticalLayout id="_IDGenVerticalLayout2" class="sapUiSmallMarginEnd" visible="true">
-								  	<Label id="_IDGenLabel2" labelFor="QUO_VERSION" text="{pch>PCH10_QUO_VERSION}"/>
-								  	<smartField:SmartField id="QUO_VERSION" value="{QUO_VERSION}" showLabel="false" width="10em" mandatory = "true" editable="{=${localModel>/editable} || false}"/>
-								  </l:VerticalLayout>
-								  <l:VerticalLayout id="_IDGenVerticalLayout3" class="sapUiSmallMarginEnd" visible="true">
-								  	<Label id="_IDGenLabel3" labelFor="SALES_NUMBER" text="{pch>PCH10_SALES_NUMBER}"/>
-								  	<smartField:SmartField id="SALES_NUMBER" value="{SALES_NUMBER}" showLabel="false" width="10em" mandatory = "true" editable="{=${localModel>/editable} || false}"/>
-								  </l:VerticalLayout>  -->
-                </FlexBox>
-              </l:VerticalLayout>
-            </uxap:blocks>
-          </uxap:ObjectPageSubSection>
-        </uxap:subSections>
-      </uxap:ObjectPageSection>
-
-      <uxap:ObjectPageSection id="_IDGenObjectPageSection1" title="{com>TITLE_DETAIL}">
-        <uxap:subSections>
+    
+    <uxap:sections >
+      <uxap:ObjectPageSection id="_IDGenObjectPageSection1" title="{com>TITLE_DETAIL}" >
+        <uxap:subSections >
           <uxap:ObjectPageSubSection id="_IDGenObjectPageSubSection2" showTitle="false">
             <uxap:blocks>
-
-              <smartTable:SmartTable id="smartTable" tableType="Table" useVariantManagement="false" enableExport="false" editable="false" useTablePersonalisation="false" enableAutoColumnWidth="true" entitySet="PCH10_LIST" tableBindingPath="PCH10_LIST" requestAtLeastFields="QUO_NUMBER" showRowCount="true" persistencyKey="pch34_SmartTableAnalytical_Explored2" enableAutoBinding="true" beforeRebindTable="onRebind">
-                <smartTable:customToolbar>
-                  <OverflowToolbar id="_IDGenOverflowToolbar1">
-                    <content>
-                      <ToolbarSpacer id="_IDGenToolbarSpacer1"/>
-                      <Button id="_IDGenButton1" text="{pch>PCH10_BPTQ}"  press="onBp"   enabled="true"   visible="{localModel>/PCH10_BP}"/>
-                      <Button id="_IDGenButton2" text="{pch>PCH10_GMTQ}"  press="onGM"   enabled="true" visible="{localModel>/PCH10_GM}"/>
-                      <Button id="showDetailButton" text="{pch>PCH08_SHOW_DETAIL}" press="getDetail"></Button>
-                      
-                      <Button id="bpaddButton" text="{pch>PCH10_BP_ADD}" press="onBPAdd"></Button>
-                      <Button id="bpdelButton" text="{pch>PCH10_BP_DEL}" press="onBPDel"></Button>
-
-                      <Button id="editButton" text="{pch>PCH03_BUTTON_EDI}" enabled="{localModel>/show}" tooltip="{pch>PCH03_BUTTON_EDI}" press="onEdit" />
-                      <Button id="saveButton" text="{pch>PCH03_BUTTON_SAV}" enabled="{localModel>/save}" tooltip="{pch>PCH03_BUTTON_SAV}" press="onSave" />
-
-                     
-                    </content>
-                  </OverflowToolbar>
-                </smartTable:customToolbar>
-
                 <!-- <table:Table id="listTable" alternateRowColors="true"  rowActionCount="1"> -->
-                <table:Table  rows="{path: 'workInfo>/'}"   id="tableUploadData" rowMode="Auto" rowActionCount="1" selectionMode="MultiToggle" alternateRowColors="true" fixedColumnCount="0" threshold="20">
+                <table:Table  rows="{path: 'workInfo>/'}"   id="tableUploadData" rowMode="Auto" rowActionCount="1" selectionMode="MultiToggle" alternateRowColors="true" fixedColumnCount="0" threshold="100">
+                  <table:extension>
+						<OverflowToolbar id="_IDGenOverflowToolbar1">
+							<ToolbarSpacer id="ID_ToolbarSpacer" />
+                                <Button id="_IDGenButton1" text="{pch>PCH10_BPTQ}"  press="onBp"   enabled="true"   visible="{localModel>/PCH10_BP}"/>
+                                <Button id="_IDGenButton2" text="{pch>PCH10_GMTQ}"  press="onGM"   enabled="true" visible="{localModel>/PCH10_GM}"/>
+                                <Button id="showDetailButton" text="{pch>PCH08_SHOW_DETAIL}" press="getDetail"></Button>
+                                
+                                <Button id="bpaddButton" text="{pch>PCH10_BP_ADD}" press="onBPAdd"></Button>
+                                <Button id="bpdelButton" text="{pch>PCH10_BP_DEL}" press="onBPDel"></Button>
+
+                                <Button id="editButton" text="{pch>PCH03_BUTTON_EDI}" enabled="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'}], formatter: '.formatter.getEditableDCommon'}" press="onEdit" />
+                                <Button id="saveButton" text="{pch>PCH03_BUTTON_SAV}" enabled="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'}], formatter: '.formatter.getEditableSaveCommon'}" tooltip="{pch>PCH03_BUTTON_SAV}" press="onSave" />
+					</OverflowToolbar>
+						
+					</table:extension>
+
                   <table:columns>
                     <table:Column id="colQuoNumber" width="10rem" sortProperty="QUO_NUMBER" filterProperty="QUO_NUMBER">
                     <table:customData>
@@ -123,6 +89,24 @@
                         <Text id="textQuoItem" text="{workInfo>QUO_ITEM}" />
                     </table:template>
                 </table:Column>
+
+
+                <!-- <table:Column id="colSALES_D_NO" width="6rem" sortProperty="SALES_D_NO" filterProperty="SALES_D_NO">
+                    <table:customData>
+                        <core:CustomData key="p13nData" value="{
+                                columnKey: 'SALES_D_NO',
+                                leadingProperty: 'SALES_D_NO',
+                                sortProperty: 'SALES_D_NO',
+                                filterProperty: 'SALES_D_NO'
+                            }" />
+                    </table:customData>
+                    <table:label>
+                        <Label id="labelSALES_D_NO" text="{pch>U07_SALES_D_NO}" />
+                    </table:label>
+                    <table:template>
+                        <Text id="textSALES_D_NO" text="{workInfo>SALES_D_NO}" />
+                    </table:template>
+                </table:Column>  -->
 
                 <table:Column id="colNo" width="6rem" sortProperty="NO" filterProperty="NO">
                     <table:customData>
@@ -274,7 +258,10 @@
                         <Label id="labelUwebUser" text="{pch>PCH08_UWEB_USER}" />
                     </table:label>
                     <table:template>
-                        <Text id="textUwebUser" text="{workInfo>UWEB_USER}" />
+                        <!-- <Text id="textUwebUser" text="{workInfo>UWEB_USER}" /> -->
+
+                            <Input value="{workInfo>UWEB_USER}" editable="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'},{path: 'workInfo>RQ'}], formatter: '.formatter.getEditableSaveCommonData'}"/>
+
                     </table:template>
                 </table:Column>
 
@@ -291,11 +278,12 @@
                         <Label id="labelBp" text="{pch>PCH08_BP_NUMBER}" />
                     </table:label>
                     <table:template>
-                        <Text id="textBp" text="{workInfo>BP_NUMBER}" />
+                        <!-- <Text id="textBp" text="{workInfo>BP_NUMBER}" /> -->
+                        <Input value="{workInfo>BP_NUMBER}" editable="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'},{path: 'workInfo>RQ'}], formatter: '.formatter.getEditableSaveCommonData'}"/>
                     </table:template>
                 </table:Column>
 
-                <!-- <table:Column id="colPersonNo1" width="10rem" sortProperty="PERSON_NO1" filterProperty="PERSON_NO1">
+                <table:Column id="colPERSON_NO1" width="10rem" sortProperty="PERSON_NO1" filterProperty="PERSON_NO1">
                     <table:customData>
                         <core:CustomData key="p13nData" value="{
                                 columnKey: 'PERSON_NO1',
@@ -305,14 +293,14 @@
                             }" />
                     </table:customData>
                     <table:label>
-                        <Label id="labelPersonNo1" text="{pch>PCH08_PERSON_NO1}" />
+                        <Label id="labelPERSON_NO1" text="{pch>PCH10_PERSON_NO1}" />
                     </table:label>
                     <table:template>
-                        <Text id="textPersonNo1" text="{PERSON_NO1}" />
+                        <Text id="textPERSON_NO1" text="{workInfo>PERSON_NO1}" />
                     </table:template>
                 </table:Column>
 
-                <table:Column id="colPersonNo2" width="10rem" sortProperty="PERSON_NO2" filterProperty="PERSON_NO2">
+                <!--<table:Column id="colPersonNo2" width="10rem" sortProperty="PERSON_NO2" filterProperty="PERSON_NO2">
                     <table:customData>
                         <core:CustomData key="p13nData" value="{
                                 columnKey: 'PERSON_NO2',
@@ -393,7 +381,8 @@
                         <Label id="labelYlp" text="{pch>PCH08_YLP}" />
                     </table:label>
                     <table:template>
-                        <smartField:SmartField id="textYlp" value="{workInfo>YLP}" editable="{localModel>/save}" />
+                    <Input value="{workInfo>YLP}" editable="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'},{path: 'workInfo>RQ'}], formatter: '.formatter.getEditableSaveCommonData'}"/>
+                        <!-- <smartField:SmartField id="textYlp" value="{workInfo>YLP}" editable="true" /> -->
                     </table:template>
                 </table:Column>
 
@@ -410,7 +399,8 @@
                         <Label id="labelManul" text="{pch>PCH08_MANUL}" />
                     </table:label>
                     <table:template>
-                        <smartField:SmartField id="textManul" value="{workInfo>MANUL}"  editable="{localModel>/save}" />
+                        <!-- <smartField:SmartField id="textManul" value="{workInfo>MANUL}"  editable="true" /> -->
+                        <Input value="{workInfo>MANUL}" editable="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'},{path: 'workInfo>RQ'}], formatter: '.formatter.getEditableSaveCommonData'}"/>
                     </table:template>
                 </table:Column>
 
@@ -427,7 +417,8 @@
                         <Label id="labelManufactCode" text="{pch>PCH08_MANUFACT_CODE}" />
                     </table:label>
                     <table:template>
-                        <smartField:SmartField id="textManufactCode" value="{workInfo>MANUFACT_CODE}"  editable="{localModel>/save}"/>
+                        <!-- <smartField:SmartField id="textManufactCode" value="{workInfo>MANUFACT_CODE}"  editable="true"/> -->
+                        <Input value="{workInfo>MANUFACT_CODE}" editable="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'},{path: 'workInfo>RQ'}], formatter: '.formatter.getEditableSaveCommonData'}"/>
                     </table:template>
                 </table:Column>
 
@@ -444,7 +435,8 @@
                         <Label id="labelCustomerMmodel" text="{pch>PCH08_CUSTOMER_MMODEL}" />
                     </table:label>
                     <table:template>
-                        <smartField:SmartField id="textCustomerMmodel" value="{workInfo>CUSTOMER_MMODEL}" editable="{localModel>/save}" />
+                        <!-- <smartField:SmartField id="textCustomerMmodel" value="{workInfo>CUSTOMER_MMODEL}" editable="true" /> -->
+                        <Input value="{workInfo>CUSTOMER_MMODEL}" editable="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'},{path: 'workInfo>RQ'}], formatter: '.formatter.getEditableSaveCommonData'}"/>
                     </table:template>
                 </table:Column>
 
@@ -461,7 +453,8 @@
                         <Label id="labelMidQf" text="{pch>PCH08_MID_QF}" />
                     </table:label>
                     <table:template>
-                        <smartField:SmartField id="textMidQf" value="{workInfo>MID_QF}" editable="{localModel>/save}" />
+                        <Input value="{workInfo>MID_QF}" editable="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'},{path: 'workInfo>RQ'}], formatter: '.formatter.getEditableSaveCommonData'}"/>
+                        <!-- <smartField:SmartField id="textMidQf" value="{workInfo>MID_QF}" editable="true" /> -->
                     </table:template>
                 </table:Column>
                 
@@ -478,7 +471,8 @@
                         <Label id="labelSmallQf" text="{pch>PCH08_SMALL_QF}" />
                     </table:label>
                     <table:template>
-                        <smartField:SmartField id="textSmallQf" value="{workInfo>SMALL_QF}" editable="{localModel>/save}"/>
+                        <!-- <smartField:SmartField id="textSmallQf" value="{workInfo>SMALL_QF}" editable="true"/> -->
+                        <Input value="{workInfo>SMALL_QF}" editable="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'},{path: 'workInfo>RQ'}], formatter: '.formatter.getEditableSaveCommonData'}"/>
                     </table:template>
                 </table:Column>
 
@@ -495,7 +489,8 @@
                         <Label id="labelOtherQf" text="{pch>PCH08_OTHER_QF}" />
                     </table:label>
                     <table:template>
-                        <smartField:SmartField id="textOtherQf" value="{workInfo>OTHER_QF}" editable="{localModel>/save}" />
+                        <!-- <smartField:SmartField id="textOtherQf" value="{workInfo>OTHER_QF}" editable="true" /> -->
+                        <Input value="{workInfo>OTHER_QF}" editable="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'},{path: 'workInfo>RQ'}], formatter: '.formatter.getEditableSaveCommonData'}"/>
                     </table:template>
                 </table:Column>
 
@@ -514,7 +509,7 @@
                     </table:label>
                     <table:template>
                         <!-- 但是暂时还不知道用不用修改 -->
-                        <smartField:SmartField id="textQty" value="{workInfo>QTY}" editable="{localModel>/save}" />
+                        <Text text="{workInfo>QTY}" editable="true"></Text>	
                     </table:template>
                 </table:Column>
 
@@ -531,7 +526,8 @@
                         <Label id="labelCurrency" text="{pch>PCH08_CURRENCY}" />
                     </table:label>
                     <table:template>
-                        <smartField:SmartField id="textCurrency" value="{workInfo>CURRENCY}" editable="{localModel>/save}"/>
+                        <Input value="{workInfo>CURRENCY}" editable="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'},{path: 'workInfo>RQ'}], formatter: '.formatter.getEditableSaveCommonData'}"/>
+                        <!-- <smartField:SmartField id="textCurrency" value="{workInfo>CURRENCY}" editable="true"/> -->
                     </table:template>
                 </table:Column>
 
@@ -548,7 +544,8 @@
                         <Label id="labelPriceControl" text="{pch>PCH08_PRICE_CONTROL}" />
                     </table:label>
                     <table:template>
-                        <smartField:SmartField id="textPriceControl" value="{workInfo>PRICE_CONTROL}" editable="{localModel>/save}" />
+                        <Input value="{workInfo>PRICE_CONTROL}" editable="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'},{path: 'workInfo>RQ'}], formatter: '.formatter.getEditableSaveCommonData'}"/>
+                        <!-- <smartField:SmartField id="textPriceControl" value="{workInfo>PRICE_CONTROL}" editable="true" /> -->
                     </table:template>
                 </table:Column>
 
@@ -565,8 +562,8 @@
                         <Label id="labelLeadTime" text="{pch>PCH08_LEAD_TIME}" />
                     </table:label>
                     <table:template>
-                      
-                        <smartField:SmartField id="textLeadTime" value="{workInfo>LEAD_TIME}" editable="{localModel>/save}" />
+                        <Input value="{workInfo>LEAD_TIME}" editable="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'},{path: 'workInfo>RQ'}], formatter: '.formatter.getEditableSaveCommonData'}"/>
+                        <!-- <smartField:SmartField id="textLeadTime" value="{workInfo>LEAD_TIME}" editable="true" /> -->
                     </table:template>
                 </table:Column>
 
@@ -583,7 +580,8 @@
                         <Label id="labelMoq" text="{pch>PCH08_MOQ}" />
                     </table:label>
                     <table:template>
-                        <smartField:SmartField id="textMoq" value="{workInfo>MOQ}"  editable="{localModel>/save}" />
+                        <!-- <smartField:SmartField id="textMoq" value="{workInfo>MOQ}"  editable="true" /> -->
+                        <Input value="{workInfo>MOQ}" editable="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'},{path: 'workInfo>RQ'}], formatter: '.formatter.getEditableSaveCommonData'}"/>
                     </table:template>
                 </table:Column>
 
@@ -600,7 +598,8 @@
                         <Label id="labelUnit" text="{pch>PCH08_UNIT}" />
                     </table:label>
                     <table:template>
-                        <smartField:SmartField id="textUnit" value="{workInfo>UNIT}" editable="{localModel>/save}" />
+                        <!-- <smartField:SmartField id="textUnit" value="{workInfo>UNIT}" editable="true" /> -->
+                        <Input value="{workInfo>UNIT}" editable="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'},{path: 'workInfo>RQ'}], formatter: '.formatter.getEditableSaveCommonData'}"/>
                     </table:template>
                 </table:Column>
 
@@ -617,7 +616,8 @@
                         <Label id="labelSpq" text="{pch>PCH08_SPQ}" />
                     </table:label>
                     <table:template>
-                        <smartField:SmartField id="textSpq" value="{workInfo>SPQ}" editable="{localModel>/save}"/>
+                        <!-- <smartField:SmartField id="textSpq" value="{workInfo>SPQ}" editable="true"/> -->
+                        <Input value="{workInfo>SPQ}" editable="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'},{path: 'workInfo>RQ'}], formatter: '.formatter.getEditableSaveCommonData'}"/>
                     </table:template>
                 </table:Column>
 
@@ -635,7 +635,7 @@
                     </table:label>
                     <table:template>
                        
-                         <ComboBox id="id.KBXT" editable="{localModel>/save}" value="{workInfo>KBXT}">
+                         <ComboBox id="id.KBXT" editable="true" value="{workInfo>KBXT}">
                             <items>
                                 <core:Item key="テーピング" text="テーピング" />
                                 <core:Item key="トレイ" text="トレイ" />
@@ -660,7 +660,8 @@
                         <Label id="labelProductWeight" text="{pch>PCH08_PRODUCT_WEIGHT}" />
                     </table:label>
                     <table:template>
-                        <smartField:SmartField id="textProductWeight" value="{workInfo>PRODUCT_WEIGHT}" editable="{localModel>/save}" />
+                        <!-- <smartField:SmartField id="textProductWeight" value="{workInfo>PRODUCT_WEIGHT}" editable="true" /> -->
+                        <Input value="{workInfo>PRODUCT_WEIGHT}" editable="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'},{path: 'workInfo>RQ'}], formatter: '.formatter.getEditableSaveCommonData'}"/>
                     </table:template>
                 </table:Column>
 
@@ -677,7 +678,8 @@
                         <Label id="labelOriginalCou" text="{pch>PCH08_ORIGINAL_COU}" />
                     </table:label>
                     <table:template>
-                        <smartField:SmartField id="textOriginalCou" value="{workInfo>ORIGINAL_COU}" editable="{localModel>/save}" />
+                        <!-- <smartField:SmartField id="textOriginalCou" value="{workInfo>ORIGINAL_COU}" editable="true" /> -->
+                        <Input value="{workInfo>ORIGINAL_COU}" editable="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'},{path: 'workInfo>RQ'}], formatter: '.formatter.getEditableSaveCommonData'}"/>
                     </table:template>
                 </table:Column>
 
@@ -694,7 +696,8 @@
                         <Label id="labelEol" text="{pch>PCH08_EOL}" />
                     </table:label>
                     <table:template>
-                        <smartField:SmartField id="textEol" value="{workInfo>EOL}" editable="{localModel>/save}" />
+                        <!-- <smartField:SmartField id="textEol" value="{workInfo>EOL}" editable="true" /> -->
+                        <Input value="{workInfo>EOL}" editable="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'},{path: 'workInfo>RQ'}], formatter: '.formatter.getEditableSaveCommonData'}"/>
                     </table:template>
                 </table:Column>
 
@@ -711,8 +714,8 @@
                         <Label id="labelIsboi" text="{pch>PCH08_ISBOI}" />
                     </table:label>
                     <table:template>
-                        
-                        <smartField:SmartField id="textIsboi" value="{workInfo>ISBOI}" editable="{localModel>/save}" />
+                        <Input value="{workInfo>ISBOI}" editable="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'},{path: 'workInfo>RQ'}], formatter: '.formatter.getEditableSaveCommonData'}"/>
+                        <!-- <smartField:SmartField id="textIsboi" value="{workInfo>ISBOI}" editable="true" /> -->
                     </table:template>
                 </table:Column>
 
@@ -729,7 +732,8 @@
                         <Label id="labelIncoterms" text="{pch>PCH08_Incoterms}" />
                     </table:label>
                     <table:template>
-                        <smartField:SmartField id="textIncoterms" value="{workInfo>Incoterms}" editable="{localModel>/save}" />
+                        <!-- <smartField:SmartField id="textIncoterms" value="{workInfo>Incoterms}" editable="true" /> -->
+                        <Input value="{workInfo>Incoterms}" editable="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'},{path: 'workInfo>RQ'}], formatter: '.formatter.getEditableSaveCommonData'}"/>
                     </table:template>
                 </table:Column>
 
@@ -746,7 +750,8 @@
                         <Label id="labelIncoterms_Text" text="{pch>PCH08_Incoterms_Text}" />
                     </table:label>
                     <table:template>
-                        <smartField:SmartField id="textIncoterms_Text" value="{workInfo>Incoterms_Text}" editable="{localModel>/save}" />
+                    <Input value="{workInfo>Incoterms_Text}" editable="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'},{path: 'workInfo>RQ'}], formatter: '.formatter.getEditableSaveCommonData'}"/>
+                        <!-- <smartField:SmartField id="textIncoterms_Text" value="{workInfo>Incoterms_Text}" editable="true" /> -->
                     </table:template>
                 </table:Column>
 
@@ -763,7 +768,8 @@
                         <Label id="labelMemo1" text="{pch>PCH08_MEMO1}" />
                     </table:label>
                     <table:template>
-                        <smartField:SmartField id="textMemo1" value="{workInfo>MEMO1}"  editable="{localModel>/save}" />
+                        <!-- <smartField:SmartField id="textMemo1" value="{workInfo>MEMO1}"  editable="true" /> -->
+                        <Input value="{workInfo>MEMO1}" editable="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'},{path: 'workInfo>RQ'}], formatter: '.formatter.getEditableSaveCommonData'}"/>
                     </table:template>
                 </table:Column>
 
@@ -780,7 +786,8 @@
                         <Label id="labelMemo2" text="{pch>PCH08_MEMO2}" />
                     </table:label>
                     <table:template>
-                        <smartField:SmartField id="textMemo2" value="{workInfo>MEMO2}" editable="{localModel>/save}" />
+                        <!-- <smartField:SmartField id="textMemo2" value="{workInfo>MEMO2}" editable="true" /> -->
+                        <Input value="{workInfo>MEMO2}" editable="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'},{path: 'workInfo>RQ'}], formatter: '.formatter.getEditableSaveCommonData'}"/>
                     </table:template>
                 </table:Column>
 
@@ -797,7 +804,8 @@
                         <Label id="labelMemo3" text="{pch>PCH08_MEMO3}" />
                     </table:label>
                     <table:template>
-                        <smartField:SmartField id="textMemo3" value="{workInfo>MEMO3}" editable="{localModel>/save}" />
+                    <Input value="{workInfo>MEMO3}" editable="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'},{path: 'workInfo>RQ'}], formatter: '.formatter.getEditableSaveCommonData'}"/>
+                        <!-- <smartField:SmartField id="textMemo3" value="{workInfo>MEMO3}" editable="true" /> -->
                     </table:template>
                 </table:Column>
 
@@ -814,7 +822,8 @@
                         <Label id="labelSl" text="{pch>PCH08_SL}" />
                     </table:label>
                     <table:template>
-                        <smartField:SmartField id="textSl" value="{workInfo>SL}" editable="{localModel>/save}" />
+                        <!-- <smartField:SmartField id="textSl" value="{workInfo>SL}" editable="true" /> -->
+                        <Input value="{workInfo>SL}" editable="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'},{path: 'workInfo>RQ'}], formatter: '.formatter.getEditableSaveCommonData'}"/>
                     </table:template>
                 </table:Column>
 
@@ -831,7 +840,8 @@
                         <Label id="labelTz" text="{pch>PCH08_TZ}" />
                     </table:label>
                     <table:template>
-                        <smartField:SmartField id="textTz" value="{workInfo>TZ}" editable="{localModel>/save}" />
+                        <!-- <smartField:SmartField id="textTz" value="{workInfo>TZ}" editable="true" /> -->
+                        <Input value="{workInfo>TZ}" editable="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'},{path: 'workInfo>RQ'}], formatter: '.formatter.getEditableSaveCommonData'}"/>
                     </table:template>
                 </table:Column>
 
@@ -848,7 +858,8 @@
                         <Label id="labelRmaterial" text="{pch>PCH08_RMATERIAL}" />
                     </table:label>
                     <table:template>
-                        <smartField:SmartField id="textRmaterial" value="{workInfo>RMATERIAL}" editable="{localModel>/save}" />
+                        <!-- <smartField:SmartField id="textRmaterial" value="{workInfo>RMATERIAL}" editable="true" /> -->
+                        <Input value="{workInfo>RMATERIAL}" editable="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'},{path: 'workInfo>RQ'}], formatter: '.formatter.getEditableSaveCommonData'}"/>
                     </table:template>
                 </table:Column>
 
@@ -865,7 +876,8 @@
                         <Label id="labelRmaterialCurrency" text="{pch>PCH08_RMATERIAL_CURRENCY}" />
                     </table:label>
                     <table:template>
-                        <smartField:SmartField id="textRmaterialCurrency" value="{workInfo>RMATERIAL_CURRENCY}" editable="{localModel>/save}" />
+                        <!-- <smartField:SmartField id="textRmaterialCurrency" value="{workInfo>RMATERIAL_CURRENCY}" editable="true" /> -->
+                        <Input value="{workInfo>RMATERIAL_CURRENCY}" editable="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'},{path: 'workInfo>RQ'}], formatter: '.formatter.getEditableSaveCommonData'}"/>
                     </table:template>
                 </table:Column>
 
@@ -882,7 +894,8 @@
                         <Label id="labelRmaterialPrice" text="{pch>PCH08_RMATERIAL_PRICE}" />
                     </table:label>
                     <table:template>
-                        <smartField:SmartField id="textRmaterialPrice" value="{workInfo>RMATERIAL_PRICE}" editable="{localModel>/save}" />
+                    <Input value="{workInfo>RMATERIAL_PRICE}" editable="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'},{path: 'workInfo>RQ'}], formatter: '.formatter.getEditableSaveCommonData'}"/>
+                        <!-- <smartField:SmartField id="textRmaterialPrice" value="{workInfo>RMATERIAL_PRICE}" editable="true" /> -->
                     </table:template>
                 </table:Column>
 
@@ -899,8 +912,8 @@
                         <Label id="labelRmaterialLt" text="{pch>PCH08_RMATERIAL_LT}" />
                     </table:label>
                     <table:template>
-                        
-                        <smartField:SmartField id="textRmaterialLt" value="{workInfo>RMATERIAL_LT}" editable="{localModel>/save}" />
+                        <Input value="{workInfo>RMATERIAL_LT}" editable="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'},{path: 'workInfo>RQ'}], formatter: '.formatter.getEditableSaveCommonData'}"/>
+                        <!-- <smartField:SmartField id="textRmaterialLt" value="{workInfo>RMATERIAL_LT}" editable="true" /> -->
                     </table:template>
                 </table:Column>
                 <table:Column id="colRmaterialMoq" width="10rem" sortProperty="RMATERIAL_MOQ" filterProperty="RMATERIAL_MOQ">
@@ -916,7 +929,8 @@
                         <Label id="labelRmaterialMoq" text="{pch>PCH08_RMATERIAL_MOQ}" />
                     </table:label>
                     <table:template>
-                        <smartField:SmartField id="textRmaterialMoq" value="{workInfo>RMATERIAL_MOQ}" editable="{localModel>/save}" />
+                        <!-- <smartField:SmartField id="textRmaterialMoq" value="{workInfo>RMATERIAL_MOQ}" editable="true" /> -->
+                        <Input value="{workInfo>RMATERIAL_MOQ}" editable="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'},{path: 'workInfo>RQ'}], formatter: '.formatter.getEditableSaveCommonData'}"/>
                     </table:template>
                 </table:Column>
 
@@ -933,7 +947,8 @@
                         <Label id="labelRmaterialKbxt" text="{pch>PCH08_RMATERIAL_KBXT}" />
                     </table:label>
                     <table:template>
-                        <smartField:SmartField id="textRmaterialKbxt" value="{workInfo>RMATERIAL_KBXT}" editable="{localModel>/save}" />
+                    <Input value="{workInfo>RMATERIAL_KBXT}" editable="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'},{path: 'workInfo>RQ'}], formatter: '.formatter.getEditableSaveCommonData'}"/>
+                        <!-- <smartField:SmartField id="textRmaterialKbxt" value="{workInfo>RMATERIAL_KBXT}" editable="true" /> -->
                     </table:template>
                 </table:Column>
 
@@ -950,7 +965,8 @@
                         <Label id="labelUcComment1" text="{pch>PCH08_UMC_COMMENT_1}" />
                     </table:label>
                     <table:template>
-                        <Text id="textUcComment1" text="{workInfo>UMC_COMMENT_1}" />
+                        <!-- <Text id="textUcComment1" text="{workInfo>UMC_COMMENT_1}" /> -->
+                        <Input value="{workInfo>UMC_COMMENT_1}" editable="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'},{path: 'workInfo>RQ'}], formatter: '.formatter.getEditableSaveCommonData'}"/>
                     </table:template>
                 </table:Column>
 
@@ -967,7 +983,8 @@
                         <Label id="labelUcComment2" text="{pch>PCH08_UMC_COMMENT_2}" />
                     </table:label>
                     <table:template>
-                        <Text id="textUcComment2" text="{workInfo>UMC_COMMENT_2}" />
+                    <Input value="{workInfo>UMC_COMMENT_2}" editable="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'},{path: 'workInfo>RQ'}], formatter: '.formatter.getEditableSaveCommonData'}"/>
+                        <!-- <Text id="textUcComment2" text="{workInfo>UMC_COMMENT_2}" /> -->
                     </table:template>
                 </table:Column>
 
@@ -984,7 +1001,8 @@
                         <Label id="labelSupplierMat" text="{pch>PCH08_SUPPLIER_MAT}" />
                     </table:label>
                     <table:template>
-                        <Text id="textSupplierMat" text="{workInfo>SUPPLIER_MAT}"  />
+                    <Input value="{workInfo>SUPPLIER_MAT}" editable="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'},{path: 'workInfo>RQ'}], formatter: '.formatter.getEditableSaveCommonData'}"/>
+                        <!-- <Text id="textSupplierMat" text="{workInfo>SUPPLIER_MAT}"  /> -->
                     </table:template>
                 </table:Column>
 
@@ -1001,14 +1019,51 @@
                         <Label id="labelStatus" text="{pch>PCH08_STATUS}" />
                     </table:label>
                     <table:template>
+                    
                         <Text id="textStatus" text="{path:'STATUS', formatter:'.customFormatter.formatPch08Status'}"  />
                     </table:template>
                 </table:Column> 
 
+                <table:Column id="colPlant" width="10rem" sortProperty="PLANT_ID" filterProperty="PLANT_ID">
+                    <table:customData>
+                        <core:CustomData key="p13nData" value="{
+                                columnKey: 'PLANT_ID',
+                                leadingProperty: 'PLANT_ID',
+                                sortProperty: 'PLANT_ID',
+                                filterProperty: 'PLANT_ID'
+                            }" />
+                    </table:customData>
+                    <table:label>
+                        <Label id="labelPlant" text="{pch>PCH10_PLANT_ID}" />
+                    </table:label>
+                    <table:template>
+                    <!-- <Input value="{workInfo>PLANT_ID}" editable="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'},{path: 'workInfo>RQ'}], formatter: '.formatter.getEditableSaveCommonData'}"/> -->
+                        <Text id="textPlant" text="{workInfo>PLANT_ID}"  />
+                    </table:template>
+                </table:Column>
+
+                <table:Column id="colINITIAL_OBJ" width="10rem" sortProperty="INITIAL_OBJ" filterProperty="INITIAL_OBJ">
+                    <table:customData>
+                        <core:CustomData key="p13nData" value="{
+                                columnKey: 'INITIAL_OBJ',
+                                leadingProperty: 'INITIAL_OBJ',
+                                sortProperty: 'INITIAL_OBJ',
+                                filterProperty: 'INITIAL_OBJ'
+                            }" />
+                    </table:customData>
+                    <table:label>
+                        <Label id="labelINITIAL_OBJ" text="{pch>PCH10_INITIAL_OBJ}" />
+                    </table:label>
+                    <table:template>
+                    <!-- <Input value="{workInfo>PLANT_ID}" editable="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'},{path: 'workInfo>RQ'}], formatter: '.formatter.getEditableSaveCommonData'}"/> -->
+                        <Text id="textINITIAL_OBJ" text="{workInfo>INITIAL_OBJ}"  />
+                    </table:template>
+                </table:Column>
+
                   </table:columns>
 
                 </table:Table>
-              </smartTable:SmartTable>
+             
             </uxap:blocks>
           </uxap:ObjectPageSubSection>
         </uxap:subSections>
