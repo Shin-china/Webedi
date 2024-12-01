@@ -30,8 +30,8 @@ sap.ui.define([
 			// oTable.setSelectionMode("None");
 			//  设置版本号
 			this._setOnInitNo("MST01");
-			// this.MessageTools._clearMessage();
-			// this.MessageTools._initoMessageManager(this);
+			this.MessageTools._clearMessage();
+			this.MessageTools._initoMessageManager(this);
 
 			this.getRouter().getRoute("RouteCre_pch03").attachPatternMatched(this._onRouteMatched, this);
 
@@ -220,6 +220,7 @@ sap.ui.define([
 							Object.keys(typeList).forEach(type => {
 								//所有供应商下的数据	
 								const typeObj = typeList[type];
+								if(typeObj[0].EMAIL_ADDRESS){
 								if ("新规" == type) {
 									this._sendEmailTy(typeObj, supplierObjMap, supplierLenMap, supplierCntMap, supplier, "UWEB_PCH03_C")
 								}
@@ -229,6 +230,11 @@ sap.ui.define([
 								if ("変更" == type) {
 									this._sendEmailTy(typeObj, supplierObjMap, supplierLenMap, supplierCntMap, supplier, "UWEB_PCH03_U")
 								}
+							}else{
+								this._setBusy(false);
+								// this.MessageTools._addMessages(this.MessageTools._getI18nText("", this.getView()), null, 1, this.getView());
+								that.MessageTools._addMessages(this.MessageTools._getI18nTextInModel("pch", "PCH_03_ERROR_MSG1", this.getView()), null, 1, this.getView());
+							}
 							})
 
 						})
@@ -245,9 +251,15 @@ sap.ui.define([
 					Object.keys(groupedBySupplier).forEach(supplier => {
 						//所有供应商下的数据	
 						const obj1 = groupedBySupplier[supplier];
+						if(obj1[0].EMAIL_ADDRESS){
+							this._sendEmailTy(obj1, supplierObjMap, supplierLenMap, supplierCntMap, supplier, "UWEB_PCH03_P")
+						}else{
+							this._setBusy(false);
+							that.MessageTools._addMessages(this.MessageTools._getI18nTextInModel("pch", "PCH_03_ERROR_MSG1", this.getView()), null, 1, this.getView());
+						}
 
 
-						this._sendEmailTy(obj1, supplierObjMap, supplierLenMap, supplierCntMap, supplier, "UWEB_PCH03_P")
+						
 
 					})
 				}
