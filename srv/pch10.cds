@@ -183,8 +183,8 @@ extend service TableService {
                 T01.CD_BY
         }
         where
-                T02.DEL_FLAG <> 'Y'
-            and T02.DEL_FLAG <> 'y';
+                T01.DEL_FLAG <> 'Y'
+            and T01.DEL_FLAG <> 'y';
     //                 action PCH07_CHECK_DATA(shelfJson : String) returns String;
     //                 action PCH07_SAVE_DATA(shelfJson : String) returns String;
 
