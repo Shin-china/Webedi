@@ -115,9 +115,7 @@ extend service TableService {
         select from PCH.T07_QUOTATION_D as T01
         left join PCH.T06_QUOTATION_H as T02
             on(
-                    T01.QUO_NUMBER   = T02.QUO_NUMBER
-                and T01.SALES_NUMBER = T02.SALES_NUMBER
-                and T01.QUO_VERSION  = T02.QUO_VERSION
+                T01.QUO_NUMBER = T02.QUO_NUMBER
             )
 
         {
