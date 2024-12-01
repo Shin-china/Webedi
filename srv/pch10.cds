@@ -135,7 +135,7 @@ extend service TableService {
                 T01.MAKER,
                 T01.UWEB_USER,
                 T01.BP_NUMBER,
-                //                    T02.PERSON_NO1,
+                T01.PERSON_NO1,
                 //                    T02.PERSON_NO2,
                 //                    T02.PERSON_NO3,
                 //                    T02.PERSON_NO4,
