@@ -80,6 +80,8 @@ public class PchD007 extends Dao {
     }
 
     public void update(Map<String, Object> data, Map<String, Object> keys) {
+        data.put("UP_TIME", this.getNow());
+        data.put("UP_BY", this.getUserId());
         CqnUpdate update = Update.entity(Pch_.T07_QUOTATION_D, b -> b.matching(keys)).data(data);
 
         db.run(update);
