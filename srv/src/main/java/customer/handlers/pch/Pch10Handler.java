@@ -15,8 +15,11 @@ import com.sap.cds.services.handler.annotations.ServiceName;
 
 import cds.gen.pch.T06QuotationH;
 import cds.gen.tableservice.PCH10GrSENDContext;
+import cds.gen.tableservice.PCH10SaveDATAContext;
 import cds.gen.tableservice.Pch06BatchSendingContext;
 import cds.gen.tableservice.TableService_;
+import customer.bean.pch.Pch06DataList;
+import customer.bean.pch.Pch10SaveDataList;
 import customer.handlers.sys.SendService;
 import customer.service.pch.Pch10Service;
 
@@ -64,4 +67,19 @@ public class Pch10Handler implements EventHandler {
         context.setResult(JSON.toJSONString(pch06List));
     }
 
+    // 保存
+    @On(event = "PCH10_SAVE_DATA")
+    public void saveData(PCH10SaveDATAContext context) throws IOException {
+
+
+        Pch10SaveDataList list = JSON.parseObject(context.getJson(), Pch10SaveDataList.class);
+
+        pch10Service.check(list);
+        if (!list.getErr()) {
+            pch10Service.detailsSave(list);
+        }
+
+
+        context.setResult(JSON.toJSONString(list));
+    }
 }

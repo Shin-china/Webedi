@@ -1,9 +1,14 @@
 package customer.service.pch;
 
+import java.math.BigDecimal;
 import java.util.List;
 
+import org.apache.poi.ss.formula.functions.T;
+import org.checkerframework.checker.units.qual.t;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import com.alibaba.fastjson.annotation.JSONField;
 
 import cds.gen.pch.T06QuotationH;
 import cds.gen.pch.T07QuotationD;
@@ -11,6 +16,8 @@ import cds.gen.sys.T07ComOpH;
 import cds.gen.sys.T08ComOpD;
 import ch.qos.logback.core.status.Status;
 import customer.bean.pch.Pch10;
+import customer.bean.pch.Pch10Save;
+import customer.bean.pch.Pch10SaveDataList;
 import customer.dao.pch.Pch10Dao;
 
 @Component
@@ -85,5 +92,94 @@ public class Pch10Service {
         // 输出头部状态
         System.out.println("Header Status: " + headerStatus);
 
+    }
+
+    public Pch10SaveDataList check(Pch10SaveDataList list) {
+
+        return list;
+
+    }
+
+    public void detailsSave(Pch10SaveDataList list) {
+        Integer count = 0;
+
+        for (Pch10Save value : list.getList()) {
+            count++;
+
+            T07QuotationD o = T07QuotationD.create();
+
+            o.setId(value.getT02_ID());
+            o.setSalesNumber(value.getSALES_NUMBER());
+            o.setSalesDNo(value.getSALES_D_NO());
+            o.setQuoNumber(value.getQUO_NUMBER());
+            o.setQuoItem(value.getQUO_ITEM());
+            o.setQuoVersion(value.getQUO_VERSION());
+            o.setNo(value.getNO());
+            o.setRefrenceNo(value.getREFRENCE_NO());
+            o.setMaterialNumber(value.getMATERIAL_NUMBER());
+            o.setCustMaterial(value.getCUST_MATERIAL());
+            o.setManufactMaterial(value.getMANUFACT_MATERIAL());
+            o.setAttachment(value.getAttachment());
+            o.setMaterial(value.getMaterial());
+            o.setMaker(value.getMAKER());
+            o.setUwebUser(value.getUWEB_USER());
+            o.setBpNumber(value.getBP_NUMBER());
+            o.setPersonNo1(value.getPERSON_NO1());
+            o.setYlp(value.getYLP());
+            o.setManul(value.getMANUL());
+            o.setManufactCode(value.getMANUFACT_CODE());
+            o.setCustomerMmodel(value.getCUSTOMER_MMODEL());
+            o.setMidQf(value.getMID_QF());
+            o.setSmallQf(value.getSMALL_QF());
+            o.setOtherQf(value.getOTHER_QF());
+            o.setQty(value.getQTY());
+            o.setCurrency(value.getCURRENCY());
+            o.setPrice(value.getPRICE());
+            o.setPriceControl(value.getPRICE_CONTROL());
+            o.setLeadTime(value.getLEAD_TIME());
+            o.setMoq(value.getMOQ());
+            o.setUnit(value.getUNIT());
+            o.setSpq(value.getSPQ());
+            o.setKbxt(value.getKBXT());
+            o.setProductWeight(value.getPRODUCT_WEIGHT());
+            o.setOriginalCou(value.getORIGINAL_COU());
+            o.setEol(value.getEOL());
+            o.setIsboi(value.getISBOI());
+            o.setIncoterms(value.getIncoterms());
+            o.setIncotermsText(value.getIncoterms_Text());
+            o.setMemo1(value.getMEMO1());
+            o.setMemo2(value.getMEMO2());
+            o.setMemo3(value.getMEMO3());
+            o.setSl(value.getSL());
+            o.setTz(value.getTZ());
+            o.setRmaterial(value.getRMATERIAL());
+            o.setRmaterialCurrency(value.getRMATERIAL_CURRENCY());
+            o.setRmaterialPrice(value.getRMATERIAL_PRICE());
+            o.setRmaterialLt(value.getRMATERIAL_LT());
+            o.setRmaterialMoq(value.getRMATERIAL_MOQ());
+            o.setRmaterialKbxt(value.getRMATERIAL_KBXT());
+            o.setUmcSelection(value.getUMC_SELECTION());
+            o.setUmcComment1(value.getUMC_COMMENT_1());
+            o.setUmcComment2(value.getUMC_COMMENT_2());
+            o.setStatus(value.getSTATUS());
+            o.setInitialObj(value.getINITIAL_OBJ());
+            o.setPlantId(value.getPLANT_ID());
+            o.setSupplierMat(value.getSUPPLIER_MAT());
+
+            try {
+
+                Pch10Dao.modifyT07(o);
+                list.setErr(false);
+                list.setReTxt("第" + count + "行保存成功");
+
+            } catch (Exception e) {
+
+                e.printStackTrace();
+                list.setErr(true);
+                list.setReTxt(e.getMessage());
+
+            }
+
+        }
     }
 }

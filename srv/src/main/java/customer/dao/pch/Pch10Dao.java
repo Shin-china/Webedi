@@ -16,6 +16,7 @@ import cds.gen.pch.T06QuotationH;
 import cds.gen.pch.T07QuotationD;
 import cds.gen.sys.T07ComOpH;
 import customer.bean.pch.Pch10;
+import customer.bean.pch.Pch10SaveDataList;
 import customer.dao.common.Dao;
 
 @Repository
@@ -115,6 +116,43 @@ public class Pch10Dao extends Dao {
         }
         return null;
 
+    }
+
+    public T07QuotationD getT07ByID(String id) {
+
+        Optional<T07QuotationD> result = db.run(Select.from(Pch_.T07_QUOTATION_D)
+                .where(o -> o.ID().eq(id)))
+                .first(T07QuotationD.class);
+
+        if (result.isPresent()) {
+
+            return result.get();
+
+        }
+        return null;
+
+    }
+
+    public void modifyT07(T07QuotationD o) {
+
+        T07QuotationD isExist = getT07ByID(o.getId());
+
+        if (isExist == null) {
+            insertT07(o);
+        } else {
+            updateT07(o);
+        }
+
+    }
+
+    private void updateT07(T07QuotationD o) {
+        o.setUpTime(getNow());
+        db.run(Update.entity(Pch_.T07_QUOTATION_D).entry(o));
+    }
+
+    private void insertT07(T07QuotationD o) {
+        o.setCdTime(getNow());
+        db.run(Insert.into(Pch_.T07_QUOTATION_D).entry(o));
     }
 
 }
