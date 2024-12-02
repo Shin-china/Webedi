@@ -110,6 +110,7 @@ public class PchD001 extends Dao {
     public void sendMailToUpdatePo(Map<String, String> supplierUpdateMap) throws IOException {
         Collection<MailJson> mailJsonList = new ArrayList<>();
 
+        // 更新发信
         if (supplierUpdateMap.size() > 0) {
             for (Map.Entry<String, String> entry : supplierUpdateMap.entrySet()) {
 
@@ -200,14 +201,13 @@ public class PchD001 extends Dao {
                     mailJson.setMailBody(createMailBody(emailadd)); // 设置邮件内容（MailBody）
                     // 添加到邮件列表
                     mailJsonList.add(mailJson);
-                    // 调用邮件发送服务
+
+                    emailServiceFun.sendEmailFun(mailJsonList);
 
                 }
             }
 
         }
-
-        emailServiceFun.sendEmailFun(mailJsonList);
 
     }
 
