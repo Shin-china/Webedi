@@ -215,7 +215,7 @@ sap.ui.define([
 						//所有供应商下的数据	
 						const obj1 = groupedBySupplier[supplier];
 						if (obj1[0].EMAIL_ADDRESS) {
-							this._sendEmailTy(obj1, supplierObjMap, supplierLenMap, supplierCntMap, supplier, "UWEB_PCH03_P")
+							this._sendEmailFaxTy(obj1, supplierObjMap, supplierLenMap, supplierCntMap, supplier, "UWEB_M006")
 						} else {
 							this._setBusy(false);
 							console.log((this.MessageTools._getI18nTextInModel("pch", "PCH_03_ERROR_MSG1", this.getView())))
@@ -359,7 +359,10 @@ sap.ui.define([
 							object: "仕入先名称",
 							value: supplier // 使用替换后的邮件内容
 						},
-
+						{
+							object: "po",
+							value: uniqueIdList // 使用替换后的邮件内容
+						},
 						{
 							object: "filename_2",
 							value: that.CommTools.getCurrentTimeFormatted()+"_"+supplier+".csv"
@@ -402,6 +405,78 @@ sap.ui.define([
 				//sonota和C部分明细打印
 				if (obj == "C" || obj == "W") {
 					that._printZWSPrintEmail(that, myMap.get(item), "/PCH_T03_PO_ITEM_PRINT", "ID",supplierObjMap,item,supplier).then((oData) => {
+
+						that._newNPSprinEmil(myMap, that, oData, supplierObjMap).then((oData2) => {
+							if(this._checkEmailaskPdf(supplierLenMap,supplierCntMap,oData2[1])){
+								this._sendEmail(supplierObjMap.get(oData2[1]));
+								this._setBusy(false);
+							}
+						})
+					})
+				}
+
+			}
+		 },
+		 _sendEmailFaxTy: function (obj1,supplierObjMap,supplierLenMap,supplierCntMap,supplier,TEMPLATE_ID){
+			var that = this;
+			// 创建一个新的Map对象  用作判断key值对应po对应的明细数据
+			let myMap = new Map();
+			var poList = [];
+			obj1.forEach((item) => {
+				poList.push(item.PO_NO);
+				myMap.get(item.PO_NO) ? myMap.get(item.PO_NO).push(item.ID) : myMap.set(item.PO_NO, [item.ID]);
+			})
+
+
+
+
+			//经过去重以后的po号
+			var uniqueIdList = [...new Set(poList)];
+			var mailobj = {
+				emailJson: {
+					TEMPLATE_ID: TEMPLATE_ID,
+					MAIL_TO: obj1[0].EMAIL_ADDRESS,
+					MAIL_BODY: [
+
+						{
+							object: "発注番号",
+							value: uniqueIdList.join("_") // 使用替换后的邮件内容
+						},
+					
+					]
+				}
+			};
+			
+			//将mailobj对象设置到supplierObjMap中
+			supplierObjMap.set(supplier, mailobj);
+			supplierLenMap.set(supplier, uniqueIdList.length);
+			supplierCntMap.set(supplier, 0);
+
+			//循环po通过po打印
+			for(var i=0;i<uniqueIdList.length;i++){
+				
+				var item = uniqueIdList[i];
+				let obj = obj1[0].ZABC;
+				//EFwei全po打印
+				if (obj == "E" || obj == "F") {
+
+					that._printZWSPrintEmail(that, [item], "/PCH_T03_PO_ITEM_PRINT", "PO_NO",supplierObjMap,item,supplier,"FAX").then((oData) => {
+
+						that._newNPSprinEmil(myMap, that, oData, supplierObjMap).then((oData2) => {
+
+
+							if(this._checkEmailaskPdf(supplierLenMap,supplierCntMap,oData2[1])){
+								this._sendEmail(supplierObjMap.get(oData2[1]));
+								this._setBusy(false);
+							}
+						})
+
+					})
+
+				}
+				//sonota和C部分明细打印
+				if (obj == "C" || obj == "W") {
+					that._printZWSPrintEmail(that, myMap.get(item), "/PCH_T03_PO_ITEM_PRINT", "ID",supplierObjMap,item,supplier,"FAX").then((oData) => {
 
 						that._newNPSprinEmil(myMap, that, oData, supplierObjMap).then((oData2) => {
 							if(this._checkEmailaskPdf(supplierLenMap,supplierCntMap,oData2[1])){
@@ -522,7 +597,7 @@ sap.ui.define([
 			})
 
 		},
-		_printZWSPrintEmail(that, item, cds, key,list,name,supplier) {
+		_printZWSPrintEmail(that, item, cds, key,list,name,supplier,fax) {
 			let options = { compact: true, ignoreComment: true, spaces: 4 };
 			return new Promise(function (resolve, reject) {
 			//打印前先获取打印数据npm
@@ -536,7 +611,7 @@ sap.ui.define([
 					that.PrintTool.getImageBase64(oData).then((odata2) => {
 						list.get(supplier).emailJson.MAIL_BODY.push({
 							object: "filename_2",
-							value: that.CommTools.getCurrentTimeFormatted()+"_"+name+"注文書.pdf"
+							value: fax? "TransFAX_"+name+".pdf" :that.CommTools.getCurrentTimeFormatted()+"_"+name+"注文書.pdf"
 						});
 						list.get(supplier).emailJson.MAIL_BODY.push({
 							object: "filecontent_2",
