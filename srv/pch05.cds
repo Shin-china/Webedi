@@ -309,13 +309,14 @@ extend service TableService {
 
     entity PCH_T05_ACCOUNT_DETAIL           as
         select from PCH.T05_PAYMENT_D as T05
-        left join PCH.T04_PAYMENT_H as T04
+        inner join PCH.T04_PAYMENT_H as T04
             on T05.INV_NO = T04.INV_NO
-            and T05.TAX_CODE = 'V3' or T05.TAX_CODE = 'V4'
+            and T05.TAX_CODE in ('V3', 'V4')
         left join MST.T03_SAP_BP as T03
             on T04.SUPPLIER = T03.BP_ID
         left join SYS.T08_COM_OP_D as T08
             on T08.H_CODE = 'MM0011'
+        
 
         distinct {
             key T05.INV_NO, // 伝票番号
