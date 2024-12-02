@@ -143,6 +143,7 @@ public class Pch03Handler implements EventHandler {
             BigDecimal taxAmount = pchd03.getTaxAmount();
             // 货币除了日元5其余2
             String currency = pchd03.getCurrency();
+            pchd03.setOrderUnitPrice(numFromt(pchd03.getDelPrice()));
             if (delPrice != null && poPurQty != null && taxAmount != null) {
                 //// 税抜額
                 // 根据货币进行四舍五入
@@ -157,7 +158,7 @@ public class Pch03Handler implements EventHandler {
 
                 // 税込額
                 BigDecimal inclusive_tax_amount = taxAmount.add(exclusive_tax_amount);
-                pchd03.setOrderUnitPrice(numFromt(pchd03.getDelPrice()));
+
                 pchd03.setExclusiveTaxAmount(numFromt(exclusive_tax_amount));
                 pchd03.setTaxAmountView(numFromt(taxAmount));
                 pchd03.setInclusiveTaxAmount(numFromt(inclusive_tax_amount));
@@ -362,8 +363,11 @@ public class Pch03Handler implements EventHandler {
             String currency = pchd03.getCurrency();
             // 発注金額 = 価格単位*発注数量 三位小数
             // 根据货币进行四舍五入
-            pchd03.setIssuedamount(NumberTool.toScale(pchd03.getDelPrice().multiply(pchd03.getPoPurQty()),
-                    currency));
+            if (pchd03.getDelPrice() != null) {
+                pchd03.setIssuedamount(NumberTool.toScale(pchd03.getDelPrice().multiply(pchd03.getPoPurQty()),
+                        currency));
+            }
+
             // 设置検査合区分
             if (!StringTool.isEmpty(pchd03.getImpComp())) {
                 // pchd03.setImpComp("受入検査あり");
