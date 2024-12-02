@@ -65,7 +65,8 @@ public class SendService {
         for (int i = 0; i < jsonArray.size(); i++) {
             JSONObject jsonObject = jsonArray.getJSONObject(i);
             T06QuotationH t06QuotationH = PchD006.get(jsonObject.getString("QUO_NUMBER"));
-            pch06List.add(t06QuotationH);
+            if (t06QuotationH != null)
+                pch06List.add(t06QuotationH);
         }
         return pch06List;
 
