@@ -52,6 +52,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Stream;
 
+import com.alibaba.excel.util.StringUtils;
+
 @Component
 @ServiceName(TableService_.CDS_NAME)
 public class Pch03Handler implements EventHandler {
@@ -220,19 +222,20 @@ public class Pch03Handler implements EventHandler {
             pchd03.setCop19(pchd03.getCop27());
             // 公司固定值取出
 
-            pchd03.setZws1(pchd03.getPodno() + "\n" + pchd03.getSapCdBy());
+            pchd03.setZws1(
+                    pchd03.getPodno() + "\n" + (StringUtils.isBlank(pchd03.getSapCdBy()) ? "" : pchd03.getSapCdBy()));
             pchd03.setZws2(pchd03.getSupplierMat() + "\n" + pchd03.getMatId());
             pchd03.setZws3(pchd03.getManuMaterial());
             pchd03.setZws4(pchd03.getCop2() + "\n" + pchd03.getStorage());
             pchd03.setZws5(pchd03.getPoPurUnit() + "\n" + pchd03.getMemo());
 
             if (pchd03.getDelPrice() != null && pchd03.getPoPurQty() != null) {
-                pchd03.setZws7(
+                pchd03.setZws7(numFromt(
                         NumberTool.toScale(pchd03.getDelPrice().multiply(pchd03.getPoPurQty()),
-                                currency) + "");
+                                currency)));
+                pchd03.setZws6(numFromt(pchd03.getDelPrice()));
             }
 
-            pchd03.setZws6(pchd03.getDelPrice().toString());
             pchd03.setZws8(pchd03.getCurrency());
             pchd03.setZws9(DateTools.getCurrentDateString(pchd03.getPoDDate()));
 
