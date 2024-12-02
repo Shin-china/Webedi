@@ -143,6 +143,7 @@ extend service TableService {
                 '' as DATE1 : String,
                 '' as DATE2 : String,
                 '' as DATE3 : String,
+                '' as DATE4 : String,
 
                 '' as BP_NAME12 : String,
                 '' as POSTCODE2 : String,

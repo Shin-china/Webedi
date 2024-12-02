@@ -247,7 +247,7 @@ public class Pch03Handler implements EventHandler {
             pchd03.setDate1(DateTools.getCurrentDateString());
             pchd03.setDate2(DateTools.getCurrentDateString());
             pchd03.setDate3(DateTools.getCurrentDateString());
-
+            pchd03.setDate4(DateTools.getCurrentDateString());
             List<T08ComOpD> byList = pchD008Dao.getByList(UmcConstants.C_INFO);
             for (T08ComOpD t08ComOpD : byList) {
                 if (UmcConstants.C_INFO_NAME.equals(t08ComOpD.getDName())) {

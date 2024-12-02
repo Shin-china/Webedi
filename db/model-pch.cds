@@ -259,13 +259,13 @@ entity T09_FORCAST : IF_CUID_FILED { //
                                  @title: '{i18n>PUR_GROUP}' PUR_GROUP                   : String(3); //購買 Group
                                  @title: '{i18n>PUR_GROUP_NAME}' PUR_GROUP_NAME         : String(20); //購買 Group名
                                  @title: '{i18n>SUPPLIER}' SUPPLIER                     : String(10); //仕入先
-                                 @title: '{i18n>NAME1}' NAME1                           : String(20); //名称 1
+                                 @title: '{i18n>NAME1}' NAME1                           : String(40); //名称 1
                                  @title: '{i18n>MATERIAL}' MATERIAL                     : String(40); //品目
                                  @title: '{i18n>MATERIAL_TEXT}' MATERIAL_TEXT           : String(80); //品目テキスト
                                  @title: '{i18n>SUPPLIER_MATERIAL}' SUPPLIER_MATERIAL   : String(40); //仕入先品目コード
                                  @title: '{i18n>DELIVARY_DAYS}' DELIVARY_DAYS           : Integer; //納入予定日数
                                  @title: '{i18n>MIN_DELIVERY_QTY}' MIN_DELIVERY_QTY     : Decimal(18, 3); //最低発注数量
-                                 @title: '{i18n>MANUF_CODE}' MANUF_CODE                 : String(20); //製造者製品コード
+                                 @title: '{i18n>MANUF_CODE}' MANUF_CODE                 : String(40); //製造者製品コード
                                  @title: '{i18n>ARRANGE_START_DATE}' ARRANGE_START_DATE : Date; //手配開始日
                                  @title: '{i18n>ARRANGE_END_DATE}' ARRANGE_END_DATE     : Date; //手配終了日
                                  @title: '{i18n>ARRANGE_QTY}' ARRANGE_QTY               : Decimal(18, 3); //手配数量合計
