@@ -61,7 +61,7 @@ public class Ifm05PayService {
                     o.setInvNo(suplist.getSupplierinvoice());
                     o.setGlYear(suplist.getFiscalyear());
                     o.setSupplier(suplist.getInvoicingparty());
-                    o.setInvPostDate(suplist.getPostingdate1());
+                    o.setInvPostDate(suplist.getPostingdate2());
                     o.setExchange(suplist.getExchangerate());
                     o.setInvBaseDate(suplist.getDuecalculationbasedate());
                     o.setAmount(suplist.getInvoicegrossamount());
@@ -102,7 +102,7 @@ public class Ifm05PayService {
                     p.setPlantId(suplist.getPlant());
                     p.setCompanyCode(suplist.getCompanycode());
                     p.setShkzg(suplist.getDebitcreditcode());
-                    p.setGrDate(suplist.getPostingdate2());
+                    p.setGrDate(suplist.getPostingdate1());
                     p.setTaxRate(suplist.getTaxrate());
                     p.setMatDesc(suplist.getPurchaseorderitemtext());
                     PchDao.modifyT05(p);
