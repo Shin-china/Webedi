@@ -182,6 +182,8 @@ public class Ifm03PoService {
                         o2.setIntNumber(Items.getInternationalarticlenumber());
                         o2.setPrBy(Items.getRequisitionername());
 
+                        o2.setTaxCode(Items.getTaxcode());// 1125新需求 追加
+
                         try {
 
                             LocalDate deliveryDate = LocalDate.parse(Items.getSchedulelinedeliverydate(), formatter);
@@ -196,6 +198,9 @@ public class Ifm03PoService {
                             // 将字符串转换为 BigDecimal
                             BigDecimal netpriceAmount = new BigDecimal(Items.getNetpriceamount());
                             BigDecimal netPriceQuantity = new BigDecimal(Items.getNetpricequantity());
+                            BigDecimal taxAmount = new BigDecimal(Items.getTaxamount());// 1125新需求 追加
+
+                            o2.setTaxAmount(taxAmount);
 
                             // 检查 netPriceQuantity 是否为 0，以避免除以 0 的情况
                             if (netPriceQuantity.compareTo(BigDecimal.ZERO) != 0) {
