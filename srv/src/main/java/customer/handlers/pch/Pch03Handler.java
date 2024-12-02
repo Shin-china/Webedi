@@ -197,8 +197,9 @@ public class Pch03Handler implements EventHandler {
             pchd03.setCop3(pchd03.getPodno());
             // 納入日：
             pchd03.setCop4(DateTools.getCurrentDateString(pchd03.getPoDDate(), "yyyy-MM-dd"));
-            pchd03.setCop5(pchd03.getSupplierMat());
-            pchd03.setCop6(pchd03.getMatId());
+            pchd03.setCop5(pchd03.getMatId());
+            pchd03.setCop6(pchd03.getPoDTxz01());
+            pchd03.setCop20(pchd03.getSupplierMat());
             pchd03.setCop7(pchd03.getStorage());
             pchd03.setCop8(pchd03.getCheckOk());
             pchd03.setCop9(pchd03.getBpName1());// name1
@@ -228,12 +229,16 @@ public class Pch03Handler implements EventHandler {
             pchd03.setZws3(pchd03.getManuMaterial());
             pchd03.setZws4(pchd03.getCop2() + "\n" + pchd03.getStorage());
             pchd03.setZws5(pchd03.getPoPurUnit() + "\n" + pchd03.getMemo());
-
             if (pchd03.getDelPrice() != null && pchd03.getPoPurQty() != null) {
                 pchd03.setZws7(numFromt(
                         NumberTool.toScale(pchd03.getDelPrice().multiply(pchd03.getPoPurQty()),
                                 currency)));
                 pchd03.setZws6(numFromt(pchd03.getDelPrice()));
+            }
+            // 如果potype为删除是则单价和价格0
+            if ("D".equals(pchd03.getPoType())) {
+                pchd03.setZws7("0");
+                pchd03.setZws6("0");
             }
 
             pchd03.setZws8(pchd03.getCurrency());
@@ -276,9 +281,9 @@ public class Pch03Handler implements EventHandler {
         pchd03.setJcs3(pchd03.getStorage());
         pchd03.setJcs4(pchd03.getSapCdBy());
         pchd03.setJcs5(pchd03.getCop1());
-        pchd03.setJcs6(pchd03.getSupplierMat());
-        pchd03.setJcs7(pchd03.getMatId());
-        pchd03.setJcs8(pchd03.getPoDTxz01());
+        pchd03.setJcs6(pchd03.getMatId());
+        pchd03.setJcs7(pchd03.getPoDTxz01());
+        pchd03.setJcs8(pchd03.getSupplierMat());
         pchd03.setJcs9(pchd03.getPoDDate2());
         pchd03.setJcs10(pchd03.getPoPurQty2());
         pchd03.setJcs11(pchd03.getCop2());
@@ -370,7 +375,13 @@ public class Pch03Handler implements EventHandler {
                 pchd03.setIssuedamount(NumberTool.toScale(pchd03.getDelPrice().multiply(pchd03.getPoPurQty()),
                         currency));
             }
+            // 如果potype为删除是则单价和价格0
+            if ("D".equals(pchd03.getPoType())) {
+                pchd03.setIssuedamount(BigDecimal.ZERO);
+                pchd03.setDelPrice2(BigDecimal.ZERO);
+                pchd03.setPoPurQty2(BigDecimal.ZERO);
 
+            }
             // 设置検査合区分
             if (!StringTool.isEmpty(pchd03.getImpComp())) {
                 // pchd03.setImpComp("受入検査あり");
