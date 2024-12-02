@@ -54,16 +54,15 @@
 						<smartFilterBar:ControlConfiguration id="PO_PUR_QTY" index="11" key="PO_PUR_QTY"  visible="false" />	
 						<smartFilterBar:ControlConfiguration id="PO_PUR_UNIT" index="11" key="PO_PUR_UNIT"  visible="false" />	
 						<smartFilterBar:ControlConfiguration id="CURRENCY" index="11" key="CURRENCY"  visible="false" />	
+						
 						<smartFilterBar:ControlConfiguration id="DEL_PRICE" index="11" key="DEL_PRICE"  visible="false" />	
 						<smartFilterBar:ControlConfiguration id="UNIT_PRICE" index="11" key="UNIT_PRICE"  visible="false" />	
 						<smartFilterBar:ControlConfiguration id="DEL_AMOUNT" index="11" key="DEL_AMOUNT"  visible="false" />	
 						<smartFilterBar:ControlConfiguration id="USER_TYPE" index="11" key="USER_TYPE"  visible="false" />	
-						<smartFilterBar:ControlConfiguration id="UNIT_PRICE" index="11" key="UNIT_PRICE"  visible="false" />	
-						<smartFilterBar:ControlConfiguration id="PO_TYPE" index="11" key="PO_TYPE"  visible="false" />	
-						<smartFilterBar:ControlConfiguration id="PO_PUR_QTY" index="11" key="PO_PUR_QTY"  visible="false" />	
+	
 						<smartFilterBar:ControlConfiguration id="STORAGE_LOC" index="11" key="STORAGE_LOC"  visible="false" />	
 						<smartFilterBar:ControlConfiguration id="SUPPLIER_MAT" index="11" key="SUPPLIER_MAT"  visible="false" />	
-						<smartFilterBar:ControlConfiguration id="PCH03_BP_NAME1" index="11" key="PCH03_BP_NAME1"  visible="false" />	
+						<smartFilterBar:ControlConfiguration index="11" key=""  visible="false" />	
 						<smartFilterBar:ControlConfiguration id="BP_ID" index="11" key="BP_ID"  visible="false" />	
 						<smartFilterBar:ControlConfiguration id="BYNAME" index="11" key="BYNAME"  visible="false" />	
 						<smartFilterBar:ControlConfiguration id="checkOk" index="11" key="checkOk"  visible="false" />	
