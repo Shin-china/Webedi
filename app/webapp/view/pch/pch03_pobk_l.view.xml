@@ -55,8 +55,11 @@
 						<smartFilterBar:ControlConfiguration id="PO_PUR_UNIT" index="11" key="PO_PUR_UNIT"  visible="false" />	
 						<smartFilterBar:ControlConfiguration id="CURRENCY" index="11" key="CURRENCY"  visible="false" />	
 						
-						<smartFilterBar:ControlConfiguration id="DEL_PRICE" index="11" key="DEL_PRICE"  visible="false" />	
+						<smartFilterBar:ControlConfiguration id="DEL_PRICE2" index="11" key="DEL_PRICE2"  visible="false" />	
+						<smartFilterBar:ControlConfiguration id="PO_PUR_QTY2" index="11" key="PO_PUR_QTY2"  visible="false" />	
 						<smartFilterBar:ControlConfiguration id="UNIT_PRICE" index="11" key="UNIT_PRICE"  visible="false" />	
+																		
+						<smartFilterBar:ControlConfiguration id="DEL_PRICE" index="11" key="DEL_PRICE"  visible="false" />	
 						<smartFilterBar:ControlConfiguration id="DEL_AMOUNT" index="11" key="DEL_AMOUNT"  visible="false" />	
 						<smartFilterBar:ControlConfiguration id="USER_TYPE" index="11" key="USER_TYPE"  visible="false" />	
 	
@@ -70,7 +73,24 @@
 						<smartFilterBar:ControlConfiguration id="DOWN_FLAG" index="11" key="DOWN_FLAG"  visible="false" />	
 						<smartFilterBar:ControlConfiguration id="EMAIL_ADDRESS" index="11" key="EMAIL_ADDRESS"  visible="false" />	
 						<smartFilterBar:ControlConfiguration id="IMP_COMP" index="11" key="IMP_COMP"  visible="false" />	
-					
+						
+						<smartFilterBar:ControlConfiguration index="11" key="PR_BY"  visible="false" />	
+						<smartFilterBar:ControlConfiguration index="11" key="INT_NUMBER"  visible="false" />	
+						<smartFilterBar:ControlConfiguration index="11" key="SAP_CD_BY"  visible="false" />	
+						<smartFilterBar:ControlConfiguration index="11" key="POCDBY"  visible="false" />	
+						<smartFilterBar:ControlConfiguration index="11" key="ISSUEDAMOUNT"  visible="false" />	
+						<smartFilterBar:ControlConfiguration index="11" key="MANU_MATERIAL"  visible="false" />	
+						<smartFilterBar:ControlConfiguration index="11" key="BP_NAME1"  visible="false" />	
+						<smartFilterBar:ControlConfiguration index="11" key="TYPE"  visible="false" />	
+						<smartFilterBar:ControlConfiguration index="11" key="STORAGE_TXT"  visible="false" />	
+						<smartFilterBar:ControlConfiguration index="11" key="ZABC1_NAME"  visible="false" />	
+						<smartFilterBar:ControlConfiguration index="11" key="STATUS_NAME"  visible="false" />	
+						<smartFilterBar:ControlConfiguration index="11" key="PO_TYPE_NAME"  visible="false" />	
+						<smartFilterBar:ControlConfiguration index="11" key="IMP_COMP"  visible="false" />	
+						<smartFilterBar:ControlConfiguration index="11" key="IMP_COMP"  visible="false" />	
+
+
+
 
 
 						</smartFilterBar:controlConfiguration>

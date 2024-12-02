@@ -106,15 +106,15 @@ public class SysD008Dao extends Dao {
      */
     public String getEmailAddress(String supplier) {
 
-        Optional<T08ComOpD> listOf = db.run(
+        List<T08ComOpD> listOf = db.run(
                 Select.from(Sys_.T08_COM_OP_D)
                         .where(o -> o.H_CODE().eq(UmcConstants.T08_EMAIL_ADDRESS).and(o.VALUE01().eq(supplier))))
 
-                .first(T08ComOpD.class);
+                .listOf(T08ComOpD.class);
 
-        if (listOf.isPresent()) {
-
-            return listOf.get().getValue02();
+        if (listOf.size() > 0) {
+            // 获取listOf中所有的.getValue02()去重数据，并且拼接成,分割的字符串
+            return listOf.stream().map(T08ComOpD::getValue02).distinct().collect(Collectors.joining(","));
 
         }
 
