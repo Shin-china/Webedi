@@ -345,11 +345,12 @@ extend service TableService {
                 Tu.USER_TYPE = '1';
 
 
-    action PCH03_SENDEMAIL(parms : String) returns String;
-    action PCH03_QUEREN(parms : String) returns String;
-    action PCH03_GETTYPE(parms : String) returns String;
-    action PCH03_PRINTHX(parms : String) returns String;
-    action PCH03_LOGDATA(parms : String) returns String;
+    action PCH03_SENDEMAIL(parms : String) returns String; //发用邮件方法
+    action PCH03_QUEREN(parms : String) returns String; //确认方法
+    action PCH03_GETTYPE(parms : String) returns String; //获取邮件类型
+    action PCH03_PRINTHX(parms : String) returns String; //打印csv回执方法 
+    action PCH03_LOGDATA(parms : String) returns String; //判断po明细是否和履历表中的一致
+    action PCH03_UPDATE_EMAILTYPE(parms : String) returns String; //更新fax的邮箱头，以用作邮件发送
 
 }
 

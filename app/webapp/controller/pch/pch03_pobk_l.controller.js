@@ -64,6 +64,8 @@ sap.ui.define([
 			let boo = true;
 			oEvent.forEach(odata => {
 				if (odata.STATUS == '02') {
+					
+					console.log((this.MessageTools._getI18nTextInModel("pch", "PCH03_MESSAGE1", this.getView())))
 					that.MessageTools._addMessages(this.MessageTools._getI18nTextInModel("pch", "PCH03_MESSAGE1", this.getView()), null, 1, this.getView());
 
 				}
@@ -78,6 +80,7 @@ sap.ui.define([
 		 */
 		onQr: function (oEvent) {
 			var that = this;
+			this.MessageTools._clearMessage();
 			//设置通用dialog
 			this._AfterDigLogCheck().then((selectedIndices) => {
 				var pList = Array();
@@ -187,10 +190,69 @@ sap.ui.define([
 			// Disable Worker as Mockserver is used in Demokit sample
 			mExcelSettings.worker = false;
 		},
-		onEmail: function (oEvt) {
+		onFax: function (oEvt) {
 			var that = this;
+			this.MessageTools._clearMessage();
 			//有输入true则需要判读是否已经发送过邮件，且提示框内容不一样
 			this._AfterDigLogCheck(true).then((selectedIndices) => {
+				//发注区分的报错fax
+				//true则报错，false则无报错
+				if (this._checkZABC(selectedIndices, "F")) {
+					this._setBusy(false);
+					console.log((this.MessageTools._getI18nTextInModel("pch", "PCH_03_ERROR_MSG4", this.getView())))
+					that.MessageTools._addMessages(this.MessageTools._getI18nTextInModel("pch", "PCH_03_ERROR_MSG4", this.getView()), null, 1, this.getView());
+					return;
+
+				} else {
+					//
+					//获取supplierMap
+					var supplierObjMap = new Map();
+					var supplierLenMap = new Map();
+					var supplierCntMap = new Map();
+					//将工厂分过的数据通过供应商分组
+					const groupedBySupplier = that._getObjiList(selectedIndices, "SUPPLIER");
+					Object.keys(groupedBySupplier).forEach(supplier => {
+						//所有供应商下的数据	
+						const obj1 = groupedBySupplier[supplier];
+						if (obj1[0].EMAIL_ADDRESS) {
+							this._sendEmailTy(obj1, supplierObjMap, supplierLenMap, supplierCntMap, supplier, "UWEB_PCH03_P")
+						} else {
+							this._setBusy(false);
+							console.log((this.MessageTools._getI18nTextInModel("pch", "PCH_03_ERROR_MSG1", this.getView())))
+							that.MessageTools._addMessages(this.MessageTools._getI18nTextInModel("pch", "PCH_03_ERROR_MSG1", this.getView()), null, 1, this.getView());
+						}
+					})
+					this._isQuerenDb(selectedIndices, "eml");
+				}
+
+
+
+			})
+		},
+		_checkZABC: function (selectedIndices,_ZABC){
+			var boo =false;
+			selectedIndices.some((index) => {
+				if(index.ZABC != _ZABC){
+					 boo = true;
+				}
+			})
+			return boo;
+		},
+		onEmail: function (oEvt) {
+			var that = this;
+			this.MessageTools._clearMessage();
+			//有输入true则需要判读是否已经发送过邮件，且提示框内容不一样
+			this._AfterDigLogCheck(true).then((selectedIndices) => {
+				//发注区分的报错fax
+				//true则报错，false则无报错
+				if(this._checkZABC(selectedIndices,"W")){
+					this._setBusy(false);
+					console.log((this.MessageTools._getI18nTextInModel("pch", "PCH_03_ERROR_MSG3", this.getView())))
+					that.MessageTools._addMessages(this.MessageTools._getI18nTextInModel("pch", "PCH_03_ERROR_MSG3", this.getView()), null, 1, this.getView());
+					return;
+					
+				}else{
+
 				//
 				//获取supplierMap
 				var supplierObjMap = new Map();
@@ -232,7 +294,7 @@ sap.ui.define([
 								}
 							}else{
 								this._setBusy(false);
-								// this.MessageTools._addMessages(this.MessageTools._getI18nText("", this.getView()), null, 1, this.getView());
+								console.log((this.MessageTools._getI18nTextInModel("pch", "PCH_03_ERROR_MSG1", this.getView())))
 								that.MessageTools._addMessages(this.MessageTools._getI18nTextInModel("pch", "PCH_03_ERROR_MSG1", this.getView()), null, 1, this.getView());
 							}
 							})
@@ -255,6 +317,7 @@ sap.ui.define([
 							this._sendEmailTy(obj1, supplierObjMap, supplierLenMap, supplierCntMap, supplier, "UWEB_PCH03_P")
 						}else{
 							this._setBusy(false);
+							console.log((this.MessageTools._getI18nTextInModel("pch", "PCH_03_ERROR_MSG1", this.getView())))
 							that.MessageTools._addMessages(this.MessageTools._getI18nTextInModel("pch", "PCH_03_ERROR_MSG1", this.getView()), null, 1, this.getView());
 						}
 
@@ -264,6 +327,9 @@ sap.ui.define([
 					})
 				}
 				that._isQuerenDb(selectedIndices, "eml");
+				}
+
+
 			})
 		},
 

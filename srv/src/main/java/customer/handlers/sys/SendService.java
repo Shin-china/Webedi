@@ -92,14 +92,12 @@ public class SendService {
         return (String) jsonObject2.get("value");
     }
 
-    public void extracted(ArrayList<PchT06QuotationH> pch06List, ArrayList<cds.gen.pch.T06QuotationH> pch06List2) {
+    public void extracted(ArrayList<PchT06QuotationH> pch06List) {
+        ArrayList<cds.gen.pch.T06QuotationH> pch06List2 = new ArrayList<>();
         System.out.println("开始插入");
         pch06List.forEach(pchT06QuotationH -> {
 
             // 获取購買見積番号
-            // pchT06QuotationH.setQuoNumber(docNoDao.getPJNo(1));
-
-            // pchT06QuotationH.setQuoNumber(docNoDao.getQuoNumber("", 1));
             pchT06QuotationH.setQuoNumber(pchT06QuotationH.getQuoNumber());
 
             // 插入头标，首先删除原key值数据
@@ -123,8 +121,6 @@ public class SendService {
             List<PchT07QuotationD> toItems = pchT06QuotationH.getToItemPo();
             if (toItems != null) {
                 toItems.forEach(pchT07QuotationD -> {
-                    // 获取購買見積番号
-                    pchT07QuotationD.setQuoNumber(pchT06QuotationH.getQuoNumber());
 
                     T07QuotationD t07QuotationD = T07QuotationD.create();
 
@@ -135,10 +131,10 @@ public class SendService {
 
                     if (byID2 != null) {
 
-                        PchD007.update(t07QuotationD);
+                        // PchD007.update(t07QuotationD);
 
                         Map<String, Object> data = new HashMap<>();
-                        extracted2(t07QuotationD, data);
+                        getT07DaoData(t07QuotationD, data);
                         Map<String, Object> keys = new HashMap<>();
                         keys.put("ID", t07QuotationD.getId());
                         PchD007.update(data, keys);
@@ -151,7 +147,7 @@ public class SendService {
         });
     }
 
-    private void extracted2(T07QuotationD t07QuotationD, Map<String, Object> data) {
+    public void getT07DaoData(T07QuotationD t07QuotationD, Map<String, Object> data) {
         data.put("SALES_NUMBER", t07QuotationD.getSalesNumber());
         data.put("QUO_VERSION", t07QuotationD.getQuoVersion());
         data.put("SALES_D_NO", t07QuotationD.getSalesDNo());
@@ -219,5 +215,6 @@ public class SendService {
         data.put("STATUS", t07QuotationD.getStatus());
         data.put("CD_DATE", t07QuotationD.getCdDate());
         data.put("CD_DATE_TIME", t07QuotationD.getCdDateTime());
+
     }
 }

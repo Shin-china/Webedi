@@ -108,7 +108,7 @@ public class SysD008Dao extends Dao {
 
         Optional<T08ComOpD> listOf = db.run(
                 Select.from(Sys_.T08_COM_OP_D)
-                        .where(o -> o.H_CODE().eq(UmcConstants.T08_EMAIL_ADDRESS).and(o.D_CODE().eq(supplier))))
+                        .where(o -> o.H_CODE().eq(UmcConstants.T08_EMAIL_ADDRESS).and(o.VALUE01().eq(supplier))))
 
                 .first(T08ComOpD.class);
 
