@@ -784,6 +784,7 @@ sap.ui.define([
 
 					function (odata) {
 						that.byId("smartTable").rebindTable();
+						that._setBusy(false);
 					},
 					function (error) {
 						that.MessageTools._addMessage(error.responseText, null, null, that.getView());
