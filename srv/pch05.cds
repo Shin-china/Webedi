@@ -311,6 +311,7 @@ extend service TableService {
         select from PCH.T05_PAYMENT_D as T05
         left join PCH.T04_PAYMENT_H as T04
             on T05.INV_NO = T04.INV_NO
+            and T05.TAX_CODE = 'V3' or T05.TAX_CODE = 'V4'
         left join MST.T03_SAP_BP as T03
             on T04.SUPPLIER = T03.BP_ID
         left join SYS.T08_COM_OP_D as T08
