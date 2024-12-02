@@ -19,10 +19,10 @@ import cds.gen.tableservice.PchT05AccountDetailDisplay3;
 import cds.gen.tableservice.PchT05AccountDetailDisplay3_;
 import cds.gen.tableservice.PchT05Forexcel;
 import cds.gen.tableservice.PchT05Forexcel_;
-import cds.gen.tableservice.PchT05AccountDetailExcel;
-import cds.gen.tableservice.PchT05AccountDetailExcel_;
-import cds.gen.tableservice.PchT05AccountDetail;
-import cds.gen.tableservice.PchT05AccountDetail_;
+import cds.gen.tableservice.PchT05AccountDetailExcel1;
+import cds.gen.tableservice.PchT05AccountDetailExcel1_;
+import cds.gen.tableservice.PchT05AccountDetail1;
+import cds.gen.tableservice.PchT05AccountDetail1_;
 import cds.gen.tableservice.TableService_;
 import cds.gen.MailBody;
 import cds.gen.MailJson;
@@ -76,28 +76,28 @@ public class Pch05Handler implements EventHandler {
    * @param context       传入上下文
    * @param d012MoveActHs 传入画面输入值
    */
-  @After(entity = PchT05AccountDetail_.CDS_NAME, event = "READ")
-  public void afterReadPchT05AccountDetail(CdsReadEventContext context,
-      Stream<PchT05AccountDetail> pchT05AccountDetails) {
-    pchT05AccountDetails.forEach(pchT05AccountDetail -> {
-      String currency = pchT05AccountDetail.getCurrency();
+  @After(entity = PchT05AccountDetail1_.CDS_NAME, event = "READ")
+  public void afterReadPchT05AccountDetail1(CdsReadEventContext context,
+      Stream<PchT05AccountDetail1> pchT05AccountDetail1s) {
+    pchT05AccountDetail1s.forEach(PchT05AccountDetail1 -> {
+      String currency = PchT05AccountDetail1.getCurrency();
 
       // 检查 currency 并根据需要设置字段精度
       if ("JPY".equals(currency)) {
-        pchT05AccountDetail.setPriceAmount(scaleToInteger(pchT05AccountDetail.getPriceAmount()));
-        pchT05AccountDetail.setTaxAmount(scaleToInteger(pchT05AccountDetail.getTaxAmount()));
-        pchT05AccountDetail.setTotalAmount(scaleToInteger(pchT05AccountDetail.getTotalAmount()));
+        PchT05AccountDetail1.setPriceAmount(scaleToInteger(PchT05AccountDetail1.getPriceAmount()));
+        PchT05AccountDetail1.setTaxAmount(scaleToInteger(PchT05AccountDetail1.getTaxAmount()));
+        PchT05AccountDetail1.setTotalAmount(scaleToInteger(PchT05AccountDetail1.getTotalAmount()));
       } else if ("USD".equals(currency) || "EUR".equals(currency)) {
-        pchT05AccountDetail.setPriceAmount(scaleToTwoDecimal(pchT05AccountDetail.getPriceAmount()));
-        pchT05AccountDetail.setTaxAmount(scaleToTwoDecimal(pchT05AccountDetail.getTaxAmount()));
-        pchT05AccountDetail.setTotalAmount(scaleToTwoDecimal(pchT05AccountDetail.getTotalAmount()));
+        PchT05AccountDetail1.setPriceAmount(scaleToTwoDecimal(PchT05AccountDetail1.getPriceAmount()));
+        PchT05AccountDetail1.setTaxAmount(scaleToTwoDecimal(PchT05AccountDetail1.getTaxAmount()));
+        PchT05AccountDetail1.setTotalAmount(scaleToTwoDecimal(PchT05AccountDetail1.getTotalAmount()));
       }
 
-      pchT05AccountDetail.setQuantity(stripTrailingZeros(pchT05AccountDetail.getQuantity()));
-      pchT05AccountDetail.setTaxRate(stripTrailingZeros(pchT05AccountDetail.getTaxRate()));
+      PchT05AccountDetail1.setQuantity(stripTrailingZeros(PchT05AccountDetail1.getQuantity()));
+      PchT05AccountDetail1.setTaxRate(stripTrailingZeros(PchT05AccountDetail1.getTaxRate()));
 
       // 获取 NoDetails 字段并补充前导零
-      String noDetails = pchT05AccountDetail.getNoDetails();
+      String noDetails = PchT05AccountDetail1.getNoDetails();
       if (noDetails != null && noDetails.length() >= 10) {
         // 获取前10位
         String prefix = noDetails.substring(0, 10);
@@ -112,7 +112,7 @@ public class Pch05Handler implements EventHandler {
         String paddedNoDetails = prefix + paddedSuffix;
     
         // 设置回 NoDetails
-        pchT05AccountDetail.setNoDetails(paddedNoDetails);
+        PchT05AccountDetail1.setNoDetails(paddedNoDetails);
     }
 
     });
@@ -125,8 +125,8 @@ public class Pch05Handler implements EventHandler {
    * @param context       传入上下文
    * @param d012MoveActHs 传入画面输入值
    */
-  @After(entity = PchT05AccountDetailExcel_.CDS_NAME, event = "READ")
-  public void afterReadPchT05AccountDetailExcel(CdsReadEventContext context, Stream<PchT05AccountDetailExcel> datas1) {
+  @After(entity = PchT05AccountDetailExcel1_.CDS_NAME, event = "READ")
+  public void afterReadPchT05AccountDetailExcel1(CdsReadEventContext context, Stream<PchT05AccountDetailExcel1> datas1) {
 
     datas1.forEach(data1 -> {
 
@@ -203,8 +203,30 @@ public class Pch05Handler implements EventHandler {
       data2.setTotal10TaxIncludedAmount(stripTrailingZeros(data2.getTotal10TaxIncludedAmount()));
       data2.setTotal8TaxIncludedAmount(stripTrailingZeros(data2.getTotal8TaxIncludedAmount()));
 
+    //   // 对每个字段进行处理
+    // data2.setCalc10PriceAmount(handleZeroValue(data2.getCalc10PriceAmount()));
+    // data2.setCalc8PriceAmount(handleZeroValue(data2.getCalc8PriceAmount()));
+    // data2.setSapTaxAmount10(handleZeroValue(data2.getSapTaxAmount10()));
+    // data2.setSapTaxAmount8(handleZeroValue(data2.getSapTaxAmount8()));
+    // data2.setRecalcPriceAmount10(handleZeroValue(data2.getRecalcPriceAmount10()));
+    // data2.setRecalcPriceAmount8(handleZeroValue(data2.getRecalcPriceAmount8()));
+    // data2.setDiffTaxAmount10(handleZeroValue(data2.getDiffTaxAmount10()));
+    // data2.setDiffTaxAmount8(handleZeroValue(data2.getDiffTaxAmount8()));
+    // data2.setTotal10TaxIncludedAmount(handleZeroValue(data2.getTotal10TaxIncludedAmount()));
+    // data2.setTotal8TaxIncludedAmount(handleZeroValue(data2.getTotal8TaxIncludedAmount()));
+
     });
   }
+
+//   /**
+//  * 处理字段值，若为 0 则返回 null，否则返回原值
+//  *
+//  * @param value 输入值
+//  * @return 处理后的值
+//  */
+// private BigDecimal handleZeroValue(BigDecimal value) {
+//   return (value != null && value.compareTo(BigDecimal.ZERO) == 0) ? null : value;
+// }
 
 
   /**
@@ -315,7 +337,7 @@ public class Pch05Handler implements EventHandler {
       // 遍历 Pch05List 中的每一项（每个 item 为 Pch05List 的一个记录）
       for (Pch05 item : dataList.getList()) {
 
-        item.setPO_BUKRS1(item.getPO_BUKRS()); // 赋值 PO_BUKRS1
+        item.setCOMPANY_CODE1(item.getCOMPANY_CODE()); // 赋值 Company_Code
         item.setLASTDATE1(item.getLASTDATE()); // 将 LASTDATE 的值赋给 LASTDATE1
         item.setLASTDATE2(item.getLASTDATE()); // 将 LASTDATE 的值赋给 LASTDATE2
         item.setDIFF_TAX_AMOUNT1(item.getDIFF_TAX_AMOUNT()); // 赋值 DIFF_TAX_AMOUNT1

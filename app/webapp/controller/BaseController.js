@@ -1512,33 +1512,54 @@ sap.ui.define([
           
           return new Blob(byteArrays, {type: mimeType}); 
       },
-      _setDialog:function(boo,data){
-        var that = this;
-        return new Promise(function (resolve, reject) {
-          var PoList = that._TableDataList("detailTable", 'PO_NO')
-          //返回发送过邮件的po号
-          that.PrintTool._getPrintDataInfo(that,PoList,"/PCH_T10_EMAIL_SEND_LOG",'PO_NO').then((oData) => {
+      _getDialogParm(selectedIndices){
+        var pList = Array();
+        selectedIndices.forEach((odata) => {
+            var p = {
+            po: odata.PO_NO,
+            dNo: odata.D_NO,
+          }
+          pList.push(p);
+        })
+        return {parms: JSON.stringify(pList)};
+        
+      },
+    _setDialog: function (boo, data) {
+      var that = this;
+      return new Promise(function (resolve, reject) {
+        //返回发送过邮件的po号
+        that._callCdsAction("/PCH03_LOGDATA", that._getDialogParm(data), that).then(
+
+          function (odata) {
             //判断dialog是的提示消息
             var txt = that.MessageTools._getI18nTextInModel("com", "Dialog", that.getView())
             var list = [];
-            
-            if(oData.results  != undefined ){
-                oData.results.forEach((item) => {
-                  if('Y' ==  item.TYPE){
-                  list.push(item.PO_NO)
-                  }
-              })
+
+            var po = JSON.parse(odata.PCH03_LOGDATA);
+            if (po != undefined) {
+            if(po.length > 0){
+              if ('1' == data[0].USER_TYPE) {
+                
+                po.forEach((item) => {
+                  
+                      list.push(item)
+                  })
   
-              if(boo){
-                if(list.length > 0){
-                  txt = that.MessageTools._getI18nMessage("Dialog2", list, that.getView())
+                  if (boo) {
+                    if (list.length > 0) {
+                      txt = that.MessageTools._getI18nMessage("Dialog2", list, that.getView())
+                    }
+                  }
                 }
               }
             }
-            
+
+
+
+
             sap.m.MessageBox.confirm(txt, {
-              icon: sap.m.MessageBox.Icon.INFORMATION,  
-              title: "Confirmation",  
+              icon: sap.m.MessageBox.Icon.INFORMATION,
+              title: "Confirmation",
               actions: [sap.m.MessageBox.Action.OK, sap.m.MessageBox.Action.CANCEL],
               emphasizedAction: sap.m.MessageBox.Action.OK,
               onClose: function (sAction) {
@@ -1550,11 +1571,14 @@ sap.ui.define([
                 }
               }
             })
-          });
-          
+          },
+          function (error) {
+            that._setBusy(false);
 
-        })
-      },
+          }
+        )
+      })
+    },
         //需要从明细取数据且弹提示框的所有前置
         _AfterDigLogCheck(boo) {
           var that = this;

@@ -64,7 +64,7 @@ public class CommonHandler implements EventHandler {
     SendService sendService;
     private static final Logger logger = LoggerFactory.getLogger(CommonHandler.class);
 
-    // IFM054 購買見積依頼受信+送信
+    // IFM054 購買見積依頼受信
     @On(event = "pch06BatchImport")
     public void pch06BatchImport(Pch06BatchImportContext context) throws Exception {
         // 获取uqmc传入的t06数据
@@ -76,20 +76,18 @@ public class CommonHandler implements EventHandler {
 
         // 将 Collection 转换为 Listpch06BatchImport
         ArrayList<PchT06QuotationH> pch06List = new ArrayList<>(context.getPch06());
-        ArrayList<cds.gen.pch.T06QuotationH> pch06List2 = new ArrayList<>();
+
         String msg = "";
-        try {
-            // 提取数据，插入表中
-            sendService.extracted(pch06List, pch06List2);
 
-            msg = sendService.sendPost(pch06List2);
-        } catch (Exception e) {
-            msg = UmcConstants.ERROR;
-        }
+        // 提取数据，插入表中
+        sendService.extracted(pch06List);
+        System.out.println("提取数据完成");
 
-        System.out.println(msg);
+        // msg = sendService.sendPost(pch06List2);
 
-        context.setResult(msg);
+        System.out.println("success");
+
+        context.setResult("success");
     }
 
     // IFM055 購買見積依頼送信
@@ -97,19 +95,15 @@ public class CommonHandler implements EventHandler {
     public void pch06BatchSending(Pch06BatchSendingContext context) throws Exception {
         ArrayList<T06QuotationH> pch06List = new ArrayList<>();
         String msg = "";
-        try {
-            pch06List = sendService.getJson(context.getJson());
 
-            // 调用接口传值
-            if (pch06List != null && pch06List.size() > 0) {
-                msg = sendService.sendPost(pch06List);
-                System.out.println(msg);
-            }
+        pch06List = sendService.getJson(context.getJson());
 
-        } catch (Exception e) {
-            logger.info(UmcConstants.ERROR + e.getMessage());
-            context.setResult(UmcConstants.ERROR + e.getMessage());
+        // 调用接口传值
+        if (pch06List != null && pch06List.size() > 0) {
+            msg = sendService.sendPost(pch06List);
+            System.out.println(msg);
         }
+
         context.setResult(msg);
     }
 

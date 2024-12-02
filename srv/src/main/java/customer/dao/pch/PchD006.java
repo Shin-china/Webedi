@@ -33,15 +33,15 @@ public class PchD006 extends Dao {
     private static final Logger logger = LoggerFactory.getLogger(PchD006.class);
 
     // public T06QuotationH getByID(String PLANT_ID) {
-    //     Optional<T06QuotationH> result = db.run(
-    //             Select.from(Pch_.T06_QUOTATION_H)
-    //                     .where(o -> o.PLANT_ID().eq(PLANT_ID)))
-    //             .first(T06QuotationH.class);
+    // Optional<T06QuotationH> result = db.run(
+    // Select.from(Pch_.T06_QUOTATION_H)
+    // .where(o -> o.PLANT_ID().eq(PLANT_ID)))
+    // .first(T06QuotationH.class);
 
-    //     if (result.isPresent()) {
-    //         return result.get();
-    //     }
-    //     return null;
+    // if (result.isPresent()) {
+    // return result.get();
+    // }
+    // return null;
     // }
 
     public T06QuotationH getByID(String saNum, String ver) {
@@ -75,7 +75,7 @@ public class PchD006 extends Dao {
     // dao层获取传入的QUO_NUMBER所有明细以及头表
     public T06QuotationH get(String quoNumber) {
         Optional<T06QuotationH> first = db
-                .run(Select.from(Pch_.T06_QUOTATION_H).columns(o -> o._all(), o -> o.TO_ITEMS_PO().expand())
+                .run(Select.from(Pch_.T06_QUOTATION_H).columns(o -> o._all(), o -> o.TO_ITEM_PO().expand())
                         .where(o -> o.QUO_NUMBER().eq(quoNumber)))
                 .first(T06QuotationH.class);
 

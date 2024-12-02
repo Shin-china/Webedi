@@ -125,7 +125,7 @@ sap.ui.define([
 				let options = { compact: true, ignoreComment: true, spaces: 4 };
 				var IdList = that._TableDataList("detailTable", 'SUPPLIER')
 				if (IdList) {
-					that.PrintTool._getPrintDataInfo(that, IdList, "/PCH_T05_ACCOUNT_DETAIL_EXCEL", "SUPPLIER").then((oData) => {
+					that.PrintTool._getPrintDataInfo(that, IdList, "/PCH_T05_ACCOUNT_DETAIL_EXCEL1", "SUPPLIER").then((oData) => {
 						
                         oData.results.forEach(function (row) {
     
@@ -273,7 +273,7 @@ sap.ui.define([
               }
         
             if (IdList) {
-                that.PrintTool._getPrintDataInfo(that, IdList, "/PCH_T05_ACCOUNT_DETAIL_EXCEL", "SUPPLIER").then((oData) => {
+                that.PrintTool._getPrintDataInfo(that, IdList, "/PCH_T05_ACCOUNT_DETAIL_EXCEL1", "SUPPLIER").then((oData) => {
                     oData.results.forEach(function (row) {
     
                         // 格式化日期

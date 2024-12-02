@@ -82,59 +82,6 @@ sap.ui.define([
                 var SUPPLIER = supplierSet.values().next().value;
                 var entity = "/SYS_T08_COM_OP_D";
 
-            //     this._readHead(H_CODE, SUPPLIER, entity).then(function (oHeadData) {
-
-            //     let mail = oHeadData.results && oHeadData.results.length > 0 ? oHeadData.results[0].VALUE02 : '';
-
-            //         // 构建邮件内容对象
-            //     var mailobj = {
-            //         emailJson: {
-            //             TEMPLATE_ID: "UWEB_M001",
-            //             MAIL_TO: [
-            //                         mail
-                            
-            //             ].join(", "), // 使用逗号和空格连接
-            //             MAIL_BODY: [
-            //                 {
-            //                     object: "vendor",
-            //                     value: supplierName
-            //                 },
-            //                 {
-            //                     object: "yyyy",
-            //                     value: year
-            //                 },
-            //                 {
-            //                     object: "mm",
-            //                     value: month
-            //                 },
-            //                 {
-            //                     object: "absama",
-            //                     value: "测试没问题　様"
-            //                 }
-
-            //             ]
-            //         }
-            //     };
-                
-            // let newModel = this.getView().getModel("Common");
-            // let oBind = newModel.bindList("/sendEmail");
-            // // oBind.create(mailobj);
-            // let a =oBind.create(mailobj, {
-            //     success: function (oData) {
-            //         console.log(oData)
-            //         // 确保oData不为null并且有返回的结果
-            //         if (oData && oData.result && oData.result === "sucess") {
-            //             MessageToast.show("メールが正常に送信されました。");
-            //         } else {
-            //             MessageBox.error("メール送信に失敗しました。エラー: " + (oData.result || "不明なエラー"));
-            //         }
-            //     },
-            //     error: function (oError) {
-            //         console.log(oError)
-            //         MessageBox.error("メール送信に失敗しました。エラー: " + oError.message);
-            //     }
-                // });
-
                 this._readHead(H_CODE, SUPPLIER, entity).then((oHeadData) => {
                     let mail = oHeadData.results && oHeadData.results.length > 0 ? 
                         oHeadData.results.map(result => result.VALUE02).join(", ") : '';            
@@ -172,22 +119,12 @@ sap.ui.define([
                     });
                 });
 
-                
-
-            // console.log(a)
-
-            //     });
-
             }
                 
             // 假设您在这里定义邮件内容模板
             var supplierName = "";
             var year = "";
             var month = "";
-            var nextMonthDate = ""; // 用于存储下个月的第二个工作日
-            var finalYear = "";     // 用于存储最终年份
-            var finalMonth = "";    // 用于存储最终月份
-            var finalDay = "";      // 用于存储最终日期
 
             aSelectedData.map(function (data) {
                 supplierName = data.NAME1 || "未指定"; // 默认值
@@ -197,58 +134,6 @@ sap.ui.define([
                 year = currentDate.getFullYear().toString(); // 当前年份
                 month = (currentDate.getMonth() + 1).toString().padStart(2, '0'); // 当前月份，确保是两位数格式
             });
-
-    
-            //     // 构建邮件内容对象
-            //     var mailobj = {
-            //         emailJson: {
-            //             TEMPLATE_ID: "UWEB_M001",
-            //             MAIL_TO: [
-            //                         mail
-                            
-            //             ].join(", "), // 使用逗号和空格连接
-            //             MAIL_BODY: [
-            //                 {
-            //                     object: "vendor",
-            //                     value: supplierName
-            //                 },
-            //                 {
-            //                     object: "yyyy",
-            //                     value: year
-            //                 },
-            //                 {
-            //                     object: "mm",
-            //                     value: month
-            //                 },
-            //                 {
-            //                     object: "absama",
-            //                     value: "测试没问题　様"
-            //                 }
-
-            //             ]
-            //         }
-            //     };
-                
-            // let newModel = this.getView().getModel("Common");
-            // let oBind = newModel.bindList("/sendEmail");
-            // // oBind.create(mailobj);
-            // let a =oBind.create(mailobj, {
-            //     success: function (oData) {
-            //         console.log(oData)
-            //         // 确保oData不为null并且有返回的结果
-            //         if (oData && oData.result && oData.result === "sucess") {
-            //             MessageToast.show("メールが正常に送信されました。");
-            //         } else {
-            //             MessageBox.error("メール送信に失敗しました。エラー: " + (oData.result || "不明なエラー"));
-            //         }
-            //     },
-            //     error: function (oError) {
-            //         console.log(oError)
-            //         MessageBox.error("メール送信に失敗しました。エラー: " + oError.message);
-            //     }
-            // });
-            // console.log(a)
-            
         },
 
         _readHead: function (a,b, entity) {

@@ -160,70 +160,76 @@ public class Ifm03PoService extends TranscationService {
 
                         if (!sap.getSupplierUpdateMap().containsKey(PoComp + supplier)) {
 
-                            sap.getSupplierUpdateMap().put(PoComp + supplier,
-                                    "来自118行，四个字段其中有修改，肯定是更新" + Items.getPurchaseorder() + Items.getPurchaseorderitem());// delflag
-                                                                                                                        // 单独考虑。
+                        } catch (DateTimeParseException e) {
+                            System.out.println("日期格式无效: " + e.getMessage()); // 处理格式错误
+                        }
+                        // 去除前导 0 后的
+                        o.setSupplier(supplier);
+                        o.setPocdby(Items.getCorrespncinternalreference());
+                        o.setSapCdBy(Items.getCreatedbyuser());
+
+                        PchDao.modify(o);
+                        // ------------------------------------------------------------------------------------以上是对t01的修改
+
+                        T02PoD o2 = T02PoD.create();
+                        o2.setPoNo(Items.getPurchaseorder());
+                        o2.setDNo(dn);
+                        o2.setMatId(Items.getMaterial());
+                        o2.setPlantId(Items.getPlant());
+                        o2.setPoDTxz01(Items.getPurchaseorderitemtext());
+                        Items.getOrderquantity();
+                        o2.setPoPurQty(new BigDecimal(Items.getOrderquantity()));
+                        o2.setPoPurUnit(Items.getPurchaseorderquantityunit());
+                        o2.setCurrency(Items.getDocumentcurrency());
+                        o2.setIntNumber(Items.getInternationalarticlenumber());
+                        o2.setPrBy(Items.getRequisitionername());
+
+                        o2.setTaxCode(Items.getTaxcode());// 1125新需求 追加
+
+                        try {
+
+                            LocalDate deliveryDate = LocalDate.parse(Items.getSchedulelinedeliverydate(), formatter);
+                            o2.setPoDDate(deliveryDate);
+
+                        } catch (DateTimeParseException e) {
+                            e.printStackTrace();
 
                         }
                         ;
                     }
 
-                    // 判断是否需要删除对象 (删除标记为X)
-                    // 前提条件：
-                    // 1.有对删除标记的修改
+                        try {
+                            // 将字符串转换为 BigDecimal
+                            BigDecimal netpriceAmount = new BigDecimal(Items.getNetpriceamount());
+                            BigDecimal netPriceQuantity = new BigDecimal(Items.getNetpricequantity());
+                            BigDecimal taxAmount = new BigDecimal(Items.getTaxamount());// 1125新需求 追加
 
-                    // 两种情况
-                    // 1.当前po下的所有明细都有删除标记
-                    // 2.当前po下的所有明细不是都有删除标记
-                    Boolean isDelflaghavechange = PchDao.getDelflaghavechange(Items);
+                            o2.setTaxAmount(taxAmount);
 
-                    o.setPoNo(Items.getPurchaseorder());
-                    o.setPoBukrs(Items.getCompanycode());
+                            // 检查 netPriceQuantity 是否为 0，以避免除以 0 的情况
+                            if (netPriceQuantity.compareTo(BigDecimal.ZERO) != 0) {
+                                // 计算并设置价格，使用指定为具有两位小数的舍入模式
+                                BigDecimal delPrice = netpriceAmount.divide(netPriceQuantity, 2, RoundingMode.HALF_UP);
+                                o2.setDelPrice(delPrice);
+                            } else {
+                                // 处理除以 0 的情况，例如设置为 0 或抛出异常
+                                o2.setDelPrice(BigDecimal.ZERO); // 或其他逻辑
+                            }
+                        } catch (NumberFormatException e) {
+                            e.printStackTrace(); // 处理转换错误
+                        } catch (Exception e) {
+                            e.printStackTrace(); // 处理其他可能的异常
+                        }
 
-                    LocalDate cddate = LocalDate.parse(Items.getCreationdate(), formatter);
-                    LocalDate poDate = LocalDate.parse(Items.getPurchaseorderdate(), formatter); // 转换字符串为 //
+                        o2.setDelAmount(new BigDecimal(Items.getNetamount()));
+                        o2.setUnitPrice(new BigDecimal(Items.getNetpricequantity()));
+                        o2.setStorageLoc(Items.getStoragelocation());
+                        o2.setStorageTxt(Items.getStoragelocationname());
+                        o2.setMemo(Items.getPlainlongtext());
 
-                    o.setCdDate(cddate);
-                    o.setPoDate(poDate);
+                        o2.setSupplierMat(Items.getSupplierMaterialNumber());
 
-                    // 去除前导 0 后的
-                    o.setSupplier(supplier);
-                    o.setPocdby(Items.getCorrespncinternalreference());
-                    o.setSapCdBy(Items.getCreatedbyuser());
-
-                    PchDao.modify(o);
-                    // ------------------------------------------------------------------------------------以上是对t01的修改
-
-                    T02PoD o2 = T02PoD.create();
-                    o2.setPoNo(Items.getPurchaseorder());
-                    o2.setDNo(dn);
-                    o2.setMatId(Items.getMaterial());
-                    o2.setPlantId(Items.getPlant());
-                    o2.setPoDTxz01(Items.getPurchaseorderitemtext());
-                    Items.getOrderquantity();
-                    o2.setPoPurQty(new BigDecimal(Items.getOrderquantity()));
-                    o2.setPoPurUnit(Items.getPurchaseorderquantityunit());
-                    o2.setCurrency(Items.getDocumentcurrency());
-                    o2.setIntNumber(Items.getInternationalarticlenumber());
-                    o2.setPrBy(Items.getRequisitionername());
-
-                    LocalDate deliveryDate = LocalDate.parse(Items.getSchedulelinedeliverydate(), formatter);
-                    o2.setPoDDate(deliveryDate);
-
-                    // 将字符串转换为 BigDecimal
-                    BigDecimal netpriceAmount = new BigDecimal(Items.getNetpriceamount());
-                    BigDecimal netPriceQuantity = new BigDecimal(Items.getNetpricequantity());
-
-                    // 检查 netPriceQuantity 是否为 0，以避免除以 0 的情况
-                    if (netPriceQuantity.compareTo(BigDecimal.ZERO) != 0) {
-                        // 计算并设置价格，使用指定为具有两位小数的舍入模式
-                        BigDecimal delPrice = netpriceAmount.divide(netPriceQuantity, 2, RoundingMode.HALF_UP);
-                        o2.setDelPrice(delPrice);
-                    }
-                    else {
-                        // 处理除以 0 的情况，例如设置为 0 或抛出异常
-                        o2.setDelPrice(BigDecimal.ZERO); // 或其他逻辑
-                    }
+                        if (Items.getPurchasingdocumentdeletioncode().equals("L")) {
 
                     o2.setDelAmount(new BigDecimal(Items.getNetamount()));
                     o2.setUnitPrice(new BigDecimal(Items.getNetpricequantity()));
@@ -281,10 +287,20 @@ public class Ifm03PoService extends TranscationService {
             this.commit(s);
 
         }
-        catch (Exception e) {
-        }
-        finally {
-            this.rollback(s);
+        System.out.println("po接口测试结束");
+        return "POはUWEBに同期されました。";
+
+    }
+
+    // 创建 MailBody 的集合
+    private Collection<MailBody> createMailBody(List<T08ComOpD> emailadd) {
+        Collection<MailBody> bodies = new ArrayList<>();
+
+        MailBody body = MailBody.create();
+
+        String bpName = getBpName(emailadd.get(0).getValue01());
+        if (bpName == null || bpName.isEmpty()) {
+            bpName = " ";
         }
 
         return sap;

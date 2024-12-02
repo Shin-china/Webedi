@@ -37,6 +37,8 @@ import java.util.ArrayList;
 
 import java.util.LinkedHashMap;
 
+import customer.dao.sys.SysD008Dao;
+
 @Component
 public class PchService {
     @Autowired
@@ -47,6 +49,8 @@ public class PchService {
     PchD004 pchD004;
     @Autowired
     PchD010Dao pchD010;
+    @Autowired
+    SysD008Dao sysD008;
 
     // 根据传入的po和po明细修改po明细状态
     public void setPoStu(String po, String dNo) {
@@ -113,7 +117,7 @@ public class PchService {
             t10.setDNo(Integer.parseInt(dNo));
             t10.setQuantity(byID.getPoPurQty());
             t10.setInputDate(byID.getPoDDate());
-            t10.setDelFlag(byID.getDelFlag());
+            t10.setDelPrice(byID.getDelPrice());
             t10.setPoType(byID.getPoType());
             // 如果t不为空，则进行写Y操作
             if (!StringTool.isEmpty(t)) {
@@ -124,16 +128,16 @@ public class PchService {
         } else {
             T10EmailSendLog t10 = T10EmailSendLog.create();
 
-            t10.setQuantity(byID.getPoPurQty());
-            t10.setInputDate(byID.getPoDDate());
-            t10.setDelFlag(byID.getDelFlag());
-            t10.setPoType(byID.getPoType());
+            byID2.setQuantity(byID.getPoPurQty());
+            byID2.setInputDate(byID.getPoDDate());
+            byID2.setDelFlag(byID.getDelFlag());
+            byID2.setPoType(byID.getPoType());
             // 如果t不为空，则进行写Y操作
             if (!StringTool.isEmpty(t)) {
-                t10.setType("Y");
+                byID2.setType("Y");
             }
 
-            pchD010.update(t10);
+            pchD010.update(byID2);
         }
 
     }
@@ -186,6 +190,49 @@ public class PchService {
         byID.setDownFlag("Y");
         // 修改
         pchD002.updateD002(byID);
+
+    }
+
+    public String getEmailAddress(String supplier) {
+        return sysD008.getEmailAddress(supplier);
+    }
+
+    /**
+     * 判断po明细是否和履历表中的一致
+     * 
+     * @param jsonObject
+     * @return true则为一致或者，false则为不一致,为空
+     */
+    public Boolean getT09LogData(JSONObject jsonObject) {
+        Boolean re = true;
+        String po = jsonObject.getString("po");
+        String dNo = jsonObject.getString("dNo");
+        T02PoD byID = pchD002.getByID(po, Integer.parseInt(dNo));
+        T10EmailSendLog byID2 = pchD010.getByID(po, Integer.parseInt(dNo));
+        if (byID != null && byID2 != null) {
+            if (UmcConstants.DELETE_YES.equals(byID2.getType())) {
+                if (!byID.getPoType().equals(byID2.getPoType())) {
+                    re = false;
+                }
+                if (byID.getPoPurQty() != null && byID2.getQuantity() != null
+                        && byID.getPoPurQty().compareTo(byID2.getQuantity()) != 0) {
+                    re = false;
+                }
+                if (byID.getPoDDate() != null && byID2.getInputDate() != null
+                        && !byID.getPoDDate().isEqual(byID2.getInputDate())) {
+                    re = false;
+                }
+                if (byID.getDelPrice() != null && byID2.getDelPrice() != null
+                        && byID.getDelPrice().compareTo(byID2.getDelPrice()) != 0) {
+                    re = false;
+                }
+            }
+
+        } else {
+            // 如果没有也为不一致
+            re = false;
+        }
+        return re;
 
     }
 
