@@ -259,7 +259,7 @@ entity T09_FORCAST : IF_CUID_FILED { //
                                  @title: '{i18n>PUR_GROUP}' PUR_GROUP                   : String(3); //購買 Group
                                  @title: '{i18n>PUR_GROUP_NAME}' PUR_GROUP_NAME         : String(20); //購買 Group名
                                  @title: '{i18n>SUPPLIER}' SUPPLIER                     : String(10); //仕入先
-                                 @title: '{i18n>NAME1}' NAME1                           : String(20); //名称 1
+                                 @title: '{i18n>NAME1}' NAME1                           : String(40); //名称 1
                                  @title: '{i18n>MATERIAL}' MATERIAL                     : String(40); //品目
                                  @title: '{i18n>MATERIAL_TEXT}' MATERIAL_TEXT           : String(80); //品目テキスト
                                  @title: '{i18n>SUPPLIER_MATERIAL}' SUPPLIER_MATERIAL   : String(40); //仕入先品目コード
