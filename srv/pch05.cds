@@ -25,9 +25,8 @@ extend service TableService {
             key T05.PO_NO, // 購買伝票
             key T05.D_NO, // 明細
             key T04.SUPPLIER, // 仕入先
-                // T01.PO_BUKRS, // 会社コード
+            key T05.ITEM_NO,
                 T05.Company_Code,
-                T05.ITEM_NO, // 請求書明細
                 T04.SUPPLIER_DESCRIPTION, // 仕入先名称
                 T04.INV_CONFIRMATION, // インボイス
                 T05.PO_TRACK_NO, // 購買依頼追跡番号
@@ -319,18 +318,17 @@ extend service TableService {
         
 
         distinct {
-            key T05.INV_NO, // 伝票番号
-            key T05.GL_YEAR, // 会計年度
-            key T04.SUPPLIER, // 仕入先
-                T05.PO_NO, // 購買伝票
-                T05.D_NO, // 明細
-                // T01.PO_BUKRS, // 会社コード
-                T05.ITEM_NO, // 請求書明細
-                T05.TAX_CODE, // 税コード
-                T05.TAX_RATE, // 税率
-                T05.CURRENCY, // 通貨コード
-                T05.Company_Code, // Company Code
-                T04.INV_POST_DATE, // 転記日付
+            key T05.INV_NO,            // 伝票番号
+            key T05.GL_YEAR,           // 会計年度
+            key T04.SUPPLIER,          // 仕入先
+                T05.PO_NO,             // 購買伝票
+                T05.D_NO,              // 明細
+                T05.ITEM_NO,           // 請求書明細
+                T05.TAX_CODE,          // 税コード
+                T05.TAX_RATE,          // 税率
+                T05.CURRENCY,          // 通貨コード
+                T05.Company_Code,      // Company Code
+                T04.INV_POST_DATE,     // 転記日付
                 T04.HEADER_TEXT,
                 T04.AMOUNT,
                 T04.TAX_AMOUNT AS TAX_AMOUNT_1,
@@ -347,9 +345,9 @@ extend service TableService {
                         ) // 保留五位小数
                 end                                 as UNIT_PRICE   : Decimal(18, 5),
 
-                T04.INV_BASE_DATE, // 支払い基準日
-                T05.GR_DATE, // 伝票日付
-                T05.SHKZG, // 借方/貸方フラグ
+                T04.INV_BASE_DATE,    // 支払い基準日
+                T05.GR_DATE,          // 伝票日付
+                T05.SHKZG,            // 借方/貸方フラグ
                 T05.PO_NO || T05.D_NO               as NO_DETAILS   : String(15), // 購買伝票\明細NO
 
                  CASE
@@ -422,25 +420,24 @@ extend service TableService {
         select from PCH_T05_ACCOUNT_DETAIL
 
         distinct {
-            key INV_NO, // 伝票番号
-            key GL_YEAR, // 会計年度
-            key SUPPLIER, // 仕入先
-                PO_NO, // 購買伝票
-                D_NO, // 明細
-                ITEM_NO, // 請求書明細
-                // PO_BUKRS, // 会社コード
-                Company_Code, // Company Code
-                TAX_CODE, // 税コード
-                TAX_RATE, // 税率
-                INV_POST_DATE, // 転記日付
-                UNIT_PRICE, // 単価
-                PRICE_AMOUNT, // 本体金額
-                TAX_AMOUNT, // 消費税額
-                TOTAL_AMOUNT, // 計上金額
-                INV_BASE_DATE, // 支払い基準日
-                GR_DATE, // 伝票日付
-                INV_MONTH, // 提取年月，作为月度字段
-                CURRENCY, // 通貨コード
+            key INV_NO,              // 伝票番号
+            key GL_YEAR,             // 会計年度
+            key SUPPLIER,            // 仕入先
+                PO_NO,               // 購買伝票
+                D_NO,                // 明細
+                ITEM_NO,             // 請求書明細
+                Company_Code,        // Company Code
+                TAX_CODE,            // 税コード
+                TAX_RATE,            // 税率
+                INV_POST_DATE,       // 転記日付
+                UNIT_PRICE,          // 単価
+                PRICE_AMOUNT,        // 本体金額
+                TAX_AMOUNT,          // 消費税額
+                TOTAL_AMOUNT,        // 計上金額
+                INV_BASE_DATE,       // 支払い基準日
+                GR_DATE,             // 伝票日付
+                INV_MONTH,           // 提取年月，作为月度字段
+                CURRENCY,            // 通貨コード
                 NO_DETAILS,
                 HEADER_TEXT,
                 // 新增计算字段
@@ -593,8 +590,8 @@ extend service TableService {
 
         select from PCH_T05_ACCOUNT_DETAIL_SUM_GRO as T02
         left join PCH_T05_ACCOUNT_DETAIL as T03
-            on  T02.SUPPLIER  = T03.SUPPLIER
-            and T02.INV_MONTH = T03.INV_MONTH
+            on  T02.SUPPLIER      = T03.SUPPLIER
+            and T02.INV_MONTH     = T03.INV_MONTH
             and T02.Company_Code  = T03.Company_Code
 
         distinct {
@@ -616,14 +613,10 @@ extend service TableService {
                 T02.CALC_8_PRICE_AMOUNT,
                 T02.SAP_TAX_AMOUNT_10,
                 T02.SAP_TAX_AMOUNT_8,
-                // T02.TAX_AMOUNT_HEADER_10_Y,
-                // T02.TAX_AMOUNT_HEADER_8_Y,
                 T02.AMOUNT_HEADER_10_Y,
                 T02.AMOUNT_HEADER_8_Y,
                 T02.TAX_AMOUNT_HEADER_10_N,
                 T02.TAX_AMOUNT_HEADER_8_N,
-                // T02.AMOUNT_HEADER_10_N,
-                // T02.AMOUNT_HEADER_8_N,
                 T03.HEADER_TEXT,
                 T03.SHKZG,
                 // 再计算的税额（根据 CURRENCY 处理小数点后位数）
@@ -721,20 +714,12 @@ extend service TableService {
                 UNIT_PRICE,
                 PRICE_AMOUNT,
                 INV_POST_DATE,
-                // TAX_AMOUNT_HEADER_10,
-                // TAX_AMOUNT_HEADER_8,
-                // AMOUNT_HEADER_10,
-                // AMOUNT_HEADER_8,
                 AMOUNT_HEADER_10_Y,
                 AMOUNT_HEADER_8_Y,
                 TAX_AMOUNT_HEADER_10_N,
                 TAX_AMOUNT_HEADER_8_N,
                 HEADER_TEXT,
                 SHKZG,
-
-                // TAX_AMOUNT_HEADER_8 + AMOUNT_HEADER_8 as TAX_AMOUNT_HEADER_8_TOTAL : Decimal(15, 2),
-                // TAX_AMOUNT_HEADER_10 + AMOUNT_HEADER_10 as TAX_AMOUNT_HEADER_10_TOTAL : Decimal(15, 2),
-
                 
                 COALESCE(
                     TAX_AMOUNT_HEADER_8_N, 0
@@ -748,15 +733,6 @@ extend service TableService {
                     AMOUNT_HEADER_10_Y, 0
                 )                          as HEADER_10_TOTAL  : Decimal(15, 2), 
 
-                // CASE 
-                //     WHEN HEADER_TEXT = '仮払消費税調整' THEN AMOUNT_HEADER_8
-                //     ELSE (TAX_AMOUNT_HEADER_8 + AMOUNT_HEADER_8)
-                // END AS TAX_AMOUNT_HEADER_8_TOTAL : Decimal(15, 2),
-                
-                // CASE 
-                //     WHEN HEADER_TEXT = '仮払消費税調整' THEN AMOUNT_HEADER_10
-                //     ELSE (TAX_AMOUNT_HEADER_10 + AMOUNT_HEADER_10)
-                // END AS TAX_AMOUNT_HEADER_10_TOTAL : Decimal(15, 2),
 
                 case
                     when
@@ -824,29 +800,6 @@ extend service TableService {
                         )
                 end as RECALC_PRICE_AMOUNT_8        : Decimal(15, 2), // 再计算 8% 税额
 
-                // // 消费税差额
-                // case
-                //     when
-                //         TAX_RATE = 10
-                //     then
-                //         COALESCE(
-                //             RECALC_PRICE_AMOUNT_10, 0
-                //         )-COALESCE(
-                //             HEADER_10_TOTAL, 0
-                //         )
-                // end as DIFF_TAX_AMOUNT_10           : Decimal(15, 2),
-
-                // case
-                //     when
-                //         TAX_RATE = 8
-                //     then
-                //         COALESCE(
-                //             RECALC_PRICE_AMOUNT_8, 0
-                //         )-COALESCE(
-                //             HEADER_8_TOTAL, 0
-                //         )
-                // end as DIFF_TAX_AMOUNT_8            : Decimal(15, 2),
-
                 // 合计金额
                 case
                     when
@@ -870,7 +823,6 @@ extend service TableService {
                         )
                 end as TOTAL_8_TAX_INCLUDED_AMOUNT  : Decimal(15, 2),
 
-
         }
 
 
@@ -878,8 +830,8 @@ extend service TableService {
 
         select from PCH_T05_ACCOUNT_DETAIL_SUM_GRO as T02
         left join PCH_T05_ACCOUNT_DETAIL_SUM_FINAL as T03
-            on  T02.SUPPLIER  = T03.SUPPLIER
-            and T02.INV_MONTH = T03.INV_MONTH
+            on  T02.SUPPLIER      = T03.SUPPLIER
+            and T02.INV_MONTH     = T03.INV_MONTH
             and T02.Company_Code  = T03.Company_Code
 
         distinct {
@@ -887,25 +839,18 @@ extend service TableService {
             key T02.INV_MONTH,
             key T02.Company_Code,
                 T03.CURRENCY,
-                T02.CALC_10_PRICE_AMOUNT, // 10% 税抜金额
-                T02.CALC_8_PRICE_AMOUNT, // 8%  税抜金额
-                T02.SAP_TAX_AMOUNT_10, // 10% SAP税额
-                T02.SAP_TAX_AMOUNT_8, // 8%  SAP税额
-                T03.RECALC_PRICE_AMOUNT_10, // 再計算10％税額
-                T03.RECALC_PRICE_AMOUNT_8, // 再計算8％税額
-                T03.TOTAL_10_TAX_INCLUDED_AMOUNT, // 合計10％税込金額
-                T03.TOTAL_8_TAX_INCLUDED_AMOUNT, // 合計8％税込金額
+                T02.CALC_10_PRICE_AMOUNT,           // 10% 税抜金额
+                T02.CALC_8_PRICE_AMOUNT,            // 8%  税抜金额
+                T02.SAP_TAX_AMOUNT_10,              // 10% SAP税额
+                T02.SAP_TAX_AMOUNT_8,               // 8%  SAP税额
+                T03.RECALC_PRICE_AMOUNT_10,         // 再計算10％税額
+                T03.RECALC_PRICE_AMOUNT_8,          // 再計算8％税額
+                T03.TOTAL_10_TAX_INCLUDED_AMOUNT,   // 合計10％税込金額
+                T03.TOTAL_8_TAX_INCLUDED_AMOUNT,    // 合計8％税込金額
                 T03.TAX_CODE,
                 T03.TAX_RATE,
                 T03.HEADER_8_TOTAL,
                 T03.HEADER_10_TOTAL,
-                // T03.AMOUNT_HEADER_10_Y,
-                // T03.AMOUNT_HEADER_8_Y,
-                // T03.TAX_AMOUNT_HEADER_10_N,
-                // T03.TAX_AMOUNT_HEADER_8_N,
-                // T03.TAX_AMOUNT_HEADER_8_TOTAL  : Decimal(15, 2),
-                // T03.TAX_AMOUNT_HEADER_10_TOTAL : Decimal(15, 2),
-
 
                 // 消费税差额
                 case
@@ -947,10 +892,7 @@ extend service TableService {
                 SUM(DIFF_TAX_AMOUNT_8)            as DIFF_TAX_AMOUNT_8            : Decimal(15, 2), //8％消費税差額
                 SUM(TOTAL_10_TAX_INCLUDED_AMOUNT) as TOTAL_10_TAX_INCLUDED_AMOUNT : Decimal(15, 2), //合計10％税込金額
                 SUM(TOTAL_8_TAX_INCLUDED_AMOUNT)  as TOTAL_8_TAX_INCLUDED_AMOUNT  : Decimal(15, 2), //合計8％税込金額
-                // SUM(HEADER_10_TOTAL)           as HEADER_10_TOTAL           : Decimal(15, 2),
-                // SUM(HEADER_8_TOTAL)            as HEADER_8_TOTAL            : Decimal(15, 2), 
-                // SUM(TAX_AMOUNT_HEADER_10_N)       as TAX_AMOUNT_HEADER_10_N       : Decimal(15, 2), 
-                // SUM(TAX_AMOUNT_HEADER_8_N)        as TAX_AMOUNT_HEADER_8_N        : Decimal(15, 2) 
+
         }
         group by
             Company_Code,
@@ -975,22 +917,18 @@ extend service TableService {
             key T01.INV_MONTH,
             key T01.Company_Code,
                 T02.CURRENCY,
-                T01.CALC_10_PRICE_AMOUNT, // 10% 税抜金额
-                T01.CALC_8_PRICE_AMOUNT, // 8%  税抜金额
-                T01.SAP_TAX_AMOUNT_10, // 10% SAP税额
-                T01.SAP_TAX_AMOUNT_8, // 8%  SAP税额
-                T02.RECALC_PRICE_AMOUNT_10, // 再計算10％税額
-                T02.RECALC_PRICE_AMOUNT_8, // 再計算8％税額
-                T02.DIFF_TAX_AMOUNT_10, // 10％消費税差額
-                T02.DIFF_TAX_AMOUNT_8, // 8％消費税差額
-                T02.TOTAL_10_TAX_INCLUDED_AMOUNT, // 合計10％税込金額
-                T02.TOTAL_8_TAX_INCLUDED_AMOUNT, // 合計8％税込金額      
+                T01.CALC_10_PRICE_AMOUNT,            // 10% 税抜金额
+                T01.CALC_8_PRICE_AMOUNT,             // 8%  税抜金额
+                T01.SAP_TAX_AMOUNT_10,               // 10% SAP税额
+                T01.SAP_TAX_AMOUNT_8,                // 8%  SAP税额
+                T02.RECALC_PRICE_AMOUNT_10,          // 再計算10％税額
+                T02.RECALC_PRICE_AMOUNT_8,           // 再計算8％税額
+                T02.DIFF_TAX_AMOUNT_10,              // 10％消費税差額
+                T02.DIFF_TAX_AMOUNT_8,               // 8％消費税差額
+                T02.TOTAL_10_TAX_INCLUDED_AMOUNT,    // 合計10％税込金額
+                T02.TOTAL_8_TAX_INCLUDED_AMOUNT,     // 合計8％税込金額      
                 T03.HEADER_8_TOTAL,
                 T03.HEADER_10_TOTAL,          
-                // T02.TAX_AMOUNT_HEADER_10_N,
-                // T02.TAX_AMOUNT_HEADER_8_N,
-                // T02.AMOUNT_HEADER_10_Y,
-                // T02.AMOUNT_HEADER_8_Y,
 
                 case
                     when
@@ -1084,18 +1022,16 @@ extend service TableService {
             key T01.INV_MONTH,
             key T01.Company_Code,
                 T02.CURRENCY,
-                T02.CALC_10_PRICE_AMOUNT, // 10% 税抜金额
-                T02.CALC_8_PRICE_AMOUNT, // 8%  税抜金额
-                T02.SAP_TAX_AMOUNT_10, // 10% SAP税额
-                T02.SAP_TAX_AMOUNT_8, // 8%  SAP税额
-                T01.RECALC_PRICE_AMOUNT_10, // 再計算10％税額
-                T01.RECALC_PRICE_AMOUNT_8, // 再計算8％税額
-                T01.DIFF_TAX_AMOUNT_10, // 10％消費税差額
-                T01.DIFF_TAX_AMOUNT_8, // 8％消費税差額
-                T01.TOTAL_10_TAX_INCLUDED_AMOUNT, // 合計10％税込金額
-                T01.TOTAL_8_TAX_INCLUDED_AMOUNT, // 合計8％税込金額
-                // T03.TAX_AMOUNT_HEADER_8_TOTAL,
-                // T03.TAX_AMOUNT_HEADER_10_TOTAL,
+                T02.CALC_10_PRICE_AMOUNT,           // 10% 税抜金额
+                T02.CALC_8_PRICE_AMOUNT,            // 8%  税抜金额
+                T02.SAP_TAX_AMOUNT_10,              // 10% SAP税额
+                T02.SAP_TAX_AMOUNT_8,               // 8%  SAP税额
+                T01.RECALC_PRICE_AMOUNT_10,         // 再計算10％税額
+                T01.RECALC_PRICE_AMOUNT_8,          // 再計算8％税額
+                T01.DIFF_TAX_AMOUNT_10,             // 10％消費税差額
+                T01.DIFF_TAX_AMOUNT_8,              // 8％消費税差額
+                T01.TOTAL_10_TAX_INCLUDED_AMOUNT,   // 合計10％税込金額
+                T01.TOTAL_8_TAX_INCLUDED_AMOUNT,    // 合計8％税込金額
                 T03.HEADER_8_TOTAL,
                 T03.HEADER_10_TOTAL,         
                 T03.TRANSACTION,
@@ -1110,9 +1046,8 @@ extend service TableService {
                 T02.TAX_CODE,
                 T03.TAX_BASE_AMOUNT,
                 ROW_NUMBER() over() as INVOICEID    : Integer,
-                '仮払消費税調整'           as DETAILTEXT50 : String, // headertext 字段固定值为仮払消費税調整
+                '仮払消費税調整'     as DETAILTEXT50 : String, // headertext 字段固定值为仮払消費税調整
                 
-
         }
 
     action PCH05_SENDEMAIL(parms : String)     returns String;
