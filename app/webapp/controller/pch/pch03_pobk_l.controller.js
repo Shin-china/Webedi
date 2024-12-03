@@ -284,13 +284,13 @@ sap.ui.define([
 								const typeObj = typeList[type];
 								if(typeObj[0].EMAIL_ADDRESS){
 								if ("新规" == type) {
-									this._sendEmailTy(typeObj, supplierObjMap, supplierLenMap, supplierCntMap, supplier, "UWEB_PCH03_C")
+									this._sendEmailTy(typeObj, supplierObjMap, supplierLenMap, supplierCntMap, supplier, "UWEB_M004-1")
 								}
 								if ("削除" == type) {
-									this._sendEmailTy(typeObj, supplierObjMap, supplierLenMap, supplierCntMap, supplier, "UWEB_PCH03_D")
+									this._sendEmailTy(typeObj, supplierObjMap, supplierLenMap, supplierCntMap, supplier, "UWEB_M004-3")
 								}
 								if ("変更" == type) {
-									this._sendEmailTy(typeObj, supplierObjMap, supplierLenMap, supplierCntMap, supplier, "UWEB_PCH03_U")
+									this._sendEmailTy(typeObj, supplierObjMap, supplierLenMap, supplierCntMap, supplier, "UWEB_M004-2")
 								}
 							}else{
 								this._setBusy(false);
@@ -314,7 +314,7 @@ sap.ui.define([
 						//所有供应商下的数据	
 						const obj1 = groupedBySupplier[supplier];
 						if(obj1[0].EMAIL_ADDRESS){
-							this._sendEmailTy(obj1, supplierObjMap, supplierLenMap, supplierCntMap, supplier, "UWEB_PCH03_P")
+							this._sendEmailTy(obj1, supplierObjMap, supplierLenMap, supplierCntMap, supplier, "UWEB_M005")
 						}else{
 							this._setBusy(false);
 							console.log((this.MessageTools._getI18nTextInModel("pch", "PCH_03_ERROR_MSG1", this.getView())))
