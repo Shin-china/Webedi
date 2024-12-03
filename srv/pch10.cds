@@ -38,7 +38,8 @@ extend service TableService {
                 T01.CD_DATE,
                 T01.CD_BY,
                 T02.SUPPLIER_MAT,
-                T01.CD_DATE_TIME
+                T02.INITIAL_OBJ,
+                T01.CD_DATE_TIME,
 
         }
 
