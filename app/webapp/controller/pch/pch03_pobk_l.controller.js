@@ -357,11 +357,7 @@ sap.ui.define([
 					MAIL_BODY: [
 						{
 							object: "仕入先名称",
-							value: supplier // 使用替换后的邮件内容
-						},
-						{
-							object: "po",
-							value: uniqueIdList // 使用替换后的邮件内容
+							value: obj1[0].PCH03_BP_NAME1 // 使用替换后的邮件内容
 						},
 						{
 							object: "filename_2",

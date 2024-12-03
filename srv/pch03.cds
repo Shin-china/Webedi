@@ -245,7 +245,7 @@ extend service TableService {
                 T02.INT_NUMBER,
                 T02.TO_MAT.CUST_MATERIAL,//P/N：
                 T02.PR_BY,
-                '' as EMAIL_ADDRESS : String(50), // 邮箱地址,
+                '' as EMAIL_ADDRESS : String(500), // 邮箱地址,
                 T09.IMP_COMP,//検査合区分
                 T02.PO_PUR_QTY as PO_PUR_QTY2, // 発注数量
                 T02.DEL_PRICE as DEL_PRICE2, // 発注単価（値）
@@ -339,7 +339,7 @@ extend service TableService {
                 T02.INT_NUMBER,
                 T02.TO_MAT.CUST_MATERIAL,
                 T02.PR_BY,
-                '' as EMAIL_ADDRESS : String(50), // 邮箱地址,
+                '' as EMAIL_ADDRESS : String(500), // 邮箱地址,
                 T09.IMP_COMP,//検査合区分
                 T02.PO_PUR_QTY as PO_PUR_QTY2, // 発注数量
                 T02.DEL_PRICE as DEL_PRICE2, // 発注単価（値）
