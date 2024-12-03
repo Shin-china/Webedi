@@ -1,5 +1,6 @@
 {
   "name": "approuter",
+  "version": "0.0.1",
   "dependencies": {
     "@sap/approuter": "^16.0.0"
   },
@@ -7,6 +8,7 @@
     "node": "^20.0.0"
   },
   "scripts": {
-    "start": "node node_modules/@sap/approuter/approuter.js"
+    "start": "node node_modules/@sap/approuter/approuter.js",
+    "build:apps": "ui5 build --config=../ui5.yaml --clean-dest --dest /webapp --include-task=generateManifestBundle"
   }
 }
