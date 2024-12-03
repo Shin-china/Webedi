@@ -47,7 +47,7 @@
                         <smartFilterBar:ControlConfiguration id="NAME1"                     key="NAME1"                  visibleInAdvancedArea="false"  visible="false"  index="11"/>          
                         <smartFilterBar:ControlConfiguration id="PUR_GROUP_NAME"            key="PUR_GROUP_NAME"         visibleInAdvancedArea="false"  visible="false"    index="12"/>    
                         <smartFilterBar:ControlConfiguration id="MIN_DELIVERY_QTY"         key="MIN_DELIVERY_QTY"      visibleInAdvancedArea="false"  visible="false"    index="13"/>
-                        <smartFilterBar:ControlConfiguration id="SUPPLIER_MATERIAL"         key="SUPPLIER_MATERIAL"      visibleInAdvancedArea="false"  visible="false"    index="14"/>
+                        <smartFilterBar:ControlConfiguration id="SUPPLIER_MATERIAL"         key="SUPPLIER_MATERIAL"      visibleInAdvancedArea="true" label="{pch>PCH09_SUPPLIER_MATERIAL_filter}"  visible="false"    index="14"/>
 
                         </smartFilterBar:controlConfiguration>
                     </smartFilterBar:SmartFilterBar>
