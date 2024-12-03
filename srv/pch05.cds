@@ -366,27 +366,6 @@ extend service TableService {
                         null 
                 END AS TAX_AMOUNT_HEADER_N : Decimal(18, 3),
 
-                // CASE
-                //     WHEN T04.HEADER_TEXT <> '仮払消費税調整' THEN
-                //         CASE
-                //             WHEN T05.SHKZG = 'S' THEN
-                //                 T04.AMOUNT // 借方为正
-                //             WHEN T05.SHKZG = 'H' THEN
-                //                 -T04.AMOUNT // 贷方为负
-                //             ELSE
-                //                 T04.AMOUNT // 默认情况
-                //         END
-                //     ELSE
-                //         T04.AMOUNT 
-                // END AS AMOUNT_HEADER_N : Decimal(18, 3),
-
-                // CASE
-                //     when T04.HEADER_TEXT = '仮払消費税調整' THEN
-                //         T04.TAX_AMOUNT
-                //     else
-                //         T04.TAX_AMOUNT 
-                // end AS TAX_AMOUNT_HEADER_Y : Decimal(18, 3),
-
                 CASE
                     when T04.HEADER_TEXT = '仮払消費税調整' THEN
                         T04.AMOUNT
@@ -538,42 +517,6 @@ extend service TableService {
                         )
                 end as TAX_AMOUNT_HEADER_8_N  :   Decimal(15, 2), // 8% 税抜金额HEADER
 
-                //   case
-                //     when
-                //         TAX_RATE = 10
-                //     then
-                //         cast(
-                //             AMOUNT_HEADER_N as Decimal(15, 2)
-                //         )
-                // end as AMOUNT_HEADER_10_N :   Decimal(15, 2), // 10% 税抜金额HEADER
-
-                // case
-                //     when
-                //         TAX_RATE = 8
-                //     then
-                //         cast(
-                //             AMOUNT_HEADER_N as Decimal(15, 2)
-                //         )
-                // end as AMOUNT_HEADER_8_N  :   Decimal(15, 2), // 8% 税抜金额HEADER
-
-                // case
-                //     when
-                //         TAX_RATE = 10
-                //     then
-                //         cast(
-                //             TAX_AMOUNT_HEADER_Y as Decimal(15, 2)
-                //         )
-                // end as TAX_AMOUNT_HEADER_10_Y :   Decimal(15, 2), // 10% 税抜金额HEADER
-
-                // case
-                //     when
-                //         TAX_RATE = 8
-                //     then
-                //         cast(
-                //             TAX_AMOUNT_HEADER_Y as Decimal(15, 2)
-                //         )
-                // end as TAX_AMOUNT_HEADER_8_Y  :   Decimal(15, 2), // 8% 税抜金额HEADER
-
                   case
                     when
                         TAX_RATE = 10
@@ -594,9 +537,38 @@ extend service TableService {
 
         }
 
-    entity PCH_T05_ACCOUNT_DETAIL_SUM_GRO   as
+        entity PCH_T05_ACCOUNT_DETAIL_DELETE   as
 
         select from PCH_T05_ACCOUNT_DETAIL_SUM 
+
+
+        distinct {
+            key Company_Code, // Company Code,
+            key SUPPLIER,
+            key INV_MONTH,
+            key AMOUNT_HEADER_10_Y,
+            key AMOUNT_HEADER_8_Y,
+            key TAX_AMOUNT_HEADER_10_N,
+            key TAX_AMOUNT_HEADER_8_N,
+            key INV_NO,
+                SUM(CALC_10_PRICE_AMOUNT)      as CALC_10_PRICE_AMOUNT      : Decimal(15, 2),    // 10% 税抜金额
+                SUM(CALC_8_PRICE_AMOUNT)       as CALC_8_PRICE_AMOUNT       : Decimal(15, 2),    // 8%  税抜金额
+                SUM(SAP_TAX_AMOUNT_10)         as SAP_TAX_AMOUNT_10         : Decimal(15, 2),    // 10% SAP税额
+                SUM(SAP_TAX_AMOUNT_8)          as SAP_TAX_AMOUNT_8          : Decimal(15, 2),    // 8%  SAP税额
+        }
+        group by
+            Company_Code,
+            SUPPLIER,
+            INV_MONTH,
+            AMOUNT_HEADER_10_Y,
+            AMOUNT_HEADER_8_Y,
+            TAX_AMOUNT_HEADER_10_N,
+            TAX_AMOUNT_HEADER_8_N,
+            INV_NO;
+
+    entity PCH_T05_ACCOUNT_DETAIL_SUM_GRO   as
+
+        select from PCH_T05_ACCOUNT_DETAIL_DELETE 
 
 
         distinct {
@@ -609,10 +581,6 @@ extend service TableService {
                 SUM(SAP_TAX_AMOUNT_8)          as SAP_TAX_AMOUNT_8          : Decimal(15, 2),    // 8%  SAP税额
                 SUM(TAX_AMOUNT_HEADER_10_N)    as TAX_AMOUNT_HEADER_10_N    : Decimal(15, 2),    // 10% SAP税额HEADER TAX_AMOUNT_HEADER
                 SUM(TAX_AMOUNT_HEADER_8_N)     as TAX_AMOUNT_HEADER_8_N     : Decimal(15, 2),    // 8%  SAP税额HEADER TAX_AMOUNT_HEADER
-                // SUM(AMOUNT_HEADER_10_N)        as AMOUNT_HEADER_10_N        : Decimal(15, 2),    // 10% SAP税额HEADER AMOUNT_HEADER
-                // SUM(AMOUNT_HEADER_8_N)         as AMOUNT_HEADER_8_N         : Decimal(15, 2),    // 8%  SAP税额HEADER AMOUNT_HEADER
-                // SUM(TAX_AMOUNT_HEADER_10_Y)    as TAX_AMOUNT_HEADER_10_Y    : Decimal(15, 2),    // 10% SAP税额HEADER TAX_AMOUNT_HEADER
-                // SUM(TAX_AMOUNT_HEADER_8_Y)     as TAX_AMOUNT_HEADER_8_Y     : Decimal(15, 2),    // 8%  SAP税额HEADER TAX_AMOUNT_HEADER
                 SUM(AMOUNT_HEADER_10_Y)        as AMOUNT_HEADER_10_Y        : Decimal(15, 2),    // 10% SAP税额HEADER AMOUNT_HEADER
                 SUM(AMOUNT_HEADER_8_Y)         as AMOUNT_HEADER_8_Y         : Decimal(15, 2),    // 8%  SAP税额HEADER AMOUNT_HEADER
         }
