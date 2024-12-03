@@ -59,15 +59,15 @@ public class Pch06Handler implements EventHandler {
 
     // 同期
     @On(event = "PCH06_TQ")
-    public void pch06Tq(PCH06TQContext context) throws ParseException {
+    public void pch06Tq(PCH06TQContext context) throws Exception {
         // Pch06DataList list = JSON.parseObject(context.getStr(), Pch06DataList.class);
         // pchService.check(list);
         // if (!list.getErr()) {
         // pchService.detailsSave(list);
         // }
 
-        String run = Ifm03PoService.syncPo();
-        context.setResult(run);
+        Ifm03PoService.syncPo();
+        context.setResult("successs");
     }
 
     /**
