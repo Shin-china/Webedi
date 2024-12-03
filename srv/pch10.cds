@@ -7,7 +7,13 @@ extend service TableService {
 
 
     entity PCH10_Header       as
-        select from PCH.T06_QUOTATION_H as T01 distinct {
+        select from PCH.T06_QUOTATION_H as T01
+        left join PCH.T07_QUOTATION_D as T02
+            on(
+                T01.QUO_NUMBER = T02.QUO_NUMBER
+            )
+
+        distinct {
 
             key T01.ID,
                 T01.QUO_NUMBER,
@@ -31,6 +37,7 @@ extend service TableService {
                 // T01.TOTAL_THB,
                 T01.CD_DATE,
                 T01.CD_BY,
+                T02.SUPPLIER_MAT,
                 T01.CD_DATE_TIME
 
         }
