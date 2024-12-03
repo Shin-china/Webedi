@@ -108,7 +108,7 @@ public class Pch03Handler implements EventHandler {
             String po = jsonObject.getString("po");
             String dNo = jsonObject.getString("dNo");
             // 判断po明细是否和履历表中的一致
-            Boolean boo = pchService.getT09LogData(jsonObject);
+            Boolean boo = pchService.getT09LogData(po, dNo);
             if (boo) {
                 list.add(po);
             }
@@ -352,18 +352,9 @@ public class Pch03Handler implements EventHandler {
         Boolean[] isPrint = new Boolean[1];
         isPrint[0] = false;
         pchd03List.forEach(pchd03 -> {
-            String type = "";
             // type
             String poSendPDFZWSType = pchService.getPoSendPDFZWSType(pchd03.getPoNo());
-            if (UmcConstants.ZWS_TYPE_3.equals(poSendPDFZWSType)) {
-                type = UmcConstants.ZWS_TYPE_3_NAME;
-            }
-            if (UmcConstants.ZWS_TYPE_1.equals(poSendPDFZWSType)) {
-                type = UmcConstants.ZWS_TYPE_1_NAME;
-            }
-            if (UmcConstants.ZWS_TYPE_2.equals(poSendPDFZWSType)) {
-                type = UmcConstants.ZWS_TYPE_2_NAME;
-            }
+            String type = getTypeIss(poSendPDFZWSType);
             pchd03.setEmailAddress(pchService.getEmailAddress(pchd03.getSupplier()));
             // 如果poSendPDFZWSType是REIUSSE
             pchd03.setType(type);
@@ -415,6 +406,26 @@ public class Pch03Handler implements EventHandler {
             pchd03.setId(po + StringTool.leftPadWithZeros(dNo, 5));
 
         });
+    }
+
+    /**
+     * 获取类型
+     * 
+     * @param poSendPDFZWSType
+     * @return
+     */
+    private String getTypeIss(String poSendPDFZWSType) {
+        String type = "";
+        if (UmcConstants.ZWS_TYPE_3.equals(poSendPDFZWSType)) {
+            type = UmcConstants.ZWS_TYPE_3_NAME;
+        }
+        if (UmcConstants.ZWS_TYPE_1.equals(poSendPDFZWSType)) {
+            type = UmcConstants.ZWS_TYPE_1_NAME;
+        }
+        if (UmcConstants.ZWS_TYPE_2.equals(poSendPDFZWSType)) {
+            type = UmcConstants.ZWS_TYPE_2_NAME;
+        }
+        return type;
     }
 
     @On(event = PCH03GETTYPEContext.CDS_NAME)

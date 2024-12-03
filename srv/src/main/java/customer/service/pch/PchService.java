@@ -158,8 +158,9 @@ public class PchService {
     }
 
     public String getPoSendPDFZWSType(String po) {
-        T10EmailSendLog t10 = pchD010.getByPo(po);
+        List<T10EmailSendLog> byPo2 = pchD010.getByPo(po);
         List<T02PoD> byPo = pchD002.getByPo(po);
+
         Boolean flag1 = false;
         // 判断明细是否为D
         for (T02PoD t02PoD : byPo) {
@@ -173,15 +174,27 @@ public class PchService {
             return UmcConstants.ZWS_TYPE_3;
         }
         // 如果T10EmailSendLog中type有type为Y的则为type1，否则为type2
-        if (t10 != null) {
-            if (t10.getType().equals("Y")) {
-                return UmcConstants.ZWS_TYPE_2;
-            } else {
-                return UmcConstants.ZWS_TYPE_1;
+        if (byPo2 != null) {
+
+            // 有发送过的情况则要判断是否一致
+            for (T10EmailSendLog t10 : byPo2) {
+                // 循环
+                for (T02PoD t02 : byPo) {
+                    // 判断是否一致
+                    if (t10.getPoNo().equals(t02.getPoNo()) && t10.getDNo().equals(t02.getDNo())) {
+                        Boolean boo = getT09LogData(t02, t10);
+                        // 不一致就是变更
+                        if (!boo) {
+                            return UmcConstants.ZWS_TYPE_2;
+                        }
+                    }
+
+                }
             }
-        } else {
-            return UmcConstants.ZWS_TYPE_1;
         }
+        // 最后没有就是新规
+        return UmcConstants.ZWS_TYPE_1;
+
     }
 
     public void setT02PrintHx(String po, String dNo) {
@@ -203,10 +216,9 @@ public class PchService {
      * @param jsonObject
      * @return true则为一致或者，false则为不一致,为空
      */
-    public Boolean getT09LogData(JSONObject jsonObject) {
+    public Boolean getT09LogData(String po, String dNo) {
         Boolean re = true;
-        String po = jsonObject.getString("po");
-        String dNo = jsonObject.getString("dNo");
+
         T02PoD byID = pchD002.getByID(po, Integer.parseInt(dNo));
         T10EmailSendLog byID2 = pchD010.getByID(po, Integer.parseInt(dNo));
         if (byID != null && byID2 != null) {
@@ -236,4 +248,39 @@ public class PchService {
 
     }
 
+    /**
+     * 判断po明细是否和履历表中的一致
+     * 
+     * @param jsonObject
+     * @return true则为一致或者，false则为不一致,为空
+     */
+    public Boolean getT09LogData(T02PoD byID, T10EmailSendLog byID2) {
+        Boolean re = true;
+
+        if (byID != null && byID2 != null) {
+            if (UmcConstants.DELETE_YES.equals(byID2.getType())) {
+                if (!byID.getPoType().equals(byID2.getPoType())) {
+                    re = false;
+                }
+                if (byID.getPoPurQty() != null && byID2.getQuantity() != null
+                        && byID.getPoPurQty().compareTo(byID2.getQuantity()) != 0) {
+                    re = false;
+                }
+                if (byID.getPoDDate() != null && byID2.getInputDate() != null
+                        && !byID.getPoDDate().isEqual(byID2.getInputDate())) {
+                    re = false;
+                }
+                if (byID.getDelPrice() != null && byID2.getDelPrice() != null
+                        && byID.getDelPrice().compareTo(byID2.getDelPrice()) != 0) {
+                    re = false;
+                }
+            }
+
+        } else {
+            // 如果没有也为不一致
+            re = false;
+        }
+        return re;
+
+    }
 }

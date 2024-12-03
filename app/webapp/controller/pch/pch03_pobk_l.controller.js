@@ -94,7 +94,9 @@ sap.ui.define([
 							pList.push(p)
 						}
 					})
-					this._querenDb(pList)
+					this._querenDb(pList).then(res => {
+						this._setBusy(false);
+					})
 
 				}
 			})
@@ -265,7 +267,7 @@ sap.ui.define([
 				const plant1400 = plantList["1400"];
 				if (plant1100 && plant1100.length > 0) {
 					//循环1100的数据
-					plant1100.forEach((item) => {
+					
 						//通过供应商分组
 
 						//将工厂分过的数据通过供应商分组
@@ -283,7 +285,7 @@ sap.ui.define([
 								//所有供应商下的数据	
 								const typeObj = typeList[type];
 								if(typeObj[0].EMAIL_ADDRESS){
-								if ("新规" == type) {
+								if ("新規" == type) {
 									this._sendEmailTy(typeObj, supplierObjMap, supplierLenMap, supplierCntMap, supplier, "UWEB_M004-1")
 								}
 								if ("削除" == type) {
@@ -302,7 +304,7 @@ sap.ui.define([
 						})
 
 
-					})
+					
 				}
 				if (plant1400 && plant1400.length > 0) {
 					//循环1400的数据
@@ -326,7 +328,10 @@ sap.ui.define([
 
 					})
 				}
-				that._isQuerenDb(selectedIndices, "eml");
+				setTimeout(function() {
+					that._isQuerenDb(selectedIndices, "eml");
+				}, 3000);
+				
 				}
 
 
@@ -337,10 +342,13 @@ sap.ui.define([
 			var that = this;
 			// 创建一个新的Map对象  用作判断key值对应po对应的明细数据
 			let myMap = new Map();
+
+			let myIssMap = new Map();
 			var poList = [];
 			obj1.forEach((item) => {
 				poList.push(item.PO_NO);
 				myMap.get(item.PO_NO) ? myMap.get(item.PO_NO).push(item.ID) : myMap.set(item.PO_NO, [item.ID]);
+				myIssMap.get(item.PO_NO) ? myIssMap.get(item.PO_NO) : myIssMap.set(item.PO_NO, item.TYPE);
 			})
 
 
@@ -380,11 +388,12 @@ sap.ui.define([
 			for(var i=0;i<uniqueIdList.length;i++){
 				
 				var item = uniqueIdList[i];
+				var pdfName = that._getZwsName(myIssMap.get(item),item);
 				let obj = obj1[0].ZABC;
 				//EFwei全po打印
 				if (obj == "E" || obj == "F") {
 
-					that._printZWSPrintEmail(that, [item], "/PCH_T03_PO_ITEM_PRINT", "PO_NO",supplierObjMap,item,supplier).then((oData) => {
+					that._printZWSPrintEmail(that, [item], "/PCH_T03_PO_ITEM_PRINT", "PO_NO",supplierObjMap,item,supplier,undefined,pdfName).then((oData) => {
 
 						that._newNPSprinEmil(myMap, that, oData, supplierObjMap).then((oData2) => {
 
@@ -400,7 +409,7 @@ sap.ui.define([
 				}
 				//sonota和C部分明细打印
 				if (obj == "C" || obj == "W") {
-					that._printZWSPrintEmail(that, myMap.get(item), "/PCH_T03_PO_ITEM_PRINT", "ID",supplierObjMap,item,supplier).then((oData) => {
+					that._printZWSPrintEmail(that, myMap.get(item), "/PCH_T03_PO_ITEM_PRINT", "ID",supplierObjMap,item,supplier,undefined,pdfName).then((oData) => {
 
 						that._newNPSprinEmil(myMap, that, oData, supplierObjMap).then((oData2) => {
 							if(this._checkEmailaskPdf(supplierLenMap,supplierCntMap,oData2[1])){
@@ -417,6 +426,7 @@ sap.ui.define([
 			var that = this;
 			// 创建一个新的Map对象  用作判断key值对应po对应的明细数据
 			let myMap = new Map();
+			
 			var poList = [];
 			obj1.forEach((item) => {
 				poList.push(item.PO_NO);
@@ -530,6 +540,7 @@ sap.ui.define([
 					selectedIndices.forEach((item) => {
 						myMap.get(item.PO_NO) ? myMap.get(item.PO_NO).push(item.ID) : myMap.set(item.PO_NO, [item.ID]);
 						myZABCMap.get(item.PO_NO) ? myZABCMap.get(item.PO_NO) : myZABCMap.set(item.PO_NO, item.ZABC);
+						
 					})
 
 					var zip = new JSZipSync();
@@ -543,7 +554,7 @@ sap.ui.define([
 						zipFile: [],
 
 					};
-					that._onNPSprintTy(selectedIndices, uniqueIdList, myMap, myZABCMap, that, false);
+					that._onNPSprintTy(selectedIndices, uniqueIdList, myMap, myZABCMap, that);
 
 				}
 				that._isQuerenDb(selectedIndices, "nps");
@@ -562,7 +573,7 @@ sap.ui.define([
 				// 创建一个新的Map对象  用作判断po是否状态
 				let myZABCMap = new Map();
 				// 创建一个新的Map对象  用作判断key值对应po对应的明细数据 po+明细
-				let myMapPoDno = new Map();
+				let myIssMap = new Map();
 				var PoList = that._TableDataList("detailTable", 'PO_NO')
 				//经过去重以后的po号
 				var uniqueIdList = [...new Set(PoList)];
@@ -571,7 +582,7 @@ sap.ui.define([
 
 					ObList.forEach((item) => {
 						myMap.get(item.PO_NO) ? myMap.get(item.PO_NO).push(item.ID) : myMap.set(item.PO_NO, [item.ID]);
-						
+						myIssMap.get(item.PO_NO) ? myIssMap.get(item.PO_NO) : myIssMap.set(item.PO_NO, item.TYPE);
 						myZABCMap.get(item.PO_NO) ? myZABCMap.get(item.PO_NO) : myZABCMap.set(item.PO_NO, item.ZABC);
 					})
 
@@ -586,14 +597,14 @@ sap.ui.define([
 						zipFile: [],
 
 					};
-					that._onZWSprintTy(ObList, uniqueIdList, myMap, myZABCMap, that);
+					that._onZWSprintTy(ObList, uniqueIdList, myMap, myZABCMap, that,myIssMap);
 
 				}
 				that._isQuerenDb(ObList,"zws");
 			})
 
 		},
-		_printZWSPrintEmail(that, item, cds, key,list,name,supplier,fax) {
+		_printZWSPrintEmail(that, item, cds, key,list,name,supplier,fax,pdfName) {
 			let options = { compact: true, ignoreComment: true, spaces: 4 };
 			return new Promise(function (resolve, reject) {
 			//打印前先获取打印数据npm
@@ -607,7 +618,7 @@ sap.ui.define([
 					that.PrintTool.getImageBase64(oData).then((odata2) => {
 						list.get(supplier).emailJson.MAIL_BODY.push({
 							object: "filename_2",
-							value: fax? "TransFAX_"+name+".pdf" :that.CommTools.getCurrentTimeFormatted()+"_"+name+"注文書.pdf"
+							value: fax? "TransFAX_"+name+".pdf" :pdfName
 						});
 						list.get(supplier).emailJson.MAIL_BODY.push({
 							object: "filecontent_2",
@@ -623,7 +634,7 @@ sap.ui.define([
 		
 
 		},
-		_printZWSPrint(that, item, cds, key) {
+		_printZWSPrint(that, item, cds, key,_name) {
 			let options = { compact: true, ignoreComment: true, spaces: 4 };
 			return new Promise(function (resolve, reject) {
 			//打印前先获取打印数据
@@ -631,7 +642,7 @@ sap.ui.define([
 				let sResponse = json2xml(oData, options);
 				console.log(sResponse)
 
-				that.PrintTool._detailSelectPrintDowS(that, sResponse, "test03/test2", oData, null, null, null, null, null).then((oData) => {
+				that.PrintTool._detailSelectPrintDowS(that, sResponse, "test03/test2", oData, null, _name, null, null, null).then((oData) => {
 					//po=po+podno
 					var sapPo = {
 						po: item[0],
@@ -662,7 +673,7 @@ sap.ui.define([
 		 * @param {*} boo 
 		 * @returns 
 		 */
-		_onZWSprintTy: function (ObList, uniqueIdList, myMap, myZABCMap, that, boo) {
+		_onZWSprintTy: function (ObList, uniqueIdList, myMap, myZABCMap, that, myIssMap) {
 			let options = { compact: true, ignoreComment: true, spaces: 4 };
 
 			return new Promise(function (resolve, reject) {
@@ -674,12 +685,12 @@ sap.ui.define([
 						//EFwei全po打印
 						if (obj == "E" || obj == "F") {
 
-							that._printZWSPrint(that, [item], "/PCH_T03_PO_ITEM_PRINT", "PO_NO")
+							that._printZWSPrint(that, [item], "/PCH_T03_PO_ITEM_PRINT", "PO_NO",that._getZwsName(myIssMap.get(item),item))
 
 						}
 						//sonota和C部分明细打印
 						if (obj == "C" || obj == "W") {
-							that._printZWSPrint(that, myMap.get(item), "/PCH_T03_PO_ITEM_PRINT", "ID")
+							that._printZWSPrint(that, myMap.get(item), "/PCH_T03_PO_ITEM_PRINT", "ID",that._getZwsName(myIssMap.get(item),item))
 
 
 						}
@@ -727,7 +738,7 @@ sap.ui.define([
 					that.PrintTool.getImageBase64(oData).then((odata2) => {
 						list.get(item[1]).emailJson.MAIL_BODY.push({
 							object: "filename_3",
-							value: that.CommTools.getCurrentTimeFormatted()+"_"+item[0]+"納品書.pdf"
+							value: that._getNpsName()
 						});
 						list.get(item[1]).emailJson.MAIL_BODY.push({
 							object: "filecontent_3",
@@ -740,7 +751,13 @@ sap.ui.define([
 			});
 			});
 		},
-		_newNPSprinDowS(myMap, that, item) {
+		_getZwsName(iss,po){
+			return "注文書("+ iss+")_"+po+"_"+this.CommTools.getCurrentTimeFormatted()+".pdf";
+		},
+		_getNpsName(){
+			return "納品書"+ this.CommTools.getCurrentTimeFormatted()+".pdf";
+		},
+		_newNPSprinDowS(myMap, that, item,_name) {
 			let options = { compact: true, ignoreComment: true, spaces: 4 };
 			var that = this;
 			that.PrintTool._getPrintDataInfo(that, myMap.get(item), "/PCH_T03_PO_ITEM_PRINT", "ID").then((oData) => {
@@ -748,7 +765,7 @@ sap.ui.define([
 				console.log(sResponse)
 
 				// that.PrintTool._detailSelectPrint(that, sResponse, "test/test", oData, null, null, null, null)
-				that.PrintTool._detailSelectPrintDowS(that, sResponse, "test03/test1", oData, null, null, null, null, null).then((oData) => {
+				that.PrintTool._detailSelectPrintDowS(that, sResponse, "test03/test1", oData, null, _name, null, null, null).then((oData) => {
 					var sapPo = {
 						po:  myMap.get(item),
 						type: "PCH03",
@@ -775,26 +792,19 @@ sap.ui.define([
 		 * @param {*} list 
 		 * @returns 
 		 */
-		_onNPSprintTy: function (ObList, uniqueIdList, myMap, myZABCMap, that, boo, list) {
+		_onNPSprintTy: function (ObList, uniqueIdList, myMap, myZABCMap, that ) {
 
 			return new Promise(function (resolve, reject) {
 
 
-				if (boo) {
-					uniqueIdList.forEach((item) => {
 
-						that._newNPSprinEmil(myMap, that, item, list);
-						resolve(true);
-
-					})
-				} else {//通过去重的po号取map数据进行打印
-					uniqueIdList.forEach((item) => {
-						that._newNPSprinDowS(myMap, that, item, list);
-						resolve(true);
+				uniqueIdList.forEach((item) => {
+					that._newNPSprinDowS(myMap, that, item, that._getNpsName());
+					resolve(true);
 
 
-					})
-				}
+				})
+
 				that._setBusy(false);
 
 			})
@@ -811,7 +821,8 @@ sap.ui.define([
 				let myMap = new Map();
 				// 创建一个新的Map对象  用作判断po是否状态
 				let myZABCMap = new Map();
-
+				// 用作名字
+				let myIssMap = new Map();
 
 				let options = { compact: true, ignoreComment: true, spaces: 4 };
 				var IdList = that._TableDataList("detailTable", 'ID')
@@ -824,6 +835,7 @@ sap.ui.define([
 					selectedIndices.forEach((item) => {
 						myMap.get(item.PO_NO) ? myMap.get(item.PO_NO).push(item.ID) : myMap.set(item.PO_NO, [item.ID]);
 						myZABCMap.get(item.PO_NO) ? myZABCMap.get(item.PO_NO) : myZABCMap.set(item.PO_NO, item.ZABC);
+						myIssMap.get(item.PO_NO) ? myIssMap.get(item.PO_NO) : myIssMap.set(item.PO_NO, item.TYPE);
 					})
 					var zip = new JSZipSync();
 					that.printTaskPdf = {
@@ -836,9 +848,9 @@ sap.ui.define([
 						zipFile: [],
 
 					};
-					that._onZWSprintTy(selectedIndices, uniqueIdList, myMap, myZABCMap, that, false);
+					that._onZWSprintTy(selectedIndices, uniqueIdList, myMap, myZABCMap, that, myIssMap);
 
-					that._onNPSprintTy(selectedIndices, uniqueIdList, myMap, myZABCMap, that, false);
+					that._onNPSprintTy(selectedIndices, uniqueIdList, myMap, myZABCMap, that );
 
 					that._isQuerenDb(selectedIndices, "zws");
 				}
@@ -850,12 +862,14 @@ sap.ui.define([
 		 */
 		_querenDb(pList) {
 			var that = this;
+			return new Promise(function (resolve, reject) {
 			if(pList.length>0){
 				that._callCdsAction(_objectCommData._entity2, { parms: JSON.stringify(pList) }, that).then(
 
 					function (odata) {
 						that.byId("smartTable").rebindTable();
-						that._setBusy(false);
+						
+						resolve(true);
 					},
 					function (error) {
 						that.MessageTools._addMessage(error.responseText, null, null, that.getView());
@@ -863,6 +877,7 @@ sap.ui.define([
 					}
 				)
 			}
+		})
 
 		},
 
@@ -912,6 +927,8 @@ sap.ui.define([
 				}
 			})
 			this._querenDb(pList)
+			    
+			
 		},
 	});
 });

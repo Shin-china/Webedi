@@ -241,6 +241,7 @@ extend service TableService {
                 '' as checkOk : String(50), // 検査合区分
                 '' as BYNAME : String(50), // 発注担当者,
                 T01.POCDBY , // 発注担当者
+                @title: '{i18n>CD_BY}'
                 T02.SAP_CD_BY, // SAP担当者
                 T02.INT_NUMBER,
                 T02.TO_MAT.CUST_MATERIAL,//P/N：
@@ -335,6 +336,7 @@ extend service TableService {
                 '' as checkOk : String(50), // 検査合区分
                 '' as BYNAME : String(50), // 発注担当者,
                 T01.POCDBY , // 発注担当者
+                @title: '{i18n>CD_BY}'
                 T02.SAP_CD_BY, // SAP担当者
                 T02.INT_NUMBER,
                 T02.TO_MAT.CUST_MATERIAL,

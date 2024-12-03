@@ -58,10 +58,28 @@ public class PchD010Dao extends Dao {
      * 
      * @param po
      */
-    public T10EmailSendLog getByPo(String po) {
-        Optional<T10EmailSendLog> result = db.run(
+    public List<T10EmailSendLog> getByPo(String po) {
+        List<T10EmailSendLog> listOf = db.run(
                 Select.from(Pch_.T10_EMAIL_SEND_LOG)
                         .where(o -> o.PO_NO().eq(po)
+                                .and(o.TYPE().eq("Y"))))
+                .listOf(T10EmailSendLog.class);
+
+        if (!listOf.isEmpty()) {
+            return listOf;
+        }
+        return null;
+    }
+
+    /**
+     * 判断log中po是否有已经回答
+     * 
+     * @param po
+     */
+    public T10EmailSendLog getByPoDno(String po, int dno) {
+        Optional<T10EmailSendLog> result = db.run(
+                Select.from(Pch_.T10_EMAIL_SEND_LOG)
+                        .where(o -> o.PO_NO().eq(po).and(o.D_NO().eq(dno))
                                 .and(o.TYPE().eq("Y"))))
                 .first(T10EmailSendLog.class);
         if (result.isPresent()) {

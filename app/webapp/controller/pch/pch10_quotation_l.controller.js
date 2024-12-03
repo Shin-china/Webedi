@@ -25,7 +25,39 @@ sap.ui.define(["umc/app/Controller/BaseController", "sap/m/MessageToast"], funct
       //手动添加排序
       this._onListRebinSort(oEvent, sorts, ascs);
     },
+    //调用接口
+    onSend: function (oEvent) {
+      //获取数据
+      this.getView().setBusy(true);
+      var that = this;
 
+      var selectedIndices = that._TableList("detailTable10"); // 获取选中行 
+      if( selectedIndices != undefined){
+        var confirmMsg = this.MessageTools._getI18nMessage("SD022_UWEB_CONFIRM",[selectedIndices.length],this.getView());
+
+        sap.m.MessageBox.confirm(confirmMsg, {
+          actions: ["YES", "NO"],
+          emphasizedAction: "YES",
+          onClose: function (sAction) {
+            if (sAction == "YES") {
+            selectedIndices.forEach((data) => {
+              if("B" !== data.STATUS_SALES) {
+              this.getView().setBusy(true);
+              sap.m.MessageBox.alert(that.MessageTools._getI18nText("SD022_UWEB_STATUS_ERROR",that.getView()));
+              return;
+              }
+            });
+      
+            //调用转寄接口
+
+            that._invoUweb(selectedIndices);
+            
+            }
+          },
+          });
+      }
+
+    },
     onPress: function (oEvent) {
       let oItem = oEvent.getSource();
       let oContext = oItem.getBindingContext();
