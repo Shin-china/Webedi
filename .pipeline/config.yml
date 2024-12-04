@@ -30,6 +30,7 @@ stages:
 steps:
   mtaBuild:
     source: mta_umceq
+    installArtifacts: true
   cloudFoundryDeploy:
     mtaDeployParameters: "-f --version-rule ALL"
   artifactPrepareVersion:
