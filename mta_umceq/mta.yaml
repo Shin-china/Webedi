@@ -45,7 +45,7 @@ modules:
         - npm install
         - npm run build:ui
       supported-platforms: []
-      
+
   - name: uweb-umce-qas
     type: approuter.nodejs
     path: ../app/router_umceq
@@ -63,7 +63,6 @@ modules:
       - name: uweb-umce-qas-auth
       - name: uweb-umce-qas-html5-repo-runtime
       - name: uweb-umce-qas-getDestination
-      - name: uweb-umce-qas-deploy
         parameters:
           content-target: true
     provides:
