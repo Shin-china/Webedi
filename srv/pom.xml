@@ -120,11 +120,11 @@
 		</dependency>
 
 		<!-- ODATA PROTOCOL ADAPTER -->
-		<dependency>
+		<!-- <dependency>
 			<groupId>com.sap.cds</groupId>
 			<artifactId>cds-adapter-odata-v4</artifactId>
 			<scope>runtime</scope>
-		</dependency>
+		</dependency> -->
 
 		<dependency>
 			<groupId>com.sap.cds</groupId>
