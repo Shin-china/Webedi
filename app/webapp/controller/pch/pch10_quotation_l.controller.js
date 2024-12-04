@@ -8,6 +8,14 @@ sap.ui.define(["umc/app/Controller/BaseController", "sap/m/MessageToast"], funct
       //显示页面
       this.getRouter().getRoute("RouteList_pch10").attachPatternMatched(this._onObjectMatched, this);
 
+      // this._localModel = new sap.ui.model.json.JSONModel();
+      //       this._localModel.setData({
+      //           "show": true,
+      //           "save": false
+      //       });
+      //       this.getView().setModel(this._localModel, "localModel");
+      //       this._BusyDialog = new sap.m.BusyDialog();
+
       
     },
     // _onObjectMatched: function () {
@@ -19,14 +27,29 @@ sap.ui.define(["umc/app/Controller/BaseController", "sap/m/MessageToast"], funct
     // },
 
     onRebind: function (oEvent) {
+
+      var select = this.byId("sch_INITIAL_OBJ").getSelected();
+
+       var mBindingParams = oEvent.getParameter("bindingParams");
+
+      var newFilter;
+            if (select === true) {
+                newFilter = new sap.ui.model.Filter("INITIAL_OBJ", sap.ui.model.FilterOperator.EQ, "1");
+            } else {
+                newFilter = new sap.ui.model.Filter("INITIAL_OBJ", sap.ui.model.FilterOperator.EQ, "");
+            }
+            mBindingParams.filters.push(newFilter);
+      
       this._rowNoMap == null;
       let sorts = ["QUO_NUMBER"];
       let ascs = [false]; //true desc false asc
       //手动添加排序
       this._onListRebinSort(oEvent, sorts, ascs);
+
+
     },
     //调用接口
-    onSend: function (oEvent) {
+    onLink: function (oEvent) {
       //获取数据
       this.getView().setBusy(true);
       var that = this;
@@ -58,6 +81,11 @@ sap.ui.define(["umc/app/Controller/BaseController", "sap/m/MessageToast"], funct
       }
 
     },
+    // onEdit: function () {
+    //     this._localModel.setProperty("/show", false);
+    //     this._localModel.setProperty("/save", true);
+    // },
+
     onPress: function (oEvent) {
       let oItem = oEvent.getSource();
       let oContext = oItem.getBindingContext();

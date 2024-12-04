@@ -2,19 +2,27 @@ package customer.handlers.pch;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
+import org.apache.xmlbeans.StringEnumAbstractBase.Table;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.sap.cds.services.handler.annotations.After;
 import com.sap.cds.services.handler.annotations.On;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.sap.cds.services.cds.CqnService;
 import com.sap.cds.services.handler.EventHandler;
 import com.sap.cds.services.handler.annotations.ServiceName;
 
 import cds.gen.pch.T06QuotationH;
 import cds.gen.tableservice.PCH10GrSENDContext;
+import cds.gen.tableservice.PCH10Header;
+import cds.gen.tableservice.PCH10Header_;
 import cds.gen.tableservice.PCH10SaveDATAContext;
 import cds.gen.tableservice.Pch06BatchSendingContext;
 import cds.gen.tableservice.TableService_;
@@ -22,6 +30,8 @@ import customer.bean.pch.Pch06DataList;
 import customer.bean.pch.Pch10SaveDataList;
 import customer.handlers.sys.SendService;
 import customer.service.pch.Pch10Service;
+
+import com.sap.cds.services.cds.CdsReadEventContext;
 
 @Component
 @ServiceName(TableService_.CDS_NAME)
@@ -32,6 +42,14 @@ public class Pch10Handler implements EventHandler {
     private Pch10Service pch10Service;
     @Autowired
     SendService sendService;
+
+    @After(entity = PCH10Header_.CDS_NAME, event = CqnService.EVENT_READ)
+    public void AfterreadPch10Header(CdsReadEventContext context, Stream<PCH10Header> pch10Header) {
+
+        List<PCH10Header> distinctlist = pch10Header.distinct().collect(Collectors.toList());
+
+        context.setResult(distinctlist);
+    }
 
     @On(event = "PCH10_GR_SEND")
     public void Send(PCH10GrSENDContext context) throws IOException {
@@ -71,14 +89,12 @@ public class Pch10Handler implements EventHandler {
     @On(event = "PCH10_SAVE_DATA")
     public void saveData(PCH10SaveDATAContext context) throws IOException {
 
-
         Pch10SaveDataList list = JSON.parseObject(context.getJson(), Pch10SaveDataList.class);
 
         pch10Service.check(list);
         if (!list.getErr()) {
             pch10Service.detailsSave(list);
         }
-
 
         context.setResult(JSON.toJSONString(list));
     }

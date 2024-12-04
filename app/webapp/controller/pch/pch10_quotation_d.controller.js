@@ -1,4 +1,4 @@
-sap.ui.define(["umc/app/Controller/BaseController", "sap/m/MessageToast"], function (Controller, MessageToast) {
+sap.ui.define(["umc/app/Controller/BaseController", "sap/m/MessageToast", "sap/m/BusyDialog",], function (Controller, MessageToast, BusyDialog) {
   "use strict";
 
   var _objectCommData = {
@@ -30,6 +30,8 @@ sap.ui.define(["umc/app/Controller/BaseController", "sap/m/MessageToast"], funct
 
       this.MessageTools._clearMessage();
       this.MessageTools._initoMessageManager(this);
+
+      this._BusyDialog = new sap.m.BusyDialog();
       
       // this._localModel = new sap.ui.model.json.JSONModel();
       // this._localModel.setData({
@@ -76,29 +78,29 @@ sap.ui.define(["umc/app/Controller/BaseController", "sap/m/MessageToast"], funct
                 }));
             }
 
-            if (QUO_ITEM) {
-                this._aFilters.push(new sap.ui.model.Filter({
-                    path: "QUO_ITEM",
-                    value1: QUO_ITEM,
-                    operator: sap.ui.model.FilterOperator.EQ,
-                }));
-            }
+            // if (QUO_ITEM) {
+            //     this._aFilters.push(new sap.ui.model.Filter({
+            //         path: "QUO_ITEM",
+            //         value1: QUO_ITEM,
+            //         operator: sap.ui.model.FilterOperator.EQ,
+            //     }));
+            // }
 
-            if (SALES_NUMBER) {
-                this._aFilters.push(new sap.ui.model.Filter({
-                    path: "SALES_NUMBER",
-                    value1: SALES_NUMBER,
-                    operator: sap.ui.model.FilterOperator.EQ,
-                }));
-            }
+            // if (SALES_NUMBER) {
+            //     this._aFilters.push(new sap.ui.model.Filter({
+            //         path: "SALES_NUMBER",
+            //         value1: SALES_NUMBER,
+            //         operator: sap.ui.model.FilterOperator.EQ,
+            //     }));
+            // }
 
-            if (QUO_VERSION) {
-                this._aFilters.push(new sap.ui.model.Filter({
-                    path: "QUO_VERSION",
-                    value1: QUO_VERSION,
-                    operator: sap.ui.model.FilterOperator.EQ,
-                }));
-            }
+            // if (QUO_VERSION) {
+            //     this._aFilters.push(new sap.ui.model.Filter({
+            //         path: "QUO_VERSION",
+            //         value1: QUO_VERSION,
+            //         operator: sap.ui.model.FilterOperator.EQ,
+            //     }));
+            // }
 
       var view = this.getView();
       var jsonModel = view.getModel("workInfo");
@@ -368,7 +370,6 @@ sap.ui.define(["umc/app/Controller/BaseController", "sap/m/MessageToast"], funct
 			};
 			return oPrams;
     },
-    
 
     fetchMaxSalesDNo() {
       return new Promise(function (resolve, reject) {
@@ -397,7 +398,268 @@ sap.ui.define(["umc/app/Controller/BaseController", "sap/m/MessageToast"], funct
             },
         });
     });
-    }
-    
+    },
+
+    onCloseAttachmentDialog: function () {
+            this._closeDialog(this, 'idAttachmentDialog');
+        },
+
+        onFileChange: function (oEvent) {
+            var oFile = oEvent.getParameter("files")[0];
+            if (!oFile) {
+                return;
+            }
+
+            var oAttachmentModel = this.getView().getModel("attachment");
+
+            if (!oAttachmentModel) {
+                return;
+            }
+
+            var sQuoNumber = oAttachmentModel.getProperty("/QUO_NUMBER");
+            if (!sQuoNumber) {
+                sap.m.MessageToast.show(this._PchResourceBundle.getText("QUO_NUMBER_IS_NULL"));
+                return;
+            }
+
+            let sQuoItem = oAttachmentModel.getProperty("/QUO_ITEM");
+            let sObject = sQuoNumber + '_' + sQuoItem;
+
+            var oReader = new FileReader();
+            oReader.readAsDataURL(oFile);
+            this._BusyDialog.open();
+            var that = this;
+            oReader.onload = function (e) {
+                let oFileData = e.target.result;
+                let sContent = oFileData.substring(oFileData.indexOf("base64,") + 7);
+                var oUploadData = {};
+                oUploadData = {
+                    "object": sObject,
+                    "object_type": "PCH08",
+                    "file_type": btoa(oFile.type),
+                    "file_name": oFile.name,
+                    "value": sContent
+                };
+                let oAttachmentObj = {
+                    "attachmentJson": oUploadData
+                };
+
+                $.ajax({
+                    url: "srv/odata/v4/Common/s3uploadAttachment",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    async: false,
+                    crossDomain: true,
+                    responseType: 'blob',
+                    data: JSON.stringify(oAttachmentObj),
+                    success: function (base64) {
+                        that.getView().getModel().refresh();
+                        console.log("上传成功");
+                    }
+                })
+
+
+                this.byId("idFileUploader").clear();
+                this._BusyDialog.close();
+            }.bind(this);
+        },
+
+        onDestroyAttachmentDialog: function (oEvent) {
+            this._destroyDialog(oEvent);
+        },
+
+        onOpenAttachmentDialog: function () {
+            var oTable = this.byId("tableUploadData");
+
+            if (!oTable) {
+                return;
+            }
+
+            const aIndex = oTable.getSelectedIndices();
+
+            if (aIndex.length !== 1) {
+                sap.m.MessageToast.show(this._PchResourceBundle.getText("SELECT_ONE_RECORD"));
+                return;
+            }
+
+            let oSelectData = oTable.getContextByIndex(aIndex[0]).getObject();
+
+            var sQuoNumber = oSelectData.QUO_NUMBER;
+            if (!sQuoNumber) {
+                sap.m.MessageToast.show(this._PchResourceBundle.getText("QUO_NUMBER_IS_NULL"));
+                return;
+            }
+
+            var oAttachmentModel = new sap.ui.model.json.JSONModel(oSelectData);
+
+            this.getView().setModel(oAttachmentModel, "attachment");
+
+            var oBindingContext = oTable.getContextByIndex(aIndex[0]);
+
+            this.loadFragment({
+                name: 'umc.app.view.pch.pch08_list_a'
+            }).then(function (oDialog) {
+                oDialog.setBindingContext(oBindingContext);
+                oDialog.open();
+            });
+        },
+
+        onDeleteAttachment: function (oEvent) {
+            var oTable = this.byId("id.AttachmentTable");
+
+            if (!oTable) {
+                return;
+            }
+
+            var aIndex = oTable.getSelectedIndices();
+
+            if (aIndex.length < 1) {
+                sap.m.MessageToast.show(this._PchResourceBundle.getText("SELECT_AT_LEAST_ONE_RECORD"));
+                return;
+            }
+
+            var that = this;
+            var aKey = [];
+            for (var i = 0; i < aIndex.length; i++) {
+                var oBindingContext = oTable.getContextByIndex(aIndex[i]);
+                var oData = oBindingContext.getObject();
+                var sAttachmentId = oData.ID;
+                aKey.push(sAttachmentId);
+            }
+
+            for (var i = 0; i < aKey.length; i++) {
+                var oAttachmentObj = {
+                    "key": aKey[i]
+                };
+
+                $.ajax({
+                    url: "srv/odata/v4/Common/deleteS3Object",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    async: false,
+                    crossDomain: true,
+                    data: JSON.stringify(oAttachmentObj),
+                    success: function (base64) {
+                        that.getView().getModel().refresh();
+                    }
+                })
+
+            }
+        },
+
+        _closeDialog: function (oContext, sDialogId) {
+            var oDialog = oContext.getView().byId(sDialogId);
+            oDialog.close();
+            oDialog.destroy();
+        },
+
+        _destroyDialog: function (oEvent) {
+            var oSource = oEvent.getSource();
+            if (oSource) {
+                oSource.destroy();
+            }
+        },
+
+        onBeforeBindAttachment: function (oEvent) {
+            var oParameters = oEvent.getParameter("bindingParams");
+            var oAttachmentModel = this.getView().getModel("attachment");
+
+            //Filter
+            if (oAttachmentModel) {
+                let sQuoNumber = oAttachmentModel.getProperty("/QUO_NUMBER");
+                let sQuoItem = oAttachmentModel.getProperty("/QUO_ITEM");
+                let sFilter = sQuoNumber + '_' + sQuoItem;
+                if (sQuoNumber !== '') {
+                    oParameters.filters.push(new sap.ui.model.Filter(
+                        "OBJECT",
+                        sap.ui.model.FilterOperator.EQ,
+                        sFilter
+                    ))
+                }
+            }
+
+            oParameters.filters.push(new sap.ui.model.Filter(
+                "OBJECT_TYPE",
+                sap.ui.model.FilterOperator.EQ,
+                "PCH08"
+            ));
+
+            oParameters.parameters.select = oParameters.parameters.select + ",FILE_TYPE,ID,OBJECT_LINK,OBJECT_TYPE";
+
+        },
+
+        onDownloadAttachment: function (oEvent) {
+            var oTable = this.byId("id.AttachmentTable");
+            var that = this;
+
+            if (!oTable) {
+                return;
+            }
+
+
+            var oBindingContext = oEvent.oSource.getBindingContext();
+            var oAttachment = oBindingContext.getObject();
+            var sId = oAttachment.ID;
+            var sType = '';
+            if (sId) {
+                var downloadJson = {
+                    attachmentJson: [{
+                        object: "download",
+                        value: oAttachment.OBJECT_LINK
+                    }]
+                }
+                sType = oAttachment.FILE_TYPE;
+            }
+
+
+            $.ajax({
+                url: "srv/odata/v4/Common/s3DownloadAttachment",
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                async: false,
+                crossDomain: true,
+                responseType: 'blob',
+                data: JSON.stringify(downloadJson),
+                success: function (base64) {
+                    const downloadLink = document.createElement("a");
+                    const blob = that._base64Blob(base64.value, sType);
+                    const blobUrl = URL.createObjectURL(blob);
+                    downloadLink.href = blobUrl;
+                    downloadLink.download = oAttachment.FILE_NAME;
+                    downloadLink.click();
+                }
+            })
+        },
+
+        onBeforeRebindList: function (oEvent) {
+
+            var oModel = this.getView().getModel();
+            if (oModel.hasPendingChanges()) {
+                oModel.resetChanges();
+            }
+
+            var oParameters = oEvent.getParameter("bindingParams");
+            var oComboStatus = this.byId("idStatusMultiComboBox");
+
+            //Filter
+            if (oComboStatus) {
+                var aKeys = oComboStatus.getSelectedKeys();
+                if (aKeys && aKeys.length > 0) {
+                    aKeys.forEach(e => {
+                        oParameters.filters.push(new sap.ui.model.Filter(
+                            "STATUS",
+                            sap.ui.model.FilterOperator.EQ,
+                            e
+                        ))
+                    });
+
+                }
+            }
+
+        },
+
   });
 });

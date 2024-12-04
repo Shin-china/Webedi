@@ -51,7 +51,8 @@
 
                                 <Button id="editButton" text="{pch>PCH03_BUTTON_EDI}" enabled="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'}], formatter: '.formatter.getEditableDCommon'}" press="onEdit" />
                                 <Button id="saveButton" text="{pch>PCH03_BUTTON_SAV}" enabled="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'}], formatter: '.formatter.getEditableSaveCommon'}" tooltip="{pch>PCH03_BUTTON_SAV}" press="onSave" />
-					</OverflowToolbar>
+                                <Button id="id.UBAttachment" text="{pch>ATTACHMENT}" press="onOpenAttachmentDialog" />
+                    </OverflowToolbar>
 						
 					</table:extension>
 
