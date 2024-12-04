@@ -62,25 +62,15 @@ modules:
           url: ${default-url}
 
   # --------------------- HTML5 App Deployer Module  ------------------------
-  - name: uweb-umce-qas-app-content
-    type: com.sap.html5.application-content
-    path: ../app/ui_deployer
-    requires:
-    - name: uweb-umce-qas-html5-repo-runtime
-      parameters:
-        content-target: true
-    build-parameters:
-      requires:
-        - name: UWEB-UMCE-QAS
-          artifacts:
-            - '../*'
+
   - name: UWEB-UMCE-QAS
     type: html5
     path: ../app
     build-parameters:
       builder: custom
       commands:
-        - npm run build:umce
+        - npm install
+        - npm run build:ui
       supported-platforms: []
 resources:
   - name: uweb-umce-qas-hdi
