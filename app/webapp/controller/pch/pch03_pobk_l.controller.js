@@ -649,6 +649,7 @@ sap.ui.define([
 						type: "PCH03",
 						fileName: "注文書",
 					}
+					that._setBusy(false);
 					//打印pdf后写表共通
 					that.PrintTool.printBackActionPo(that,oData,sapPo)
 
@@ -698,7 +699,7 @@ sap.ui.define([
 
 					})
 				
-					that._setBusy(false);
+					// that._setBusy(false);
 				
 			})
 
@@ -773,7 +774,7 @@ sap.ui.define([
 					}
 
 					//完成后是否更新确认
-
+					that._setBusy(false);
 					that.PrintTool.printBackActionPo(that,oData,sapPo)
 
 
@@ -805,7 +806,7 @@ sap.ui.define([
 
 				})
 
-				that._setBusy(false);
+				
 
 			})
 

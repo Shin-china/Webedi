@@ -239,6 +239,7 @@ public class Pch03Handler implements EventHandler {
             if ("D".equals(pchd03.getPoType())) {
                 pchd03.setZws7("0");
                 pchd03.setZws6("0");
+                pchd03.setZws4("0" + "\n" + pchd03.getStorage());
             }
 
             pchd03.setZws8(pchd03.getCurrency());
