@@ -35,7 +35,17 @@ modules:
       - name: app-api
         properties:
           CDS_MULTITENANCY_APPUI_URL: ~{url}
-
+  # --------------------- HTML5 App Deployer Module  ------------------------
+  - name: uweb-umce-qas-deploy
+    type: html5
+    path: ../app
+    build-parameters:
+      builder: custom
+      commands:
+        - npm install
+        - npm run build:ui
+      supported-platforms: []
+      
   - name: uweb-umce-qas
     type: approuter.nodejs
     path: ../app/router_umceq
@@ -53,6 +63,7 @@ modules:
       - name: uweb-umce-qas-auth
       - name: uweb-umce-qas-html5-repo-runtime
       - name: uweb-umce-qas-getDestination
+      - name: uweb-umce-qas-deploy
         parameters:
           content-target: true
     provides:
@@ -60,17 +71,8 @@ modules:
         properties:
           url: ${default-url}
 
-  # --------------------- HTML5 App Deployer Module  ------------------------
 
-  - name: UWEB-UMCE-QAS
-    type: html5
-    path: ../app
-    build-parameters:
-      builder: custom
-      commands:
-        - npm install
-        - npm run build:ui
-      supported-platforms: []
+
 resources:
   - name: uweb-umce-qas-auth
     type: org.cloudfoundry.managed-service
