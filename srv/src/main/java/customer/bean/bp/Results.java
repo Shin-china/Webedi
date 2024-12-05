@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class Results {
+    private String BusinessPartner;
     private String Supplier;
     private String OrganizationBPName1;
     private String OrganizationBPName2;

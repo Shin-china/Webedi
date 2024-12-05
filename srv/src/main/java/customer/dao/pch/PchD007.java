@@ -1,6 +1,7 @@
 package customer.dao.pch;
 
 import java.time.Instant;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -85,5 +86,35 @@ public class PchD007 extends Dao {
         CqnUpdate update = Update.entity(Pch_.T07_QUOTATION_D, b -> b.matching(keys)).data(data);
 
         db.run(update);
+    }
+
+    public void updateT07(T07QuotationD o) {
+
+        // 获取 key 的值
+        String plantId = o.getPlantId();
+        String materialNumber = o.getMaterialNumber();
+        Integer bpNumber = o.getBpNumber();
+
+        // 构建更新条件
+        Map<String, Object> keys = new HashMap<>();
+        keys.put("PLANT_ID", plantId);
+        keys.put("MATERIAL_NUMBER", materialNumber);
+        keys.put("BP_NUMBER", bpNumber);
+
+        // 创建需要更新的字段
+        Map<String, Object> updatedFields = new HashMap<>();
+        updatedFields.put("UNIT", o.getUnit());
+        updatedFields.put("LEAD_TIME", o.getLeadTime());
+        updatedFields.put("ORIGINAL_COU", o.getOriginalCou());
+        updatedFields.put("SUPPLIER_MAT", o.getSupplierMat());
+        updatedFields.put("PRICE_CONTROL", o.getPriceControl());
+        updatedFields.put("MOQ", o.getMoq());
+        updatedFields.put("Incoterms", o.getIncoterms());
+        updatedFields.put("Incoterms_Text", o.getIncotermsText());
+        updatedFields.put("CURRENCY", o.getCurrency());
+
+        // 执行更新
+        db.run(Update.entity(Pch_.T07_QUOTATION_D, b -> b.matching(keys)).data(updatedFields));
+
     }
 }

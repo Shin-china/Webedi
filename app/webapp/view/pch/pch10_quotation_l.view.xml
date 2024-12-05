@@ -66,13 +66,179 @@
         </smartTable:customToolbar>
 
         <table:Table id="detailTable10" rowMode="Auto" rowActionCount="1" selectionMode="Multi" alternateRowColors="true" fixedColumnCount="0">
-          <table:rowActionTemplate>
-            <table:RowAction id="RowAction10">
-              <table:items>
-                <table:RowActionItem id="RowActionItem" type="Navigation" press="onPress" visible="{localModel>/PCH10_VIEW_DOC}" />
-              </table:items>
-            </table:RowAction>
-          </table:rowActionTemplate>
+          <table:columns>
+            
+            <table:Column id="colQuoNumber" width="10rem" sortProperty="QUO_NUMBER" filterProperty="QUO_NUMBER">
+                <table:customData>
+                    <core:CustomData key="p13nData" value="{
+                            columnKey: 'QUO_NUMBER',
+                            leadingProperty: 'QUO_NUMBER',
+                            sortProperty: 'QUO_NUMBER',
+                            filterProperty: 'QUO_NUMBER'
+                        }" />
+                </table:customData>
+                <table:label>
+                    <Label id="labelQuoNumber" text="{pch>PCH10_QUO_NUMBER}" />
+                </table:label>
+                <table:template>
+                    <Text id="textQuoNumber" text="{QUO_NUMBER}" />
+                </table:template>
+            </table:Column>
+
+
+            <table:Column id="colQUO_VERSION" width="10rem" sortProperty="QUO_VERSION" filterProperty="QUO_VERSION">
+                <table:customData>
+                    <core:CustomData key="p13nData" value="{
+                            columnKey: 'QUO_VERSION',
+                            leadingProperty: 'QUO_VERSION',
+                            sortProperty: 'QUO_VERSION',
+                            filterProperty: 'QUO_VERSION'
+                        }" />
+                </table:customData>
+                <table:label>
+                    <Label id="labelQUO_VERSION" text="{pch>PCH10_QUO_VERSION}" />
+                </table:label>
+                <table:template>
+                    <Text id="textQUO_VERSION" text="{QUO_VERSION}" />
+                </table:template>
+            </table:Column>
+
+            <table:Column id="colSALES_NUMBER" width="10rem" sortProperty="SALES_NUMBER" filterProperty="SALES_NUMBER">
+                <table:customData>
+                    <core:CustomData key="p13nData" value="{
+                            columnKey: 'SALES_NUMBER',
+                            leadingProperty: 'SALES_NUMBER',
+                            sortProperty: 'SALES_NUMBER',
+                            filterProperty: 'SALES_NUMBER'
+                        }" />
+                </table:customData>
+                <table:label>
+                    <Label id="labelSALES_NUMBER" text="{pch>PCH10_SALES_NUMBER}" />
+                </table:label>
+                <table:template>
+                    <Text id="textSALES_NUMBER" text="{SALES_NUMBER}" />
+                </table:template>
+            </table:Column>
+
+            <table:Column id="colCUSTOMER" width="10rem" sortProperty="CUSTOMER" filterProperty="CUSTOMER">
+                <table:customData>
+                    <core:CustomData key="p13nData" value="{
+                            columnKey: 'CUSTOMER',
+                            leadingProperty: 'CUSTOMER',
+                            sortProperty: 'CUSTOMER',
+                            filterProperty: 'CUSTOMER'
+                        }" />
+                </table:customData>
+                <table:label>
+                    <Label id="labelCUSTOMER" text="{pch>PCH10_CUSTOMER}" />
+                </table:label>
+                <table:template>
+                    <Text id="textCUSTOMER" text="{CUSTOMER}" />
+                </table:template>
+            </table:Column>
+
+            <table:Column id="colMACHINE_TYPE" width="10rem" sortProperty="MACHINE_TYPE" filterProperty="MACHINE_TYPE">
+                <table:customData>
+                    <core:CustomData key="p13nData" value="{
+                            columnKey: 'MACHINE_TYPE',
+                            leadingProperty: 'MACHINE_TYPE',
+                            sortProperty: 'MACHINE_TYPE',
+                            filterProperty: 'MACHINE_TYPE'
+                        }" />
+                </table:customData>
+                <table:label>
+                    <Label id="labelMACHINE_TYPE" text="{pch>PCH10_MACHINE_TYPE}" />
+                </table:label>
+                <table:template>
+  
+                    <smartField:SmartField id="textMACHINE_TYPE" value="{MACHINE_TYPE}" editable="{localModel>/save}" />
+                </table:template>
+            </table:Column>
+
+             <table:Column id="colQUANTITY" width="10rem" sortProperty="QUANTITY" filterProperty="QUANTITY">
+                <table:customData>
+                    <core:CustomData key="p13nData" value="{
+                            columnKey: 'QUANTITY',
+                            leadingProperty: 'QUANTITY',
+                            sortProperty: 'QUANTITY',
+                            filterProperty: 'QUANTITY'
+                        }" />
+                </table:customData>
+                <table:label>
+                    <Label id="labelQUANTITY" text="{pch>PCH10_QUANTITY}" />
+                </table:label>
+                <table:template>
+
+                    <smartField:SmartField id="textQUANTITY" value="{QUANTITY}" editable="{localModel>/save}" />
+                </table:template>
+            </table:Column>
+
+        <table:Column id="colItem" width="10rem" sortProperty="Item" filterProperty="Item">
+                <table:customData>
+                    <core:CustomData key="p13nData" value="{
+                            columnKey: 'Item',
+                            leadingProperty: 'Item',
+                            sortProperty: 'Item',
+                            filterProperty: 'Item'
+                        }" />
+                </table:customData>
+                <table:label>
+                    <Label id="labelItem" text="{pch>PCH10_ITEM}" />
+                </table:label>
+                <table:template>
+
+                    <smartField:SmartField id="textItem" value="{Item}" editable="{localModel>/save}" />
+                </table:template>
+            </table:Column>
+
+        <table:Column id="colTIME" width="10rem" sortProperty="TIME" filterProperty="TIME">
+                <table:customData>
+                    <core:CustomData key="p13nData" value="{
+                            columnKey: 'TIME',
+                            leadingProperty: 'TIME',
+                            sortProperty: 'TIME',
+                            filterProperty: 'TIME'
+                        }" />
+                </table:customData>
+                <table:label>
+                    <Label id="labelTIME" text="{pch>PCH10_TIME}" />
+                </table:label>
+                <table:template>
+
+                    <smartField:SmartField id="textTIME" value="{TIME}" editable="{localModel>/save}" />
+                </table:template>
+            </table:Column>
+
+            <table:Column id="colLOCATION" width="10rem" sortProperty="LOCATION" filterProperty="LOCATION">
+                <table:customData>
+                    <core:CustomData key="p13nData" value="{
+                            columnKey: 'LOCATION',
+                            leadingProperty: 'LOCATION',
+                            sortProperty: 'LOCATION',
+                            filterProperty: 'LOCATION'
+                        }" />
+                </table:customData>
+                <table:label>
+                    <Label id="labelLOCATION" text="{pch>PCH10_LOCATION}" />
+                </table:label>
+                <table:template>
+
+                    <smartField:SmartField id="textLOCATION" value="{LOCATION}" editable="{localModel>/save}" />
+                </table:template>
+            </table:Column>
+
+
+        </table:columns>
+
+        <table:rowActionTemplate>
+          <table:RowAction id="RowAction10">
+            <table:items>
+              <table:RowActionItem id="RowActionItem" type="Navigation" press="onPress" visible="{localModel>/PCH10_VIEW_DOC}" />
+            </table:items>
+          </table:RowAction>
+        </table:rowActionTemplate>
+
+
         </table:Table>
       </smartTable:SmartTable>
 

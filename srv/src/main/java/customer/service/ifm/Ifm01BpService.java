@@ -35,7 +35,10 @@ public class Ifm01BpService {
             SapBpRoot sapBpRoot = JSON.parseObject(response, SapBpRoot.class);
             for (Results results : sapBpRoot.getD().getResults()) {
                 T03SapBp o = T03SapBp.create();
-                o.setBpId(results.getSupplier());
+                // o.setBpId(results.getSupplier());
+
+                o.setBpId(results.getBusinessPartner());
+
                 o.setBpName1(results.getOrganizationBPName1());
                 o.setBpName2(results.getOrganizationBPName2());
                 o.setBpName3(results.getOrganizationBPName3());

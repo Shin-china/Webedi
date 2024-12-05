@@ -180,94 +180,356 @@ sap.ui.define(["umc/app/Controller/BaseController", "sap/m/MessageToast", "sap/m
       
     },
 
+    /*==============================
+    保存
+    ==============================*/
+    onSave: function (oEvent) {
+        var that = this;
+        // that._setBusy(true);
+        var view = this.getView();
+        //清除msg
+        this.MessageTools._clearMessage();
+
+        if (that._isCheckData()) {
+            var jsonModel = view.getModel("workInfo");
+            this._callCdsAction("/PCH10_SAVE_DATA", this._getData(), this).then((oData) => {
+
+
+                var myArray = JSON.parse(oData.PCH10_SAVE_DATA);
+                this._setEditable(false);
+                if (myArray.err) {
+                    this._setEditable(true);
+                    var rt = myArray.reTxt.split("||");
+                    for (var i = 1; i < rt.length; i++) {
+
+                        that.MessageTools._addMessages(this.MessageTools._getI18nTextInModel("pch", rt[i], this.getView()), null, 1, this.getView());
+                    }
+
+        } else {
+        
+        return new Promise(function (resolve, reject) {
+
+            that.getModel().read("/PCH10_LIST", {
+            
+            filters: that._aFilters,
+            success: function (oData) {
+
+                oData.results.sort(function(a, b) {
+                    return a.SALES_D_NO - b.SALES_D_NO; // 升序排序
+                    // 如果需要降序排序，可以使用 b.SALES_D_NO - a.SALES_D_NO;
+                });
+
+                jsonModel = new sap.ui.model.json.JSONModel();
+                view.setModel(jsonModel, "workInfo");
+                jsonModel.setData(oData.results);
+
+            },
+            error: function (oError) {
+                reject(oError);
+            },
+            })
+        })
+                }
+                // that._setBusy(false);
+
+            });
+        } else {
+            // that._setBusy(false);
+        }
+    },
 
     /*==============================
-		保存
-		==============================*/
-		onSave: function (oEvent) {
-			var that = this;
-			// that._setBusy(true);
-			var view = this.getView();
-			//清除msg
-			this.MessageTools._clearMessage();
+    删除
+    ==============================*/
+    onBPDel: function (oEvent) {
+        var that = this;
+        var view = this.getView();
+        var selectedIndices = this._TableList("tableUploadData"); // 获取选中行
+        var jsonModel = view.getModel("workInfo");
 
-			if (that._isCheckData()) {
-				var jsonModel = view.getModel("workInfo");
-				this._callCdsAction("/PCH10_SAVE_DATA", this._getData(), this).then((oData) => {
-
-
-					var myArray = JSON.parse(oData.PCH10_SAVE_DATA);
-					this._setEditable(false);
-					if (myArray.err) {
-						this._setEditable(true);
-						var rt = myArray.reTxt.split("||");
-						for (var i = 1; i < rt.length; i++) {
-
-							that.MessageTools._addMessages(this.MessageTools._getI18nTextInModel("pch", rt[i], this.getView()), null, 1, this.getView());
-						}
-
-          } else {
+        var datas = jsonModel.getData();
+        if (selectedIndices) {
+            selectedIndices.forEach((selectedIndex) => {
+                //如果删除只能删除新追加的
+        if (!selectedIndex.CD_BY) {
+            var T02_ID = selectedIndex.T02_ID
+            //根据id删除list
+            datas = datas.filter(odata =>
+            odata.T02_ID !== T02_ID
+            )
             
-            return new Promise(function (resolve, reject) {
+        } else {
+            that.MessageTools._addMessages(this.MessageTools._getI18nTextInModel("pch", "PCH_10_ERROR_MSG1", this.getView()), null, 1, this.getView());
+        }
+        });
 
-              that.getModel().read("/PCH10_LIST", {
-                
-                filters: that._aFilters,
+            jsonModel.setData(datas);
+        }
+    },
+        
+      /*=  
+      发信
+      */
+      onSend: function (oEvent) {
+        
+        var selectedIndices = this._TableList("tableUploadData"); // 获取选中行
+        if (selectedIndices.length == 0) {
+            sap.m.MessageToast.show("選択されたデータがありません、データを選択してください。");
+            return false;
+        }
+
+          var BP_NUMBERset = new Set(selectedIndices.map(item => item.BP_NUMBER));
+          
+          if (BP_NUMBERset.size > 0) { 
+              
+            var H_CODE = "MM0002";
+            var BP_NUMBER = BP_NUMBERset;
+            var entity = "/SYS_T08_COM_OP_D";
+
+            this._readHeademail(H_CODE, BP_NUMBER, entity).then((oHeadData) => {
+              
+              let mail = oHeadData.results && oHeadData.results.length > 0 ? 
+              oHeadData.results.map(result => result.VALUE02).join(", ") : '';  
+              
+              let mailobj = {
+                  emailJson: {
+                      TEMPLATE_ID: "UWEB_M002",
+                      MAIL_TO: [mail].join(", "), 
+                      MAIL_BODY: [
+                          { object: "vendor", value: supplierName },
+                      ]
+                  }
+              };
+              let newModel = this.getView().getModel("Common");
+              let oBind = newModel.bindList("/sendEmail");
+
+              oBind.create(mailobj, {
                 success: function (oData) {
-
-                  oData.results.sort(function(a, b) {
-                      return a.SALES_D_NO - b.SALES_D_NO; // 升序排序
-                      // 如果需要降序排序，可以使用 b.SALES_D_NO - a.SALES_D_NO;
-                  });
-
-                  jsonModel = new sap.ui.model.json.JSONModel();
-                  view.setModel(jsonModel, "workInfo");
-                  jsonModel.setData(oData.results);
-
+                    if (oData && oData.result && oData.result === "sucess") {
+                        MessageToast.show("メールが正常に送信されました。");
+                    } else {
+                        MessageToast.error("メール送信に失敗しました。エラー: " + (oData.result || "不明なエラー"));
+                    }
                 },
                 error: function (oError) {
-                  reject(oError);
-                },
-              })
-            })
-					}
-					// that._setBusy(false);
-
-				});
-			} else {
-				// that._setBusy(false);
-			}
-		},
-
-    /*==============================
-		删除
-		==============================*/
-		onBPDel: function (oEvent) {
-			var that = this;
-			var view = this.getView();
-			var selectedIndices = this._TableList("tableUploadData"); // 获取选中行
-			var jsonModel = view.getModel("workInfo");
-
-			var datas = jsonModel.getData();
-			if (selectedIndices) {
-				selectedIndices.forEach((selectedIndex) => {
-					//如果删除只能删除新追加的
-            if (!selectedIndex.CD_BY) {
-              var T02_ID = selectedIndex.T02_ID
-              //根据id删除list
-              datas = datas.filter(odata =>
-                odata.T02_ID !== T02_ID
-              )
+                    MessageToast.error("メール送信に失敗しました。エラー: " + oError.message);
+                }
+              });
+            });
               
-            } else {
-              that.MessageTools._addMessages(this.MessageTools._getI18nTextInModel("pch", "PCH_10_ERROR_MSG1", this.getView()), null, 1, this.getView());
-            }
+              
+          }
+          // 假设您在这里定义邮件内容模板
+      var supplierName = "";
+
+      },  
+
+
+      onBP: function (oEvent) {
+          var that = this;
+
+          var aSelectedIndices = this.byId("tableUploadData"); // 获取选中行
+
+          if (aSelectedIndices.length === 0) {
+                
+              sap.m.MessageToast.show("選択されたデータがありません、データを選択してください。"); // 提示未选择数据
+                
+              return;
+
+          }
+
+          //因为http param 长度有限制，必须循环一条条调用，不要一次性提交
+            var oPostData = {}, oPostList = {}, aPostItem = [], iDoCount = 0, bError;
+              aSelectedIndices.forEach(iIndex => {
+              aPostItem = [];
+              oPostData = {};
+              oPostList = {};
+
+              var oItem = oTable.getContextByIndex(iIndex).getObject();
+
+                  if (oItem.BP_NUMBER == null) {
+                      sap.m.MessageToast.show("BP为空，无法调用接口"); // 提示未选择数据
+                                  that._setBusy(false);
+                  return;
+
+                  }
+                  
+                  aPostItem.push(oItem);
+
+              oPostList = JSON.stringify({
+                  "list": aPostItem
+              });
+
+              oPostData = {
+                  "str": oPostList
+                  };
+
+                  this._callCdsAction("/PCH10_BPTQ", oPostData, this).then((oData) => {
+                  
+                  
+                  iDoCount++;
+                        var oResult = JSON.parse(oData.PCH10_GMTQ);
+
+                        if (oResult.err) {
+                            bError = true;
+                        }
+
+                        if (iDoCount === aSelectedIndices.length) {
+                            if (bError) {
+                                that.MessageTools._addMessage(that.MessageTools._getI18nTextInModel("pch", oResult.reTxt, this.getView()), null, 1, this.getView());
+                            } else {
+                                sap.m.MessageToast.show(that._PchResourceBundle.getText("SAVE_SUCCESS"));
+                            }
+                            that._setBusy(false);
+                  }
+              });
+                
           });
 
-				jsonModel.setData(datas);
-			}
-		},
 
+
+
+
+
+      },
+
+      onGM: function (oEvent) {
+          var that = this;
+         that._setBusy(true);
+          var oTable = this.byId("tableUploadData");
+
+          var aSelectedIndices = oTable.getSelectedIndices();
+            
+          if (aSelectedIndices.length === 0) {
+                
+              sap.m.MessageToast.show("選択されたデータがありません、データを選択してください。"); // 提示未选择数据
+                
+              return;
+
+          }
+
+
+
+
+          
+
+          //因为http param 长度有限制，必须循环一条条调用，不要一次性提交
+            var oPostData = {}, oPostList = {}, aPostItem = [], iDoCount = 0, bError;
+              aSelectedIndices.forEach(iIndex => {
+              aPostItem = [];
+              oPostData = {};
+              oPostList = {};
+
+              var oItem = oTable.getContextByIndex(iIndex).getObject();
+
+                  if (oItem.MATERIAL_NUMBER == null) {
+                      sap.m.MessageToast.show("物料为空，无法调用接口"); // 提示未选择数据
+                                  that._setBusy(false);
+                      return;
+                  
+              }
+
+                  if (oItem.BP_NUMBER == null) {
+                      sap.m.MessageToast.show("BP为空，无法调用接口"); // 提示未选择数据
+                                  that._setBusy(false);
+                  return;
+
+              }
+                  if (oItem.PLANT_ID == null) {   
+                      sap.m.MessageToast.show("工厂为空，无法调用接口"); // 提示未选择数据
+                                  that._setBusy(false);
+                  return;
+
+              }
+              
+              aPostItem.push(oItem);
+
+              oPostList = JSON.stringify({
+                  "list": aPostItem
+              });
+
+              oPostData = {
+                  "str": oPostList
+              };
+
+
+              this._callCdsAction("/PCH10_GMTQ", oPostData, this).then((oData) => {
+                  
+                  
+                  iDoCount++;
+                        var oResult = JSON.parse(oData.PCH10_GMTQ);
+
+                        if (oResult.err) {
+                            bError = true;
+                        }
+
+                        if (iDoCount === aSelectedIndices.length) {
+                            if (bError) {
+                                that.MessageTools._addMessage(that.MessageTools._getI18nTextInModel("pch", oResult.reTxt, this.getView()), null, 1, this.getView());
+                            } else {
+                                sap.m.MessageToast.show(that._PchResourceBundle.getText("SAVE_SUCCESS"));
+                            }
+                            that._setBusy(false);
+                  }
+              });
+                
+          });
+          },
+
+      getData: function () {
+            
+          var jsondata = this.getModel("tableUploadData").getData();
+          
+            
+          var a = JSON.stringify({ list: jsondata });
+            
+            
+          var oPrams = {
+                
+              shelfJson: a,
+          
+          };
+          
+          return oPrams;
+          
+        
+      },
+
+      
+      _readHeademail: function (a,b, entity) {
+          var that = this;
+          return new Promise(function (resolve, reject) {
+            that.getModel().read(entity, {
+                filters: [
+                  
+                new sap.ui.model.Filter({
+                  path: "H_CODE",
+                  value1: a,
+                  operator: sap.ui.model.FilterOperator.EQ,
+                }),
+                new sap.ui.model.Filter({
+                  path: "VALUE01",
+                  value1: b,
+                  operator: sap.ui.model.FilterOperator.IN,
+                }),
+
+                new sap.ui.model.Filter({
+                  path: "DEL_FLAG",
+                  value1: "X",
+                  operator: sap.ui.model.FilterOperator.NE,
+                }),
+
+              ],
+              success: function (oData) {
+                resolve(oData);
+              },
+              error: function (oError) {
+                reject(oError);
+              },
+            });
+          });
+        },
+    
     /*==============================
 		复制
 		==============================*/
@@ -369,7 +631,9 @@ sap.ui.define(["umc/app/Controller/BaseController", "sap/m/MessageToast", "sap/m
 				json: a,
 			};
 			return oPrams;
-    },
+      },
+        
+
 
     fetchMaxSalesDNo() {
       return new Promise(function (resolve, reject) {
