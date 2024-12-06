@@ -100,6 +100,9 @@ annotate TableService.PCH01_STATUS_POP_1 with {
   VALUE @Common.Text: {$value: NAME}
 };
 
+annotate TableService.PCH10_STATUS_POP with {
+  VALUE @Common.Text: {$value: NAME}
+};
 
 annotate TableService.PCH02_STATUS_POP with {
   VALUE @Common.Text: {$value: NAME}
