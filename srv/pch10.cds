@@ -216,4 +216,7 @@ extend service TableService {
     action PCH10_GR_SEND(params : String)   returns String;
     action pch06BatchSending(json : String) returns String; //IFM055 購買見積結果送信
     action PCH10_SAVE_DATA(json : String)   returns String; //IFM055 購買見積保存
+    action PCH10_L_SAVE_DATA(str : String)  returns String; // list 画面保存按钮
+    action PCH10_GMTQ(str : String)         returns String; //购买同期
+    action PCH10_BPTQ(str : String)         returns String; //BP同期
 };
