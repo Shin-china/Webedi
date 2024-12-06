@@ -290,7 +290,23 @@ sap.ui.define([], function () {
     } else {
         return ''; // 默认返回空字符串
     }
-},
+      },
+      formatStatusPch10: function (value) {
+
+        if (value === '1') {
+          return '1: 未送信';
+        } else if (value === '2') {
+          return '2: 送信済（未回答）';
+        } else if (value === '3') {
+          return '3: 回答済';
+        } else if (value === '4') {
+          return '4: 再送信（依頼中）';
+        } else if (value === '5') {
+          return '5: 完了';
+        } else {
+          return ''; // 默认返回空字符串
+        }
+      },
 
   formatIndex: function(index) {
     return (index + 1).toString(); // 返回行号
