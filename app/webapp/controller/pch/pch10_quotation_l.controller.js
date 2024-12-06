@@ -7,49 +7,39 @@ sap.ui.define(["umc/app/Controller/BaseController", "sap/m/MessageToast"], funct
       this._setOnInitNo("PCH10", "20241029");
       //显示页面
       this.getRouter().getRoute("RouteList_pch10").attachPatternMatched(this._onObjectMatched, this);
-
       this._localModel = new sap.ui.model.json.JSONModel();
-            this._localModel.setData({
-                "show": true,
-                "save": false
-            });
-            this.getView().setModel(this._localModel, "localModel");
-            this._BusyDialog = new sap.m.BusyDialog();
-
-                  this._PchResourceBundle = this.getOwnerComponent().getModel("pch").getResourceBundle();
-
-      
+      this._localModel.setData({
+        "show": true,
+        "save": false
+      });
+      this.getView().setModel(this._localModel, "localModel");
+      this._BusyDialog = new sap.m.BusyDialog();
+      this._PchResourceBundle = this.getOwnerComponent().getModel("pch").getResourceBundle();
     },
-    // _onObjectMatched: function () {
-    //   //获取并设置权限数据
-    //   this._setAuthByMenuAndUser("INV34");
-    //   //初始化 msg
-    //   this.MessageTools._clearMessage();
-    //   this.MessageTools._initoMessageManager(this);
-    // },
 
     onRebind: function (oEvent) {
 
       var select = this.byId("sch_INITIAL_OBJ").getSelected();
 
-       var mBindingParams = oEvent.getParameter("bindingParams");
+      var mBindingParams = oEvent.getParameter("bindingParams");
 
       var newFilter;
-            if (select === true) {
-                newFilter = new sap.ui.model.Filter("INITIAL_OBJ", sap.ui.model.FilterOperator.EQ, "1");
-            } else {
-                newFilter = new sap.ui.model.Filter("INITIAL_OBJ", sap.ui.model.FilterOperator.EQ, "");
-            }
-            mBindingParams.filters.push(newFilter);
+
+      if (select === true) {
+        newFilter = new sap.ui.model.Filter("INITIAL_OBJ", sap.ui.model.FilterOperator.EQ, "1");
+      } else {
+        newFilter = new sap.ui.model.Filter("INITIAL_OBJ", sap.ui.model.FilterOperator.EQ, "");
+      }
       
+      mBindingParams.filters.push(newFilter);
       this._rowNoMap == null;
       let sorts = ["QUO_NUMBER"];
       let ascs = [false]; //true desc false asc
       //手动添加排序
       this._onListRebinSort(oEvent, sorts, ascs);
 
-
     },
+
     //调用接口
     onLink: function (oEvent) {
       //获取数据
@@ -58,8 +48,8 @@ sap.ui.define(["umc/app/Controller/BaseController", "sap/m/MessageToast"], funct
 
       var selectedIndices = that._TableList("detailTable10"); // 获取选中行 
       if( selectedIndices != undefined){
-        var confirmMsg = this.MessageTools._getI18nMessage("SD022_UWEB_CONFIRM",[selectedIndices.length],this.getView());
 
+        var confirmMsg = this.MessageTools._getI18nMessage("SD022_UWEB_CONFIRM", [selectedIndices.length], this.getView());
         sap.m.MessageBox.confirm(confirmMsg, {
           actions: ["YES", "NO"],
           emphasizedAction: "YES",
@@ -72,97 +62,85 @@ sap.ui.define(["umc/app/Controller/BaseController", "sap/m/MessageToast"], funct
               return;
               }
             });
-      
             //调用转寄接口
-
             that._invoUweb(selectedIndices);
             
             }
           },
           });
       }
-
     },
+   
     onEdit: function () {
-        this._localModel.setProperty("/show", false);
-        this._localModel.setProperty("/save", true);
+      this._localModel.setProperty("/show", false);
+        
+      this._localModel.setProperty("/save", true);
     },
 
     onSave: function (oEvent) {
-            var that = this;
+      var that = this;
       that._setBusy(true);
-      
       var oTable = this.byId("detailTable10");
+      var aSelectedIndices = oTable.getSelectedIndices();
 
-            var aSelectedIndices = oTable.getSelectedIndices();
+      if (aSelectedIndices.length === 0) {
+        sap.m.MessageToast.show("選択されたデータがありません、データを選択してください。"); // 提示未选择数据
+        oEvent.preventDefault(); // 取消导出操作
+        that._setBusy(false);
+        return;
+      }
 
-            if (aSelectedIndices.length === 0) {
-                sap.m.MessageToast.show("選択されたデータがありません、データを選択してください。"); // 提示未选择数据
-                oEvent.preventDefault(); // 取消导出操作
-                that._setBusy(false);
-                return;
+      //因为http param 长度有限制，必须循环一条条调用，不要一次性提交
+      var oPostData = {}, oPostList = {}, aPostItem = [], iDoCount = 0, bError;
+      aSelectedIndices.forEach(iIndex => {
+        aPostItem = [];
+        oPostData = {};
+        oPostList = {};
+        var oItem = oTable.getContextByIndex(iIndex).getObject();
+        oItem.VALIDATE_START = that.__formatDate(oItem.VALIDATE_START);
+        oItem.VALIDATE_END = that.__formatDate(oItem.VALIDATE_END);
+        oItem.TIME = that.__formatDate(oItem.TIME);
+        aPostItem.push(oItem);
+        oPostList = JSON.stringify({
+          "list": aPostItem
+        });
+        oPostData = {
+          "str": oPostList    
+        };        
+        that._callCdsAction("/PCH10_L_SAVE_DATA", oPostData, that).then(         
+          (oData) => {
+            iDoCount++;
+            var oResult = JSON.parse(oData.PCH10_L_SAVE_DATA);
+
+            if (oResult.err) {
+              bError = true;
             }
 
-            //因为http param 长度有限制，必须循环一条条调用，不要一次性提交
-            var oPostData = {}, oPostList = {}, aPostItem = [], iDoCount = 0, bError;
-            aSelectedIndices.forEach(iIndex => {
-                aPostItem = [];
-                oPostData = {};
-                oPostList = {};
+            if (iDoCount === aSelectedIndices.length) {
 
-                var oItem = oTable.getContextByIndex(iIndex).getObject();
-                oItem.VALIDATE_START = that.__formatDate(oItem.VALIDATE_START);
-                oItem.VALIDATE_END = that.__formatDate(oItem.VALIDATE_END);
-                oItem.TIME = that.__formatDate(oItem.TIME);
+              if (bError) {
+                that._localModel.setProperty("/show", false);
+                that._localModel.setProperty("/save", true);
+                that.MessageTools._addMessage(that.MessageTools._getI18nTextInModel("pch", oResult.reTxt, this.getView()), null, 1, this.getView());
+              } else {
+                that._localModel.setProperty("/show", true);
+                that._localModel.setProperty("/save", false);
+                sap.m.MessageToast.show(that._PchResourceBundle.getText("SAVE_SUCCESS"));
+              }
 
-                aPostItem.push(oItem);
-
-                oPostList = JSON.stringify({
-                    "list": aPostItem
-                });
-
-                oPostData = {
-                    "str": oPostList
-                };
-
-                that._callCdsAction("/PCH10_L_SAVE_DATA", oPostData, that).then(
-
-                    (oData) => {
-                        iDoCount++;
-                        var oResult = JSON.parse(oData.PCH10_L_SAVE_DATA);
-
-                        if (oResult.err) {
-                            bError = true;
-                        }
-
-                        if (iDoCount === aSelectedIndices.length) {
-                            if (bError) {
-                                that._localModel.setProperty("/show", false);
-                                that._localModel.setProperty("/save", true);
-                                that.MessageTools._addMessage(that.MessageTools._getI18nTextInModel("pch", oResult.reTxt, this.getView()), null, 1, this.getView());
-                            } else {
-                                that._localModel.setProperty("/show", true);
-                                that._localModel.setProperty("/save", false);
-                                sap.m.MessageToast.show(that._PchResourceBundle.getText("SAVE_SUCCESS"));
-                            }
-                            that._setBusy(false);
-                        }
-
-                    });
-
-            });
-
+              that._setBusy(false);
+            }
+          });
+      });
     },
     
     __formatDate: function (date) {
-            if (!date) {
-                return '';
-            }
-
-            let newDate = new Date(date);
-            return newDate.toISOString().split('T')[0];
-        },
-
+      if (!date) { 
+        return '';
+      }
+      let newDate = new Date(date);
+      return newDate.toISOString().split('T')[0];
+    },
 
     onPress: function (oEvent) {
       let oItem = oEvent.getSource();
@@ -179,96 +157,87 @@ sap.ui.define(["umc/app/Controller/BaseController", "sap/m/MessageToast"], funct
     },
 
     onSend: function () {
-			var that = this;
-      var oTable = this.byId("detailTable10");
+      var that = this;
+      that.getView().setBusy(true);
+      
+      var oTable = that.byId("detailTable10");
 
       var aSelectedIndices = oTable.getSelectedIndices();
 
       // 检查是否有选中的数据
       if (aSelectedIndices.length === 0) {
-          MessageToast.show("選択されたデータがありません、データを選択してください。");
-          return;
+        MessageToast.show("選択されたデータがありません、データを選択してください。");
+        that.getView().setBusy(false);
+        return;
       }
 
-      // 遍历选中的行，提取所需数据
       var aSelectedData = aSelectedIndices.map(function (iIndex) {
-          return oTable.getContextByIndex(iIndex).getObject();
-      });  
+        return oTable.getContextByIndex(iIndex).getObject();
+      })  
 
+      sap.m.MessageBox.confirm("123", {
+        actions: ["YES", "NO"],
+        emphasizedAction: "YES",
+        onClose: function (sAction) {
+          if (sAction == "YES") {
+          // 遍历选中的行，提取所需数据
+            var QUO_NUMBERSet = new Set(aSelectedData.map(data => data.QUO_NUMBER));
+            var BP_NUMBERSet;
 
-      // // 检查 SUPPLIER 是否相同
-      // var CUSTOMERSet = new Set(aSelectedData.map(data => data.CUSTOMER));
-      // if (CUSTOMERSet.size > 1) {
-      //     sap.m.MessageToast.show("選択されたデータがありません、データを選択してください。");
-      //     return;
-      // }
+            if (QUO_NUMBERSet.size > 0) { 
+              var QUO_NUMBER = Array.from(QUO_NUMBERSet);
+              var entity = "/PCH_T07_QUOTATION_D";
+              that._readBpNumber(QUO_NUMBER, entity).then((oData) => { 
+              BP_NUMBERSet = new Set(oData.results.map(result => result.BP_NUMBER));
 
-      var QUO_NUMBERSet = new Set(aSelectedData.map(data => data.QUO_NUMBER));
-
-      var BP_NUMBERSet;
-      
-      if (QUO_NUMBERSet.size > 0) { 
-
-        var QUO_NUMBER = Array.from(QUO_NUMBERSet);
-        var entity = "/PCH_T07_QUOTATION_D";
-
-        this._readBpNumber(QUO_NUMBER, entity).then((oData) => { 
-
-          BP_NUMBERSet = new Set(oData.results.map(result => result.BP_NUMBER));
-
-          if (BP_NUMBERSet.size > 0) { 
-            var H_CODE = "MM0002";
-            var BP_NUMBER = BP_NUMBERSet;
-            var entity = "/SYS_T08_COM_OP_D";
-
-            this._readHeademail(H_CODE, BP_NUMBER, entity).then((oHeadData) => {
+          
+                if (BP_NUMBERSet.size > 0) { 
+                  var H_CODE = "MM0002";
+                  var BP_NUMBER = BP_NUMBERSet;
+                  var entity = "/SYS_T08_COM_OP_D";
+                  that._readHeademail(H_CODE, BP_NUMBER, entity).then((oHeadData) => {
               
-              let mail = oHeadData.results && oHeadData.results.length > 0 ? 
-              oHeadData.results.map(result => result.VALUE02).join(", ") : '';  
               
-              let mailobj = {
-                  emailJson: {
-                      TEMPLATE_ID: "UWEB_M002",
-                      MAIL_TO: [mail].join(", "), 
-                      MAIL_BODY: [
+                    let mail = oHeadData.results && oHeadData.results.length > 0 ? 
+                      oHeadData.results.map(result => result.VALUE02).join(", ") : '';  
+                    let absama = oHeadData.results && oHeadData.results.length > 0 ? 
+                      oHeadData.results.map(result => result.VALUE03 + " 様").join("  ") : '';
+                    let mailobj = {
+                      emailJson: {
+                        TEMPLATE_ID: "UWEB_M002",
+                        MAIL_TO: [mail].join(", "), 
+                        // MAIL_CC: "購買統括部支援G窓口 <zhao.wang@sh.shin-china.com>",
+                        MAIL_BODY: [
                           { object: "vendor", value: supplierName },
-                      ]
-                  }
-              };
-              let newModel = this.getView().getModel("Common");
-              let oBind = newModel.bindList("/sendEmail");
-
-              oBind.create(mailobj, {
-                success: function (oData) {
-                    if (oData && oData.result && oData.result === "sucess") {
-                        MessageToast.show("メールが正常に送信されました。");
-                    } else {
-                        MessageToast.error("メール送信に失敗しました。エラー: " + (oData.result || "不明なエラー"));
-                    }
-                },
-                error: function (oError) {
-                    MessageToast.error("メール送信に失敗しました。エラー: " + oError.message);
+                          { object: "absama", value: absama },
+                        ]
+                      }
+                    };
+                    that._sendEmail(mailobj);
+                    that.getView().setBusy(false);
+                  });
                 }
               });
-            });
+            }
+          
+          } else {
+            that.getView().setBusy(false);
+            return;
           }
-        });
-      }
+        }
+      })
       // 假设您在这里定义邮件内容模板
       var supplierName = "";
       var year = "";
       var month = "";
-
       aSelectedData.map(function (data) {
-          supplierName = data.NAME1 || "未指定"; // 默认值
-          
-          // 使用当前年月
-          var currentDate = new Date();
-          year = currentDate.getFullYear().toString(); // 当前年份
-          month = (currentDate.getMonth() + 1).toString().padStart(2, '0'); // 当前月份，确保是两位数格式
+        supplierName = data.NAME1 || "未指定"; // 默认值
+        // 使用当前年月
+        var currentDate = new Date();
+        year = currentDate.getFullYear().toString(); // 当前年份
+        month = (currentDate.getMonth() + 1).toString().padStart(2, '0'); // 当前月份，确保是两位数格式
       });
     },
-
     _readBpNumber(a, entity) {
       var that = this;
       return new Promise(function (resolve, reject) {
@@ -344,29 +313,5 @@ sap.ui.define(["umc/app/Controller/BaseController", "sap/m/MessageToast"], funct
 				}
 			});
     },
-
-    // _readHead: function (a,b, entity) {
-    //       var that = this;
-    //       return new Promise(function (resolve, reject) {
-    //         that.getModel().read(entity, {
-    //             filters: [
-                  
-    //             new sap.ui.model.Filter({
-    //               path: "SALES_NUMBER",
-    //               value1: a,
-    //               operator: sap.ui.model.FilterOperator.EQ,
-    //             }),
-                  
-    //           ],
-    //           success: function (oData) {
-    //             resolve(oData);
-    //           },
-    //           error: function (oError) {
-    //             reject(oError);
-    //           },
-    //         });
-    //       });
-    // },
-    
   });
 });

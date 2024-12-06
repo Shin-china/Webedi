@@ -27,8 +27,6 @@ extend service TableService {
                 T01.LOCATION,
                 T01.VALIDATE_START,
                 T01.VALIDATE_END,
-                // T01.PLANT_ID,
-
                 T01.STATUS,
                 // T01.TOTAL_JPY,
                 // T01.TOTAL_USD,
@@ -37,6 +35,7 @@ extend service TableService {
                 // T01.TOTAL_THB,
                 T01.CD_DATE,
                 T01.CD_BY,
+                T02.PLANT_ID,
                 T02.SUPPLIER_MAT,
                 T02.INITIAL_OBJ,
                 T01.CD_DATE_TIME,
