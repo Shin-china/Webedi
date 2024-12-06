@@ -109,8 +109,8 @@ public class SendService {
             // 如果已经存在则更新，如果不存在则插入
             T06QuotationH byID = PchD006.getByIdOnle(t06QuotationH.getId());
             pch06List2.add(t06QuotationH);
-            t06QuotationH.remove("TO_ITEM_PO");
             t06QuotationH.remove("TO_ITEMS");
+            t06QuotationH.remove("TO_ITEM_PO");
 
             if (byID != null) {
                 PchD006.update(t06QuotationH);

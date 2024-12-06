@@ -103,8 +103,12 @@ public class CommonHandler implements EventHandler {
             msg = sendService.sendPost(pch06List);
             System.out.println(msg);
         }
+        if (msg.equals("success")) {
+            context.setResult("販売見積への連携は成功になりました。");
+        } else {
+            context.setResult("販売見積への連携は失敗になりました。");
+        }
 
-        context.setResult(msg);
     }
 
 }
