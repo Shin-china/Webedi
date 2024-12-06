@@ -56,24 +56,24 @@ sap.ui.define(["umc/app/Controller/BaseController", "sap/m/MessageToast"], funct
 
       var selectedIndices = that._TableList("detailTable10"); // 获取选中行 
       if( selectedIndices != undefined){
-        var confirmMsg = this.MessageTools._getI18nMessage("SD022_UWEB_CONFIRM",[selectedIndices.length],this.getView());
-
-        sap.m.MessageBox.confirm(confirmMsg, {
+        var txt = that.MessageTools._getI18nTextInModel("com", "Dialog", that.getView())
+          
+        sap.m.MessageBox.confirm(txt, {
           actions: ["YES", "NO"],
           emphasizedAction: "YES",
           onClose: function (sAction) {
             if (sAction == "YES") {
-            selectedIndices.forEach((data) => {
-              if("B" !== data.STATUS_SALES) {
-              this.getView().setBusy(true);
-              sap.m.MessageBox.alert(that.MessageTools._getI18nText("SD022_UWEB_STATUS_ERROR",that.getView()));
-              return;
-              }
-            });
+            // selectedIndices.forEach((data) => {
+            //   if("B" !== data.STATUS_SALES) {
+            //   this.getView().setBusy(true);
+            //   sap.m.MessageBox.alert(that.MessageTools._getI18nText("SD022_UWEB_STATUS_ERROR",that.getView()));
+            //   return;
+            //   }
+            // });
       
             //调用转寄接口
 
-            that._invoUweb(selectedIndices);
+            that._invoQums(selectedIndices);
             
             }
           },
@@ -81,6 +81,49 @@ sap.ui.define(["umc/app/Controller/BaseController", "sap/m/MessageToast"], funct
       }
 
     },
+             /**
+         *调用po接口
+         * @param {*Odata}tableOdata
+         */
+         _invoQums(aSelectedData) {
+          var that =this;
+            var oParams = this._buildParams(aSelectedData);
+            var par = {json:JSON.stringify(oParams)};
+         
+            $.ajax({
+              url: "srv/odata/v4/Common/pch06BatchSending",
+              type: "POST",
+              contentType: "application/json; charset=utf-8",
+              dataType: "json",
+              async: false,
+              crossDomain: true,
+              responseType: 'blob',
+              data: JSON.stringify(par),
+              success: function (oData) {
+                that.getView().setBusy(false);
+                sap.m.MessageToast.show(oData.value, null, 1, that.getView())
+                that.MessageTools._addMessages(oData.value, null, 1, that.getView());
+
+              
+              }
+            })
+
+          },
+
+            /**
+           * ->uqms接口辅助方法
+           * @param {} aSelectedData 
+           * @returns 
+           */
+                    _buildParams: function (aSelectedData) {
+                      // 根据选中的数据构建参数
+                      return aSelectedData.map(function (oData) {
+                          // 格式化交货日期为 YYYY-MM-DD
+                          return {
+                            QUO_NUMBER: oData.QUO_NUMBER,                                   // 采购订单号
+                          };
+                      });
+                  },
     // onEdit: function () {
     //     this._localModel.setProperty("/show", false);
     //     this._localModel.setProperty("/save", true);
