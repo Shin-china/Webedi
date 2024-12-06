@@ -45,7 +45,7 @@ public class JobMonotor {
     @Autowired
     private Ifm06BpPurchaseService ifm06BpPurchaseService;
 
-    @Scheduled(cron = "0 0/59 * * * ?")
+    @Scheduled(cron = "0 0/1 * * * ?")
     public void poolMonitor() throws IOException {
 
         // IMFS01 bp同期
@@ -59,7 +59,7 @@ public class JobMonotor {
     public void poolMonitor6() throws IOException {
 
         // IMFS02 bp同期
-        ifm06BpPurchaseService.syncBPPurchase();
+        //ifm06BpPurchaseService.syncBPPurchase();
     }
 
     @Scheduled(cron = "0 0/5 * * * ?")
@@ -67,7 +67,7 @@ public class JobMonotor {
 
         // IF039 品目同期 标准api
         System.out.println("MST Sync run");
-        ifm02MstService.syncMst();
+       // ifm02MstService.syncMst();
         System.out.println("JobMonotor  run");
     }
 
@@ -76,7 +76,7 @@ public class JobMonotor {
 
         // IF041 po同期 自开发
         System.out.println("PO Sync run");
-        ifm03PoService.syncPo();
+       // ifm03PoService.syncPo();
         System.out.println("JobMonotor  run");
     }
 
@@ -85,7 +85,7 @@ public class JobMonotor {
 
         // IF065 フォーキャスト連携
         System.out.println("PR Sync run");
-        ifm04PrService.syncPr();
+       //ifm04PrService.syncPr();
         System.out.println("JobMonotor  run");
     }
 
@@ -94,7 +94,7 @@ public class JobMonotor {
 
         // IF042 PO支払通知同期
         System.out.println("pr Sync run");
-        ifm05PayService.syncPay();
+       // ifm05PayService.syncPay();
         System.out.println("JobMonotor run");
     }
 
