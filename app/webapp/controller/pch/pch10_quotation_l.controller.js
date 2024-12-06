@@ -220,7 +220,9 @@ sap.ui.define(["umc/app/Controller/BaseController", "sap/m/MessageToast"], funct
         return oTable.getContextByIndex(iIndex).getObject();
       })  
 
-      sap.m.MessageBox.confirm("123", {
+      var confirmMsg = "送信しますか？";
+
+      sap.m.MessageBox.confirm(confirmMsg, {
         actions: ["YES", "NO"],
         emphasizedAction: "YES",
         onClose: function (sAction) {
@@ -271,6 +273,7 @@ sap.ui.define(["umc/app/Controller/BaseController", "sap/m/MessageToast"], funct
           }
         }
       })
+      
       // 假设您在这里定义邮件内容模板
       var supplierName = "";
       var year = "";
@@ -282,6 +285,7 @@ sap.ui.define(["umc/app/Controller/BaseController", "sap/m/MessageToast"], funct
         year = currentDate.getFullYear().toString(); // 当前年份
         month = (currentDate.getMonth() + 1).toString().padStart(2, '0'); // 当前月份，确保是两位数格式
       });
+      
     },
     _readBpNumber(a, entity) {
       var that = this;
