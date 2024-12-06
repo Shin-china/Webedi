@@ -16,6 +16,8 @@ import cds.gen.sys.T07ComOpH;
 import cds.gen.sys.T08ComOpD;
 import ch.qos.logback.core.status.Status;
 import customer.bean.pch.Pch10;
+import customer.bean.pch.Pch10DataList;
+import customer.bean.pch.Pch10L;
 import customer.bean.pch.Pch10Save;
 import customer.bean.pch.Pch10SaveDataList;
 import customer.dao.pch.Pch10Dao;
@@ -179,6 +181,37 @@ public class Pch10Service {
                 list.setReTxt(e.getMessage());
 
             }
+
+        }
+    }
+
+    public void checkList(Pch10DataList list) {
+
+        for (Pch10L value : list.getList()) {
+
+        }
+
+        list.setErr(false);
+
+    }
+
+    public void detailsSaveList(Pch10DataList list) {
+
+        T06QuotationH o = Pch10Dao.getByQuo(list.getList().get(0).getQUO_NUMBER());
+
+        if (o != null) {
+
+            o.setMachineType(list.getList().get(0).getMACHINE_TYPE());
+            o.setQuantity(list.getList().get(0).getQUANTITY());
+            o.setItem(list.getList().get(0).getItem());
+            o.setTime(list.getList().get(0).getTIME());
+            o.setLocation(list.getList().get(0).getLOCATION());
+
+            Pch10Dao.modify(o);
+
+            list.setErr(false);
+
+            list.setReTxt("Save Success");
 
         }
     }

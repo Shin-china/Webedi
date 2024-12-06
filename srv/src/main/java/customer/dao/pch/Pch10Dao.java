@@ -16,6 +16,7 @@ import cds.gen.pch.T06QuotationH;
 import cds.gen.pch.T07QuotationD;
 import cds.gen.sys.T07ComOpH;
 import customer.bean.pch.Pch10;
+import customer.bean.pch.Pch10DataList;
 import customer.bean.pch.Pch10SaveDataList;
 import customer.dao.common.Dao;
 
@@ -23,6 +24,7 @@ import customer.dao.common.Dao;
 public class Pch10Dao extends Dao {
 
     public T06QuotationH getByID(String quono) {
+
         Optional<T06QuotationH> result = db.run(Select.from(Pch_.T06_QUOTATION_H).where(o -> o.QUO_NUMBER().eq(quono)))
                 .first(T06QuotationH.class);
         if (result.isPresent()) {
@@ -30,6 +32,7 @@ public class Pch10Dao extends Dao {
             return result.get();
 
         }
+
         return null;
 
     }
@@ -83,6 +86,21 @@ public class Pch10Dao extends Dao {
 
         Optional<T06QuotationH> result = db
                 .run(Select.from(Pch_.T06_QUOTATION_H).where(o -> o.SALES_NUMBER().eq(sal_Num)))
+                .first(T06QuotationH.class);
+        if (result.isPresent()) {
+
+            return result.get();
+
+        }
+        return null;
+
+    }
+
+    public T06QuotationH getByQuo(String Quo_No) {
+
+        Optional<T06QuotationH> result = db
+                .run(Select.from(Pch_.T06_QUOTATION_H).where(o -> o.QUO_NUMBER().eq(
+                        Quo_No)))
                 .first(T06QuotationH.class);
         if (result.isPresent()) {
 

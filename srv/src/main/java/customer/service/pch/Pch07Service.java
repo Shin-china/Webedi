@@ -152,7 +152,7 @@ public class Pch07Service {
         HashMap<String, String> noMap = new HashMap<>();
         // 最大明细值
         HashMap<String, String> dNoMap = new HashMap<>();
-        //no
+        // no
         LinkedHashMap<String, String> noMap1 = new LinkedHashMap<>();
 
         for (Pch07 data : list.getList()) {
@@ -188,10 +188,10 @@ public class Pch07Service {
                 // 最大明细值
                 dNoMap.put(key, "1");
 
-                if(noMap1.isEmpty()){
-                    noMap1.put(fullkey,"1");
-                }else{
-                    noMap1.put(fullkey, "1");         
+                if (noMap1.isEmpty()) {
+                    noMap1.put(fullkey, "1");
+                } else {
+                    noMap1.put(fullkey, "1");
                 }
             }
 
@@ -201,7 +201,6 @@ public class Pch07Service {
             // 需要采番的情况创建T06
             this.createT06(data);
 
-
             data.setMESSAGE("購買見積は成功にアップロードしました");
             data.setNO(noMap1.get(fullkey));
             // 创建T07
@@ -209,7 +208,7 @@ public class Pch07Service {
         }
     }
 
-    private void createT07(Pch07 data) throws IOException {
+    public void createT07(Pch07 data) throws IOException {
 
         String response = getResponse(data);
         System.out.println(response);
@@ -240,7 +239,7 @@ public class Pch07Service {
             BigDecimal priceBigDecimal = (priceStr != null && !priceStr.isEmpty()) ? new BigDecimal(priceStr) : null;
             t07QuotationD2.setPrice(priceBigDecimal);
 
-            // 获取 Baseunit 并设置到表字段中        
+            // 获取 Baseunit 并设置到表字段中
             t07QuotationD2.setUnit(firstItem.getString("Baseunit"));
             t07QuotationD2.setLeadTime(firstItem.getString("Materialplanneddeliverydurn"));
             t07QuotationD2.setOriginalCou(firstItem.getString("Suppliercertorigincountry"));
@@ -249,7 +248,7 @@ public class Pch07Service {
             t07QuotationD2.setMoq(firstItem.getString("Minimumpurchaseorderquantity"));
             t07QuotationD2.setIncoterms(firstItem.getString("Incotermsclassification"));
             t07QuotationD2.setIncotermsText(firstItem.getString("Incotermslocation1"));
-            t07QuotationD2.setCurrency(firstItem.getString("Currency"));         
+            t07QuotationD2.setCurrency(firstItem.getString("Currency"));
 
         }
 
@@ -260,25 +259,25 @@ public class Pch07Service {
         t07QuotationD2.setStatus("1");
         t07QuotationD2.setNo(Integer.parseInt(data.getNO()));
 
-            // 处理与 number 相关的逻辑
-            if (number != null && number.getMatName() != null && !number.getMatName().isEmpty()) {
-                t07QuotationD2.setMaterial(number.getMatName());
-            } else {
-                t07QuotationD2.setMaterial(null); // 如果 MatName 为 null 或空，设置为 null
-            }
+        // 处理与 number 相关的逻辑
+        if (number != null && number.getMatName() != null && !number.getMatName().isEmpty()) {
+            t07QuotationD2.setMaterial(number.getMatName());
+        } else {
+            t07QuotationD2.setMaterial(null); // 如果 MatName 为 null 或空，设置为 null
+        }
 
-            if (number != null && number.getManuCode() != null && !number.getManuCode().isEmpty()) {
-                t07QuotationD2.setMaker(number.getManuCode());
-            } else {
-                t07QuotationD2.setMaker(null); // 如果 ManuCode 为 null 或空，设置为 null
-            }
+        if (number != null && number.getManuCode() != null && !number.getManuCode().isEmpty()) {
+            t07QuotationD2.setMaker(number.getManuCode());
+        } else {
+            t07QuotationD2.setMaker(null); // 如果 ManuCode 为 null 或空，设置为 null
+        }
 
         // t07QuotationD2.setManufactMaterial(number.getManuMaterial());
         if (bpid != null && bpid.getBpName1() != null && !bpid.getBpName1().isEmpty()) {
             t07QuotationD2.setUwebUser(bpid.getBpName1());
         } else {
             t07QuotationD2.setUwebUser(null);
-        }        
+        }
         // t07QuotationD2.setUwebUser(bpid.getBpName1());
         t07QuotationD2.setCustMaterial(data.getCUST_MATERIAL());
         t07QuotationD2.setManufactMaterial(data.getMANUFACT_MATERIAL());
@@ -308,7 +307,7 @@ public class Pch07Service {
         pchD006.insert(t06QuotationH);
     }
 
-    private String getResponse(Pch07 data) throws IOException {
+    public String getResponse(Pch07 data) throws IOException {
         ArrayList ar = new ArrayList<>();
         HashMap<String, String> map = new HashMap<>();
         map.put("material_number", data.getMATERIAL_NUMBER());
@@ -331,5 +330,52 @@ public class Pch07Service {
             tail = iterator.next();
         }
         return tail;
+    }
+
+    public void UpdateT07(Pch07 data) throws IOException {
+
+        String response = getResponse(data);
+
+        System.out.println(response);
+
+        T07QuotationD t07QuotationD2 = T07QuotationD.create();
+
+        // 解析 JSON 字符串
+        JSONObject jsonObject = (JSONObject) JSON.parse(response);
+
+        // 获取 Items 数组
+        JSONArray itemsArray = jsonObject.getJSONArray("Items");
+
+        // 确保 Items 数组不为空
+        if (itemsArray != null && itemsArray.size() > 0) {
+            // 取第一个 Item
+            JSONObject firstItem = itemsArray.getJSONObject(0);
+
+            // 设置 Qty
+            Double qtyDouble = data.getQTY();
+            BigDecimal qtyBigDecimal = qtyDouble != null ? BigDecimal.valueOf(qtyDouble) : null;
+            t07QuotationD2.setQty(qtyBigDecimal);
+
+            // 设置 Price
+            String priceStr = firstItem.getString("Netpriceamount");
+            BigDecimal priceBigDecimal = (priceStr != null && !priceStr.isEmpty()) ? new BigDecimal(priceStr) : null;
+            t07QuotationD2.setPrice(priceBigDecimal);
+            // 获取 Baseunit 并设置到表字段中
+            t07QuotationD2.setUnit(firstItem.getString("Baseunit"));
+            t07QuotationD2.setLeadTime(firstItem.getString("Materialplanneddeliverydurn"));
+            t07QuotationD2.setOriginalCou(firstItem.getString("Suppliercertorigincountry"));
+            t07QuotationD2.setSupplierMat(firstItem.getString("Suppliermaterialnumber"));
+            t07QuotationD2.setPriceControl(firstItem.getString("Pricingdatecontrol"));
+            t07QuotationD2.setMoq(firstItem.getString("Minimumpurchaseorderquantity"));
+            t07QuotationD2.setIncoterms(firstItem.getString("Incotermsclassification"));
+            t07QuotationD2.setIncotermsText(firstItem.getString("Incotermslocation1"));
+            t07QuotationD2.setCurrency(firstItem.getString("Currency"));
+            t07QuotationD2.setPlantId(data.getPLANT_ID());
+            t07QuotationD2.setMaterialNumber(data.getMATERIAL_NUMBER());
+            t07QuotationD2.setBpNumber(Integer.parseInt(data.getBP_NUMBER()));
+
+            pchD007.updateT07(t07QuotationD2);
+            
+        }
     }
 }
