@@ -271,60 +271,66 @@ sap.ui.define(["umc/app/Controller/BaseController", "sap/m/MessageToast", "sap/m
       发信
       */
       onSend: function (oEvent) {
+          var that = this;
+          
+        that._setBusy(true);
+          
         
         var selectedIndices = this._TableList("tableUploadData"); // 获取选中行
         if (selectedIndices.length == 0) {
             sap.m.MessageToast.show("選択されたデータがありません、データを選択してください。");
             return false;
-        }
-
-          var BP_NUMBERset = new Set(selectedIndices.map(item => item.BP_NUMBER));
-          
-          if (BP_NUMBERset.size > 0) { 
-              
-            var H_CODE = "MM0002";
-            var BP_NUMBER = BP_NUMBERset;
-            var entity = "/SYS_T08_COM_OP_D";
-
-            this._readHeademail(H_CODE, BP_NUMBER, entity).then((oHeadData) => {
-              
-              let mail = oHeadData.results && oHeadData.results.length > 0 ? 
-              oHeadData.results.map(result => result.VALUE02).join(", ") : '';  
-              
-              let mailobj = {
-                  emailJson: {
-                      TEMPLATE_ID: "UWEB_M002",
-                      MAIL_TO: [mail].join(", "), 
-                      MAIL_BODY: [
-                          { object: "vendor", value: supplierName },
-                      ]
-                  }
-              };
-              let newModel = this.getView().getModel("Common");
-              let oBind = newModel.bindList("/sendEmail");
-
-              oBind.create(mailobj, {
-                success: function (oData) {
-                    if (oData && oData.result && oData.result === "sucess") {
-                        MessageToast.show("メールが正常に送信されました。");
-                    } else {
-                        MessageToast.error("メール送信に失敗しました。エラー: " + (oData.result || "不明なエラー"));
-                    }
-                },
-                error: function (oError) {
-                    MessageToast.error("メール送信に失敗しました。エラー: " + oError.message);
-                }
-              });
-            });
-              
-              
           }
-          // 假设您在这里定义邮件内容模板
-      var supplierName = "";
+          
+          sap.m.MessageBox.confirm("123", {
+        
+              actions: ["YES", "NO"],
+      
+              emphasizedAction: "YES",
+     
+              onClose: function (sAction) {
+        
+                  if (sAction == "YES") {
+                      var BP_NUMBERset = new Set(selectedIndices.map(item => item.BP_NUMBER));
+        
+                      if (BP_NUMBERset.size > 0) {
+                          var H_CODE = "MM0002";
+                          var BP_NUMBER = BP_NUMBERset;
+                          var entity = "/SYS_T08_COM_OP_D";
+                          var supplierName = "";
+            
+                          that._readHeademail(H_CODE, BP_NUMBER, entity).then((oHeadData) => {
+                              
+                              // 多人邮件地址（，分隔隔开）
+                              let mail = oHeadData.results && oHeadData.results.length > 0 ?
+                                  oHeadData.results.map(result => result.VALUE02).join(", ") : '';
+                              
+                              //担当着姓名 替换邮件模板中{absama}
+                              let absama = oHeadData.results && oHeadData.results.length > 0 ? 
+                                  oHeadData.results.map(result => result.VALUE03 + " 様").join("  ") : '';
+                              
+                              // 邮件obj
+                              let mailobj = {
+                                  emailJson: {
+                                      TEMPLATE_ID: "UWEB_M002",
+                                      MAIL_TO: [mail].join(", "),
+                                      MAIL_BODY: [
+                                          { object: "absama", value: absama },
+                                      ]
 
+                                  }
+                              };
+                              that._sendEmail(mailobj);
+                              that._setBusy(false)
+                          });
+                      }
+                      else {
+                          that._setBusy(false);
+                      }
+                  }
+              }
+              });
       },  
-
-
       onBP: function (oEvent) {
           var that = this;
 
@@ -385,11 +391,6 @@ sap.ui.define(["umc/app/Controller/BaseController", "sap/m/MessageToast", "sap/m
               });
                 
           });
-
-
-
-
-
 
       },
 
