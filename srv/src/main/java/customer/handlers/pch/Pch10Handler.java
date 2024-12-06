@@ -22,6 +22,7 @@ import com.sap.cds.services.handler.annotations.ServiceName;
 
 import cds.gen.pch.T06QuotationH;
 import cds.gen.tableservice.PCH08SaveDATAContext;
+import cds.gen.tableservice.PCH10BPTQContext;
 import cds.gen.tableservice.PCH10GMTQContext;
 import cds.gen.tableservice.PCH10GrSENDContext;
 import cds.gen.tableservice.PCH10Header;
@@ -151,7 +152,7 @@ public class Pch10Handler implements EventHandler {
     }
 
     @On(event = "PCH10_BPTQ")
-    public void BPTQ(PCH10GMTQContext context) throws IOException {
+    public void BPTQ(PCH10BPTQContext context) throws IOException {
 
         ifm01BpService.syncBP();
 
