@@ -35,7 +35,7 @@
         <CheckBox id="sch_INITIAL_OBJ" text="{pch>PCH10_INITIAL_OBJ}" select="onButtonSelect"/>
         <smartFilterBar:controlConfiguration>
           <smartFilterBar:ControlConfiguration id="sch_QUO_NUMBER" key="QUO_NUMBER" visibleInAdvancedArea="true"  index="1"/>
-          <smartFilterBar:ControlConfiguration id="sch_STATUS"     key="STATUS" visibleInAdvancedArea="true" index="2"/>
+          <smartFilterBar:ControlConfiguration id="sch_STATUS"     key="STATUS" visibleInAdvancedArea="true" controlType="dropDownList" index="2"/>
           <smartFilterBar:ControlConfiguration id="sch_CD_DATE"    key="CD_DATE" label="登録日付" visibleInAdvancedArea="true" index="3"/>
           <smartFilterBar:ControlConfiguration id="sch_CD_BY"      key="CD_BY" label="登録者" visibleInAdvancedArea="true" index="4"/>
           <smartFilterBar:ControlConfiguration id="sch_VALIDATE_START" key="VALIDATE_START" visibleInAdvancedArea="true" index="5"/>

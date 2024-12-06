@@ -219,4 +219,12 @@ extend service TableService {
     action PCH10_L_SAVE_DATA(str : String)  returns String; // list 画面保存按钮
     action PCH10_GMTQ(str : String)         returns String; //购买同期
     action PCH10_BPTQ(str : String)         returns String; //BP同期
+
+
+}
+
+annotate TableService.PCH10_Header with {
+
+    STATUS @(Common: {ValueList: {entity: 'PCH10_STATUS_POP', }});
+
 };
