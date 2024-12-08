@@ -2,6 +2,7 @@ package customer.service.pch;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.UUID;
 
 import org.apache.poi.ss.formula.functions.T;
 import org.checkerframework.checker.units.qual.t;
@@ -20,6 +21,7 @@ import customer.bean.pch.Pch10DataList;
 import customer.bean.pch.Pch10L;
 import customer.bean.pch.Pch10Save;
 import customer.bean.pch.Pch10SaveDataList;
+import customer.bean.tmpl.pch04excel;
 import customer.dao.pch.Pch10Dao;
 
 @Component
@@ -213,6 +215,100 @@ public class Pch10Service {
 
             list.setReTxt("Save Success");
 
+        }
+    }
+
+    public Boolean checkCopy(Pch10SaveDataList list) {
+        Boolean copy = Pch10Dao.getCopyByID(list.getList().get(0).getQUO_NUMBER(), list.getList().get(0).getQUO_ITEM());
+
+        return copy;
+
+    }
+
+    public void copyDataBy5key(Pch10SaveDataList list) {
+        T07QuotationD o = T07QuotationD.create();
+
+        List<T07QuotationD> CopyList = Pch10Dao.getCopyItem(list.getList().get(0).getQUO_NUMBER(),
+                list.getList().get(0).getSALES_NUMBER(), list.getList().get(0).getSALES_D_NO(),
+                list.getList().get(0).getQUO_VERSION());
+
+        Pch10Save value = list.getList().get(0);
+
+        for (T07QuotationD item : CopyList) {
+
+            // 复制数据
+            o.setId(UUID.randomUUID().toString());
+            o.setSalesNumber(item.getSalesNumber());
+            o.setSalesDNo(item.getSalesDNo());
+            o.setQuoNumber(item.getQuoNumber());
+            o.setQuoVersion(item.getQuoVersion());
+            o.setNo(item.getNo());
+            o.setRefrenceNo(item.getRefrenceNo());
+            o.setMaterialNumber(item.getMaterialNumber());
+            o.setCustMaterial(item.getCustMaterial());
+            o.setManufactMaterial(item.getManufactMaterial());
+            o.setAttachment(item.getAttachment());
+            o.setMaterial(item.getMaterial());
+            o.setMaker(item.getMaker());
+            o.setStatus(item.getStatus());
+            o.setInitialObj(item.getInitialObj());
+            o.setPlantId(item.getPlantId());
+            o.setSupplierMat(item.getSupplierMat());
+            // 修改数据
+            o.setQuoItem(value.getQUO_ITEM());
+            o.setUwebUser(value.getUWEB_USER());
+            o.setBpNumber(value.getBP_NUMBER());
+            o.setPersonNo1(value.getPERSON_NO1());
+            o.setYlp(value.getYLP());
+            o.setManul(value.getMANUL());
+            o.setManufactCode(value.getMANUFACT_CODE());
+            o.setCustomerMmodel(value.getCUSTOMER_MMODEL());
+            o.setMidQf(value.getMID_QF());
+            o.setSmallQf(value.getSMALL_QF());
+            o.setOtherQf(value.getOTHER_QF());
+            o.setQty(value.getQTY());
+            o.setCurrency(value.getCURRENCY());
+            o.setPrice(value.getPRICE());
+            o.setPriceControl(value.getPRICE_CONTROL());
+            o.setLeadTime(value.getLEAD_TIME());
+            o.setMoq(value.getMOQ());
+            o.setUnit(value.getUNIT());
+            o.setSpq(value.getSPQ());
+            o.setKbxt(value.getKBXT());
+            o.setProductWeight(value.getPRODUCT_WEIGHT());
+            o.setOriginalCou(value.getORIGINAL_COU());
+            o.setEol(value.getEOL());
+            o.setIsboi(value.getISBOI());
+            o.setIncoterms(value.getIncoterms());
+            o.setIncotermsText(value.getIncoterms_Text());
+            o.setMemo1(value.getMEMO1());
+            o.setMemo2(value.getMEMO2());
+            o.setMemo3(value.getMEMO3());
+            o.setSl(value.getSL());
+            o.setTz(value.getTZ());
+            o.setRmaterial(value.getRMATERIAL());
+            o.setRmaterialCurrency(value.getRMATERIAL_CURRENCY());
+            o.setRmaterialPrice(value.getRMATERIAL_PRICE());
+            o.setRmaterialLt(value.getRMATERIAL_LT());
+            o.setRmaterialMoq(value.getRMATERIAL_MOQ());
+            o.setRmaterialKbxt(value.getRMATERIAL_KBXT());
+            o.setUmcSelection(value.getUMC_SELECTION());
+            o.setUmcComment1(value.getUMC_COMMENT_1());
+            o.setUmcComment2(value.getUMC_COMMENT_2());
+
+            try {
+
+                Pch10Dao.modifyT07(o);
+                list.setErr(false);
+                list.setReTxt("第" + list.getList().size() + "行保存成功");
+
+            } catch (Exception e) {
+
+                e.printStackTrace();
+                list.setErr(true);
+                list.setReTxt(e.getMessage());
+
+            }
         }
     }
 }

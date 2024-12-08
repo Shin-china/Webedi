@@ -144,7 +144,7 @@ sap.ui.define(["umc/app/Controller/BaseController", "sap/m/MessageToast"], funct
         var oItem = oTable.getContextByIndex(iIndex).getObject();
         oItem.VALIDATE_START = that.__formatDate(oItem.VALIDATE_START);
         oItem.VALIDATE_END = that.__formatDate(oItem.VALIDATE_END);
-        oItem.TIME = that.__formatDate(oItem.TIME);
+        // oItem.TIME = that.__formatDate(oItem.TIME);
         aPostItem.push(oItem);
         oPostList = JSON.stringify({
           "list": aPostItem
@@ -261,6 +261,9 @@ sap.ui.define(["umc/app/Controller/BaseController", "sap/m/MessageToast"], funct
                       }
                     };
                     that._sendEmail(mailobj);
+
+                    // that._changeEmailStatus();
+                    
                     that.getView().setBusy(false);
                   });
                 }
@@ -287,6 +290,60 @@ sap.ui.define(["umc/app/Controller/BaseController", "sap/m/MessageToast"], funct
       });
       
     },
+
+    _changeEmailStatus: function () {
+      var that = this;
+
+      var oTable = this.byId("detailTable10");
+      var aSelectedIndices = oTable.getSelectedIndices();
+
+      //因为http param 长度有限制，必须循环一条条调用，不要一次性提交
+      var oPostData = {}, oPostList = {}, aPostItem = [], iDoCount = 0, bError;
+
+      var QUO_NUMBERSet = new Set(aSelectedIndices.map(data => data.QUO_NUMBER));
+      // aSelectedIndices.forEach(iIndex => {
+      //   aPostItem = [];
+      //   oPostData = {};
+      //   oPostList = {};
+      //   var oItem = oTable.getContextByIndex(iIndex).getObject();
+      //   oItem.VALIDATE_START = that.__formatDate(oItem.VALIDATE_START);
+      //   oItem.VALIDATE_END = that.__formatDate(oItem.VALIDATE_END);
+      //   // oItem.TIME = that.__formatDate(oItem.TIME);
+      //   aPostItem.push(oItem);
+      //   oPostList = JSON.stringify({
+      //     "list": aPostItem
+      //   });
+      oPostList = JSON.stringify({
+          "str": QUO_NUMBERSet
+        });
+;
+
+      that._callCdsAction("/PCH10_L_SAVE_DATA", oPostList, that).then(         
+          (oData) => {
+            iDoCount++;
+            var oResult = JSON.parse(oData.PCH10_L_SAVE_DATA);
+
+            if (oResult.err) {
+              bError = true;
+            }
+
+            if (iDoCount === aSelectedIndices.length) {
+
+              if (bError) {
+                that._localModel.setProperty("/show", false);
+                that._localModel.setProperty("/save", true);
+                that.MessageTools._addMessage(that.MessageTools._getI18nTextInModel("pch", oResult.reTxt, this.getView()), null, 1, this.getView());
+              } else {
+                that._localModel.setProperty("/show", true);
+                that._localModel.setProperty("/save", false);
+                sap.m.MessageToast.show(that._PchResourceBundle.getText("SAVE_SUCCESS"));
+              }
+
+              that._setBusy(false);
+            }
+          });
+         },
+
     _readBpNumber(a, entity) {
       var that = this;
       return new Promise(function (resolve, reject) {
@@ -296,7 +353,7 @@ sap.ui.define(["umc/app/Controller/BaseController", "sap/m/MessageToast"], funct
             new sap.ui.model.Filter({
               path: "QUO_NUMBER",
               value1: a,
-              operator: sap.ui.model.FilterOperator.IN,
+              operator: sap.ui.model.FilterOperator.EQ,
             })
               ],
               success: function (oData) { 
@@ -311,39 +368,54 @@ sap.ui.define(["umc/app/Controller/BaseController", "sap/m/MessageToast"], funct
 
 
 
-        _readHeademail: function (a,b, entity) {
-          var that = this;
-          return new Promise(function (resolve, reject) {
-            that.getModel().read(entity, {
-                filters: [
-                  
-                new sap.ui.model.Filter({
-                  path: "H_CODE",
-                  value1: a,
-                  operator: sap.ui.model.FilterOperator.EQ,
-                }),
-                new sap.ui.model.Filter({
-                  path: "VALUE01",
-                  value1: b,
-                  operator: sap.ui.model.FilterOperator.IN,
-                }),
+_readHeademail: function (a, b, entity) {
+    var that = this;
+    return new Promise(function (resolve, reject) {
+        // 如果 b 是一个 Set，将其转换为数组
+        var aValues = Array.isArray(b) ? b : Array.from(b);
 
-                new sap.ui.model.Filter({
-                  path: "DEL_FLAG",
-                  value1: "X",
-                  operator: sap.ui.model.FilterOperator.NE,
-                }),
-
-              ],
-              success: function (oData) {
-                resolve(oData);
-              },
-              error: function (oError) {
-                reject(oError);
-              },
+        // 动态创建 VALUE01 的过滤器
+        var aValueFilters = aValues.map(function (sValue) {
+            return new sap.ui.model.Filter({
+                path: "VALUE01",
+                operator: sap.ui.model.FilterOperator.Contains,
+                value1: sValue
             });
-          });
-        },
+        });
+
+        // 将多个 VALUE01 的过滤器组合为一个 OR 过滤器
+        var oValueFilter = new sap.ui.model.Filter({
+            filters: aValueFilters,
+            and: false // 使用 OR 逻辑
+        });
+
+        // 组合其他过滤器
+        var aFilters = [
+            new sap.ui.model.Filter({
+                path: "H_CODE",
+                operator: sap.ui.model.FilterOperator.EQ,
+                value1: a
+            }),
+            oValueFilter, // 动态生成的 OR 过滤器
+            new sap.ui.model.Filter({
+                path: "DEL_FLAG",
+                operator: sap.ui.model.FilterOperator.NE,
+                value1: "X"
+            })
+        ];
+
+        // 执行读操作
+        that.getModel().read(entity, {
+            filters: aFilters,
+            success: function (oData) {
+                resolve(oData);
+            },
+            error: function (oError) {
+                reject(oError);
+            }
+        });
+    });
+},
 
     onBeforeExport: function (oEvent) {
 			var mExcelSettings = oEvent.getParameter("exportSettings");

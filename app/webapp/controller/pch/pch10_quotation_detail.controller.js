@@ -82,7 +82,7 @@ sap.ui.define([
                     let qty = "{QTY_" + i + "}";
                     let column1 = new sap.ui.table.Column({
                         label: new sap.m.Label({ text: "単価" + i }),
-                        template: new sap.m.Input({ value: price, editable: "{=${" + priceFlag + "} === undefined || ${" + priceFlag + "} === null || ${" + priceFlag + "} === ''  ? false : true}" })
+                        template: new sap.m.Input({ value: price, editable: false })
                     });
                     let column2 = new sap.ui.table.Column({
                         label: new sap.m.Label({ text: "数量" + i }),

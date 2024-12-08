@@ -287,7 +287,7 @@
                     </table:template>
                 </table:Column>
 
-                <table:Column id="colPERSON_NO1" width="10rem" sortProperty="PERSON_NO1" filterProperty="PERSON_NO1">
+                <!-- <table:Column id="colPERSON_NO1" width="10rem" sortProperty="PERSON_NO1" filterProperty="PERSON_NO1">
                     <table:customData>
                         <core:CustomData key="p13nData" value="{
                                 columnKey: 'PERSON_NO1',
@@ -302,7 +302,7 @@
                     <table:template>
                         <Text id="textPERSON_NO1" text="{workInfo>PERSON_NO1}" />
                     </table:template>
-                </table:Column>
+                </table:Column> -->
 
                 <!--<table:Column id="colPersonNo2" width="10rem" sortProperty="PERSON_NO2" filterProperty="PERSON_NO2">
                     <table:customData>
@@ -499,7 +499,7 @@
                 </table:Column>
 
 
-                <table:Column id="colQTY" width="10rem" sortProperty="QTY" filterProperty="QTY">
+                <!-- <table:Column id="colQTY" width="10rem" sortProperty="QTY" filterProperty="QTY">
                     <table:customData>
                         <core:CustomData key="p13nData" value="{
                                 columnKey: 'QTY',
@@ -512,10 +512,10 @@
                         <Label id="labelQty" text="{pch>PCH08_QTY}" />
                     </table:label>
                     <table:template>
-                        <!-- 但是暂时还不知道用不用修改 -->
+
                         <Text text="{workInfo>QTY}" editable="true"></Text>	
                     </table:template>
-                </table:Column>
+                </table:Column> -->
 
                 <table:Column id="colCurrency" width="10rem" sortProperty="CURRENCY" filterProperty="CURRENCY">
                     <table:customData>
@@ -1023,8 +1023,7 @@
                         <Label id="labelStatus" text="{pch>PCH08_STATUS}" />
                     </table:label>
                     <table:template>
-                    
-                        <Text id="textStatus" text="{path:'STATUS', formatter:'.customFormatter.formatPch08Status'}"  />
+                        <Text id="textStatus" text="{path:'workInfo>STATUS', formatter:'.customFormatter.formatPch08Status'}"  />
                     </table:template>
                 </table:Column> 
 

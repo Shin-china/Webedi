@@ -17,6 +17,7 @@ import cds.gen.pch.T07QuotationD;
 import cds.gen.sys.T07ComOpH;
 import customer.bean.pch.Pch10;
 import customer.bean.pch.Pch10DataList;
+import customer.bean.pch.Pch10Save;
 import customer.bean.pch.Pch10SaveDataList;
 import customer.dao.common.Dao;
 
@@ -171,6 +172,35 @@ public class Pch10Dao extends Dao {
     private void insertT07(T07QuotationD o) {
         o.setCdTime(getNow());
         db.run(Insert.into(Pch_.T07_QUOTATION_D).entry(o));
+    }
+
+    public Boolean getCopyByID(String quo_NUMBER, Integer quo_ITEM) {
+
+        Optional<T07QuotationD> result = db.run(Select.from(Pch_.T07_QUOTATION_D)
+                .where(o -> o.QUO_NUMBER().eq(
+                        quo_NUMBER).and(o.QUO_ITEM().eq(quo_ITEM))))
+                .first(T07QuotationD.class);
+
+        if (result.isPresent()) {
+
+            return true;
+
+        }
+        return false;
+
+    }
+
+    public List<T07QuotationD> getCopyItem(String quo_NUMBER, String sales_NUMBER, String sales_D_NO,
+            String quo_VERSION) {
+        List<T07QuotationD> result = db.run(
+                Select.from(Pch_.T07_QUOTATION_D)
+                        .where(o -> o.QUO_NUMBER().eq(quo_NUMBER)
+                                .and(o.SALES_NUMBER().eq(sales_NUMBER))
+                                .and(o.SALES_D_NO().eq(sales_D_NO))
+                                .and(o.QUO_VERSION().eq(quo_VERSION))
+                                .and(o.DEL_FLAG().eq("N"))))
+                .listOf(T07QuotationD.class);
+        return result;
     }
 
 }

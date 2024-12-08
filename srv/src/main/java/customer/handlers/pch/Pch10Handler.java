@@ -111,8 +111,12 @@ public class Pch10Handler implements EventHandler {
 
         Pch10SaveDataList list = JSON.parseObject(context.getJson(), Pch10SaveDataList.class);
 
-        pch10Service.check(list);
-        if (!list.getErr()) {
+        // 判断是不是新加复制行 判断逻辑是 用 quono 和 quo item 去查数据库里有没有相同的记录
+        Boolean isCopy = pch10Service.checkCopy(list);
+
+        if (!isCopy) {
+            pch10Service.copyDataBy5key(list);
+        } else {
             pch10Service.detailsSave(list);
         }
 

@@ -32,24 +32,6 @@ sap.ui.define(["umc/app/Controller/BaseController", "sap/m/MessageToast", "sap/m
       this.MessageTools._initoMessageManager(this);
 
       this._BusyDialog = new sap.m.BusyDialog();
-      
-      // this._localModel = new sap.ui.model.json.JSONModel();
-      // this._localModel.setData({
-      //     "show": true,
-      //     "save": false
-      // });
-      // this.getView().setModel(this._localModel, "localModel");
-
-      // var view = this.getView();
-      // var jsonModel = view.getModel("workInfo");
-
-
-      // // 设置为不可编辑
-      // jsonModel.setData({
-      //     "show": true,
-      //     "save": false
-      // });
-      
     },
 
     _onRouteMatched: function (oEvent) {
@@ -69,39 +51,14 @@ sap.ui.define(["umc/app/Controller/BaseController", "sap/m/MessageToast", "sap/m
       QUO_VERSION = (QUO_VERSION === "") ? null : QUO_VERSION;
 
       this._aFilters = [];
-
-            if (QUO_NUMBER) {
-                this._aFilters.push(new sap.ui.model.Filter({
-                    path: "QUO_NUMBER",
-                    value1: QUO_NUMBER,
-                    operator: sap.ui.model.FilterOperator.EQ,
-                }));
-            }
-
-            // if (QUO_ITEM) {
-            //     this._aFilters.push(new sap.ui.model.Filter({
-            //         path: "QUO_ITEM",
-            //         value1: QUO_ITEM,
-            //         operator: sap.ui.model.FilterOperator.EQ,
-            //     }));
-            // }
-
-            // if (SALES_NUMBER) {
-            //     this._aFilters.push(new sap.ui.model.Filter({
-            //         path: "SALES_NUMBER",
-            //         value1: SALES_NUMBER,
-            //         operator: sap.ui.model.FilterOperator.EQ,
-            //     }));
-            // }
-
-            // if (QUO_VERSION) {
-            //     this._aFilters.push(new sap.ui.model.Filter({
-            //         path: "QUO_VERSION",
-            //         value1: QUO_VERSION,
-            //         operator: sap.ui.model.FilterOperator.EQ,
-            //     }));
-            // }
-
+        if (QUO_NUMBER) {
+            this._aFilters.push(new sap.ui.model.Filter({
+                path: "QUO_NUMBER",
+                value1: QUO_NUMBER,
+                operator: sap.ui.model.FilterOperator.EQ,
+            }));
+        }
+        
       var view = this.getView();
       var jsonModel = view.getModel("workInfo");
 
@@ -109,24 +66,12 @@ sap.ui.define(["umc/app/Controller/BaseController", "sap/m/MessageToast", "sap/m
 
         that.getModel().read("/PCH10_LIST", {
         
-          // filters: [
 
-          //   new sap.ui.model.Filter({
-            
-          //     path: "QUO_NUMBER",
-            
-          //     value1: headID,
-            
-          //     operator: sap.ui.model.FilterOperator.EQ,
-            
-          //   }),
-
-          // ]
           filters: that._aFilters
           ,
           success: function (oData) {
                               oData.results.sort(function(a, b) {
-                      return a.SALES_D_NO - b.SALES_D_NO; // 升序排序
+                      return a.QUO_ITEM - b.QUO_ITEM; // 升序排序
                       // 如果需要降序排序，可以使用 b.SALES_D_NO - a.SALES_D_NO;
                   });
 
@@ -183,59 +128,146 @@ sap.ui.define(["umc/app/Controller/BaseController", "sap/m/MessageToast", "sap/m
     /*==============================
     保存
     ==============================*/
-    onSave: function (oEvent) {
-        var that = this;
-        // that._setBusy(true);
-        var view = this.getView();
-        //清除msg
-        this.MessageTools._clearMessage();
+      onSave: function (oEvent) {
+var that = this;
+         that._setBusy(true);
+          var oTable = this.byId("tableUploadData");
 
-        if (that._isCheckData()) {
-            var jsonModel = view.getModel("workInfo");
-            this._callCdsAction("/PCH10_SAVE_DATA", this._getData(), this).then((oData) => {
-
-
-                var myArray = JSON.parse(oData.PCH10_SAVE_DATA);
-                this._setEditable(false);
-                if (myArray.err) {
-                    this._setEditable(true);
-                    var rt = myArray.reTxt.split("||");
-                    for (var i = 1; i < rt.length; i++) {
-
-                        that.MessageTools._addMessages(this.MessageTools._getI18nTextInModel("pch", rt[i], this.getView()), null, 1, this.getView());
-                    }
-
-        } else {
-        
-        return new Promise(function (resolve, reject) {
-
-            that.getModel().read("/PCH10_LIST", {
+          var aSelectedIndices = oTable.getSelectedIndices();
             
-            filters: that._aFilters,
-            success: function (oData) {
+          if (aSelectedIndices.length === 0) {
+                
+              sap.m.MessageToast.show("選択されたデータがありません、データを選択してください。"); // 提示未选择数据
+                
+              return;
 
-                oData.results.sort(function(a, b) {
-                    return a.SALES_D_NO - b.SALES_D_NO; // 升序排序
-                    // 如果需要降序排序，可以使用 b.SALES_D_NO - a.SALES_D_NO;
-                });
+          }
+          //因为http param 长度有限制，必须循环一条条调用，不要一次性提交
+            var oPostData = {}, oPostList = {}, aPostItem = [], iDoCount = 0, bError;
+              aSelectedIndices.forEach(iIndex => {
+              aPostItem = [];
+              oPostData = {};
+              oPostList = {};
 
-                jsonModel = new sap.ui.model.json.JSONModel();
-                view.setModel(jsonModel, "workInfo");
-                jsonModel.setData(oData.results);
+              var oItem = oTable.getContextByIndex(iIndex).getObject();
+              
+              aPostItem.push(oItem);
 
-            },
-            error: function (oError) {
-                reject(oError);
-            },
-            })
-        })
-                }
-                // that._setBusy(false);
+              oPostList = JSON.stringify({
+                  "list": aPostItem
+              });
 
-            });
-        } else {
-            // that._setBusy(false);
-        }
+              oPostData = {
+                  "json": oPostList
+              };
+
+
+              this._callCdsAction("/PCH10_SAVE_DATA", oPostData, this).then((oData) => {
+                  
+                  iDoCount++;
+
+                  var oResult = JSON.parse(oData.PCH10_SAVE_DATA);
+                  if (oResult.err) {   
+                      bError = true;
+                  }
+
+                  if (iDoCount === aSelectedIndices.length) {
+                      if (bError) {
+                          that.MessageTools._addMessage(that.MessageTools._getI18nTextInModel("pch", oResult.reTxt, this.getView()), null, 1, this.getView());
+                      } else {
+                          sap.m.MessageToast.show(that._PchResourceBundle.getText("SAVE_SUCCESS"));
+                      }
+                      that._setBusy(false);
+                  }
+              });
+                
+          });
+
+        // var that = this;
+        // // that._setBusy(true);
+        // var view = this.getView();
+        // //清除msg
+        // this.MessageTools._clearMessage();
+        // var oTable = this.byId("tableUploadData");
+
+
+        // var aSelectedIndices = this._TableList("tableUploadData"); // 获取选中行
+
+        //     if (aSelectedIndices.length == 0) {
+        //         sap.m.MessageToast.show("選択されたデータがありません、データを選択してください。");
+        //         return false;
+        //     }
+
+        //     //因为http param 长度有限制，必须循环一条条调用，不要一次性提交
+        // var oPostData = {}, oPostList = {}, aPostItem = [], iDoCount = 0, bError;
+              
+        // aSelectedIndices.forEach(iIndex => {
+             
+        //     aPostItem = [];
+        //     oPostData = {};
+        //     oPostList = {};
+
+        //     var oItem = oTable.getContextByIndex(iIndex).getObject();             
+        //     aPostItem.push(oItem);
+
+        //     oPostList = JSON.stringify({
+        //         "list": aPostItem
+        //     });
+
+        //     oPostData = {
+        //         "json": oPostList
+        //     };
+        
+        //     }
+        // );
+
+
+        // if (that._isCheckData()) {
+        //     var jsonModel = view.getModel("workInfo");
+        //     this._callCdsAction("/PCH10_SAVE_DATA", oPostData, this).then((oData) => {
+
+
+        //         var myArray = JSON.parse(oData.PCH10_SAVE_DATA);
+        //         this._setEditable(false);
+        //         if (myArray.err) {
+        //             this._setEditable(true);
+        //             var rt = myArray.reTxt.split("||");
+        //             for (var i = 1; i < rt.length; i++) {
+
+        //                 that.MessageTools._addMessages(this.MessageTools._getI18nTextInModel("pch", rt[i], this.getView()), null, 1, this.getView());
+        //             }
+
+        // } else {
+        
+        // return new Promise(function (resolve, reject) {
+
+        //     that.getModel().read("/PCH10_LIST", {
+            
+        //     filters: that._aFilters,
+        //     success: function (oData) {
+
+        //         oData.results.sort(function(a, b) {
+        //             return a.QUO_ITEM - b.QUO_ITEM; // 升序排序
+        //             // 如果需要降序排序，可以使用 b.SALES_D_NO - a.SALES_D_NO;
+        //         });
+
+        //         jsonModel = new sap.ui.model.json.JSONModel();
+        //         view.setModel(jsonModel, "workInfo");
+        //         jsonModel.setData(oData.results);
+
+        //     },
+        //     error: function (oError) {
+        //         reject(oError);
+        //     },
+        //     })
+        // })
+        //         }
+        //         // that._setBusy(false);
+
+        //     });
+        // } else {
+        //     // that._setBusy(false);
+        // }
     },
 
     /*==============================
@@ -282,7 +314,8 @@ sap.ui.define(["umc/app/Controller/BaseController", "sap/m/MessageToast", "sap/m
             return false;
           }
           
-          sap.m.MessageBox.confirm("123", {
+          var confirmMsg = "送信しますか？";
+          sap.m.MessageBox.confirm(confirmMsg, {
         
               actions: ["YES", "NO"],
       
@@ -321,6 +354,9 @@ sap.ui.define(["umc/app/Controller/BaseController", "sap/m/MessageToast", "sap/m
                                   }
                               };
                               that._sendEmail(mailobj);
+
+                            //   that._changeEmailStatus(); 
+
                               that._setBusy(false)
                           });
                       }
@@ -331,9 +367,15 @@ sap.ui.define(["umc/app/Controller/BaseController", "sap/m/MessageToast", "sap/m
               }
               });
       },  
+
+
+
+
+
       onBP: function (oEvent) {
           var that = this;
 
+          var oTable = this.byId("tableUploadData");
           var aSelectedIndices = this.byId("tableUploadData"); // 获取选中行
 
           if (aSelectedIndices.length === 0) {
@@ -362,8 +404,8 @@ sap.ui.define(["umc/app/Controller/BaseController", "sap/m/MessageToast", "sap/m
                   
                   aPostItem.push(oItem);
 
-              oPostList = JSON.stringify({
-                  "list": aPostItem
+              oPostData = JSON.stringify({
+                  "str": oPostList
               });
 
               oPostData = {
@@ -408,12 +450,6 @@ sap.ui.define(["umc/app/Controller/BaseController", "sap/m/MessageToast", "sap/m
               return;
 
           }
-
-
-
-
-          
-
           //因为http param 长度有限制，必须循环一条条调用，不要一次性提交
             var oPostData = {}, oPostList = {}, aPostItem = [], iDoCount = 0, bError;
               aSelectedIndices.forEach(iIndex => {
@@ -468,7 +504,7 @@ sap.ui.define(["umc/app/Controller/BaseController", "sap/m/MessageToast", "sap/m
                             if (bError) {
                                 that.MessageTools._addMessage(that.MessageTools._getI18nTextInModel("pch", oResult.reTxt, this.getView()), null, 1, this.getView());
                             } else {
-                                sap.m.MessageToast.show(that._PchResourceBundle.getText("SAVE_SUCCESS"));
+                                sap.m.MessageToast.show(that._PchResourceBundle.getText("GMSUCCESS_MSG"));
                             }
                             that._setBusy(false);
                   }
@@ -536,42 +572,42 @@ sap.ui.define(["umc/app/Controller/BaseController", "sap/m/MessageToast", "sap/m
 		==============================*/
 		onBPAdd: function (oEvent) {
 			var that = this;
-      var view = this.getView();
-      
-      that._setEditable(true);
-			var selectedIndices = this._TableList("tableUploadData"); // 获取选中行
-			var jsonModel = view.getModel("workInfo");
+            var view = this.getView();
+            that._setEditable(true);
+            var selectedIndices = this._TableList("tableUploadData"); // 获取选中行
+            var jsonModel = view.getModel("workInfo");
+            var datas = jsonModel.getData();
+            var MaxDN = 0;  // 默认从 1 开始
+         
+            if (datas && datas.length > 0) {
+             
+                MaxDN = Math.max(...datas.map(function (item) {
+                 
+                    return item.QUO_ITEM || 0; // 如果 SALES_D_NO 是 undefined 或 null，使用 0
+                }));
 
-      var datas = jsonModel.getData();
-
-
-      var MaxDN = 0;  // 默认从 1 开始
-          if (datas && datas.length > 0) {
-              MaxDN = Math.max(...datas.map(function (item) {
-                  return item.SALES_D_NO || 0; // 如果 SALES_D_NO 是 undefined 或 null，使用 0
-              })) + 1 ;
-          }
-      
+                MaxDN++;
+                
+            }
 			if (selectedIndices) {
-				selectedIndices.forEach((selectedIndex) => {
-          let copiedIndex = JSON.parse(JSON.stringify(selectedIndex));
-          
+                selectedIndices.forEach((selectedIndex) => {
+                    let copiedIndex = JSON.parse(JSON.stringify(selectedIndex));
           // copiedIndex.QUO_NUMBER = null;     
           // copiedIndex.QUO_ITEM = null;
           // copiedIndex.SALES_NUMBER = null;
           // copiedIndex.QUO_VERSION = null;
           // copiedIndex.NO  = null;            
           // copiedIndex.REFRENCE_NO    = null;   
-          copiedIndex.MATERIAL_NUMBER  = null;   
-          copiedIndex.CUST_MATERIAL = null;
-          copiedIndex.MANUFACT_MATERIAL = null;
-          copiedIndex.Attachment = null;
-          copiedIndex.Material = null;
-          copiedIndex.MAKER = null;
-					copiedIndex.CD_BY = null;
+        //   copiedIndex.MATERIAL_NUMBER  = null;   
+        //   copiedIndex.CUST_MATERIAL = null;
+        //   copiedIndex.MANUFACT_MATERIAL = null;
+        //   copiedIndex.Attachment = null;
+        //   copiedIndex.Material = null;
+        //   copiedIndex.MAKER = null;
+		  copiedIndex.CD_BY = null;
           copiedIndex.CD_TIME = null;
 
-          copiedIndex.SALES_D_NO = MaxDN++;
+          copiedIndex.QUO_ITEM = MaxDN++;
           
           const uuid = this.generateUUID();
           copiedIndex.T02_ID = uuid;
