@@ -55,14 +55,9 @@ public class Application implements CommandLineRunner {
 		ConfigConstants.BTP_APP_ID = configDao.getConfig("SYSTEM_ID").getConValue();
 		ConfigConstants.USER_LANG_CODE = configDao.getConfig("USER_LANG_CODE").getConValue();
 
-		// 当前系统有几家工厂
-		ConfigConstants.SYSTEM_PLANT_LIST = Arrays
-				.asList(configDao.getConfig("SYSTEM_PLANT_ID").getConValue().split(","));
-
-		// OBJECT STORE 目录设定
-		ConfigConstants.OBJECT_STOTE_PDF_FLORD = configDao.getConfig("OBJECT_STOTE_PDF_FLORD").getConValue();
-		ConfigConstants.OBJECT_STOTE_TXT_FLORD = configDao.getConfig("OBJECT_STOTE_TXT_FLORD").getConValue();
-		ConfigConstants.OBJECT_STORE_TEMPLATE = configDao.getConfig("OBJECT_STORE_TEMPLATE").getConValue();
+		// // 当前系统有几家工厂
+		// ConfigConstants.SYSTEM_PLANT_LIST = Arrays
+		// .asList(configDao.getConfig("SYSTEM_PLANT_ID").getConValue().split(","));
 
 		// 设定S4 DESTINATION
 		S4OdataTools.desName = configDao.getConfig("S4_DESTINATION").getConValue();
