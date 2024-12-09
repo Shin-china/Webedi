@@ -9,8 +9,7 @@
     "@sap/cds": "7.9.2",
     "@sap/cds-compiler": "4.9.4",
     "@sap/cds-dk": "7.9.3",
-    "npm": "^10.9.0",
-    "umc-webedi-cds": "file:"
+    "npm": "^10.9.0"
   },
   "devDependencies": {
     "@sap/cds": "7.9.2",
