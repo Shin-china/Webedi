@@ -46,7 +46,7 @@ public class Pch08Service {
     }
 
     public List<T07QuotationD> getOldT07Data(Pch08 pch08) {
-        return pch08Dao.getT07ByQuoNumber(pch08.getQUO_NUMBER());
+        return pch08Dao.getT07ByQuoNumberItem(pch08.getQUO_NUMBER(), pch08.getQUO_ITEM());
     }
 
     public List<T07QuotationD> extractT07Data(Pch08 pch08) {
