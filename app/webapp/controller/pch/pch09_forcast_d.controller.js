@@ -49,7 +49,9 @@ sap.ui.define([
         },
 
         onResend: function () {
-			var that = this;
+            var that = this;
+            that.getView().setBusy(true);
+
             var oTable = this.getView().byId("detailTable");
             var aSelectedIndices = oTable.getSelectedIndices();
 
@@ -58,7 +60,7 @@ sap.ui.define([
                 MessageToast.show("選択されたデータがありません、データを選択してください。");
                 return;
             }
-   
+
             var oModel = this.getView().getModel();
             var oCommonModel = this.getView().getModel("Common"); // 获取公共模型
             var aEmailParams = [];
@@ -77,49 +79,59 @@ sap.ui.define([
                 return;
             }
 
-            if (supplierSet.size === 1) { 
-                var H_CODE = "MM0001";
-                var SUPPLIER = supplierSet.values().next().value;
-                var entity = "/SYS_T08_COM_OP_D";
 
-                this._readHead(H_CODE, SUPPLIER, entity).then((oHeadData) => {
-                    let mail = oHeadData.results && oHeadData.results.length > 0 ? 
-                        oHeadData.results.map(result => result.VALUE02).join(", ") : '';            
-                    let absama = oHeadData.results && oHeadData.results.length > 0 ? 
-                        oHeadData.results.map(result => result.VALUE03 + " 様").join("  ") : '';
+            var confirmMsg = "送信しますか？";
+
+     
+            sap.m.MessageBox.confirm(confirmMsg, {
+               
+                actions: ["YES", "NO"],
+               
+                emphasizedAction: "YES",
+                
+                onClose: function (sAction) {
+                 
+                
+                    if (sAction == "YES") {
+
+                        if (supplierSet.size === 1) { 
                     
-                    let mailobj = {
-                        emailJson: {
-                            TEMPLATE_ID: "UWEB_M001",
-                            MAIL_TO: [mail].join(", "), 
-                            MAIL_BODY: [
-                                { object: "vendor", value: supplierName },
-                                { object: "yyyy", value: year },
-                                { object: "mm", value: month },
-                                { object: "absama", value: absama}
-                            ]
+                            var H_CODE = "MM0001";
+                            var SUPPLIER = supplierSet.values().next().value;
+                            var entity = "/SYS_T08_COM_OP_D";
+
+                    
+                            that._readHead(H_CODE, SUPPLIER, entity).then((oHeadData) => {
+                                let mail = oHeadData.results && oHeadData.results.length > 0 ? 
+                                    oHeadData.results.map(result => result.VALUE02).join(", ") : '';
+                                let absama = oHeadData.results && oHeadData.results.length > 0 ? 
+                                    oHeadData.results.map(result => result.VALUE03 + " 様").join("  ") : '';
+                    
+                                let mailobj = {
+                                    emailJson: {
+                                        TEMPLATE_ID: "UWEB_M001",
+                                        MAIL_TO: [mail].join(", "), 
+                                        MAIL_BODY: [
+                                            { object: "vendor", value: supplierName },
+                                            { object: "yyyy", value: year },
+                                            { object: "mm", value: month },
+                                            { object: "absama", value: absama }
+                                        ]
+                                    }
+                                };
+           
+                                that._sendEmail(mailobj); 
+                                that.getView().setBusy(false);
+
+                            });
                         }
-                    };
 
-                    // 确保 this.getView() 是正确的
-                    let newModel = this.getView().getModel("Common");
-                    let oBind = newModel.bindList("/sendEmail");
-
-                    oBind.create(mailobj, {
-                        success: function (oData) {
-                            if (oData && oData.result && oData.result === "sucess") {
-                                MessageToast.show("メールが正常に送信されました。");
-                            } else {
-                                MessageBox.error("メール送信に失敗しました。エラー: " + (oData.result || "不明なエラー"));
-                            }
-                        },
-                        error: function (oError) {
-                            MessageBox.error("メール送信に失敗しました。エラー: " + oError.message);
-                        }
-                    });
-                });
-
-            }
+                    } else {
+                        that.getView().setBusy(false);
+                        return;
+                    }
+                }
+            });    
                 
             // 假设您在这里定义邮件内容模板
             var supplierName = "";
