@@ -169,6 +169,7 @@ extend service TableService {
             )
         left join view.MST_T05_SAP_BP_PURCHASE T04
             on T01.SUPPLIER = T04.SUPPLIER
+            and T01.PO_ORG = T04.PURCHASE_ORG
 
 
          join view.SYS_T01_USER as Tu
@@ -185,7 +186,7 @@ extend service TableService {
             on T09.PLANT_ID = T02.PLANT_ID
             and T09.MAT_ID = T02.MAT_ID
 
-          {
+          distinct{
             @title: '{i18n>PO_NO_DNO}'
             key T01.PO_NO || RIGHT('00000' || T02.D_NO, 5) as ID   : String(100),
             key T01.PO_NO, // 発注番号
