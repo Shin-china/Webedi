@@ -262,7 +262,8 @@ extend service TableService {
                     T01.PO_NO = T02.PO_NO
                 )
             left join view.MST_T05_SAP_BP_PURCHASE T04
-                on T01.SUPPLIER = T04.SUPPLIER
+               on T01.SUPPLIER = T04.SUPPLIER
+                and T01.PO_ORG = T04.PURCHASE_ORG
 
             join view.SYS_T01_USER as Tu
                 on Tu.USER_ID = (select user from view.USER_CODE   ) 
