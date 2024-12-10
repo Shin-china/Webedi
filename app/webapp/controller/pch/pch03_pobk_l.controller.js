@@ -159,18 +159,11 @@ sap.ui.define([
 				Object.keys(groupedBySupplier).forEach(key => {
 					const row = groupedBySupplier[key];
 
-
-
-					const csvContent = that._getCsvData(row, "");
-					// 添加UTF-8 BOM
-					const bom = "\uFEFF";
-					// 创建一个Blob对象，指定类型为text/csv，并添加BOM
-					const blob = new Blob([bom + csvContent], { type: "text/csv;charset=utf-8" });
-
+					const csvContent = that._getCsvData(row);
 
 					// 创建一个<a>标签用于下载
 					const a = document.createElement("a");
-					a.href = URL.createObjectURL(blob);
+					a.href = URL.createObjectURL(csvContent);
 					a.download = that.CommTools.getCurrentTimeFormatted() + "_" + key + ".csv";
 
 					// 触发下载
@@ -365,70 +358,75 @@ sap.ui.define([
 			//经过去重以后的po号
 			var uniqueIdList = [...new Set(poList)];
 			//获取csv
-			var csvContent = that._getCsvData(obj1,"");
-			var mailobj = {
-				emailJson: {
-					TEMPLATE_ID: TEMPLATE_ID,
-					MAIL_TO: obj1[0].EMAIL_ADDRESS,
-					MAIL_BODY: [
-						{
-							object: "仕入先名称",
-							value: obj1[0].PCH03_BP_NAME1 // 使用替换后的邮件内容
-						},
-						{
-							object: "filename_2",
-							value: that.CommTools.getCurrentTimeFormatted()+"_"+supplier+".csv"
-						},
-						{
-							object: "filecontent_2",
-							value: csvContent
-						}
-					]
-				}
-			};
+			var csvContent = that._getCsvData(obj1);
 			
-			//将mailobj对象设置到supplierObjMap中
-			supplierObjMap.set(supplier, mailobj);
-			supplierLenMap.set(supplier, uniqueIdList.length);
-			supplierCntMap.set(supplier, 0);
-
-			//循环po通过po打印
-			for(var i=0;i<uniqueIdList.length;i++){
+			this.PrintTool.getCsvBase64(csvContent).then((base64) => {
+			    
+				var mailobj = {
+					emailJson: {
+						TEMPLATE_ID: TEMPLATE_ID,
+						MAIL_TO: obj1[0].EMAIL_ADDRESS,
+						MAIL_BODY: [
+							{
+								object: "仕入先名称",
+								value: obj1[0].PCH03_BP_NAME1 // 使用替换后的邮件内容
+							},
+							{
+								object: "filename_2",
+								value: that.CommTools.getCurrentTimeFormatted()+"_"+supplier+".csv"
+							},
+							{
+								object: "filecontent_2",
+								value: base64
+							}
+						]
+					}
+				};
 				
-				var item = uniqueIdList[i];
-				var pdfName = that._getZwsName(myIssMap.get(item),item);
-				let obj = obj1[0].ZABC;
-				//EFwei全po打印
-				if (obj == "E" || obj == "F") {
+				//将mailobj对象设置到supplierObjMap中
+				supplierObjMap.set(supplier, mailobj);
+				supplierLenMap.set(supplier, uniqueIdList.length);
+				supplierCntMap.set(supplier, 0);
 
-					that._printZWSPrintEmail(that, [item], "/PCH_T03_PO_ITEM_PRINT", "PO_NO",supplierObjMap,item,supplier,undefined,pdfName).then((oData) => {
+				//循环po通过po打印
+				for(var i=0;i<uniqueIdList.length;i++){
+					
+					var item = uniqueIdList[i];
+					var pdfName = that._getZwsName(myIssMap.get(item),item);
+					let obj = obj1[0].ZABC;
+					//EFwei全po打印
+					if (obj == "E" || obj == "F") {
 
-						that._newNPSprinEmil(myMap, that, oData, supplierObjMap).then((oData2) => {
+						that._printZWSPrintEmail(that, [item], "/PCH_T03_PO_ITEM_PRINT", "PO_NO",supplierObjMap,item,supplier,undefined,pdfName).then((oData) => {
+
+							that._newNPSprinEmil(myMap, that, oData, supplierObjMap).then((oData2) => {
 
 
-							if(this._checkEmailaskPdf(supplierLenMap,supplierCntMap,oData2[1])){
-								this._sendEmail(supplierObjMap.get(oData2[1]));
-								this._setBusy(false);
-							}
+								if(this._checkEmailaskPdf(supplierLenMap,supplierCntMap,oData2[1])){
+									this._sendEmail(supplierObjMap.get(oData2[1]));
+									this._setBusy(false);
+								}
+							})
+
 						})
 
-					})
+					}
+					//sonota和C部分明细打印
+					if (obj == "C" || obj == "W") {
+						that._printZWSPrintEmail(that, myMap.get(item), "/PCH_T03_PO_ITEM_PRINT", "ID",supplierObjMap,item,supplier,undefined,pdfName).then((oData) => {
 
-				}
-				//sonota和C部分明细打印
-				if (obj == "C" || obj == "W") {
-					that._printZWSPrintEmail(that, myMap.get(item), "/PCH_T03_PO_ITEM_PRINT", "ID",supplierObjMap,item,supplier,undefined,pdfName).then((oData) => {
-
-						that._newNPSprinEmil(myMap, that, oData, supplierObjMap).then((oData2) => {
-							if(this._checkEmailaskPdf(supplierLenMap,supplierCntMap,oData2[1])){
-								this._sendEmail(supplierObjMap.get(oData2[1]));
-								this._setBusy(false);
-							}
+							that._newNPSprinEmil(myMap, that, oData, supplierObjMap).then((oData2) => {
+								if(this._checkEmailaskPdf(supplierLenMap,supplierCntMap,oData2[1])){
+									this._sendEmail(supplierObjMap.get(oData2[1]));
+									this._setBusy(false);
+								}
+							})
 						})
-					})
-				}
+					}
 
-			}
+				}
+				})
+
 		 },
 		 _sendEmailFaxTy: function (obj1,supplierObjMap,supplierLenMap,supplierCntMap,supplier,TEMPLATE_ID){
 			var that = this;
@@ -503,8 +501,10 @@ sap.ui.define([
 
 			}
 		 },
-		_getCsvData: function (selectedIndices,csvContent) {
+		_getCsvData: function (selectedIndices) {
 			var that = this;
+			var csvContent = "";
+		
 			if (selectedIndices) {
 							//设置头的模板
 							var headers = that._setHeaderModel();
@@ -529,7 +529,11 @@ sap.ui.define([
 								csvContent += values.join(",") + "\n";
 							});
 			}
-			return csvContent;
+				// 添加UTF-8 BOM
+				const bom = "\uFEFF";
+				// 创建一个Blob对象，指定类型为text/csv，并添加BOM
+				const blob = new Blob([bom + csvContent], { type: "text/csv;charset=utf-8" });
+			return blob;
 		},
 		onPrintNPS: function () {
 			var that = this;

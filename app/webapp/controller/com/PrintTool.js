@@ -745,8 +745,20 @@ sap.ui.define(
           }
           reader.onerror = error => reject(error);
         });
+      },
+      //将pdf转换为base64传到后台打印
+      getCsvBase64(blob) {
+        return new Promise((resolve,reject) => {
+          const reader = new FileReader();
+          reader.readAsDataURL(blob);
+          reader.onload = () => {
+            const base64 = reader.result;
+            
+            resolve(base64.replace("data:text/csv;charset=utf-8;base64,",""));
+          }
+          reader.onerror = error => reject(error);
+        });
       }
-
     };
   }
 );
