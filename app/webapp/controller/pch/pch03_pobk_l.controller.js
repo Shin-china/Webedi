@@ -154,22 +154,30 @@ sap.ui.define([
 			var that = this;
 			//设置通用dialog
 			this._AfterDigLogCheck().then((selectedIndices) => {
-				const groupedBySupplier =that._getObjiList(selectedIndices, "SUPPLIER");
+				const groupedBySupplier = that._getObjiList(selectedIndices, "SUPPLIER");
 
 				Object.keys(groupedBySupplier).forEach(key => {
 					const row = groupedBySupplier[key];
 
-					// 构建CSV内容  
-					var csvContent = "data:text/csv;charset=utf-8,";
-					csvContent = that._getCsvData(row,csvContent);
 
-					// 触发下载  
-					var encodedUri = encodeURI(csvContent);
-					var link = document.createElement("a");
-					link.setAttribute("href", encodedUri);
-					link.setAttribute("download", that.CommTools.getCurrentTimeFormatted()+"_"+key+".csv");
-					document.body.appendChild(link);
-					link.click();
+
+					const csvContent = that._getCsvData(row, "");
+					// 添加UTF-8 BOM
+					const bom = "\uFEFF";
+					// 创建一个Blob对象，指定类型为text/csv，并添加BOM
+					const blob = new Blob([bom + csvContent], { type: "text/csv;charset=utf-8" });
+
+
+					// 创建一个<a>标签用于下载
+					const a = document.createElement("a");
+					a.href = URL.createObjectURL(blob);
+					a.download = that.CommTools.getCurrentTimeFormatted() + "_" + key + ".csv";
+
+					// 触发下载
+					document.body.appendChild(a);
+					a.click();
+
+
 				})
 
 				//完成后是否更新确认,false不更新Y
