@@ -1,201 +1,129 @@
 package customer.bean.pch;
 
-import com.alibaba.fastjson.annotation.JSONField;
-import lombok.Data;
-
 import java.math.BigDecimal;
-import java.time.LocalDate;
 
-public class Pch08Template {
+import com.alibaba.fastjson.annotation.JSONField;
+
+public class Pch10Save {
+
+    @JSONField(name = "ID")
+    private String ID;
+    @JSONField(name = "T02_ID")
+    private String T02_ID;
     @JSONField(name = "QUO_NUMBER")
     private String QUO_NUMBER;
-
     @JSONField(name = "QUO_ITEM")
     private Integer QUO_ITEM;
-
     @JSONField(name = "SALES_NUMBER")
     private String SALES_NUMBER;
-
     @JSONField(name = "SALES_D_NO")
     private String SALES_D_NO;
-
+    @JSONField(name = "QUO_VERSION")
+    private String QUO_VERSION;
     @JSONField(name = "NO")
     private Integer NO;
-
     @JSONField(name = "REFRENCE_NO")
     private String REFRENCE_NO;
-
-    @JSONField(name = "QUANTITY")
-    private String QUANTITY;
-
-    @JSONField(name = "CUSTOMER")
-    private String CUSTOMER;
-
-    @JSONField(name = "MACHINE_TYPE")
-    private String MACHINE_TYPE;
-
-    @JSONField(name = "VALIDATE_START")
-    private LocalDate VALIDATE_START;
-
-    @JSONField(name = "VALIDATE_END")
-    private LocalDate VALIDATE_END;
-
-    @JSONField(name = "TIME")
-    private String TIME;
-
-    @JSONField(name = "ITEM")
-    private String ITEM;
-
-    @JSONField(name = "LOCATION")
-    private String LOCATION;
-
     @JSONField(name = "MATERIAL_NUMBER")
     private String MATERIAL_NUMBER;
-
     @JSONField(name = "CUST_MATERIAL")
     private String CUST_MATERIAL;
-
     @JSONField(name = "MANUFACT_MATERIAL")
     private String MANUFACT_MATERIAL;
-
     @JSONField(name = "Attachment")
     private String Attachment;
-
     @JSONField(name = "Material")
     private String Material;
-
     @JSONField(name = "MAKER")
     private String MAKER;
-
     @JSONField(name = "UWEB_USER")
     private String UWEB_USER;
-
     @JSONField(name = "BP_NUMBER")
     private Integer BP_NUMBER;
-
     @JSONField(name = "PERSON_NO1")
     private Integer PERSON_NO1;
-
     @JSONField(name = "YLP")
     private String YLP;
-
     @JSONField(name = "MANUL")
     private String MANUL;
-
     @JSONField(name = "MANUFACT_CODE")
     private String MANUFACT_CODE;
-
     @JSONField(name = "CUSTOMER_MMODEL")
     private String CUSTOMER_MMODEL;
-
     @JSONField(name = "MID_QF")
     private String MID_QF;
-
     @JSONField(name = "SMALL_QF")
     private String SMALL_QF;
-
     @JSONField(name = "OTHER_QF")
     private String OTHER_QF;
-
-    @JSONField(name = "CURRENCY")
-    private String CURRENCY;
-
     @JSONField(name = "QTY")
     private BigDecimal QTY;
-
+    @JSONField(name = "CURRENCY")
+    private String CURRENCY;
     @JSONField(name = "PRICE")
     private BigDecimal PRICE;
-
     @JSONField(name = "PRICE_CONTROL")
     private String PRICE_CONTROL;
-
     @JSONField(name = "LEAD_TIME")
     private String LEAD_TIME;
-
     @JSONField(name = "MOQ")
     private String MOQ;
-
     @JSONField(name = "UNIT")
     private String UNIT;
-
     @JSONField(name = "SPQ")
     private String SPQ;
-
     @JSONField(name = "KBXT")
     private String KBXT;
-
     @JSONField(name = "PRODUCT_WEIGHT")
     private String PRODUCT_WEIGHT;
-
     @JSONField(name = "ORIGINAL_COU")
     private String ORIGINAL_COU;
-
     @JSONField(name = "EOL")
     private String EOL;
-
     @JSONField(name = "ISBOI")
     private Boolean ISBOI;
-
     @JSONField(name = "Incoterms")
     private String Incoterms;
-
     @JSONField(name = "Incoterms_Text")
     private String Incoterms_Text;
-
     @JSONField(name = "MEMO1")
     private String MEMO1;
-
     @JSONField(name = "MEMO2")
     private String MEMO2;
-
     @JSONField(name = "MEMO3")
     private String MEMO3;
-
     @JSONField(name = "SL")
     private String SL;
-
     @JSONField(name = "TZ")
     private String TZ;
-
     @JSONField(name = "RMATERIAL")
     private String RMATERIAL;
-
     @JSONField(name = "RMATERIAL_CURRENCY")
     private String RMATERIAL_CURRENCY;
-
     @JSONField(name = "RMATERIAL_PRICE")
     private BigDecimal RMATERIAL_PRICE;
-
     @JSONField(name = "RMATERIAL_LT")
     private String RMATERIAL_LT;
-
     @JSONField(name = "RMATERIAL_MOQ")
     private String RMATERIAL_MOQ;
-
     @JSONField(name = "RMATERIAL_KBXT")
     private String RMATERIAL_KBXT;
-
+    @JSONField(name = "UMC_SELECTION")
+    private String UMC_SELECTION;
     @JSONField(name = "UMC_COMMENT_1")
     private String UMC_COMMENT_1;
-
     @JSONField(name = "UMC_COMMENT_2")
     private String UMC_COMMENT_2;
-
-    public String getQUO_NUMBER() {
-        return QUO_NUMBER;
-    }
-
-    public void setQUO_NUMBER(String qUO_NUMBER) {
-        QUO_NUMBER = qUO_NUMBER;
-    }
-
-    public Integer getQUO_ITEM() {
-        return QUO_ITEM;
-    }
-
-    public void setQUO_ITEM(Integer qUO_ITEM) {
-        QUO_ITEM = qUO_ITEM;
-    }
+    @JSONField(name = "STATUS")
+    private String STATUS;
+    @JSONField(name = "INITIAL_OBJ")
+    private String INITIAL_OBJ;
+    @JSONField(name = "PLANT_ID")
+    private String PLANT_ID;
+    @JSONField(name = "SUPPLIER_MAT")
+    private String SUPPLIER_MAT;
+    @JSONField(name = "CD_BY")
+    private String CD_BY;
 
     public String getSALES_NUMBER() {
         return SALES_NUMBER;
@@ -213,6 +141,14 @@ public class Pch08Template {
         SALES_D_NO = sALES_D_NO;
     }
 
+    public String getQUO_VERSION() {
+        return QUO_VERSION;
+    }
+
+    public void setQUO_VERSION(String qUO_VERSION) {
+        QUO_VERSION = qUO_VERSION;
+    }
+
     public Integer getNO() {
         return NO;
     }
@@ -227,70 +163,6 @@ public class Pch08Template {
 
     public void setREFRENCE_NO(String rEFRENCE_NO) {
         REFRENCE_NO = rEFRENCE_NO;
-    }
-
-    public String getQUANTITY() {
-        return QUANTITY;
-    }
-
-    public void setQUANTITY(String qUANTITY) {
-        QUANTITY = qUANTITY;
-    }
-
-    public String getCUSTOMER() {
-        return CUSTOMER;
-    }
-
-    public void setCUSTOMER(String cUSTOMER) {
-        CUSTOMER = cUSTOMER;
-    }
-
-    public String getMACHINE_TYPE() {
-        return MACHINE_TYPE;
-    }
-
-    public void setMACHINE_TYPE(String mACHINE_TYPE) {
-        MACHINE_TYPE = mACHINE_TYPE;
-    }
-
-    public LocalDate getVALIDATE_START() {
-        return VALIDATE_START;
-    }
-
-    public void setVALIDATE_START(LocalDate vALIDATE_START) {
-        VALIDATE_START = vALIDATE_START;
-    }
-
-    public LocalDate getVALIDATE_END() {
-        return VALIDATE_END;
-    }
-
-    public void setVALIDATE_END(LocalDate vALIDATE_END) {
-        VALIDATE_END = vALIDATE_END;
-    }
-
-    public String getTIME() {
-        return TIME;
-    }
-
-    public void setTIME(String tIME) {
-        TIME = tIME;
-    }
-
-    public String getITEM() {
-        return ITEM;
-    }
-
-    public void setITEM(String iTEM) {
-        ITEM = iTEM;
-    }
-
-    public String getLOCATION() {
-        return LOCATION;
-    }
-
-    public void setLOCATION(String lOCATION) {
-        LOCATION = lOCATION;
     }
 
     public String getMATERIAL_NUMBER() {
@@ -357,14 +229,6 @@ public class Pch08Template {
         BP_NUMBER = bP_NUMBER;
     }
 
-    public Integer getPERSON_NO1() {
-        return PERSON_NO1;
-    }
-
-    public void setPERSON_NO1(Integer pERSON_NO1) {
-        PERSON_NO1 = pERSON_NO1;
-    }
-
     public String getYLP() {
         return YLP;
     }
@@ -421,20 +285,20 @@ public class Pch08Template {
         OTHER_QF = oTHER_QF;
     }
 
-    public String getCURRENCY() {
-        return CURRENCY;
-    }
-
-    public void setCURRENCY(String cURRENCY) {
-        CURRENCY = cURRENCY;
-    }
-
     public BigDecimal getQTY() {
         return QTY;
     }
 
     public void setQTY(BigDecimal qTY) {
         QTY = qTY;
+    }
+
+    public String getCURRENCY() {
+        return CURRENCY;
+    }
+
+    public void setCURRENCY(String cURRENCY) {
+        CURRENCY = cURRENCY;
     }
 
     public BigDecimal getPRICE() {
@@ -629,6 +493,14 @@ public class Pch08Template {
         RMATERIAL_KBXT = rMATERIAL_KBXT;
     }
 
+    public String getUMC_SELECTION() {
+        return UMC_SELECTION;
+    }
+
+    public void setUMC_SELECTION(String uMC_SELECTION) {
+        UMC_SELECTION = uMC_SELECTION;
+    }
+
     public String getUMC_COMMENT_1() {
         return UMC_COMMENT_1;
     }
@@ -645,4 +517,83 @@ public class Pch08Template {
         UMC_COMMENT_2 = uMC_COMMENT_2;
     }
 
+    public String getSTATUS() {
+        return STATUS;
+    }
+
+    public void setSTATUS(String sTATUS) {
+        STATUS = sTATUS;
+    }
+
+    public String getINITIAL_OBJ() {
+        return INITIAL_OBJ;
+    }
+
+    public void setINITIAL_OBJ(String iNITIAL_OBJ) {
+        INITIAL_OBJ = iNITIAL_OBJ;
+    }
+
+    public String getPLANT_ID() {
+        return PLANT_ID;
+    }
+
+    public void setPLANT_ID(String pLANT_ID) {
+        PLANT_ID = pLANT_ID;
+    }
+
+    public String getSUPPLIER_MAT() {
+        return SUPPLIER_MAT;
+    }
+
+    public void setSUPPLIER_MAT(String sUPPLIER_MAT) {
+        SUPPLIER_MAT = sUPPLIER_MAT;
+    }
+
+    public String getCD_BY() {
+        return CD_BY;
+    }
+
+    public void setCD_BY(String cD_BY) {
+        CD_BY = cD_BY;
+    }
+
+    public String getID() {
+        return ID;
+    }
+
+    public void setID(String iD) {
+        ID = iD;
+    }
+
+    public String getT02_ID() {
+        return T02_ID;
+    }
+
+    public void setT02_ID(String t02_ID) {
+        T02_ID = t02_ID;
+    }
+
+    public String getQUO_NUMBER() {
+        return QUO_NUMBER;
+    }
+
+    public void setQUO_NUMBER(String qUO_NUMBER) {
+        QUO_NUMBER = qUO_NUMBER;
+    }
+
+    public Integer getQUO_ITEM() {
+        return QUO_ITEM;
+    }
+
+    public void setQUO_ITEM(Integer qUO_ITEM) {
+        QUO_ITEM = qUO_ITEM;
+    }
+
+    public Integer getPERSON_NO1() {
+        return PERSON_NO1;
+    }
+
+    public void setPERSON_NO1(Integer pERSON_NO1) {
+        PERSON_NO1 = pERSON_NO1;
+    }
 }

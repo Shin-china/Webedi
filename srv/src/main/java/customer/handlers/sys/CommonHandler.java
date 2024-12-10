@@ -64,7 +64,7 @@ public class CommonHandler implements EventHandler {
     SendService sendService;
     private static final Logger logger = LoggerFactory.getLogger(CommonHandler.class);
 
-    // IFM054 購買見積依頼受信+送信
+    // IFM054 購買見積依頼受信
     @On(event = "pch06BatchImport")
     public void pch06BatchImport(Pch06BatchImportContext context) throws Exception {
         // 获取uqmc传入的t06数据
@@ -76,18 +76,18 @@ public class CommonHandler implements EventHandler {
 
         // 将 Collection 转换为 Listpch06BatchImport
         ArrayList<PchT06QuotationH> pch06List = new ArrayList<>(context.getPch06());
-        ArrayList<cds.gen.pch.T06QuotationH> pch06List2 = new ArrayList<>();
+
         String msg = "";
 
         // 提取数据，插入表中
-        sendService.extracted(pch06List, pch06List2);
+        sendService.extracted(pch06List);
         System.out.println("提取数据完成");
 
-        msg = sendService.sendPost(pch06List2);
+        // msg = sendService.sendPost(pch06List2);
 
-        System.out.println(msg);
+        System.out.println("success");
 
-        context.setResult(msg);
+        context.setResult("success");
     }
 
     // IFM055 購買見積依頼送信
@@ -103,8 +103,12 @@ public class CommonHandler implements EventHandler {
             msg = sendService.sendPost(pch06List);
             System.out.println(msg);
         }
+        if (msg.equals("success")) {
+            context.setResult("販売見積への連携は成功になりました。");
+        } else {
+            context.setResult("販売見積への連携は失敗になりました。");
+        }
 
-        context.setResult(msg);
     }
 
 }

@@ -55,9 +55,9 @@ sap.ui.define(
       },
       //取得多语言内容
       _getI18nTextInModel: function (_model, _i18nID, _view) {
-        if (this._i18nBundle == null) {
+        // if (this._i18nBundle == null) {
           this._i18nBundle = _view.getModel(_model).getResourceBundle();
-        }
+        // }
         return this._i18nBundle.getText(_i18nID);
       },
       //取得多语言内容

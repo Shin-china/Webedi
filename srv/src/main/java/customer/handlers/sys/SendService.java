@@ -5,6 +5,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Paths;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -38,6 +39,7 @@ import cds.gen.common.PchT07QuotationD;
 import cds.gen.pch.T06QuotationH;
 import cds.gen.pch.T07QuotationD;
 import cds.gen.sys.T11IfManager;
+import customer.bean.pch.Pch07;
 
 @Component
 public class SendService {
@@ -63,7 +65,8 @@ public class SendService {
         for (int i = 0; i < jsonArray.size(); i++) {
             JSONObject jsonObject = jsonArray.getJSONObject(i);
             T06QuotationH t06QuotationH = PchD006.get(jsonObject.getString("QUO_NUMBER"));
-            pch06List.add(t06QuotationH);
+            if (t06QuotationH != null)
+                pch06List.add(t06QuotationH);
         }
         return pch06List;
 
@@ -90,14 +93,12 @@ public class SendService {
         return (String) jsonObject2.get("value");
     }
 
-    public void extracted(ArrayList<PchT06QuotationH> pch06List, ArrayList<cds.gen.pch.T06QuotationH> pch06List2) {
+    public void extracted(ArrayList<PchT06QuotationH> pch06List) {
+        ArrayList<cds.gen.pch.T06QuotationH> pch06List2 = new ArrayList<>();
         System.out.println("开始插入");
         pch06List.forEach(pchT06QuotationH -> {
 
             // 获取購買見積番号
-            // pchT06QuotationH.setQuoNumber(docNoDao.getPJNo(1));
-
-            // pchT06QuotationH.setQuoNumber(docNoDao.getQuoNumber("", 1));
             pchT06QuotationH.setQuoNumber(pchT06QuotationH.getQuoNumber());
 
             // 插入头标，首先删除原key值数据
@@ -108,8 +109,8 @@ public class SendService {
             // 如果已经存在则更新，如果不存在则插入
             T06QuotationH byID = PchD006.getByIdOnle(t06QuotationH.getId());
             pch06List2.add(t06QuotationH);
-            t06QuotationH.remove("TO_ITEM_PO");
             t06QuotationH.remove("TO_ITEMS");
+            t06QuotationH.remove("TO_ITEM_PO");
 
             if (byID != null) {
                 PchD006.update(t06QuotationH);
@@ -121,8 +122,6 @@ public class SendService {
             List<PchT07QuotationD> toItems = pchT06QuotationH.getToItemPo();
             if (toItems != null) {
                 toItems.forEach(pchT07QuotationD -> {
-                    // 获取購買見積番号
-                    pchT07QuotationD.setQuoNumber(pchT06QuotationH.getQuoNumber());
 
                     T07QuotationD t07QuotationD = T07QuotationD.create();
 
@@ -132,12 +131,91 @@ public class SendService {
                     T07QuotationD byID2 = PchD007.getByT07Id(t07QuotationD.getId());
 
                     if (byID2 != null) {
-                        PchD007.update(t07QuotationD);
+
+                        // PchD007.update(t07QuotationD);
+
+                        Map<String, Object> data = new HashMap<>();
+                        getT07DaoData(t07QuotationD, data);
+                        Map<String, Object> keys = new HashMap<>();
+                        keys.put("ID", t07QuotationD.getId());
+                        PchD007.update(data, keys);
+
                     } else {
                         PchD007.insert(t07QuotationD);
                     }
                 });
             }
         });
+    }
+
+    public void getT07DaoData(T07QuotationD t07QuotationD, Map<String, Object> data) {
+        data.put("SALES_NUMBER", t07QuotationD.getSalesNumber());
+        data.put("QUO_VERSION", t07QuotationD.getQuoVersion());
+        data.put("SALES_D_NO", t07QuotationD.getSalesDNo());
+        data.put("QUO_NUMBER", t07QuotationD.getQuoNumber());
+        data.put("QUO_ITEM", t07QuotationD.getQuoItem());
+        data.put("SAP_MAT_ID", t07QuotationD.getSapMatId());
+        data.put("DEVELOP_MAT", t07QuotationD.getDevelopMat());
+        data.put("NO", t07QuotationD.getNo());
+        data.put("REFRENCE_NO", t07QuotationD.getRefrenceNo());
+        data.put("MATERIAL_NUMBER", t07QuotationD.getMaterialNumber());
+        data.put("INITIAL_OBJ", t07QuotationD.getInitialObj());
+        data.put("QTY", t07QuotationD.getQty());
+        data.put("CUST_MATERIAL", t07QuotationD.getCustMaterial());
+        data.put("MANUFACT_MATERIAL", t07QuotationD.getManufactMaterial());
+        data.put("SMI_CM_MM", t07QuotationD.getSmiCmMm());
+        data.put("PLANT_ID", t07QuotationD.getPlantId());
+        data.put("Attachment", t07QuotationD.getAttachment());
+        data.put("Material", t07QuotationD.getMaterial());
+        data.put("MAKER", t07QuotationD.getMaker());
+        data.put("UWEB_USER", t07QuotationD.getUwebUser());
+        data.put("PERSON_NO1", t07QuotationD.getPersonNo1());
+        data.put("YLP", t07QuotationD.getYlp());
+        data.put("MANUL", t07QuotationD.getManul());
+        data.put("MANUFACT_CODE", t07QuotationD.getManufactCode());
+        data.put("CUSTOMER_MMODEL", t07QuotationD.getCustomerMmodel());
+        data.put("MID_QF", t07QuotationD.getMidQf());
+        data.put("SMALL_QF", t07QuotationD.getSmallQf());
+        data.put("OTHER_QF", t07QuotationD.getOtherQf());
+        data.put("CURRENCY", t07QuotationD.getCurrency());
+        data.put("PRICE", t07QuotationD.getPrice());
+        data.put("PRICE_CONTROL", t07QuotationD.getPriceControl());
+        data.put("LEAD_TIME", t07QuotationD.getLeadTime());
+        data.put("MOQ", t07QuotationD.getMoq());
+
+        data.put("UNIT", t07QuotationD.getUnit());
+        data.put("SPQ", t07QuotationD.getSpq());
+        data.put("KBXT", t07QuotationD.getKbxt());
+
+        data.put("PRODUCT_WEIGHT", t07QuotationD.getProductWeight());
+        data.put("ORIGINAL_COU", t07QuotationD.getOriginalCou());
+        data.put("EOL", t07QuotationD.getEol());
+        data.put("ISBOI", t07QuotationD.getIsboi());
+        data.put("Incoterms", t07QuotationD.getIncoterms());
+        data.put("Incoterms_Text", t07QuotationD.getIncotermsText());
+
+        data.put("MEMO1", t07QuotationD.getMemo1());
+        data.put("MEMO2", t07QuotationD.getMemo2());
+        data.put("MEMO3", t07QuotationD.getMemo3());
+        data.put("SL", t07QuotationD.getSl());
+        data.put("TZ", t07QuotationD.getTz());
+        data.put("RMATERIAL", t07QuotationD.getRmaterial());
+
+        data.put("RMATERIAL_CURRENCY", t07QuotationD.getRmaterialCurrency());
+        data.put("RMATERIAL_PRICE", t07QuotationD.getRmaterialPrice());
+        data.put("RMATERIAL_LT", t07QuotationD.getRmaterialLt());
+
+        data.put("RMATERIAL_MOQ", t07QuotationD.getRmaterialMoq());
+        data.put("RMATERIAL_KBXT", t07QuotationD.getRmaterialKbxt());
+        data.put("UMC_SELECTION", t07QuotationD.getUmcSelection());
+
+        data.put("UMC_COMMENT_1", t07QuotationD.getUmcComment1());
+        data.put("UMC_COMMENT_2", t07QuotationD.getUmcComment2());
+        data.put("FINAL_CHOICE", t07QuotationD.getFinalChoice());
+        data.put("SUPPLIER_MAT", t07QuotationD.getSupplierMat());
+        data.put("STATUS", t07QuotationD.getStatus());
+        data.put("CD_DATE", t07QuotationD.getCdDate());
+        data.put("CD_DATE_TIME", t07QuotationD.getCdDateTime());
+
     }
 }

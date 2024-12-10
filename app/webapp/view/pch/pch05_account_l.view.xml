@@ -18,7 +18,7 @@
                 <smartFilterBar:SmartFilterBar id="smartFilterBar" entitySet="PCH_T05_ACCOUNT_DETAIL_DISPLAY3" persistencyKey="PCH_T05_ACCOUNT_DETAIL_DISPLAY3" showFilterConfiguration="true">
                     <smartFilterBar:controlConfiguration>
 
-                    <smartFilterBar:ControlConfiguration id="PCH_PO_BUKRS"      key="PO_BUKRS"             visibleInAdvancedArea="true" label="{pch>PO_BUKRS}"                index="1"/>
+                    <smartFilterBar:ControlConfiguration id="PCH_Company_Code"  key="Company_Code"         visibleInAdvancedArea="true" label="{pch>Company_Code}"                index="1"/>
                     <smartFilterBar:ControlConfiguration id="PCH_INV_MONTH"     key="INV_MONTH"            visibleInAdvancedArea="true" label="{pch>INV_MONTH}"               index="2"/>
                     <smartFilterBar:ControlConfiguration id="PCH_SUPPLIER"      key="SUPPLIER"             visibleInAdvancedArea="true" label="{pch>SUPPLIER}"                index="3"/>
 
@@ -45,6 +45,8 @@
                     <smartFilterBar:ControlConfiguration key="SAP_TAX_AMOUNT_8"  visible="false"  index="99"/>
                     <smartFilterBar:ControlConfiguration key="TOTAL_10_TAX_INCLUDED_AMOUNT"   visible="false"  index="99"/>
                     <smartFilterBar:ControlConfiguration key="TOTAL_8_TAX_INCLUDED_AMOUNT"   visible="false"  index="99"/>
+                    <smartFilterBar:ControlConfiguration key="HEADER_8_TOTAL"   visible="false"  index="99"/>
+                    <smartFilterBar:ControlConfiguration key="HEADER_10_TOTAL"   visible="false"  index="99"/>
                   
                     </smartFilterBar:controlConfiguration>
                 </smartFilterBar:SmartFilterBar>
@@ -55,8 +57,8 @@
   <!-- </f:DynamicPageHeader> -->
 
     <smartTable:SmartTable id="ID" enableAutoColumnWidth="true" entitySet="PCH_T05_ACCOUNT_DETAIL_DISPLAY3" 
-        ignoredFields="ACCOUNT,DETAILTEXT,DIFF_TAX_AMOUNT,DOCUMENTTYPE,HEADERTEXT,LASTDATE,REFERENCE,SHKZG_FLAG,TAX_BASE_AMOUNT,TRANSACTION" requestAtLeastFields="PO_BUKRS, TRANSACTION, SUPPLIER, REFERENCE, LASTDATE, LASTDATE, DOCUMENTTYPE, HEADERTEXT, CURRENCY, DIFF_TAX_AMOUNT, LASTDATE, PO_BUKRS, ACCOUNT, DETAILTEXT, SHKZG_FLAG, DIFF_TAX_AMOUNT, TAX_BASE_AMOUNT" 
-        initiallyVisibleFields="SUPPLIER,INV_MONTH,PO_BUKRS,CURRENCY,CALC_10_PRICE_AMOUNT,CALC_8_PRICE_AMOUNT,SAP_TAX_AMOUNT_10,SAP_TAX_AMOUNT_8,RECALC_PRICE_AMOUNT_10,RECALC_PRICE_AMOUNT_8,DIFF_TAX_AMOUNT_10,DIFF_TAX_AMOUNT_8,CALC_10_PRICE_AMOUNT_TOTAL,CALC_8_PRICE_AMOUNT_TOTAL"
+        ignoredFields="SAP_TAX_AMOUNT_10,SAP_TAX_AMOUNT_8,ACCOUNT,DETAILTEXT,DIFF_TAX_AMOUNT,DOCUMENTTYPE,HEADERTEXT,LASTDATE,REFERENCE,SHKZG_FLAG,TAX_BASE_AMOUNT,TRANSACTION" requestAtLeastFields="Company_Code, TRANSACTION, SUPPLIER, REFERENCE, LASTDATE, LASTDATE, DOCUMENTTYPE, HEADERTEXT, CURRENCY, DIFF_TAX_AMOUNT, LASTDATE, Company_Code, ACCOUNT, DETAILTEXT, SHKZG_FLAG, DIFF_TAX_AMOUNT, TAX_BASE_AMOUNT" 
+        initiallyVisibleFields="SUPPLIER,INV_MONTH,Company_Code,CURRENCY,CALC_10_PRICE_AMOUNT,CALC_8_PRICE_AMOUNT,RECALC_PRICE_AMOUNT_10,RECALC_PRICE_AMOUNT_8,DIFF_TAX_AMOUNT_10,DIFF_TAX_AMOUNT_8,CALC_10_PRICE_AMOUNT_TOTAL,CALC_8_PRICE_AMOUNT_TOTAL,HEADER_10_TOTAL,HEADER_8_TOTAL"
         smartFilterId="smartFilterBar" enableExport="true" beforeExport="onBeforeExport" 
         useVariantManagement="true" useTablePersonalisation="true" header="{pch>TITLE_RESULT}" showRowCount="true" persistencyKey="pch05_SmartTableAnalytical_Explored" enableAutoBinding="false" >
     
@@ -95,15 +97,15 @@
     </table:template>
 </table:Column>
 
-<table:Column id="colBukrs" width="6rem" sortProperty="PO_BUKRS" filterProperty="PO_BUKRS">
+<table:Column id="colBukrs" width="6rem" sortProperty="Company_Code" filterProperty="Company_Code">
     <table:customData>
-        <core:CustomData key="p13nData" value='{"columnKey":"PO_BUKRS", "leadingProperty":"PO_BUKRS", "sortProperty":"PO_BUKRS", "filterProperty":"PO_BUKRS"}'/>
+        <core:CustomData key="p13nData" value='{"columnKey":"Company_Code", "leadingProperty":"Company_Code", "sortProperty":"Company_Code", "filterProperty":"Company_Code"}'/>
     </table:customData>
     <table:label>
-        <Label id="labelBukrs" text="{pch>PO_BUKRS}"/>
+        <Label id="labelBukrs" text="{pch>Company_Code}"/>
     </table:label>
     <table:template>
-        <Text id="textBukrs" text="{PO_BUKRS}"/>
+        <Text id="textBukrs" text="{Company_Code}"/>
     </table:template>
 </table:Column>
 
@@ -143,27 +145,27 @@
     </table:template>
 </table:Column>
 
-<table:Column id="colSapTaxAmount10" width="10rem" sortProperty="SAP_TAX_AMOUNT_10" filterProperty="SAP_TAX_AMOUNT_10">
+<table:Column id="colSapTaxAmount10" width="10rem" sortProperty="HEADER_10_TOTAL" filterProperty="HEADER_10_TOTAL">
     <table:customData>
-        <core:CustomData key="p13nData" value='{"columnKey":"SAP_TAX_AMOUNT_10", "leadingProperty":"SAP_TAX_AMOUNT_10", "sortProperty":"SAP_TAX_AMOUNT_10", "filterProperty":"SAP_TAX_AMOUNT_10"}'/>
+        <core:CustomData key="p13nData" value='{"columnKey":"HEADER_10_TOTAL", "leadingProperty":"HEADER_10_TOTAL", "sortProperty":"HEADER_10_TOTAL", "filterProperty":"HEADER_10_TOTAL"}'/>
     </table:customData>
     <table:label>
-        <Label id="labelSapTaxAmount10" text="{pch>SAP_TAX_AMOUNT_10}"/>
+        <Label id="labelSapTaxAmount10" text="{pch>HEADER_10_TOTAL}"/>
     </table:label>
     <table:template>
-        <Text id="textSapTaxAmount10" text="{SAP_TAX_AMOUNT_10}"/>
+        <Text id="textSapTaxAmount10" text="{HEADER_10_TOTAL}"/>
     </table:template>
 </table:Column>
 
-<table:Column id="colSapTaxAmount8" width="10rem" sortProperty="SAP_TAX_AMOUNT_8" filterProperty="SAP_TAX_AMOUNT_8">
+<table:Column id="colSapTaxAmount8" width="10rem" sortProperty="HEADER_8_TOTAL" filterProperty="HEADER_8_TOTAL">
     <table:customData>
-        <core:CustomData key="p13nData" value='{"columnKey":"SAP_TAX_AMOUNT_8", "leadingProperty":"SAP_TAX_AMOUNT_8", "sortProperty":"SAP_TAX_AMOUNT_8", "filterProperty":"SAP_TAX_AMOUNT_8"}'/>
+        <core:CustomData key="p13nData" value='{"columnKey":"HEADER_8_TOTAL", "leadingProperty":"HEADER_8_TOTAL", "sortProperty":"HEADER_8_TOTAL", "filterProperty":"HEADER_8_TOTAL"}'/>
     </table:customData>
     <table:label>
-        <Label id="labelSapTaxAmount8" text="{pch>SAP_TAX_AMOUNT_8}"/>
+        <Label id="labelSapTaxAmount8" text="{pch>HEADER_8_TOTAL}"/>
     </table:label>
     <table:template>
-        <Text id="textSapTaxAmount8" text="{SAP_TAX_AMOUNT_8}"/>
+        <Text id="textSapTaxAmount8" text="{HEADER_8_TOTAL}"/>
     </table:template>
 </table:Column>
 

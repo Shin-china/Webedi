@@ -19,7 +19,7 @@ public class Pch05 {
     @ExcelProperty(index = 0, value = "*請求書ID")
     private String INVOICEID;
     @ExcelProperty(index = 1, value = "*会社コード(4)")
-    private String PO_BUKRS;
+    private String COMPANY_CODE;
     @ExcelProperty(index = 2, value = "*取引(1)1=請求書、2=クレジットメモ")
     private String TRANSACTION;
     @ExcelProperty(index = 3, value = "*請求元(10)")
@@ -49,7 +49,7 @@ public class Pch05 {
     @ExcelProperty(index = 12, value = "税率定義の日付")
     private Date LASTDATE2;
     @ExcelProperty(index = 13, value = "*会社コード(4)")
-    private String PO_BUKRS1;
+    private String COMPANY_CODE1;
     @ExcelProperty(index = 14, value = "勘定(10)")
     private String ACCOUNT;
     @ExcelProperty(index = 15, value = "明細テキスト")

@@ -27,19 +27,21 @@ public class Ifm01BpService {
     @Autowired
     private BusinessPartnerDao BPDao;
 
-    public void syncBP() {
+    public void syncBP() throws UnsupportedOperationException, IOException {
         T11IfManager interfaceConfig = ifsManageDao.getByCode("IFM01");
-        try {
-
             String response = S4OdataTools.get(interfaceConfig, null, null, null);
             SapBpRoot sapBpRoot = JSON.parseObject(response, SapBpRoot.class);
             for (Results results : sapBpRoot.getD().getResults()) {
                 T03SapBp o = T03SapBp.create();
-                o.setBpId(results.getSupplier());
+                // o.setBpId(results.getSupplier());
+
+                o.setBpId(results.getBusinessPartner());
+
                 o.setBpName1(results.getOrganizationBPName1());
                 o.setBpName2(results.getOrganizationBPName2());
                 o.setBpName3(results.getOrganizationBPName3());
                 o.setBpName4(results.getOrganizationBPName4());
+                o.setSearch2(results.getSearchTerm2());
 
                 // Fax
                 for (To_AddressIndependentFax fax : results.getTo_AddressIndependentFax().getResults()) {
@@ -60,13 +62,5 @@ public class Ifm01BpService {
                 o.setBpType("SUPP");
                 BPDao.modify(o);
             }
-
-        } catch (UnsupportedOperationException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
     }
 }

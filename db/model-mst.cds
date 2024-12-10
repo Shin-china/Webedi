@@ -41,7 +41,7 @@ entity T03_SAP_BP : IF_CUID_FILED { //工厂表
 
                                      @title: '{i18n>LOG_NO}' LOG_NO         : String(40); //登録番号
                                      @title: '{i18n>POSTCODE}' POSTCODE     : String(40); //郵便番号
-                                     @title: '{i18n>REGIONS}' REGIONS       : String(40); //地域(都道府県)
+                                     @title: '{i18n>REGIONS}' REGIONS       : String(120); //地域(都道府県)
                                      @title: '{i18n>PLACE_NAME}' PLACE_NAME : String(40); //地名/番地-号
 
 }

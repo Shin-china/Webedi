@@ -56,7 +56,7 @@ public class PurchaseDataDao extends Dao {
 
     // Update
     public void update(T01PoH o) {
-        o.setCdTime(getNow());
+        o.setUpTime(getNow());
         db.run(Update.entity(Pch_.T01_PO_H).entry(o));
     }
 
@@ -103,8 +103,8 @@ public class PurchaseDataDao extends Dao {
 
     // Update2
     public void update2(T02PoD o2, Boolean d) {
-
-        o2.setPoType("U");
+        // 判断是否要更新 potype
+        Boolean update = getByPoDnUpdateObj2(o2);
 
         if (d) {
 
@@ -113,13 +113,19 @@ public class PurchaseDataDao extends Dao {
 
         } else {
 
-            o2.setPoType("U");
+            if (update) {
+                o2.setPoType("U");
+                o2.setUpTime(getNow());
+            }
+
             o2.setDelFlag("N");
 
         }
 
         o2.setStatus("1");
-        o2.setCdTime(getNow());
+
+        // o2.setCdTime(getNow());
+
         db.run(Update.entity(Pch_.T02_PO_D).entry(o2));
     }
 
@@ -153,7 +159,7 @@ public class PurchaseDataDao extends Dao {
 
     // Update
     public void update3(T09Forcast o) {
-        o.setCdTime(getNow());
+        o.setUpTime(getNow());
         db.run(Update.entity(Pch_.T09_FORCAST).entry(o));
     }
 
@@ -161,6 +167,7 @@ public class PurchaseDataDao extends Dao {
         Integer dn = Integer.parseInt(items.getPurchaseorderitem());
 
         T02PoD isExist = getByID2(items.getPurchaseorder(), dn);
+
         if (isExist == null) {
 
             return false;
@@ -172,6 +179,28 @@ public class PurchaseDataDao extends Dao {
             return update;
 
         }
+
+    }
+
+    public Boolean getByPoDnUpdateObj2(T02PoD o2) {
+
+        T02PoD isExist = getByID2(o2.getPoNo(), o2.getDNo());
+
+        Boolean update = updateobj2(isExist, o2);
+
+        return update;
+    }
+
+    private Boolean updateobj2(T02PoD isExist, T02PoD o2) {
+
+        if (!isExist.getPoPurQty().equals(o2.getPoPurQty())
+                || !isExist.getPoDDate().isEqual(o2.getPoDDate())
+                || isExist.getDelAmount().compareTo(o2.getDelAmount()) != 0) {
+
+            return true; // 只要有一个值不一样，返回 true
+        }
+
+        return false;
 
     }
 

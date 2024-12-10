@@ -16,12 +16,16 @@ import cds.gen.pch.T06QuotationH;
 import cds.gen.pch.T07QuotationD;
 import cds.gen.sys.T07ComOpH;
 import customer.bean.pch.Pch10;
+import customer.bean.pch.Pch10DataList;
+import customer.bean.pch.Pch10Save;
+import customer.bean.pch.Pch10SaveDataList;
 import customer.dao.common.Dao;
 
 @Repository
 public class Pch10Dao extends Dao {
 
     public T06QuotationH getByID(String quono) {
+
         Optional<T06QuotationH> result = db.run(Select.from(Pch_.T06_QUOTATION_H).where(o -> o.QUO_NUMBER().eq(quono)))
                 .first(T06QuotationH.class);
         if (result.isPresent()) {
@@ -29,6 +33,7 @@ public class Pch10Dao extends Dao {
             return result.get();
 
         }
+
         return null;
 
     }
@@ -92,6 +97,21 @@ public class Pch10Dao extends Dao {
 
     }
 
+    public T06QuotationH getByQuo(String Quo_No) {
+
+        Optional<T06QuotationH> result = db
+                .run(Select.from(Pch_.T06_QUOTATION_H).where(o -> o.QUO_NUMBER().eq(
+                        Quo_No)))
+                .first(T06QuotationH.class);
+        if (result.isPresent()) {
+
+            return result.get();
+
+        }
+        return null;
+
+    }
+
     public List<T07QuotationD> getItems(String sal_Num) {
 
         List<T07QuotationD> result = db.run(
@@ -115,6 +135,72 @@ public class Pch10Dao extends Dao {
         }
         return null;
 
+    }
+
+    public T07QuotationD getT07ByID(String id) {
+
+        Optional<T07QuotationD> result = db.run(Select.from(Pch_.T07_QUOTATION_D)
+                .where(o -> o.ID().eq(id)))
+                .first(T07QuotationD.class);
+
+        if (result.isPresent()) {
+
+            return result.get();
+
+        }
+        return null;
+
+    }
+
+    public void modifyT07(T07QuotationD o) {
+
+        T07QuotationD isExist = getT07ByID(o.getId());
+
+        if (isExist == null) {
+            insertT07(o);
+        } else {
+            updateT07(o);
+        }
+
+    }
+
+    private void updateT07(T07QuotationD o) {
+        o.setUpTime(getNow());
+        db.run(Update.entity(Pch_.T07_QUOTATION_D).entry(o));
+    }
+
+    private void insertT07(T07QuotationD o) {
+        o.setCdTime(getNow());
+        db.run(Insert.into(Pch_.T07_QUOTATION_D).entry(o));
+    }
+
+    public Boolean getCopyByID(String quo_NUMBER, Integer quo_ITEM) {
+
+        Optional<T07QuotationD> result = db.run(Select.from(Pch_.T07_QUOTATION_D)
+                .where(o -> o.QUO_NUMBER().eq(
+                        quo_NUMBER).and(o.QUO_ITEM().eq(quo_ITEM))))
+                .first(T07QuotationD.class);
+
+        if (result.isPresent()) {
+
+            return true;
+
+        }
+        return false;
+
+    }
+
+    public List<T07QuotationD> getCopyItem(String quo_NUMBER, String sales_NUMBER, String sales_D_NO,
+            String quo_VERSION) {
+        List<T07QuotationD> result = db.run(
+                Select.from(Pch_.T07_QUOTATION_D)
+                        .where(o -> o.QUO_NUMBER().eq(quo_NUMBER)
+                                .and(o.SALES_NUMBER().eq(sales_NUMBER))
+                                .and(o.SALES_D_NO().eq(sales_D_NO))
+                                .and(o.QUO_VERSION().eq(quo_VERSION))
+                                .and(o.DEL_FLAG().eq("N"))))
+                .listOf(T07QuotationD.class);
+        return result;
     }
 
 }

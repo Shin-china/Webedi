@@ -45,7 +45,7 @@ public class JobMonotor {
     @Autowired
     private Ifm06BpPurchaseService ifm06BpPurchaseService;
 
-    @Scheduled(cron = "0 0/59 * * * ?")
+    @Scheduled(cron = "0 0/1 * * * ?")
     public void poolMonitor() throws IOException {
 
         // IMFS01 bp同期
@@ -59,7 +59,7 @@ public class JobMonotor {
     public void poolMonitor6() throws IOException {
 
         // IMFS02 bp同期
-        ifm06BpPurchaseService.syncBPPurchase();
+         ifm06BpPurchaseService.syncBPPurchase();
     }
 
     @Scheduled(cron = "0 0/5 * * * ?")
@@ -76,7 +76,7 @@ public class JobMonotor {
 
         // IF041 po同期 自开发
         System.out.println("PO Sync run");
-        ifm03PoService.syncPo();
+         ifm03PoService.syncPo();
         System.out.println("JobMonotor  run");
     }
 

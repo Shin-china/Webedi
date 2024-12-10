@@ -24,7 +24,7 @@
 
     <f:DynamicPageHeader id="DynamicPageHeader" pinnable="true">
         <f:content>
-            <smartFilterBar:SmartFilterBar id="smartFilterBar" entitySet="PCH_T05_ACCOUNT_DETAIL" persistencyKey="PCH_T05_ACCOUNT_DETAIL" showFilterConfiguration="true">
+            <smartFilterBar:SmartFilterBar id="smartFilterBar" entitySet="PCH_T05_ACCOUNT_DETAIL1" persistencyKey="PCH_T05_ACCOUNT_DETAIL1" showFilterConfiguration="true">
                 <smartFilterBar:controlConfiguration>
 
                 <smartFilterBar:ControlConfiguration id="PCH_PO_BUKRS"      key="PO_BUKRS"             visibleInAdvancedArea="true" label="{pch>PO_BUKRS}"              index="1"/>
@@ -65,14 +65,15 @@
                 <smartFilterBar:ControlConfiguration key="QUANTITY"  visible="false"  index="99"/>
                 <smartFilterBar:ControlConfiguration key="MAT_ID"  visible="false"  index="99"/>
                 <smartFilterBar:ControlConfiguration key="D_NO"  visible="false"  index="99"/>
+                <smartFilterBar:ControlConfiguration key="Company_Code"  visible="false"  index="99"/>
                 
                 </smartFilterBar:controlConfiguration>
             </smartFilterBar:SmartFilterBar>
         </f:content>
     </f:DynamicPageHeader>
 
-    <smartTable:SmartTable id="ID" enableAutoColumnWidth="true" entitySet="PCH_T05_ACCOUNT_DETAIL" 
-        ignoredFields="INV_MONTH,ADRESS,NO_DETAILS,PO_BUKRS,POSTCODE,VALUE01,SHKZG" requestAtLeastFields="SHKZG,TAX_AMOUNT,TOTAL_AMOUNT"   initiallyVisibleFields="INV_NO,GL_YEAR,ITEM_NO,PO_NO,D_NO,SUPPLIER,SUPPLIER_DESCRIPTION,INV_CONFIRMATION,PO_TRACK_NO,PR_BY,GL_ACCOUNT,COST_CENTER,PURCHASE_GROUP,PURCHASE_GROUP_DESC,CURRENCY,MAT_ID,QUANTITY,UNIT,MAT_DESC,TAX_CODE,TAX_RATE,INV_POST_DATE,SEND_FLAG,UNIT_PRICE,PRICE_AMOUNT,TAX_AMOUNT,TOTAL_AMOUNT,INV_BASE_DATE,GR_DATE,LOG_NO" 
+    <smartTable:SmartTable id="ID" enableAutoColumnWidth="true" entitySet="PCH_T05_ACCOUNT_DETAIL1" 
+        ignoredFields="INV_MONTH,ADRESS,NO_DETAILS,PO_BUKRS,POSTCODE,VALUE01,SHKZG,Company_Code" requestAtLeastFields="SHKZG,TAX_AMOUNT,TOTAL_AMOUNT"   initiallyVisibleFields="INV_NO,GL_YEAR,ITEM_NO,PO_NO,D_NO,SUPPLIER,SUPPLIER_DESCRIPTION,INV_CONFIRMATION,PO_TRACK_NO,PR_BY,GL_ACCOUNT,COST_CENTER,PURCHASE_GROUP,PURCHASE_GROUP_DESC,CURRENCY,MAT_ID,QUANTITY,UNIT,MAT_DESC,TAX_CODE,TAX_RATE,INV_POST_DATE,SEND_FLAG,UNIT_PRICE,PRICE_AMOUNT,TAX_AMOUNT,TOTAL_AMOUNT,INV_BASE_DATE,GR_DATE,LOG_NO" 
         smartFilterId="smartFilterBar" enableExport="true" beforeExport="onBeforeExport" 
         useVariantManagement="true" useTablePersonalisation="true" header="{pch>TITLE_RESULT}" showRowCount="true" persistencyKey="pch05_SmartTableAnalytical_Explored" enableAutoBinding="false" >
         

@@ -1,21 +1,16 @@
 package customer.tool;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
-import java.util.Base64;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import jakarta.servlet.http.HttpSession;
-
 import com.alibaba.fastjson.JSONObject;
-import com.sap.cds.services.request.UserInfo;
 
 import io.micrometer.common.util.StringUtils;
 
@@ -167,39 +162,41 @@ public class StringTool {
 		return str;
 	}
 
-	    /**
-     * 将 GBK 编码的字符串转换为 Shift_JIS 编码
-     *
-     * @param gbkString GBK 编码的字符串
-     * @return 转换为 Shift_JIS 编码的字符串
-     */
-    public static String convertGbkToShiftJIS(String gbkString) {
-        try {
-            // 将 GBK 字符串转换为字节数组
-            byte[] gbkBytes = gbkString.getBytes("GBK");
-            // 将字节数组转换为 Shift_JIS 编码的字符串
-            return new String(gbkBytes, "ShiftJ_IS");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-    /**
-     * 将 GBK 编码的字符串转换为 UTF-8 编码。
-     * 
-     * @param input GBK 编码的字符串
-     * @return 转换后的 UTF-8 编码字符串
-     */
-    public static String convertGBKToUTF8(String input) throws UnsupportedEncodingException {
-        if (input == null) {
-            return null;
-        }
-        // 将 GBK 编码的字符串转换为字节数组
-        byte[] gbkBytes = input.getBytes("GBK");
-        
-        // 将字节数组按 UTF-8 编码转换回字符串
-        return new String(gbkBytes, StandardCharsets.UTF_8);
-    }
+	/**
+	 * 将 GBK 编码的字符串转换为 Shift_JIS 编码
+	 *
+	 * @param gbkString GBK 编码的字符串
+	 * @return 转换为 Shift_JIS 编码的字符串
+	 */
+	public static String convertGbkToShiftJIS(String gbkString) {
+		try {
+			// 将 GBK 字符串转换为字节数组
+			byte[] gbkBytes = gbkString.getBytes("GBK");
+			// 将字节数组转换为 Shift_JIS 编码的字符串
+			return new String(gbkBytes, "ShiftJ_IS");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	/**
+	 * 将 GBK 编码的字符串转换为 UTF-8 编码。
+	 * 
+	 * @param input GBK 编码的字符串
+	 * @return 转换后的 UTF-8 编码字符串
+	 */
+	public static String convertGBKToUTF8(String input) throws UnsupportedEncodingException {
+		if (input == null) {
+			return null;
+		}
+		// 将 GBK 编码的字符串转换为字节数组
+		byte[] gbkBytes = input.getBytes("GBK");
+
+		// 将字节数组按 UTF-8 编码转换回字符串
+		return new String(gbkBytes, StandardCharsets.UTF_8);
+	}
+
 	public static String InputStream2String(InputStream inputStream) throws IOException {
 
 		StringBuilder sb = new StringBuilder();
@@ -322,6 +319,35 @@ public class StringTool {
 	public static String String2Boolean1(String a) {
 
 		return String.format("%10s", "abc");
+	}
+
+	/**
+	 * 将传入的字符串处理为指定长度。如果长度不足，则在字符串末尾补空格；如果超出，则截断字符串。
+	 *
+	 * @param input  原始字符串
+	 * @param length 目标长度
+	 * @return 处理后的字符串
+	 */
+	public static String padOrTruncate(String input, int length) {
+		if (input == null) {
+			input = "";
+		} else {
+			input = input + " ";
+		}
+
+		// // 使用字符串的substring方法来实现截断，如果必要的话
+		// if (input.length() > length) {
+		// return input.substring(0, length);
+		// } else {
+		// // 使用StringBuilder来拼接空格，因为StringBuilder在字符串拼接时性能更好
+		// StringBuilder sb = new StringBuilder(input);
+		// int spacesToAdd = length - input.length();
+		// for (int i = 0; i < spacesToAdd; i++) {
+		// sb.append(' ');
+		// }
+		// return sb.toString();
+		// }
+		return input;
 	}
 
 }
