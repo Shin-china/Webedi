@@ -132,16 +132,11 @@ sap.ui.define(["umc/app/Controller/BaseController", "sap/m/MessageToast", "sap/m
          var that = this;
          that._setBusy(true);
           var oTable = this.byId("tableUploadData");
-
           var aSelectedIndices = oTable.getSelectedIndices();
-            
           if (aSelectedIndices.length === 0) {
-                
               sap.m.MessageToast.show("選択されたデータがありません、データを選択してください。"); // 提示未选择数据
-                
               that._setBusy(false);
               return;
-
           }
           //因为http param 长度有限制，必须循环一条条调用，不要一次性提交
             var oPostData = {}, oPostList = {}, aPostItem = [], iDoCount = 0, bError;
@@ -176,7 +171,8 @@ sap.ui.define(["umc/app/Controller/BaseController", "sap/m/MessageToast", "sap/m
                       if (bError) {
                           that.MessageTools._addMessage(that.MessageTools._getI18nTextInModel("pch", oResult.reTxt, this.getView()), null, 1, this.getView());
                       } else {
-                          sap.m.MessageToast.show(that._PchResourceBundle.getText("SAVE_SUCCESS"));
+                          that._setEditable(false);
+                          sap.m.MessageToast.show(that._PchResourceBundle.getText("PCH10_SAVE_SUCCESS"));
                       }
                       that._setBusy(false);
                   }
@@ -513,10 +509,6 @@ sap.ui.define(["umc/app/Controller/BaseController", "sap/m/MessageToast", "sap/m
               });
       },  
 
-
-
-
-
       onBP: function (oEvent) {
           var that = this;
 
@@ -571,7 +563,8 @@ sap.ui.define(["umc/app/Controller/BaseController", "sap/m/MessageToast", "sap/m
                             if (bError) {
                                 that.MessageTools._addMessage(that.MessageTools._getI18nTextInModel("pch", oResult.reTxt, this.getView()), null, 1, this.getView());
                             } else {
-                                sap.m.MessageToast.show(that._PchResourceBundle.getText("SAVE_SUCCESS"));
+
+                                sap.m.MessageToast.show(that._PchResourceBundle.getText("PCH10_SAVE_SUCCESS"));
                             }
                             that._setBusy(false);
                   }

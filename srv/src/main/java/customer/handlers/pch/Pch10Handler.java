@@ -162,9 +162,11 @@ public class Pch10Handler implements EventHandler {
     @On(event = "PCH10_BPTQ")
     public void BPTQ(PCH10BPTQContext context) throws IOException {
 
-        ifm01BpService.syncBP();
+        // ifm01BpService.syncBP();
 
-        ifm02MstService.syncMst();
+        // ifm02MstService.syncMst();
+
+        
 
         context.setResult("1");
 

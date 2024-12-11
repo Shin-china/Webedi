@@ -1,6 +1,7 @@
 package customer.dao.pch;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -220,14 +221,65 @@ public class Pch10Dao extends Dao {
 
     public void UpdateStatus(String quo_NUMBER) {
 
-        T06QuotationH o = getById2(quo_NUMBER);
+        List<T07QuotationD> o = getById4(quo_NUMBER);
 
-        if (o != null) {
-            o.setStatus("2");
+        for (T07QuotationD item : o) {
 
-            updateT06(o);
+            if (item.getStatus().equals("1")) {// 未送信
+                item.setStatus("2");
+            } else if (item.getStatus().equals("2")) {
+                item.setStatus("2");
+            } else if (item.getStatus().equals("3")) {
+                item.setStatus("4");
+            } else if (item.getStatus().equals("4")) {
+                item.setStatus("4");
+            } else {
+
+            }
+
+            updateT07Status(item);
 
         }
+
+        List<T07QuotationD> o2 = getById4(quo_NUMBER);
+
+        boolean hasUnsent = false;
+        boolean hasPendingResponse = false;
+        boolean hasResponded = false;
+        boolean allComplete = true;
+
+        for (T07QuotationD item : o2) {
+
+            // 检查状态
+            if (item.getStatus().equals("1")) { // 未送信
+                hasUnsent = true;
+                allComplete = false;
+            } else if (item.getStatus().equals("2")) { // 送信済（未回答）
+                hasPendingResponse = true;
+                allComplete = false;
+            } else if (item.getStatus().equals("3")) { // 回答済
+                hasResponded = true;
+                allComplete = false;
+            } else if (item.getStatus().equals("4")) { // 完了
+                allComplete = false;
+            }
+        }
+
+        T06QuotationH o3 = getById2(quo_NUMBER);
+        // 根据检查的状态更新头部状态
+        if (hasUnsent) {
+            o3.setStatus("1"); // 未送信
+        } else if (hasPendingResponse) {
+            o3.setStatus("2"); // 送信済（未回答）
+        } else if (hasResponded) {
+            o3.setStatus("3"); // 回答済
+        } else if (allComplete) {
+            o3.setStatus("5"); // 完了
+        } else {
+            o3.setStatus("4"); // 再送信（依頼中）
+        }
+
+        updateT06(o3);
 
     }
 
@@ -300,4 +352,60 @@ public class Pch10Dao extends Dao {
 
     }
 
+    private List<T07QuotationD> getById4(String quo_NUMBER) {
+
+        List<T07QuotationD> result = db.run(
+                Select.from(Pch_.T07_QUOTATION_D)
+                        .where(o -> o.QUO_NUMBER().eq(quo_NUMBER)
+                                .and(o.DEL_FLAG().eq("N"))))
+                .listOf(T07QuotationD.class);
+        return result;
+
+    }
+
+    public void SetHStatus(HashSet<String> qUO_NUMBERset) {
+
+        for (String quono : qUO_NUMBERset) {
+
+            List<T07QuotationD> o2 = getById4(quono);
+
+            boolean hasUnsent = false;
+            boolean hasPendingResponse = false;
+            boolean hasResponded = false;
+            boolean allComplete = true;
+
+            for (T07QuotationD item : o2) {
+
+                // 检查状态
+                if (item.getStatus().equals("1")) { // 未送信
+                    hasUnsent = true;
+                    allComplete = false;
+                } else if (item.getStatus().equals("2")) { // 送信済（未回答）
+                    hasPendingResponse = true;
+                    allComplete = false;
+                } else if (item.getStatus().equals("3")) { // 回答済
+                    hasResponded = true;
+                    allComplete = false;
+                } else if (item.getStatus().equals("4")) { // 完了
+                    allComplete = false;
+                }
+            }
+
+            T06QuotationH o3 = getById2(quono);
+            // 根据检查的状态更新头部状态
+            if (hasUnsent) {
+                o3.setStatus("1"); // 未送信
+            } else if (hasPendingResponse) {
+                o3.setStatus("2"); // 送信済（未回答）
+            } else if (hasResponded) {
+                o3.setStatus("3"); // 回答済
+            } else if (allComplete) {
+                o3.setStatus("5"); // 完了
+            } else {
+                o3.setStatus("4"); // 再送信（依頼中）
+            }
+            updateT06(o3);
+        }
+
+    }
 }
