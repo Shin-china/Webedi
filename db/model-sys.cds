@@ -202,3 +202,24 @@ entity T14_USER_2_BP : cuid, UP_FILED {
   TO_USER                          : Association to one T01_USER
                                        on TO_USER.ID = USER_ID; //
 }
+
+entity T15_IF_LOG : cuid {
+
+  @title: '{i18n>IF_CODE}' IF_CODE         : String(20); //接口编号
+  @title: '{i18n>IF_PARA}' IF_PARA         : String(200); //接口参数
+  @title: '{i18n>IF_RESULT}' IF_RESULT     : String(2) default 'D'; //处理结果  OK  NG  DO
+  @title: '{i18n>IF_MSG}' IF_MSG           : String(200); //接口处理消息
+
+  @title: '{i18n>TOTAL_NUM}' TOTAL_NUM     : Integer default 0; //接收记录数
+  @title: '{i18n>SUCCESS_NUM}' SUCCESS_NUM : Integer default 0; //处理记录数（成功）
+  @title: '{i18n>IGNORE_NUM}' IGNORE_NUM   : Integer default 0; //忽略记录数（成功）
+  @title: '{i18n>ERROR_NUM}' ERROR_NUM     : Integer default 0; //失败记录数
+
+
+  @title: '{i18n>START_TIME}' START_TIME   : DateTime   @cds.on.insert: $now; //
+  @title: '{i18n>FINISH_TIME}' FINISH_TIME : DateTime; //
+
+
+  @title: '{i18n>UP_BY}' CD_BY             : String(36) @cds.on.update: $user; //修改人
+
+}
