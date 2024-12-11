@@ -475,6 +475,12 @@ sap.ui.define(["umc/app/Controller/BaseController", "sap/m/MessageToast", "sap/m
                           var supplierName = "";
             
                           that._readHeademail(H_CODE, BP_NUMBER, entity).then((oHeadData) => {
+                              if (oHeadData.results.length == 0) {
+                                  that._setBusy(false);
+                                  sap.m.MessageToast.show("BPに対してメールが設定されていません、送信できません。");
+                                  return;
+                                  
+                          }
                               
                               // 多人邮件地址（，分隔隔开）
                               let mail = oHeadData.results && oHeadData.results.length > 0 ?
@@ -495,9 +501,13 @@ sap.ui.define(["umc/app/Controller/BaseController", "sap/m/MessageToast", "sap/m
 
                                   }
                               };
-                             that._sendEmail(mailobj);
+                              
+                              that._sendEmail(mailobj)
                               that._sendEmailStatus();
+                              that._refreshTable();
                               that._setBusy(false);
+
+                         
                           });
                           }
                               
@@ -674,27 +684,43 @@ sap.ui.define(["umc/app/Controller/BaseController", "sap/m/MessageToast", "sap/m
       _readHeademail: function (a,b, entity) {
           var that = this;
           return new Promise(function (resolve, reject) {
-            that.getModel().read(entity, {
-                filters: [
+                      // 如果 b 是一个 Set，将其转换为数组
+        
+              var aValues = Array.isArray(b) ? b : Array.from(b);
+              // 动态创建 VALUE01 的过滤器
+        
+              var aValueFilters = aValues.map(function (sValue) {
+                  return new sap.ui.model.Filter({
+                      path: "VALUE01",
+                      operator: sap.ui.model.FilterOperator.Contains,
+                      value1: sValue
+                  });
+              });
+
+              // 将多个 VALUE01 的过滤器组合为一个 OR 过滤器
+              var oValueFilter = new sap.ui.model.Filter({
+                  filters: aValueFilters,
+                  and: false // 使用 OR 逻辑
+              });
+              
+              // 组合其他过滤器
+              var aFilters = [
+                  new sap.ui.model.Filter({
+                      path: "H_CODE",
+                      operator: sap.ui.model.FilterOperator.EQ,
+                      value1: a
+                  }),
+                  oValueFilter, // 动态生成的 OR 过滤器
+                  new sap.ui.model.Filter({
+                      path: "DEL_FLAG",
+                      operator: sap.ui.model.FilterOperator.NE,
+                      value1: "X"
+                    })
+              ];
+              that.getModel().read(entity, {
+                  filters: aFilters,
                   
-                new sap.ui.model.Filter({
-                  path: "H_CODE",
-                  value1: a,
-                  operator: sap.ui.model.FilterOperator.EQ,
-                }),
-                new sap.ui.model.Filter({
-                  path: "VALUE01",
-                  value1: b,
-                  operator: sap.ui.model.FilterOperator.IN,
-                }),
-
-                new sap.ui.model.Filter({
-                  path: "DEL_FLAG",
-                  value1: "X",
-                  operator: sap.ui.model.FilterOperator.NE,
-                }),
-
-              ],
+                
               success: function (oData) {
                 resolve(oData);
               },
@@ -1099,7 +1125,39 @@ sap.ui.define(["umc/app/Controller/BaseController", "sap/m/MessageToast", "sap/m
                 }
             }
 
-        },
+      },
+        
+      _refreshTable: function () {
+          var that = this;
+        var view = this.getView();
+      var jsonModel = view.getModel("workInfo");
+
+      return new Promise(function (resolve, reject) {
+
+        that.getModel().read("/PCH10_LIST", {
+        
+
+          filters: that._aFilters
+          ,
+          success: function (oData) {
+                              oData.results.sort(function(a, b) {
+                      return a.QUO_ITEM - b.QUO_ITEM; // 升序排序
+                      // 如果需要降序排序，可以使用 b.SALES_D_NO - a.SALES_D_NO;
+                  });
+
+            jsonModel = new sap.ui.model.json.JSONModel();
+            view.setModel(jsonModel, "workInfo");
+            jsonModel.setData(oData.results);
+
+            resolve(oData);
+
+          },
+          error: function (oError) {
+            reject(oError);
+          },
+        })
+      })
+          },
 
   });
 });

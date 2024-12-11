@@ -28,7 +28,7 @@ sap.ui.define(["umc/app/Controller/BaseController", "sap/m/MessageToast"], funct
       if (select === true) {
         newFilter = new sap.ui.model.Filter("INITIAL_OBJ", sap.ui.model.FilterOperator.EQ, "1");
       } else {
-        newFilter = new sap.ui.model.Filter("INITIAL_OBJ", sap.ui.model.FilterOperator.EQ, "");
+        newFilter = new sap.ui.model.Filter("INITIAL_OBJ", sap.ui.model.FilterOperator.EQ, null);
       }
       
       mBindingParams.filters.push(newFilter);

@@ -304,14 +304,37 @@ public class Pch10Dao extends Dao {
 
     public void UpdateStatus2(String quo_NUMBER, Integer quo_ITEM) {
 
-        T07QuotationD o = getById3(quo_NUMBER, quo_ITEM);
+        List<T07QuotationD> o = getById5(quo_NUMBER, quo_ITEM);
 
-        if (o != null) {
-            o.setStatus("4");
+        for (T07QuotationD item : o) {
 
-            updateT07Status(o);
+            if (item.getStatus().equals("1")) {// 未送信
+                item.setStatus("2");
+            } else if (item.getStatus().equals("2")) {
+                item.setStatus("2");
+            } else if (item.getStatus().equals("3")) {
+                item.setStatus("4");
+            } else if (item.getStatus().equals("4")) {
+                item.setStatus("4");
+            } else {
+
+            }
+
+            updateT07Status(item);
 
         }
+
+    }
+
+    private List<T07QuotationD> getById5(String quo_NUMBER, Integer quo_ITEM) {
+
+        List<T07QuotationD> result = db.run(
+                Select.from(Pch_.T07_QUOTATION_D)
+                        .where(o -> o.QUO_NUMBER().eq(quo_NUMBER)
+                                .and(o.QUO_ITEM().eq(quo_ITEM))
+                                .and(o.DEL_FLAG().eq("N"))))
+                .listOf(T07QuotationD.class);
+        return result;
 
     }
 
