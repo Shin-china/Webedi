@@ -8,6 +8,10 @@ public class Pch10Save {
 
     @JSONField(name = "ID")
     private String ID;
+
+    @JSONField(name = "COPYBY")
+    private Integer COPYBY;
+
     @JSONField(name = "T02_ID")
     private String T02_ID;
     @JSONField(name = "QUO_NUMBER")
@@ -595,5 +599,13 @@ public class Pch10Save {
 
     public void setPERSON_NO1(Integer pERSON_NO1) {
         PERSON_NO1 = pERSON_NO1;
+    }
+
+    public Integer getCOPYBY() {
+        return COPYBY;
+    }
+
+    public void setCOPYBY(Integer cOPYBY) {
+        COPYBY = cOPYBY;
     }
 }

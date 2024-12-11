@@ -129,7 +129,7 @@ sap.ui.define(["umc/app/Controller/BaseController", "sap/m/MessageToast", "sap/m
     保存
     ==============================*/
       onSave: function (oEvent) {
-var that = this;
+         var that = this;
          that._setBusy(true);
           var oTable = this.byId("tableUploadData");
 
@@ -139,6 +139,7 @@ var that = this;
                 
               sap.m.MessageToast.show("選択されたデータがありません、データを選択してください。"); // 提示未选择数据
                 
+              that._setBusy(false);
               return;
 
           }
@@ -268,6 +269,152 @@ var that = this;
         // } else {
         //     // that._setBusy(false);
         // }
+      },
+      
+      /*==============================
+    change email status
+    ==============================*/
+      _sendEmailStatus: function (oEvent) {
+         var that = this;
+         that._setBusy(true);
+          var oTable = this.byId("tableUploadData");
+
+          var aSelectedIndices = oTable.getSelectedIndices();
+            
+          if (aSelectedIndices.length === 0) {
+                
+              sap.m.MessageToast.show("選択されたデータがありません、データを選択してください。"); // 提示未选择数据
+                
+              that._setBusy(false);
+              return;
+
+          }
+          //因为http param 长度有限制，必须循环一条条调用，不要一次性提交
+            var oPostData = {}, oPostList = {}, aPostItem = [], iDoCount = 0, bError;
+              aSelectedIndices.forEach(iIndex => {
+              aPostItem = [];
+              oPostData = {};
+              oPostList = {};
+
+              var oItem = oTable.getContextByIndex(iIndex).getObject();
+              
+              aPostItem.push(oItem);
+
+              oPostList = JSON.stringify({
+                  "list": aPostItem
+              });
+
+              oPostData = {
+                  "str": oPostList
+              };
+
+
+              this._callCdsAction("/PCH10_D_SENDSTATUS", oPostData, this).then((oData) => {
+                  
+                  iDoCount++;
+
+                  var oResult = JSON.parse(oData.PCH10_D_SENDSTATUS);
+                  if (oResult.err) {   
+                      bError = true;
+                  }
+
+                 
+                      if (bError) {
+                          that.MessageTools._addMessage(that.MessageTools._getI18nTextInModel("pch", oResult.reTxt, this.getView()), null, 1, this.getView());
+                      } else {
+
+                      }
+                      that._setBusy(false);
+                  
+              });
+                
+          });
+
+        // var that = this;
+        // // that._setBusy(true);
+        // var view = this.getView();
+        // //清除msg
+        // this.MessageTools._clearMessage();
+        // var oTable = this.byId("tableUploadData");
+
+
+        // var aSelectedIndices = this._TableList("tableUploadData"); // 获取选中行
+
+        //     if (aSelectedIndices.length == 0) {
+        //         sap.m.MessageToast.show("選択されたデータがありません、データを選択してください。");
+        //         return false;
+        //     }
+
+        //     //因为http param 长度有限制，必须循环一条条调用，不要一次性提交
+        // var oPostData = {}, oPostList = {}, aPostItem = [], iDoCount = 0, bError;
+              
+        // aSelectedIndices.forEach(iIndex => {
+             
+        //     aPostItem = [];
+        //     oPostData = {};
+        //     oPostList = {};
+
+        //     var oItem = oTable.getContextByIndex(iIndex).getObject();             
+        //     aPostItem.push(oItem);
+
+        //     oPostList = JSON.stringify({
+        //         "list": aPostItem
+        //     });
+
+        //     oPostData = {
+        //         "json": oPostList
+        //     };
+        
+        //     }
+        // );
+
+
+        // if (that._isCheckData()) {
+        //     var jsonModel = view.getModel("workInfo");
+        //     this._callCdsAction("/PCH10_SAVE_DATA", oPostData, this).then((oData) => {
+
+
+        //         var myArray = JSON.parse(oData.PCH10_SAVE_DATA);
+        //         this._setEditable(false);
+        //         if (myArray.err) {
+        //             this._setEditable(true);
+        //             var rt = myArray.reTxt.split("||");
+        //             for (var i = 1; i < rt.length; i++) {
+
+        //                 that.MessageTools._addMessages(this.MessageTools._getI18nTextInModel("pch", rt[i], this.getView()), null, 1, this.getView());
+        //             }
+
+        // } else {
+        
+        // return new Promise(function (resolve, reject) {
+
+        //     that.getModel().read("/PCH10_LIST", {
+            
+        //     filters: that._aFilters,
+        //     success: function (oData) {
+
+        //         oData.results.sort(function(a, b) {
+        //             return a.QUO_ITEM - b.QUO_ITEM; // 升序排序
+        //             // 如果需要降序排序，可以使用 b.SALES_D_NO - a.SALES_D_NO;
+        //         });
+
+        //         jsonModel = new sap.ui.model.json.JSONModel();
+        //         view.setModel(jsonModel, "workInfo");
+        //         jsonModel.setData(oData.results);
+
+        //     },
+        //     error: function (oError) {
+        //         reject(oError);
+        //     },
+        //     })
+        // })
+        //         }
+        //         // that._setBusy(false);
+
+        //     });
+        // } else {
+        //     // that._setBusy(false);
+        // }
     },
 
     /*==============================
@@ -304,10 +451,9 @@ var that = this;
       */
       onSend: function (oEvent) {
           var that = this;
-          
-        that._setBusy(true);
-          
-        
+          that._setBusy(true);
+
+          var oTable = that.byId("tableUploadData");
         var selectedIndices = this._TableList("tableUploadData"); // 获取选中行
         if (selectedIndices.length == 0) {
             sap.m.MessageToast.show("選択されたデータがありません、データを選択してください。");
@@ -353,13 +499,12 @@ var that = this;
 
                                   }
                               };
-                              that._sendEmail(mailobj);
-
-                            //   that._changeEmailStatus(); 
-
-                              that._setBusy(false)
+                                that._sendEmail(mailobj);
+                              that._sendEmailStatus();
+                              that._setBusy(false);
                           });
-                      }
+                          }
+                              
                       else {
                           that._setBusy(false);
                       }
@@ -604,13 +749,14 @@ var that = this;
         //   copiedIndex.Attachment = null;
         //   copiedIndex.Material = null;
         //   copiedIndex.MAKER = null;
-		  copiedIndex.CD_BY = null;
-          copiedIndex.CD_TIME = null;
+                copiedIndex.CD_BY = null;
+                copiedIndex.CD_TIME = null;
+                    copiedIndex.COPYBY = selectedIndex.QUO_ITEM;
 
-          copiedIndex.QUO_ITEM = MaxDN++;
-          
-          const uuid = this.generateUUID();
-          copiedIndex.T02_ID = uuid;
+                copiedIndex.QUO_ITEM = MaxDN++;
+                
+                const uuid = this.generateUUID();
+                copiedIndex.T02_ID = uuid;
           
 					datas.push(copiedIndex);
 				});

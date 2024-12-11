@@ -242,6 +242,17 @@ sap.ui.define([], function () {
        
       },
 
+      formatDate2: function (date) {
+        if (date != null) {
+          const year = date.getFullYear();  
+          const month = ('0' + (date.getMonth() + 1)).slice(-2);  
+          const day = ('0' + date.getDate()).slice(-2);  
+          
+          return `${year}-${month}-${day}`; 
+        }
+       
+      },
+
       formatTaxRate: function(rate) {
         if (!rate && rate !== 0) return "";  // 如果值为 null 或 undefined 返回空字符串
         return rate + "%";  // 在税率后加上 % 符号

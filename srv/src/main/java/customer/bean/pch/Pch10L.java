@@ -14,6 +14,9 @@ public class Pch10L {
     @JSONField(name = "QUO_NUMBER")
     private String QUO_NUMBER;
 
+    @JSONField(name = "QUO_ITEM")
+    private Integer QUO_ITEM;
+
     @JSONField(name = "QUO_VERSION")
     private String QUO_VERSION;
 

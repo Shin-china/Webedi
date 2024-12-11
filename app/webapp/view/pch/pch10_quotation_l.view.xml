@@ -270,7 +270,9 @@
                     <Label id="labelCD_DATE" text="{pch>PCH10_CD_DATE}" />
                 </table:label>
                 <table:template>
-                    <Text id="textCD_DATE" text="{CD_DATE}" />
+
+                
+                    <Text id="textCD_DATE" text="{parts:[{path:'CD_DATE'}],formatter: '.formatter.formatDate2'}" />
                 </table:template>
             </table:Column>
 

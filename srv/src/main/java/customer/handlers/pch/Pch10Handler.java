@@ -23,10 +23,12 @@ import com.sap.cds.services.handler.annotations.ServiceName;
 import cds.gen.pch.T06QuotationH;
 import cds.gen.tableservice.PCH08SaveDATAContext;
 import cds.gen.tableservice.PCH10BPTQContext;
+import cds.gen.tableservice.PCH10DSENDSTATUSContext;
 import cds.gen.tableservice.PCH10GMTQContext;
 import cds.gen.tableservice.PCH10GrSENDContext;
 import cds.gen.tableservice.PCH10Header;
 import cds.gen.tableservice.PCH10Header_;
+import cds.gen.tableservice.PCH10LSENDSTATUSContext;
 import cds.gen.tableservice.PCH10LSaveDATAContext;
 import cds.gen.tableservice.PCH10SaveDATAContext;
 import cds.gen.tableservice.Pch06BatchSendingContext;
@@ -36,6 +38,8 @@ import customer.bean.pch.Pch07;
 import customer.bean.pch.Pch07DataList;
 import customer.bean.pch.Pch08DataList;
 import customer.bean.pch.Pch10DataList;
+import customer.bean.pch.Pch10EMAILSTATUS;
+import customer.bean.pch.Pch10ListEmail;
 import customer.bean.pch.Pch10SaveDataList;
 import customer.handlers.sys.SendService;
 import customer.service.ifm.Ifm01BpService;
@@ -115,7 +119,7 @@ public class Pch10Handler implements EventHandler {
         Boolean isCopy = pch10Service.checkCopy(list);
 
         if (!isCopy) {
-            pch10Service.copyDataBy5key(list);
+            pch10Service.copyDataBykey(list);
         } else {
             pch10Service.detailsSave(list);
         }
@@ -161,6 +165,28 @@ public class Pch10Handler implements EventHandler {
         ifm01BpService.syncBP();
 
         ifm02MstService.syncMst();
+
+        context.setResult("1");
+
+    }
+
+    @On(event = "PCH10_L_SENDSTATUS")
+    public void SendStatus(PCH10LSENDSTATUSContext context) throws IOException {
+
+        Pch10DataList list = JSON.parseObject(context.getStr(), Pch10DataList.class);
+
+        pch10Service.ListSendStatus(list);
+
+        context.setResult("1");
+
+    }
+
+    @On(event = "PCH10_D_SENDSTATUS")
+    public void SendStatusD(PCH10DSENDSTATUSContext context) throws IOException {
+
+        Pch10DataList list = JSON.parseObject(context.getStr(), Pch10DataList.class);
+
+        pch10Service.ListSendStatus2(list);
 
         context.setResult("1");
 

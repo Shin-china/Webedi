@@ -260,11 +260,49 @@ sap.ui.define(["umc/app/Controller/BaseController", "sap/m/MessageToast"], funct
                         ]
                       }
                     };
-                    that._sendEmail(mailobj);
 
-                    // that._changeEmailStatus();
+                    // that._sendEmail(mailobj);
+                    // 
+                    //因为http param 长度有限制，必须循环一条条调用，不要一次性提交
+                    var oPostData = {}, oPostList = {}, aPostItem = [], iDoCount = 0, bError;
+                    aSelectedIndices.forEach(iIndex => {
+                      aPostItem = [];
+                      oPostData = {};
+                      oPostList = {};
+                      var oItem = oTable.getContextByIndex(iIndex).getObject();
+                      oItem.VALIDATE_START = that.__formatDate(oItem.VALIDATE_START);
+                      oItem.VALIDATE_END = that.__formatDate(oItem.VALIDATE_END);
+                      // oItem.TIME = that.__formatDate(oItem.TIME);
+                      aPostItem.push(oItem);
+                      oPostList = JSON.stringify({
+                        "list": aPostItem
+                      });
+                      oPostData = {
+                        "str": oPostList
+                      };
+
+                      that._callCdsAction("/PCH10_L_SENDSTATUS", oPostData, that).then(
+                        (oData) => {
+                          
+                          var oResult = JSON.parse(oData.PCH10_L_SENDSTATUS);
+
+                          if (oResult.err) {
+                            bError = true;
+                          }
+                          if (bError) {
+                              
+                            that.MessageTools._addMessage(that.MessageTools._getI18nTextInModel("pch", oResult.reTxt, this.getView()), null, 1, this.getView());
+                            that.getView().setBusy(false);
+                          } else {
+
+                            that.byId("smartTable10").rebindTable();
+
+                            that.getView().setBusy(false);
+                          }
+                        });
+                    });
                     
-                    that.getView().setBusy(false);
+                   
                   });
                 }
               });
@@ -291,58 +329,52 @@ sap.ui.define(["umc/app/Controller/BaseController", "sap/m/MessageToast"], funct
       
     },
 
-    _changeEmailStatus: function () {
-      var that = this;
+    // _changeEmailStatus: function (aSelectedData,oTable) {
+    //   var that = this;
+    //   that._setBusy(true);
+    //   var bSelectedIndices = aSelectedData;
 
-      var oTable = this.byId("detailTable10");
-      var aSelectedIndices = oTable.getSelectedIndices();
+    //   //因为http param 长度有限制，必须循环一条条调用，不要一次性提交
+    //   var oPostData = {}, oPostList = {}, aPostItem = [], iDoCount = 0, bError;
+    //   aSelectedIndices.forEach(iIndex => {
+    //     aPostItem = [];
+    //     oPostData = {};
+    //     oPostList = {};
+    //     var oItem = oTable.getContextByIndex(iIndex).getObject();
+    //     oItem.VALIDATE_START = that.__formatDate(oItem.VALIDATE_START);
+    //     oItem.VALIDATE_END = that.__formatDate(oItem.VALIDATE_END);
+    //     // oItem.TIME = that.__formatDate(oItem.TIME);
+    //     aPostItem.push(oItem);
+    //     oPostList = JSON.stringify({
+    //       "list": aPostItem
+    //     });
+    //     oPostData = {
+    //       "str": oPostList    
+    //     };
 
-      //因为http param 长度有限制，必须循环一条条调用，不要一次性提交
-      var oPostData = {}, oPostList = {}, aPostItem = [], iDoCount = 0, bError;
+    //   that._callCdsAction("/PCH10_L_SENDSTATUS", oPostList, that).then(         
+    //       (oData) => {
+            
+    //         var oResult = JSON.parse(oData.PCH10_L_SENDSTATUS);
 
-      var QUO_NUMBERSet = new Set(aSelectedIndices.map(data => data.QUO_NUMBER));
-      // aSelectedIndices.forEach(iIndex => {
-      //   aPostItem = [];
-      //   oPostData = {};
-      //   oPostList = {};
-      //   var oItem = oTable.getContextByIndex(iIndex).getObject();
-      //   oItem.VALIDATE_START = that.__formatDate(oItem.VALIDATE_START);
-      //   oItem.VALIDATE_END = that.__formatDate(oItem.VALIDATE_END);
-      //   // oItem.TIME = that.__formatDate(oItem.TIME);
-      //   aPostItem.push(oItem);
-      //   oPostList = JSON.stringify({
-      //     "list": aPostItem
-      //   });
-      oPostList = JSON.stringify({
-          "str": QUO_NUMBERSet
-        });
-;
-
-      that._callCdsAction("/PCH10_L_SAVE_DATA", oPostList, that).then(         
-          (oData) => {
-            iDoCount++;
-            var oResult = JSON.parse(oData.PCH10_L_SAVE_DATA);
-
-            if (oResult.err) {
-              bError = true;
-            }
-
-            if (iDoCount === aSelectedIndices.length) {
-
-              if (bError) {
-                that._localModel.setProperty("/show", false);
-                that._localModel.setProperty("/save", true);
-                that.MessageTools._addMessage(that.MessageTools._getI18nTextInModel("pch", oResult.reTxt, this.getView()), null, 1, this.getView());
-              } else {
-                that._localModel.setProperty("/show", true);
-                that._localModel.setProperty("/save", false);
-                sap.m.MessageToast.show(that._PchResourceBundle.getText("SAVE_SUCCESS"));
-              }
-
-              that._setBusy(false);
-            }
-          });
-         },
+    //         if (oResult.err) {
+    //           bError = true;
+    //         }
+    //           if (bError) {
+                
+    //             that.MessageTools._addMessage(that.MessageTools._getI18nTextInModel("pch", oResult.reTxt, this.getView()), null, 1, this.getView());
+    //           } else {
+    //             sap.m.MessageToast.show(that._PchResourceBundle.getText("SAVE_SUCCESS"));
+    //       }
+          
+    //       });
+    //   },
+    //   )
+    //   },
+        
+        
+        
+        
 
     _readBpNumber(a, entity) {
       var that = this;
@@ -354,7 +386,12 @@ sap.ui.define(["umc/app/Controller/BaseController", "sap/m/MessageToast"], funct
               path: "QUO_NUMBER",
               value1: a,
               operator: sap.ui.model.FilterOperator.EQ,
-            })
+            }),
+            new sap.ui.model.Filter({
+              path: "DEL_FLAG",
+              value1: "N",
+              operator: sap.ui.model.FilterOperator.EQ,
+            })  
               ],
               success: function (oData) { 
                 resolve(oData); 

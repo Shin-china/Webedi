@@ -1,8 +1,11 @@
 package customer.dao.pch;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
+import org.apache.poi.ss.formula.functions.T;
 import org.springframework.stereotype.Repository;
 
 import com.sap.cds.ql.Insert;
@@ -87,6 +90,21 @@ public class Pch10Dao extends Dao {
 
         Optional<T06QuotationH> result = db
                 .run(Select.from(Pch_.T06_QUOTATION_H).where(o -> o.SALES_NUMBER().eq(sal_Num)))
+                .first(T06QuotationH.class);
+        if (result.isPresent()) {
+
+            return result.get();
+
+        }
+        return null;
+
+    }
+
+    public T06QuotationH getById2(String quo_Number) {
+
+        Optional<T06QuotationH> result = db
+                .run(Select.from(Pch_.T06_QUOTATION_H).where(o -> o.QUO_NUMBER().eq(
+                        quo_Number)))
                 .first(T06QuotationH.class);
         if (result.isPresent()) {
 
@@ -190,17 +208,96 @@ public class Pch10Dao extends Dao {
 
     }
 
-    public List<T07QuotationD> getCopyItem(String quo_NUMBER, String sales_NUMBER, String sales_D_NO,
-            String quo_VERSION) {
+    public List<T07QuotationD> getCopyItem(String quo_NUMBER, Integer copyby) {
         List<T07QuotationD> result = db.run(
                 Select.from(Pch_.T07_QUOTATION_D)
                         .where(o -> o.QUO_NUMBER().eq(quo_NUMBER)
-                                .and(o.SALES_NUMBER().eq(sales_NUMBER))
-                                .and(o.SALES_D_NO().eq(sales_D_NO))
-                                .and(o.QUO_VERSION().eq(quo_VERSION))
+                                .and(o.QUO_ITEM().eq(copyby))
                                 .and(o.DEL_FLAG().eq("N"))))
                 .listOf(T07QuotationD.class);
         return result;
+    }
+
+    public void UpdateStatus(String quo_NUMBER) {
+
+        T06QuotationH o = getById2(quo_NUMBER);
+
+        if (o != null) {
+            o.setStatus("2");
+
+            updateT06(o);
+
+        }
+
+    }
+
+    public void updateT06(T06QuotationH o) {
+
+        // 获取 key 的值
+        String quonumber = o.getQuoNumber();
+
+        // 构建更新条件
+        Map<String, Object> keys = new HashMap<>();
+        keys.put("QUO_NUMBER", quonumber);
+
+        // 创建需要更新的字段
+        Map<String, Object> updatedFields = new HashMap<>();
+
+        updatedFields.put("STATUS", o.getStatus());
+
+        // 执行更新
+        db.run(Update.entity(Pch_.T06_QUOTATION_H, b -> b.matching(keys)).data(updatedFields));
+
+    }
+
+    public void UpdateStatus2(String quo_NUMBER, Integer quo_ITEM) {
+
+        T07QuotationD o = getById3(quo_NUMBER, quo_ITEM);
+
+        if (o != null) {
+            o.setStatus("4");
+
+            updateT07Status(o);
+
+        }
+
+    }
+
+    private void updateT07Status(T07QuotationD o) {
+        // 获取 key 的值
+        String quonumber = o.getQuoNumber();
+        Integer quoitem = o.getQuoItem();
+
+        // 构建更新条件
+        Map<String, Object> keys = new HashMap<>();
+        keys.put("QUO_NUMBER", quonumber);
+        keys.put("QUO_ITEM", quoitem);
+
+        // 创建需要更新的字段
+        Map<String, Object> updatedFields = new HashMap<>();
+
+        updatedFields.put("STATUS", o.getStatus());
+
+        // 执行更新
+        db.run(Update.entity(Pch_.T07_QUOTATION_D, b -> b.matching(keys)).data(updatedFields));
+    }
+
+    private T07QuotationD getById3(String quo_NUMBER, Integer quo_ITEM) {
+
+        Optional<T07QuotationD> result = db
+                .run(Select.from(Pch_.T07_QUOTATION_D)
+                        .where(o -> o.QUO_NUMBER().eq(quo_NUMBER)
+                                .and(o.QUO_ITEM().eq(quo_ITEM)).and(o.DEL_FLAG().eq(
+                                        "N"))))
+
+                .first(T07QuotationD.class);
+        if (result.isPresent()) {
+
+            return result.get();
+
+        }
+        return null;
+
     }
 
 }
