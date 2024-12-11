@@ -499,7 +499,7 @@ sap.ui.define(["umc/app/Controller/BaseController", "sap/m/MessageToast", "sap/m
 
                                   }
                               };
-                                that._sendEmail(mailobj);
+                             that._sendEmail(mailobj);
                               that._sendEmailStatus();
                               that._setBusy(false);
                           });

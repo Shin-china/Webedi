@@ -261,8 +261,8 @@ sap.ui.define(["umc/app/Controller/BaseController", "sap/m/MessageToast"], funct
                       }
                     };
 
-                    // that._sendEmail(mailobj);
-                    // 
+                    that._sendEmail(mailobj);
+                    
                     //因为http param 长度有限制，必须循环一条条调用，不要一次性提交
                     var oPostData = {}, oPostList = {}, aPostItem = [], iDoCount = 0, bError;
                     aSelectedIndices.forEach(iIndex => {
