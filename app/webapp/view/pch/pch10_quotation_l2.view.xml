@@ -104,15 +104,24 @@
                 <core:CustomData key="p13nData" value='\{"columnKey":"VALIDATE_START", "leadingProperty":"VALIDATE_START", "sortProperty":"VALIDATE_START", "filterProperty":"VALIDATE_START"}'/>
             </t:customData>
             <t:label><Label text="{pch>PCH10_VALIDATE_START}"/></t:label>
-            <t:template><Text text="{VALIDATE_START}"/></t:template>
+            <t:template>
+                <Text id="idVALIDATE_START" text="{path: 'VALIDATE_START', type: 'sap.ui.model.type.Date', formatOptions: {pattern: 'yyyy/MM/dd'}}"/>
+            </t:template>
         </t:Column>
 
         <t:Column id="colVALIDATE_END" width="10rem" sortProperty="VALIDATE_END" filterProperty="VALIDATE_END">
             <t:customData>
                 <core:CustomData key="p13nData" value='\{"columnKey":"VALIDATE_END", "leadingProperty":"VALIDATE_END", "sortProperty":"VALIDATE_END", "filterProperty":"VALIDATE_END"}'/>
             </t:customData>
-            <t:label><Label text="{pch>PCH10_VALIDATE_END}"/></t:label>
-            <t:template><Text text="{VALIDATE_END}"/></t:template>
+            <t:label>
+                <Label text="{pch>PCH10_VALIDATE_END}"/>
+            </t:label>
+            <t:template>
+                <!-- <Text id = "idVALIDATE_END" text="{VALIDATE_END}"/> -->
+
+                <Text id = "idVALIDATE_END" text="{path: 'VALIDATE_END', type: 'sap.ui.model.type.Date', formatOptions: {pattern: 'yyyy/MM/dd'}}"/>
+                
+            </t:template>
         </t:Column>
 
         <t:Column id="colSALES_D_NO" width="10rem" sortProperty="SALES_D_NO" filterProperty="SALES_D_NO">

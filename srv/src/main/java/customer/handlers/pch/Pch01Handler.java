@@ -31,21 +31,11 @@ public class Pch01Handler implements EventHandler {
   @Autowired
   private Pch01Service Pch01Service;
 
-  @Autowired
-  private Ifm04PrService ifm04PrService;
-
-  @Autowired
-  private Ifm01BpService ifm01BpService;
-
-  @Autowired
-  private JobMonotor jobMonotor;
 
   // check数据
   @On(event = "PCH01_CHECK_DATA")
   public void checkData(PCH01CheckDATAContext context) throws IOException {
     Pch01List list = JSON.parseObject(context.getShelfJson(), Pch01List.class);
-
-    ifm01BpService.syncBP();
 
     Pch01Service.detailsCheck(list);
     context.setResult(JSON.toJSONString(list));
