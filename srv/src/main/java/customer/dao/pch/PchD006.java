@@ -89,6 +89,21 @@ public class PchD006 extends Dao {
         return null;
     }
 
+    public T06QuotationH getNot3(String quoNumber, String salesNumber, String quoVersion) {
+        Optional<T06QuotationH> first = db
+                .run(Select.from(Pch_.T06_QUOTATION_H).columns(o -> o._all(), o -> o.TO_ITEMS().expand())
+                        .where(o -> o.QUO_NUMBER().eq(quoNumber).and(o.SALES_NUMBER().eq(salesNumber))
+                                .and(o.QUO_VERSION().eq(quoVersion)).and(o.DEL_FLAG().eq("N"))
+
+                        ))
+                .first(T06QuotationH.class);
+
+        if (first.isPresent()) {
+            return first.get();
+        }
+        return null;
+    }
+
     // dao层获取传入的QUO_NUMBER所有明细以及头表
     public T06QuotationH getByIdOnle(String id) {
         Optional<T06QuotationH> first = db
