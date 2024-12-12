@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.time.LocalDate;
 
 import cds.gen.pch.T06QuotationH;
@@ -26,6 +27,8 @@ import cds.gen.tableservice.TableService_;
 import cds.gen.tableservice.PCHT07QuoItemMax1;
 
 import java.time.Instant;
+
+import customer.bean.com.UmcConstants;
 
 @Repository
 public class PchD006 extends Dao {
@@ -73,10 +76,13 @@ public class PchD006 extends Dao {
     }
 
     // dao层获取传入的QUO_NUMBER所有明细以及头表
-    public T06QuotationH get(String quoNumber) {
+    public T06QuotationH get(String quoNumber, String salesNumber, String quoVersion) {
         Optional<T06QuotationH> first = db
                 .run(Select.from(Pch_.T06_QUOTATION_H).columns(o -> o._all(), o -> o.TO_ITEM_PO().expand())
-                        .where(o -> o.QUO_NUMBER().eq(quoNumber)))
+                        .where(o -> o.QUO_NUMBER().eq(quoNumber).and(o.SALES_NUMBER().eq(salesNumber))
+                                .and(o.QUO_VERSION().eq(quoVersion)).and(o.DEL_FLAG().eq("N"))
+                                .and(o.TO_ITEM_PO().STATUS().eq(UmcConstants.T07_STATUS_03))
+                                .and(o.TO_ITEM_PO().DEL_FLAG().eq("N"))))
                 .first(T06QuotationH.class);
 
         if (first.isPresent()) {

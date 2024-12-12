@@ -64,7 +64,11 @@ public class SendService {
         // 获取要传入的字符串
         for (int i = 0; i < jsonArray.size(); i++) {
             JSONObject jsonObject = jsonArray.getJSONObject(i);
-            T06QuotationH t06QuotationH = PchD006.get(jsonObject.getString("QUO_NUMBER"));
+            String quoNumber = jsonObject.getString("QUO_NUMBER");
+            String salesNumber = jsonObject.getString("SALES_NUMBER");
+            String quoVersion = jsonObject.getString("QUO_VERSION");
+            T06QuotationH t06QuotationH = PchD006.get(quoNumber, salesNumber, quoVersion);
+
             if (t06QuotationH != null)
                 pch06List.add(t06QuotationH);
         }
