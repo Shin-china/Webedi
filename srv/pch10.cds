@@ -51,9 +51,10 @@ extend service TableService {
             )
 
         distinct {
-
-            key T01.SALES_NUMBER,
-            key T01.QUO_VERSION,
+            key T01.QUO_NUMBER,
+            key T01.QUO_ITEM,
+                T01.SALES_NUMBER,
+                T01.QUO_VERSION,
                 T02.CUSTOMER,
                 T02.MACHINE_TYPE,
                 T02.Item,
@@ -64,8 +65,6 @@ extend service TableService {
                 T02.VALIDATE_END,
                 T01.SALES_D_NO,
                 T01.SAP_MAT_ID,
-                T01.QUO_NUMBER,
-                T01.QUO_ITEM,
                 T01.NO,
                 T01.REFRENCE_NO,
                 T01.MATERIAL_NUMBER,
