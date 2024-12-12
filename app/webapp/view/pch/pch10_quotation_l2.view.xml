@@ -585,7 +585,10 @@
                 <core:CustomData key="p13nData" value='\{"columnKey":"CD_DATE", "leadingProperty":"CD_DATE", "sortProperty":"CD_DATE", "filterProperty":"CD_DATE"}'/>
             </t:customData>
             <t:label><Label text="{pch>PCH10_CD_DATE}"/></t:label>
-            <t:template><Text text="{CD_DATE}"/></t:template>
+            <t:template>
+            
+            <Text id="idcd_date" text="{path: 'CD_DATE', type: 'sap.ui.model.type.Date', formatOptions: {pattern: 'yyyy/MM/dd'}}"/>
+            </t:template>
         </t:Column>
 
          <t:Column id="colCD_DATE_TIME" width="10rem" sortProperty="CD_DATE_TIME" filterProperty="CD_DATE_TIME">
@@ -610,6 +613,16 @@
             </t:customData>
             <t:label><Label text="{pch>PCH10_SUPPLIER_MAT}"/></t:label>
             <t:template><Text text="{SUPPLIER_MAT}"/></t:template>
+        </t:Column>
+
+        <t:Column id="colSTATUS" width="10rem" sortProperty="STATUS" filterProperty="STATUS">
+            <t:customData>
+                <core:CustomData key="p13nData" value='\{"columnKey":"STATUS", "leadingProperty":"STATUS", "sortProperty":"STATUS", "filterProperty":"STATUS"}'/>
+            </t:customData>
+            <t:label><Label text="{pch>PCH10_STATUS}"/></t:label>
+            <t:template>
+                <Text id="idstatus" text="{path:'STATUS', formatter: '.formatter.formatStatusPch10'}"/>
+            </t:template>
         </t:Column>
 
         
