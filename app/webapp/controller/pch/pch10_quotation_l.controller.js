@@ -93,7 +93,6 @@ sap.ui.define(["umc/app/Controller/BaseController", "sap/m/MessageToast"], funct
           success: function (oData) {
             that.getView().setBusy(false);
             sap.m.MessageToast.show(oData.value, null, 1, that.getView())
-            that.MessageTools._addMessages(oData.value, null, 1, that.getView());
 
           
           }
