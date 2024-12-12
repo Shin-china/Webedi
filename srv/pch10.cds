@@ -115,7 +115,11 @@ extend service TableService {
                 T01.FINAL_CHOICE,
                 T01.STATUS,
                 T01.INITIAL_OBJ,
-                T01.PLANT_ID
+                T01.PLANT_ID,
+                T01.SUPPLIER_MAT,
+                T01.CD_BY,
+                T01.CD_DATE_TIME,
+                T01.CD_DATE,
         }
 
     entity PCH10_LIST         as
