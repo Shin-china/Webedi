@@ -138,17 +138,13 @@ public class SendService {
 
             // 复制类属性
             BeanUtils.copyProperties(pchT06QuotationH, t06QuotationH);
-            // 如果已经存在则更新，如果不存在则插入
-            T06QuotationH byID = PchD006.getByIdOnle(t06QuotationH.getId());
+
             pch06List2.add(t06QuotationH);
             t06QuotationH.remove("TO_ITEMS");
             t06QuotationH.remove("TO_ITEM_PO");
+            // 如果已经存在则更新，如果不存在则插入
+            PchD006.modefind(t06QuotationH);
 
-            if (byID != null) {
-                PchD006.update(t06QuotationH);
-            } else {
-                PchD006.insert(t06QuotationH);
-            }
 
             // 插入明细
             List<PchT07QuotationD> toItems = pchT06QuotationH.getToItemPo();
@@ -159,8 +155,9 @@ public class SendService {
 
                     // // 复制类属性
                     BeanUtils.copyProperties(pchT07QuotationD, t07QuotationD);
+
                     // // 如果已经存在则更新，如果不存在则插入
-                    T07QuotationD byID2 = PchD007.getByT07Id(t07QuotationD.getId());
+                    T07QuotationD byID2 = PchD007.getId(t07QuotationD.getQuoNumber(),t07QuotationD.getSalesNumber(),t07QuotationD.getQuoVersion(),t07QuotationD.getQuoItem(),t07QuotationD.getSalesDNo());
 
                     if (byID2 != null) {
 
@@ -169,7 +166,11 @@ public class SendService {
                         Map<String, Object> data = new HashMap<>();
                         getT07DaoData(t07QuotationD, data);
                         Map<String, Object> keys = new HashMap<>();
-                        keys.put("ID", t07QuotationD.getId());
+                        keys.put("SALES_NUMBER",t07QuotationD.getSalesNumber());
+                        keys.put("QUO_NUMBER",t07QuotationD.getQuoNumber());
+                        keys.put("QUO_VERSION",t07QuotationD.getQuoVersion());
+                        keys.put("SALES_D_NO",t07QuotationD.getSalesDNo());
+                        keys.put("QUO_ITEM",t07QuotationD.getQuoItem());
                         PchD007.update(data, keys);
 
                     } else {

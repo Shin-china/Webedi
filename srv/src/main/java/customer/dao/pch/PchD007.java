@@ -52,7 +52,20 @@ public class PchD007 extends Dao {
         }
         return null;
     }
+    // dao层获取传入的QUO_NUMBER所有明细以及头表
+    public T07QuotationD getId(String quoNumber, String salesNumber, String quoVersion, String item, String dno) {
+        Optional<T07QuotationD> first = db
+                .run(Select.from(Pch_.T07_QUOTATION_D)
+                        .where(o -> o.QUO_NUMBER().eq(quoNumber).and(o.SALES_NUMBER().eq(salesNumber))
+                                .and(o.QUO_VERSION().eq(quoVersion)).and(o.QUO_ITEM().eq(item))
+                                .and(o.SALES_D_NO().eq(dno))))
+                .first(T07QuotationD.class);
 
+        if (first.isPresent()) {
+            return first.get();
+        }
+        return null;
+    }
     // 追加
     public void insert(T07QuotationD o) {
 

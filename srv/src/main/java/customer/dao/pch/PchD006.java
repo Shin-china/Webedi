@@ -58,7 +58,20 @@ public class PchD006 extends Dao {
         }
         return null;
     }
+    public T06QuotationH getByID(String quoNumber, String salesNumber, String quoVersion) {
+        Optional<T06QuotationH> first = db
+                .run(Select.from(Pch_.T06_QUOTATION_H)
+                        .where(o -> o.QUO_NUMBER().eq(quoNumber).and(o.SALES_NUMBER().eq(salesNumber))
+                                .and(o.QUO_VERSION().eq(quoVersion))
 
+                        ))
+                .first(T06QuotationH.class);
+
+        if (first.isPresent()) {
+            return first.get();
+        }
+        return null;
+    }
     // 追加
     public void insert(T06QuotationH o) {
 
@@ -157,4 +170,44 @@ public class PchD006 extends Dao {
         db.run(Update.entity(Pch_.T06_QUOTATION_H).data(o));
     }
 
+    public void modefind(T06QuotationH o) {
+        // 如果已经存在则更新，如果不存在则插入
+        T06QuotationH byID = this.getByID(o.getQuoNumber(),o.getSalesNumber(),o.getQuoVersion());
+        if (byID != null) {
+            Map<String, Object> data = getT06DaoData(t06QuotationH);
+            Map<String, Object> keys = new HashMap<>();
+            keys.put("SALES_NUMBER",o.getSalesNumber());
+            keys.put("QUO_NUMBER",o.getQuoNumber());
+            keys.put("QUO_VERSION",o.getQuoVersion());
+            PchD006.update(data, keys);
+        } else {
+            PchD006.insert(t06QuotationH);
+        }
+    }
+
+    public Map<String, Object> getT06DaoData(T06QuotationH t06QuotationH) {
+        Map<String, Object> data = new HashMap<>();
+        // data.put("SALES_NUMBER", t07QuotationD.getSalesNumber());
+        // data.put("QUO_VERSION", t07QuotationD.getQuoVersion());
+        // data.put("SALES_D_NO", t07QuotationD.getSalesDNo());
+        // data.put("QUO_NUMBER", t07QuotationD.getQuoNumber());
+        data.put("STATUS", t06QuotationH.getStatus());
+        data.put("MACHINE_TYPE", t06QuotationH.getMachineType());
+        data.put("Item", t06QuotationH.getItem());
+        data.put("QUANTITY", t06QuotationH.getQuantity());
+        data.put("TIME", t06QuotationH.getTime());
+        data.put("LOCATION", t06QuotationH.getLocation());
+        data.put("CD_DATE", t06QuotationH.getCdDate());
+        data.put("CD_DATE_TIME", t06QuotationH.getCdDateTime());
+
+        return data;
+
+    }
+    public void update(Map<String, Object> data, Map<String, Object> keys) {
+        data.put("UP_TIME", this.getNow());
+        data.put("UP_BY", this.getUserId());
+        CqnUpdate update = Update.entity(Qms_.T06_QUOTATION_H, b -> b.matching(keys)).data(data);
+
+        db.run(update);
+    }
 }
