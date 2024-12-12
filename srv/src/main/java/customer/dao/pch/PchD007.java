@@ -22,6 +22,7 @@ import org.springframework.stereotype.Repository;
 import cds.gen.pch.T07QuotationD;
 import cds.gen.pch.T07QuotationD_;
 import cds.gen.pch.Pch_;
+import cds.gen.pch.T06QuotationH;
 
 @Repository
 public class PchD007 extends Dao {
@@ -35,6 +36,21 @@ public class PchD007 extends Dao {
                 .first(T07QuotationD.class);
 
         return result.orElse(null);
+    }
+
+    // dao层获取传入的QUO_NUMBER所有明细以及头表
+    public T07QuotationD get(String quoNumber, String salesNumber, String quoVersion, String item) {
+        Optional<T07QuotationD> first = db
+                .run(Select.from(Pch_.T07_QUOTATION_D)
+                        .where(o -> o.QUO_NUMBER().eq(quoNumber).and(o.SALES_NUMBER().eq(salesNumber))
+                                .and(o.QUO_VERSION().eq(quoVersion)).and(o.DEL_FLAG().eq("N"))
+                                .and(o.SALES_D_NO().eq(item))))
+                .first(T07QuotationD.class);
+
+        if (first.isPresent()) {
+            return first.get();
+        }
+        return null;
     }
 
     // 追加

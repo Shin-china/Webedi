@@ -164,4 +164,7 @@ public class UmcConstants {
 
     public static final String T08_EMAIL_ADDRESS = "MM0004";
 
+    public static final String T07_STATUS_03 = "3";
+    public static final String T07_STATUS_05 = "5";
+
 }

@@ -112,6 +112,8 @@ sap.ui.define(["umc/app/Controller/BaseController", "sap/m/MessageToast"], funct
                       // 格式化交货日期为 YYYY-MM-DD
                       return {
                         QUO_NUMBER: oData.QUO_NUMBER,                                   // 采购订单号
+                        SALES_NUMBER: oData.SALES_NUMBER,    
+                        QUO_VERSION: oData.QUO_VERSION,    
                       };
                   });
               },

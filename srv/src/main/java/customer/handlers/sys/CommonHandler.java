@@ -105,6 +105,12 @@ public class CommonHandler implements EventHandler {
         }
         if (msg.equals("success")) {
             context.setResult("販売見積への連携は成功になりました。");
+            // 更新明细
+            sendService.update(pch06List);
+
+            // 更新头部
+            sendService.update(context.getJson());
+
         } else {
             context.setResult("販売見積への連携は失敗になりました。");
         }

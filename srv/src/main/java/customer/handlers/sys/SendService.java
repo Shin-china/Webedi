@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Array;
 import java.nio.file.Paths;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -39,6 +40,7 @@ import cds.gen.common.PchT07QuotationD;
 import cds.gen.pch.T06QuotationH;
 import cds.gen.pch.T07QuotationD;
 import cds.gen.sys.T11IfManager;
+import customer.bean.com.UmcConstants;
 import customer.bean.pch.Pch07;
 
 @Component
@@ -58,16 +60,46 @@ public class SendService {
     // 发送t06数据，传入json,返回ArrayList<T06QuotationH>
     public ArrayList<T06QuotationH> getJson(String json) {
         ArrayList<T06QuotationH> pch06List = new ArrayList<>();
+        HashMap<String, String> map = new HashMap<>();
         // 直接从上下文中获取参数
         JSONArray jsonArray = JSONArray.parseArray(json);
         // 根据传入的po和po明细修改po明细状态
         // 获取要传入的字符串
         for (int i = 0; i < jsonArray.size(); i++) {
             JSONObject jsonObject = jsonArray.getJSONObject(i);
-            T06QuotationH t06QuotationH = PchD006.get(jsonObject.getString("QUO_NUMBER"));
+            String quoNumber = jsonObject.getString("QUO_NUMBER");
+            String salesNumber = jsonObject.getString("SALES_NUMBER");
+            String quoVersion = jsonObject.getString("QUO_VERSION");
+            String key = quoNumber + salesNumber + quoVersion;
+            String salesDno = jsonObject.getString("SALES_D_NO");
+            if (map.containsKey(key)) {
+                String string = map.get(key);
+                map.put(key, salesDno + "," + string);
+            } else {
+                map.put(key, salesDno);
+            }
+
+            T06QuotationH t06QuotationH = PchD006.get(quoNumber, salesNumber, quoVersion);
+
             if (t06QuotationH != null)
                 pch06List.add(t06QuotationH);
         }
+        // pch06List.forEach(pch06 -> {
+        // ArrayList<T07QuotationD> list = new ArrayList<T07QuotationD>();
+        // String quoNumber = pch06.getQuoNumber();
+        // String salesNumber = pch06.getSalesNumber();
+        // String quoVersion = pch06.getQuoVersion();
+        // String key = quoNumber + salesNumber + quoVersion;
+        // String salesDno = map.get(key);
+        // String[] split = salesDno.split(",");
+        // for (String string : split) {
+        // T07QuotationD t07QuotationD = PchD007.get(quoNumber, salesNumber, quoVersion,
+        // string);
+        // list.add(t07QuotationD);
+        // }
+        // pch06.setToItemPo(list);
+
+        // });
         return pch06List;
 
     }
@@ -217,5 +249,38 @@ public class SendService {
         data.put("CD_DATE", t07QuotationD.getCdDate());
         data.put("CD_DATE_TIME", t07QuotationD.getCdDateTime());
 
+    }
+
+    public void update(ArrayList<T06QuotationH> pch06List) {
+        pch06List.forEach(pch06 -> {
+            pch06.getToItemPo().forEach(toItemPo -> {
+                toItemPo.setStatus(UmcConstants.T07_STATUS_05);
+                PchD007.update(toItemPo);
+            });
+        });
+    }
+
+    public void update(String json) {
+        // 直接从上下文中获取参数
+        JSONArray jsonArray = JSONArray.parseArray(json);
+        // 根据传入的po和po明细修改po明细状态
+        // 获取要传入的字符串
+        for (int i = 0; i < jsonArray.size(); i++) {
+            JSONObject jsonObject = jsonArray.getJSONObject(i);
+            String quoNumber = jsonObject.getString("QUO_NUMBER");
+            String salesNumber = jsonObject.getString("SALES_NUMBER");
+            String quoVersion = jsonObject.getString("QUO_VERSION");
+            T06QuotationH t06QuotationH = PchD006.getNot3(quoNumber, salesNumber, quoVersion);
+
+            if (t06QuotationH.getToItems() != null) {
+                // 如果所有明细状态为5，则更新头表状态为5
+                if (t06QuotationH.getToItems().stream()
+                        .allMatch(toItemPo -> toItemPo.getStatus().equals(UmcConstants.T07_STATUS_05))) {
+                    t06QuotationH.setStatus(UmcConstants.T07_STATUS_05);
+                    PchD006.update(t06QuotationH);
+                }
+            }
+
+        }
     }
 }
