@@ -10,6 +10,7 @@ import com.sap.cds.ql.*;
 import customer.bean.pch.Pch08DetailParam;
 import customer.bean.pch.Pch08QueryResult;
 import customer.dao.common.Dao;
+import customer.tool.UniqueIDTool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -49,30 +50,29 @@ public class Pch08Dao extends Dao {
     }
 
     public void updateT06ReplyStatus(String quoNumber){
-        T06QuotationH header = db.run(
+        Optional<T06QuotationH> headerOpt = db.run(
                 Select.from(Pch_.T06_QUOTATION_H)
                        .where(o -> o.QUO_NUMBER().eq(quoNumber).and(o.DEL_FLAG().eq("N")).and(o.STATUS().ne("3")))
 
-        ).single(T06QuotationH.class);
+        ).first(T06QuotationH.class);
 
-        if (header == null) {
+        if (headerOpt.isEmpty()) {
             return;
         }
-
+        T06QuotationH header = headerOpt.get();
         T06QuotationH newHeader = T06QuotationH.create();
         BeanUtils.copyProperties(header, newHeader);
         newHeader.setStatus("3");
-        newHeader.setId(null);
+        newHeader.setId(UniqueIDTool.getUUID());
         newHeader.setUpTime(getNow());
         newHeader.setUpBy(this.getUserId());
 
-        header.setDelFlag("Y");
+
         header.setUpBy(this.getUserId());
         header.setUpTime(getNow());
-        db.run(
-                Update.entity(Pch_.T06_QUOTATION_H)
-                        .data(header)
-        );
+        header.setDelFlag("Y");
+        db.run(Update.entity(Pch_.T06_QUOTATION_H).data(header));
+
 
         db.run(Insert.into(Pch_.T06_QUOTATION_H).entry(newHeader));
     }
