@@ -105,13 +105,11 @@ public class CommonHandler implements EventHandler {
         }
         if (msg.equals("success")) {
             context.setResult("販売見積への連携は成功になりました。");
-            pch06List.forEach(pch06 -> {
-                pch06.getToItemPo().forEach(toItemPo -> {
-                    toItemPo.setStatus(UmcConstants.T07_STATUS_05);
-                    PchD007.update(toItemPo);
-                });
-            });
             // 更新明细
+            sendService.update(pch06List);
+
+            // 更新头部
+            sendService.update(context.getJson());
 
         } else {
             context.setResult("販売見積への連携は失敗になりました。");
