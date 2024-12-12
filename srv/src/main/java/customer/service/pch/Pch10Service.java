@@ -2,6 +2,7 @@ package customer.service.pch;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
 
@@ -270,11 +271,13 @@ public class Pch10Service {
             o.setPlantId(item.getPlantId());
             o.setSupplierMat(item.getSupplierMat());
             o.setSapMatId(item.getSapMatId());
+            o.setPersonNo1(item.getPersonNo1());
+            o.setQty(item.getQty());
+
             // 修改数据
             o.setQuoItem(value.getQUO_ITEM());
             o.setUwebUser(value.getUWEB_USER());
             o.setBpNumber(value.getBP_NUMBER());
-            o.setPersonNo1(value.getPERSON_NO1());
             o.setYlp(value.getYLP());
             o.setManul(value.getMANUL());
             o.setManufactCode(value.getMANUFACT_CODE());
@@ -282,7 +285,6 @@ public class Pch10Service {
             o.setMidQf(value.getMID_QF());
             o.setSmallQf(value.getSMALL_QF());
             o.setOtherQf(value.getOTHER_QF());
-            o.setQty(value.getQTY());
             o.setCurrency(value.getCURRENCY());
             o.setPrice(value.getPRICE());
             o.setPriceControl(value.getPRICE_CONTROL());
@@ -338,12 +340,15 @@ public class Pch10Service {
     }
 
     public void ListSendStatus2(Pch10DataList list) {
+        HashSet<String> QUO_NUMBERset = new HashSet<>();
 
         for (Pch10L value : list.getList()) {
 
             Pch10Dao.UpdateStatus2(value.getQUO_NUMBER(), value.getQUO_ITEM());
-            
-            }
+            QUO_NUMBERset.add(value.getQUO_NUMBER());
 
+        }
+
+        Pch10Dao.SetHStatus(QUO_NUMBERset);
     }
 }

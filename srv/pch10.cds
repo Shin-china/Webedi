@@ -51,9 +51,11 @@ extend service TableService {
             )
 
         distinct {
-
-            key T01.SALES_NUMBER,
-            key T01.QUO_VERSION,
+            key T01.ID,
+                T01.QUO_NUMBER,
+                T01.QUO_ITEM,
+                T01.SALES_NUMBER,
+                T01.QUO_VERSION,
                 T02.CUSTOMER,
                 T02.MACHINE_TYPE,
                 T02.Item,
@@ -64,8 +66,6 @@ extend service TableService {
                 T02.VALIDATE_END,
                 T01.SALES_D_NO,
                 T01.SAP_MAT_ID,
-                T01.QUO_NUMBER,
-                T01.QUO_ITEM,
                 T01.NO,
                 T01.REFRENCE_NO,
                 T01.MATERIAL_NUMBER,
@@ -116,7 +116,11 @@ extend service TableService {
                 T01.FINAL_CHOICE,
                 T01.STATUS,
                 T01.INITIAL_OBJ,
-                T01.PLANT_ID
+                T01.PLANT_ID,
+                T01.SUPPLIER_MAT,
+                T01.CD_BY,
+                T01.CD_DATE_TIME,
+                T01.CD_DATE,
         }
 
     entity PCH10_LIST         as

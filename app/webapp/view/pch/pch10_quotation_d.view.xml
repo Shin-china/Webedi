@@ -1023,7 +1023,7 @@
                         <Label id="labelStatus" text="{pch>PCH08_STATUS}" />
                     </table:label>
                     <table:template>
-                        <Text id="textStatus" text="{path:'workInfo>STATUS', formatter:'.customFormatter.formatPch08Status'}"  />
+                        <Text id="textStatus" text="{path:'workInfo>STATUS' , formatter: '.formatter.formatStatusPch10'}"  />
                     </table:template>
                 </table:Column> 
 

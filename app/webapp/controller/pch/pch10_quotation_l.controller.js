@@ -28,7 +28,7 @@ sap.ui.define(["umc/app/Controller/BaseController", "sap/m/MessageToast"], funct
       if (select === true) {
         newFilter = new sap.ui.model.Filter("INITIAL_OBJ", sap.ui.model.FilterOperator.EQ, "1");
       } else {
-        newFilter = new sap.ui.model.Filter("INITIAL_OBJ", sap.ui.model.FilterOperator.EQ, "");
+        newFilter = new sap.ui.model.Filter("INITIAL_OBJ", sap.ui.model.FilterOperator.EQ, null);
       }
       
       mBindingParams.filters.push(newFilter);
@@ -172,7 +172,7 @@ sap.ui.define(["umc/app/Controller/BaseController", "sap/m/MessageToast"], funct
               } else {
                 that._localModel.setProperty("/show", true);
                 that._localModel.setProperty("/save", false);
-                sap.m.MessageToast.show(that._PchResourceBundle.getText("SAVE_SUCCESS"));
+                sap.m.MessageToast.show(that._PchResourceBundle.getText("PCH10_SAVE_SUCCESS"));
               }
 
               that._setBusy(false);
@@ -366,7 +366,7 @@ sap.ui.define(["umc/app/Controller/BaseController", "sap/m/MessageToast"], funct
                 
     //             that.MessageTools._addMessage(that.MessageTools._getI18nTextInModel("pch", oResult.reTxt, this.getView()), null, 1, this.getView());
     //           } else {
-    //             sap.m.MessageToast.show(that._PchResourceBundle.getText("SAVE_SUCCESS"));
+    //             sap.m.MessageToast.show(that._PchResourceBundle.getText("PCH10_SAVE_SUCCESS"));
     //       }
           
     //       });
