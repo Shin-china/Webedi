@@ -9,6 +9,7 @@ import customer.dao.common.Dao;
 import customer.tool.DateTools;
 import customer.tool.UniqueIDTool;
 import io.vavr.collection.Seq;
+import com.sap.cds.ql.cqn.CqnUpdate;
 
 import com.sap.cds.ql.Delete;
 import com.sap.cds.ql.Insert;
@@ -176,14 +177,14 @@ public class PchD006 extends Dao {
         // 如果已经存在则更新，如果不存在则插入
         T06QuotationH byID = this.getByID(o.getQuoNumber(),o.getSalesNumber(),o.getQuoVersion());
         if (byID != null) {
-            Map<String, Object> data = getT06DaoData(t06QuotationH);
+            Map<String, Object> data = getT06DaoData(byID);
             Map<String, Object> keys = new HashMap<>();
             keys.put("SALES_NUMBER",o.getSalesNumber());
             keys.put("QUO_NUMBER",o.getQuoNumber());
             keys.put("QUO_VERSION",o.getQuoVersion());
-            PchD006.update(data, keys);
+            this.update(data, keys);
         } else {
-            PchD006.insert(t06QuotationH);
+            this.insert(o);
         }
     }
 
@@ -208,7 +209,7 @@ public class PchD006 extends Dao {
     public void update(Map<String, Object> data, Map<String, Object> keys) {
         data.put("UP_TIME", this.getNow());
         data.put("UP_BY", this.getUserId());
-        CqnUpdate update = Update.entity(Qms_.T06_QUOTATION_H, b -> b.matching(keys)).data(data);
+        CqnUpdate update = Update.entity(Pch_.T06_QUOTATION_H, b -> b.matching(keys)).data(data);
 
         db.run(update);
     }

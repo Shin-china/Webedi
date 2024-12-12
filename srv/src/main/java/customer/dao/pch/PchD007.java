@@ -57,7 +57,7 @@ public class PchD007 extends Dao {
         Optional<T07QuotationD> first = db
                 .run(Select.from(Pch_.T07_QUOTATION_D)
                         .where(o -> o.QUO_NUMBER().eq(quoNumber).and(o.SALES_NUMBER().eq(salesNumber))
-                                .and(o.QUO_VERSION().eq(quoVersion)).and(o.QUO_ITEM().eq(item))
+                                .and(o.QUO_VERSION().eq(quoVersion)).and(o.QUO_ITEM().eq(Intget.pastInt(item)))
                                 .and(o.SALES_D_NO().eq(dno))))
                 .first(T07QuotationD.class);
 
