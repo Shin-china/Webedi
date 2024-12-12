@@ -42,6 +42,11 @@ public class Pch08Service {
 
             pch08Dao.updatePch08(oldItems, newItems);
 
+            //更新抬头状态
+            oldItems.forEach(o->{
+                updateHeaderReplyStatus(o.getQuoNumber());
+            });
+
         });
     }
 
@@ -371,6 +376,9 @@ public class Pch08Service {
             t07New.setStatus("3");
             t07New.setDelFlag("N");
             d007Dao.insert(t07New);
+
+        //更新t06状态
+        updateHeaderReplyStatus(t07New.getQuoNumber());
     }
 
     private void updateCase1(JSONObject o, int size) {
@@ -606,6 +614,9 @@ public class Pch08Service {
         checkResult.setSTATUS("S");
         checkResult.setMESSAGE("実行成功");
 
+        //更新t06状态
+        updateHeaderReplyStatus(t07New.getQuoNumber());
+
         return checkResult;
     }
 
@@ -677,6 +688,19 @@ public class Pch08Service {
         uploadResult.setSTATUS("S");
         uploadResult.setMESSAGE("チェック成功");
         return uploadResult;
+    }
+
+    private void updateHeaderReplyStatus(String quoNumber){
+        if (quoNumber == null || quoNumber.isEmpty()){
+            return;
+        }
+
+        List<T07QuotationD> unReplyItems = pch08Dao.getT07UnReplyItemsByQuoNumber(quoNumber);
+        if (unReplyItems != null && !unReplyItems.isEmpty()){
+            return;
+        }
+
+        pch08Dao.updateT06ReplyStatus(quoNumber);
     }
 
 }

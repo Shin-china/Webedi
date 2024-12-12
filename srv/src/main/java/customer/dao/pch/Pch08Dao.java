@@ -12,6 +12,7 @@ import customer.bean.pch.Pch08QueryResult;
 import customer.dao.common.Dao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -31,12 +32,49 @@ public class Pch08Dao extends Dao {
              .listOf(T07QuotationD.class);
     }
 
+    public List<T07QuotationD> getT07UnReplyItemsByQuoNumber(String quoNumber) {
+        return db.run(
+                Select.from(Pch_.T07_QUOTATION_D)
+                    .where(o -> o.QUO_NUMBER().eq(quoNumber).and(o.DEL_FLAG().eq("N")).and(o.STATUS().ne("3"))
+                     ))
+            .listOf(T07QuotationD.class);
+    }
+
     public List<T07QuotationD> getT07ByQuoNumberItem(String quoNumber, Integer quoItem) {
         return db.run(
                 Select.from(Pch_.T07_QUOTATION_D)
                    .where(o -> o.QUO_NUMBER().eq(quoNumber).and(o.DEL_FLAG().eq("N")).and(o.QUO_ITEM().eq(quoItem))
                   ))
            .listOf(T07QuotationD.class);
+    }
+
+    public void updateT06ReplyStatus(String quoNumber){
+        T06QuotationH header = db.run(
+                Select.from(Pch_.T06_QUOTATION_H)
+                       .where(o -> o.QUO_NUMBER().eq(quoNumber).and(o.DEL_FLAG().eq("N")).and(o.STATUS().ne("3")))
+
+        ).single(T06QuotationH.class);
+
+        if (header == null) {
+            return;
+        }
+
+        T06QuotationH newHeader = T06QuotationH.create();
+        BeanUtils.copyProperties(header, newHeader);
+        newHeader.setStatus("3");
+        newHeader.setId(null);
+        newHeader.setUpTime(getNow());
+        newHeader.setUpBy(this.getUserId());
+
+        header.setDelFlag("Y");
+        header.setUpBy(this.getUserId());
+        header.setUpTime(getNow());
+        db.run(
+                Update.entity(Pch_.T06_QUOTATION_H)
+                        .data(header)
+        );
+
+        db.run(Insert.into(Pch_.T06_QUOTATION_H).entry(newHeader));
     }
 
     // 修改t06, t07
