@@ -145,7 +145,6 @@ public class SendService {
             // 如果已经存在则更新，如果不存在则插入
             PchD006.modefind(t06QuotationH);
 
-
             // 插入明细
             List<PchT07QuotationD> toItems = pchT06QuotationH.getToItemPo();
             if (toItems != null) {
@@ -157,7 +156,8 @@ public class SendService {
                     BeanUtils.copyProperties(pchT07QuotationD, t07QuotationD);
 
                     // // 如果已经存在则更新，如果不存在则插入
-                    T07QuotationD byID2 = PchD007.getId(t07QuotationD.getQuoNumber(),t07QuotationD.getSalesNumber(),t07QuotationD.getQuoVersion(),t07QuotationD.getQuoItem(),t07QuotationD.getSalesDNo());
+                    T07QuotationD byID2 = PchD007.getId(t07QuotationD.getQuoNumber(), t07QuotationD.getSalesNumber(),
+                            t07QuotationD.getQuoVersion(), t07QuotationD.getQuoItem(), t07QuotationD.getSalesDNo());
 
                     if (byID2 != null) {
 
@@ -166,11 +166,11 @@ public class SendService {
                         Map<String, Object> data = new HashMap<>();
                         getT07DaoData(t07QuotationD, data);
                         Map<String, Object> keys = new HashMap<>();
-                        keys.put("SALES_NUMBER",t07QuotationD.getSalesNumber());
-                        keys.put("QUO_NUMBER",t07QuotationD.getQuoNumber());
-                        keys.put("QUO_VERSION",t07QuotationD.getQuoVersion());
-                        keys.put("SALES_D_NO",t07QuotationD.getSalesDNo());
-                        keys.put("QUO_ITEM",t07QuotationD.getQuoItem());
+                        keys.put("SALES_NUMBER", t07QuotationD.getSalesNumber());
+                        keys.put("QUO_NUMBER", t07QuotationD.getQuoNumber());
+                        keys.put("QUO_VERSION", t07QuotationD.getQuoVersion());
+                        keys.put("SALES_D_NO", t07QuotationD.getSalesDNo());
+                        keys.put("QUO_ITEM", t07QuotationD.getQuoItem());
                         PchD007.update(data, keys);
 
                     } else {
@@ -249,6 +249,8 @@ public class SendService {
         data.put("STATUS", t07QuotationD.getStatus());
         data.put("CD_DATE", t07QuotationD.getCdDate());
         data.put("CD_DATE_TIME", t07QuotationD.getCdDateTime());
+        // 通用字段
+        data.put("DEL_FLAG", t07QuotationD.getDelFlag());
 
     }
 
