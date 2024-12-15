@@ -6,6 +6,7 @@ import java.time.format.DateTimeFormatter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.TransactionStatus;
 
 import com.alibaba.fastjson.JSON;
 
@@ -20,18 +21,21 @@ import cds.gen.sys.T06DocNo;
 import cds.gen.sys.T11IfManager;
 import customer.bean.mst.Value;
 import customer.bean.pch.SupList;
+import customer.comm.tool.MessageTools;
 import customer.bean.pch.SapPchRoot;
 import customer.bean.pch.SapPrRoot;
 import customer.bean.pch.SapSupRoot;
+import customer.bean.ifm.IFLog;
 import customer.bean.mst.SapMstRoot;
 import customer.dao.mst.MaterialDataDao;
 import customer.dao.pch.PurchaseDataDao;
 import customer.dao.sys.IFSManageDao;
 import customer.dao.sys.SysD008Dao;
 import customer.odata.S4OdataTools;
+import customer.service.comm.IfmService;
 
 @Component
-public class Ifm05PayService {
+public class Ifm05PayService extends IfmService {
 
     @Autowired
     private IFSManageDao ifsManageDao;
@@ -39,22 +43,55 @@ public class Ifm05PayService {
     @Autowired
     private PurchaseDataDao PchDao;
 
-    public String syncPay() {
+    private SapSupRoot get(IFLog log) throws Exception {
+
+        T11IfManager info = this.getIfMnager(log);
+
+        // 调用 Web Service 的 get 方法
+        String a = S4OdataTools.get(info, 1000, null, null);
+        return JSON.parseObject(a, SapSupRoot.class);
+
+    }
+
+    public void process(IFLog log) {
+
+        log.setTd(super.transactionInit()); // 事务初始换
 
         try {
+            this.insertLog(log);// 插入日志
 
-            T11IfManager interfaceConfig = ifsManageDao.getByCode("IFM42");
+            SapSupRoot data = get(log);
 
-            
-            if (interfaceConfig != null) {
+            // log.setTotalNum(data.get__count());// 得到记录总数
+            // int pageCount = log.getPageCount(); // 得到页数
 
-                String response = S4OdataTools.get(interfaceConfig, 1000, null, null);
+            onePage(log, data.getItems()); // 处理第0页的数据
 
-                SapSupRoot sapsupRoot = JSON.parseObject(response, SapSupRoot.class);
+            log.setSuccessMsg(MessageTools.getMsgText(rbms, "IFM05_01", log.getSuccessNum(), log.getErrorNum(),
+                    log.getConsumTimeS()));
 
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.setFairMsg(e.getMessage());
+        } finally {
+            log.setFinish(); // 设定接口完了时间
+            this.updateLogAndIf(log, log.getIfConfig());
 
-                for (SupList suplist : sapsupRoot.getItems()) {
+        }
+
+    }
+
+    private void onePage(IFLog log, ArrayList<SupList> items) {
+
+        if (items != null && items.size() > 0) {
+
+            for (SupList suplist : items) {
+
+                TransactionStatus s = null;
+
+                try {
+
+                    s = this.begin(log.getTd()); // 开启新事务
 
                     T04PaymentH o = T04PaymentH.create();
 
@@ -70,10 +107,6 @@ public class Ifm05PayService {
                     o.setSendFlag(suplist.getSendflag());
                     o.setSupplierDescription(suplist.getSuppliername());
                     o.setInvDate(suplist.getDocumentdate());
-
-                    // if(suplist.getSupplierinvoiceitem()==null){
-                    //     System.out.println("2222");
-                    // }
 
                     PchDao.modifyT04(o);
 
@@ -105,22 +138,21 @@ public class Ifm05PayService {
                     p.setGrDate(suplist.getPostingdate1());
                     p.setTaxRate(suplist.getTaxrate());
                     p.setMatDesc(suplist.getPurchaseorderitemtext());
-                    PchDao.modifyT05(p);
 
+                    PchDao.modifyT05(p);
+                    log.addSuccessNum();
+                    this.commit(s);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+
+                } finally {
+                    this.rollback(s); // 回滚事务
                 }
 
-                return "success";
-            } else {
-
-                return "error";
             }
-
-        } catch (Exception e) {
-
-            return e.getMessage();
-
         }
-
     }
+
 
 }

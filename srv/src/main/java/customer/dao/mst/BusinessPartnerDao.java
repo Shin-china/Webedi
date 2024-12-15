@@ -38,12 +38,15 @@ public class BusinessPartnerDao extends Dao {
     // Insert
     public void insert(T03SapBp o) {
         o.setCdTime(getNow());
+        o.setCdBy(getUserId());
         db.run(Insert.into(Mst_.T03_SAP_BP).entry(o));
     }
 
     // Update
     public void update(T03SapBp o) {
-        o.setCdTime(getNow());
+        o.setUpTime(getNow());
+        o.setUpBy(getUserId());
         db.run(Update.entity(Mst_.T03_SAP_BP).entry(o));
     }
+
 }

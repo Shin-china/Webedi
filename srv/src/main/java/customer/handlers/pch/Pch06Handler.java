@@ -20,7 +20,9 @@ import cds.gen.tableservice.PchT06PoItem_;
 import cds.gen.tableservice.TableService_;
 import cds.gen.MailBody;
 import cds.gen.MailJson;
+import customer.bean.ifm.IFLog;
 import customer.bean.pch.Pch06DataList;
+import customer.dao.sys.IFSManageDao;
 import customer.service.ifm.Ifm03PoService;
 import customer.service.pch.Pch06Service;
 import customer.service.sys.EmailServiceFun;
@@ -65,8 +67,8 @@ public class Pch06Handler implements EventHandler {
         // if (!list.getErr()) {
         // pchService.detailsSave(list);
         // }
-
-        Ifm03PoService.syncPo();
+        IFLog ifLog = new IFLog(IFSManageDao.IF_S4_PO);    
+        Ifm03PoService.process(ifLog);
         context.setResult("successs");
     }
 
