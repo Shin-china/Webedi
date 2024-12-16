@@ -600,17 +600,11 @@ sap.ui.define(
 		_getDownloadName: function (templateId) {
 			var downloadName = "";
 			switch (templateId) {
-				case "test03/test2":
+				case "uwms_umce_dev_zws/T":
 					downloadName = "注文書";
 					break;
-				case "test03/test1":
+				case "uwms_umce_dev_nps/T":
 					downloadName = "納品書";
-					break;
-        case "test02/test05":
-          downloadName = "支払通知書";
-          break;
-        case "test02/test03":
-          downloadName = "買掛金明細";
           break;
 			}
 			var date = new Date();

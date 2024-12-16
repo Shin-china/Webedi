@@ -45,7 +45,7 @@ public class Pch10Save {
     @JSONField(name = "BP_NUMBER")
     private Integer BP_NUMBER;
     @JSONField(name = "PERSON_NO1")
-    private Integer PERSON_NO1;
+    private BigDecimal PERSON_NO1;
     @JSONField(name = "YLP")
     private String YLP;
     @JSONField(name = "MANUL")
@@ -593,19 +593,19 @@ public class Pch10Save {
         QUO_ITEM = qUO_ITEM;
     }
 
-    public Integer getPERSON_NO1() {
-        return PERSON_NO1;
-    }
-
-    public void setPERSON_NO1(Integer pERSON_NO1) {
-        PERSON_NO1 = pERSON_NO1;
-    }
-
     public Integer getCOPYBY() {
         return COPYBY;
     }
 
     public void setCOPYBY(Integer cOPYBY) {
         COPYBY = cOPYBY;
+    }
+
+    public BigDecimal getPERSON_NO1() {
+        return PERSON_NO1;
+    }
+
+    public void setPERSON_NO1(BigDecimal pERSON_NO1) {
+        PERSON_NO1 = pERSON_NO1;
     }
 }

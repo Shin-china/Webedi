@@ -1,10 +1,9 @@
 package customer.bean.pch;
 
-import com.alibaba.fastjson.annotation.JSONField;
-import lombok.Data;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
+
+import com.alibaba.fastjson.annotation.JSONField;
 
 public class Pch08Template {
     @JSONField(name = "QUO_NUMBER")
@@ -74,7 +73,7 @@ public class Pch08Template {
     private Integer BP_NUMBER;
 
     @JSONField(name = "PERSON_NO1")
-    private Integer PERSON_NO1;
+    private BigDecimal PERSON_NO1;
 
     @JSONField(name = "YLP")
     private String YLP;
@@ -357,14 +356,6 @@ public class Pch08Template {
         BP_NUMBER = bP_NUMBER;
     }
 
-    public Integer getPERSON_NO1() {
-        return PERSON_NO1;
-    }
-
-    public void setPERSON_NO1(Integer pERSON_NO1) {
-        PERSON_NO1 = pERSON_NO1;
-    }
-
     public String getYLP() {
         return YLP;
     }
@@ -643,6 +634,14 @@ public class Pch08Template {
 
     public void setUMC_COMMENT_2(String uMC_COMMENT_2) {
         UMC_COMMENT_2 = uMC_COMMENT_2;
+    }
+
+    public BigDecimal getPERSON_NO1() {
+        return PERSON_NO1;
+    }
+
+    public void setPERSON_NO1(BigDecimal pERSON_NO1) {
+        PERSON_NO1 = pERSON_NO1;
     }
 
 }
