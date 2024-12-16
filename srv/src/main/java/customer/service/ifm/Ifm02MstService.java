@@ -1,9 +1,12 @@
 package customer.service.ifm;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.TransactionStatus;
 
 import com.alibaba.fastjson.JSON;
 
@@ -12,14 +15,23 @@ import cds.gen.mst.T06MatPlant;
 import cds.gen.sys.T06DocNo;
 import cds.gen.sys.T11IfManager;
 import customer.bean.mst.Value;
+import customer.comm.tool.MessageTools;
+import customer.bean.ifm.IFLog;
 import customer.bean.mst.SapMstRoot;
 import customer.dao.mst.MaterialDataDao;
 import customer.dao.sys.IFSManageDao;
 import customer.dao.sys.SysD008Dao;
 import customer.odata.S4OdataTools;
+import customer.service.comm.IfmService;
+import customer.tool.StringTool;
+import customer.odata.S4OdataTools;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Component
-public class Ifm02MstService {
+public class Ifm02MstService extends IfmService {
+    private static final Logger logger = LoggerFactory.getLogger(Ifm02MstService.class);
 
     @Autowired
     private IFSManageDao ifsManageDao1;
@@ -32,66 +44,108 @@ public class Ifm02MstService {
 
     public String tt;
 
-    public void syncMst() {
+    // 得到SAP的物料信息
+    private SapMstRoot getS4(IFLog log, Integer currentPage, String matId) throws Exception {
+        
+        T11IfManager info = this.getIfMnager(log);
+        HashMap<String, String> addParaMap = S4OdataTools.setCountPara(true, null);
+        String para = "";
+        if (!StringTool.isEmpty(matId)) {
+            para = "Product  eq '" + matId + "' "; // 设定最大时间查询条件
+            addParaMap.put("$filter", StringTool.encodeURIComponent(para)); // Greater than or equal
+        } else {
+            if (!StringTool.isEmpty(info.getNextPara())) {
+                para = "LastChangeDateTime  ge " + info.getNextPara(); // 设定最大时间查询条件
+                addParaMap.put("$filter", StringTool.encodeURIComponent(para)); // Greater than or equal
+            }
+        }
 
-        T11IfManager interfaceConfig = ifsManageDao1.getByCode("IFM39");
+        log.gett15log().setIfPara(para);
+
+        String a = S4OdataTools.get(info, currentPage, addParaMap, null);
+
+        SapMstRoot ps = JSON.parseObject(a, SapMstRoot.class);
+
+        if (currentPage == 0) { // 第一次执行的时候，指定取的总记录数
+            ps.set__count(S4OdataTools.getCount(a));
+        }
+
+        return ps;
+    }
+
+    public IFLog process(IFLog log, String matId) {
+        log.setTd(super.transactionInit()); // 事务初始换
 
         try {
+            this.insertLog(log);// 插入日志
+            SapMstRoot data = getS4(log, 0, matId);
+            log.setTotalNum(data.get__count());// 得到记录总数
+            int pageCount = log.getPageCount(); // 得到页数
+            onePage(log, data.getValue()); // 处理第0页的数据
 
-            String response = S4OdataTools.get(interfaceConfig, null, null, null);
-            SapMstRoot sapMstRoot = JSON.parseObject(response, SapMstRoot.class);
-
-            for (Value value : sapMstRoot.getValue()) {
-
-                T01SapMat o = T01SapMat.create();
-
-                o.setMatId(value.getProduct());
-                o.setCdBy(value.getCreatedByUser());
-                o.setUpBy(value.getLastChangedByUser());
-
-                String unittrans = sysD008Dao.getDnameByHcodeDcode("S4_UNIT_TEC_2_USER", value.getBaseUnit());
-
-                o.setMatUnit(unittrans);
-
-                o.setMatType(value.getProductType());
-                o.setMatGroup(value.getProductGroup());
-                o.setManuCode(value.getManufacturerNumber());
-                o.setManuMaterial(value.getProductManufacturerNumber());
-
-                o.setMatName(value.get_ProductDescription().get(0).getProductDescription());
-                // o.setMatStatus(value.getCrossPlantStatus());
-                // o.setMatName(value.getBaseUnit());
-                // o.setManuCode(value.getBaseUnit());
-                // o.setManuMaterial(value.getBaseUnit());
-                o.setCustMaterial(value.getYY1_CUSTOMERMATERIAL_PRD());
-                MSTDao.modify(o);
-
-                if (value.get_ProductPlant().size() > 0) {
-
-                    T06MatPlant o2 = T06MatPlant.create();
-
-                    value.get_ProductPlant().get(0).getProductIsCriticalPrt();
-
-                    o2.setMatId(value.get_ProductPlant().get(0).getProduct());
-                    o2.setPlantId(value.get_ProductPlant().get(0).getPlant());
-                    if (value.get_ProductPlant().get(0).getProductIsCriticalPrt()) {
-                        o2.setImpComp("X");
-                    } else {
-                        o2.setImpComp(" ");
-                    }
-
-                    MSTDao.modifyt06(o2);
-
+            if (pageCount > 1) {
+                for (int i = 1; i < pageCount; i++) {
+                    data = getS4(log, i, matId);
+                    onePage(log, data.getValue());
                 }
 
             }
 
-        } catch (Exception e) {
+            if (StringTool.isEmpty(matId)) {
+                log.setNextPara();// 设定最大变更时间，作为下次的参数
+            }
 
-            System.out.println(e.getMessage());
+            log.setSuccessMsg(MessageTools.getMsgText(rbms, "IFM02_01", log.getSuccessNum(), log.getErrorNum(),
+                    log.getConsumTimeS()));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.setFairMsg(e.getMessage());
+        } finally {
+            log.setFinish(); // 设定接口完了时间
+            this.updateLogAndIf(log, log.getIfConfig());
 
         }
 
+        return log;
+
+    }
+
+    public IFLog onePage(IFLog log, List<Value> list) {
+        String matId = null;
+        if (list != null && list.size() > 0) {
+
+            for (Value v : list) { // 单个品目
+
+                TransactionStatus s = null;
+
+                try {
+                    s = this.begin(log.getTd()); // 开启新事务
+                    matId = v.getProduct();
+
+                    T01SapMat ifMatInfo = MSTDao.S4Mat_2_locl_Mat(v, T01SapMat.create(matId)); // 得到接口获取的品目信息
+
+                    MSTDao.modify(ifMatInfo);
+
+                    log.setMaxInstant(ifMatInfo.getSapUpTime()); // 设定当前履历的最大修改时间
+
+                    this.commit(s); // 提交事务
+
+                    if (log.getSuccessNum() % printLogRows == 0) {
+                        logger.info("当前处理{0}条品目", log.getSuccessNum());
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    logger.warn("物料:{0}处理异常{1}", matId, e.getMessage());
+                } finally {
+                    this.rollback(s); // 回滚事务
+                }
+
+            }
+
+        }
+        return log;
     }
 
 }

@@ -24,6 +24,7 @@ import cds.gen.pch.T01PoH;
 import cds.gen.pch.T02PoD;
 import cds.gen.pch.T03PoC;
 import cds.gen.sys.T11IfManager;
+import customer.bean.ifm.IFLog;
 import customer.bean.pch.Confirmation;
 import customer.bean.pch.Item;
 import customer.bean.pch.Pch01Sap;
@@ -32,10 +33,13 @@ import customer.dao.pch.PchD001;
 import customer.dao.pch.PurchaseDataDao;
 import customer.dao.sys.IFSManageDao;
 import customer.odata.S4OdataTools;
+import customer.service.comm.IfmService;
 import customer.service.comm.TranscationService;
 
 @Component
-public class Ifm03PoService extends TranscationService {
+public class Ifm03PoService extends IfmService {
+
+
     @Autowired
     private PurchaseDataDao PchDao;
 
@@ -51,13 +55,11 @@ public class Ifm03PoService extends TranscationService {
         T11IfManager webServiceConfig = ifsManageDao.getByCode("IFM41");
         // 调用 Web Service 的 get 方法
         String response = S4OdataTools.get(webServiceConfig, 0, null, null);
-
-        System.out.println(response);
-
         return JSON.parseObject(response, SapPchRoot.class);
+
     }
 
-    public void syncPo() throws UnsupportedOperationException, IOException {
+    public void process(IFLog log) throws UnsupportedOperationException, IOException {
 
         Pch01Sap sap = new Pch01Sap();
         // 获取 Web Service 配置信息
@@ -67,9 +69,11 @@ public class Ifm03PoService extends TranscationService {
         HashSet<String> PoSet = getSet(sapPchRoot);
 
         TransactionDefinition td = transactionInit(); // 初始化事务
+        log.setTd(super.transactionInit()); // 事务初始换
 
         for (String po : PoSet) { // 循环一个PO
-            this.processOne(td, sap, po, sapPchRoot);
+            this.insertLog(log);
+            this.processOne(td, sap, po, sapPchRoot, log);
         }
 
         for (String poDel : sap.getPoDelSet()) {
@@ -81,8 +85,7 @@ public class Ifm03PoService extends TranscationService {
                 // 全部明细都有删除标记
                 sap.getSupplierDeleteMap().put(PoComp + supplier, "来自287行，全部明细都有删除标记，肯定是删除");
 
-            }
-            else {
+            } else {
                 // 部分明细有删除标记 ，但是删除标记更新了，所以也是更新。
                 sap.getSupplierUpdateMap().put(PoComp + supplier, "来自290行，部分明细有删除标记，肯定是更新");
             }
@@ -94,7 +97,7 @@ public class Ifm03PoService extends TranscationService {
 
     }
 
-    private Pch01Sap processOne(TransactionDefinition td, Pch01Sap sap, String poNo, SapPchRoot sapPchRoot) {
+    private Pch01Sap processOne(TransactionDefinition td, Pch01Sap sap, String poNo, SapPchRoot sapPchRoot, IFLog log) {
         TransactionStatus s = null;
 
         try {
@@ -114,8 +117,7 @@ public class Ifm03PoService extends TranscationService {
 
                     // 当前02表中没有本条，传进来的是删除标记还是x ，则不进行插入操作
 
-                }
-                else {
+                } else {
                     T01PoH o = T01PoH.create();
 
                     T01PoH T01poExist = PchDao.getByID(Items.getPurchaseorder());
@@ -134,8 +136,7 @@ public class Ifm03PoService extends TranscationService {
 
                         }
 
-                    }
-                    else { // 头没找到，创建
+                    } else { // 头没找到，创建
 
                         sap.getSupplierCreatMap().put(PoComp + supplier,
                                 "来自105行，头没找到，创建发信对象" + Items.getPurchaseorder() + Items.getPurchaseorderitem());
@@ -189,6 +190,7 @@ public class Ifm03PoService extends TranscationService {
                     o.setSapCdBy(Items.getCreatedbyuser());
 
                     PchDao.modify(o);
+
                     // ------------------------------------------------------------------------------------以上是对t01的修改
 
                     T02PoD o2 = T02PoD.create();
@@ -221,8 +223,7 @@ public class Ifm03PoService extends TranscationService {
                         // 计算并设置价格，使用指定为具有两位小数的舍入模式
                         BigDecimal delPrice = netpriceAmount.divide(netPriceQuantity, 2, RoundingMode.HALF_UP);
                         o2.setDelPrice(delPrice);
-                    }
-                    else {
+                    } else {
                         // 处理除以 0 的情况，例如设置为 0 或抛出异常
                         o2.setDelPrice(BigDecimal.ZERO); // 或其他逻辑
                     }
@@ -280,12 +281,12 @@ public class Ifm03PoService extends TranscationService {
                 }
 
             }
+            log.addSuccessNum();
             this.commit(s);
 
-        }
-        catch (Exception e) {
-        }
-        finally {
+        } catch (Exception e) {
+        } finally {
+
             this.rollback(s);
         }
 
@@ -298,8 +299,7 @@ public class Ifm03PoService extends TranscationService {
             String poNo = Items.getPurchaseorder();
             if (PoSet.contains(poNo)) {
 
-            }
-            else {
+            } else {
                 PoSet.add(poNo);
             }
         }

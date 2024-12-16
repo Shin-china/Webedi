@@ -61,6 +61,7 @@ public class Application implements CommandLineRunner {
 
 		// 设定S4 DESTINATION
 		S4OdataTools.desName = configDao.getConfig("S4_DESTINATION").getConValue();
+		log.info("desName: " + S4OdataTools.desName);
 
 		log.info("init finish ************************************");
 	}

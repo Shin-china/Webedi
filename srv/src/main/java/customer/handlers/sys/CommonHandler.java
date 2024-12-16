@@ -38,12 +38,15 @@ import cds.gen.pch.T06QuotationH;
 import cds.gen.pch.T07QuotationD;
 import cds.gen.sys.T13Attachment;
 import customer.bean.com.UmcConstants;
+import customer.bean.ifm.IFLog;
 import customer.dao.pch.Pch08Dao;
 import customer.dao.pch.PchD006;
 import customer.dao.pch.PchD007;
 import customer.dao.sys.DocNoDao;
+import customer.dao.sys.IFSManageDao;
 import customer.dao.sys.T13AttachmentDao;
 import customer.odata.BaseMoveService;
+import customer.service.ifm.Ifm01BpService;
 import customer.service.sys.ObjectStoreService;
 
 @Component
@@ -63,6 +66,20 @@ public class CommonHandler implements EventHandler {
     @Autowired
     SendService sendService;
     private static final Logger logger = LoggerFactory.getLogger(CommonHandler.class);
+
+    @Autowired
+    private Ifm01BpService ifm01BpService;
+
+    // job test 外部接口
+    @On(event = "aaa")
+    public void aaa(AaaContext context) {
+
+        IFLog ifLog = new IFLog(IFSManageDao.IF_S4_BP);
+        ifm01BpService.process(ifLog);
+
+        context.setResult("OK");
+
+    }
 
     // IFM054 購買見積依頼受信
     @On(event = "pch06BatchImport")
