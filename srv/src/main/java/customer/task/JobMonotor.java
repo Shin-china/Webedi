@@ -50,14 +50,14 @@ public class JobMonotor {
     // 改造 定时任务
     @Scheduled(cron = "0 0/5 * * * ?")
     public void poolMonitor() throws IOException {
-
+        // BP 同期 标准api
         IFLog ifLog = new IFLog(IFSManageDao.IF_S4_BP);
         ifm01BpService.process(ifLog);
     }
     
     @Scheduled(cron = "0 0/5 * * * ?")
     public void poolMonitor6() throws IOException {
-
+        // BP　PURCHASE 标准api
         IFLog ifLog = new IFLog(IFSManageDao.IF_S4_BPPURCHASE);
         ifm06BpPurchaseService.process(ifLog);
     }
@@ -74,7 +74,6 @@ public class JobMonotor {
     public void poolMonitor3() throws IOException {
 
         // IF041 po同期 自开发
-
         IFLog ifLog = new IFLog(IFSManageDao.IF_S4_PO);
         ifm03PoService.process(ifLog);
 
@@ -83,7 +82,7 @@ public class JobMonotor {
     @Scheduled(cron = "0 0/5 * * * ?")
     public void poolMonitor4() throws IOException {
 
-        // IF065 フォーキャスト連携
+        // IF065 フォーキャスト連携 自开发
         IFLog ifLog = new IFLog(IFSManageDao.IF_S4_PR);
         ifm04PrService.process(ifLog);
 
@@ -92,7 +91,7 @@ public class JobMonotor {
     @Scheduled(cron = "0 0/5 * * * ?")
     public void poolMonitor5() throws IOException {
 
-        // IF042 PO支払通知同期
+        // IF042 PO支払通知同期 自开发
         IFLog ifLog = new IFLog(IFSManageDao.IF_S4_PAY);
         ifm05PayService.process(ifLog);
 

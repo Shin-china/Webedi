@@ -1,5 +1,6 @@
 package customer.dao.mst;
 
+import java.util.HashMap;
 import java.util.Optional;
 
 import org.bouncycastle.jcajce.provider.asymmetric.dsa.DSASigner.noneDSA;
@@ -11,6 +12,8 @@ import com.sap.cds.ql.Update;
 
 import cds.gen.mst.T01SapMat;
 import cds.gen.mst.T06MatPlant;
+import cds.gen.sys.Sys_;
+import cds.gen.sys.T08ComOpD;
 import cds.gen.mst.Mst_;
 import customer.bean.mst.Value;
 import customer.bean.mst._ProductDescription;
@@ -18,7 +21,6 @@ import customer.bean.mst._ProductPlant;
 import customer.comm.constant.ConfigConstants;
 import customer.comm.odata.OdateValueTool;
 import customer.dao.common.Dao;
-
 
 import java.text.ParseException;
 
@@ -49,12 +51,14 @@ public class MaterialDataDao extends Dao {
     // Insert
     public void insert(T01SapMat o) {
         o.setCdTime(getNow());
+        o.setCdBy(getUserId());
         db.run(Insert.into(Mst_.T01_SAP_MAT).entry(o));
     }
 
     // Update
     public void update(T01SapMat o) {
-        o.setCdTime(getNow());
+        o.setUpTime(getNow());
+        o.setUpBy(getUserId());
         db.run(Update.entity(Mst_.T01_SAP_MAT).entry(o));
     }
 
@@ -87,22 +91,54 @@ public class MaterialDataDao extends Dao {
 
     private void update2(T06MatPlant o2) {
 
-        o2.setCdTime(getNow());
+        o2.setUpTime(getNow());
+        o2.setUpBy(getUserId());
+
         db.run(Update.entity(Mst_.T06_MAT_PLANT).entry(o2));
     }
 
     private void insert2(T06MatPlant o2) {
 
         o2.setCdTime(getNow());
+        o2.setCdBy(getUserId());
         db.run(Insert.into(Mst_.T06_MAT_PLANT).entry(o2));
 
     }
 
-    public T01SapMat S4Mat_2_locl_Mat(Value s4, T01SapMat mat) throws ParseException {    // 本地化的物料信息
+    public String getDnameByHcodeDcode(String h_code, String d_code) {
+
+        Optional<T08ComOpD> listOf = db.run(
+                Select.from(Sys_.T08_COM_OP_D)
+                        .where(o -> o.H_CODE().eq(h_code).and(o.D_CODE().eq(d_code))))
+
+                .first(T08ComOpD.class);
+
+        if (listOf.isPresent()) {
+
+            return listOf.get().getDName();
+
+        }
+
+        return d_code;
+
+    }
+
+    public T01SapMat S4Mat_2_locl_Mat(Value s4, T01SapMat mat) throws ParseException { // 本地化的物料信息
 
         String matId = s4.getProduct();
 
         mat.setMatId(matId);
+
+        String dbMat = s4.getBaseUnit();
+
+        if (dbMat != null) {
+
+            String dbMatUser = getDnameByHcodeDcode("S4_UNIT_TEC_2_USER", dbMat);
+
+            mat.setMatUnit(dbMatUser);
+
+        }
+
         mat.setMatUnit(s4.getBaseUnit());
         mat.setMatType(s4.getProductType());
         mat.setMatGroup(s4.getProductGroup());
@@ -147,6 +183,5 @@ public class MaterialDataDao extends Dao {
 
         return mat;
     }
-    
 
 }
