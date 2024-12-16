@@ -122,22 +122,19 @@ public class Ifm02MstService extends IfmService {
                 try {
                     s = this.begin(log.getTd()); // 开启新事务
                     matId = v.getProduct();
-
+                    
                     T01SapMat ifMatInfo = MSTDao.S4Mat_2_locl_Mat(v, T01SapMat.create(matId)); // 得到接口获取的品目信息
 
                     MSTDao.modify(ifMatInfo);
+
+                    log.addSuccessNum();
 
                     log.setMaxInstant(ifMatInfo.getSapUpTime()); // 设定当前履历的最大修改时间
 
                     this.commit(s); // 提交事务
 
-                    if (log.getSuccessNum() % printLogRows == 0) {
-                        logger.info("当前处理{0}条品目", log.getSuccessNum());
-                    }
-
                 } catch (Exception e) {
                     e.printStackTrace();
-                    logger.warn("物料:{0}处理异常{1}", matId, e.getMessage());
                 } finally {
                     this.rollback(s); // 回滚事务
                 }

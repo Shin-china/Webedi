@@ -29,6 +29,7 @@ import customer.bean.pch.Confirmation;
 import customer.bean.pch.Item;
 import customer.bean.pch.Pch01Sap;
 import customer.bean.pch.SapPchRoot;
+import customer.comm.tool.MessageTools;
 import customer.dao.pch.PchD001;
 import customer.dao.pch.PurchaseDataDao;
 import customer.dao.sys.IFSManageDao;
@@ -75,6 +76,9 @@ public class Ifm03PoService extends IfmService {
             this.insertLog(log);
             this.processOne(td, sap, po, sapPchRoot, log);
         }
+
+        log.setSuccessMsg(MessageTools.getMsgText(rbms, "IFM06_01", log.getSuccessNum(), log.getErrorNum(),
+                log.getConsumTimeS()));
 
         for (String poDel : sap.getPoDelSet()) {
             String supplier = PchDao.getSupplierByPO(poDel);
@@ -283,6 +287,7 @@ public class Ifm03PoService extends IfmService {
             }
             log.addSuccessNum();
             this.commit(s);
+
 
         } catch (Exception e) {
         } finally {

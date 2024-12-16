@@ -125,10 +125,6 @@ public class Ifm04PrService extends IfmService {
                     this.commit(s); // 提交事务
                     log.addSuccessNum();
 
-                    if (log.getSuccessNum() % printLogRows == 0) {
-                        logger.info("当前处理{0}条品目", log.getSuccessNum());
-                    }
-
                 } catch (Exception e) {
                     e.printStackTrace();
 
