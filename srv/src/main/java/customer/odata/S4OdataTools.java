@@ -1,4 +1,4 @@
-package customer.usapbe.comm.odata;
+package customer.odata;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,8 +19,6 @@ import org.slf4j.LoggerFactory;
 import cds.gen.sys.T11IfManager;
 import customer.comm.tool.HttpTools;
 import customer.comm.tool.StringTool;
-
-import customer.odata.S4OdataBase;
 
 public class S4OdataTools extends S4OdataBase {
 
