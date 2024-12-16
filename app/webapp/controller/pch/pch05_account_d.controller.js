@@ -145,7 +145,7 @@ sap.ui.define([
                     let sResponse = json2xml(oData, options);
 						console.log(sResponse)
 						that.setSysConFig().then(res => {
-							that.PrintTool._detailSelectPrintEmil(that, sResponse, "test02/test03", oData, null,"買掛金明細", null, null).then(()=>{
+							that.PrintTool._detailSelectPrintEmil(that, sResponse, that.getGlobProperty("ADS_template_form") +"_rep03/T", oData, null,"買掛金明細", null, null).then(()=>{
 								that.PrintTool.getImageBase64(that._blob).then((odata)=>{
 
 								var mailobj = {
@@ -292,7 +292,7 @@ sap.ui.define([
                     // 设置文件名为当前日期和时间
                     var fileName = `買掛金明細_${sDate}${sTime}.pdf`;
                         // 调用打印方法
-                        that.PrintTool._detailSelectPrintDow(that, sResponse, "test02/test03", oData, null, fileName, null, null);
+                        that.PrintTool._detailSelectPrintDow(that, sResponse, that.getGlobProperty("ADS_template_form") +"_rep03/T", oData, null, fileName, null, null);
                     });
                 });
             }

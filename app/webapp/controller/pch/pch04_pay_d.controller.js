@@ -278,7 +278,7 @@ sap.ui.define([
                     console.log(sResponse);
                     that.setSysConFig().then(res => {
                         // 调用打印方法
-                        that.PrintTool._detailSelectPrintDow(that, sResponse, "test02/test05", J, null,fileName, null, null).then((oData) => {
+                        that.PrintTool._detailSelectPrintDow(that, sResponse, that.getGlobProperty("ADS_template_form") +"_rep04/T", J, null,fileName, null, null).then((oData) => {
 
                         var sapPo = {
                             po: IdList[0],

@@ -617,6 +617,7 @@ sap.ui.define([
 
 		},
 		_printZWSPrintEmail(that, item, cds, key,list,name,supplier,fax,pdfName) {
+			var that = this;
 			let options = { compact: true, ignoreComment: true, spaces: 4 };
 			return new Promise(function (resolve, reject) {
 			//打印前先获取打印数据npm
@@ -624,7 +625,8 @@ sap.ui.define([
 				let sResponse = json2xml(oData, options);
 				console.log(sResponse)
 
-				that.PrintTool._detailSelectPrintEmil(that, sResponse, "test03/test2", oData, null, "注文書", null, null, null).then((oData) => {
+
+				that.PrintTool._detailSelectPrintEmil(that, sResponse, that.getGlobProperty("ADS_template_form") +"_rep02/T", oData, null, "注文書", null, null, null).then((oData) => {
 
 					//完成后是否更新确认,false不更新Y
 					that.PrintTool.getImageBase64(oData).then((odata2) => {
@@ -648,13 +650,14 @@ sap.ui.define([
 		},
 		_printZWSPrint(that, item, cds, key,_name) {
 			let options = { compact: true, ignoreComment: true, spaces: 4 };
+			var that = this;
 			return new Promise(function (resolve, reject) {
 			//打印前先获取打印数据
 			that.PrintTool._getPrintDataInfo(that, item, cds, key).then((oData) => {
 				let sResponse = json2xml(oData, options);
 				console.log(sResponse)
 
-				that.PrintTool._detailSelectPrintDowS(that, sResponse, "test03/test2", oData, null, _name, null, null, null).then((oData) => {
+				that.PrintTool._detailSelectPrintDowS(that, sResponse, that.getGlobProperty("ADS_template_form") +"_rep02/T", oData, null, _name, null, null, null).then((oData) => {
 					//po=po+podno
 					var sapPo = {
 						po: item[0],
@@ -740,7 +743,7 @@ sap.ui.define([
 				console.log(sResponse);
 
 				// that.PrintTool._detailSelectPrint(that, sResponse, "test/test", oData, null, null, null, null)
-				that.PrintTool._detailSelectPrintEmil(that, sResponse, "test03/test1", oData, null, "納品書", null, null, null).then((oData) => {
+				that.PrintTool._detailSelectPrintEmil(that, sResponse, that.getGlobProperty("ADS_template_form") +"_rep01/T", oData, null, "納品書", null, null, null).then((oData) => {
 					// var sapPo = {
 					// 	po :PoList.join(","),
 					// 	tpye :"PCH03",
@@ -778,7 +781,7 @@ sap.ui.define([
 				console.log(sResponse)
 
 				// that.PrintTool._detailSelectPrint(that, sResponse, "test/test", oData, null, null, null, null)
-				that.PrintTool._detailSelectPrintDowS(that, sResponse, "test03/test1", oData, null, _name, null, null, null).then((oData) => {
+				that.PrintTool._detailSelectPrintDowS(that, sResponse, that.getGlobProperty("ADS_template_form") +"_rep01/T", oData, null, _name, null, null, null).then((oData) => {
 					var sapPo = {
 						po:  myMap.get(item),
 						type: "PCH03",
