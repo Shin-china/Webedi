@@ -1,4 +1,4 @@
-using {TableService as VIEW} from '../srv/tables';
+using {TableService as view} from './table';
 using {SYS} from '../db/model-sys';
 
 extend service TableService with {
