@@ -4,7 +4,13 @@ using {SYS} from '../db/model-sys';
 
 
 extend service TableService with {
-
+  entity COM_Y_N_DROPDOWN         as
+    select from SYS.T08_COM_OP_D {
+      key D_CODE as OP_VALUE,
+          D_NAME as OP_NAME
+    }
+    where
+      H_CODE = 'Y_OR_N';
   entity PCH01_STATUS_POP_1 as
     select from SYS.T07_COM_OP_H T01
     inner join SYS.T08_COM_OP_D T02
