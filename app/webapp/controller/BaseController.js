@@ -1460,7 +1460,9 @@ sap.ui.define([
               responseType: 'blob',
               data: JSON.stringify(mailobj),
               success: function (data) {
-                sap.m.MessageToast.show(that.MessageTools._getI18nTextInModel("com", "email_msg_s", that.getView()))
+                sap.m.MessageToast.show(that.MessageTools._getI18nTextInModel("com", "email_msg_s", that.getView()),{
+                  duration: 3000
+                })
               },
               error: function (error) {
                 sap.m.MessageToast.show("error");
