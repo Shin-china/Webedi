@@ -1,0 +1,224 @@
+<mvc:View controllerName="umc.app.controller.sys.sys03_dict_d"
+	xmlns:smartfield="sap.ui.comp.smartfield"
+	xmlns:smartform="sap.ui.comp.smartform"
+	xmlns:core="sap.ui.core"
+	xmlns="sap.m"
+	xmlns:m="sap.m"
+	xmlns:f="sap.f"
+	xmlns:l="sap.ui.layout"
+	xmlns:smartFilterBar="sap.ui.comp.smartfilterbar"
+	xmlns:smartTable="sap.ui.comp.smarttable"
+	xmlns:sv="sap.ui.comp.smartvariants"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:uxap="sap.uxap"
+	xmlns:table="sap.ui.table"
+	xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+	<uxap:ObjectPageLayout id="_IDGenObjectPageLayout1" busy="{localModel>/isBusy}" showFooter="true">
+		<uxap:headerTitle>
+			<uxap:ObjectPageHeader id="_IDGenObjectPageHeader1" objectTitle="{sys>SYS03_DICT_C}">
+
+				<uxap:navigationBar>
+					<m:Bar id="_IDGenBar1">
+						<m:contentRight>
+							<m:Button id="_IDGenButtonb" icon="sap-icon://nav-back" tooltip="nav-back" press="navTo('RouteList_sys03')"/>
+						</m:contentRight>
+
+					</m:Bar>
+				</uxap:navigationBar>
+				<uxap:actions>
+					<uxap:ObjectPageHeaderActionButton id="_IDGenObjectPageHeaderActionButton1" icon="sap-icon://save" text="{com>BUTTON_SAVE}" tooltip="{com>BUTTON_SAVE}" hideText="false" enabled="{localModel>/editable}" press="onHSave" visible="{= ${localModel>/SYS03_MODIFY} || ${localModel>/SYS03_CREAT} }"/>
+					<uxap:ObjectPageHeaderActionButton id="_IDGenObjectPageHeaderActionButton2" icon="sap-icon://edit" text="{com>BUTTON_DIT}" tooltip="{com>BUTTON_DIT}" hideText="false" enabled="{parts: [ {path: 'CAN_CHANGE'},{path: 'localModel>/editable'}, {path: 'localModel>/SYS03_DATA_EDIT'}], formatter: '.formatter._sys03GetViewHButton'}" press="onHEdit" visible="{localModel>/SYS03_MODIFY}"/>
+					<uxap:ObjectPageHeaderActionButton id="_IDGenObjectPageHeaderActionButton3" icon="sap-icon://decline" text="{com>BUTTON_COLSE}" tooltip="{com>BUTTON_COLSE}" hideText="false" enabled="{=${localModel>/isCreate} === false &amp;&amp;${localModel>/editable}===true }" press="onHClose" visible="{= ${localModel>/SYS03_MODIFY} || ${localModel>/SYS03_CREAT} }"/>
+				</uxap:actions>
+
+
+			</uxap:ObjectPageHeader>
+
+		</uxap:headerTitle>
+
+		<uxap:sections>
+			<uxap:ObjectPageSection id="_IDGenObjectPageSection1" title="{com>TITLE_HEAD}">
+				<uxap:subSections>
+					<uxap:ObjectPageSubSection id="_IDGenObjectPageSubSection1">
+						<uxap:blocks>
+
+							<FlexBox id="_IDGenFlexBox1" wrap="Wrap" fitContainer="true">
+
+								<l:VerticalLayout id="_IDGenVerticalLayout1" class="sapUiSmallMarginEnd" visible="true">
+									<Label id="_IDGenLabel1" labelFor="SYS03_H_CODE" class="mandatory" text="{sys>SYS03_H_CODE}"/>
+									<smartfield:SmartField id="H_CODE" value="{H_CODE}" showLabel="false" width="20em" mandatory = "true" editable="{=${localModel>/editable} || false}"/>
+								</l:VerticalLayout>
+								<!--  -->
+								<l:VerticalLayout id="_IDGenVerticalLayout2" class="sapUiSmallMarginEnd">
+									<Label id="_IDGenLabel2" labelFor="SYS03_H_NAME" text="{sys>SYS03_H_NAME}"/>
+
+									<smartfield:SmartField id="H_NAME" value="{H_NAME}" showLabel="false" width="20em" mandatory = "true" editable="{=${localModel>/editable} || false}"/>
+								</l:VerticalLayout>
+								<!--  -->
+								<l:VerticalLayout id="_IDGenVerticalLayout3" class="sapUiSmallMarginEnd">
+									<Label id="_IDGenLabel3" labelFor="SYS03_BE_CHANGE" text="{sys>SYS03_BE_CHANGE}"/>
+									  <Select id="_IDGenSelect321" forceSelection="false" width="20em" editable="{=${CAN_CHANGE} === 'Y'  &amp;&amp;${localModel>/editable} === true }"  selectedKey="{CAN_CHANGE}" items="{
+                        			    path: '/COM_Y_N_DROPDOWN', sorter: { path: 'OP_VALUE' } }">
+                     				 <core:Item id="_IDGenItem132" key="{OP_VALUE}" text="{OP_NAME}" />
+                   					 </Select>
+								</l:VerticalLayout>
+							</FlexBox>
+
+						</uxap:blocks>
+					</uxap:ObjectPageSubSection>
+				</uxap:subSections>
+			</uxap:ObjectPageSection>
+			<uxap:ObjectPageSection id="_IDGenObjectPageSection2">
+				<uxap:subSections>
+					<uxap:ObjectPageSubSection id="_IDGenObjectPageSubSection2" title="{com>TITLE_DETAIL}">
+						<uxap:blocks>
+							<smartTable:SmartTable entitySet="TO_ITEMS" tableBindingPath="TO_ITEMS" id="smdetailTable" enableAutoBinding="true" requestAtLeastFields="ID" beforeRebindTable="onDetailRebind" editable="true" useTablePersonalisation="false" enableExport="false">
+								<smartTable:customToolbar>
+									<OverflowToolbar id="_IDGenOverflowToolbar1">
+										<content>
+											<ToolbarSpacer id="_IDGenToolbarSpacer1"/>
+											<Button id="_IDGenButton1" text="{com>BUTTON_D_ADD}" icon="sap-icon://add" press="onDAdd" enabled="{parts: [ {path: 'CAN_CHANGE'},{path: 'localModel>/editable'}, {path: 'localModel>/SYS03_DATA_EDIT'}], formatter: '.formatter._sys03GetEditableHButton'}"/>
+											<Button id="_IDGenButton2" text="{com>BUTTON_D_DELETE}" icon="sap-icon://delete" press="onDDelete" enabled="{parts: [ {path: 'CAN_CHANGE'},{path: 'localModel>/editable'}, {path: 'localModel>/SYS03_DATA_EDIT'}], formatter: '.formatter._sys03GetEditableHButton'}"/>
+										</content>
+									</OverflowToolbar>
+								</smartTable:customToolbar>
+								<table:Table id="detailTable" alternateRowColors="true" rowActionCount="1">
+									<table:columns>
+
+										<!-- 明細番号 -->
+										<table:Column id="_IDGenColumn1" visible="true" autoResizable="true" sortProperty="D_NO" filterProperty="D_NO" minWidth="10" width="10em">
+											<table:customData>
+												<core:CustomData key="p13nData" value='\{"columnKey":"D_NO", "leadingProperty":"D_NO"}'/>
+											</table:customData>
+											<table:label>
+												<Label id="_IDGenLabel4" text="{sys>SYS03_D_NO}"/>
+											</table:label>
+											<table:template>
+
+												<smartfield:SmartField id="_IDGenSmartField1" value="{D_NO}" editable="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'}, {path: 'DEL_FLAG'}], formatter: '.formatter.getDEditableCommon'}"/>
+											</table:template>
+										</table:Column>
+
+										<table:Column id="D_H_CODE" visible="true" autoResizable="true" sortProperty="H_CODE" filterProperty="H_CODE" width="15em">
+											<table:customData>
+												<core:CustomData key="p13nData" value='\{"columnKey":"H_CODE", "leadingProperty":"H_CODE"}'/>
+											</table:customData>
+											<table:label>
+												<Label id="_IDGenLabel5" text="{sys>SYS03_H_CODE}"/>
+											</table:label>
+											<table:template>
+												<smartfield:SmartField id="_IDGenSmartField2" value="{H_CODE}" editable="false"/>
+											</table:template>
+										</table:Column>
+										<table:Column id="H_ID" visible="false" autoResizable="true" sortProperty="H_ID" filterProperty="H_ID" width="15em">
+											<table:customData>
+												<core:CustomData key="p13nData" value='\{"columnKey":"H_ID", "leadingProperty":"H_ID"}'/>
+											</table:customData>
+											<table:label>
+												<Label id="_IDGenLabel6" text="{sys>SYS03_H_ID}"/>
+											</table:label>
+											<table:template>
+												<smartfield:SmartField id="_IDGenSmartField3" value="{H_ID}" editable="false"/>
+											</table:template>
+										</table:Column>
+
+										<table:Column id="D_CODE" visible="true" autoResizable="true" sortProperty="D_CODE" filterProperty="D_CODE" width="15em">
+											<table:customData>
+												<core:CustomData key="p13nData" value='\{"columnKey":"D_CODE", "leadingProperty":"D_CODE"}'/>
+											</table:customData>
+											<table:label>
+												<Label id="_IDGenLabel7" text="{sys>SYS03_D_CODE}"/>
+											</table:label>
+											<table:template>
+												<smartfield:SmartField id="_IDGenSmartField4" value="{D_CODE}" editable="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'}, {path: 'DEL_FLAG'}], formatter: '.formatter.getDEditableCommon'}"/>
+											</table:template>
+										</table:Column>
+
+										<table:Column id="_IDGenColumn2" visible="true" autoResizable="true" sortProperty="D_NAME" filterProperty="D_NAME" width="15em">
+											<table:customData>
+												<core:CustomData key="p13nData" value='\{"columnKey":"D_NAME", "leadingProperty":"D_NAME"}'/>
+											</table:customData>
+											<table:label>
+												<Label id="_IDGenLabel8" text="{sys>SYS03_D_NAME}"/>
+											</table:label>
+											<table:template>
+												<smartfield:SmartField id="_IDGenSmartField5" value="{D_NAME}" editable="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'}, {path: 'DEL_FLAG'}], formatter: '.formatter.getDEditableCommon'}"/>
+											</table:template>
+										</table:Column>
+										<table:Column id="_IDGenColumn3" visible="true" autoResizable="true" sortProperty="VALUE01" filterProperty="VALUE01" width="15em">
+											<table:customData>
+												<core:CustomData key="p13nData" value='\{"columnKey":"VALUE01", "leadingProperty":"VALUE01"}'/>
+											</table:customData>
+											<table:label>
+												<Label id="_IDGenLabel9" text="{sys>SYS03_VALUE01}"/>
+											</table:label>
+											<table:template>
+
+												<smartfield:SmartField id="_IDGenSmartField6" value="{VALUE01}" editable="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'}, {path: 'DEL_FLAG'}], formatter: '.formatter.getDEditableCommon'}"/>
+											</table:template>
+										</table:Column>
+										<table:Column id="_IDGenColumn4" visible="true" autoResizable="true" sortProperty="VALUE02" filterProperty="VALUE02" width="15em">
+											<table:customData>
+												<core:CustomData key="p13nData" value='\{"columnKey":"VALUE02", "leadingProperty":"VALUE02"}'/>
+											</table:customData>
+											<table:label>
+												<Label id="_IDGenLabel10" text="{sys>SYS03_VALUE02}"/>
+											</table:label>
+											<table:template>
+												<smartfield:SmartField id="_IDGenSmartField7" value="{VALUE02}" editable="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'}, {path: 'DEL_FLAG'}], formatter: '.formatter.getDEditableCommon'}"/>
+											</table:template>
+										</table:Column>
+										<table:Column id="_IDGenColumn5" visible="true" autoResizable="true" sortProperty="VALUE03" filterProperty="VALUE03" width="15em">
+											<table:customData>
+												<core:CustomData key="p13nData" value='\{"columnKey":"VALUE03", "leadingProperty":"VALUE03"}'/>
+											</table:customData>
+											<table:label>
+												<Label id="_IDGenColumn6" text="{sys>SYS03_VALUE03}"/>
+											</table:label>
+											<table:template>
+												<smartfield:SmartField id="_IDGenSmartField8" value="{VALUE03}" editable="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'}, {path: 'DEL_FLAG'}], formatter: '.formatter.getDEditableCommon'}"/>
+											</table:template>
+										</table:Column>
+
+										<table:Column id="_IDGenColumn7" visible="true" autoResizable="true" sortProperty="VALUE04" filterProperty="VALUE04" width="15em">
+											<table:customData>
+												<core:CustomData key="p13nData" value='\{"columnKey":"VALUE04", "leadingProperty":"VALUE04"}'/>
+											</table:customData>
+											<table:label>
+												<Label id="_IDGenLabel11" text="{sys>SYS03_VALUE04}"/>
+											</table:label>
+											<table:template>
+												<smartfield:SmartField id="_IDGenSmartField9" value="{VALUE04}" editable="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'}, {path: 'DEL_FLAG'}], formatter: '.formatter.getDEditableCommon'}"/>
+											</table:template>
+										</table:Column>
+
+										<table:Column id="_IDGenColumn8" visible="true" autoResizable="true" sortProperty="VALUE05" filterProperty="VALUE05" width="15em">
+											<table:customData>
+												<core:CustomData key="p13nData" value='\{"columnKey":"VALUE05", "leadingProperty":"VALUE05"}'/>
+											</table:customData>
+											<table:label>
+												<Label id="_IDGenLabel13" text="{sys>SYS03_VALUE05}"/>
+											</table:label>
+											<table:template>
+												<smartfield:SmartField id="_IDGenSmartField10" value="{VALUE05}" editable="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'}, {path: 'DEL_FLAG'}], formatter: '.formatter.getDEditableCommon'}"/>
+											</table:template>
+										</table:Column>
+
+									
+
+									</table:columns>
+								</table:Table>
+							</smartTable:SmartTable>
+						</uxap:blocks>
+					</uxap:ObjectPageSubSection>
+				</uxap:subSections>
+			</uxap:ObjectPageSection>
+		</uxap:sections>
+		<uxap:footer>
+			<OverflowToolbar id="otbFooter" visible="{=${message>/}.length > 0}">
+				<Button icon="sap-icon://alert" text="{=${message>/}.length}" visible="{=${message>/}.length > 0}" type="Emphasized" press="onClickMessagePopover" id="messageButton">
+				</Button>
+			</OverflowToolbar>
+		</uxap:footer>
+	</uxap:ObjectPageLayout>
+</mvc:View>

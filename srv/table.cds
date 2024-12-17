@@ -31,6 +31,12 @@ service TableService {
   entity PCH_T10_EMAIL_SEND_LOG          as projection on PCH.T10_EMAIL_SEND_LOG;
   entity SYS_T08_COM_OP_D        as projection on SYS.T08_COM_OP_D;
 
+  entity SYS_T07_COM_OP_H          as
+    projection on SYS.T07_COM_OP_H {
+      *,
+      TO_ITEMS : redirected to SYS_T08_COM_OP_D
+    };
+
   entity PCH_T06_QUOTATION_H     as
     projection on PCH.T06_QUOTATION_H {
       *,

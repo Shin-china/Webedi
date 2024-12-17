@@ -175,6 +175,7 @@
         {"pattern": "RouteList_sys03","name": "RouteList_sys03","target": "sys03_dict_l"},
         {"pattern": "RouteCre_sys03","name": "RouteCre_sys03","target": "sys03_dict_d"},
         {"pattern": "RouteEdit_sys03/{headID}","name": "RouteEdit_sys03","target": "sys03_dict_d"},
+        {"pattern": "RouteView_sys03/{headID}","name": "RouteView_sys03","target": "sys03_dict_d"},
         {"pattern": "RouteList_sys04","name": "RouteList_sys04","target": "sys04_doc_l"},
         {"pattern": "RouteList_sys05","name": "RouteList_sys05","target": "sys05_mail_l"},
         {"pattern": "RouteEdit_sys05/{headID}","name": "RouteEdit_sys05","target": "sys05_mail_d"},
