@@ -141,47 +141,62 @@ sap.ui.define([
                         oHeadData.results.map(result => result.VALUE02).join(", ") : '';            
                     let absama = oHeadData.results && oHeadData.results.length > 0 ? 
                         oHeadData.results.map(result => result.VALUE03 + " 様").join("  ") : '';
+                    // Add Confirm button by stanley 20241217
+                        var confirmTxt = this.MessageTools._getI18nTextInModel("pch", "confirmTxt", this.getView());
+                        var confirmTitle = this.MessageTools._getI18nTextInModel("pch", "confirmTitle", this.getView());
+                        var confirmOk = this.MessageTools._getI18nTextInModel("pch", "confirmOk", this.getView());
+                        var confirmCancel = this.MessageTools._getI18nTextInModel("pch", "confirmCancel", this.getView());
+                        var sResponsivePaddingClasses = "sapUiResponsivePadding--header sapUiResponsivePadding--content sapUiResponsivePadding--footer";
+                        MessageBox.confirm(confirmTxt,{
+                            icon:MessageBox.Icon.INFORMATION,
+                            title:confirmTitle,
+                            actions: [confirmOk, confirmCancel],
+                            emphasized: confirmOk,
+                            initialFocus: confirmCancel,
+                            styleClass: sResponsivePaddingClasses,
+                            onClose: function(sAction) {
+                              if(sAction === confirmOk){
+                                let sResponse = json2xml(oData, options);
+                                console.log(sResponse)
+                                that.setSysConFig().then(res => {
+                                    that.PrintTool._detailSelectPrintEmil(that, sResponse, that.getGlobProperty("ADS_template_form") +"_rep03/T", oData, null,"買掛金明細", null, null).then(()=>{
+                                        that.PrintTool.getImageBase64(that._blob).then((odata)=>{
+        
+                                        var mailobj = {
+                                            emailJson: {
+                                                TEMPLATE_ID: "UWEB_M008",
+                                                MAIL_TO: [mail].join(", "), 
+                                                MAIL_BODY: [
+                                                {
+                                                    object: "filename_1",
+                                                    value: "PO_買掛金計上高明細表.pdf"
+                                                },
+                                                {
+                                                    object: "filecontent_1",
+                                                    value: odata.replace("data:application/pdf;base64,","")
+                                                },
+                        
+                                            ]
+                                            }
+                                        };
+        
+                                            that._sendEmail(mailobj);
+                                            that._setBusy(false);
+                                            that.getModel().refresh();
+        
+                                        that._callCdsAction(_objectCommData._entity, { parms: IdList[0] }, that).then((data) => {
+        
+        
+                                        });
+        
+                                        })								
+                                    })						
+                                })            
+                            }}
+                        });
+                    // End Add
 
-                    let sResponse = json2xml(oData, options);
-						console.log(sResponse)
-						that.setSysConFig().then(res => {
-							that.PrintTool._detailSelectPrintEmil(that, sResponse, that.getGlobProperty("ADS_template_form") +"_rep03/T", oData, null,"買掛金明細", null, null).then(()=>{
-								that.PrintTool.getImageBase64(that._blob).then((odata)=>{
 
-								var mailobj = {
-									emailJson: {
-										TEMPLATE_ID: "UWEB_M008",
-                                        MAIL_TO: [mail].join(", "), 
-										MAIL_BODY: [
-										{
-											object: "filename_1",
-											value: "PO_買掛金計上高明細表.pdf"
-										},
-										{
-											object: "filecontent_1",
-											value: odata.replace("data:application/pdf;base64,","")
-										},
-				
-									]
-									}
-								};
-
-								// let newModel = this.getView().getModel("Common");
-								// let oBind = newModel.bindList("/sendEmail");
-                                // that._sendEmail(mailobj);
-								// oBind.create(mailobj);
-
-                                    this._sendEmail(mailobj);
-									this._setBusy(false);
-
-                                that._callCdsAction(_objectCommData._entity, { parms: IdList[0] }, that).then((data) => {
-
-
-                                });
-
-								})								
-							})						
-						})
 					})
 				}				
     )}},
