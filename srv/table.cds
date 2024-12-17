@@ -29,7 +29,12 @@ service TableService {
   entity PCH_T04_PAYMENT_H       as projection on PCH.T04_PAYMENT_H;
   entity PCH_T05_PAYMENT_D       as projection on PCH.T05_PAYMENT_D;
   entity PCH_T10_EMAIL_SEND_LOG          as projection on PCH.T10_EMAIL_SEND_LOG;
+  entity SYS_T03_AUTH              as
+    projection on SYS.T03_AUTH {
+      *,
+      TO_MENU : redirected to SYS.T10_MENU
 
+    };
   entity SYS_T07_COM_OP_H          as
     projection on SYS.T07_COM_OP_H {
       *,
