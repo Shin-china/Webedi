@@ -263,27 +263,27 @@
 						<t:Table id="roleTable2" rowActionCount="1">
 							<t:columns>
 								<!-- 機能権限ID -->
-								<t:Column id="_IDGenColumn23" visible="true" autoResizable="true" sortProperty="ROLE_CODE" filterProperty="ROLE_CODE" minWidth="20" width="10em">
+								<t:Column id="_IDGenColumn23" visible="true" autoResizable="true" sortProperty="TO_ROLE/ROLE_CODE" filterProperty="TO_ROLE/ROLE_CODE" minWidth="20" width="10em">
 									<t:customData>
-										<c:CustomData key="p13nData" value='\{"columnKey":"ROLE_CODE", "leadingProperty":"ROLE_CODE"}'/>
+										<c:CustomData key="p13nData" value='\{"columnKey":"TO_ROLE/ROLE_CODE", "leadingProperty":"TO_ROLE/ROLE_CODE"}'/>
 									</t:customData>
 									<t:label>
 										<Label id="_IDGenLabel25" text="{sys>SYS01_LABEL_ROLE_CODE}"/>
 									</t:label>
 									<t:template>
-										<Text id="_IDGenText25" text="{ROLE_CODE}"></Text>
+										<Text id="_IDGenText25" text="{TO_ROLE/ROLE_CODE}"></Text>
 									</t:template>
 								</t:Column>
 								<!-- 機能ID -->
-								<t:Column id="_IDGenColumn24" visible="true" autoResizable="true" sortProperty="ROLE_NAME" filterProperty="ROLE_NAME" minWidth="20" width="10em">
+								<t:Column id="_IDGenColumn24" visible="true" autoResizable="true" sortProperty="TO_ROLE/ROLE_NAME" filterProperty="TO_ROLE/ROLE_NAME" minWidth="20" width="10em">
 									<t:customData>
-										<c:CustomData key="p13nData" value='\{"columnKey":"ROLE_NAME", "leadingProperty":"ROLE_NAME"}'/>
+										<c:CustomData key="p13nData" value='\{"columnKey":"TO_ROLE/ROLE_NAME", "leadingProperty":"TO_ROLE/ROLE_NAME"}'/>
 									</t:customData>
 									<t:label>
 										<Label id="_IDGenLabel26" text="{sys>SYS01_LABEL_ROLE_NAME}"/>
 									</t:label>
 									<t:template>
-										<Text id="_IDGenText26" text="{ROLE_NAME}"></Text>
+										<Text id="_IDGenText26" text="{TO_ROLE/ROLE_NAME}"></Text>
 									</t:template>
 								</t:Column>
 							</t:columns>

@@ -5,8 +5,8 @@
   "cdsc": {
     "betterSqliteSessionVariables": true
   },
-  "requires": {
-    "db": {
+  "requires1": {
+    "db1": {
       "[pg]": {
         "kind": "postgres",
         "credentials": {

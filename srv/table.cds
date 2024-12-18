@@ -29,10 +29,12 @@ service TableService {
   entity PCH_T04_PAYMENT_H       as projection on PCH.T04_PAYMENT_H;
   entity PCH_T05_PAYMENT_D       as projection on PCH.T05_PAYMENT_D;
   entity PCH_T10_EMAIL_SEND_LOG          as projection on PCH.T10_EMAIL_SEND_LOG;
+
+    entity SYS_T10_MENU              as projection on SYS.T10_MENU;
   entity SYS_T03_AUTH              as
     projection on SYS.T03_AUTH {
       *,
-      TO_MENU : redirected to SYS.T10_MENU
+      TO_MENU : redirected to SYS_T10_MENU
 
     };
   entity SYS_T07_COM_OP_H          as
@@ -41,6 +43,12 @@ service TableService {
       TO_ITEMS : redirected to SYS_T08_COM_OP_D
     };
 
+  entity SYS_T05_ROLE_2_AUTH       as
+    projection on SYS.T05_ROLE_2_AUTH {
+      *,
+      TO_AUTH : redirected to SYS_T03_AUTH,
+      TO_ROLE : redirected to SYS_T02_ROLE
+    };
   entity SYS_T08_COM_OP_D          as
     projection on SYS.T08_COM_OP_D {
       *,

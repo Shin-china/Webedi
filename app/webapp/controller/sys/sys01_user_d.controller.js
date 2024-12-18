@@ -27,25 +27,25 @@ sap.ui.define([
 				"ListItems":[
 					{
 						"Type": "A",
-						"Name": "A.Active"
+						"Name": "A.有効"
 					},
 					{
 						"Type": "I",
-						"Name": "I.InActive"
+						"Name": "I.無効"
 					},
 					{
 						"Type": "L",
-						"Name": "L.Lock"  
+						"Name": "L.ロック"  
 					}
 				],
 				"UserType": [
 				    {
 				        "Type": "1",
-						"Name": "1.Internal User"
+						"Name": "1.内部ユーザ"
 				    },
 				    {
 				        "Type": "2",
-						"Name": "2.External Vendor"
+						"Name": "2.外部仕入先"
 				    }
 				]};
 			var oModel =  new JSONModel(oList) ;
