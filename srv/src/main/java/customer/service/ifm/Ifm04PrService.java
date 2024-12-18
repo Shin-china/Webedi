@@ -74,7 +74,7 @@ public class Ifm04PrService extends IfmService {
             log.setFairMsg(e.getMessage());
         } finally {
             log.setFinish(); // 设定接口完了时间
-            this.updateLogAndIf(log, log.getIfConfig());
+            this.updateLog(log);
 
         }
 
