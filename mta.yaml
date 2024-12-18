@@ -31,7 +31,7 @@ modules:
           srv-url: ${default-url}
     requires:
       - name: uweb-umce-dev-hdi
-      - name: uweb-umce-dev-auth
+      - name: uweb-umce-dev-srv-auth
       - name: uweb-umce-dev-getDestination
       - name: app-api
         properties:
@@ -75,10 +75,14 @@ resources:
     parameters:
       service: xsuaa
       service-plan: application
+      path: ./app/xs-security-umce-qas.json
+  - name: uweb-umce-dev-srv-auth
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: xsuaa
+      service-plan: application
       path: ./xs-security.json
-      config:
-        xsappname: uweb-umce-dev-auth
-        tenant-mode: dedicated
+
   - name: uweb-umce-dev-getDestination
     parameters:
       service-plan: lite

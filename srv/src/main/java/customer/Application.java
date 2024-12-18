@@ -47,11 +47,11 @@ public class Application implements CommandLineRunner {
 
 		// 设定服务器时区&主要用户时区&APP ID&默认语言
 		ConfigConstants.SERVER_ZONE = ZoneOffset
-				.ofHours(Integer.parseInt(configDao.getConfig("SERVER_ZONE").getConValue()));
+		        .ofHours(Integer.parseInt(configDao.getConfig("SERVER_ZONE").getConValue()));
 		ConfigConstants.S4_ODATA_ZONE_OFFSET = ZoneOffset
-				.ofHours(Integer.parseInt(configDao.getConfig("S4_ODATA_ZONE").getConValue()));
+		        .ofHours(Integer.parseInt(configDao.getConfig("S4_ODATA_ZONE").getConValue()));
 		ConfigConstants.DEFFAULT_USER_ZONE = ZoneOffset
-				.ofHours(Integer.parseInt(configDao.getConfig("USER_ZONE").getConValue()));
+		        .ofHours(Integer.parseInt(configDao.getConfig("USER_ZONE").getConValue()));
 		ConfigConstants.BTP_APP_ID = configDao.getConfig("SYSTEM_ID").getConValue();
 		ConfigConstants.USER_LANG_CODE = configDao.getConfig("USER_LANG_CODE").getConValue();
 

@@ -42,7 +42,7 @@ public class HikariPoolMonotor {
                 Thread.sleep(5000); // 等待5秒钟 让连接池初始化完成。
             }
 
-            poolName = new ObjectName("com.zaxxer.hikari:type=Pool (usapHikariPool)");
+            poolName = new ObjectName("com.zaxxer.hikari:type=Pool (uwebHikariPool)");
             HikariPoolMXBean poolProxy = JMX.newMXBeanProxy(mBeanServer, poolName, HikariPoolMXBean.class);
 
             StringBuffer s = new StringBuffer();
@@ -53,7 +53,8 @@ public class HikariPoolMonotor {
             s.append(" ThreadsAwaitingConnections:" + poolProxy.getThreadsAwaitingConnection());
             logger.info(s.toString());
 
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
 
             e.printStackTrace();
 
