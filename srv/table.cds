@@ -127,4 +127,8 @@ service TableService {
 
   //Excel测试用
   action EXCEL_TEST(content : String)         returns LargeBinary; //Excel测试用
+
+  action SYS02_ROLE_addRole(roleJson : String)  returns String; // 角色管理新增
+  action SYS02_ROLE_editRole(roleJson : String) returns String;
+
 }

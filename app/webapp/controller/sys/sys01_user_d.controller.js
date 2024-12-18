@@ -134,6 +134,7 @@ sap.ui.define([
 			var userType = this.byId("idSelectList7").getSelectedKey();
 			var plantIdList = this._getRootId("idTable1","PLANT_ID");
 			var bpIdList = this._getRootId("idTable3","BP_ID");
+			var rootIdList = this._getRootId("roleTable", "ID");
 			var itemObj = {
 				userId:context.USER_ID,
 				userType:userType,
@@ -142,7 +143,8 @@ sap.ui.define([
 				validDateFrom:dateF,
 				validDateTo:dateT,
 				plants:plantIdList,
-				bps:bpIdList
+				bps:bpIdList,
+				roles: rootIdList
 			};
 
 			var resStr = { userJson: JSON.stringify(itemObj) };
