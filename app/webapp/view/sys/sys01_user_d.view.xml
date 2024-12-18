@@ -258,9 +258,9 @@
 					</smarttable:SmartTable>
 
 					<smarttable:SmartTable id="smartTable24" persistencyKey="receiptprintTable" requestAtLeastFields="ID" entitySet="SYS_T04_USER_2_ROLE"
-					visible="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'}],formatter: '.formatter.getEditableDCommon'}" 
+					visible="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'}],formatter: '.formatter.getEditableDCommon'}" beforeRebindTable="onRebindRoot"
 					 smartFilterId="smartFilterBar"  useVariantManagement="false" useTablePersonalisation="false" tableType="Table" showRowCount="true" placeToolbarInTable="true" header="{sys>SYS01_TAB_TITLE_ROLE}" enableAutoBinding="true">
-						<t:Table id="roleTable2" rowActionCount="1">
+						<t:Table id="roleTable2" rowActionCount="1" selectionMode="None">
 							<t:columns>
 								<!-- 機能権限ID -->
 								<t:Column id="_IDGenColumn23" visible="true" autoResizable="true" sortProperty="TO_ROLE/ROLE_CODE" filterProperty="TO_ROLE/ROLE_CODE" minWidth="20" width="10em">

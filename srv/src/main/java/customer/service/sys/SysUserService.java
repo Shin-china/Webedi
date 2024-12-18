@@ -56,12 +56,12 @@ public class SysUserService {
         String userID = userDao.insert(o);
 
         // 插入用户角色
-        user2RoleDao.deleteUser2Role(o.getUserId());
+        user2RoleDao.deleteUser2Role(o.getId());
         for (String roleId : user.getRoles()) {
-        T04User2Role role = T04User2Role.create();
-        role.setRoleId(roleId);
-        role.setUserId(o.getUserId());
-        user2RoleDao.insertUser2Role(role);
+            T04User2Role role = T04User2Role.create();
+            role.setRoleId(roleId);
+            role.setUserId(o.getId());
+            user2RoleDao.insertUser2Role(role);
         }
 
         // 插入用户→工厂
@@ -100,11 +100,11 @@ public class SysUserService {
         userDao.update(o);
 
         // 插入用户角色
-        user2RoleDao.deleteUser2Role(o.getUserId());
+        user2RoleDao.deleteUser2Role(o.getId());
          for (String roleId : user.getRoles()) {
          T04User2Role role = T04User2Role.create();
          role.setRoleId(roleId);
-         role.setUserId(o.getUserId());
+         role.setUserId(o.getId());
          user2RoleDao.insertUser2Role(role);
         }
 

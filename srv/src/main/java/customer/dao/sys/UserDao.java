@@ -35,7 +35,7 @@ public class UserDao extends Dao {
 
     // 创建User Role
     public void Insert(T04User2Role O) {
-
+        
     }
 
     // 根据User ID 获取 UUIDD
