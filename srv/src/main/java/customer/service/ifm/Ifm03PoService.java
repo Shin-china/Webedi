@@ -40,7 +40,6 @@ import customer.service.comm.TranscationService;
 @Component
 public class Ifm03PoService extends IfmService {
 
-
     @Autowired
     private PurchaseDataDao PchDao;
 
@@ -61,7 +60,8 @@ public class Ifm03PoService extends IfmService {
     }
 
     public void process(IFLog log) throws UnsupportedOperationException, IOException {
-
+        log.setTd(super.transactionInit()); // 事务初始换
+        this.insertLog(log);
         Pch01Sap sap = new Pch01Sap();
         // 获取 Web Service 配置信息
 
@@ -69,16 +69,14 @@ public class Ifm03PoService extends IfmService {
 
         HashSet<String> PoSet = getSet(sapPchRoot);
 
-        TransactionDefinition td = transactionInit(); // 初始化事务
-        log.setTd(super.transactionInit()); // 事务初始换
-
         for (String po : PoSet) { // 循环一个PO
-            this.insertLog(log);
-            this.processOne(td, sap, po, sapPchRoot, log);
+            this.processOne(sap, po, sapPchRoot, log);
         }
 
         log.setSuccessMsg(MessageTools.getMsgText(rbms, "IFM06_01", log.getSuccessNum(), log.getErrorNum(),
                 log.getConsumTimeS()));
+
+        this.updateLog(log);
 
         for (String poDel : sap.getPoDelSet()) {
             String supplier = PchDao.getSupplierByPO(poDel);
@@ -101,11 +99,11 @@ public class Ifm03PoService extends IfmService {
 
     }
 
-    private Pch01Sap processOne(TransactionDefinition td, Pch01Sap sap, String poNo, SapPchRoot sapPchRoot, IFLog log) {
+    private Pch01Sap processOne(Pch01Sap sap, String poNo, SapPchRoot sapPchRoot, IFLog log) {
         TransactionStatus s = null;
 
         try {
-            s = super.begin(td);
+            s = this.begin(log.getTd());
 
             for (Item Items : sapPchRoot.getItems()) {
 
@@ -287,7 +285,6 @@ public class Ifm03PoService extends IfmService {
             }
             log.addSuccessNum();
             this.commit(s);
-
 
         } catch (Exception e) {
         } finally {
