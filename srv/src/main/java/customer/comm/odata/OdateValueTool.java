@@ -64,15 +64,22 @@ public class OdateValueTool {
         return sapCode;
     }
 
-    /// Date(1711411200000)/  转成 2023-01-01
+    /// Date(1711411200000)/ 转成 2023-01-01
     public static String Iso8601ToUtcDate(String dateString) {
         return DateTools.date2String(DateTools.longString2Date(dateString, ConfigConstants.S4_ODATA_ZONE_OFFSET));
     }
 
-    //将 SAP日期转换为本地日期。（此处为日本/中国日期）
+    // 将 SAP日期转换为本地日期。（此处为日本/中国日期）
     public static LocalDate Iso8601ToLocalDate(String dateString) {
 
-        return DateTools.longString2Date(dateString, ConfigConstants.DEFFAULT_USER_ZONE);
+        if (dateString != null) {
+
+            return DateTools.longString2Date(dateString.replace("+0000", ""), ConfigConstants.DEFFAULT_USER_ZONE);
+        }
+        return null;
+
+        // return DateTools.longString2Date(dateString,
+        // ConfigConstants.DEFFAULT_USER_ZONE);
 
     }
 
@@ -90,10 +97,10 @@ public class OdateValueTool {
         return Iso8601ToUtcDate(dateString) + " " + iso8601ToUtcTime(timeDu);
     }
 
-    //字符串转时间  
-    //字符串可能性：yyyy-MM-dd'T'HH:mm:ss.SSS'Z'
-    //字符串可能性：yyyy-MM-dd'T'HH:mm:ss.SSS
-    //字符串可能性：yyyy-MM-dd'T'HH:mm:ss
+    // 字符串转时间
+    // 字符串可能性：yyyy-MM-dd'T'HH:mm:ss.SSS'Z'
+    // 字符串可能性：yyyy-MM-dd'T'HH:mm:ss.SSS
+    // 字符串可能性：yyyy-MM-dd'T'HH:mm:ss
     public static Instant ISO8601ToInstant(String str) throws ParseException {
         return DateTools.dateTimeToInstant(DateTools.Iso86012DateTime(str), ConfigConstants.S4_ODATA_ZONE_OFFSET);
     }
@@ -109,8 +116,8 @@ public class OdateValueTool {
         return startValue;
     }
 
-    //传入 SAP的0时区 日期+时间
-    //输出 当前用户主要时区的 日期
+    // 传入 SAP的0时区 日期+时间
+    // 输出 当前用户主要时区的 日期
     public static LocalDate UTCTime_2_USER_Zone_Date(String dateString, String timeDu) throws ParseException {
         String deloiverTime = Iso8601_2DateTime(dateString, timeDu);
         if (deloiverTime == null)

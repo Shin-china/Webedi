@@ -37,6 +37,7 @@ public class Item {
     private String Correspncinternalreference;
     private String Taxcode;
     private String Taxamount;
+    private String Approvedate;
 
     private List<Confirmation> Confirmation = new ArrayList<Confirmation>();
 
