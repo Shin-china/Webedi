@@ -1,7 +1,7 @@
-using {TableService as view} from './table';
+using {TableService as view} from '../srv/table.cds';
 using {SYS} from '../db/model-sys';
 
-extend service TableService with {
+extend service TableService {
 
   entity SYS06_LIST  as
     select from SYS.T15_IF_LOG as T15

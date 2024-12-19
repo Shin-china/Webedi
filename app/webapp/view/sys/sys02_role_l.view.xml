@@ -104,32 +104,6 @@
 							</table:template>
 						</table:Column>
 
-						<!-- 更新者-->
-						<table:Column id="_IDGenColumn2" visible="true" autoResizable="true" sortProperty="UP_BY" filterProperty="UP_BY" width="10em">
-							<table:customData>
-								<core:CustomData key="p13nData" value='\{"columnKey":"UP_BY", "leadingProperty":"UP_BY"}'/>
-							</table:customData>
-							<table:label>
-								<Label id="_IDGenLabel2" text="{sys>SYS01_LABEL_D__MODIFIEDBY}"/>
-							</table:label>
-							<table:template>
-								<Text id="_IDGenText2" text="{UP_BY}"></Text>
-							</table:template>
-						</table:Column>
-						<!-- 更新日-->
-						<table:Column id="_IDGenColumn3" visible="true" autoResizable="true" sortProperty="UP_TIME" filterProperty="UP_TIME" width="10em">
-							<table:customData>
-								<core:CustomData key="p13nData" value='\{"columnKey":"UP_TIME", "leadingProperty":"UP_TIME"}'/>
-							</table:customData>
-							<table:label>
-								<Label id="_IDGenLabel3" text="{sys>SYS01_LABEL_D__MODIFIEDAT}"/>
-							</table:label>
-							<table:template>
-								<Text id="_IDGenText3" text="{parts:[{path:'UP_TIME'}],formatter:'.formatter.getFommatDateHMS'}"></Text>
-							</table:template>
-						</table:Column>
-
-
 
 					</table:columns>
 					<table:rowActionTemplate>

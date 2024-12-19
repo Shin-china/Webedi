@@ -69,16 +69,6 @@
 				<m:items>
 					<m:IconTabFilter id="_IDGenIconTabFilter2" text="{sys>SYS02_TABLE_TITLE_AUTH}" visible="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'}],formatter: '.formatter.getEditableSaveCommon'}">
 						<smartTable:SmartTable id="smartTable" persistencyKey="receiptprintTable" entitySet="SYS_T03_AUTH" smartFilterId="smartFilterBar" useExportToExcel="false" useVariantManagement="false" useTablePersonalisation="false" tableType="Table" beforeRebindTable="onRebindAuth2" showRowCount="true" placeToolbarInTable="true" header="{sys>SYS02_TABLE_TITLE_AUTH}" enableAutoBinding="true">
-							<!-- <smartTable:customToolbar>
-                                <m:OverflowToolbar id="_IDGenOverflowToolbar2">
-                                  <m:content>
-                                    <m:ToolbarSpacer id="_IDGenToolbarSpacer2"/>
-                                                <m:Button id="_IDGenButton4" text="{sys>SYS02_LABEL_B__UPDATE}" press="onUpdateAuth('add')" />                                            
-                                  </m:content>
-                                </m:OverflowToolbar>
-                              </smartTable:customToolbar> -->
-
-
 
 							<table:Table id="detailTable" rowActionCount="1">
 								<table:columns>
@@ -140,16 +130,6 @@
 
 					<m:IconTabFilter id="_IDGenIconTabFilter3" text="{sys>SYS02_TABLE_TITLE_AUTH}" visible="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'}],formatter: '.formatter.getEditableDCommon'}">
 						<smartTable:SmartTable id="smartTable2" persistencyKey="receiptprintTable" entitySet="SYS_T05_ROLE_2_AUTH" smartFilterId="smartFilterBar" useExportToExcel="false" useVariantManagement="false" useTablePersonalisation="false" tableType="Table" beforeRebindTable="onRebindAuth" showRowCount="true" placeToolbarInTable="true" header="{sys>SYS02_TABLE_TITLE_AUTH}" enableAutoBinding="true">
-							<!-- <smartTable:customToolbar>
-                                <m:OverflowToolbar id="_IDGenOverflowToolbar3">
-                                  <m:content>
-                                    <m:ToolbarSpacer id="_IDGenToolbarSpacer3"/>
-                                                <m:Button id="_IDGenButton5" text="{sys>SYS02_LABEL_B__UPDATE}" press="onUpdateAuth('update')" />                                            
-                                  </m:content>
-                                </m:OverflowToolbar>
-                              </smartTable:customToolbar> -->
-
-
 
 							<table:Table id="detailTable2" selectionMode="None" rowActionCount="1">
 								<table:columns>

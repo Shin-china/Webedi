@@ -23,7 +23,7 @@ sap.ui.define(["umc/app/controller/BaseController"], function (Controller) {
   
       _onObjectMatched: function (oEvent) {
         let _isActiveEntity = true;
-        let parameters = { CAN_CHANGE: "Y" }; //默认属性
+        let parameters = { BE_CHANGE: true }; //默认属性
         //解除绑定
         this.getView().unbindElement();
         this._setAuthByMenuAndUser("SYS03");

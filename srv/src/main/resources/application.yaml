@@ -1,17 +1,17 @@
 server:
   port: 9000
   max-http-header-size: 80KB
-  compression:   #压缩
+  compression: #压缩
     enabled: true
     mime-types: [text/html, text/xml, text/plain, text/css, text/javascript, application/javascript, application/json, application/xml]
   servlet:
     encoding:
       charset: UTF-8
   tomcat:
-    max-http-response-header-size: 80KB     #默认为8KB
+    max-http-response-header-size: 80KB #默认为8KB
     uri-encoding: UTF-8
   jetty:
-    max-http-response-header-size: 80KB     #默认为8KB
+    max-http-response-header-size: 80KB #默认为8KB
 
 spring:
   session:
@@ -52,7 +52,7 @@ cds:
     deletionTimeout: 1D
   security:
     authentication:
-      mode: never    #访问CDS不需要登录
+      mode: never #访问CDS不需要登录
     mock:
       users:
         - name: tom
@@ -72,10 +72,9 @@ cds:
             firstName: sunny_firstName
             lastName: sunny_lastName
             email: sunny@mail.com
-      enabled: true    
+      enabled: true
 http:
   encoding:
     charset: UTF-8
     enabled: true
     force: true
- 

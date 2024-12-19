@@ -356,20 +356,20 @@ sap.ui.define([], function () {
       },
       getUserTypeText: function (userType) {
         if (userType === '1') {
-          return 'Internal User';
+          return '内部ユーザ';
         } else if (userType === '2') {
-          return 'External User';
+          return '外部仕入先';
         } else {
-          return '未知用户';
+          return 'Unknow User';
         }
       },
       getUserStatus:function(userStatus){
         if(userStatus === 'A'){
-          return 'Active';
+          return '有効';
         }else if(userStatus === 'I'){
-          return 'Inactive';
+          return '無効';
         }else{
-          return 'Locked';
+          return 'ロック';
         }
       },
       		/*++++++++++++++++++++++++++++++
