@@ -54,14 +54,6 @@
 
 									<smartfield:SmartField id="H_NAME" value="{H_NAME}" showLabel="false" width="20em" mandatory = "true" editable="{=${localModel>/editable} || false}"/>
 								</l:VerticalLayout>
-								<!--  -->
-								<l:VerticalLayout id="_IDGenVerticalLayout3" class="sapUiSmallMarginEnd">
-									<Label id="_IDGenLabel3" labelFor="SYS03_BE_CHANGE" text="{sys>SYS03_BE_CHANGE}"/>
-									  <Select id="_IDGenSelect321" forceSelection="false" width="20em" editable="{=${BE_CHANGE} === 'Y'  &amp;&amp;${localModel>/editable} === true }"  selectedKey="{BE_CHANGE}" items="{
-                        			    path: '/COM_Y_N_DROPDOWN', sorter: { path: 'OP_VALUE' } }">
-                     				 <core:Item id="_IDGenItem132" key="{OP_VALUE}" text="{OP_NAME}" />
-                   					 </Select>
-								</l:VerticalLayout>
 							</FlexBox>
 
 						</uxap:blocks>
