@@ -16,7 +16,7 @@ server:
 spring:
   session:
     timeout: 10800
-  datasource1:
+  datasource:
     type: com.zaxxer.hikari.HikariDataSource
     password: sh1nCh1n@
     embedded-database-connection: none
