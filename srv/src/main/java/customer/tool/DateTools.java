@@ -5,16 +5,16 @@ import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import customer.comm.constant.ConfigConstants;
 
 public class DateTools {
 
@@ -46,7 +46,7 @@ public class DateTools {
     // 获取当前日期并格式化为字符串yyyy/MM/dd
     public static String getCurrentDateString() {
         DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-        LocalDate currentDate = LocalDate.now(); // 获取当前日期
+        LocalDate currentDate = LocalDate.now(ConfigConstants.DEFFAULT_USER_ZONE); // 获取当前日期
         return currentDate.format(DATE_FORMATTER); // 格式化为字符串
     }
 
