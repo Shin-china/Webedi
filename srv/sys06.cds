@@ -19,7 +19,6 @@ extend service TableService {
           T15.IF_MSG,
           T15.TOTAL_NUM,
           T15.SUCCESS_NUM,
-          T15.IGNORE_NUM,
           T15.ERROR_NUM,
           T15.START_TIME,
           T15.FINISH_TIME,

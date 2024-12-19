@@ -1,4 +1,4 @@
-<mvc:View controllerName="root.controller.sys.sys06_iflg_l"
+<mvc:View controllerName="umc.app.controller.sys.sys06_iflg_l"
   xmlns:smartfield="sap.ui.comp.smartfield"
   xmlns:smartform="sap.ui.comp.smartform"
   xmlns:core="sap.ui.core"
@@ -32,7 +32,7 @@
           <smartFilterBar:SmartFilterBar id="smartFilterBar" useToolbar="true" entitySet="SYS06_LIST" persistencyKey="sys06_receiptprintFilterBar" showFilterConfiguration="true">
             <smartFilterBar:controlConfiguration>
               <smartFilterBar:ControlConfiguration id="_IDGenControlConfiguration1" key="IF_CODE" filterType="single" index="1" controlType="dropDownList" visibleInAdvancedArea="true"/>
-              <smartFilterBar:ControlConfiguration id="_IDGenControlConfiguration2" key="IF_RESULT" filterType="single" index="2" controlType="dropDownList" visibleInAdvancedArea="true"/>
+              <!-- <smartFilterBar:ControlConfiguration id="_IDGenControlConfiguration2" key="IF_RESULT" filterType="single" index="2" controlType="dropDownList" visibleInAdvancedArea="true"/> -->
               <smartFilterBar:ControlConfiguration id="_IDGenControlConfiguration5" key="START_TIME" filterType="interval" index="3" visibleInAdvancedArea="true" controlType="date" />
 
 
