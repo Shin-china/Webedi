@@ -10,6 +10,7 @@ extend service TableService {
 
         left join view.MST_T05_SAP_BP_PURCHASE T04
             on T01.SUPPLIER = T04.SUPPLIER
+            and T01.PO_BUKRS = T04.PURCHASE_ORG
         left join view.MST_T03_SAP_BP T05
             on T05.BP_ID = T01.SUPPLIER
         left join view.MST_T06_MAT_PLANT T06
@@ -42,6 +43,7 @@ extend service TableService {
                     else 'C' end as ZABC : String(5), //ABC区分 E：Email F：Fax  W：Web edi
                 T02.PO_D_TXZ01, // 品目テキスト
                 T02.PO_PUR_QTY, // 発注数量
+                T02.TAX_AMOUNT,//税額
 
 
                 T02.PO_PUR_UNIT, // 単位
@@ -66,7 +68,7 @@ extend service TableService {
                 T07.MANU_CODE,
                 T02.SAP_CD_BY, // SAP担当者
                 T02.TO_MAT.MANU_MATERIAL,
-                T02.TAX_AMOUNT,//税額
+                T01.POCDBY,//自设参照者
 
 
                 '' as checkOk : String, // 検査合区分

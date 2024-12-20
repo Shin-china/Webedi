@@ -53,6 +53,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import com.alibaba.excel.util.StringUtils;
+import com.sap.xsa.core.instancemanager.util.StringUtil;
 
 @Component
 @ServiceName(TableService_.CDS_NAME)
@@ -222,28 +223,33 @@ public class Pch03Handler implements EventHandler {
             pchd03.setCop22(pchd03.getCop27());//
             pchd03.setCop19(pchd03.getCop27());
             // 公司固定值取出
+            // 発注担当者
+            String pocdby = getPocdby(pchd03.getPocdby(), pchd03.getSapCdBy());
+            pchd03.setSapCdBy(pocdby);
+            // 设置担当者
 
             pchd03.setZws1(
-                    pchd03.getPodno() + "\n" + (StringUtils.isBlank(pchd03.getSapCdBy()) ? "" : pchd03.getSapCdBy()));
+                    pchd03.getPodno() + "\n" + (StringUtils.isBlank(pocdby) ? "" : pocdby));
             pchd03.setZws2(pchd03.getSupplierMat() + "\n" + pchd03.getMatId());
-            pchd03.setZws3(pchd03.getManuMaterial());
+            pchd03.setZws3(pchd03.getManuMaterial() + "\n");
             pchd03.setZws4(pchd03.getCop2() + "\n" + pchd03.getStorage());
             pchd03.setZws5(pchd03.getPoPurUnit() + "\n" + pchd03.getMemo());
             if (pchd03.getDelPrice() != null && pchd03.getPoPurQty() != null) {
                 pchd03.setZws7(numFromt(
                         NumberTool.toScale(pchd03.getDelPrice().multiply(pchd03.getPoPurQty()),
-                                currency)));
-                pchd03.setZws6(numFromt(pchd03.getDelPrice()));
+                                currency))
+                        + "\n");
+                pchd03.setZws6(numFromt(pchd03.getDelPrice()) + "\n");
             }
             // 如果potype为删除是则单价和价格0
             if ("D".equals(pchd03.getPoType())) {
-                pchd03.setZws7("0");
-                pchd03.setZws6("0");
+                pchd03.setZws7("0" + "\n");
+                pchd03.setZws6("0" + "\n");
                 pchd03.setZws4("0" + "\n" + pchd03.getStorage());
             }
 
-            pchd03.setZws8(pchd03.getCurrency());
-            pchd03.setZws9(DateTools.getCurrentDateString(pchd03.getPoDDate()));
+            pchd03.setZws8(pchd03.getCurrency() + "\n");
+            pchd03.setZws9(DateTools.getCurrentDateString(pchd03.getPoDDate()) + "\n");
 
             pchd03.setDate1(DateTools.getCurrentDateString());
             pchd03.setDate2(DateTools.getCurrentDateString());
@@ -392,11 +398,7 @@ public class Pch03Handler implements EventHandler {
             // 先获取品目最后两位
 
             // 発注担当者
-            String pocdby = pchd03.getPocdby();
-            // 如果発注担当者为空或者全为数字
-            if (pocdby == null || pocdby.matches("\\d+")) {
-                pocdby = pchd03.getSapCdBy();
-            }
+            String pocdby = getPocdby(pchd03.getPocdby(), pchd03.getSapCdBy());
             pchd03.setByname(pocdby);
 
             // 获取po
@@ -407,6 +409,21 @@ public class Pch03Handler implements EventHandler {
             pchd03.setId(po + StringTool.leftPadWithZeros(dNo, 5));
 
         });
+    }
+
+    /**
+     * 获取発注担当者
+     * 
+     * @param pocdby
+     * @param sapCdBy
+     * @return
+     */
+    private String getPocdby(String pocdby, String sapCdBy) {
+        // 如果発注担当者为空或者全为数字
+        if (pocdby == null || pocdby.matches("\\d+")) {
+            pocdby = sapCdBy;
+        }
+        return pocdby;
     }
 
     /**
