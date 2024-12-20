@@ -1,11 +1,13 @@
-sap.ui.define(["root/controller/BaseController", "sap/ui/model/json/JSONModel", "sap/m/MessageToast"], function (Controller, JSONModel, MessageToast) {
+sap.ui.define(["umc/app/controller/BaseController", "sap/ui/model/json/JSONModel", "sap/m/MessageToast"],
+  
+function (Controller, JSONModel, MessageToast) {
   "use strict";
-  return Controller.extend("root.controller.sys06_iflg_l", {
+  return Controller.extend("umc.app.controller.sys.sys06_iflg_l", {
     onInit: function () {
       //  设置版本号
       this._setOnInitNo("SYS06");
-      this.MessageTools._clearMessage();
-      this.MessageTools._initoMessageManager(this);
+      // this.MessageTools._clearMessage();
+      // this.MessageTools._initoMessageManager(this);
     },
 
 
@@ -16,8 +18,8 @@ sap.ui.define(["root/controller/BaseController", "sap/ui/model/json/JSONModel", 
       let ascs = [true]; //true desc false asc
       //手动添加排序
       this._onListRebinSort(oEvent, sorts, ascs);
-      //获取并设置权限数据 指定菜单ID。
-      this._setAuthByMenuAndUser("SYS06");
+      // //获取并设置权限数据 指定菜单ID。
+      // this._setAuthByMenuAndUser("SYS06");
     },
 
   });

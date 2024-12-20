@@ -29,6 +29,7 @@ import customer.bean.pch.Confirmation;
 import customer.bean.pch.Item;
 import customer.bean.pch.Pch01Sap;
 import customer.bean.pch.SapPchRoot;
+import customer.comm.odata.OdateValueTool;
 import customer.comm.tool.MessageTools;
 import customer.dao.pch.PchD001;
 import customer.dao.pch.PurchaseDataDao;
@@ -182,6 +183,8 @@ public class Ifm03PoService extends IfmService {
 
                     LocalDate cddate = LocalDate.parse(Items.getCreationdate(), formatter);
                     LocalDate poDate = LocalDate.parse(Items.getPurchaseorderdate(), formatter); // 转换字符串为 //
+
+                    o.setApprovedate(OdateValueTool.Iso8601ToLocalDate(Items.getApprovedate()));
 
                     o.setCdDate(cddate);
                     o.setPoDate(poDate);
