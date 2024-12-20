@@ -14,7 +14,6 @@ service TableService {
   entity SYS_T02_ROLE            as projection on SYS.T02_ROLE;
   entity SYS_T04_USER_2_ROLE     as projection on SYS.T04_USER_2_ROLE;
   entity SYS_T06_DOC_NO          as projection on SYS.T06_DOC_NO;
-  entity SYS_T05_ROLE_2_AUTH          as projection on SYS.T05_ROLE_2_AUTH;
   
   //entity SYS_T13_ATTACHMENT      as projection on SYS.T13_ATTACHMENT;
   entity MST_T01_SAP_MAT         as projection on MST.T01_SAP_MAT;
