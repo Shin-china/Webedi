@@ -138,7 +138,13 @@ sap.ui.define([
 
                     this._readHead(H_CODE, SUPPLIER, entity).then((oHeadData) => {
                         let mail = oHeadData.results && oHeadData.results.length > 0 ? 
-                        oHeadData.results.map(result => result.VALUE02).join(", ") : '';            
+                        oHeadData.results.map(result => result.VALUE02).join(", ") : '';    
+                        
+                    //Add by stanley 20241220
+                    if (mail.size > 1) {
+                        MessageBox.error("仕入先のメールアドレスを取得できません");
+                        return;
+                    }
                     let absama = oHeadData.results && oHeadData.results.length > 0 ? 
                         oHeadData.results.map(result => result.VALUE03 + " 様").join("  ") : '';
                     // Add Confirm button by stanley 20241217
