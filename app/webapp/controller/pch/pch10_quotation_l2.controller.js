@@ -1,4 +1,4 @@
-sap.ui.define(["umc/app/Controller/BaseController", "sap/m/MessageToast"], function (Controller, MessageToast) {
+sap.ui.define(["umc/app/controller/BaseController", "sap/m/MessageToast"], function (Controller, MessageToast) {
   "use strict";
   return Controller.extend("umc.app.controller.pch.pch10_quotation_l2", {
     // onInit: function () {
