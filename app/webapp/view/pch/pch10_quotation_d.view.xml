@@ -1063,6 +1063,42 @@
                     </table:template>
                 </table:Column>
 
+                <table:Column id="colUMC_SELECTION" width="10rem" sortProperty="UMC_SELECTION" filterProperty="UMC_SELECTION">
+                    <table:customData>
+                        <core:CustomData key="p13nData" value="{
+                                columnKey: 'UMC_SELECTION',
+                                leadingProperty: 'UMC_SELECTION',
+                                sortProperty: 'UMC_SELECTION',
+                                filterProperty: 'UMC_SELECTION'
+                            }" />
+                    </table:customData>
+                    <table:label>
+                        <Label id="labelUMC_SELECTION" text="{pch>PCH10_UMC_SELECTION}" />
+                    </table:label>
+                    <table:template>
+                    <!-- <Input value="{workInfo>PLANT_ID}" editable="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'},{path: 'workInfo>RQ'}], formatter: '.formatter.getEditableSaveCommonData'}"/> -->
+                        <Text id="textUMC_SELECTION" text="{workInfo>UMC_SELECTION}"  />
+                    </table:template>
+                </table:Column>
+
+                 <table:Column id="colFINAL_CHOICE" width="10rem" sortProperty="FINAL_CHOICE" filterProperty="FINAL_CHOICE">
+                    <table:customData>
+                        <core:CustomData key="p13nData" value="{
+                                columnKey: 'FINAL_CHOICE',
+                                leadingProperty: 'FINAL_CHOICE',
+                                sortProperty: 'FINAL_CHOICE',
+                                filterProperty: 'FINAL_CHOICE'
+                            }" />
+                    </table:customData>
+                    <table:label>
+                        <Label id="labelFINAL_CHOICE" text="{pch>PCH10_FINAL_CHOICE}" />
+                    </table:label>
+                    <table:template>
+                    <!-- <Input value="{workInfo>PLANT_ID}" editable="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'},{path: 'workInfo>RQ'}], formatter: '.formatter.getEditableSaveCommonData'}"/> -->
+                        <Text id="textFINAL_CHOICE" text="{workInfo>FINAL_CHOICE}"  />
+                    </table:template>
+                </table:Column>
+
                   </table:columns>
 
                 </table:Table>

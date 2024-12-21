@@ -1,5 +1,5 @@
 sap.ui.define([
-	"umc/app/Controller/BaseController",
+	"umc/app/controller/BaseController",
 	"sap/ui/model/Filter",
 	"umc/app/model/formatter",
 	"sap/ui/export/Spreadsheet"

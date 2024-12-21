@@ -1,5 +1,5 @@
 sap.ui.define([
-    "umc/app/Controller/BaseController",
+    "umc/app/controller/BaseController",
     "sap/ui/core/mvc/Controller",
     "sap/m/MessageToast",
     "sap/m/MessageBox",

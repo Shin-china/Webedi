@@ -1,4 +1,4 @@
-sap.ui.define(["umc/app/Controller/BaseController", "sap/m/MessageToast", "sap/m/BusyDialog",], function (Controller, MessageToast, BusyDialog) {
+sap.ui.define(["umc/app/controller/BaseController", "sap/m/MessageToast", "sap/m/BusyDialog",], function (Controller, MessageToast, BusyDialog) {
   "use strict";
 
   var _objectCommData = {
