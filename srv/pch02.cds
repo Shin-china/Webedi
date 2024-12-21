@@ -70,7 +70,8 @@ extend service TableService {
                     T01.INPUT_DATE,			// 納入日付						
                     T01.INPUT_QTY,			// 納入数											
                     T01.CD_DATE,			// 登録日付						
-                    T01.CD_DATE_TIME,	    // 時刻		
+                    T01.CD_DATE_TIME,	    // 時刻	
+                    T01.CD_BY				// 登録者
 
     }
 
