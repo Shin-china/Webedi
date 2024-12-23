@@ -1,4 +1,4 @@
-<mvc:View controllerName="umc.app.controller.pch.PCH10_quotation_d"
+<mvc:View controllerName="umc.app.controller.pch.pch10_quotation_d"
   xmlns:smartField="sap.ui.comp.smartfield"
   xmlns:smartform="sap.ui.comp.smartform"
   xmlns:core="sap.ui.core"
