@@ -226,6 +226,7 @@ public class Pch03Handler implements EventHandler {
             // 発注担当者
             String pocdby = getPocdby(pchd03.getPocdby(), pchd03.getSapCdBy());
             pchd03.setSapCdBy(pocdby);
+            pchd03.setSapCdBy2(pocdby);
             // 设置担当者
 
             pchd03.setZws1(

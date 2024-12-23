@@ -66,11 +66,11 @@ extend service TableService {
                 T05.PLACE_NAME,
                 T06.IMP_COMP,//検査合区分
                 T07.MANU_CODE,
-                T02.SAP_CD_BY, // SAP担当者
+                T01.SAP_CD_BY, // SAP担当者
                 T02.TO_MAT.MANU_MATERIAL,
                 T01.POCDBY,//自设参照者
 
-
+                '' as SAP_CD_BY2 : String, // SAP担当者2
                 '' as checkOk : String, // 検査合区分
                 '' as order_unit_price : String, // 発注単価
                 '' as exclusive_tax_amount : String, // 税抜額
