@@ -26,7 +26,7 @@ sap.ui.define(
 
         return new Promise(function (resolve, reject) {
           // check if running in localhost
-          if (window.location.hostname === "localhost" || window.location.hostname === "220.248.121.53") {
+          if (that._getIsHost()) {
             // 本地开发打印
             that._getOAuthToken(_that).then(
               function (token) {
@@ -104,7 +104,7 @@ sap.ui.define(
             };
             return new Promise(function (resolve, reject) {
               // check if running in localhost
-              if (window.location.hostname === "localhost" || window.location.hostname === "220.248.121.53") {
+              if (that._getIsHost()) {
                 // 本地开发打印
                 that._getOAuthToken(_that).then(
                   function (token) {
@@ -175,7 +175,7 @@ sap.ui.define(
 
         return new Promise(function (resolve, reject) {
           // check if running in localhost
-          if (window.location.hostname === "localhost" || window.location.hostname === "220.248.121.53") {
+          if (that._getIsHost()) {
             // 本地开发打印
             that._getOAuthToken(_that).then(
               function (token) {
@@ -244,7 +244,7 @@ sap.ui.define(
 
           return new Promise(function (resolve, reject) {
             // check if running in localhost
-            if (window.location.hostname === "localhost" || window.location.hostname === "220.248.121.53") {
+            if (that._getIsHost()) {
               // 本地开发打印
               that._getOAuthToken(_that).then(
                 function (token) {
@@ -752,6 +752,15 @@ sap.ui.define(
           }
           reader.onerror = error => reject(error);
         });
+      },
+      //判断是否能使用打印的功能
+      _getIsHost() {
+        if(window.location.hostname === "localhost" || window.location.hostname === "220.248.121.53"|| window.location.hostname === "umc-electronics-co---ltd--s01-test-dev-uweb-umce-dev.cfapps.jp10.hana.ondemand.com"){
+          return true;
+        }
+        else {
+          return false;
+        }
       }
     };
   }
