@@ -66,6 +66,7 @@ sap.ui.define([
 
 			this._setEditable(false);
 			this._setCreateAble(false);
+			this._setEditableAuth(true);
 
 			const that = this;
 			this._id = headID;
