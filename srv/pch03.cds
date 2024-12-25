@@ -67,8 +67,9 @@ extend service TableService {
                 T06.IMP_COMP,//検査合区分
                 T07.MANU_CODE,
                 T01.SAP_CD_BY, // SAP担当者
-                T02.TO_MAT.MANU_MATERIAL,
+                T02.TO_MAT.TO_SAP_BP.BP_NAME1 as MANU_MATERIAL,
                 T01.POCDBY,//自设参照者
+                T01.approvedate, //承認日
 
                 '' as SAP_CD_BY2 : String, // SAP担当者2
                 '' as checkOk : String, // 検査合区分
