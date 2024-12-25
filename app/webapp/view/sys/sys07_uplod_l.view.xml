@@ -1,0 +1,435 @@
+<mvc:View controllerName="umc.app.controller.sys.sys07_uplod_l"
+	xmlns:smartfield="sap.ui.comp.smartfield"
+	xmlns:smartform="sap.ui.comp.smartform"
+	xmlns:core="sap.ui.core"
+	xmlns="sap.m"
+	xmlns:f="sap.f"
+	xmlns:l="sap.ui.layout"
+	xmlns:smartFilterBar="sap.ui.comp.smartfilterbar"
+	xmlns:smartTable="sap.ui.comp.smarttable"
+	xmlns:sv="sap.ui.comp.smartvariants"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:uxap="sap.uxap"
+	xmlns:table="sap.ui.table"
+	xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1" >
+
+
+  <!-- <f:DynamicPage id="dynamicPageId" headerExpanded="true" showFooter="true" busy="{localModel>/busy}"> -->
+	<f:DynamicPage id="dynamicPageId" headerExpanded="true" showFooter="true" busy="{localModel>/isBusy}" >
+
+		<f:header>
+			<f:DynamicPageHeader id="DynamicPageHeader" pinnable="true">
+				<f:content>
+					
+					<smartFilterBar:SmartFilterBar id="smartFilterBar" useToolbar="false" entitySet="SYS07_VIEW_L" persistencyKey="receiptprintFilterBar" showFilterConfiguration="true" search="onSerach">
+						<smartFilterBar:controlConfiguration>
+							<smartFilterBar:ControlConfiguration id="_IDGenControlConfiguration3" key="PROJECT_NO" visibleInAdvancedArea="true"  index="1"/>
+							<smartFilterBar:ControlConfiguration id="_IDGenControlConfiguration1" key="REQUISITION_VERSION" visibleInAdvancedArea="true"  index="2"/>
+							
+						</smartFilterBar:controlConfiguration>
+					</smartFilterBar:SmartFilterBar>
+				</f:content>
+			</f:DynamicPageHeader>
+		</f:header>
+
+		<f:content>
+
+
+			<!-- -->
+			<smartTable:SmartTable id="SmartTableID" tableType="Table" enableAutoColumnWidth="true" entitySet="SYS07_VIEW_L" ignoredFields="UP_FLAG" requestAtLeastFields="STATUS_SALES" initiallyVisibleFields="" smartFilterId="smartFilterBar" enableExport="true" beforeExport="onBeforeExport" useVariantManagement="true" useTablePersonalisation="true" header="{com>TITLE_RESULT}" showRowCount="true" persistencyKey="sd01_SmartTableAnalytical_Explored" beforeRebindTable="onRebind" enableAutoBinding="false">
+				
+				<smartTable:customToolbar>
+					<OverflowToolbar id="ID_header" >
+						<content>
+							<ToolbarSpacer id="ID_ToolbarSpacer" />
+							<Button id="ButtonId1" text="{com>BUTTON_SAVE}" enabled="{parts: [{path: 'localModel>/editable'}], formatter: '.formatter.getDEditable2'}"  press="onSav" />
+							<Button id="ButtonId2" text="{com>BUTTON_EDIT}" enabled="{parts: [{path: 'localModel>/editable'}], formatter: '.formatter.getUnDEditable2'}"  press="onEdi" />
+							<Button id="ButtonId3" text="{com>BUTTON_DELETE}" enabled="true"  press="onDelete" />
+							<Button id="ButtonId4" text="{sys>SYS07_BUTTON_DOWNLOAD}" enabled="true"  press="onDownload" />
+						</content>
+					</OverflowToolbar>
+				</smartTable:customToolbar>
+				
+				<table:Table id="detailTable" rowMode="Auto" rowActionCount="1" selectionMode="MultiToggle" alternateRowColors="true" >
+					<!-- 見積案件No -->
+					<table:Column  width="10rem" sortProperty="PROJECT_NO" filterProperty="PROJECT_NO">
+						<table:customData>
+							<core:CustomData key="p13nData" value='{"columnKey":"PROJECT_NO", "leadingProperty":"PROJECT_NO", "sortProperty":"PROJECT_NO", "filterProperty":"PROJECT_NO"}'/>
+						</table:customData>
+						<table:label>
+							<Label  text="{sys>SYS07_PROJECT_NO}"/>
+						</table:label>
+						<table:template>
+							<Text  text="{PROJECT_NO}"/>
+						</table:template>
+					</table:Column>
+					<!-- 見積バージョン -->
+					<table:Column  width="10rem" sortProperty="REQUISITION_VERSION" filterProperty="REQUISITION_VERSION">
+						<table:customData>
+							<core:CustomData key="p13nData" value='{"columnKey":"REQUISITION_VERSION", "leadingProperty":"REQUISITION_VERSION", "sortProperty":"REQUISITION_VERSION", "filterProperty":"REQUISITION_VERSION"}'/>
+						</table:customData>
+						<table:label>
+							<Label  text="{sys>SYS07_REQUISITION_VERSION}"/>
+						</table:label>
+						<table:template>
+							<Text  text="{REQUISITION_VERSION}"/>
+						</table:template>
+					</table:Column>
+					<!-- 原価見積依頼No -->
+					<table:Column  width="10rem" sortProperty="COST_REQUISITION_NO" filterProperty="COST_REQUISITION_NO">
+						<table:customData>
+							<core:CustomData key="p13nData" value='{"columnKey":"COST_REQUISITION_NO", "leadingProperty":"COST_REQUISITION_NO", "sortProperty":"COST_REQUISITION_NO", "filterProperty":"COST_REQUISITION_NO"}'/>
+						</table:customData>
+						<table:label>
+							<Label  text="{sys>SYS07_COST_REQUISITION_NO}"/>
+						</table:label>
+						<table:template>
+							<Text  text="{COST_REQUISITION_NO}"/>
+						</table:template>
+					</table:Column>
+					<!-- 営業見積No.	 -->
+					<table:Column  width="10rem" sortProperty="SALES_REQUISITION_NO" filterProperty="SALES_REQUISITION_NO">
+						<table:customData>
+							<core:CustomData key="p13nData" value='{"columnKey":"SALES_REQUISITION_NO", "leadingProperty":"SALES_REQUISITION_NO", "sortProperty":"SALES_REQUISITION_NO", "filterProperty":"SALES_REQUISITION_NO"}'/>
+						</table:customData>
+						<table:label>
+							<Label  text="{sys>SYS07_SALES_REQUISITION_NO}"/>
+						</table:label>
+						<table:template>
+							<Text  text="{SALES_REQUISITION_NO}"/>
+						</table:template>
+					</table:Column>
+					<!-- 販売組織 -->
+					<table:Column  width="10rem" sortProperty="SALES_ORGANIZATION" filterProperty="SALES_ORGANIZATION">
+						<table:customData>
+							<core:CustomData key="p13nData" value='{"columnKey":"SALES_ORGANIZATION", "leadingProperty":"SALES_ORGANIZATION", "sortProperty":"SALES_ORGANIZATION", "filterProperty":"SALES_ORGANIZATION"}'/>
+						</table:customData>
+						<table:label>
+							<Label  text="{sys>SYS07_SALES_ORGANIZATION}"/>
+						</table:label>
+						<table:template>
+							<Text  text="{SALES_ORGANIZATION}"/>
+						</table:template>
+					</table:Column>
+					<!-- 流通チャネル -->
+					<table:Column  width="10rem" sortProperty="DISTRIBUTION_CHANNEL" filterProperty="DISTRIBUTION_CHANNEL">
+						<table:customData>
+							<core:CustomData key="p13nData" value='{"columnKey":"DISTRIBUTION_CHANNEL", "leadingProperty":"DISTRIBUTION_CHANNEL", "sortProperty":"DISTRIBUTION_CHANNEL", "filterProperty":"DISTRIBUTION_CHANNEL"}'/>
+						</table:customData>
+						<table:label>
+							<Label  text="{sys>SYS07_DISTRIBUTION_CHANNEL}"/>
+						</table:label>
+						<table:template>
+							<Text  text="{DISTRIBUTION_CHANNEL}"/>
+						</table:template>
+					</table:Column>
+					<!-- 得意先 -->
+					<table:Column  width="10rem" sortProperty="CUSTOMER" filterProperty="CUSTOMER">
+						<table:customData>
+							<core:CustomData key="p13nData" value='{"columnKey":"CUSTOMER", "leadingProperty":"CUSTOMER", "sortProperty":"CUSTOMER", "filterProperty":"CUSTOMER"}'/>
+						</table:customData>
+						<table:label>
+							<Label  text="{sys>SYS07_CUSTOMER}"/>
+						</table:label>
+						<table:template>
+							<Text  text="{CUSTOMER}"/>
+						</table:template>
+					</table:Column>
+					<!-- 通貨 -->
+					<table:Column  width="10rem" sortProperty="CURRENCY" filterProperty="CURRENCY">
+						<table:customData>
+							<core:CustomData key="p13nData" value='{"columnKey":"CURRENCY", "leadingProperty":"CURRENCY", "sortProperty":"CURRENCY", "filterProperty":"CURRENCY"}'/>
+						</table:customData>
+						<table:label>
+							<Label  text="{sys>SYS07_CURRENCY}"/>
+						</table:label>
+						<table:template>
+							<Text  text="{CURRENCY}"/>
+						</table:template>
+					</table:Column>
+					<!-- 通貨 -->
+					<table:Column  width="10rem" sortProperty="COMMENTS" filterProperty="COMMENTS">
+						<table:customData>
+							<core:CustomData key="p13nData" value='{"columnKey":"COMMENTS", "leadingProperty":"COMMENTS", "sortProperty":"COMMENTS", "filterProperty":"COMMENTS"}'/>
+						</table:customData>
+						<table:label>
+							<Label  text="{sys>SYS07_COMMENTS}"/>
+						</table:label>
+						<table:template>
+							<Text  text="{COMMENTS}"/>
+						</table:template>
+					</table:Column>
+					<!-- 登録日 -->
+					<table:Column  width="10rem" sortProperty="CD_DATE" filterProperty="CD_DATE">
+						<table:customData>
+							<core:CustomData key="p13nData" value='{"columnKey":"CD_DATE", "leadingProperty":"CD_DATE", "sortProperty":"CD_DATE", "filterProperty":"CD_DATE"}'/>
+						</table:customData>
+						<table:label>
+							<Label  text="{sys>SYS07_CD_DATE}"/>
+						</table:label>
+						<table:template>
+							<smartfield:SmartField value="{CD_DATE}" editable="false"/>
+						</table:template>
+					</table:Column>
+					<!-- 登録者 -->
+					<table:Column  width="10rem" sortProperty="CD_BY" filterProperty="CD_BY">
+						<table:customData>
+							<core:CustomData key="p13nData" value='{"columnKey":"CD_BY", "leadingProperty":"CD_BY", "sortProperty":"CD_BY", "filterProperty":"CD_BY"}'/>
+						</table:customData>
+						<table:label>
+							<Label  text="{sys>SYS07_CD_BY}"/>
+						</table:label>
+						<table:template>
+							<Text  text="{CD_BY}"/>
+						</table:template>
+					</table:Column>
+					
+					<!-- 削除フラグ -->
+					<table:Column  width="10rem" sortProperty="DEL_FLAG" filterProperty="DEL_FLAG">
+						<table:customData>
+							<core:CustomData key="p13nData" value='{"columnKey":"DEL_FLAG", "leadingProperty":"DEL_FLAG", "sortProperty":"DEL_FLAG", "filterProperty":"DEL_FLAG"}'/>
+						</table:customData>
+						<table:label>
+							<Label  text="{sys>SYS07_DEL_FLAG}"/>
+						</table:label>
+						<table:template>
+							<Text  text="{DEL_FLAG}"/>
+						</table:template>
+					</table:Column>
+					<!-- 見積回答日 -->
+					<table:Column  width="10rem" sortProperty="QUOTATION_DATE" filterProperty="QUOTATION_DATE">
+						<table:customData>
+							<core:CustomData key="p13nData" value='{"columnKey":"QUOTATION_DATE", "leadingProperty":"QUOTATION_DATE", "sortProperty":"QUOTATION_DATE", "filterProperty":"QUOTATION_DATE"}'/>
+						</table:customData>
+						<table:label>
+							<Label  text="{sys>SYS07_QUOTATION_DATE}"/>
+						</table:label>
+						<table:template>
+							<smartfield:SmartField value="{QUOTATION_DATE}" editable="false"/>
+						</table:template>
+					</table:Column>
+					<!-- 有効開始日 -->
+					<table:Column  width="10rem" sortProperty="VALID_F" filterProperty="VALID_F">
+						<table:customData>
+							<core:CustomData key="p13nData" value='{"columnKey":"VALID_F", "leadingProperty":"VALID_F", "sortProperty":"VALID_F", "filterProperty":"VALID_F"}'/>
+						</table:customData>
+						<table:label>
+							<Label  text="{sys>SYS07_VALID_F}"/>
+						</table:label>
+						<table:template>
+							<smartfield:SmartField value="{VALID_F}" editable="false"/>
+						</table:template>
+					</table:Column>
+					<!-- 有効終了日 -->
+					<table:Column  width="10rem" sortProperty="VALID_T" filterProperty="VALID_T">
+						<table:customData>
+							<core:CustomData key="p13nData" value='{"columnKey":"VALID_T", "leadingProperty":"VALID_T", "sortProperty":"VALID_T", "filterProperty":"VALID_T"}'/>
+						</table:customData>
+						<table:label>
+							<Label  text="{sys>SYS07_VALID_T}"/>
+						</table:label>
+						<table:template>
+							<smartfield:SmartField value="{VALID_T}" editable="false"/>
+						</table:template>
+					</table:Column>
+					<!-- 営業ステータス -->
+					<table:Column  width="10rem" sortProperty="STATUS_SALES_NAME" filterProperty="STATUS_SALES_NAME">
+						<table:customData>
+							<core:CustomData key="p13nData" value='{"columnKey":"STATUS_SALES_NAME", "leadingProperty":"STATUS_SALES_NAME", "sortProperty":"STATUS_SALES_NAME", "filterProperty":"STATUS_SALES_NAME"}'/>
+						</table:customData>
+						<table:label>
+							<Label  text="{sys>SYS07_STATUS_SALES}"/>
+						</table:label>
+						<table:template>
+							<Text  text="{STATUS_SALES_NAME}"/>
+						</table:template>
+					</table:Column>
+					
+					<!-- イニシャル明細 -->
+					<table:Column  width="10rem" sortProperty="INI_ITEM_NO" filterProperty="INI_ITEM_NO">
+						<table:customData>
+							<core:CustomData key="p13nData" value='{"columnKey":"INI_ITEM_NO", "leadingProperty":"INI_ITEM_NO", "sortProperty":"INI_ITEM_NO", "filterProperty":"INI_ITEM_NO"}'/>
+						</table:customData>
+						<table:label>
+							<Label  text="{sys>SYS07_INI_ITEM_NO}"/>
+						</table:label>
+						<table:template>
+							<Text  text="{INI_ITEM_NO}"/>
+						</table:template>
+					</table:Column>
+					<!-- 項目 -->
+					<table:Column  width="10rem" sortProperty="ITEM" filterProperty="ITEM">
+						<table:customData>
+							<core:CustomData key="p13nData" value='{"columnKey":"ITEM", "leadingProperty":"ITEM", "sortProperty":"ITEM", "filterProperty":"ITEM"}'/>
+						</table:customData>
+						<table:label>
+							<Label  text="{sys>SYS07_ITEM}"/>
+						</table:label>
+						<table:template>
+							<Text  text="{ITEM}"/>
+						</table:template>
+					</table:Column>
+					<!-- 数量 -->
+					<table:Column  width="10rem" sortProperty="QUANTITY" filterProperty="QUANTITY">
+						<table:customData>
+							<core:CustomData key="p13nData" value='{"columnKey":"QUANTITY", "leadingProperty":"QUANTITY", "sortProperty":"QUANTITY", "filterProperty":"QUANTITY"}'/>
+						</table:customData>
+						<table:label>
+							<Label  text="{sys>SYS07_QUANTITY}"/>
+						</table:label>
+						<table:template>
+							<smartfield:SmartField value="{QUANTITY}" editable="{parts: [{path: 'localModel>/editable'}], formatter: '.formatter.getDEditable2'}"/>
+						</table:template>
+					</table:Column>
+					<!-- 単価 -->
+					<table:Column  width="10rem" sortProperty="UNIT_PRICE" filterProperty="UNIT_PRICE">
+						<table:customData>
+							<core:CustomData key="p13nData" value='{"columnKey":"UNIT_PRICE", "leadingProperty":"UNIT_PRICE", "sortProperty":"UNIT_PRICE", "filterProperty":"UNIT_PRICE"}'/>
+						</table:customData>
+						<table:label>
+							<Label  text="{sys>SYS07_UNIT_PRICE}"/>
+						</table:label>
+						<table:template>
+							<smartfield:SmartField value="{UNIT_PRICE}" editable="{parts: [{path: 'localModel>/editable'}], formatter: '.formatter.getDEditable2'}"/>
+						</table:template>
+					</table:Column>
+					<!-- 項目合計 -->
+					<table:Column  width="10rem" sortProperty="Amount" filterProperty="Amount">
+						<table:customData>
+							<core:CustomData key="p13nData" value='{"columnKey":"Amount", "leadingProperty":"Amount", "sortProperty":"Amount", "filterProperty":"Amount"}'/>
+						</table:customData>
+						<table:label>
+							<Label  text="{sys>SYS07_AMOUNT}"/>
+						</table:label>
+						<table:template>
+							<smartfield:SmartField value="{Amount}" editable="false"/>
+						</table:template>
+					</table:Column>
+					
+					<!-- 寿命 -->
+					<table:Column  width="10rem" sortProperty="LIFE" filterProperty="LIFE">
+						<table:customData>
+							<core:CustomData key="p13nData" value='{"columnKey":"LIFE", "leadingProperty":"LIFE", "sortProperty":"LIFE", "filterProperty":"LIFE"}'/>
+						</table:customData>
+						<table:label>
+							<Label  text="{sys>SYS07_LIFE}"/>
+						</table:label>
+						<table:template>
+							<smartfield:SmartField value="{LIFE}" editable="{parts: [{path: 'localModel>/editable'}], formatter: '.formatter.getDEditable2'}"/>
+						</table:template>
+					</table:Column>
+					<!-- 資産元 -->
+					<table:Column  width="10rem" sortProperty="ASSETS" filterProperty="ASSETS">
+						<table:customData>
+							<core:CustomData key="p13nData" value='{"columnKey":"ASSETS", "leadingProperty":"ASSETS", "sortProperty":"ASSETS", "filterProperty":"ASSETS"}'/>
+						</table:customData>
+						<table:label>
+							<Label  text="{sys>SYS07_ASSETS}"/>
+						</table:label>
+						<table:template>
+							<smartfield:SmartField value="{ASSETS}" editable="{parts: [{path: 'localModel>/editable'}], formatter: '.formatter.getDEditable2'}"/>
+						</table:template>
+					</table:Column>
+					<!-- 支払方法 -->
+					<table:Column  width="10rem" sortProperty="PAYMENT" filterProperty="PAYMENT">
+						<table:customData>
+							<core:CustomData key="p13nData" value='{"columnKey":"PAYMENT", "leadingProperty":"PAYMENT", "sortProperty":"PAYMENT", "filterProperty":"PAYMENT"}'/>
+						</table:customData>
+						<table:label>
+							<Label  text="{sys>SYS07_PAYMENT}"/>
+						</table:label>
+						<table:template>
+							<smartfield:SmartField value="{PAYMENT}" editable="{parts: [{path: 'localModel>/editable'}], formatter: '.formatter.getDEditable2'}"/>
+						</table:template>
+					</table:Column>
+					<!-- 備考 -->
+					<table:Column  width="10rem" sortProperty="REMARKS" filterProperty="REMARKS">
+						<table:customData>
+							<core:CustomData key="p13nData" value='{"columnKey":"REMARKS", "leadingProperty":"REMARKS", "sortProperty":"REMARKS", "filterProperty":"REMARKS"}'/>
+						</table:customData>
+						<table:label>
+							<Label  text="{sys>SYS07_REMARKS}"/>
+						</table:label>
+						<table:template>
+							<smartfield:SmartField value="{REMARKS}" editable="{parts: [{path: 'localModel>/editable'}], formatter: '.formatter.getDEditable2'}"/>
+						</table:template>
+					</table:Column>
+					<!-- 登録日 -->
+					<table:Column  width="10rem" sortProperty="I_CD_TIME" filterProperty="I_CD_TIME">
+						<table:customData>
+							<core:CustomData key="p13nData" value='{"columnKey":"I_CD_TIME", "leadingProperty":"I_CD_TIME", "sortProperty":"I_CD_TIME", "filterProperty":"I_CD_TIME"}'/>
+						</table:customData>
+						<table:label>
+							<Label  text="{sys>SYS07_I_CD_TIME}"/>
+						</table:label>
+						<table:template>
+							<smartfield:SmartField value="{I_CD_TIME}" editable="false"/>
+						</table:template>
+					</table:Column>
+					<!-- 登録者 -->
+					<table:Column  width="10rem" sortProperty="I_CD_BY" filterProperty="I_CD_BY">
+						<table:customData>
+							<core:CustomData key="p13nData" value='{"columnKey":"I_CD_BY", "leadingProperty":"I_CD_BY", "sortProperty":"I_CD_BY", "filterProperty":"I_CD_BY"}'/>
+						</table:customData>
+						<table:label>
+							<Label  text="{sys>SYS07_I_CD_BY}"/>
+						</table:label>
+						<table:template>
+							<smartfield:SmartField value="{I_CD_BY}" editable="false"/>
+						</table:template>
+					</table:Column>
+					<!-- 更新日 -->
+					<table:Column  width="10rem" sortProperty="I_UP_TIME" filterProperty="I_UP_TIME">
+						<table:customData>
+							<core:CustomData key="p13nData" value='{"columnKey":"I_UP_TIME", "leadingProperty":"I_UP_TIME", "sortProperty":"I_UP_TIME", "filterProperty":"I_UP_TIME"}'/>
+						</table:customData>
+						<table:label>
+							<Label  text="{sys>SYS07_I_UP_TIME}"/>
+						</table:label>
+						<table:template>
+							<smartfield:SmartField value="{I_UP_TIME}" editable="false"/>
+						</table:template>
+					</table:Column>
+					<!-- 更新者 -->
+					<table:Column  width="10rem" sortProperty="I_UP_BY" filterProperty="I_UP_BY">
+						<table:customData>
+							<core:CustomData key="p13nData" value='{"columnKey":"I_UP_BY", "leadingProperty":"I_UP_BY", "sortProperty":"I_UP_BY", "filterProperty":"I_UP_BY"}'/>
+						</table:customData>
+						<table:label>
+							<Label  text="{sys>SYS07_I_UP_BY}"/>
+						</table:label>
+						<table:template>
+							<smartfield:SmartField value="{I_UP_BY}" editable="false"/>
+						</table:template>
+					</table:Column>
+					<!-- 削除フラグ -->
+					<table:Column  width="10rem" sortProperty="I_DEL_FLAG" filterProperty="I_DEL_FLAG">
+						<table:customData>
+							<core:CustomData key="p13nData" value='{"columnKey":"I_DEL_FLAG", "leadingProperty":"I_DEL_FLAG", "sortProperty":"I_DEL_FLAG", "filterProperty":"I_DEL_FLAG"}'/>
+						</table:customData>
+						<table:label>
+							<Label  text="{sys>SYS07_I_DEL_FLAG}"/>
+						</table:label>
+						<table:template>
+							<smartfield:SmartField value="{I_DEL_FLAG}" editable="false"/>
+						</table:template>
+					</table:Column>
+				
+					
+
+
+
+
+
+					
+				</table:Table>
+
+
+			</smartTable:SmartTable>
+
+
+		</f:content>
+	
+	</f:DynamicPage>
+	
+</mvc:View>

@@ -223,3 +223,29 @@ entity T15_IF_LOG : cuid {
   @title: '{i18n>UP_BY}' CD_BY             : String(36) @cds.on.update: $user; //修改人
 
 }
+
+
+entity T16_EMAIL_H  : cuid, CUID_FILED {
+  @title: '{i18n>H_CODE}' H_CODE       : String(20) not null; //汎用マスタ区分
+  @title: '{i18n>H_NAME}' H_NAME       : String(200); //描述
+    @title: '{i18n>BP_ID}' BP_ID       : String(20) not null; //bp_id
+  @title: '{i18n>BE_CHANGE}' BE_CHANGE : Boolean default true; //修正可能
+
+
+  TO_ITEMS                             : Composition of many T17_EMAIL_D
+                                           on TO_ITEMS.H_ID = ID; //ITEM信息
+}
+
+
+entity T17_EMAIL_D : cuid, CUID_FILED {
+  @title: '{i18n>H_ID}' H_ID         : String(36) not null; //
+  @title: '{i18n>EMAIL_ADDRESS}' EMAIL_ADDRESS         : String(200) not null; //
+    @title: '{i18n>EMAIL_ADDRESS_NAME}' EMAIL_ADDRESS_NAME       : String(200); //描述
+  
+
+
+
+
+  TO_HEAD                            : Association to one T16_EMAIL_H
+                                         on TO_HEAD.ID = H_ID; //
+}

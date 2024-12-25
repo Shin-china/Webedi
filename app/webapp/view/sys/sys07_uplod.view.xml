@@ -1,0 +1,44 @@
+ <mvc:View controllerName="umc.app.controller.sys.sys07_uplod"
+  xmlns:smartfield="sap.ui.comp.smartfield"
+	xmlns:smartform="sap.ui.comp.smartform"
+  xmlns:core="sap.ui.core"
+  xmlns:m="sap.m"
+  xmlns:f="sap.f"
+  xmlns:smartFilterBar="sap.ui.comp.smartfilterbar"
+  xmlns:smartTable="sap.ui.comp.smarttable"
+  xmlns:sv="sap.ui.comp.smartvariants"
+  xmlns:mvc="sap.ui.core.mvc"
+  xmlns="sap.uxap"
+  xmlns:table="sap.ui.table"
+  xmlns:mc="sap.suite.ui.microchart"
+  xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+  <f:DynamicPage id="dynamicPageId" headerExpanded="true" showFooter="false" busy="{localModel>/busy}">
+    <f:title>
+      <f:DynamicPageTitle>
+        <f:heading>
+          <m:Title text="{sys>SYS07_TITLE}" />
+        </f:heading>
+        <f:navigationActions>
+					<m:Button id="_IDGenButton3" icon="sap-icon://home" tooltip="nav-back" press="navToHome"/>
+				</f:navigationActions>
+      </f:DynamicPageTitle>
+    </f:title>
+    <f:content>
+        <m:IconTabBar
+				expanded="true"
+        expandable="false"
+				class="sapUiSmallMarginBottom sapUiResponsiveContentPadding"
+        backgroundDesign="Translucent">
+				<m:items>
+        	<m:IconTabFilter text="{sys>SYS07_TITLE_L}" >       	
+               <mvc:XMLView viewName="umc.app.view.sys.sys07_uplod_l" height="50em"/>
+          </m:IconTabFilter>
+          <m:IconTabFilter	text="{sys>SYS07_TITLE_UPLOAD}" >
+               <mvc:XMLView viewName="umc.app.view.sys.sys07_uplod_d" height="50em"/>
+             
+				  </m:IconTabFilter>	
+				</m:items>
+			</m:IconTabBar>
+    </f:content>
+  </f:DynamicPage>
+</mvc:View>

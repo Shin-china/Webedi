@@ -274,7 +274,7 @@ extend service TableService {
                 
             join view.SYS_T09_USER_2_PLANT t09
                 on  t09.PLANT_ID = T02.PLANT_ID
-                and t09.USER_ID  = Tu.USER_ID
+                and t09.USER_ID  = Tu.ID
             left join view.PO_TYPE_POP T06
                 on T02.PO_TYPE = T06.VALUE
             left join view.PCH03_STATUS_POP T07
