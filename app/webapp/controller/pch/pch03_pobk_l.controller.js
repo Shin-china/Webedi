@@ -34,7 +34,8 @@ sap.ui.define([
 			this.MessageTools._initoMessageManager(this);
 
 			this.getRouter().getRoute("RouteCre_pch03").attachPatternMatched(this._onRouteMatched, this);
-
+			//  设置版本号
+			this._setOnInitNo("PCH03", ".20241225.01");
 		},
 
 		// onPress: function (oEvent) {
