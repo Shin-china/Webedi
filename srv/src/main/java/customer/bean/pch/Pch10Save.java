@@ -129,6 +129,19 @@ public class Pch10Save {
     @JSONField(name = "CD_BY")
     private String CD_BY;
 
+    @JSONField(name = "FINAL_CHOICE")
+    private String FINAL_CHOICE;
+
+
+
+    public String getFINAL_CHOICE() {
+        return FINAL_CHOICE;
+    }
+
+    public void setFINAL_CHOICE(String fINAL_CHOICE) {
+        FINAL_CHOICE = fINAL_CHOICE;
+    }
+
     public String getSALES_NUMBER() {
         return SALES_NUMBER;
     }
