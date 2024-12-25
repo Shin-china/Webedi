@@ -28,6 +28,38 @@ sap.ui.define(
         this._viewCreateSet();
 
       },
+        // excel上传
+        onFileChange: function (oEvent) {
+          this._setEditable(true);
+          var oFileUploader = this.byId("fileUploader");
+
+          var that = this;
+          var view = this.getView();
+          var jsonModel = view.getModel("workInfo");
+          if (!jsonModel) {
+            jsonModel = new sap.ui.model.json.JSONModel();
+            view.setModel(jsonModel, "workInfo");
+          }
+          var oFile = oFileUploader.FUEl.files[0];
+          var oReader = new FileReader();
+          oReader.onload = function (oFileData) {
+            var sResult = oFileData.target.result;
+            var oWB = XLSX.read(sResult, {
+            type: "binary",
+            });
+            //获得 sheet
+            var oSheet = oWB.Sheets[oWB.SheetNames[0]];
+            //设置头
+            var header = ["H_CODE","H_NAME","BP_ID","EMAIL_ADDRESSY","EMAIL_ADDRESS_NAME"];   //,"CUSTOMER_MAT" 存疑
+            // 通过 XLSX 将sheet转为json  要转的oSheet，header标题，range起始行（1：第二行开始）
+            var jsonS = XLSX.utils.sheet_to_json(oSheet,{header: header, range: 1});
+
+            
+            
+            jsonModel.setData(jsonS);
+          };
+          oReader.readAsBinaryString(oFile);
+        },
 
       /*++++++++++++++++++++++++++++++
 		  检查当前页面数据
