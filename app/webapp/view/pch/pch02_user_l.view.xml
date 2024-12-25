@@ -215,7 +215,7 @@
                     <core:CustomData key="p13nData" value='{"columnKey":"CD_BY", "leadingProperty":"CD_BY", "sortProperty":"CD_BY", "filterProperty":"CD_BY"}'/>
                 </table:customData>
                 <table:label>
-                    <Label id="labelCdBy" text="{sys>CD_BY}"/>
+                    <Label id="labelCdBy" text="{sys>CD_BY1}"/>
                 </table:label>
                 <table:template>
                     <Text id="textCdBy" text="{CD_BY}"/>

@@ -141,7 +141,7 @@ sap.ui.define([
                         oHeadData.results.map(result => result.VALUE02).join(", ") : '';    
                         
                     //Add by stanley 20241220
-                    if (mail.size > 1) {
+                    if (mail == "" || mail == null) {
                         MessageBox.error("仕入先のメールアドレスを取得できません");
                         return;
                     }
