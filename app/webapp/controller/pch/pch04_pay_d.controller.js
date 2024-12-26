@@ -257,7 +257,7 @@ sap.ui.define([
                 });
 
                  // 使用处理后的第一个值和年份-月份信息生成文件名
-                var fileName = `${processedIdList[0]}_${yearMonthList[0]}UMC支払通知書`;
+                var fileName = `${processedIdList[0]}_${yearMonthList[0]}UMC支払通知書.pdf`;
 
                 that.PrintTool._getPrintDataInfo(that, IdList, "/PCH_T04_PAYMENT_SUM_HJ6", "DOWNLOADID").then((J) => {
                     // oData = this.jsonDateToString(oData);  
