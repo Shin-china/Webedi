@@ -820,7 +820,7 @@ sap.ui.define([
 				uniqueIdList.forEach((item) => {
 
 					// 更通用的方法：重新构建数字部分
-					var numberPartStr = name.match( /(.+)(\d+)(\..+)$/)[2]; // 获取整个数字部分
+					var numberPartStr = name.match(/(\d{14})/)[1]; // 获取整个数字部分
 					var incrementedNumberPartStr = (parseInt(numberPartStr, 10) + 1).toString(); // 递增整个数字部分并转换回字符串
 					name = name.replace(numberPartStr, incrementedNumberPartStr); // 替换整个数字部分
 					that._newNPSprinDowS(myMap, that, item, name);
