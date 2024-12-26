@@ -784,7 +784,7 @@ sap.ui.define([
 				// that.PrintTool._detailSelectPrint(that, sResponse, "test/test", oData, null, null, null, null)
 				that.PrintTool._detailSelectPrintDowS(that, sResponse, that.getGlobProperty("ADS_template_form") +"_rep01/T", oData, null, _name, null, null, null).then((oData) => {
 					var sapPo = {
-						po:  myMap.get(item),
+						po:  item,
 						type: "PCH03",
 						fileName: _name,
 					}
