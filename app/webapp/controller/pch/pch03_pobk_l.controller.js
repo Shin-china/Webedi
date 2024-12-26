@@ -659,9 +659,9 @@ sap.ui.define([
 				console.log(sResponse)
 
 				that.PrintTool._detailSelectPrintDowS(that, sResponse, that.getGlobProperty("ADS_template_form") +"_rep02/T", oData, null, _name, null, null, null).then((oData) => {
-					//po=po+podno
+					var extractedNumber = item[0].substring(0, 10);
 					var sapPo = {
-						po: item[0],
+						po: extractedNumber,
 						type: "PCH03",
 						fileName: _name,
 					}
