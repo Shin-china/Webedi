@@ -810,7 +810,7 @@ sap.ui.define([
 		 * @returns 
 		 */
 		_onNPSprintTy: function (ObList, uniqueIdList, myMap, myZABCMap, that ) {
-
+			var regex = /(\d+)$/;
 			return new Promise(function (resolve, reject) {
 
 
@@ -820,10 +820,10 @@ sap.ui.define([
 				uniqueIdList.forEach((item) => {
 
 					// 更通用的方法：重新构建数字部分
-					var numberPartStr = name.match(regex)[0]; // 获取整个数字部分
+					var numberPartStr = name.match( /(.+)(\d+)(\..+)$/)[2]; // 获取整个数字部分
 					var incrementedNumberPartStr = (parseInt(numberPartStr, 10) + 1).toString(); // 递增整个数字部分并转换回字符串
-					var newStrGeneral = str.replace(numberPartStr, incrementedNumberPartStr); // 替换整个数字部分
-					that._newNPSprinDowS(myMap, that, item, newStrGeneral);
+					name = name.replace(numberPartStr, incrementedNumberPartStr); // 替换整个数字部分
+					that._newNPSprinDowS(myMap, that, item, name);
 					resolve(true);
 
 
