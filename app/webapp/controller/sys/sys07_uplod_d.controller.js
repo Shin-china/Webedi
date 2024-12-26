@@ -76,7 +76,7 @@ sap.ui.define(
           var jsonModel = that.getModel("workInfo");
           // 模板里面没有数据时的提示msg
           if (jsonModel.oData.length == undefined) {
-            sap.m.MessageBox.alert(that.MessageTools._getI18nTextInModel("com", "SD01_Message_01", this.getView()));
+            sap.m.MessageBox.alert(that.MessageTools._getI18nTextInModel("com", "Message_01", this.getView()));
             that.getView().setBusy(false);
             return;
           }
@@ -87,7 +87,7 @@ sap.ui.define(
               var myArray = JSON.parse(arr);
 
               //设置画面上总结
-              that._setCnt(myArray.reTxt);
+              // that._setCnt(myArray.reTxt);
 
               // 画面上的mode
               var jsonModel = that.getModel("workInfo");
@@ -111,7 +111,7 @@ sap.ui.define(
         var jsondata = this.getModel("workInfo").getData();
         var a = JSON.stringify({ list: jsondata });
         var oPrams = {
-          SYS07Json: a,
+          json: a,
         };
         return oPrams;
       },

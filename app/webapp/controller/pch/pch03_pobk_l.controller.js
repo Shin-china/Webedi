@@ -663,7 +663,7 @@ sap.ui.define([
 					var sapPo = {
 						po: item[0],
 						type: "PCH03",
-						fileName: "注文書",
+						fileName: _name,
 					}
 					that._setBusy(false);
 					//打印pdf后写表共通
@@ -786,7 +786,7 @@ sap.ui.define([
 					var sapPo = {
 						po:  myMap.get(item),
 						type: "PCH03",
-						fileName: "納品書",
+						fileName: _name,
 					}
 
 					//完成后是否更新确认

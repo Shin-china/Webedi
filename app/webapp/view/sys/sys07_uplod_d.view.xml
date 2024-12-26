@@ -57,15 +57,6 @@ xmlns:fb="sap.ui.comp.filterbar">
 						<Text id="_IDGenText4" text="{workInfo>MSG_TEXT}" width="18em" tooltip="{local>MESSAGE}"/>
 					</t:template>
 				</t:Column>
-				<t:Column  width="10rem" sortProperty="PROCESS_CODE" filterProperty="PROCESS_CODE">
-					<t:customData>
-						<core:CustomData key="p13nData" value='\{"columnKey":"PROCESS_CODE", "leadingProperty":"PROCESS_CODE"}'/>
-					</t:customData>
-					<Label  text="{sys>SYS07_PROCESS_CODE}"/>
-					<t:template>
-						<Text  text="{workInfo>PROCESS_CODE}"/>
-					</t:template>
-				</t:Column>
 
 				<t:Column  width="10rem" sortProperty="H_CODE" filterProperty="H_CODE">
 					<t:customData>
