@@ -197,6 +197,7 @@ public class Pch10Service {
             t07New.setInitialObj(pch08.getINITIAL_OBJ());
             t07New.setPlantId(pch08.getPLANT_ID());
             t07New.setSupplierMat(pch08.getSUPPLIER_MAT());
+            t07New.setFinalChoice(pch08.getFINAL_CHOICE());
 
             newItems.add(t07New);
         });
@@ -267,7 +268,6 @@ public class Pch10Service {
             o.setMaterial(item.getMaterial());
             o.setMaker(item.getMaker());
             o.setStatus(item.getStatus());
-            o.setInitialObj(item.getInitialObj());
             o.setPlantId(item.getPlantId());
             o.setSupplierMat(item.getSupplierMat());
             o.setSapMatId(item.getSapMatId());
@@ -313,6 +313,9 @@ public class Pch10Service {
             o.setUmcSelection(value.getUMC_SELECTION());
             o.setUmcComment1(value.getUMC_COMMENT_1());
             o.setUmcComment2(value.getUMC_COMMENT_2());
+
+            o.setInitialObj(value.getINITIAL_OBJ());
+            o.setFinalChoice(value.getFINAL_CHOICE());
 
             try {
 

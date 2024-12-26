@@ -47,6 +47,11 @@ import customer.dao.sys.IFSManageDao;
 import customer.dao.sys.T13AttachmentDao;
 import customer.odata.BaseMoveService;
 import customer.service.ifm.Ifm01BpService;
+import customer.service.ifm.Ifm02MstService;
+import customer.service.ifm.Ifm03PoService;
+import customer.service.ifm.Ifm04PrService;
+import customer.service.ifm.Ifm05PayService;
+import customer.service.ifm.Ifm06BpPurchaseService;
 import customer.service.sys.ObjectStoreService;
 
 @Component
@@ -70,15 +75,74 @@ public class CommonHandler implements EventHandler {
     @Autowired
     private Ifm01BpService ifm01BpService;
 
-    // job test 外部接口
-    @On(event = "aaa")
-    public void aaa(AaaContext context) {
+    @Autowired
+    private Ifm02MstService ifm02MstService;
+
+    @Autowired
+    private Ifm03PoService ifm03PoService;
+
+    @Autowired
+    private Ifm04PrService ifm04PrService;
+
+    @Autowired
+    private Ifm05PayService ifm05PayService;
+
+    @Autowired
+    private Ifm06BpPurchaseService ifm06BpPurchaseService;
+
+
+    //BP 接口外部调用
+    @On(event = "IF_S4_BP")
+    public void IF_S4_BP(IFS4BPContext context) throws IOException {
 
         IFLog ifLog = new IFLog(IFSManageDao.IF_S4_BP);
         ifm01BpService.process(ifLog);
-
         context.setResult("OK");
+    }
 
+    // BP PUERCHASE 接口外部调用
+    @On(event = "IF_S4_BPPURCHASE")
+    public void IF_S4_BP(IFS4BPPURCHASEContext context) throws IOException {
+
+        IFLog ifLog = new IFLog(IFSManageDao.IF_S4_BPPURCHASE);
+        ifm06BpPurchaseService.process(ifLog);
+        context.setResult("OK");
+    }
+
+    // MST 接口外部调用
+    @On(event = "IF_S4_MST")
+    public void IF_S4_BP(IFS4MSTContext context) throws IOException {
+
+        IFLog ifLog = new IFLog(IFSManageDao.IF_S4_MST);
+        ifm02MstService.process(ifLog, null);
+        context.setResult("OK");
+    }
+
+    // PO 接口外部调用
+    @On(event = "IF_S4_PO")
+    public void IF_S4_BP(IFS4POContext context) throws IOException {
+
+        IFLog ifLog = new IFLog(IFSManageDao.IF_S4_PO);
+        ifm03PoService.process(ifLog);
+        context.setResult("OK");
+    }
+
+    // PR 接口外部调用
+    @On(event = "IF_S4_PR")
+    public void IF_S4_BP(IFS4PRContext context)  throws IOException{
+
+        IFLog ifLog = new IFLog(IFSManageDao.IF_S4_PR);
+        ifm04PrService.process(ifLog);
+        context.setResult("OK");
+    }
+
+    // PAY 接口外部调用
+    @On(event = "IF_S4_PAY")
+    public void IF_S4_BP(IFS4PAYContext context) throws IOException {
+
+        IFLog ifLog = new IFLog(IFSManageDao.IF_S4_PAY);
+        ifm05PayService.process(ifLog);
+        context.setResult("OK");
     }
 
     // IFM054 購買見積依頼受信

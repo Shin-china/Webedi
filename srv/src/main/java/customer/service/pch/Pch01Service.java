@@ -277,22 +277,28 @@ public class Pch01Service extends Service {
 
             index++;
 
-            // 换po，或者是换dn了。 或者是第一条
-            if ((!s.getPO_NO().equals(lastpo) && s.getD_NO() != lastdn) || index == 1) {
-                // 获取新dn
-                lastdn = s.getD_NO();
-                // 获取新po
-                lastpo = s.getPO_NO();
+            /**
+             * 1.更换PO
+             * 2.同一PO，不同DN
+             * 3.第一条
+             */
+            if ((s.getPO_NO().equals(lastpo) && s.getD_NO() != lastdn) || index == 1 || !s.getPO_NO().equals(lastpo)) {
 
                 // 当没有减少数量日期的时候
                 delsuccess = savaDao.delete_pono(s.getPO_NO(), s.getD_NO());
 
-                seq = savaDao.getSeq(lastpo, lastdn);
+                seq = savaDao.getSeq(s.getPO_NO(), s.getD_NO());
             }
 
             if (delsuccess) {
 
                 seq++;
+
+                // 获取新po
+                lastpo = s.getPO_NO();
+
+                // 获取新dn
+                lastdn = s.getD_NO();
 
                 T03PoC t03 = T03PoC.create();
                 t03.setDNo(s.getD_NO()); // 设置采购订单编号
@@ -315,7 +321,7 @@ public class Pch01Service extends Service {
 
                     Boolean success02d = savaDao.update02status(t02);
 
-                    if (success02d) {
+                    if (!success02d) {
                         list.setErr(true);// 有无错误
                         list.setReTxt(" insert success but t02 update faild");// 返回消息
                     } else {
