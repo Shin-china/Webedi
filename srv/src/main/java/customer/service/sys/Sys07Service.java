@@ -7,6 +7,7 @@ import java.util.HashSet;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
@@ -26,6 +27,7 @@ import customer.service.Service;
 import customer.service.pch.CheckDataService;
 import customer.tool.UniqueIDTool;
 
+@Component
 public class Sys07Service {
     @Autowired
     Messages messages;

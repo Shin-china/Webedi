@@ -814,9 +814,16 @@ sap.ui.define([
 			return new Promise(function (resolve, reject) {
 
 
+				var name =that._getNpsName();
+
 
 				uniqueIdList.forEach((item) => {
-					that._newNPSprinDowS(myMap, that, item, that._getNpsName());
+
+					// 更通用的方法：重新构建数字部分
+					var numberPartStr = name.match(regex)[0]; // 获取整个数字部分
+					var incrementedNumberPartStr = (parseInt(numberPartStr, 10) + 1).toString(); // 递增整个数字部分并转换回字符串
+					var newStrGeneral = str.replace(numberPartStr, incrementedNumberPartStr); // 替换整个数字部分
+					that._newNPSprinDowS(myMap, that, item, newStrGeneral);
 					resolve(true);
 
 
