@@ -58,7 +58,7 @@ public class T17EmailDDao extends Dao {
     // 追加
     public void insert(T17EmailD o) {
 
-        logger.info("插入SYSt16表code" + o.getEmailAddress() + "================");
+        logger.info("插入SYSt17表code" + o.getEmailAddress() + "================");
         o.setCdBy(getUserId());
         o.setCdTime(getNow());
         if (o.getId() == null) {
@@ -71,15 +71,21 @@ public class T17EmailDDao extends Dao {
         o.setUpTime(getNow());
         o.setUpBy(this.getUserId());
 
-        logger.info("变更SYSt16表code" + o.getEmailAddress() + "================");
+        logger.info("变更SYSt17表code" + o.getEmailAddress() + "================");
         db.run(Update.entity(Sys_.T17_EMAIL_D).data(o));
     }
 
     // 删除
     public void delete(T17EmailD o) {
-        logger.info("删除SYSt16表code" + o.getEmailAddress() + "================");
+        logger.info("删除SYSt17表code" + o.getEmailAddress() + "================");
 
         db.run(Delete.from(Sys_.T17_EMAIL_D).where(a -> a.ID().eq(o.getId())));
 
+    }
+
+    public void delete() {
+        logger.info("删除SYSt17");
+
+        db.run(Delete.from(Sys_.T17_EMAIL_D));
     }
 }

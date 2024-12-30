@@ -81,4 +81,11 @@ public class T16EmailHDao extends Dao {
         db.run(Delete.from(Sys_.T16_EMAIL_H).where(a -> a.ID().eq(o.getId())));
 
     }
+
+    public void delete() {
+        logger.info("删除T16EmailH表");
+
+        db.run(Delete.from(Sys_.T16_EMAIL_H));
+
+    }
 }

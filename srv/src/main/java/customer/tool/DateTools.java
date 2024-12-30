@@ -53,7 +53,7 @@ public class DateTools {
     // 获取当前日期并格式化为字符串yyyy/MM/dd
     public static String getCurrentDateString(LocalDate data) {
         if (data == null) {
-            return null;
+            return "";
         }
         DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy/MM/dd");
         LocalDate currentDate = data; // 获取当前日期

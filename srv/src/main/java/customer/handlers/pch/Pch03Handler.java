@@ -425,7 +425,7 @@ public class Pch03Handler implements EventHandler {
      */
     private String getPocdby(String pocdby, String sapCdBy) {
         // 如果発注担当者为空或者全为数字
-        if (pocdby == null || pocdby.matches("\\d+")) {
+        if (StringUtils.isBlank(pocdby) || pocdby.matches("\\d+")) {
             pocdby = sapCdBy;
         }
         return pocdby;
