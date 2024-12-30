@@ -4,6 +4,7 @@ import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
 
 import org.apache.poi.ss.formula.functions.T;
@@ -168,9 +169,25 @@ public class CheckDataService extends Service {
      */
     public void checkNull(Sys07 s) {
         // H_CODE
-        s = this.checkNull(s.getH_CODE(), "H_CODE", s);
+        s = this.checkNull(s.getH_CODE(), "業務区分", s);
+        s = this.checkNull(s.getH_NAME(), "業務名", s);
+        s = this.checkNull(s.getBP_ID(), "仕入先", s);
+        s = this.checkNull(s.getEMAIL_ADDRESSY(), "メールアドレス", s);
+        s = this.checkNull(s.getEMAIL_ADDRESS_NAME(), "担当者", s);
         // BP_ID
         // SYS07_EMAIL_ADDRESSY
+
+    }
+
+    public void checkData(Sys07 s, HashSet<String> dno) {
+        int countA = dno.size();
+
+        dno.add(s.getH_CODE() + s.getBP_ID() + s.getEMAIL_ADDRESSY());
+        int countB = dno.size();
+        // 判断明细行号是否重复的逻辑
+        if (countA == countB) {
+            s.setError(MessageTools.getMsgText(rbms, "SYS07_EROOR_CHECK_DATA"));
+        }
 
     }
 
@@ -198,4 +215,5 @@ public class CheckDataService extends Service {
         }
         return t;
     }
+
 }

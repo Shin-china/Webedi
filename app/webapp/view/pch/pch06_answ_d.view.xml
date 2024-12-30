@@ -88,6 +88,7 @@
 								<Text text="{workInfo>D_NO}" editable="true"></Text>				
 							</table:template>
 						</table:Column>	
+						
 						<!-- 品目コード -->
 						<table:Column id="_IDGenColumn6" width="8rem" sortProperty="MAT_ID" filterProperty="MAT_ID"  >
 							<table:customData>
@@ -132,6 +133,17 @@
 							
 							</table:template>
 						</table:Column>	
+						<!-- 参照 -->
+						<table:Column id="_IDGenColumn26" width="8rem" sortProperty="ExtNumber" filterProperty="ExtNumber"  >
+							<table:customData>
+								<core:CustomData key="p13nData" value='\{"columnKey":"ExtNumber", "leadingProperty":"ExtNumber"}'/>
+							</table:customData>
+							<Label id="_IDGenLabel4" text="{pch>LABEL_D__ExtNumber}"/>
+							<table:template>
+								<Input value="{workInfo>ExtNumber}" editable="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'},{path: 'workInfo>RQ'}], formatter: '.formatter.getEditableSaveCommonData'}"/>
+	
+							</table:template>
+						</table:Column>		
 						<!-- 納品数量 -->
 						<table:Column id="_IDGenColumn110" width="8rem" sortProperty="RQ" filterProperty="RQ"  >
 							<table:customData>
@@ -143,6 +155,7 @@
 							
 							</table:template>
 						</table:Column>	
+	
 						<!-- ステータス -->
 						<table:Column id="_IDGenColumn11" width="8rem" sortProperty="STATUS" filterProperty="STATUS"  >
 							<table:customData>
@@ -311,17 +324,7 @@
 							</table:template>
 						</table:Column>	
 
-						<!-- 参照 -->
-						<table:Column id="_IDGenColumn26" width="8rem" sortProperty="ExtNumber" filterProperty="ExtNumber"  >
-							<table:customData>
-								<core:CustomData key="p13nData" value='\{"columnKey":"ExtNumber", "leadingProperty":"ExtNumber"}'/>
-							</table:customData>
-							<Label id="_IDGenLabel4" text="{pch>LABEL_D__ExtNumber}"/>
-							<table:template>
-								<Input value="{workInfo>ExtNumber}" editable="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'},{path: 'workInfo>RQ'}], formatter: '.formatter.getEditableSaveCommonData'}"/>
 	
-							</table:template>
-						</table:Column>			
 					</table:columns>
 				</table:Table>
 	

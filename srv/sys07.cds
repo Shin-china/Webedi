@@ -13,6 +13,7 @@ extend service TableService {
          BP_ID,
          TO_ITEMS.EMAIL_ADDRESS,
          TO_ITEMS.EMAIL_ADDRESS_NAME,
+         TO_ITEMS.CD_BY,TO_ITEMS.CD_TIME,TO_ITEMS.UP_BY,TO_ITEMS.UP_TIME
 
     };
 

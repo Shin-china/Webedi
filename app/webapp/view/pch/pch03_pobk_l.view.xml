@@ -116,6 +116,7 @@
 					<Button id="_IDGenButton26" text="{pch>PCH03_BUTTON_ZWS_NPS}" press="onPrintZwsNps" enabled="true" width="13em"/>
 					<Button id="_IDGenButton27" text="{pch>PCH03_BUTTON_ZWS}" press="onPrintZws" enabled="true" width="8em"/>
 					<Button id="_IDGenButton28" text="{pch>PCH03_BUTTON_NPS}" press="onPrintNPS" enabled="true" width="10em"/>
+					<Button id="ButtonId3" text="{pch>BUTTON_H__TONGQI}"  press="onTongQi" width="8em"/>
 					</content>
 				</OverflowToolbar>
 				</smartTable:customToolbar>

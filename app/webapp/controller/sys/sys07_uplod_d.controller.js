@@ -30,6 +30,7 @@ sap.ui.define(
       },
         // excel上传
         onFileChange: function (oEvent) {
+          this._viewCreateSet();
           this._setEditable(true);
           var oFileUploader = this.byId("fileUploader");
 
@@ -75,7 +76,7 @@ sap.ui.define(
         if (checkResult && flgHeand) {
           var jsonModel = that.getModel("workInfo");
           // 模板里面没有数据时的提示msg
-          if (jsonModel.oData.length == undefined) {
+          if (jsonModel.oData.length == undefined|| jsonModel.oData.length == 0) {
             sap.m.MessageBox.alert(that.MessageTools._getI18nTextInModel("com", "Message_01", this.getView()));
             that.getView().setBusy(false);
             return;
@@ -147,9 +148,9 @@ sap.ui.define(
        * 画面初始化调用
        */
       _viewCreateSet() {
-        this.byId("_IDGenButton2").setEnabled(false);
+        this.byId("_IDGenButton2").setEnabled(true);
         this.byId("_IDGenButton3").setEnabled(false);
-        this.byId("_IDGenButton4").setEnabled(true);
+        this.byId("_IDGenButton4").setEnabled(false);
         this._setEditable(true);
         this._setIsCreate(true);
         this._setEditableAuth(true);
