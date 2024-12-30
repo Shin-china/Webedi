@@ -954,5 +954,26 @@ sap.ui.define([
 			    
 			
 		},
+
+				/**
+		 * 同期方法
+		 * @param {*} oEvent 
+		 */
+				onTongQi: function (oEvent) {
+					var that = this; 
+					that._setBusy(true);
+					this._callCdsAction("/PCH06_TQ", null, this).then(
+						function (oData) {
+						  var str = oData.PCH06_TQ;
+						  that._setBusy(false);
+						  sap.m.MessageToast.show(str);
+						},
+						function (error) {
+						  that._setBusy(false);
+						  sap.m.MessageToast.show(error);
+						}
+					  )
+					// var datas = jsonModel.getData();
+				},
 	});
 });

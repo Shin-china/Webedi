@@ -1,5 +1,11 @@
 USER_ID=BTP User ID
 PLANT_ID = 工厂code
+H_CODE=業務区分
+H_NAME=業務名
+BP_ID=仕入先
+EMAIL_ADDRESS=メールアドレス
+EMAIL_ADDRESS_NAME=担当者
+
 
 
 
