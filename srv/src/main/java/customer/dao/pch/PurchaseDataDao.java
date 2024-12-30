@@ -137,8 +137,13 @@ public class PurchaseDataDao extends Dao {
         } else {
 
             if (update) {
+
                 o2.setPoType("U");
                 o2.setUpTime(getNow());
+                if (!checkSupplierisW(supplier)) {
+                    o2.setStatus("1");
+                }
+
             }
 
             o2.setDelFlag("N");
@@ -146,10 +151,7 @@ public class PurchaseDataDao extends Dao {
         }
         if (checkSupplierisW(supplier)) {
             o2.setStatus("2");
-        } else {
-            o2.setStatus("1");
-        }
-
+        } 
         // o2.setCdTime(getNow());
 
         db.run(Update.entity(Pch_.T02_PO_D).entry(o2));
