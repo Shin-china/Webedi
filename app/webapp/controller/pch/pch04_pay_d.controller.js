@@ -111,7 +111,13 @@ sap.ui.define([
                     oHeadData.results.map(result => result.VALUE02).join(", ") : '';            
                 let absama = oHeadData.results && oHeadData.results.length > 0 ? 
                     oHeadData.results.map(result => result.VALUE03 + " 様").join("  ") : '';
-         
+
+                    //Add by stanley 20241230
+                    if (mail == "" || mail == null) {
+                        MessageBox.error("仕入先のメールアドレスを取得できません");
+                        return;
+                    }
+
                     let mailobj = {
                         emailJson: {
                             TEMPLATE_ID: "UWEB_M007",
@@ -147,13 +153,32 @@ sap.ui.define([
                 
             // let newModel = this.getView().getModel("Common");
             // let oBind = newModel.bindList("/sendEmail");
+            // Add Confirm button by stanley 20241217
+            var that = this;
+            var confirmTxt = this.MessageTools._getI18nTextInModel("pch", "confirmTxt", this.getView());
+            var confirmTitle = this.MessageTools._getI18nTextInModel("pch", "confirmTitle", this.getView());
+            var confirmOk = this.MessageTools._getI18nTextInModel("pch", "confirmOk", this.getView());
+            var confirmCancel = this.MessageTools._getI18nTextInModel("pch", "confirmCancel", this.getView());
+            var sResponsivePaddingClasses = "sapUiResponsivePadding--header sapUiResponsivePadding--content sapUiResponsivePadding--footer";
+            MessageBox.confirm(confirmTxt,{
+                icon:MessageBox.Icon.INFORMATION,
+                title:confirmTitle,
+                actions: [confirmOk, confirmCancel],
+                emphasized: confirmOk,
+                initialFocus: confirmCancel,
+                styleClass: sResponsivePaddingClasses,
+                onClose: function(sAction) {
+                  if(sAction === confirmOk){
+                    that._sendEmail(mailobj);
+                    that._setBusy(false);
+                    
+                    that._callCdsAction("/PCH04_SENDEMAIL", { parms: IdList[0] }, that).then((data) => {
+                        
+                    });
+                }}
+            });
+            //END By Stanley
 
-            this._sendEmail(mailobj);
-			this._setBusy(false);
-            
-            this._callCdsAction("/PCH04_SENDEMAIL", { parms: IdList[0] }, that).then((data) => {
-				
-			});
 
         });
     },
@@ -220,6 +245,15 @@ sap.ui.define([
 				that._setBusy(false);
 				return;
 			}
+            //ADD BY STANLEY 20241230
+
+               var aFiltersCopy = aFilters.filter( e => {
+                //for( var i = 0; i < e.aFilters.length; i++){
+                     //e.aFilters.aFilters.sPath !== "INV_MONTH"
+                //}
+                    e.sPath == "INV_MONTH";
+               });
+            //END ADD
 			this._readEntryByServiceAndEntity(_objectCommData._entity, aFilters, null).then((oData) => {
             
             // 调用检查逻辑
@@ -270,6 +304,9 @@ sap.ui.define([
                             if (row.GR_DATE) {
                                 row.GR_DATE = formatDateString(row.GR_DATE);
                             }
+
+                            //ADD BY STANLEY 20241230
+                            row.SUPPLIER_DESCRIPTION = row.SUPPLIER_DESCRIPTION + " 御中";
 
 					});
 
