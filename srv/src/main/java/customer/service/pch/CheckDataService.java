@@ -1,12 +1,18 @@
 package customer.service.pch;
 
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.stereotype.Component;
+
+import com.sap.cds.services.ErrorStatuses;
+import com.sap.cds.services.ServiceException;
 
 import cds.gen.pch.T01PoH;
 import cds.gen.pch.T02PoD;
@@ -14,6 +20,9 @@ import cds.gen.pch.T03PoC;
 import cds.gen.tableservice.Pch01Auth1;
 import cds.gen.tableservice.SysT09User2Plant;
 import customer.bean.pch.Pch01;
+import customer.bean.sys.Sys07;
+import customer.comm.tool.MessageTools;
+import customer.comm.tool.StringTool;
 import customer.dao.pch.DeliverydateDao;
 import customer.dao.pch.PodataDao;
 import customer.dao.pch.PodndataDao;
@@ -150,5 +159,43 @@ public class CheckDataService extends Service {
         BigDecimal PoQuantity = podndataDao.getQuantity(PO_NO, D_NO);
         return PoQuantity;
 
+    }
+
+    /**
+     * sys07用通用不能为空字段
+     * 
+     * @param s
+     */
+    public void checkNull(Sys07 s) {
+        // H_CODE
+        s = this.checkNull(s.getH_CODE(), "H_CODE", s);
+        // BP_ID
+        // SYS07_EMAIL_ADDRESSY
+
+    }
+
+    /**
+     * 
+     * 共通方法上传文件判空
+     * 
+     * @param t 传入要增加的类
+     * @param s 要判空的值
+     * @param v 如果为空报错信息
+     * 
+     */
+    public <T> T checkNull(String s, String v, T t) {
+
+        if (StringTool.isNull(s)) {
+            Class<? extends Object> class1 = t.getClass();
+
+            try {
+                Method setCreatedby = class1.getMethod("setError", String.class);
+                setCreatedby.invoke(t, MessageTools.getMsgText(rbms, "UPLOAD_EROOR_SNULL", v));
+            } catch (Exception e) {
+                throw new ServiceException(ErrorStatuses.GATEWAY_TIMEOUT, "");
+            }
+
+        }
+        return t;
     }
 }

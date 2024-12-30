@@ -28,6 +28,38 @@ sap.ui.define(
         this._viewCreateSet();
 
       },
+        // excel上传
+        onFileChange: function (oEvent) {
+          this._setEditable(true);
+          var oFileUploader = this.byId("fileUploader");
+
+          var that = this;
+          var view = this.getView();
+          var jsonModel = view.getModel("workInfo");
+          if (!jsonModel) {
+            jsonModel = new sap.ui.model.json.JSONModel();
+            view.setModel(jsonModel, "workInfo");
+          }
+          var oFile = oFileUploader.FUEl.files[0];
+          var oReader = new FileReader();
+          oReader.onload = function (oFileData) {
+            var sResult = oFileData.target.result;
+            var oWB = XLSX.read(sResult, {
+            type: "binary",
+            });
+            //获得 sheet
+            var oSheet = oWB.Sheets[oWB.SheetNames[0]];
+            //设置头
+            var header = ["H_CODE","H_NAME","BP_ID","EMAIL_ADDRESSY","EMAIL_ADDRESS_NAME"];   //,"CUSTOMER_MAT" 存疑
+            // 通过 XLSX 将sheet转为json  要转的oSheet，header标题，range起始行（1：第二行开始）
+            var jsonS = XLSX.utils.sheet_to_json(oSheet,{header: header, range: 1});
+
+            
+            
+            jsonModel.setData(jsonS);
+          };
+          oReader.readAsBinaryString(oFile);
+        },
 
       /*++++++++++++++++++++++++++++++
 		  检查当前页面数据
@@ -44,7 +76,7 @@ sap.ui.define(
           var jsonModel = that.getModel("workInfo");
           // 模板里面没有数据时的提示msg
           if (jsonModel.oData.length == undefined) {
-            sap.m.MessageBox.alert(that.MessageTools._getI18nTextInModel("com", "SD01_Message_01", this.getView()));
+            sap.m.MessageBox.alert(that.MessageTools._getI18nTextInModel("com", "Message_01", this.getView()));
             that.getView().setBusy(false);
             return;
           }
@@ -55,7 +87,7 @@ sap.ui.define(
               var myArray = JSON.parse(arr);
 
               //设置画面上总结
-              that._setCnt(myArray.reTxt);
+              // that._setCnt(myArray.reTxt);
 
               // 画面上的mode
               var jsonModel = that.getModel("workInfo");
@@ -79,7 +111,7 @@ sap.ui.define(
         var jsondata = this.getModel("workInfo").getData();
         var a = JSON.stringify({ list: jsondata });
         var oPrams = {
-          SYS07Json: a,
+          json: a,
         };
         return oPrams;
       },

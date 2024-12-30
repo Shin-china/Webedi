@@ -230,17 +230,17 @@ public class Pch03Handler implements EventHandler {
             // 设置担当者
 
             pchd03.setZws1(
-                    pchd03.getPodno() + "\n" + (StringUtils.isBlank(pocdby) ? "" : pocdby));
-            pchd03.setZws2(pchd03.getSupplierMat() + "\n" + pchd03.getMatId());
-            pchd03.setZws3(pchd03.getManuMaterial() + "\n");
-            pchd03.setZws4(pchd03.getCop2() + "\n" + pchd03.getStorage());
-            pchd03.setZws5(pchd03.getPoPurUnit() + "\n" + pchd03.getMemo());
+                    pchd03.getPodno() + "\n" + strEmpty(pocdby));
+            pchd03.setZws2(strEmpty(pchd03.getSupplierMat()) + "\n" + strEmpty(pchd03.getMatId()));
+            pchd03.setZws3(strEmpty(pchd03.getManuMaterial()) + "\n");
+            pchd03.setZws4(strEmpty(pchd03.getCop2()) + "\n" + strEmpty(pchd03.getStorage()));
+            pchd03.setZws5(strEmpty(pchd03.getPoPurUnit()) + "\n" + strEmpty(pchd03.getMemo()));
             if (pchd03.getDelPrice() != null && pchd03.getPoPurQty() != null) {
-                pchd03.setZws7(numFromt(
+                pchd03.setZws7(strEmpty(numFromt(
                         NumberTool.toScale(pchd03.getDelPrice().multiply(pchd03.getPoPurQty()),
-                                currency))
+                                currency)))
                         + "\n");
-                pchd03.setZws6(numFromt(pchd03.getDelPrice()) + "\n");
+                pchd03.setZws6(strEmpty(numFromt(pchd03.getDelPrice())) + "\n");
             }
             // 如果potype为删除是则单价和价格0
             if ("D".equals(pchd03.getPoType())) {
@@ -249,7 +249,7 @@ public class Pch03Handler implements EventHandler {
                 pchd03.setZws4("0" + "\n" + pchd03.getStorage());
             }
 
-            pchd03.setZws8(pchd03.getCurrency() + "\n");
+            pchd03.setZws8(strEmpty(pchd03.getCurrency()) + "\n");
             pchd03.setZws9(DateTools.getCurrentDateString(pchd03.getPoDDate()) + "\n");
 
             pchd03.setDate1(DateTools.getCurrentDateString());
@@ -267,10 +267,10 @@ public class Pch03Handler implements EventHandler {
                 if (UmcConstants.C_INFO_REGIONS.equals(t08ComOpD.getDName())) {
                     pchd03.setRegions2(t08ComOpD.getValue01());
                 }
-                if (UmcConstants.C_INFO_FAX.equals(t08ComOpD.getDName())) {
+                if (UmcConstants.C_INFO_TEL.equals(t08ComOpD.getDName())) {
                     pchd03.setTel2(t08ComOpD.getValue01());
                 }
-                if (UmcConstants.C_INFO_TEL.equals(t08ComOpD.getDName())) {
+                if (UmcConstants.C_INFO_FAX.equals(t08ComOpD.getDName())) {
                     pchd03.setFax2(t08ComOpD.getValue01());
                 }
 
@@ -281,6 +281,10 @@ public class Pch03Handler implements EventHandler {
             // jcs2设置
             this.setJcs(pchd03);
         });
+    }
+
+    private String strEmpty(String str) {
+        return StringUtils.isBlank(str) ? "" : str;
     }
 
     private void setJcs(PchT03PoItemPrint pchd03) {
@@ -421,7 +425,7 @@ public class Pch03Handler implements EventHandler {
      */
     private String getPocdby(String pocdby, String sapCdBy) {
         // 如果発注担当者为空或者全为数字
-        if (pocdby == null || pocdby.matches("\\d+")) {
+        if (StringUtils.isBlank(pocdby) || pocdby.matches("\\d+")) {
             pocdby = sapCdBy;
         }
         return pocdby;

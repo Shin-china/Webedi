@@ -646,7 +646,7 @@ sap.ui.define(
         object_type:_data.type,
         value:odata,
         file_type:btoa(_blob.type),
-        file_name:_data.fileName+".pdf"
+        file_name:_data.fileName
       }}
 
 			$.ajax({

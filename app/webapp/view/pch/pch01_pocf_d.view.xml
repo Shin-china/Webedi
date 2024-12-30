@@ -31,17 +31,15 @@
     <f:content>
       <smartFilterBar:SmartFilterBar id="smartFilterBar" entitySet="PCH_01_DL" persistencyKey="PCH01_TEMPLATE" showFilterConfiguration="true">
         <smartFilterBar:controlConfiguration>
-          <smartFilterBar:ControlConfiguration id="idControlConfiguration1" key="SUPPLIER"     visibleInAdvancedArea="true" label="{pch>D_SUPPLIER}" index="0"/>
-          <smartFilterBar:ControlConfiguration id="idControlConfiguration2" key="BP_NAME1"     visibleInAdvancedArea="true" label="{pch>D_BP_NAME1}" index="1"/>
-          <smartFilterBar:ControlConfiguration id="idControlConfiguration3" key="PO_NO"        visibleInAdvancedArea="true" label="{pch>D_PO_NO}"        filterType='single' controlType="auto" index="2"/>
-          <smartFilterBar:ControlConfiguration id="idControlConfiguration4" key="MAT_ID"       visibleInAdvancedArea="true" label="{pch>D_MAT_ID}"       filterType='single' controlType="auto" index="3"/>
-          
-          <smartFilterBar:ControlConfiguration index="5" id="idControlConfiguration6" key="STATUS" label="{pch>D_STATUS}"  visibleInAdvancedArea="true" filterType='single' controlType="dropDownList"/>
-          
-          <smartFilterBar:ControlConfiguration id="idControlConfiguration7" key="PO_DATE"      visibleInAdvancedArea="true" label="{pch>D_PO_DATE}"      filterType='single' controlType="date" index="6"/> 
-          <smartFilterBar:ControlConfiguration id="idControlConfiguration8" key="PO_D_DATE"    visibleInAdvancedArea="true" label="{pch>D_PO_D_DATE}"    filterType='single' controlType="date" index="7"/> 
-          <smartFilterBar:ControlConfiguration id="idControlConfiguration9" key="CUSTOMER_MAT" visibleInAdvancedArea="true" label="{pch>D_CUSTOMER_MAT}" filterType='single' controlType="auto" index="8"/> 
-          <smartFilterBar:ControlConfiguration id="idControlConfiguration10" key="SUPPLIER_MAT" visibleInAdvancedArea="true" label="{pch>D_SUPPLIER_MAT}" filterType='single' controlType="auto" index="9"/>      
+          <smartFilterBar:ControlConfiguration id="idControlConfiguration1" key="SUPPLIER"      visibleInAdvancedArea="true" label="{pch>D_SUPPLIER}"       index="0"/>
+          <smartFilterBar:ControlConfiguration id="idControlConfiguration2" key="BP_NAME1"      visibleInAdvancedArea="true" label="{pch>D_BP_NAME1}"       index="1"/>
+          <smartFilterBar:ControlConfiguration id="idControlConfiguration3" key="PO_NO"         visibleInAdvancedArea="true" label="{pch>D_PO_NO}"          controlType="auto"   index="2"/>
+          <smartFilterBar:ControlConfiguration id="idControlConfiguration4" key="MAT_ID"        visibleInAdvancedArea="true" label="{pch>D_MAT_ID}"         controlType="auto"   index="3"/>
+          <smartFilterBar:ControlConfiguration id="idControlConfiguration6" key="STATUS"        visibleInAdvancedArea="true" label="{pch>D_STATUS}"         filterType='single'  controlType="dropDownList" index="5"/>
+          <smartFilterBar:ControlConfiguration id="idControlConfiguration7" key="PO_DATE"       visibleInAdvancedArea="true" label="{pch>D_PO_DATE}"        filterType='single'  controlType="date"         index="6"/> 
+          <smartFilterBar:ControlConfiguration id="idControlConfiguration8" key="PO_D_DATE"     visibleInAdvancedArea="true" label="{pch>D_PO_D_DATE}"      filterType='single'  controlType="date"         index="7"/> 
+          <smartFilterBar:ControlConfiguration id="idControlConfiguration9" key="CUSTOMER_MAT"  visibleInAdvancedArea="true" label="{pch>D_CUSTOMER_MAT}"   controlType="auto"   index="8"/> 
+          <smartFilterBar:ControlConfiguration id="idControlConfiguration10" key="SUPPLIER_MAT" visibleInAdvancedArea="true" label="{pch>D_SUPPLIER_MAT}"   controlType="auto"   index="9"/>      
         </smartFilterBar:controlConfiguration>
       </smartFilterBar:SmartFilterBar>
     </f:content>

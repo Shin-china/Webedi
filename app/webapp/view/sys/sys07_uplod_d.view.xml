@@ -15,20 +15,20 @@ xmlns:fb="sap.ui.comp.filterbar">
 	    
 		
 		<!--下载模板-->
-        <Button id="downloadTemplateButton" text="{sys>U_B_DOWNLOAD_TEMPLATE}" press="onExportTemple" icon="sap-icon://download" type="Transparent"/>
+        <Button id="downloadTemplateButton" text="{com>U_B_DOWNLOAD_TEMPLATE}" press="onExportTemple" icon="sap-icon://download" type="Transparent"/>
 		<!--上传文件-->
-		<unified:FileUploader id="fileUploader" sameFilenameAllowed="true" buttonText="{sys>SD07_B_SELECT}" fileType="xlsx,xls" change="onFileChange" width="40rem" />
+		<unified:FileUploader id="fileUploader" sameFilenameAllowed="true" buttonText="{sys>SYS07_B_SELECT}" fileType="xlsx,xls" change="onFileChange" width="40rem" />
 	</Panel>
 
-	<Panel id="idpanel1" expandable="true" expanded="true" busy="{localModel>/busy}" headerText="{sys>SD07_RESULT}" width="95%" height="75%" class="sapUiResponsiveMargin">
+	<Panel id="idpanel1" expandable="true" expanded="true" busy="{localModel>/busy}" headerText="{sys>SYS07_RESULT}" width="95%" height="75%" class="sapUiResponsiveMargin">
 		<t:Table id="tableUploadData" rows="{path: 'workInfo>/'}" class="sapUiSizeCompact" selectionMode='MultiToggle'    threshold="20">
 			<t:extension>
 				<OverflowToolbar id="idoverflowtooblar1">	
 					<Text id="idtext1" text="{/logInfo}"/>
 					<ToolbarSpacer id="idtoolbarspacer1"/>
-					<Button id="_IDGenButton2" text="{sys>SD07_B_CHECK}" press="onCheck" enabled="true"/>
-					<Button id="_IDGenButton3" text="{sys>SD07_B_RUN}" press="onSave" enabled="{viewModel>/isButtonEnabled}"/>	
-					<Button id="_IDGenButton4" icon="sap-icon://excel-attachment" type="Transparent" press="onExport" enabled="{=${local>/excelSet}.length > 0}" text="{sys>SD07_B_EXPORTEXCEL}" tooltip="{sys>SD07_B_EXPORTEXCEL}"/>
+					<Button id="_IDGenButton2" text="{sys>SYS07_B_CHECK}" press="onCheck" enabled="true"/>
+					<Button id="_IDGenButton3" text="{sys>SYS07_B_RUN}" press="onSave" enabled="{viewModel>/isButtonEnabled}"/>	
+					<Button id="_IDGenButton4" icon="sap-icon://excel-attachment" type="Transparent" press="onExport" enabled="{=${local>/excelSet}.length > 0}" text="{sys>SYS07_B_EXPORTEXCEL}" tooltip="{sys>SYS07_B_EXPORTEXCEL}"/>
 				</OverflowToolbar>
 			</t:extension>
 
@@ -36,7 +36,7 @@ xmlns:fb="sap.ui.comp.filterbar">
 
 				<!-- CHECK状态 -->
 				<t:Column id="Status" width="6rem" sortProperty="STATUS" filterProperty="STATUS" hAlign="Center">
-					<Label id="_IDGenLabel1" text="{sys>SD07_STATUS}"/>
+					<Label id="_IDGenLabel1" text="{sys>SYS07_STATUS}"/>
 					<t:template>
 						<ObjectStatus id="_IDGenObjectStatus1" icon="{workInfo>I_CON}" state="{workInfo>STATUS}" />
 					</t:template>
@@ -44,7 +44,7 @@ xmlns:fb="sap.ui.comp.filterbar">
 
 				<!-- 实行结果 -->
 				<t:Column id="Result" width="10rem" sortProperty="STATUS" filterProperty="STATUS">
-					<Label id="_IDGenLabel2" text="{sys>SD07_RESULT}"/>
+					<Label id="_IDGenLabel2" text="{sys>SYS07_RESULT}"/>
 					<t:template>
 						<Text id="_IDGenText3" text="{workInfo>STATUS}" />
 					</t:template>
@@ -52,48 +52,57 @@ xmlns:fb="sap.ui.comp.filterbar">
 
 				<!-- メッセージ -->
 				<t:Column id="Message" width="20rem" sortProperty="MSG_TEXT" filterProperty="MSG_TEXT">
-					<Label id="_IDGenLabel3" text="{sys>SD07_MESSAGE}"/>
+					<Label id="_IDGenLabel3" text="{sys>SYS07_MESSAGE}"/>
 					<t:template>
 						<Text id="_IDGenText4" text="{workInfo>MSG_TEXT}" width="18em" tooltip="{local>MESSAGE}"/>
 					</t:template>
 				</t:Column>
-				<t:Column  width="10rem" sortProperty="PROCESS_CODE" filterProperty="PROCESS_CODE">
+
+				<t:Column  width="10rem" sortProperty="H_CODE" filterProperty="H_CODE">
 					<t:customData>
-						<core:CustomData key="p13nData" value='\{"columnKey":"PROCESS_CODE", "leadingProperty":"PROCESS_CODE"}'/>
+						<core:CustomData key="p13nData" value='\{"columnKey":"H_CODE", "leadingProperty":"H_CODE"}'/>
 					</t:customData>
-					<Label  text="{sys>SD07_PROCESS_CODE}"/>
+					<Label  text="{sys>SYS07_H_CODE}"/>
 					<t:template>
-						<Text  text="{workInfo>PROCESS_CODE}"/>
+						<Text  text="{workInfo>H_CODE}"/>
 					</t:template>
 				</t:Column>
 
-				<t:Column  width="10rem" sortProperty="PROJECT_NO" filterProperty="PROJECT_NO">
+				<t:Column  width="10rem" sortProperty="H_NAME" filterProperty="H_NAME">
 					<t:customData>
-						<core:CustomData key="p13nData" value='\{"columnKey":"PROJECT_NO", "leadingProperty":"PROJECT_NO"}'/>
+						<core:CustomData key="p13nData" value='\{"columnKey":"H_NAME", "leadingProperty":"H_NAME"}'/>
 					</t:customData>
-					<Label  text="{sys>SYS07_PROJECT_NO}"/>
+					<Label  text="{sys>SYS07_H_NAME}"/>
 					<t:template>
-						<Text  text="{workInfo>PROJECT_NO}"/>
-					</t:template>
-				</t:Column>
-
-				<t:Column  width="10rem" sortProperty="REQUISITION_VERSION" filterProperty="REQUISITION_VERSION">
-					<t:customData>
-						<core:CustomData key="p13nData" value='\{"columnKey":"REQUISITION_VERSION", "leadingProperty":"REQUISITION_VERSION"}'/>
-					</t:customData>
-					<Label  text="{sys>SYS07_REQUISITION_VERSION}"/>
-					<t:template>
-						<Text  text="{workInfo>REQUISITION_VERSION}"/>
+						<Text  text="{workInfo>H_NAME}"/>
 					</t:template>
 				</t:Column>
 				
-				<t:Column  width="10rem" sortProperty="COST_REQUISITION_NO" filterProperty="COST_REQUISITION_NO">
+				<t:Column  width="10rem" sortProperty="BP_ID" filterProperty="BP_ID">
 					<t:customData>
-						<core:CustomData key="p13nData" value='\{"columnKey":"COST_REQUISITION_NO", "leadingProperty":"COST_REQUISITION_NO"}'/>
+						<core:CustomData key="p13nData" value='\{"columnKey":"BP_ID", "leadingProperty":"BP_ID"}'/>
 					</t:customData>
-					<Label  text="{sys>SYS07_COST_REQUISITION_NO}"/>
+					<Label  text="{sys>SYS07_BP_ID}"/>
 					<t:template>
-						<Text  text="{workInfo>COST_REQUISITION_NO}"/>
+						<Text  text="{workInfo>BP_ID}"/>
+					</t:template>
+				</t:Column>
+								<t:Column  width="10rem" sortProperty="EMAIL_ADDRESSY" filterProperty="EMAIL_ADDRESSY">
+					<t:customData>
+						<core:CustomData key="p13nData" value='\{"columnKey":"EMAIL_ADDRESSY", "leadingProperty":"EMAIL_ADDRESSY"}'/>
+					</t:customData>
+					<Label  text="{sys>SYS07_EMAIL_ADDRESSY}"/>
+					<t:template>
+						<Text  text="{workInfo>EMAIL_ADDRESSY}"/>
+					</t:template>
+				</t:Column>
+								<t:Column  width="10rem" sortProperty="EMAIL_ADDRESS_NAME" filterProperty="EMAIL_ADDRESS_NAME">
+					<t:customData>
+						<core:CustomData key="p13nData" value='\{"columnKey":"EMAIL_ADDRESS_NAME", "leadingProperty":"EMAIL_ADDRESS_NAME"}'/>
+					</t:customData>
+					<Label  text="{sys>SYS07_EMAIL_ADDRESS_NAME}"/>
+					<t:template>
+						<Text  text="{workInfo>EMAIL_ADDRESS_NAME}"/>
 					</t:template>
 				</t:Column>
 				

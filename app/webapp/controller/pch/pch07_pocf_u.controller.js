@@ -299,7 +299,7 @@ sap.ui.define([
 				     console.log(oModel);
 				     for (var i = 0; i < oModel.length; i++) {
 				      // oModel[i].MODIFIEDDAT = this.formatDate(oModel[i].MODIFIEDDAT)
-				      // oModel[i].SD07_RESULT = this.formateType(oModel[i].SD07_RESULT)
+				      // oModel[i].SYS07_RESULT = this.formateType(oModel[i].SYS07_RESULT)
 				     }
 				     oSettings = {
 				      workbook: {

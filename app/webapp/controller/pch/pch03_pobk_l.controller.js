@@ -34,7 +34,8 @@ sap.ui.define([
 			this.MessageTools._initoMessageManager(this);
 
 			this.getRouter().getRoute("RouteCre_pch03").attachPatternMatched(this._onRouteMatched, this);
-
+			//  设置版本号
+			this._setOnInitNo("PCH03", ".20241225.01");
 		},
 
 		// onPress: function (oEvent) {
@@ -658,11 +659,11 @@ sap.ui.define([
 				console.log(sResponse)
 
 				that.PrintTool._detailSelectPrintDowS(that, sResponse, that.getGlobProperty("ADS_template_form") +"_rep02/T", oData, null, _name, null, null, null).then((oData) => {
-					//po=po+podno
+					var extractedNumber = item[0].substring(0, 10);
 					var sapPo = {
-						po: item[0],
+						po: extractedNumber,
 						type: "PCH03",
-						fileName: "注文書",
+						fileName: _name,
 					}
 					that._setBusy(false);
 					//打印pdf后写表共通
@@ -783,9 +784,9 @@ sap.ui.define([
 				// that.PrintTool._detailSelectPrint(that, sResponse, "test/test", oData, null, null, null, null)
 				that.PrintTool._detailSelectPrintDowS(that, sResponse, that.getGlobProperty("ADS_template_form") +"_rep01/T", oData, null, _name, null, null, null).then((oData) => {
 					var sapPo = {
-						po:  myMap.get(item),
+						po:  item,
 						type: "PCH03",
-						fileName: "納品書",
+						fileName: _name,
 					}
 
 					//完成后是否更新确认
@@ -809,13 +810,20 @@ sap.ui.define([
 		 * @returns 
 		 */
 		_onNPSprintTy: function (ObList, uniqueIdList, myMap, myZABCMap, that ) {
-
+			var regex = /(\d+)$/;
 			return new Promise(function (resolve, reject) {
 
 
+				var name =that._getNpsName();
+
 
 				uniqueIdList.forEach((item) => {
-					that._newNPSprinDowS(myMap, that, item, that._getNpsName());
+
+					// 更通用的方法：重新构建数字部分
+					var numberPartStr = name.match(/(\d{14})/)[1]; // 获取整个数字部分
+					var incrementedNumberPartStr = (parseInt(numberPartStr, 10) + 1).toString(); // 递增整个数字部分并转换回字符串
+					name = name.replace(numberPartStr, incrementedNumberPartStr); // 替换整个数字部分
+					that._newNPSprinDowS(myMap, that, item, name);
 					resolve(true);
 
 
