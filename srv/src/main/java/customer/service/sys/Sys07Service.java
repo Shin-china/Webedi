@@ -60,8 +60,9 @@ public class Sys07Service {
 
                 // 新规check
                 ckd.checkNull(s);
-                // ckd.checkData(s);
-
+                if (s.getSUCCESS()) {
+                    ckd.checkData(s, dno);
+                }
                 if (s.getSUCCESS()) {
                     // 设置图标
                     s.setI_CON("sap-icon://sys-enter-2");
@@ -76,8 +77,6 @@ public class Sys07Service {
                 }
 
             }
-            list.setReTxt(MessageTools.getMsgText(rbms, "SD07_CHECK_RETURN_TEXT",
-                    list.getList().size(), sucC, errC));
         }
     }
 
@@ -85,7 +84,8 @@ public class Sys07Service {
         // 是否创建过头
         HashMap<String, String> hashMap = new HashMap<>();
         ArrayList<Sys07> al = list.getList();
-
+        // 删除原有的数据
+        deleteHDA();
         for (int i = 0; i < list.getList().size(); i++) {
             Sys07 s = al.get(i);
 
@@ -104,6 +104,12 @@ public class Sys07Service {
                 list.setErr("getUserId()");
             }
         }
+    }
+
+    private void deleteHDA() {
+        t16EmailHDao.delete();
+        t17EmailDDao.delete();
+
     }
 
     private void createHDA(Sys07 s, HashMap<String, String> hashMap) {
@@ -154,7 +160,7 @@ public class Sys07Service {
 
     // 设置新規登録消息
     private void setImsg(Sys07 s) {
-        s.setMSG_TEXT(MessageTools.getMsgText(rbms, "MST07_RETURN_TEXT", ""));
+        s.setMSG_TEXT(MessageTools.getMsgText(rbms, "RETURN_TEXT", ""));
 
     }
 

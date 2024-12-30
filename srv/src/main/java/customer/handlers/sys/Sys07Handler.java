@@ -16,7 +16,8 @@ import com.sap.cds.services.handler.EventHandler;
 import com.sap.cds.services.handler.annotations.On;
 import com.sap.cds.services.handler.annotations.ServiceName;
 
-import cds.gen.SYS07CheckDATAContext;
+import cds.gen.tableservice.SYS07CheckDATAContext;
+import cds.gen.tableservice.SYS07SaveDATAContext;
 import cds.gen.tableservice.SYS05MailtempAddContext;
 import cds.gen.tableservice.SYS05MailtempDelContext;
 import cds.gen.tableservice.TableService_;
@@ -44,13 +45,13 @@ public class Sys07Handler implements EventHandler {
 
     }
 
-    // // 保存数据
-    // @On(event = "SYS07_SAVE_DATA")
-    // public void saveData(SYS07SaveDATAContext context) {
-    // Sd036List list = JSON.parseObject(context.getSd036Json(), Sd036List.class);
-    // shelfService.detailsSave(list);
-    // context.setResult(JSON.toJSONString(list));
-    // }
+    // 保存数据
+    @On(event = "SYS07_SAVE_DATA")
+    public void saveData(SYS07SaveDATAContext context) {
+        Sys07List list = JSON.parseObject(context.getJson(), Sys07List.class);
+        shelfService.detailsSave(list);
+        context.setResult(JSON.toJSONString(list));
+    }
 
     // // 保存明细数据
     // @On(event = "SYS07_SAVE_DATA_L")
