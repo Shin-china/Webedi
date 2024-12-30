@@ -38,6 +38,7 @@ public class Item {
     private String Taxcode;
     private String Taxamount;
     private String Approvedate;
+    private String Purchasingorganization;
 
     private List<Confirmation> Confirmation = new ArrayList<Confirmation>();
 
