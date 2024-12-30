@@ -212,7 +212,7 @@ extend service TableService {
         left join PCH_T04_PAYMENT_SUM_FZ2 t3
         on t1.SUPPLIER = t3.SUPPLIER 
         and t1.INV_MONTH = t3.INV_MONTH
-        left join PCH_T04_PAYMENT_SUM_FZ3 t4
+        left join PCH_T04_PAYMENT_SUM_FZ3_1 t4
         on t1.SUPPLIER = t4.SUPPLIER
         and t1.INV_MONTH = t4.INV_MONTH
                                 

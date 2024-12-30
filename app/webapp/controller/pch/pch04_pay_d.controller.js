@@ -2,8 +2,10 @@ sap.ui.define([
     "umc/app/controller/BaseController",
     "sap/ui/core/mvc/Controller",
     "sap/m/MessageToast",
-    "sap/m/MessageBox"
-], function (Controller,A, MessageToast, MessageBox) {
+    "sap/m/MessageBox",
+    "sap/ui/model/Filter",
+    "sap/ui/model/FilterOperator"
+], function (Controller,A, MessageToast, MessageBox,Filter,FilterOperator) {
     "use strict";
 
     var _objectCommData = {
@@ -246,15 +248,23 @@ sap.ui.define([
 				return;
 			}
             //ADD BY STANLEY 20241230
-
-               var aFiltersCopy = aFilters.filter( e => {
-                //for( var i = 0; i < e.aFilters.length; i++){
-                     //e.aFilters.aFilters.sPath !== "INV_MONTH"
-                //}
-                    e.sPath == "INV_MONTH";
-               });
+             var aFilter = [];
+             for(var i = 0; i < aFilters[0].aFilters.length; i++){
+                if(aFilters[0].aFilters[i].sPath == undefined){
+                if(aFilters[0].aFilters[i].aFilters[0].sPath == "SUPPLIER"){
+                  aFilter.push(new Filter(aFilters[0].aFilters[i].aFilters[0].sPath,
+                     aFilters[0].aFilters[i].aFilters[0].sOperator,
+                     aFilters[0].aFilters[i].aFilters[0].oValue1
+                  ));
+                }}else{
+                    aFilter.push(new Filter(aFilters[0].aFilters[i].sPath,
+                    aFilters[0].aFilters[i].sOperator,
+                    aFilters[0].aFilters[i].oValue1
+                 ))
+                }
+             }
             //END ADD
-			this._readEntryByServiceAndEntity(_objectCommData._entity, aFilters, null).then((oData) => {
+			this._readEntryByServiceAndEntity(_objectCommData._entity, aFilter, null).then((oData) => {
             
             // 调用检查逻辑
             if (!this.checkSelectedSuppliers()) {
