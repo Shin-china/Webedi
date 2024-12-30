@@ -10,7 +10,7 @@ extend service TableService {
 
         left join view.MST_T05_SAP_BP_PURCHASE T04
             on T01.SUPPLIER = T04.SUPPLIER
-            and T01.PO_BUKRS = T04.PURCHASE_ORG
+            and T01.PO_ORG = T04.PURCHASE_ORG
         left join view.MST_T03_SAP_BP T05
             on T05.BP_ID = T01.SUPPLIER
         left join view.MST_T06_MAT_PLANT T06
