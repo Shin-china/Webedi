@@ -58,7 +58,8 @@ extend service TableService {
         T05.Company_Code,
         T05.UNIT_PRICE,
         // T02.PO_NO || REPEAT('0', 5 - LENGTH(CAST(T02.D_NO AS String))) || CAST(T02.D_NO AS String) as NO_DETAILS : String(15), // 発注\明細NO
-        T02.PO_NO || T02.D_NO as NO_DETAILS : String(15), // 購買伝票\明細NO	
+        //T02.PO_NO || T02.D_NO as NO_DETAILS : String(15), // 購買伝票\明細NO	del by stanley
+        LPAD(T02.PO_NO,10,'0') || LPAD(T02.D_NO,5,'0') as NO_DETAILS : String(15), // 購買伝票\明細NO
         TO_CHAR(T04.INV_POST_DATE, 'YYYYMM') as INV_MONTH : String,  //检收月
 
         CASE 
@@ -212,7 +213,7 @@ extend service TableService {
         left join PCH_T04_PAYMENT_SUM_FZ2 t3
         on t1.SUPPLIER = t3.SUPPLIER 
         and t1.INV_MONTH = t3.INV_MONTH
-        left join PCH_T04_PAYMENT_SUM_FZ3 t4
+        left join PCH_T04_PAYMENT_SUM_FZ3_1 t4
         on t1.SUPPLIER = t4.SUPPLIER
         and t1.INV_MONTH = t4.INV_MONTH
                                 

@@ -84,13 +84,17 @@ public class Ifm03PoService extends IfmService {
             String PoComp = PchDao.getPoCompByPO(poDel);
 
             Boolean isalldele = PchDao.getdelbyPO(poDel);
+            Boolean SupplierIsW = PchDao.checkSupplierisW(supplier);
             if (isalldele) {
                 // 全部明细都有删除标记
-                sap.getSupplierDeleteMap().put(PoComp + supplier, "来自287行，全部明细都有删除标记，肯定是删除");
-
+                if (SupplierIsW) {
+                    sap.getSupplierDeleteMap().put(PoComp + supplier, "来自287行,全部明细都有删除标记,肯定是删除");
+                }
             } else {
-                // 部分明细有删除标记 ，但是删除标记更新了，所以也是更新。
-                sap.getSupplierUpdateMap().put(PoComp + supplier, "来自290行，部分明细有删除标记，肯定是更新");
+                if (SupplierIsW) {
+                    // 部分明细有删除标记 ，但是删除标记更新了，所以也是更新。
+                    sap.getSupplierUpdateMap().put(PoComp + supplier, "来自290行,部分明细有删除标记,肯定是更新");
+                }
             }
         }
 
@@ -126,24 +130,26 @@ public class Ifm03PoService extends IfmService {
                     T01PoH T01poExist = PchDao.getByID(Items.getPurchaseorder());
                     String supplier = Items.getSupplier().replaceFirst("^0+(?!$)", "");
                     String PoComp = Items.getCompanycode();
+                    Boolean SupplierIsW = PchDao.checkSupplierisW(supplier);
                     // 头找到了
                     if (T01poExist != null) {
-
                         // 但是明细没找到，也是创建
                         Boolean T02podnExist = (PchDao.getByID2(Items.getPurchaseorder(), dn)) != null;
-
                         if (!T02podnExist) {
 
-                            sap.getSupplierCreatMap().put(PoComp + supplier, "来自99行，头找到了，但是明细没找到，创建发信对象"
-                                    + Items.getPurchaseorder() + Items.getPurchaseorderitem());
-
+                            // 仅当W供应商才创建发信对象
+                            if (SupplierIsW) {
+                                sap.getSupplierCreatMap().put(PoComp + supplier, "来自99行,头找到了,但是明细没找到,创建发信对象"
+                                        + Items.getPurchaseorder() + Items.getPurchaseorderitem());
+                            }
                         }
-
                     } else { // 头没找到，创建
 
-                        sap.getSupplierCreatMap().put(PoComp + supplier,
-                                "来自105行，头没找到，创建发信对象" + Items.getPurchaseorder() + Items.getPurchaseorderitem());
-
+                        // 仅当W供应商才创建发信对象
+                        if (SupplierIsW) {
+                            sap.getSupplierCreatMap().put(PoComp + supplier,
+                                    "来自105行,头没找到,创建发信对象" + Items.getPurchaseorder() + Items.getPurchaseorderitem());
+                        }
                     }
 
                     // 记录供应商信息，供后续邮件发送使用
@@ -153,14 +159,14 @@ public class Ifm03PoService extends IfmService {
 
                     if (isUpdateObj) {
 
-                        if (!sap.getSupplierUpdateMap().containsKey(PoComp + supplier)) {
-
-                            sap.getSupplierUpdateMap().put(PoComp + supplier,
-                                    "来自118行，四个字段其中有修改，肯定是更新" + Items.getPurchaseorder() + Items.getPurchaseorderitem());// delflag
-                                                                                                                        // 单独考虑。
-
+                        if (SupplierIsW) {
+                            if (!sap.getSupplierUpdateMap().containsKey(PoComp + supplier)) {
+                                sap.getSupplierUpdateMap().put(PoComp + supplier,
+                                        "来自118行,四个字段其中有修改,肯定是更新" + Items.getPurchaseorder()
+                                                + Items.getPurchaseorderitem());// delflag
+                                                                                // 单独考虑。
+                            }
                         }
-                        ;
                     }
 
                     // 判断是否需要删除对象 (删除标记为X)
@@ -193,6 +199,7 @@ public class Ifm03PoService extends IfmService {
                     o.setSupplier(supplier);
                     o.setPocdby(Items.getCorrespncinternalreference());
                     o.setSapCdBy(Items.getCreatedbyuser());
+                    o.setPoOrg(Items.getPurchasingorganization());
 
                     PchDao.modify(o);
 
@@ -247,7 +254,7 @@ public class Ifm03PoService extends IfmService {
                     }
 
                     //
-                    PchDao.modify2(o2, dele);
+                    PchDao.modify2(o2, dele, supplier);
 
                     for (Confirmation conf : Items.getConfirmation()) {
 
