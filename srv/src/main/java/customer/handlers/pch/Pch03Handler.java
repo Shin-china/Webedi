@@ -267,10 +267,10 @@ public class Pch03Handler implements EventHandler {
                 if (UmcConstants.C_INFO_REGIONS.equals(t08ComOpD.getDName())) {
                     pchd03.setRegions2(t08ComOpD.getValue01());
                 }
-                if (UmcConstants.C_INFO_FAX.equals(t08ComOpD.getDName())) {
+                if (UmcConstants.C_INFO_TEL.equals(t08ComOpD.getDName())) {
                     pchd03.setTel2(t08ComOpD.getValue01());
                 }
-                if (UmcConstants.C_INFO_TEL.equals(t08ComOpD.getDName())) {
+                if (UmcConstants.C_INFO_FAX.equals(t08ComOpD.getDName())) {
                     pchd03.setFax2(t08ComOpD.getValue01());
                 }
 
