@@ -47,7 +47,7 @@
 					<content>
 						<ToolbarSpacer id="ToolbarSpacerId"/>
 						<Button id="_IDGenButton22" text="{pch>PCH03_BUTTON_SAV}" press="onSav" enabled="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'}], formatter: '.formatter.getEditableSaveCommon'}" width="8em"/>
-						<Button id="_IDGenButton23" text="{pch>PCH03_BUTTON_EDI}" press="onEdi" enabled="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'}], formatter: '.formatter.getEditableDCommon'}" width="8em"/>
+						<Button id="_IDGenButton23" text="{pch>PCH03_BUTTON_EDI}" press="onEdi" enabled="{= ${path: 'localModel>/editable'} !== true}" width="8em"/>
 						<Button id="ButtonId3" text="{pch>BUTTON_H__TONGQI}"  press="onTongQi" />
 						<Button id="ButtonId4" text="{pch>BUTTON_H__JS}"  press="onJS" />
 						</content>
