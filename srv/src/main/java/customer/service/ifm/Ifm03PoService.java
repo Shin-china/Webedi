@@ -38,8 +38,13 @@ import customer.odata.S4OdataTools;
 import customer.service.comm.IfmService;
 import customer.service.comm.TranscationService;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @Component
 public class Ifm03PoService extends IfmService {
+
+    private static final Logger logger = LoggerFactory.getLogger(Ifm03PoService.class);
 
     @Autowired
     private PurchaseDataDao PchDao;
@@ -55,7 +60,10 @@ public class Ifm03PoService extends IfmService {
     public SapPchRoot get() throws UnsupportedOperationException, IOException {
         T11IfManager webServiceConfig = ifsManageDao.getByCode("IFM41");
         // 调用 Web Service 的 get 方法
+        logger.warn("PO同期开始调用接口");
         String response = S4OdataTools.get(webServiceConfig, 0, null, null);
+        logger.warn("PO同期接口response 获取成功");
+
         return JSON.parseObject(response, SapPchRoot.class);
 
     }
