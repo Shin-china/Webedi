@@ -7,11 +7,13 @@ import org.apache.http.client.HttpClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpClientFactory;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DestinationAccessor;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Header;
 import com.sap.cloud.sdk.cloudplatform.connectivity.HttpClientAccessor;
+import com.sap.cloud.sdk.cloudplatform.connectivity.HttpClientFactory;
 import com.sap.cloud.sdk.datamodel.odata.client.ODataProtocol;
 import com.sap.cloud.sdk.datamodel.odata.client.request.ODataRequestRead;
 import com.sap.cloud.sdk.datamodel.odata.client.request.ODataRequestResultGeneric;
@@ -32,10 +34,17 @@ public class S4OdataBase {
         if (Eenvironment.isWindows()) {
             DefaultHttpDestination destination = DefaultHttpDestination.builder(info.getUrl())
                     .header(new Header("X-Destination-Name", desName)).build();
-            client = HttpClientAccessor.getHttpClient(destination);
+            HttpClientFactory factory = DefaultHttpClientFactory.builder().timeoutMilliseconds(600000).build();
+            client = factory.createHttpClient(destination);
         } else {
-            Destination destination = DestinationAccessor.getDestination(desName);
-            client = HttpClientAccessor.getHttpClient(destination);
+            // Destination destination = DestinationAccessor.getDestination(desName);
+            DefaultHttpDestination destination = DefaultHttpDestination.builder(info.getUrl())
+                    .header(new Header("X-Destination-Name", desName)).build();
+
+            HttpClientFactory factory = DefaultHttpClientFactory.builder().timeoutMilliseconds(600000).build();
+
+            client = factory.createHttpClient(destination);
+            // client = HttpClientAccessor.getHttpClient(destination);
         }
         return client;
     }
