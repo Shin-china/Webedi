@@ -4,21 +4,21 @@ sap.ui.define(["umc/app/controller/BaseController"], function (Controller) {
      * 共通用对象
      */
     var _objectCommData = {
-      _entity: "/SYS_T07_COM_OP_H", //此本页面操作的对象//绑定的数据源视图
+      _entity: "/T16_EMAIL_H", //此本页面操作的对象//绑定的数据源视图
       _itmes: "TO_ITEMS", // 展开数据"TO_ITEMS,TO_XXX,"
-      _entityDarftEdit: "/SYS_T07_COM_OP_H_draftEdit", //草稿对象 编辑
-      _entityDarft: "/SYS_T07_COM_OP_H_draftActivate", //激活
+      _entityDarftEdit: "/T16_EMAIL_H_draftEdit", //草稿对象 编辑
+      _entityDarft: "/T16_EMAIL_H_draftActivate", //激活D012MoveActH_draftActivate
       _entityDetailDarft: "/TO_ITEMS", //草稿对象明细
-      _darftTables: "tableservice_sys_t07_com_op_h_drafts" + "," + "tableservice_sys_t08_com_op_d_drafts",
+      _darftTables: "tableservice_t16_email_h_drafts" + "," + "tableservice_t17_email_d_drafts",
     };
-    return Controller.extend("umc.app.controller.sys.sys03_dict_d", {
+    return Controller.extend("umc.app.controller.sys.sys07_uplod_l_d", {
       onInit: function () {
         const oRouter = this.getRouter();
         //显示页面
-        this._setOnInitNo("SYS03", ".20240920.01");
-        oRouter.getRoute("RouteView_sys03").attachPatternMatched(this._onObjectMatched, this);
+        this._setOnInitNo("SYS07", ".20240920.01");
+        oRouter.getRoute("RouteView_sys07").attachPatternMatched(this._onObjectMatched, this);
         //新规
-        oRouter.getRoute("RouteCre_sys03").attachPatternMatched(this._onObjectMatched, this);
+        oRouter.getRoute("RouteCre_sys07").attachPatternMatched(this._onObjectMatched, this);
       },
   
       _onObjectMatched: function (oEvent) {
@@ -26,7 +26,7 @@ sap.ui.define(["umc/app/controller/BaseController"], function (Controller) {
         let parameters = { BE_CHANGE: true }; //默认属性
         //解除绑定
         this.getView().unbindElement();
-        this._setAuthByMenuAndUser("SYS03");
+        this._setAuthByMenuAndUser("SYS07");
         //初始化 msg
         this.MessageTools._clearMessage();
         this.MessageTools._initoMessageManager(this);
@@ -74,7 +74,7 @@ sap.ui.define(["umc/app/controller/BaseController"], function (Controller) {
           新增明细行草稿
           ++++++++++++++++++++++++++++++*/
       onDAdd: function (oEvent) {
-        let _properties = { CD_TIME: new Date() }; //默认值参数  ORD_NO: ""  字段+value
+        let _properties = {  }; //默认值参数  ORD_NO: ""  字段+value
         this._detailAddRowForDarft(_objectCommData._itmes, _properties, this, "smdetailTable");
       },
   
@@ -82,32 +82,45 @@ sap.ui.define(["umc/app/controller/BaseController"], function (Controller) {
           明细行删除
           ++++++++++++++++++++++++++++++*/
       onDDelete: function () {
-        let that = this;
-        let idJosn = "";
-        this.MessageTools._clearMessage();
-        let selectedIndices = this._getSelectedIndicesDatas("detailTable");
-        selectedIndices.forEach((index) => {   let receiveDetail = index;
-          idJosn = idJosn + "," + receiveDetail.ID;
-        });
-        if (idJosn != "") {
-          let oPrams = { parms: idJosn };
-  
-          //删除明细行
-          that._callCdsAction("/SYS03_DELETE_ITEMS", oPrams, that).then((oData) => {
-            if (oData.SYS03_DELETE_ITEMS != "error") {
-              //that.byId("detailTable").clearSelection();
-              that.getModel().refresh();
-            } else {
-              //抛错误出来
-            }
-          });
+
+
+        var that = this;
+        var oTable = this.byId("detailTable");
+        var selectedIndices = oTable.getSelectedIndices();
+        if (selectedIndices.length === 0) {
+          sap.m.MessageBox.alert(that.MessageTools._getI18nText("LABEL_NO_DATA_SELECTED", that.getView()));
+          return;
         }
+
+        selectedIndices.forEach((selectedIndex) => {
+          var cContext = oTable.getContextByIndex(selectedIndex);
+          if(cContext){
+            
+            that.getModel().remove(cContext.getPath());
+          }
+          
+        });
+        
       },
-  
+      /*==============================
+    删除草稿(ReceiveHead + ReceiveDetail)
+    ==============================*/
+    _deleteDrafts: function () {
+      //删除抬头草稿
+      var sHeaderPath = this.getView().getBindingContext().getPath();
+      this.getModel().remove(sHeaderPath);
+
+      // 获取明细行草稿
+      var detailContexts = this.byId("detailTable").getBinding().getContexts();
+      for (var d = 0; d < detailContexts.length; d++) {
+        //删除明细草稿
+        this.getModel().remove(detailContexts[d].getPath());
+      }
+    },
       onDetailRebind: function (oEvent) {
         this._rowNoMapD = null;
-        let sorts = ["CD_TIME", "D_NO"];
-        let ascs = [false, false]; //true desc false asc
+        let sorts = ["EMAIL_ADDRESS_NAME"];
+        let ascs = [false]; //true desc false asc
         this._onDetailRebind(oEvent, sorts, ascs);
       },
     });

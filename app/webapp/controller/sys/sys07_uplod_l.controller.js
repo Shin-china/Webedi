@@ -23,7 +23,7 @@ sap.ui.define([
           onPress: function (oEvent) {
             var oItem = oEvent.getSource();
             var oContext = oItem.getBindingContext();
-            this._onPress(oEvent, "RouteView_sys07", oContext.getObject().H_ID);
+            this._onPress(oEvent, "RouteView_sys07", oContext.getObject().ID);
           },
           onRebind: function (oEvent) {
             let sorts = ["H_CODE", "BP_ID"];

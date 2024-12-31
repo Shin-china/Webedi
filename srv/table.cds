@@ -43,7 +43,16 @@ service TableService {
       *,
       TO_ITEMS : redirected to SYS_T08_COM_OP_D
     };
-
+      entity T17_EMAIL_D       as
+    projection on SYS.T17_EMAIL_D {
+      *,
+      TO_HEAD : redirected to T16_EMAIL_H,
+    };
+  entity T16_EMAIL_H       as
+    projection on SYS.T16_EMAIL_H {
+      *,
+      TO_ITEMS : redirected to T17_EMAIL_D,
+    };
   entity SYS_T05_ROLE_2_AUTH       as
     projection on SYS.T05_ROLE_2_AUTH {
       *,

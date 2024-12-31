@@ -8,6 +8,7 @@ extend service TableService {
 
     {
       key ID,
+      key TO_ITEMS.ID AS D_ID,
          H_CODE,
          H_NAME,
          BP_ID,
