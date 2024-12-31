@@ -26,7 +26,7 @@
                     <Title id="Title" text="{title}"/>
                 </f:heading>
                 <f:navigationActions>
-                    <m:Button id="_IDGenButton3" icon="sap-icon://home" tooltip="nav-back" press="navTo('RouteCre_pch08')"/>
+                    <m:Button id="_IDGenButton3" icon="sap-icon://nav-back" tooltip="nav-back" press="navTo('RouteCre_pch08')"/>
                 </f:navigationActions>
             </f:DynamicPageTitle>
         </f:title>

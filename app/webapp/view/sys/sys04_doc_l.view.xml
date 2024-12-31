@@ -18,7 +18,7 @@
                 <m:Title id="_IDGenTitle1" text="{sys>SYS04_MAINTITLE}" />
             </f:heading>
             <f:navigationActions>
-                <Button id="_IDGenButton3" icon="sap-icon://nav-back" tooltip="nav-back" press="navTo('RouteMainView')"/>
+                <Button id="_IDGenButton3" icon="sap-icon://home" tooltip="nav-back" press="navToHome"/>
             </f:navigationActions>
         </f:DynamicPageTitle>
     </f:title>
