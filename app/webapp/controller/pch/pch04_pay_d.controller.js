@@ -249,19 +249,34 @@ sap.ui.define([
 			}
             //ADD BY STANLEY 20241230
              var aFilter = [];
-             for(var i = 0; i < aFilters[0].aFilters.length; i++){
-                if(aFilters[0].aFilters[i].sPath == undefined){
-                if(aFilters[0].aFilters[i].aFilters[0].sPath == "SUPPLIER"){
-                  aFilter.push(new Filter(aFilters[0].aFilters[i].aFilters[0].sPath,
-                     aFilters[0].aFilters[i].aFilters[0].sOperator,
-                     aFilters[0].aFilters[i].aFilters[0].oValue1
-                  ));
-                }}else{
-                    aFilter.push(new Filter(aFilters[0].aFilters[i].sPath,
-                    aFilters[0].aFilters[i].sOperator,
-                    aFilters[0].aFilters[i].oValue1
-                 ))
-                }
+             var times = 0;
+             var singleCondition = false;
+             if(aFilters[0].aFilters?.length !== undefined){
+                 times = aFilters[0].aFilters.length;
+             }else{
+                 times = 1;
+                 singleCondition = true;
+             }
+             for(var i = 0; i < times; i++){
+               if(singleCondition){
+                aFilter.push(new Filter(aFilters[0].sPath,
+                    aFilters[0].sOperator,
+                    aFilters[0].oValue1
+                ))
+               }else{
+                if(aFilters?.[0]?.aFilters?.[i]?.sPath == undefined){
+                    if(aFilters[0].aFilters[i].aFilters[0].sPath == "SUPPLIER"){
+                    aFilter.push(new Filter(aFilters[0].aFilters[i].aFilters[0].sPath,
+                        aFilters[0].aFilters[i].aFilters[0].sOperator,
+                        aFilters[0].aFilters[i].aFilters[0].oValue1
+                    ));
+                    }}else{
+                        aFilter.push(new Filter(aFilters[0].aFilters[i].sPath,
+                        aFilters[0].aFilters[i].sOperator,
+                        aFilters[0].aFilters[i].oValue1
+                    ))
+                    }
+               }
              }
             //END ADD
 			this._readEntryByServiceAndEntity(_objectCommData._entity, aFilter, null).then((oData) => {
