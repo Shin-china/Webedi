@@ -24,7 +24,7 @@
 
 				</f:heading>
 				<f:navigationActions>
-					<Button id="_IDGenButton3" sap-icon://home/>
+					<Button id="_IDGenButton3" icon="sap-icon://home" tooltip="nav-back" press="navToHome"/>
 				</f:navigationActions>
 			</f:DynamicPageTitle>
 		</f:title>
