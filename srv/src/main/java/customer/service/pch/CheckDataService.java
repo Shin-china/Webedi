@@ -187,7 +187,7 @@ public class CheckDataService extends Service {
         String id = s.getH_CODE() + s.getBP_ID() + s.getEMAIL_ADDRESSY();
         Boolean boo = false;
 
-        boo = setCheckCount(dno, id, boo);
+        boo = setCheckCount(dno, id);
         if (boo) {
             s.setError(MessageTools.getMsgText(rbms, "EROOR_CHECK_DATA_COUNT", "明細"));
         }
