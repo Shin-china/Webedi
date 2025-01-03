@@ -189,6 +189,13 @@ public class Pch01Service extends Service {
 
                             // 最后一条、
                             // 因为后续没有了，所以应该先集计本条
+
+                            // 如果换是最后一条，但是换po dn了，那么本条的数量应该清零
+                            if (!s.getD_NO().equals(lastdn) || !s.getPO_NO().equals(lastpo)) {
+                                afquantity = BigDecimal.ZERO;
+
+                            }
+
                             lastpo = s.getPO_NO();
                             lastdn = s.getD_NO();
 
@@ -199,6 +206,7 @@ public class Pch01Service extends Service {
                                     afquantity = afquantity.add(s.getQUANTITY());
 
                                 }
+
                             } else {
                                 // 如果为空，则全部都是 afquantity
                                 afquantity = afquantity.add(s.getQUANTITY());
