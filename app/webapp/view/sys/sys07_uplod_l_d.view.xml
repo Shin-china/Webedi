@@ -43,22 +43,25 @@
 						<uxap:blocks>
 
 							<FlexBox id="_IDGenFlexBox1" wrap="Wrap" fitContainer="true">
+								<l:VerticalLayout id="_IDGenVerticalLayout1" class="sapUiSmallMarginEnd">
+									<Label id="_IDGenLabel1" labelFor="SYS07_H_CODE" text="{sys>SYS07_H_CODE}"/>
 
-								<l:VerticalLayout id="_IDGenVerticalLayout1" class="sapUiSmallMarginEnd" visible="true">
-									<Label id="_IDGenLabel1" labelFor="SYS07_H_CODE" class="mandatory" text="{sys>SYS07_H_CODE}"/>
-									<smartfield:SmartField id="H_CODE" value="{H_CODE}" showLabel="false" width="20em" mandatory = "true" editable="{=${localModel>/editable} || false}"/>
+									<smartfield:SmartField id="H_CODE" value="{H_CODE}" showLabel="false" width="20em" mandatory="mandatory" editable="{=${localModel>/editable} || false}"/>
 								</l:VerticalLayout>
+
+
+		
 								<!--  -->
 								<l:VerticalLayout id="_IDGenVerticalLayout2" class="sapUiSmallMarginEnd">
 									<Label id="_IDGenLabel2" labelFor="SYS07_H_NAME" text="{sys>SYS07_H_NAME}"/>
 
-									<smartfield:SmartField id="H_NAME" value="{H_NAME}" showLabel="false" width="20em" mandatory = "true" editable="{=${localModel>/editable} || false}"/>
+									<smartfield:SmartField id="H_NAME" value="{H_NAME}" showLabel="false" width="20em" mandatory="mandatory" editable="{=${localModel>/editable} || false}"/>
 								</l:VerticalLayout>
 
 								<l:VerticalLayout id="_IDGenVerticalLayout3" class="sapUiSmallMarginEnd">
 									<Label id="_IDGenLabel3" labelFor="SYS07_BP_ID" text="{sys>SYS07_BP_ID}"/>
 
-									<smartfield:SmartField id="BP_ID" value="{BP_ID}" showLabel="false" width="20em" mandatory = "true" editable="{=${localModel>/editable} || false}"/>
+									<smartfield:SmartField id="BP_ID" value="{BP_ID}" showLabel="false" width="20em" mandatory="mandatory" editable="{=${localModel>/editable} || false}"/>
 								</l:VerticalLayout>
 							</FlexBox>
 
