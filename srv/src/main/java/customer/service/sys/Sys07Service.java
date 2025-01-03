@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ResourceBundleMessageSource;
@@ -12,10 +13,14 @@ import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import com.alibaba.fastjson.JSONObject;
+import com.sap.cds.services.ErrorStatuses;
+import com.sap.cds.services.ServiceException;
 import com.sap.cds.services.messages.Messages;
 
+import cds.gen.sys.T07ComOpH;
 import cds.gen.sys.T16EmailH;
 import cds.gen.sys.T17EmailD;
+import cds.gen.tableservice.SysT08ComOpD;
 import customer.bean.sys.Sys07;
 import customer.bean.sys.Sys07List;
 import customer.comm.tool.MessageTools;
@@ -162,6 +167,42 @@ public class Sys07Service {
     private void setImsg(Sys07 s) {
         s.setMSG_TEXT(MessageTools.getMsgText(rbms, "RETURN_TEXT", ""));
 
+    }
+
+    public void checkItems(List<cds.gen.tableservice.T17EmailD> items) {
+        Boolean boo = false;
+        HashSet<String> set = new HashSet<String>();
+        if (null == items || items.size() == 0) {
+            this.messages.error("MSG_HEAD");
+            boo = true;
+        }
+        for (cds.gen.tableservice.T17EmailD t : items) {
+            boo = ckd.checkNullD(t.getEmailAddress(), "メールアドレス", t.getId(), "EMAIL_ADDRESS", boo);
+            boo = ckd.checkNullD(t.getEmailAddressName(), "担当者", t.getId(), "EMAIL_ADDRESS_NAME", boo);
+
+            Boolean count = ckd.setCheckCount(set, t.getEmailAddress());
+
+            if (count) {
+                boo = true;
+                messages.error(
+                        MessageTools.getMsgText(rbms, "EROOR_CHECK_DATA_COUNT", "メールアドレス" + t.getEmailAddress()));
+            }
+        }
+
+        if (boo) {
+            throw new ServiceException(ErrorStatuses.BAD_REQUEST, "ERROR");
+        }
+    }
+
+    public void checkHcode(cds.gen.tableservice.T16EmailH t06) {
+        Boolean boo = false;
+        ckd.checkNullH(t06.getHCode(), "業務区分", t06.getId(), "H_CODE", boo);
+        ckd.checkNullH(t06.getHName(), "業務名", t06.getId(), "H_NAME", boo);
+        ckd.checkNullH(t06.getBpId(), "仕入先", t06.getId(), "BP_ID", boo);
+
+        if (boo) {
+            throw new ServiceException(ErrorStatuses.BAD_REQUEST, "ERROR");
+        }
     }
 
 }

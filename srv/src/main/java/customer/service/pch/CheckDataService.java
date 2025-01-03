@@ -12,8 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.stereotype.Component;
 
+import com.alibaba.excel.util.StringUtils;
 import com.sap.cds.services.ErrorStatuses;
 import com.sap.cds.services.ServiceException;
+import com.sap.cds.services.messages.Messages;
 
 import cds.gen.pch.T01PoH;
 import cds.gen.pch.T02PoD;
@@ -32,6 +34,8 @@ import customer.service.Service;
 
 @Component
 public class CheckDataService extends Service {
+    @Autowired
+    Messages messages;
 
     @Autowired
     ResourceBundleMessageSource rbms;
@@ -180,15 +184,30 @@ public class CheckDataService extends Service {
     }
 
     public void checkData(Sys07 s, HashSet<String> dno) {
-        int countA = dno.size();
+        String id = s.getH_CODE() + s.getBP_ID() + s.getEMAIL_ADDRESSY();
+        Boolean boo = false;
 
-        dno.add(s.getH_CODE() + s.getBP_ID() + s.getEMAIL_ADDRESSY());
-        int countB = dno.size();
-        // 判断明细行号是否重复的逻辑
-        if (countA == countB) {
-            s.setError(MessageTools.getMsgText(rbms, "SYS07_EROOR_CHECK_DATA"));
+        boo = setCheckCount(dno, id, boo);
+        if (boo) {
+            s.setError(MessageTools.getMsgText(rbms, "EROOR_CHECK_DATA_COUNT", "明細"));
         }
 
+    }
+
+    public Boolean setCheckCount(HashSet<String> dno, String id) {
+        Boolean boo = false;
+        if (StringUtils.isNotBlank(id)) {
+            int countA = dno.size();
+            dno.add(id);
+            int countB = dno.size();
+            // 判断明细行号是否重复的逻辑
+            if (countA == countB) {
+                boo = true;
+
+            }
+        }
+
+        return boo;
     }
 
     /**
@@ -209,11 +228,50 @@ public class CheckDataService extends Service {
                 Method setCreatedby = class1.getMethod("setError", String.class);
                 setCreatedby.invoke(t, MessageTools.getMsgText(rbms, "UPLOAD_EROOR_SNULL", v));
             } catch (Exception e) {
-                throw new ServiceException(ErrorStatuses.GATEWAY_TIMEOUT, "");
+                throw new ServiceException(ErrorStatuses.GATEWAY_TIMEOUT, "ERROR");
             }
 
         }
         return t;
     }
 
+    /**
+     * 
+     * 共通方法上传文件判空 SYS07用
+     * 
+     * @param s 要判空的值
+     * @param v 如果为空报错信息
+     * 
+     */
+    public Boolean checkNullD(String s, String v, String id, String red, Boolean isDelete) {
+
+        if (StringUtils.isBlank(s)) {
+            messages.error("UPLOAD_EROOR_SNULL", v)
+                    .target("/T17_EMAIL_D(ID=guid'" + id
+                            + "',IsActiveEntity=false" + ")/" + red);
+            isDelete = true;
+            return isDelete;
+        }
+        return isDelete;
+    }
+
+    /**
+     * 
+     * 共通方法上传文件判空 SYS07用
+     * 
+     * @param s 要判空的值
+     * @param v 如果为空报错信息
+     * 
+     */
+    public Boolean checkNullH(String s, String v, String id, String red, Boolean isDelete) {
+
+        if (StringUtils.isBlank(s)) {
+            messages.error("UPLOAD_EROOR_SNULL", v)
+                    .target("/T16_EMAIL_H(ID=guid'" + id
+                            + "',IsActiveEntity=false" + ")/" + red);
+            isDelete = true;
+            return isDelete;
+        }
+        return isDelete;
+    }
 }

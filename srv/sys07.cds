@@ -24,3 +24,16 @@ action SYS07_SAVE_DATA_L(json : String) returns String; //Insert User
 action SYS07_DELETE_DATA_L(json : String) returns String; //Insert User
 action SYS07_EXCEL(json : String) returns LargeBinary; //Insert User
 }
+annotate TableService.T16_EMAIL_H with {
+
+    H_CODE      @(Common : {FieldControl : #Mandatory});
+    H_NAME @(Common : {FieldControl : #Mandatory});
+    BP_ID   @(Common : {FieldControl : #Mandatory});
+
+};
+annotate TableService.T17_EMAIL_D with {
+
+    EMAIL_ADDRESS      @(Common : {FieldControl : #Mandatory});
+    EMAIL_ADDRESS_NAME @(Common : {FieldControl : #Mandatory});
+
+};

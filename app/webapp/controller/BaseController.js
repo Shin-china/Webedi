@@ -588,6 +588,7 @@ sap.ui.define([
               that._setBusy(false);
             })
             .catch((oError) => {
+              if(msg)
               that.MessageTools._addMessage(that.MessageTools._getI18nText(msg, this.getView()), null, 1, this.getView());
               that._setBusy(false);
               that._setEditable(true);

@@ -24,8 +24,8 @@ public class SysDictService {
 
   public boolean checkHcode(String code, String id) {
 
-    if(StringTool.isEmpty(code)){
-      this.messages.error("ERROR_SYS03_H_CODE_IS_NULL");
+    if (StringTool.isEmpty(code)) {
+      this.messages.error("UPLOAD_EROOR_SNULL", "泛用CODE");
       return true;
     }
     T07ComOpH t07 = dictDao.getByCode(code);
@@ -33,13 +33,12 @@ public class SysDictService {
       this.messages.error("ERROR_SYS03_H_CODE_IS_EXIT", code);
       return true;
     }
-    
 
     return true;
   }
 
-  public void checkItems(List<SysT08ComOpD> items){
-    if(null==items || items.size()==0){
+  public void checkItems(List<SysT08ComOpD> items) {
+    if (null == items || items.size() == 0) {
       this.messages.error("ERROR_COMMON_NO_ITEMS");
     }
   }
@@ -59,14 +58,15 @@ public class SysDictService {
 
   /**
    * 汎用Hcode，DCODE获取描述
+   * 
    * @param hCode
    * @param dCode
    * @return
    */
-  public String getDictName(String hCode,String dCode){
+  public String getDictName(String hCode, String dCode) {
     String dName = "";
     T08ComOpD t08ComOpD = dictDao.get(hCode, dCode);
-    if(null!=t08ComOpD){
+    if (null != t08ComOpD) {
       dName = t08ComOpD.getDName();
     }
     return dName;
@@ -74,12 +74,13 @@ public class SysDictService {
 
   /*
    * 品目是否设定了UPN采番
-   */ 
-  public boolean checkMatUpnSet(String plantId){
+   */
+  public boolean checkMatUpnSet(String plantId) {
     List<T08ComOpD> list = dictDao.getT08ByHcode("UPN_NUM_01");
-    if(null==list||0==list.size())return true;
-    for(T08ComOpD t:list){
-      if(plantId.equals(t.getValue02())){
+    if (null == list || 0 == list.size())
+      return true;
+    for (T08ComOpD t : list) {
+      if (plantId.equals(t.getValue02())) {
         return false;
       }
     }
@@ -89,12 +90,13 @@ public class SysDictService {
 
   /*
    * 采番设定检查
-   */ 
-  public boolean checkDocSet(String dCode){
+   */
+  public boolean checkDocSet(String dCode) {
     List<T08ComOpD> list = dictDao.getT08ByHcode("DOCUMENT_NUM_01");
-    if(null==list||0==list.size())return true;
-    for(T08ComOpD t:list){
-      if(dCode.equals(t.getDCode())&&!StringTool.isNull(t.getValue01())){
+    if (null == list || 0 == list.size())
+      return true;
+    for (T08ComOpD t : list) {
+      if (dCode.equals(t.getDCode()) && !StringTool.isNull(t.getValue01())) {
         return false;
       }
     }
