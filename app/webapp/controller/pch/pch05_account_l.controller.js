@@ -127,7 +127,9 @@ var _objectCommData = {
 		_getDataDow(oData){
 			var jsondata = Array();
 			oData.results.forEach((odata) => {
-			    
+                //ADD BY STANLEY 20250104
+                odata.LASTDATE = new Date(odata.INV_MONTH.substring(0,4),odata.INV_MONTH.substring(4,6),0);
+                //END ADD
 				jsondata.push(odata);
 			})
 

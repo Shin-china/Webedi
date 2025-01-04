@@ -336,11 +336,18 @@ public class Pch05Handler implements EventHandler {
     if (dataList != null && dataList.getList() != null) {
       // 遍历 Pch05List 中的每一项（每个 item 为 Pch05List 的一个记录）
       for (Pch05 item : dataList.getList()) {
+        //Add by stanley 20250103
+        BigDecimal bigDiffTax = new BigDecimal(item.getDIFF_TAX_AMOUNT());
+        String absDIFF_TAX_AMOUNT1 = bigDiffTax.abs().toString();
+        BigDecimal bigTax_Base_Amount = new BigDecimal(item.getTAX_BASE_AMOUNT());
+        String absTAX_BASE_AMOUNT = bigTax_Base_Amount.abs().toString();
+        //End
 
         item.setCOMPANY_CODE1(item.getCOMPANY_CODE()); // 赋值 Company_Code
         item.setLASTDATE1(item.getLASTDATE()); // 将 LASTDATE 的值赋给 LASTDATE1
         item.setLASTDATE2(item.getLASTDATE()); // 将 LASTDATE 的值赋给 LASTDATE2
-        item.setDIFF_TAX_AMOUNT1(item.getDIFF_TAX_AMOUNT()); // 赋值 DIFF_TAX_AMOUNT1
+        item.setDIFF_TAX_AMOUNT1(absDIFF_TAX_AMOUNT1); // 赋值 DIFF_TAX_AMOUNT1
+        item.setTAX_BASE_AMOUNT(absTAX_BASE_AMOUNT);//ADD BY STANLEY 20250103
 
       }
     }
