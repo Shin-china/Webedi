@@ -162,9 +162,77 @@ extend service TableService {
                 '' as BP_ID : String(50),//得意先コード
                 
         }
- 
 
     entity PCH_T03_PO_ITEM       as
+    select from view.PCH_T03_PO_ITEM_AFTER as T01
+        distinct{
+
+            key T01.ID  ,
+            key T01.PO_NO, // 発注番号
+            key T01.D_NO, // 明細番号
+                T01.SUPPLIER, // 仕入先コード
+                T01.SUPPLIER_MAT, // 仕入先品目コード
+                T01.PCH03_BP_NAME1,
+                T01.MAT_ID, // 品目コード
+                T01.PO_TYPE, // 発注区分  C：新規 U：変更 D：削除
+
+                T01.PO_DATE, //発注日
+                T01.STATUS, // ステータス  01：送信済　02：照会済
+                
+                T01.CD_BY, //登録者
+                T01.PO_D_DATE, //所要日付
+                T01.PLANT_ID,
+                
+                T01.ZABC, //ABC区分 E：Email F：Fax  W：Web edi
+                T01.PO_TYPE_NAME,// 発注区分名称
+                T01.STATUS_NAME, // ステータス  01：送信済　02：照会済
+                T01.ZABC1_NAME, //ABC区分 E：Email F：Fax  W：Web edi
+                T01.PO_D_TXZ01, // 品目テキスト
+                T01.PO_PUR_QTY, // 発注数量
+                T01.PO_PUR_UNIT, // 単位
+                T01.CURRENCY, // 通貨
+                T01.DEL_PRICE, // 発注単価（値）
+                T01.UNIT_PRICE, // 価格単位
+                T01.DEL_AMOUNT, // 発注金額（値）
+                T01.MEMO, // 備考
+                T01.USER_TYPE, // 用户type
+                T01.STORAGE_LOC,
+                T01.STORAGE_TXT,
+                T01.TYPE,//csv ステータス
+                T01.BP_NAME1,
+                T01.DOWN_FLAG , //確認済みフラグ
+                T01.MANU_MATERIAL,
+                T01.ISSUEDAMOUNT  ,//csv 発注金額
+                T01.BP_ID ,//得意先コード
+                T01.checkOk , // 検査合区分
+                @title: '{i18n>CD_BY}'
+                  CASE 
+                    WHEN T01.POCDBY IS NULL 
+                    THEN T01.SAP_CD_BY
+                    WHEN T01.POCDBY = ''
+                    THEN T01.SAP_CD_BY
+                    WHEN REGEXP_LIKE(T01.POCDBY, '^[0-9]+$')
+                    THEN T01.SAP_CD_BY
+                    WHEN T01.POCDBY LIKE 'H%' AND REGEXP_LIKE(T01.POCDBY, '^[0-9]+$')
+                    THEN T01.SAP_CD_BY
+                ELSE T01.POCDBY
+                END AS BYNAME : String(50), // 発注担当者
+                T01.POCDBY , // 発注担当者
+
+                T01.SAP_CD_BY, // SAP担当者
+                T01.INT_NUMBER,
+                T01.CUST_MATERIAL,//P/N：
+                T01.PR_BY,
+                T01.EMAIL_ADDRESS , // 邮箱地址,
+                T01.IMP_COMP,//検査合区分
+                T01.PO_PUR_QTY2, // 発注数量
+                T01.DEL_PRICE2, // 発注単価（値）
+        };
+
+    
+
+
+    entity PCH_T03_PO_ITEM_AFTER       as
         select from view.T01_PO_H as T01
         join view.T02_PO_D as T02
             on(
@@ -243,7 +311,8 @@ extend service TableService {
                 0 as ISSUEDAMOUNT  :  Decimal(18, 5),//csv 発注金額
                 '' as BP_ID : String(50),//得意先コード
                 '' as checkOk : String(50), // 検査合区分
-                '' as BYNAME : String(50), // 発注担当者,
+                @title: '{i18n>CD_BY}'
+                // '' as BYNAME : String(50), // 発注担当者,
                 T01.POCDBY , // 発注担当者
                 @title: '{i18n>CD_BY}'
                 T02.SAP_CD_BY, // SAP担当者
@@ -339,7 +408,8 @@ extend service TableService {
                 0 as ISSUEDAMOUNT  :  Decimal(18, 5),//csv 発注金額
                 '' as BP_ID : String(50),//得意先コード
                 '' as checkOk : String(50), // 検査合区分
-                '' as BYNAME : String(50), // 発注担当者,
+                @title: '{i18n>CD_BY}'
+                // '' as BYNAME : String(50), // 発注担当者,
                 T01.POCDBY , // 発注担当者
                 @title: '{i18n>CD_BY}'
                 T02.SAP_CD_BY, // SAP担当者

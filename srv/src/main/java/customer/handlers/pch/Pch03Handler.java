@@ -53,6 +53,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import com.alibaba.excel.util.StringUtils;
+import com.sap.cds.services.handler.annotations.Before;
 import com.sap.xsa.core.instancemanager.util.StringUtil;
 
 @Component
@@ -403,8 +404,8 @@ public class Pch03Handler implements EventHandler {
             // 先获取品目最后两位
 
             // 発注担当者
-            String pocdby = getPocdby(pchd03.getPocdby(), pchd03.getSapCdBy());
-            pchd03.setByname(pocdby);
+            // String pocdby = getPocdby(pchd03.getPocdby(), pchd03.getSapCdBy());
+            // pchd03.setByname(pocdby);
 
             // 获取po
             String po = pchd03.getPoNo();
@@ -425,7 +426,8 @@ public class Pch03Handler implements EventHandler {
      */
     private String getPocdby(String pocdby, String sapCdBy) {
         // 如果発注担当者为空或者全为数字
-        if (StringUtils.isBlank(pocdby) || pocdby.matches("\\d+")) {
+        if (StringUtils.isBlank(pocdby) || pocdby.matches("\\d+")
+                || (pocdby.startsWith("H") && pocdby.substring(1).matches("\\d+"))) {
             pocdby = sapCdBy;
         }
         return pocdby;
