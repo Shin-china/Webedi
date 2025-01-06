@@ -205,4 +205,22 @@ public class Sys07Service {
         }
     }
 
+    public void deleteH(String hCode) {
+        T16EmailH byHCode = t16EmailHDao.getByHCode(hCode);
+        if (byHCode != null) {
+
+            t16EmailHDao.delete(byHCode);
+        }
+    }
+
+    public void deleteD(String hCode) {
+        t17EmailDDao.getByHCode(hCode).forEach(t -> {
+            t17EmailDDao.delete(t);
+        });
+    }
+
+    /**
+     * 删除头部数据
+     */
+
 }

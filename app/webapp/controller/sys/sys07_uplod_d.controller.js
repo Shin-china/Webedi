@@ -161,7 +161,87 @@ sap.ui.define(
         this._setCnt("");
         this.getModel().refresh(true);
       },
-      
+      onSampleExport: function () {
+
+
+  
+  
+        var downfilename = "メール送信マスタ.xlsx";
+        var aCols = this.createSampleConfig();
+        var json = [{
+          H_CODE: "",
+          H_NAME: "",
+          BP_ID: "",
+          EMAIL_ADDRESS: "",
+          EMAIL_ADDRESS_NAME: "",
+        }];
+  
+        var oModel = new sap.ui.model.json.JSONModel(json);
+        var aProducts = oModel.getProperty("/");
+        var oSettings = {
+          workbook: { columns: aCols },
+          dataSource: aProducts,
+          fileName: downfilename
+        };
+        var oSheet = new sap.ui.export.Spreadsheet(oSettings);
+        oSheet.build()
+          .then(function () {
+          }).finally(function () {
+            oSheet.destroy();
+          });
+      },
+
+
+      	//文件模板下载
+		createSampleConfig: function () {
+			var EdmType = exportLibrary.EdmType;
+			var aCols = [];
+
+			var H_CODE = "業務区分";
+			var H_NAME = "業務名";
+			var BP_ID = "仕入先";
+			var EMAIL_ADDRESS = "メールアドレス";
+			var EMAIL_ADDRESS_NAME ="担当者";
+		
+
+
+			aCols.push({
+				label: H_NAME,
+				property: H_NAME,
+				type: EdmType.String
+			});
+
+			aCols.push({
+				label: H_CODE,
+				property: H_CODE,
+				width: 20,
+				type: EdmType.String
+			});
+
+			aCols.push({
+				label: BP_ID,
+				property: BP_ID,
+				type: EdmType.String
+			});
+
+			aCols.push({
+				label: EMAIL_ADDRESS,
+				property: EMAIL_ADDRESS,
+				type: EdmType.String
+			});
+
+			aCols.push({
+				label: EMAIL_ADDRESS_NAME,
+				property: EMAIL_ADDRESS_NAME,
+				type: EdmType.String
+			});
+
+	
+
+
+			return aCols;
+		},
+    
     });
   }
 );

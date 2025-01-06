@@ -21,7 +21,8 @@ extend service TableService {
 action SYS07_SAVE_DATA(json : String) returns String; //Insert User
 action SYS07_CHECK_DATA(json : String) returns String;//Edit User
 action SYS07_SAVE_DATA_L(json : String) returns String; //Insert User
-action SYS07_DELETE_DATA_L(json : String) returns String; //Insert User
+action SYS07_DELETE_DATA_L(json : String) returns String; //删除明细
+action SYS07_DELETE(json : String) returns String; //删除头
 action SYS07_EXCEL(json : String) returns LargeBinary; //Insert User
 }
 annotate TableService.T16_EMAIL_H with {

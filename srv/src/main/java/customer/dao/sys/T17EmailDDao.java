@@ -55,6 +55,17 @@ public class T17EmailDDao extends Dao {
         return null;
     }
 
+    /**
+     * 根据头h_code查询明细
+     */
+    public List<T17EmailD> getByHCode(String hCode) {
+        return db.run(
+                Select.from(Sys_.T17_EMAIL_D)
+                        .where(o -> o.TO_HEAD().H_CODE().eq(hCode)))
+                .listOf(T17EmailD.class);
+
+    }
+
     // 追加
     public void insert(T17EmailD o) {
 

@@ -29,6 +29,7 @@ import java.time.LocalDate;
 import cds.gen.pch.T06QuotationH;
 import cds.gen.sys.Sys_;
 import cds.gen.sys.T16EmailH;
+import cds.gen.sys.T17EmailD;
 import cds.gen.pch.Pch_;
 import cds.gen.tableservice.TableService_;
 import cds.gen.tableservice.PCHT07QuoItemMax1;
@@ -52,6 +53,22 @@ public class T16EmailHDao extends Dao {
             return result.get();
         }
         return null;
+    }
+
+    /**
+     * 根据头h_code查询
+     */
+    public T16EmailH getByHCode(String hCode) {
+        Optional<T16EmailH> result = db.run(
+                Select.from(Sys_.T16_EMAIL_H)
+                        .where(o -> o.H_CODE().eq(hCode)))
+                .first(T16EmailH.class);
+
+        if (result.isPresent()) {
+            return result.get();
+        }
+        return null;
+
     }
 
     // 追加

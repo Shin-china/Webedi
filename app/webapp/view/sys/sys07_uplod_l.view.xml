@@ -51,6 +51,7 @@
 							<ToolbarSpacer id="_IDGenToolbarSpacer1" />
 
 							<Button id="_IDGenButton2"  icon="sap-icon://create" text="{sys>SYS07_BUTTON_CREAT}"  visible="{localModel>/SYS07_CREAT}"  press="navTo('RouteCre_sys07')" />
+							<Button id="_IDGenButton3"  icon="sap-icon://delete" text="{sys>SYS07_BUTTON_DEL}"  visible="{localModel>/SYS07_DELETE}"   press="onPressDelete" />
 						</content>
 					</OverflowToolbar>
 				</smartTable:customToolbar>

@@ -14,6 +14,8 @@ import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.write.metadata.WriteSheet;
 import com.alibaba.excel.write.metadata.fill.FillConfig;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.sap.cds.services.cds.CdsCreateEventContext;
 import com.sap.cds.services.cds.CdsUpdateEventContext;
 import com.sap.cds.services.cds.CqnService;
@@ -23,6 +25,7 @@ import com.sap.cds.services.handler.annotations.On;
 import com.sap.cds.services.handler.annotations.ServiceName;
 
 import cds.gen.tableservice.SYS07CheckDATAContext;
+import cds.gen.tableservice.SYS07DELETEContext;
 import cds.gen.tableservice.SYS07SaveDATAContext;
 import cds.gen.tableservice.SysT07ComOpH;
 import cds.gen.tableservice.SysT07ComOpH_;
@@ -63,6 +66,23 @@ public class Sys07Handler implements EventHandler {
         Sys07List list = JSON.parseObject(context.getJson(), Sys07List.class);
         shelfService.detailsSave(list);
         context.setResult(JSON.toJSONString(list));
+    }
+
+    // 删除头数据
+    @On(event = "SYS07_DELETE")
+    public void deleteData(SYS07DELETEContext context) {
+        // 直接从上下文中获取参数
+        JSONArray jsonArray = JSONArray.parseArray(context.getJson());
+        // 根据传入的po和po明细修改po明细状态
+        for (int i = 0; i < jsonArray.size(); i++) {
+            // JSONObject jsonObject = jsonArray.getJSONObject(i);
+            String hCode = jsonArray.getString(i);
+            // String hCode = jsonObject.getString("H_CODE");
+            shelfService.deleteH(hCode);
+            shelfService.deleteD(hCode);
+        }
+
+        context.setResult("success");
     }
 
     /**
