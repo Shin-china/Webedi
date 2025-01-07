@@ -44,7 +44,7 @@
 						<smartFilterBar:ControlConfiguration id="MAT_ID" index="6" key="MAT_ID"  visibleInAdvancedArea="true" />	
 						<smartFilterBar:ControlConfiguration id="PO_DATE" index="7" key="PO_DATE"  visibleInAdvancedArea="true" />	
 						<smartFilterBar:ControlConfiguration id="STATUS" index="8" key="STATUS"  visibleInAdvancedArea="true"  filterType='single' controlType="dropDownList"/>	
-						<smartFilterBar:ControlConfiguration id="BYNAME" index="9" key="BYNAME"  visibleInAdvancedArea="true" />	
+						<smartFilterBar:ControlConfiguration id="SAP_CD_BY" index="9" key="SAP_CD_BY"  visibleInAdvancedArea="true" />	
 						<smartFilterBar:ControlConfiguration id="PO_D_DATE" index="10" key="PO_D_DATE"  visibleInAdvancedArea="true" />	
 						<smartFilterBar:ControlConfiguration id="ZABC" index="11" key="ZABC"  visibleInAdvancedArea="true"  filterType='multiple' controlType="dropDownList"/>	
 						<smartFilterBar:ControlConfiguration id="MEMO" index="11" key="MEMO"  visible="false" />	
@@ -69,7 +69,7 @@
 
 
 						<smartFilterBar:ControlConfiguration id="BP_ID" index="11" key="BP_ID"  visible="false" />	
-						<smartFilterBar:ControlConfiguration id="SAP_CD_BY" index="11" key="SAP_CD_BY"  visible="false" />		
+						<smartFilterBar:ControlConfiguration id="BYNAME" index="11" key="BYNAME"  visible="false" />		
 						<smartFilterBar:ControlConfiguration id="checkOk" index="11" key="checkOk"  visible="false" />	
 						<smartFilterBar:ControlConfiguration id="CUST_MATERIAL" index="11" key="CUST_MATERIAL"  visible="false" />	
 						<smartFilterBar:ControlConfiguration id="DOWN_FLAG" index="11" key="DOWN_FLAG"  visible="false" />	
@@ -78,7 +78,7 @@
 						
 						<smartFilterBar:ControlConfiguration index="11" key="PR_BY"  visible="false" />	
 						<smartFilterBar:ControlConfiguration index="11" key="INT_NUMBER"  visible="false" />	
-						<smartFilterBar:ControlConfiguration index="11" key="SAP_CD_BY"  visible="false" />	
+
 						<smartFilterBar:ControlConfiguration index="11" key="POCDBY"  visible="false" />	
 						<smartFilterBar:ControlConfiguration index="11" key="ISSUEDAMOUNT"  visible="false" />	
 						<smartFilterBar:ControlConfiguration index="11" key="MANU_MATERIAL"  visible="false" />	
@@ -104,7 +104,7 @@
 
 
 
-			<smartTable:SmartTable id="smartTable" enableAutoColumnWidth="true" showFullScreenButton="true" persistencyKey="mst02_receiptprintTable" ignoredFields="ID,USER_TYPE,PLANT_ID,STORAGE_LOC,STORAGE_TXT,ZABC,TYPE,BP_NAME1,DOWN_FLAG,MANU_MATERIAL,ISSUEDAMOUNT,POCDBY,INT_NUMBER,CUST_MATERIAL,PR_BY,BP_ID,checkOk,IMP_COMP,EMAIL_ADDRESS,PO_PUR_QTY2,DEL_PRICE2,PO_TYPE,PCH03_BP_NAME1,UNIT_PRICE,STATUS,POCDBY,SAP_CD_BY,CD_BY" entitySet="PCH_T03_PO_ITEM" requestAtLeastFields="ID,USER_TYPE,PLANT_ID,STORAGE_LOC,STORAGE_TXT,ZABC,TYPE,BP_NAME1,DOWN_FLAG,MANU_MATERIAL,ISSUEDAMOUNT,POCDBY,INT_NUMBER,CUST_MATERIAL,PR_BY,BP_ID,checkOk,IMP_COMP,EMAIL_ADDRESS,PO_PUR_QTY2,DEL_PRICE2,PO_TYPE,PCH03_BP_NAME1,BYNAME"  smartFilterId="smartFilterBar" beforeExport="onBeforeExport" enableExport="true" useVariantManagement="true" useTablePersonalisation="true"  initiallyVisibleFields="PO_TYPE_NAME,PO_NO,D_NO,MAT_ID,PO_D_TXZ01,PO_PUR_QTY,PO_PUR_UNIT,STATUS_NAME,ZABC1_NAME,SUPPLIER,SUPPLIER_MAT,CURRENCY,DEL_PRICE,DEL_AMOUNT,PO_DATE,PO_D_DATE,MEMO,USER_TYPE,BYNAME" tableType="Table" showRowCount="true" beforeRebindTable="onRebind" placeToolbarInTable="true" header="{com>TITLE_RESULT}" enableAutoBinding="false">
+			<smartTable:SmartTable id="smartTable" enableAutoColumnWidth="true" showFullScreenButton="true" persistencyKey="mst02_receiptprintTable" ignoredFields="ID,USER_TYPE,PLANT_ID,STORAGE_LOC,STORAGE_TXT,ZABC,TYPE,BP_NAME1,DOWN_FLAG,MANU_MATERIAL,ISSUEDAMOUNT,POCDBY,INT_NUMBER,CUST_MATERIAL,PR_BY,BP_ID,checkOk,IMP_COMP,EMAIL_ADDRESS,PO_PUR_QTY2,DEL_PRICE2,PO_TYPE,PCH03_BP_NAME1,UNIT_PRICE,STATUS,POCDBY,CD_BY,BYNAME" entitySet="PCH_T03_PO_ITEM" requestAtLeastFields="ID,USER_TYPE,PLANT_ID,STORAGE_LOC,STORAGE_TXT,ZABC,TYPE,BP_NAME1,DOWN_FLAG,MANU_MATERIAL,ISSUEDAMOUNT,POCDBY,INT_NUMBER,CUST_MATERIAL,PR_BY,BP_ID,checkOk,IMP_COMP,EMAIL_ADDRESS,PO_PUR_QTY2,DEL_PRICE2,PO_TYPE,PCH03_BP_NAME1,SAP_CD_BY,BYNAME"  smartFilterId="smartFilterBar" beforeExport="onBeforeExport" enableExport="true" useVariantManagement="true" useTablePersonalisation="true"  initiallyVisibleFields="PO_TYPE_NAME,PO_NO,D_NO,MAT_ID,PO_D_TXZ01,PO_PUR_QTY,PO_PUR_UNIT,STATUS_NAME,ZABC1_NAME,SUPPLIER,SUPPLIER_MAT,CURRENCY,DEL_PRICE,DEL_AMOUNT,PO_DATE,PO_D_DATE,MEMO,USER_TYPE,SAP_CD_BY" tableType="Table" showRowCount="true" beforeRebindTable="onRebind" placeToolbarInTable="true" header="{com>TITLE_RESULT}" enableAutoBinding="false">
 
 				<smartTable:customToolbar>
 				<OverflowToolbar id="ID_header">

@@ -5,7 +5,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
+import org.bouncycastle.jcajce.provider.asymmetric.dsa.DSASigner;
+import org.checkerframework.checker.units.qual.C;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.stereotype.Component;
@@ -89,8 +93,16 @@ public class Sys07Service {
         // 是否创建过头
         HashMap<String, String> hashMap = new HashMap<>();
         ArrayList<Sys07> al = list.getList();
+
+        Set<String> collect = list.getList().stream().map(Sys07::getH_CODE).collect(Collectors.toSet());
+        // 循环collect
+        for (String s : collect) {
+            // 删除对应的H——code数据
+            deleteD(s);
+            deleteH(s);
+        }
+
         // 删除原有的数据
-        deleteHDA();
         for (int i = 0; i < list.getList().size(); i++) {
             Sys07 s = al.get(i);
 
