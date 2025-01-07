@@ -450,10 +450,24 @@ sap.ui.define(["umc/app/controller/BaseController", "sap/m/MessageToast", "sap/m
           that._setBusy(true);
 
           var oTable = that.byId("tableUploadData");
-        var selectedIndices = this._TableList("tableUploadData"); // 获取选中行
-        if (selectedIndices.length == 0) {
-            sap.m.MessageToast.show("選択されたデータがありません、データを選択してください。");
+          var selectedIndices = this._TableList("tableUploadData"); // 获取选中行
+
+          if (selectedIndices.length == 0) { 
+              sap.m.MessageToast.show("選択されたデータがありません、データを選択してください。");
             return false;
+          }
+
+          //如果状态有5，则提示错误信息
+          var aStatusData = selectedIndices.filter(data => data.STATUS === "5");
+          if (aStatusData.length > 0) {
+        
+              var arr = new Array();
+              for (var i = 0; i < aStatusData.length; i++) {
+                  arr.push(aStatusData[i].QUO_NUMBER + "-" + aStatusData[i].QUO_ITEM);
+              }
+              MessageToast.show("購買見積番号" + arr.join("、") + "に対して、ステータスは完了となりましたので、送信できません。");
+              that._setBusy(false);
+              return;
           }
           
           var confirmMsg = "送信しますか？";
@@ -514,7 +528,10 @@ sap.ui.define(["umc/app/controller/BaseController", "sap/m/MessageToast", "sap/m
                       else {
                           that._setBusy(false);
                       }
-                  }
+                  } else {
+                      that._setBusy(false);
+
+                      }
               }
               });
       },  

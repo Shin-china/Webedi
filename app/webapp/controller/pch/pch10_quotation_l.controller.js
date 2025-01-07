@@ -209,6 +209,7 @@ sap.ui.define(["umc/app/controller/BaseController", "sap/m/MessageToast"], funct
       var oTable = that.byId("detailTable10");
 
       var aSelectedIndices = oTable.getSelectedIndices();
+      
 
       // 检查是否有选中的数据
       if (aSelectedIndices.length === 0) {
@@ -220,6 +221,23 @@ sap.ui.define(["umc/app/controller/BaseController", "sap/m/MessageToast"], funct
       var aSelectedData = aSelectedIndices.map(function (iIndex) {
         return oTable.getContextByIndex(iIndex).getObject();
       })  
+
+      //如果状态有5，则提示错误信息
+      var aStatusData = aSelectedData.filter(data => data.STATUS === "5");
+
+      if (aStatusData.length > 0) {
+        var arr = new Array();
+        for (var i = 0; i < aStatusData.length; i++) {
+
+          arr.push(aStatusData[i].QUO_NUMBER);
+
+        }
+
+        MessageToast.show("購買見積番号" + arr.join("、") + "に対して、ステータスは完了となりましたので、送信できません。");
+        
+        that.getView().setBusy(false);
+        return;
+      }
 
       var confirmMsg = "送信しますか？";
 
@@ -329,53 +347,6 @@ sap.ui.define(["umc/app/controller/BaseController", "sap/m/MessageToast"], funct
       });
       
     },
-
-    // _changeEmailStatus: function (aSelectedData,oTable) {
-    //   var that = this;
-    //   that._setBusy(true);
-    //   var bSelectedIndices = aSelectedData;
-
-    //   //因为http param 长度有限制，必须循环一条条调用，不要一次性提交
-    //   var oPostData = {}, oPostList = {}, aPostItem = [], iDoCount = 0, bError;
-    //   aSelectedIndices.forEach(iIndex => {
-    //     aPostItem = [];
-    //     oPostData = {};
-    //     oPostList = {};
-    //     var oItem = oTable.getContextByIndex(iIndex).getObject();
-    //     oItem.VALIDATE_START = that.__formatDate(oItem.VALIDATE_START);
-    //     oItem.VALIDATE_END = that.__formatDate(oItem.VALIDATE_END);
-    //     // oItem.TIME = that.__formatDate(oItem.TIME);
-    //     aPostItem.push(oItem);
-    //     oPostList = JSON.stringify({
-    //       "list": aPostItem
-    //     });
-    //     oPostData = {
-    //       "str": oPostList    
-    //     };
-
-    //   that._callCdsAction("/PCH10_L_SENDSTATUS", oPostList, that).then(         
-    //       (oData) => {
-            
-    //         var oResult = JSON.parse(oData.PCH10_L_SENDSTATUS);
-
-    //         if (oResult.err) {
-    //           bError = true;
-    //         }
-    //           if (bError) {
-                
-    //             that.MessageTools._addMessage(that.MessageTools._getI18nTextInModel("pch", oResult.reTxt, this.getView()), null, 1, this.getView());
-    //           } else {
-    //             sap.m.MessageToast.show(that._PchResourceBundle.getText("PCH10_SAVE_SUCCESS"));
-    //       }
-          
-    //       });
-    //   },
-    //   )
-    //   },
-        
-        
-        
-        
 
     _readBpNumber(a, entity) {
       var that = this;
