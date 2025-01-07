@@ -1,5 +1,5 @@
 sap.ui.define([
-    "umc/app/Controller/BaseController",
+    "umc/app/controller/BaseController",
     "sap/ui/core/mvc/Controller",
     "sap/m/MessageToast",
     "sap/m/MessageBox",
@@ -36,12 +36,6 @@ sap.ui.define([
 
                 // 清空
                 data.length = 0;
-                // let rowNo = [];
-                // json.forEach(item => {
-                //     rowNo.push(item.MAX)
-                // })
-
-                // let maxNum = Math.max.apply(null, rowNo); 
                 this._maxPersonSize = 0;
                 this._maxQtySize = 0;
 
@@ -75,11 +69,10 @@ sap.ui.define([
 
                 //员数列
                 for (let i = 1; i <= this._maxPersonSize; i++) { 
-                    let personFlag = "PERSON_" + i;
                     let person = "{PERSON_" + i + "}";
                     let column = new sap.ui.table.Column({
                         label: new sap.m.Label({ text: "員数" + i }),
-                        template: new sap.m.Input({ value: person, editable: "{=${" + personFlag + "} === undefined || ${" + personFlag + "} === null || ${" + personFlag + "} === ''  ? false : true}" })
+                        template: new sap.m.Input({ value: person, editable: false })
                     });
                     this.getView().byId("dataTable").addColumn(column);
                 }

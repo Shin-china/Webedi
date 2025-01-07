@@ -45,7 +45,7 @@
                 <Button id="editButton" text="{pch>PCH03_BUTTON_EDI}" enabled="{localModel>/show}" tooltip="{pch>PCH03_BUTTON_EDI}" press="onEdit" />
                 <Button id="saveButton" text="{pch>PCH03_BUTTON_SAV}" enabled="{localModel>/save}" tooltip="{pch>PCH03_BUTTON_SAV}" press="onSave" />
                 <Button id="id.UBAttachment" text="{pch>ATTACHMENT}" press="onOpenAttachmentDialog" />
-                <!-- <Button id="id.UBTemplate" text="{pch>PCH08_UPLOAD_TEMPLATE}" press="onDownloadTemplate" /> -->
+                <Button id="id.UBTemplate" text="{pch>PCH08_UPLOAD_TEMPLATE}" press="onDownloadTemplate" />
 
             </OverflowToolbar>
         </smartTable:customToolbar>
@@ -113,7 +113,7 @@
                     </table:label>
                     <table:template>
                         <!-- <Text id="textReferenceNo" text="{REFRENCE_NO}" /> -->
-                        <smartField:SmartField id="textReferenceNo" value="{REFRENCE_NO}" editable="false" change="onRefrenceNoChange" />
+                        <smartField:SmartField id="textReferenceNo" value="{REFRENCE_NO}" editable="false" />
                     </table:template>
                 </table:Column>
                 <table:Column id="colCustomer" width="10rem" sortProperty="CUSTOMER" filterProperty="CUSTOMER">

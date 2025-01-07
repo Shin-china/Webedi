@@ -1,9 +1,11 @@
 sap.ui.define([
-    "umc/app/Controller/BaseController",
+    "umc/app/controller/BaseController",
     "sap/ui/core/mvc/Controller",
     "sap/m/MessageToast",
-    "sap/m/MessageBox"
-], function (Controller,A, MessageToast, MessageBox) {
+    "sap/m/MessageBox",
+    "sap/ui/model/Filter",
+    "sap/ui/model/FilterOperator"
+], function (Controller,A, MessageToast, MessageBox,Filter,FilterOperator) {
     "use strict";
 
     var _objectCommData = {
@@ -16,6 +18,9 @@ sap.ui.define([
         onResend: function () {
             var oTable = this.getView().byId("detailTable");
             var aSelectedIndices = oTable.getSelectedIndices();
+
+            var that = this;
+            var IdList = that._TableDataList("detailTable", 'SUPPLIER');
    
             // 检查是否有选中的数据
             if (aSelectedIndices.length === 0) {
@@ -108,7 +113,13 @@ sap.ui.define([
                     oHeadData.results.map(result => result.VALUE02).join(", ") : '';            
                 let absama = oHeadData.results && oHeadData.results.length > 0 ? 
                     oHeadData.results.map(result => result.VALUE03 + " 様").join("  ") : '';
-         
+
+                    //Add by stanley 20241230
+                    if (mail == "" || mail == null) {
+                        MessageBox.error("仕入先のメールアドレスを取得できません");
+                        return;
+                    }
+
                     let mailobj = {
                         emailJson: {
                             TEMPLATE_ID: "UWEB_M007",
@@ -144,25 +155,33 @@ sap.ui.define([
                 
             // let newModel = this.getView().getModel("Common");
             // let oBind = newModel.bindList("/sendEmail");
+            // Add Confirm button by stanley 20241217
+            var that = this;
+            var confirmTxt = this.MessageTools._getI18nTextInModel("pch", "confirmTxt", this.getView());
+            var confirmTitle = this.MessageTools._getI18nTextInModel("pch", "confirmTitle", this.getView());
+            var confirmOk = this.MessageTools._getI18nTextInModel("pch", "confirmOk", this.getView());
+            var confirmCancel = this.MessageTools._getI18nTextInModel("pch", "confirmCancel", this.getView());
+            var sResponsivePaddingClasses = "sapUiResponsivePadding--header sapUiResponsivePadding--content sapUiResponsivePadding--footer";
+            MessageBox.confirm(confirmTxt,{
+                icon:MessageBox.Icon.INFORMATION,
+                title:confirmTitle,
+                actions: [confirmOk, confirmCancel],
+                emphasized: confirmOk,
+                initialFocus: confirmCancel,
+                styleClass: sResponsivePaddingClasses,
+                onClose: function(sAction) {
+                  if(sAction === confirmOk){
+                    that._sendEmail(mailobj);
+                    that._setBusy(false);
+                    
+                    that._callCdsAction("/PCH04_SENDEMAIL", { parms: IdList[0] }, that).then((data) => {
+                        
+                    });
+                }}
+            });
+            //END By Stanley
 
-            this._sendEmail(mailobj);
-			this._setBusy(false);
-            // oBind.create(mailobj);
-            // let a =oBind.create(mailobj, {
-            //     success: function (oData) {
-            //         console.log(oData)
-            //         // 确保oData不为null并且有返回的结果
-            //         if (oData && oData.result && oData.result === "sucess") {
-            //             MessageToast.show("メールは送付されました");
-            //         } else {
-            //             MessageBox.error("メール送信に失敗しました。エラー: " + (oData.result || "不明なエラー"));
-            //         }
-            //     },
-            //     error: function (oError) {
-            //         console.log(oError)
-            //         MessageBox.error("メール送信に失敗しました。エラー: " + oError.message);
-            //     }
-            // });
+
         });
     },
 
@@ -228,7 +247,39 @@ sap.ui.define([
 				that._setBusy(false);
 				return;
 			}
-			this._readEntryByServiceAndEntity(_objectCommData._entity, aFilters, null).then((oData) => {
+            //ADD BY STANLEY 20241230
+             var aFilter = [];
+             var times = 0;
+             var singleCondition = false;
+             if(aFilters[0].aFilters?.length !== undefined){
+                 times = aFilters[0].aFilters.length;
+             }else{
+                 times = 1;
+                 singleCondition = true;
+             }
+             for(var i = 0; i < times; i++){
+               if(singleCondition){
+                aFilter.push(new Filter(aFilters[0].sPath,
+                    aFilters[0].sOperator,
+                    aFilters[0].oValue1
+                ))
+               }else{
+                if(aFilters?.[0]?.aFilters?.[i]?.sPath == undefined){
+                    if(aFilters[0].aFilters[i].aFilters[0].sPath == "SUPPLIER"){
+                    aFilter.push(new Filter(aFilters[0].aFilters[i].aFilters[0].sPath,
+                        aFilters[0].aFilters[i].aFilters[0].sOperator,
+                        aFilters[0].aFilters[i].aFilters[0].oValue1
+                    ));
+                    }}else{
+                        aFilter.push(new Filter(aFilters[0].aFilters[i].sPath,
+                        aFilters[0].aFilters[i].sOperator,
+                        aFilters[0].aFilters[i].oValue1
+                    ))
+                    }
+               }
+             }
+            //END ADD
+			this._readEntryByServiceAndEntity(_objectCommData._entity, aFilter, null).then((oData) => {
             
             // 调用检查逻辑
             if (!this.checkSelectedSuppliers()) {
@@ -279,6 +330,9 @@ sap.ui.define([
                                 row.GR_DATE = formatDateString(row.GR_DATE);
                             }
 
+                            //ADD BY STANLEY 20241230
+                            row.SUPPLIER_DESCRIPTION = row.SUPPLIER_DESCRIPTION + " 御中";
+
 					});
 
                     // 确保 oData[0] 存在
@@ -286,7 +340,7 @@ sap.ui.define([
                     console.log(sResponse);
                     that.setSysConFig().then(res => {
                         // 调用打印方法
-                        that.PrintTool._detailSelectPrintDow(that, sResponse, "test02/test05", J, null,fileName, null, null).then((oData) => {
+                        that.PrintTool._detailSelectPrintDow(that, sResponse, that.getGlobProperty("ADS_template_form") +"_rep04/T", J, null,fileName, null, null).then((oData) => {
 
                         var sapPo = {
                             po: IdList[0],

@@ -1,6 +1,7 @@
 package customer.tool;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.regex.Matcher;
@@ -33,6 +34,24 @@ public class NumberTool {
       }
     }
     return nullTo;
+  }
+
+  /**
+   * 获取货币的精度，如果是日元5，其余2
+   * 
+   * @param currency
+   * @return
+   */
+  public static BigDecimal toScale(BigDecimal data, String currency) {
+    BigDecimal prc = BigDecimal.ZERO;
+    if (data != null) {
+      if (UWebConstants.JPY.equals(currency)) {
+        prc = data.setScale(5, RoundingMode.UP);
+      } else {
+        prc = data.setScale(2, RoundingMode.UP);
+      }
+    }
+    return prc;
   }
 
   // // 在库计算小数

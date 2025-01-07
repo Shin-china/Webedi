@@ -8,11 +8,11 @@ extend service TableService {
 
     entity PCH_T02_USER as
             select from PCH.T01_PO_H as T01
-            left join PCH.T02_PO_D as T02
+            inner join PCH.T02_PO_D as T02
                 on(
                     T01.PO_NO = T02.PO_NO
                 )
-            left join PCH.T03_PO_C as T03
+            inner join PCH.T03_PO_C as T03
                 on(
                         T02.PO_NO = T03.PO_NO
                     and T02.D_NO  = T03.D_NO
@@ -70,7 +70,8 @@ extend service TableService {
                     T01.INPUT_DATE,			// 納入日付						
                     T01.INPUT_QTY,			// 納入数											
                     T01.CD_DATE,			// 登録日付						
-                    T01.CD_DATE_TIME,	    // 時刻		
+                    T01.CD_DATE_TIME,	    // 時刻	
+                    T01.CD_BY				// 登録者
 
     }
 

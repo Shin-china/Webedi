@@ -24,11 +24,14 @@ import cds.gen.MailBody;
 import cds.gen.MailJson;
 
 import customer.bean.tmpl.test;
+import customer.service.pch.PchService;
 import customer.service.sys.EmailServiceFun;
 import customer.tool.UWebConstants;
+import customer.bean.com.UmcConstants;
 import customer.bean.tmpl.Pch04;
 import customer.bean.tmpl.Pch04List;
 import customer.bean.tmpl.Pch05;
+import customer.dao.pch.PchD004;
 
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.ExcelWriter;
@@ -58,11 +61,15 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 
 @Component
 @ServiceName(TableService_.CDS_NAME)
 public class Pch04Handler implements EventHandler {
+
+    @Autowired
+    PchService pchService;
 
     @Autowired
     private EmailServiceFun emailServiceFun;
@@ -96,11 +103,27 @@ public class Pch04Handler implements EventHandler {
             emailServiceFun.sendEmailFun(mailJsonList);
             // 设置操作结果
             context.setResult(JSON.toJSONString("メールは送付されました"));
+
         } catch (Exception e) {
             // 处理发送邮件的异常
 
         }
+
     }
+
+    /**
+   * 
+   * @param context
+   */
+  @On(event = "PCH04_SENDEMAIL")
+  public void sendemail(PCH04SENDEMAILContext context) {
+
+    String suppli = context.getParms();
+    pchService.setSendflag(suppli);
+
+    context.setResult("success");
+
+  }
 
     // 创建 MailBody 的集合
     private Collection<MailBody> createMailBody(MailParam param) {
@@ -174,6 +197,25 @@ public class Pch04Handler implements EventHandler {
             data1.setBaseAmountExcludingTax(stripTrailingZeros(data1.getBaseAmountExcludingTax()));
             data1.setTaxRate(stripTrailingZeros(data1.getTaxRate()));
 
+             // 获取 NoDetails 字段并补充前导零
+             String noDetails = data1.getNoDetails(); // 使用实例调用非静态方法
+             if (noDetails != null && noDetails.length() >= 10) {
+                 // 获取前10位
+                 String prefix = noDetails.substring(0, 10);
+             
+                 // 获取第11位及以后的部分
+                 String suffix = noDetails.length() > 10 ? noDetails.substring(10) : "";
+             
+                 // 补零到5位，从第11位开始补零
+                 String paddedSuffix = String.format("%05d", Integer.parseInt(suffix.isEmpty() ? "0" : suffix));
+             
+                 // 拼接前10位和补零后的后缀，确保总长度为15
+                 String paddedNoDetails = prefix + paddedSuffix;
+             
+                 // 设置回 NoDetails
+                 data1.setNoDetails(paddedNoDetails);
+             }
+
         });
     }
 
@@ -200,8 +242,28 @@ public class Pch04Handler implements EventHandler {
             data2.setPriceAmount10(stripTrailingZeros(data2.getPriceAmount10()));
             data2.setPriceAmount8(stripTrailingZeros(data2.getPriceAmount8()));
 
+            // 获取 NoDetails 字段并补充前导零
+            String noDetails = data2.getNoDetails(); // 使用实例调用非静态方法
+            if (noDetails != null && noDetails.length() >= 10) {
+                // 获取前10位
+                String prefix = noDetails.substring(0, 10);
+            
+                // 获取第11位及以后的部分
+                String suffix = noDetails.length() > 10 ? noDetails.substring(10) : "";
+            
+                // 补零到5位，从第11位开始补零
+                String paddedSuffix = String.format("%05d", Integer.parseInt(suffix.isEmpty() ? "0" : suffix));
+            
+                // 拼接前10位和补零后的后缀，确保总长度为15
+                String paddedNoDetails = prefix + paddedSuffix;
+            
+                // 设置回 NoDetails
+                data2.setNoDetails(paddedNoDetails);
+            }
+
         });
     }
+
 
     /**
      * 处理金额字段，去除尾随零。
@@ -264,12 +326,6 @@ public class Pch04Handler implements EventHandler {
         list.add(new Pch04());
         list.add(new Pch04());
         dataList.setList(list);
-
-        // ArrayList<Pch04> list = dataList.getList();
-        // list.add(new Pch04());
-        // list.add(new Pch04());
-        // list.add(new Pch04());
-        // dataList.setList(list);
 
         InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(UWebConstants.PCH04_TEP_PATH);
 

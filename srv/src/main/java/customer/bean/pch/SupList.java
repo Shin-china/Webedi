@@ -11,11 +11,12 @@ public class SupList {
     private String Supplierinvoice;
     private Integer Fiscalyear;
     private String Invoicingparty;
-    private String Documentdate;
-    private LocalDate Postingdate;
+    private LocalDate Documentdate;
+    private LocalDate Postingdate1;
+    private LocalDate Postingdate2;
     private BigDecimal Exchangerate;
     private LocalDate Duecalculationbasedate;
-    private String Invoicegrossamount;
+    private BigDecimal Invoicegrossamount;
     private String Createdbyuser;
     private String Lastchangedbyuser;
     private String Supplierinvoicetaxcounter;
@@ -42,6 +43,12 @@ public class SupList {
     private String Companycode;
     private String Purchasinggroupname;
     private String Accountingdocument;
+    private BigDecimal Taxrate;
+    private String Sendflag;
+    private BigDecimal Taxamountheader;
+    private String Documentheadertext;
+    private String Suppliername;
+
 
 
     

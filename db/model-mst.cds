@@ -15,7 +15,8 @@ entity T01_SAP_MAT : IF_CUID_FILED { //物料基本信息
                               @title: '{i18n>MANU_MATERIAL}' MANU_MATERIAL     : String(40); //制造商物料编号
                               @title: '{i18n>CUST_MATERIAL}' CUST_MATERIAL     : String(40); //制造商物料编号
 
-
+                                TO_SAP_BP                           : Association to one T03_SAP_BP
+                                                                       on TO_SAP_BP.BP_ID = MANU_CODE;
 }
 
 entity T02_SAP_PLANT : IF_CUID_FILED { //工厂表
@@ -34,12 +35,13 @@ entity T03_SAP_BP : IF_CUID_FILED { //工厂表
                                      @title: '{i18n>BP_NAME2}' BP_NAME2     : String(40); //BP Name 1
                                      @title: '{i18n>BP_NAME3}' BP_NAME3     : String(20); //BP Name 1
                                      @title: '{i18n>BP_NAME4}' BP_NAME4     : String(70); //BP Name 1
-                                     @title: '{i18n>FAX}' FAX               : String(40); //FAX
+                                    @title: '{i18n>SEARCH2}' SEARCH2        : String(40); //检索语句
+                                    @title: '{i18n>FAX}' FAX                : String(40); //FAX
                                      @title: '{i18n>TEL}' TEL               : String(40); //TEL
 
                                      @title: '{i18n>LOG_NO}' LOG_NO         : String(40); //登録番号
                                      @title: '{i18n>POSTCODE}' POSTCODE     : String(40); //郵便番号
-                                     @title: '{i18n>REGIONS}' REGIONS       : String(40); //地域(都道府県)
+                                     @title: '{i18n>REGIONS}' REGIONS       : String(120); //地域(都道府県)
                                      @title: '{i18n>PLACE_NAME}' PLACE_NAME : String(40); //地名/番地-号
 
 }

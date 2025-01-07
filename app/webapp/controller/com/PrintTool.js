@@ -26,7 +26,7 @@ sap.ui.define(
 
         return new Promise(function (resolve, reject) {
           // check if running in localhost
-          if (window.location.hostname === "localhost" || window.location.hostname === "220.248.121.53") {
+          if (that._getIsHost()) {
             // 本地开发打印
             that._getOAuthToken(_that).then(
               function (token) {
@@ -104,7 +104,7 @@ sap.ui.define(
             };
             return new Promise(function (resolve, reject) {
               // check if running in localhost
-              if (window.location.hostname === "localhost" || window.location.hostname === "220.248.121.53") {
+              if (that._getIsHost()) {
                 // 本地开发打印
                 that._getOAuthToken(_that).then(
                   function (token) {
@@ -175,7 +175,7 @@ sap.ui.define(
 
         return new Promise(function (resolve, reject) {
           // check if running in localhost
-          if (window.location.hostname === "localhost" || window.location.hostname === "220.248.121.53") {
+          if (that._getIsHost()) {
             // 本地开发打印
             that._getOAuthToken(_that).then(
               function (token) {
@@ -244,7 +244,7 @@ sap.ui.define(
 
           return new Promise(function (resolve, reject) {
             // check if running in localhost
-            if (window.location.hostname === "localhost" || window.location.hostname === "220.248.121.53") {
+            if (that._getIsHost()) {
               // 本地开发打印
               that._getOAuthToken(_that).then(
                 function (token) {
@@ -600,17 +600,11 @@ sap.ui.define(
 		_getDownloadName: function (templateId) {
 			var downloadName = "";
 			switch (templateId) {
-				case "test03/test2":
+				case "uwms_umce_dev_zws/T":
 					downloadName = "注文書";
 					break;
-				case "test03/test1":
+				case "uwms_umce_dev_nps/T":
 					downloadName = "納品書";
-					break;
-        case "test02/test05":
-          downloadName = "支払通知書";
-          break;
-        case "test02/test03":
-          downloadName = "買掛金明細";
           break;
 			}
 			var date = new Date();
@@ -652,7 +646,7 @@ sap.ui.define(
         object_type:_data.type,
         value:odata,
         file_type:btoa(_blob.type),
-        file_name:_data.fileName+".pdf"
+        file_name:_data.fileName
       }}
 
 			$.ajax({
@@ -745,8 +739,29 @@ sap.ui.define(
           }
           reader.onerror = error => reject(error);
         });
+      },
+      //将pdf转换为base64传到后台打印
+      getCsvBase64(blob) {
+        return new Promise((resolve,reject) => {
+          const reader = new FileReader();
+          reader.readAsDataURL(blob);
+          reader.onload = () => {
+            const base64 = reader.result;
+            
+            resolve(base64.replace("data:text/csv;charset=utf-8;base64,",""));
+          }
+          reader.onerror = error => reject(error);
+        });
+      },
+      //判断是否能使用打印的功能
+      _getIsHost() {
+        if(window.location.hostname === "localhost" || window.location.hostname === "220.248.121.53"|| window.location.hostname === "umc-electronics-co---ltd--s01-test-dev-uweb-umce-dev.cfapps.jp10.hana.ondemand.com"){
+          return true;
+        }
+        else {
+          return false;
+        }
       }
-
     };
   }
 );

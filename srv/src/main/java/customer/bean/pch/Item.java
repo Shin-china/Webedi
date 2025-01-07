@@ -35,6 +35,10 @@ public class Item {
     private String Internationalarticlenumber;
     private String Requisitionername;
     private String Correspncinternalreference;
+    private String Taxcode;
+    private String Taxamount;
+    private String Approvedate;
+    private String Purchasingorganization;
 
     private List<Confirmation> Confirmation = new ArrayList<Confirmation>();
 

@@ -40,12 +40,14 @@ public class BPPurchaseDao extends Dao {
     // Insert
     public void insert(T05SapBpPurchase o) {
         o.setCdTime(getNow());
+        o.setCdBy(getUserId());
         db.run(Insert.into(Mst_.T05_SAP_BP_PURCHASE).entry(o));
     }
 
     // Update
     public void update(T05SapBpPurchase o) {
         o.setCdTime(getNow());
+        o.setCdBy(getUserId());
         db.run(Update.entity(Mst_.T05_SAP_BP_PURCHASE).entry(o));
     }
 }

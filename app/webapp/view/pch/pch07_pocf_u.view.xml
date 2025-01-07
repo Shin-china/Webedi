@@ -24,7 +24,7 @@ xmlns:fb="sap.ui.comp.filterbar">
 		<unified:FileUploader id="fileUploader" sameFilenameAllowed="true" buttonText="{pch>U07_B_SELECT}" fileType="xlsx,xls" change="onFileChange" width="40rem" />
 	</Panel>
 
-	<Panel id="idpanel1" expandable="true" expanded="true" headerText="{pch>U07_RESULT}" width="auto" class="sapUiResponsiveMargin">
+	<Panel id="idpanel1" expandable="true" expanded="true" headerText="{pch>U07_RESULT}"   width="auto" class="sapUiResponsiveMargin">
 		<t:Table id="tableUploadData" rows="{path: 'workInfo>/'}" class="sapUiSizeCompact" selectionMode='MultiToggle' threshold="20">
 			<t:extension>
 				<OverflowToolbar id="idoverflowtooblar1">	
@@ -54,10 +54,10 @@ xmlns:fb="sap.ui.comp.filterbar">
 				</t:Column>
 
 				<!-- 結果内容 -->
-				<t:Column id="Message" width="15rem" sortProperty="MESSAGE" filterProperty="MESSAGE">
+				<t:Column id="Message" width="30rem" sortProperty="MESSAGE" filterProperty="MESSAGE">
 					<Label id="_IDGenLabel3" text="{pch>U07_MESSAGE}"/>
 					<t:template>
-						<Text id="_IDGenText4" text="{workInfo>MESSAGE}" width="12em" tooltip="{local>MESSAGE}"/>
+						<Text id="_IDGenText4" text="{workInfo>MESSAGE}"  width="42em" tooltip="{local>MESSAGE}" wrapping="false"/>
 					</t:template>
 				</t:Column>
 

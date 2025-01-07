@@ -16,8 +16,6 @@
     xmlns:upload="sap.m.upload"
     xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
 
-
-
     <f:DynamicPage id="dynamicPageId" headerExpanded="true" showFooter="true" busy="{localModel>/isBusy}">
         <f:title>
             <f:DynamicPageTitle id="DynamicPageTitle">
@@ -26,7 +24,7 @@
                     <Title id="Title" text="{title}"/>
                 </f:heading>
                 <f:navigationActions>
-                    <m:Button id="_IDGenButton3" icon="sap-icon://home" tooltip="nav-back" press="navTo('RouteList_pch10')"/>
+                    <m:Button id="_IDGenButton3" icon="sap-icon://nav-back" tooltip="nav-back" press=".onNavBack"/>
                 </f:navigationActions>
             </f:DynamicPageTitle>
         </f:title>
@@ -37,30 +35,12 @@
             <l:VerticalLayout id="_IDGenVerticalLayout1">
                 <OverflowToolbar id="ID_header">
                     <ToolbarSpacer id="idtoolbarspacer1"/>
-                    <m:Button id="Button1" text="修改" icon="sap-icon://edit" press="onEdit"/>
+                    <!-- <m:Button id="Button1" text="{pch>U_B_SAVE}" icon="sap-icon://edit" press="onEdit"/> -->
                     <m:Button id="Button2" text="Export" icon="sap-icon://download" press="onExport"/>
                 </OverflowToolbar>
                 <table:Table id="dataTable" rows="{path: '/dataList'}" selectionMode="None">
-
-
                 </table:Table>
             </l:VerticalLayout>
-
         </f:content>
-
-
-
-
-
-
-
-
-
-
-
-
-
     </f:DynamicPage>
-
-
 </mvc:View>

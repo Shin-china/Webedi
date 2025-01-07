@@ -1,0 +1,196 @@
+<mvc:View controllerName="umc.app.controller.sys.sys07_uplod_l"
+	xmlns:smartfield="sap.ui.comp.smartfield"
+	xmlns:smartform="sap.ui.comp.smartform"
+	xmlns:core="sap.ui.core"
+	xmlns="sap.m"
+	xmlns:m="sap.m"
+	xmlns:f="sap.f"
+	xmlns:l="sap.ui.layout"
+	xmlns:smartFilterBar="sap.ui.comp.smartfilterbar"
+	xmlns:smartTable="sap.ui.comp.smarttable"
+	xmlns:sv="sap.ui.comp.smartvariants"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:uxap="sap.uxap"
+	xmlns:table="sap.ui.table"
+	xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+
+	<f:DynamicPage id="dynamicPageId" headerExpanded="true" showFooter="true" busy="{localModel>/isBusy}">
+
+		<f:header>
+			<f:DynamicPageHeader id="DynamicPageHeader" pinnable="true">
+
+				<f:content>
+
+					<smartFilterBar:SmartFilterBar id="smartFilterBar" useToolbar="true" entitySet="SYS07_EMAIL" persistencyKey="sys07_receiptprintFilterBar" showFilterConfiguration="true">
+						<smartFilterBar:controlConfiguration>
+							<smartFilterBar:ControlConfiguration id="_IDGenControlConfiguration1" key="H_CODE" label="{sys>SYS07_H_CODE}" visibleInAdvancedArea="true"  />
+							<smartFilterBar:ControlConfiguration id="_IDGenControlConfiguration2" key="H_NAME" label="{sys>SYS07_H_NAME}" visibleInAdvancedArea="true"  />
+							<smartFilterBar:ControlConfiguration id="_IDGenControlConfiguration3" key="BP_ID" label="{sys>SYS07_BP_ID}" visibleInAdvancedArea="true"  />
+							<smartFilterBar:ControlConfiguration id="_IDGenControlConfiguration4" key="EMAIL_ADDRESS" label="{sys>SYS07_EMAIL_ADDRESS}" visibleInAdvancedArea="true"  />
+							<smartFilterBar:ControlConfiguration id="_IDGenControlConfiguration5" key="EMAIL_ADDRESS_NAME" label="{sys>SYS07_EMAIL_ADDRESS_NAME}" visibleInAdvancedArea="true"  />
+							
+							<smartFilterBar:ControlConfiguration index="11" key="ID"  visible="false" />	
+							<smartFilterBar:ControlConfiguration index="11" key="CD_BY"  visible="false" />	
+							<smartFilterBar:ControlConfiguration index="11" key="CD_TIME"  visible="false" />	
+							<smartFilterBar:ControlConfiguration index="11" key="UP_BY"  visible="false" />	
+							<smartFilterBar:ControlConfiguration index="11" key="UP_TIME"  visible="false" />	
+							</smartFilterBar:controlConfiguration>
+					</smartFilterBar:SmartFilterBar>
+
+				</f:content>
+			</f:DynamicPageHeader>
+		</f:header>
+
+		<f:content>
+
+			<smartTable:SmartTable id="smartTable" smartVariant="__SVM01" showFullScreenButton="true" persistencyKey="sys07_SmartTableAnalytical_Explored"  beforeExport="onBeforeExportCommon" entitySet="SYS07_EMAIL"  ignoredFields="ID"  requestAtLeastFields="ID" smartFilterId="smartFilterBar" enableExport="true" useVariantManagement="true" useTablePersonalisation="true" tableType="Table" showRowCount="true" beforeRebindTable="onRebind" placeToolbarInTable="true" header="{com>TITLE_RESULT}" enableAutoBinding="false">
+
+				<smartTable:customToolbar>
+					<OverflowToolbar id="_IDGenOverflowToolbar1">
+						<content>
+							<ToolbarSpacer id="_IDGenToolbarSpacer1" />
+
+							<Button id="_IDGenButton2"  icon="sap-icon://create" text="{sys>SYS07_BUTTON_CREAT}"  visible="{localModel>/SYS07_CREAT}"  press="navTo('RouteCre_sys07')" />
+							<Button id="_IDGenButton3"  icon="sap-icon://delete" text="{sys>SYS07_BUTTON_DEL}"  visible="{localModel>/SYS07_DELETE}"   press="onPressDelete" />
+						</content>
+					</OverflowToolbar>
+				</smartTable:customToolbar>
+				<table:Table id="detailTable" rowMode="Auto" rowActionCount="1">
+
+<!-- //H_CODE,H_NAME,BP_ID,EMAIL_ADDRESS,EMAIL_ADDRESS_NAME,CD_BY,CD_TIME,UP_BY,UP_TIME -->
+					<table:columns>
+			
+						<!-- 業務区分 -->
+						<table:Column visible="true" autoResizable="true" sortProperty="H_CODE" filterProperty="H_CODE" width="10em">
+							<table:customData>
+								<core:CustomData key="p13nData" value='\{"columnKey":"H_CODE", "leadingProperty":"H_CODE"}'/>
+							</table:customData>
+							<table:label>
+								<Label text="{sys>SYS07_H_CODE}"/>
+							</table:label>
+							<table:template>
+								<smartfield:SmartField value="{H_CODE}"  editable="false"/>
+							</table:template>
+						</table:Column>
+						<!-- 業務名 -->
+						<table:Column visible="true" autoResizable="true" sortProperty="H_NAME" filterProperty="H_NAME" width="10em">
+							<table:customData>
+								<core:CustomData key="p13nData" value='\{"columnKey":"H_NAME", "leadingProperty":"H_NAME"}'/>
+							</table:customData>
+							<table:label>
+								<Label text="{sys>SYS07_H_NAME}"/>
+							</table:label>
+							<table:template>
+								<smartfield:SmartField value="{H_NAME}"  editable="false"/>
+							</table:template>
+						</table:Column>
+						<!-- 仕入先 -->
+						<table:Column visible="true" autoResizable="true" sortProperty="BP_ID" filterProperty="BP_ID" width="10em">
+							<table:customData>
+								<core:CustomData key="p13nData" value='\{"columnKey":"BP_ID", "leadingProperty":"BP_ID"}'/>
+							</table:customData>
+							<table:label>
+								<Label text="{sys>SYS07_BP_ID}"/>
+							</table:label>
+							<table:template>
+								<smartfield:SmartField value="{BP_ID}"  editable="false"/>
+							</table:template>
+						</table:Column>
+						<!--メールアドレス -->
+						<table:Column visible="true" autoResizable="true" sortProperty="EMAIL_ADDRESS" filterProperty="EMAIL_ADDRESS" width="20em">
+							<table:customData>
+								<core:CustomData key="p13nData" value='\{"columnKey":"EMAIL_ADDRESS", "leadingProperty":"EMAIL_ADDRESS"}'/>
+							</table:customData>
+							<table:label>
+								<Label text="{sys>SYS07_EMAIL_ADDRESS}"/>
+							</table:label>
+							<table:template>
+								<smartfield:SmartField value="{EMAIL_ADDRESS}"  editable="false"/>
+							</table:template>
+						</table:Column>
+						<!--担当者-->
+						<table:Column visible="true" autoResizable="true" sortProperty="EMAIL_ADDRESS_NAME" filterProperty="EMAIL_ADDRESS_NAME" width="10em">
+							<table:customData>
+								<core:CustomData key="p13nData" value='\{"columnKey":"EMAIL_ADDRESS_NAME", "leadingProperty":"EMAIL_ADDRESS_NAME"}'/>
+							</table:customData>
+							<table:label>
+								<Label text="{sys>SYS07_EMAIL_ADDRESS_NAME}"/>
+							</table:label>
+							<table:template>
+								<smartfield:SmartField value="{EMAIL_ADDRESS_NAME}"  editable="false"/>
+							</table:template>
+						</table:Column>
+						<!-- 登録者 -->
+						<table:Column visible="true" autoResizable="true" sortProperty="CD_BY" filterProperty="CD_BY" width="10em">
+							<table:customData>
+								<core:CustomData key="p13nData" value='\{"columnKey":"CD_BY", "leadingProperty":"CD_BY"}'/>
+							</table:customData>
+							<table:label>
+								<Label text="{sys>CD_BY}"/>
+							</table:label>
+							<table:template>
+								<smartfield:SmartField value="{CD_BY}"  editable="false"/>
+							</table:template>
+						</table:Column>
+						<!--登録日時-->
+						<table:Column visible="true" autoResizable="true" sortProperty="CD_TIME" filterProperty="CD_TIME" width="15em">
+							<table:customData>
+								<core:CustomData key="p13nData" value='\{"columnKey":"CD_TIME", "leadingProperty":"CD_TIME"}'/>
+							</table:customData>
+							<table:label>
+								<Label text="{sys>CD_TIME}"/>
+							</table:label>
+							<table:template>
+								<smartfield:SmartField value="{CD_TIME}"  editable="false"/>
+							</table:template>
+						</table:Column>
+						<!-- 更新者 -->
+						<table:Column visible="true" autoResizable="true" sortProperty="UP_BY" filterProperty="UP_BY" width="10em">
+							<table:customData>
+								<core:CustomData key="p13nData" value='\{"columnKey":"UP_BY", "leadingProperty":"UP_BY"}'/>
+							</table:customData>
+							<table:label>
+								<Label text="{sys>UP_BY}"/>
+							</table:label>
+							<table:template>
+								<smartfield:SmartField value="{UP_BY}"  editable="false"/>
+							</table:template>
+						</table:Column>
+						<!-- 更新日時 -->
+						<table:Column visible="true" autoResizable="true" sortProperty="UP_TIME" filterProperty="UP_TIME" width="15em">
+							<table:customData>
+								<core:CustomData key="p13nData" value='\{"columnKey":"UP_TIME", "leadingProperty":"UP_TIME"}'/>
+							</table:customData>
+							<table:label>
+								<Label text="{sys>UP_TIME}"/>
+							</table:label>
+							<table:template>
+								<smartfield:SmartField value="{UP_TIME}"  editable="false"/>
+							</table:template>
+						</table:Column>
+				
+
+
+					</table:columns>
+					<table:rowActionTemplate>
+						<table:RowAction id="RowAction">
+							<table:items>
+								<table:RowActionItem id="RowActionItem" type="Navigation" press="onPress"  visible="{localModel>/SYS07_DETAIL_VIEW}" />
+							</table:items>
+						</table:RowAction>
+					</table:rowActionTemplate>
+
+				</table:Table>
+
+
+			</smartTable:SmartTable>
+		</f:content>
+		<f:footer>
+			<OverflowToolbar id="otbFooter" visible="{=${message>/}.length > 0}">
+				<Button icon="sap-icon://alert" text="{=${message>/}.length}" visible="{=${message>/}.length > 0}" type="Emphasized" press="onClickMessagePopover" id="messageButton">
+				</Button>
+			</OverflowToolbar>
+		</f:footer>
+	</f:DynamicPage>
+
+</mvc:View>

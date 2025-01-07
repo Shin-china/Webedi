@@ -23,7 +23,7 @@
       <Title id="Title" text="{pch>PCH10_TITLE2}"/>
     </f:heading>
     <f:navigationActions>
-      <Button id="_IDGenButton3" icon="sap-icon://nav-back" tooltip="nav-back" press="navTo('RouteMainView')"/>
+      <Button id="_IDGenButton3" icon="sap-icon://home" tooltip="nav-back" press="navToHome"/>
     </f:navigationActions>
   </f:DynamicPageTitle>
 
@@ -104,15 +104,24 @@
                 <core:CustomData key="p13nData" value='\{"columnKey":"VALIDATE_START", "leadingProperty":"VALIDATE_START", "sortProperty":"VALIDATE_START", "filterProperty":"VALIDATE_START"}'/>
             </t:customData>
             <t:label><Label text="{pch>PCH10_VALIDATE_START}"/></t:label>
-            <t:template><Text text="{VALIDATE_START}"/></t:template>
+            <t:template>
+                <Text id="idVALIDATE_START" text="{path: 'VALIDATE_START', type: 'sap.ui.model.type.Date', formatOptions: {pattern: 'yyyy/MM/dd'}}"/>
+            </t:template>
         </t:Column>
 
         <t:Column id="colVALIDATE_END" width="10rem" sortProperty="VALIDATE_END" filterProperty="VALIDATE_END">
             <t:customData>
                 <core:CustomData key="p13nData" value='\{"columnKey":"VALIDATE_END", "leadingProperty":"VALIDATE_END", "sortProperty":"VALIDATE_END", "filterProperty":"VALIDATE_END"}'/>
             </t:customData>
-            <t:label><Label text="{pch>PCH10_VALIDATE_END}"/></t:label>
-            <t:template><Text text="{VALIDATE_END}"/></t:template>
+            <t:label>
+                <Label text="{pch>PCH10_VALIDATE_END}"/>
+            </t:label>
+            <t:template>
+                <!-- <Text id = "idVALIDATE_END" text="{VALIDATE_END}"/> -->
+
+                <Text id = "idVALIDATE_END" text="{path: 'VALIDATE_END', type: 'sap.ui.model.type.Date', formatOptions: {pattern: 'yyyy/MM/dd'}}"/>
+                
+            </t:template>
         </t:Column>
 
         <t:Column id="colSALES_D_NO" width="10rem" sortProperty="SALES_D_NO" filterProperty="SALES_D_NO">
@@ -235,7 +244,7 @@
             <t:template><Text text="{PERSON_NO1}"/></t:template>
         </t:Column>
 
-        <t:Column id="colPERSON_NO2" width="10rem" sortProperty="PERSON_NO2" filterProperty="PERSON_NO2">
+        <!-- <t:Column id="colPERSON_NO2" width="10rem" sortProperty="PERSON_NO2" filterProperty="PERSON_NO2">
             <t:customData>
                 <core:CustomData key="p13nData" value='\{"columnKey":"PERSON_NO2", "leadingProperty":"PERSON_NO2", "sortProperty":"PERSON_NO2", "filterProperty":"PERSON_NO2"}'/>
             </t:customData>
@@ -265,7 +274,7 @@
             </t:customData>
             <t:label><Label text="{pch>PCH10_PERSON_NO5}"/></t:label>
             <t:template><Text text="{PERSON_NO5}"/></t:template>
-        </t:Column>
+        </t:Column> -->
 
         <t:Column id="colYLP" width="10rem" sortProperty="YLP" filterProperty="YLP">
             <t:customData>
@@ -507,8 +516,116 @@
             <t:template><Text text="{RMATERIAL_PRICE}"/></t:template>
         </t:Column>
 
+         <t:Column id="colRMATERIAL_LT" width="10rem" sortProperty="RMATERIAL_LT" filterProperty="RMATERIAL_LT">
+            <t:customData>
+                <core:CustomData key="p13nData" value='\{"columnKey":"RMATERIAL_LT", "leadingProperty":"RMATERIAL_LT", "sortProperty":"RMATERIAL_LT", "filterProperty":"RMATERIAL_LT"}'/>
+            </t:customData>
+            <t:label><Label text="{pch>PCH10_RMATERIAL_LT}"/></t:label>
+            <t:template><Text text="{RMATERIAL_LT}"/></t:template>
+        </t:Column>
 
+        <t:Column id="colRMATERIAL_MOQ" width="10rem" sortProperty="RMATERIAL_MOQ" filterProperty="RMATERIAL_MOQ">
+            <t:customData>
+                <core:CustomData key="p13nData" value='\{"columnKey":"RMATERIAL_MOQ", "leadingProperty":"RMATERIAL_MOQ", "sortProperty":"RMATERIAL_MOQ", "filterProperty":"RMATERIAL_MOQ"}'/>
+            </t:customData>
+            <t:label><Label text="{pch>PCH10_RMATERIAL_MOQ}"/></t:label>
+            <t:template><Text text="{RMATERIAL_MOQ}"/></t:template>
+        </t:Column>
 
+        <t:Column id="colRMATERIAL_KBXT" width="10rem" sortProperty="RMATERIAL_KBXT" filterProperty="RMATERIAL_KBXT">
+            <t:customData>
+                <core:CustomData key="p13nData" value='\{"columnKey":"RMATERIAL_KBXT", "leadingProperty":"RMATERIAL_KBXT", "sortProperty":"RMATERIAL_KBXT", "filterProperty":"RMATERIAL_KBXT"}'/>
+            </t:customData>
+            <t:label><Label text="{pch>PCH10_RMATERIAL_KBXT}"/></t:label>
+            <t:template><Text text="{RMATERIAL_KBXT}"/></t:template>
+        </t:Column>
+
+        <t:Column id="colUMC_SELECTION" width="10rem" sortProperty="UMC_SELECTION" filterProperty="UMC_SELECTION">
+            <t:customData>
+                <core:CustomData key="p13nData" value='\{"columnKey":"UMC_SELECTION", "leadingProperty":"UMC_SELECTION", "sortProperty":"UMC_SELECTION", "filterProperty":"UMC_SELECTION"}'/>
+            </t:customData>
+            <t:label><Label text="{pch>PCH10_UMC_SELECTION}"/></t:label>
+            <t:template><Text text="{UMC_SELECTION}"/></t:template>
+        </t:Column>
+
+        <t:Column id="colUMC_COMMENT_1" width="10rem" sortProperty="UMC_COMMENT_1" filterProperty="UMC_COMMENT_1">
+            <t:customData>
+                <core:CustomData key="p13nData" value='\{"columnKey":"UMC_COMMENT_1", "leadingProperty":"UMC_COMMENT_1", "sortProperty":"UMC_COMMENT_1", "filterProperty":"UMC_COMMENT_1"}'/>
+            </t:customData>
+            <t:label><Label text="{pch>PCH10_UMC_COMMENT_1}"/></t:label>
+            <t:template><Text text="{UMC_COMMENT_1}"/></t:template>
+        </t:Column>
+
+        <t:Column id="colUMC_COMMENT_2" width="10rem" sortProperty="UMC_COMMENT_2" filterProperty="UMC_COMMENT_2">
+            <t:customData>
+                <core:CustomData key="p13nData" value='\{"columnKey":"UMC_COMMENT_2", "leadingProperty":"UMC_COMMENT_2", "sortProperty":"UMC_COMMENT_2", "filterProperty":"UMC_COMMENT_2"}'/>
+            </t:customData>
+            <t:label><Label text="{pch>PCH10_UMC_COMMENT_2}"/></t:label>
+            <t:template><Text text="{UMC_COMMENT_2}"/></t:template>
+        </t:Column>
+
+        <t:Column id="colFINAL_CHOICE" width="10rem" sortProperty="FINAL_CHOICE" filterProperty="FINAL_CHOICE">
+            <t:customData>
+                <core:CustomData key="p13nData" value='\{"columnKey":"FINAL_CHOICE", "leadingProperty":"FINAL_CHOICE", "sortProperty":"FINAL_CHOICE", "filterProperty":"FINAL_CHOICE"}'/>
+            </t:customData>
+            <t:label><Label text="{pch>PCH10_FINAL_CHOICE}"/></t:label>
+            <t:template><Text text="{FINAL_CHOICE}"/></t:template>
+        </t:Column>
+
+         <t:Column id="colINITIAL_OBJ" width="10rem" sortProperty="INITIAL_OBJ" filterProperty="INITIAL_OBJ">
+            <t:customData>
+                <core:CustomData key="p13nData" value='\{"columnKey":"INITIAL_OBJ", "leadingProperty":"INITIAL_OBJ", "sortProperty":"INITIAL_OBJ", "filterProperty":"INITIAL_OBJ"}'/>
+            </t:customData>
+            <t:label><Label text="{pch>PCH10_INITIAL_OBJ}"/></t:label>
+            <t:template><Text text="{INITIAL_OBJ}"/></t:template>
+        </t:Column>
+
+                 <t:Column id="colCD_DATE" width="10rem" sortProperty="CD_DATE" filterProperty="CD_DATE">
+            <t:customData>
+                <core:CustomData key="p13nData" value='\{"columnKey":"CD_DATE", "leadingProperty":"CD_DATE", "sortProperty":"CD_DATE", "filterProperty":"CD_DATE"}'/>
+            </t:customData>
+            <t:label><Label text="{pch>PCH10_CD_DATE}"/></t:label>
+            <t:template>
+            
+            <Text id="idcd_date" text="{path: 'CD_DATE', type: 'sap.ui.model.type.Date', formatOptions: {pattern: 'yyyy/MM/dd'}}"/>
+            </t:template>
+        </t:Column>
+
+         <t:Column id="colCD_DATE_TIME" width="10rem" sortProperty="CD_DATE_TIME" filterProperty="CD_DATE_TIME">
+            <t:customData>
+                <core:CustomData key="p13nData" value='\{"columnKey":"CD_DATE_TIME", "leadingProperty":"CD_DATE_TIME", "sortProperty":"CD_DATE_TIME", "filterProperty":"CD_DATE_TIME"}'/>
+            </t:customData>
+            <t:label><Label text="{pch>PCH10_CD_DATE_TIME}"/></t:label>
+            <t:template><Text text="{CD_DATE_TIME}"/></t:template>
+        </t:Column>
+
+        <t:Column id="colCD_BY" width="10rem" sortProperty="CD_BY" filterProperty="CD_BY">
+            <t:customData>
+                <core:CustomData key="p13nData" value='\{"columnKey":"CD_BY", "leadingProperty":"CD_BY", "sortProperty":"CD_BY", "filterProperty":"CD_BY"}'/>
+            </t:customData>
+            <t:label><Label text="{pch>PCH10_CD_BY}"/></t:label>
+            <t:template><Text text="{CD_BY}"/></t:template>
+        </t:Column>
+
+                <t:Column id="colSUPPLIER_MAT" width="10rem" sortProperty="SUPPLIER_MAT" filterProperty="SUPPLIER_MAT">
+            <t:customData>
+                <core:CustomData key="p13nData" value='\{"columnKey":"SUPPLIER_MAT", "leadingProperty":"SUPPLIER_MAT", "sortProperty":"SUPPLIER_MAT", "filterProperty":"SUPPLIER_MAT"}'/>
+            </t:customData>
+            <t:label><Label text="{pch>PCH10_SUPPLIER_MAT}"/></t:label>
+            <t:template><Text text="{SUPPLIER_MAT}"/></t:template>
+        </t:Column>
+
+        <t:Column id="colSTATUS" width="10rem" sortProperty="STATUS" filterProperty="STATUS">
+            <t:customData>
+                <core:CustomData key="p13nData" value='\{"columnKey":"STATUS", "leadingProperty":"STATUS", "sortProperty":"STATUS", "filterProperty":"STATUS"}'/>
+            </t:customData>
+            <t:label><Label text="{pch>PCH10_STATUS}"/></t:label>
+            <t:template>
+                <Text id="idstatus" text="{path:'STATUS', formatter: '.formatter.formatStatusPch10'}"/>
+            </t:template>
+        </t:Column>
+
+        
 
 			</t:columns>    
     </t:Table>

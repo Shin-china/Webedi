@@ -1,0 +1,60 @@
+<mvc:View controllerName="umc.app.controller.sys.sys06_iflg_l"
+  xmlns:smartfield="sap.ui.comp.smartfield"
+  xmlns:smartform="sap.ui.comp.smartform"
+  xmlns:core="sap.ui.core"
+  xmlns="sap.m"
+  xmlns:m="sap.m"
+  xmlns:f="sap.f"
+  xmlns:l="sap.ui.layout"
+  xmlns:smartFilterBar="sap.ui.comp.smartfilterbar"
+  xmlns:smartTable="sap.ui.comp.smarttable"
+  xmlns:sv="sap.ui.comp.smartvariants"
+  xmlns:mvc="sap.ui.core.mvc"
+  xmlns:uxap="sap.uxap"
+  xmlns:table="sap.ui.table"
+  xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+
+  <f:DynamicPage id="dynamicPageId" headerExpanded="true" showFooter="true" busy="{localModel>/isBusy}">
+    <f:title>
+      <f:DynamicPageTitle id="DynamicPageTitle">
+
+        <f:heading >
+          <Title id="Title" text="{sys>SYS06_TITLE}" />
+        </f:heading>
+        <f:navigationActions>
+          <m:Button id="_IDGenButton3" icon="sap-icon://home" tooltip="nav-back" press="navToHome"/>
+        </f:navigationActions>
+      </f:DynamicPageTitle>
+    </f:title>
+    <f:header >
+      <f:DynamicPageHeader id="DynamicPageHeader" pinnable="true">
+        <f:content>
+          <smartFilterBar:SmartFilterBar id="smartFilterBar" useToolbar="true" entitySet="SYS06_LIST" persistencyKey="sys06_receiptprintFilterBar" showFilterConfiguration="true">
+            <smartFilterBar:controlConfiguration>
+              <smartFilterBar:ControlConfiguration id="_IDGenControlConfiguration1" key="IF_CODE" filterType="single" index="1" controlType="dropDownList" visibleInAdvancedArea="true"/>
+              <!-- <smartFilterBar:ControlConfiguration id="_IDGenControlConfiguration2" key="IF_RESULT" filterType="single" index="2" controlType="dropDownList" visibleInAdvancedArea="true"/> -->
+              <smartFilterBar:ControlConfiguration id="_IDGenControlConfiguration5" key="START_TIME" filterType="interval" index="3" visibleInAdvancedArea="true" controlType="date" />
+
+
+            </smartFilterBar:controlConfiguration>
+          </smartFilterBar:SmartFilterBar>
+
+        </f:content>
+      </f:DynamicPageHeader>
+    </f:header>
+
+    <f:content>
+      <smartTable:SmartTable id="smartTable" tableType="Table" showFullScreenButton="true" enableAutoColumnWidth="true" entitySet="SYS06_LIST" initiallyVisibleFields="IF_CODE,IF_NAME,IF_PARA,IF_RESULT,IF_MSG,TOTAL_NUM,SUCCESS_NUM,IGNORE_NUM,ERROR_NUM,START_TIME,FINISH_TIME,CD_BY" requestAtLeastFields="ID" smartFilterId="smartFilterBar" enableExport="true" beforeExport="onBeforeExportCommon" useVariantManagement="true" useTablePersonalisation="true" header="{com>TITLE_RESULT}" showRowCount="true" persistencyKey="sys06_SmartTableAnalytical_Explored" enableAutoBinding="false" beforeRebindTable="onRebind">
+        <table:Table id="detailTable" rowActionCount="1" rowMode="Auto" selectionMode="None">
+        </table:Table>
+      </smartTable:SmartTable>
+    </f:content>
+    <f:footer>
+      <OverflowToolbar id="otbFooter" visible="{=${message>/}.length > 0}">
+        <Button icon="sap-icon://alert" text="{=${message>/}.length}" visible="{=${message>/}.length > 0}" type="Emphasized" press="onClickMessagePopover" id="messageButton">
+        </Button>
+      </OverflowToolbar>
+    </f:footer>
+  </f:DynamicPage>
+
+</mvc:View>

@@ -139,7 +139,8 @@ public class EmailServiceFun {
                         multipart.addBodyPart(filBodyPart);
                     }
                 } else {
-                    filBodyPart.setDataHandler(new DataHandler(new ByteArrayDataSource(entry.getValue(), "text/csv")));
+                    filBodyPart.setDataHandler(new DataHandler(
+                            new ByteArrayDataSource(StringTool.base2InputStream(entry.getValue()), "text/csv")));
                     filBodyPart.setFileName(get_filename);
                     multipart.addBodyPart(filBodyPart);
                 }

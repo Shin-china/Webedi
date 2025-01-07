@@ -242,6 +242,17 @@ sap.ui.define([], function () {
        
       },
 
+      formatDate2: function (date) {
+        if (date != null) {
+          const year = date.getFullYear();  
+          const month = ('0' + (date.getMonth() + 1)).slice(-2);  
+          const day = ('0' + date.getDate()).slice(-2);  
+          
+          return `${year}-${month}-${day}`; 
+        }
+       
+      },
+
       formatTaxRate: function(rate) {
         if (!rate && rate !== 0) return "";  // 如果值为 null 或 undefined 返回空字符串
         return rate + "%";  // 在税率后加上 % 符号
@@ -282,16 +293,6 @@ sap.ui.define([], function () {
       }
   },
 
-  formatSendFlag1: function(value) {
-    if (value === '1') {
-        return '1: 送信済';
-    } else if (value === '2') {
-        return '2: 照会済';
-    } else {
-        return ''; // 默认返回空字符串
-    }
-},
-
   formatSendFlagPch02: function(value) {
     if (value === '1') {
         return '1: 反映待';
@@ -300,7 +301,23 @@ sap.ui.define([], function () {
     } else {
         return ''; // 默认返回空字符串
     }
-},
+      },
+      formatStatusPch10: function (value) {
+
+        if (value === '1') {
+          return '1: 未送信';
+        } else if (value === '2') {
+          return '2: 送信済（未回答）';
+        } else if (value === '3') {
+          return '3: 回答済';
+        } else if (value === '4') {
+          return '4: 再送信（依頼中）';
+        } else if (value === '5') {
+          return '5: 完了';
+        } else {
+          return ''; // 默认返回空字符串
+        }
+      },
 
   formatIndex: function(index) {
     return (index + 1).toString(); // 返回行号
@@ -339,20 +356,20 @@ sap.ui.define([], function () {
       },
       getUserTypeText: function (userType) {
         if (userType === '1') {
-          return 'Internal User';
+          return '内部ユーザ';
         } else if (userType === '2') {
-          return 'External User';
+          return '外部仕入先';
         } else {
-          return '未知用户';
+          return 'Unknow User';
         }
       },
       getUserStatus:function(userStatus){
         if(userStatus === 'A'){
-          return 'Active';
+          return '有効';
         }else if(userStatus === 'I'){
-          return 'Inactive';
+          return '無効';
         }else{
-          return 'Locked';
+          return 'ロック';
         }
       },
       		/*++++++++++++++++++++++++++++++

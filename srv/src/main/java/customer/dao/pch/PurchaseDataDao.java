@@ -13,6 +13,8 @@ import com.sap.cds.ql.Insert;
 import com.sap.cds.ql.Select;
 import com.sap.cds.ql.Update;
 
+import cds.gen.mst.Mst_;
+import cds.gen.mst.T05SapBpPurchase;
 import cds.gen.pch.Pch_;
 import cds.gen.pch.T01PoH;
 import cds.gen.pch.T02PoD;
@@ -56,7 +58,7 @@ public class PurchaseDataDao extends Dao {
 
     // Update
     public void update(T01PoH o) {
-        o.setCdTime(getNow());
+        o.setUpTime(getNow());
         db.run(Update.entity(Pch_.T01_PO_H).entry(o));
     }
 
@@ -75,17 +77,17 @@ public class PurchaseDataDao extends Dao {
 
     }
 
-    public void modify2(T02PoD o2, Boolean d) {
+    public void modify2(T02PoD o2, Boolean d, String supplier) {
         T02PoD isExist = getByID2(o2.getPoNo(), o2.getDNo());
         if (isExist == null) {
-            insert2(o2, d);
+            insert2(o2, d, supplier);
         } else {
-            update2(o2, d);
+            update2(o2, d, supplier);
         }
     }
 
     // Insert2
-    public void insert2(T02PoD o2, Boolean d) {
+    public void insert2(T02PoD o2, Boolean d, String supplier) {
         o2.setPoType("C");
 
         // 如果是删除标记被打上的话 应该是改成D而不是c创建
@@ -95,16 +97,37 @@ public class PurchaseDataDao extends Dao {
             o2.setDelFlag("Y");
 
         }
+        // 如果 supplier 是 W 则 status 应该是2 不等于W则全都是1。
 
-        o2.setStatus("1");
+        if (checkSupplierisW(supplier)) {
+            o2.setStatus("2");
+        } else {
+            o2.setStatus("1");
+        }
+
         o2.setCdTime(getNow());
         db.run(Insert.into(Pch_.T02_PO_D).entry(o2));
     }
 
-    // Update2
-    public void update2(T02PoD o2, Boolean d) {
+    public boolean checkSupplierisW(String supplier) {
+        Optional<T05SapBpPurchase> result = db.run(Select.from(Mst_.T05_SAP_BP_PURCHASE)
+                .where(o -> o.SUPPLIER().eq(supplier)
+                        .and(o.ZABC().eq("W"))))
+                .first(T05SapBpPurchase.class);
 
-        o2.setPoType("U");
+        if (result.isPresent()) {
+
+            return true;
+
+        }
+        return false;
+
+    }
+
+    // Update2
+    public void update2(T02PoD o2, Boolean d, String supplier) {
+        // 判断是否要更新 potype
+        Boolean update = getByPoDnUpdateObj2(o2);
 
         if (d) {
 
@@ -113,13 +136,24 @@ public class PurchaseDataDao extends Dao {
 
         } else {
 
-            o2.setPoType("U");
+            if (update) {
+
+                o2.setPoType("U");
+                o2.setUpTime(getNow());
+                if (!checkSupplierisW(supplier)) {
+                    o2.setStatus("1");
+                }
+
+            }
+
             o2.setDelFlag("N");
 
         }
+        if (checkSupplierisW(supplier)) {
+            o2.setStatus("2");
+        } 
+        // o2.setCdTime(getNow());
 
-        o2.setStatus("1");
-        o2.setCdTime(getNow());
         db.run(Update.entity(Pch_.T02_PO_D).entry(o2));
     }
 
@@ -153,7 +187,7 @@ public class PurchaseDataDao extends Dao {
 
     // Update
     public void update3(T09Forcast o) {
-        o.setCdTime(getNow());
+        o.setUpTime(getNow());
         db.run(Update.entity(Pch_.T09_FORCAST).entry(o));
     }
 
@@ -161,6 +195,7 @@ public class PurchaseDataDao extends Dao {
         Integer dn = Integer.parseInt(items.getPurchaseorderitem());
 
         T02PoD isExist = getByID2(items.getPurchaseorder(), dn);
+
         if (isExist == null) {
 
             return false;
@@ -172,6 +207,28 @@ public class PurchaseDataDao extends Dao {
             return update;
 
         }
+
+    }
+
+    public Boolean getByPoDnUpdateObj2(T02PoD o2) {
+
+        T02PoD isExist = getByID2(o2.getPoNo(), o2.getDNo());
+
+        Boolean update = updateobj2(isExist, o2);
+
+        return update;
+    }
+
+    private Boolean updateobj2(T02PoD isExist, T02PoD o2) {
+
+        if (!isExist.getPoPurQty().equals(o2.getPoPurQty())
+                || !isExist.getPoDDate().isEqual(o2.getPoDDate())
+                || isExist.getDelAmount().compareTo(o2.getDelAmount()) != 0) {
+
+            return true; // 只要有一个值不一样，返回 true
+        }
+
+        return false;
 
     }
 
@@ -371,6 +428,19 @@ public class PurchaseDataDao extends Dao {
         }
         return null;
 
+    }
+
+    public String getPoCompByPO(String poDel) {
+        Optional<T01PoH> result = db.run(Select.from(Pch_.T01_PO_H).where(o -> o.PO_NO().eq(poDel)))
+                .first(T01PoH.class);
+
+        if (result.isPresent()) {
+
+            return result.get().getPoBukrs();
+
+        }
+        ;
+        return null;
     }
 
 }

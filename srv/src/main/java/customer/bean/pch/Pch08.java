@@ -26,7 +26,7 @@ public class Pch08 {
     private String  MACHINE_TYPE;
 
     @JSONField(name = "QUANTITY")
-    private Double QUANTITY;
+    private String QUANTITY;
 
     @JSONField(name = "VALIDATE_START")
     private LocalDate VALIDATE_START;

@@ -3,6 +3,7 @@ package customer.dao.sys;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +19,7 @@ import cds.gen.pch.T08Upload;
 import cds.gen.sys.Sys_;
 import cds.gen.sys.T07ComOpH;
 import cds.gen.sys.T08ComOpD;
+import customer.bean.com.UmcConstants;
 import customer.dao.common.Dao;
 import customer.tool.DateTools;
 
@@ -98,4 +100,27 @@ public class SysD008Dao extends Dao {
         return d_code;
 
     }
+
+    /**
+     * 通过供应商取得相应邮箱数据
+     * 
+     */
+    public String getEmailAddress(String supplier) {
+
+        List<T08ComOpD> listOf = db.run(
+                Select.from(Sys_.T08_COM_OP_D)
+                        .where(o -> o.H_CODE().eq(UmcConstants.T08_EMAIL_ADDRESS).and(o.VALUE01().eq(supplier))))
+
+                .listOf(T08ComOpD.class);
+
+        if (listOf.size() > 0) {
+            // 获取listOf中所有的.getValue02()去重数据，并且拼接成,分割的字符串
+            return listOf.stream().map(T08ComOpD::getValue02).distinct().collect(Collectors.joining(","));
+
+        }
+
+        return "";
+
+    }
+
 }

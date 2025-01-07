@@ -14,6 +14,7 @@ service TableService {
   entity SYS_T02_ROLE            as projection on SYS.T02_ROLE;
   entity SYS_T04_USER_2_ROLE     as projection on SYS.T04_USER_2_ROLE;
   entity SYS_T06_DOC_NO          as projection on SYS.T06_DOC_NO;
+  
   //entity SYS_T13_ATTACHMENT      as projection on SYS.T13_ATTACHMENT;
   entity MST_T01_SAP_MAT         as projection on MST.T01_SAP_MAT;
   entity MST_T02_SAP_PLANT       as projection on MST.T02_SAP_PLANT;
@@ -29,7 +30,40 @@ service TableService {
   entity PCH_T04_PAYMENT_H       as projection on PCH.T04_PAYMENT_H;
   entity PCH_T05_PAYMENT_D       as projection on PCH.T05_PAYMENT_D;
   entity PCH_T10_EMAIL_SEND_LOG          as projection on PCH.T10_EMAIL_SEND_LOG;
-  entity SYS_T08_COM_OP_D        as projection on SYS.T08_COM_OP_D;
+
+    entity SYS_T10_MENU              as projection on SYS.T10_MENU;
+  entity SYS_T03_AUTH              as
+    projection on SYS.T03_AUTH {
+      *,
+      TO_MENU : redirected to SYS_T10_MENU
+
+    };
+  entity SYS_T07_COM_OP_H          as
+    projection on SYS.T07_COM_OP_H {
+      *,
+      TO_ITEMS : redirected to SYS_T08_COM_OP_D
+    };
+      entity T17_EMAIL_D       as
+    projection on SYS.T17_EMAIL_D {
+      *,
+      TO_HEAD : redirected to T16_EMAIL_H,
+    };
+  entity T16_EMAIL_H       as
+    projection on SYS.T16_EMAIL_H {
+      *,
+      TO_ITEMS : redirected to T17_EMAIL_D,
+    };
+  entity SYS_T05_ROLE_2_AUTH       as
+    projection on SYS.T05_ROLE_2_AUTH {
+      *,
+      TO_AUTH : redirected to SYS_T03_AUTH,
+      TO_ROLE : redirected to SYS_T02_ROLE
+    };
+  entity SYS_T08_COM_OP_D          as
+    projection on SYS.T08_COM_OP_D {
+      *,
+      TO_HEAD : redirected to SYS_T07_COM_OP_H
+    };
 
   entity PCH_T06_QUOTATION_H     as
     projection on PCH.T06_QUOTATION_H {
@@ -103,4 +137,11 @@ service TableService {
 
   //Excel测试用
   action EXCEL_TEST(content : String)         returns LargeBinary; //Excel测试用
+
+  action SYS02_ROLE_addRole(roleJson : String)  returns String; // 角色管理新增
+  action SYS02_ROLE_editRole(roleJson : String) returns String;
+
+  //草稿数据删除 共通使用
+  action cancelDarft(parms : String)                  returns String;
+
 }

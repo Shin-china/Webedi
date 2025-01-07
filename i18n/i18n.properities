@@ -1,5 +1,11 @@
 USER_ID=BTP User ID
 PLANT_ID = 工厂code
+H_CODE=業務区分
+H_NAME=業務名
+BP_ID=仕入先
+EMAIL_ADDRESS=メールアドレス
+EMAIL_ADDRESS_NAME=担当者
+
 
 
 
@@ -18,8 +24,9 @@ Item=アイテム
 QUANTITY=数量
 TIME=時期
 LOCATION=量産場所
-PLANT_ID=工厂
+PLANT_ID=プラント
 
 CD_DATE=创建日
 CD_DATE_TIME=创建日时
 SUPPLIER_MAT=仕入先品目コード
+PCH03_BP_NAME1=業者名

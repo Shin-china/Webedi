@@ -5,16 +5,16 @@ import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import customer.comm.constant.ConfigConstants;
 
 public class DateTools {
 
@@ -46,16 +46,36 @@ public class DateTools {
     // 获取当前日期并格式化为字符串yyyy/MM/dd
     public static String getCurrentDateString() {
         DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-        LocalDate currentDate = LocalDate.now(); // 获取当前日期
+        LocalDate currentDate = LocalDate.now(ConfigConstants.DEFFAULT_USER_ZONE); // 获取当前日期
+        return currentDate.format(DATE_FORMATTER); // 格式化为字符串
+    }
+
+    // 获取当前日期并格式化为字符串yyyy/MM/dd
+    public static String getCurrentDateString(Instant instant) {
+        if (instant == null) {
+            return "";
+        }
+        DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        LocalDate currentDate = getLocalDate(instant); // 获取当前日期
         return currentDate.format(DATE_FORMATTER); // 格式化为字符串
     }
 
     // 获取当前日期并格式化为字符串yyyy/MM/dd
     public static String getCurrentDateString(LocalDate data) {
         if (data == null) {
-            return null;
+            return "";
         }
         DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        LocalDate currentDate = data; // 获取当前日期
+        return currentDate.format(DATE_FORMATTER); // 格式化为字符串
+    }
+
+    // 获取当前日期并格式化为字符串yyyy/MM/dd
+    public static String getCurrentDateString(LocalDate data, String format) {
+        if (data == null) {
+            return null;
+        }
+        DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern(format);
         LocalDate currentDate = data; // 获取当前日期
         return currentDate.format(DATE_FORMATTER); // 格式化为字符串
     }
@@ -113,10 +133,8 @@ public class DateTools {
      */
     public static LocalDate getLocalDate(Instant instant) {
 
-        // 使用默认时区将Instant转换为ZonedDateTime
-        ZoneId defaultZoneId = ZoneId.systemDefault();
-        defaultZoneId = ZoneId.of("Asia/Tokyo");
-        ZonedDateTime zonedDateTime = instant.atZone(defaultZoneId);
+        // 使用系统时区计算
+        ZonedDateTime zonedDateTime = instant.atZone(ConfigConstants.DEFFAULT_USER_ZONE);
 
         // 从ZonedDateTime中提取LocalDateTime
         LocalDateTime localDateTime = zonedDateTime.toLocalDateTime();

@@ -30,7 +30,7 @@ extend service TableService {
         left join MST.T05_SAP_BP_PURCHASE AS M04
             on (
                 M04.SUPPLIER = T01.SUPPLIER
-                and M04.PURCHASE_ORG = T01.PO_ORG
+                and M04.PURCHASE_ORG = T01.PO_BUKRS
             )
 
     {
@@ -38,7 +38,7 @@ extend service TableService {
         KEY T02.D_NO,                      // 明細番号 
         KEY T04.INV_NO,                    // 发票号
         T01.SUPPLIER,                      // 仕入先
-        T01.PO_ORG,                        // 購買組織
+        T01.PO_BUKRS,                      // 会社コード
         T04.SUPPLIER_DESCRIPTION,          // 業者名
         T05.MAT_ID,                        // 品目コード
         T05.MAT_DESC,                      // 品目名称
@@ -58,7 +58,8 @@ extend service TableService {
         T05.Company_Code,
         T05.UNIT_PRICE,
         // T02.PO_NO || REPEAT('0', 5 - LENGTH(CAST(T02.D_NO AS String))) || CAST(T02.D_NO AS String) as NO_DETAILS : String(15), // 発注\明細NO
-        T02.PO_NO || T02.D_NO as NO_DETAILS : String(15), // 購買伝票\明細NO	
+        //T02.PO_NO || T02.D_NO as NO_DETAILS : String(15), // 購買伝票\明細NO	del by stanley
+         RIGHT('0000000000' || T02.PO_NO, 10) || RIGHT('00000' || T02.D_NO, 5)  as NO_DETAILS : String(15), // 購買伝票\明細NO
         TO_CHAR(T04.INV_POST_DATE, 'YYYYMM') as INV_MONTH : String,  //检收月
 
         CASE 
@@ -88,7 +89,7 @@ extend service TableService {
         UNIT_PRICE,
         EXCHANGE,                      // 換算レート
         SUPPLIER,                      // 仕入先
-        PO_ORG,                        // 購買組織
+        PO_BUKRS,                        // 会社コード
         SUPPLIER_DESCRIPTION,          // 業者名
         MAT_ID,                        // 品目コード
         MAT_DESC,                      // 品目名称
@@ -212,7 +213,7 @@ extend service TableService {
         left join PCH_T04_PAYMENT_SUM_FZ2 t3
         on t1.SUPPLIER = t3.SUPPLIER 
         and t1.INV_MONTH = t3.INV_MONTH
-        left join PCH_T04_PAYMENT_SUM_FZ3 t4
+        left join PCH_T04_PAYMENT_SUM_FZ3_1 t4
         on t1.SUPPLIER = t4.SUPPLIER
         and t1.INV_MONTH = t4.INV_MONTH
                                 

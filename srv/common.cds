@@ -38,6 +38,14 @@ service Common {
 
     action pch06BatchImport(pch06 : array of PCH_T06_QUOTATION_H)               returns String; //IFM054 購買見積依頼受信
     action pch06BatchSending(json : String)               returns String; //IFM055 購買見積結果送信
-    
+
+    action aaa()                                                          returns String; //bp ceshi  
+
+    action IF_S4_BP()                                                     returns String; //IF_S4_BP bp接口外部启动
+    action IF_S4_BPPURCHASE()                                             returns String; //IF_S4_BPPURCHASE 采购订单接口外部启动
+    action IF_S4_MST()                                                    returns String; //IF_S4_MST 主数据接口外部启动
+    action IF_S4_PO()                                                     returns String; //IF_S4_PO 采购订单接口外部启动
+    action IF_S4_PR()                                                     returns String; //IF_S4_PR 采购订单接口外部启动
+    action IF_S4_PAY()                                                    returns String; //IF_S4_PAY 采购订单接口外部启动
 
 }

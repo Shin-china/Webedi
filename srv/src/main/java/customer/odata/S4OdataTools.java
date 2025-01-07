@@ -6,31 +6,23 @@ import java.util.HashMap;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
-import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
-import com.sap.cloud.sdk.cloudplatform.connectivity.DestinationAccessor;
-import com.sap.cloud.sdk.cloudplatform.connectivity.Header;
-import com.sap.cloud.sdk.cloudplatform.connectivity.HttpClientAccessor;
 import com.sap.cloud.sdk.datamodel.odata.client.ODataProtocol;
 import com.sap.cloud.sdk.datamodel.odata.client.request.ODataRequestCreate;
 import com.sap.cloud.sdk.datamodel.odata.client.request.ODataRequestRead;
 import com.sap.cloud.sdk.datamodel.odata.client.request.ODataRequestResultGeneric;
 
 import org.apache.http.client.HttpClient;
-import org.apache.http.entity.StringEntity;
 import org.apache.logging.log4j.util.Base64Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import cds.gen.sys.T11IfManager;
-import customer.tool.Eenvironment;
-import customer.tool.StringTool;
+import customer.comm.tool.HttpTools;
+import customer.comm.tool.StringTool;
 
-public class S4OdataTools {
+public class S4OdataTools extends S4OdataBase {
 
     private static final Logger logger = LoggerFactory.getLogger(S4OdataTools.class);
-
-    public static String desName = "XXXXX";
 
     public static String get(T11IfManager info, Integer currentPage, HashMap<String, String> addParaMap,
             HashMap<String, String> headMap) throws UnsupportedOperationException, IOException {
@@ -56,6 +48,7 @@ public class S4OdataTools {
             }
 
             if (resultGene != null) {
+
                 resultGene = null;
             }
 
@@ -74,36 +67,24 @@ public class S4OdataTools {
 
         logger.info("if info=============================" + info.getServicepath());
 
-        HttpClient client = null;
-
-        if (Eenvironment.isWindows()) {
-            logger.info("当前Windows环境" + desName);
-            DefaultHttpDestination destination = DefaultHttpDestination.builder(info.getUrl())
-                    .header(new Header("X-Destination-Name", desName)).build();
-            client = HttpClientAccessor.getHttpClient(destination);
-        } else {
-            logger.info("当前Linux环境" + desName);
-            Destination destination = DestinationAccessor.getDestination(desName);
-            client = HttpClientAccessor.getHttpClient(destination);
-        }
+        HttpClient client = getClent(info);
 
         // 这是get方法
         ODataRequestRead requestRead = new ODataRequestRead(info.getServicepath(), info.getEntityname(), null,
                 ODataProtocol.V2);
 
+        requestRead.addHeader("Authorization", HttpTools.getBaiscAuthorization(info));
         requestRead.addHeader("x-csrf-token", "fetch");
-        requestRead.addHeader("Accept-Language", info.getLangCode());
+        // requestRead.addHeader("Accept-Language", info.getLangCode());
+        requestRead.addHeader("sap-language", info.getLangCode());
         requestRead.addHeader("Content-Type", "application/json");
         requestRead.addHeader("Accept", "application/json");
 
-        String userInfo = Base64Util.encode(info.getSapuser());// 用户名,密码
-        requestRead.addHeader("Authorization", "Basic " + userInfo);
-        // requestRead.addListener(null);
-        // if (headMap != null) {
-        // for (String key : headMap.keySet()) {
-        // requestRead.addHeader(key, headMap.get(key)); // 设定追加的head
-        // }
-        // }
+        if (headMap != null) {
+            for (String key : headMap.keySet()) {
+                requestRead.addHeader(key, headMap.get(key)); // 设定追加的head
+            }
+        }
 
         if (!StringTool.isNull(info.getExpand())) {
             requestRead.addQueryParameter("$expand", info.getExpand()); // 展开表结构
@@ -119,6 +100,10 @@ public class S4OdataTools {
             requestRead.addQueryParameter("$orderby", info.getOrderBy()); // 排序条件
         }
 
+        // if (!StringTool.isNull(info.getSelectField())) {
+        // requestRead.addQueryParameter("$select", info.getSelectField()); // 取字段的值
+        // }
+
         if (info.getPageRecord() != null && info.getPageRecord() > 0 && currentPage != null) { // 每页记录数大于0 的时候
             requestRead.addQueryParameter("$top", info.getPageRecord().toString());
             Integer skip = info.getPageRecord() * currentPage; // 从第0页开始
@@ -131,7 +116,8 @@ public class S4OdataTools {
             }
         }
 
-        logger.info("queryParameter:" + JSON.toJSONString(requestRead.getQueryString()));
+        logger.info("getRequestQuery:" + requestRead.getRequestQuery());
+        logger.info("getHeaders:" + requestRead.getHeaders());
 
         if (body != null) {
 
@@ -146,33 +132,25 @@ public class S4OdataTools {
             throws UnsupportedOperationException, IOException {
 
         logger.info("post paramater=============================");
+        logger.info(JSON.toJSONString(headMap));
         logger.info(body);
 
-        HttpClient client = null;
-
-        if (Eenvironment.isWindows()) {
-            DefaultHttpDestination destination = DefaultHttpDestination.builder(info.getUrl())
-                    .header(new Header("X-Destination-Name", desName)).build();
-            client = HttpClientAccessor.getHttpClient(destination);
-        } else {
-            Destination destination = DestinationAccessor.getDestination(desName);
-            client = HttpClientAccessor.getHttpClient(destination);
-        }
-
+        HttpClient client = getClent(info);
         // 这是get方法
         ODataRequestCreate requestcreate = new ODataRequestCreate(info.getServicepath(), info.getEntityname(), body,
                 ODataProtocol.V2);
         String userInfo = Base64Util.encode(info.getSapuser());// 用户名,密码
         requestcreate.addHeader("Authorization", "Basic " + userInfo);
         requestcreate.addHeader("Accept-Language", info.getLangCode());
-        requestcreate.addHeader("Content-Type", "application/json;charset=UTF-8");
+        requestcreate.addHeader("sap-language", info.getLangCode());
+        requestcreate.addHeader("Content-Type", "application/json");
         requestcreate.addHeader("Accept", "application/json");
 
-        // if (headMap != null) {
-        // for (String key : headMap.keySet()) {
-        // requestcreate.addHeader(key, headMap.get(key)); // 设定追加的head
-        // }
-        // }
+        if (headMap != null) {
+            for (String key : headMap.keySet()) {
+                requestcreate.addHeader(key, headMap.get(key)); // 设定追加的head
+            }
+        }
 
         ODataRequestResultGeneric resultGene = requestcreate.execute(client);
 
@@ -201,6 +179,7 @@ public class S4OdataTools {
     // 得到 V4的计数结果 (V2自动能拿到)
     public static Integer getCount(String a) {
         JSONObject jsonObject = JSON.parseObject(a);
+
         return jsonObject.getInteger("@odata.count");
     }
 

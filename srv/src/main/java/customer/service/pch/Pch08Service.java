@@ -22,7 +22,6 @@ import java.util.*;
 @Component
 public class Pch08Service {
 
-
     @Autowired
     private Pch08Dao pch08Dao;
 
@@ -39,14 +38,18 @@ public class Pch08Service {
             List<T07QuotationD> oldItems = getOldT07Data(value);
             List<T07QuotationD> newItems = extractT07Data(value);
 
-
             pch08Dao.updatePch08(oldItems, newItems);
+
+            // 更新抬头状态
+            oldItems.forEach(o -> {
+                updateHeaderReplyStatus(o.getQuoNumber());
+            });
 
         });
     }
 
     public List<T07QuotationD> getOldT07Data(Pch08 pch08) {
-        return pch08Dao.getT07ByQuoNumber(pch08.getQUO_NUMBER());
+        return pch08Dao.getT07ByQuoNumberItem(pch08.getQUO_NUMBER(), pch08.getQUO_ITEM());
     }
 
     public List<T07QuotationD> extractT07Data(Pch08 pch08) {
@@ -61,7 +64,7 @@ public class Pch08Service {
             T07QuotationD t07New = T07QuotationD.create();
             BeanUtils.copyProperties(value, t07New);
 
-            t07New.setId(null); //Create New data
+            t07New.setId(null); // Create New data
             t07New.setStatus("3");
             t07New.setUpTime(DateTools.getInstantNow());
             t07New.setUpBy(pch08Dao.getUserId());
@@ -162,14 +165,12 @@ public class Pch08Service {
             return new ArrayList<>();
         }
 
-
         List<T07QuotationD> t07Items;
         Map<String, List<PchQuoItem>> quantityMap;
         Map<String, List<Pch08Person>> personMap;
         Map<String, List<String>> keyMap;
         Map<String, Object> resultMap;
         List<Map<String, Object>> resultList = new ArrayList<>();
-
 
         for (Pch08DetailParam detailParam : detailParams) {
             String quoNumber = detailParam.getQUO_NUMBER();
@@ -179,7 +180,7 @@ public class Pch08Service {
                 continue;
             }
 
-            //获取报价单明细信息
+            // 获取报价单明细信息
             t07Items = pch08Dao.getT07ByQuoNumberItem(quoNumber, quoItem);
             if (t07Items == null || t07Items.isEmpty()) {
                 continue;
@@ -190,13 +191,13 @@ public class Pch08Service {
             keyMap = new HashMap<>();
             resultMap = new HashMap<>();
 
-            //循环所有明细
+            // 循环所有明细
             for (T07QuotationD t07Item : t07Items) {
                 Pch08Keys keys = extractDetailKeys(t07Item);
                 String machineKey = keys.getMachine();
                 String materialKey = keys.getMaterial();
 
-                //先把key分组：物料,机种
+                // 先把key分组：物料,机种
                 if (keyMap.containsKey(materialKey)) {
                     List<String> keyList = keyMap.get(materialKey);
 
@@ -211,15 +212,15 @@ public class Pch08Service {
 
             }
 
-            //循环分组
+            // 循环分组
             for (T07QuotationD t07Item : t07Items) {
                 Pch08Keys keys = extractDetailKeys(t07Item);
                 String materialKey = keys.getMaterial();
 
-                //分组
+                // 分组
                 List<String> materialKeys = keyMap.get(materialKey);
 
-                //case 1. 相同物料存在多个几种，那么数量合并，员数扩展
+                // case 1. 相同物料存在多个几种，那么数量合并，员数扩展
                 if (materialKeys.size() > 1) {
                     if (quantityMap.containsKey(materialKey)) {
                         List<PchQuoItem> quantityList = quantityMap.get(materialKey);
@@ -252,7 +253,7 @@ public class Pch08Service {
                         personMap.put(materialKey, personList);
                     }
                 } else {
-                    //case 2. 相同物料只有一种，那么数量扩展，员数直接赋值
+                    // case 2. 相同物料只有一种，那么数量扩展，员数直接赋值
                     PchQuoItem item = new PchQuoItem();
                     item.setQty(t07Item.getQty());
                     item.setQuoNumber(t07Item.getQuoNumber());
@@ -286,7 +287,7 @@ public class Pch08Service {
                 }
             }
 
-            //生成动态结果
+            // 生成动态结果
             for (String materialKey : keyMap.keySet()) {
                 resultMap.put("QUO_NO", detailParam.getQUO_NUMBER());
                 resultMap.put("QUO_ITEM", detailParam.getQUO_ITEM());
@@ -318,7 +319,7 @@ public class Pch08Service {
 
                 resultMap.put("PERSON_SIZE", personSize);
 
-                String[] materialArr = materialKey.split("::");
+                String[] materialArr = materialKey.split("::", -1);
                 if (materialArr.length == 3) {
                     resultMap.put("MATERIAL_NUMBER", materialArr[0]);
                     resultMap.put("CUST_MATERIAL", materialArr[1]);
@@ -328,7 +329,6 @@ public class Pch08Service {
                 resultList.add(resultMap);
 
             }
-
 
         }
 
@@ -347,10 +347,10 @@ public class Pch08Service {
         }
     }
 
-    private void updateT07DetailData(String id, int personNo, BigDecimal price){
+    private void updateT07DetailData(String id, BigDecimal personNo, BigDecimal price) {
         T07QuotationD t07 = d007Dao.getByT07Id(id);
 
-        if (t07 == null){
+        if (t07 == null) {
             LogLog.warn("未找到T07 id为: " + id + "的记录");
             return;
         }
@@ -358,27 +358,31 @@ public class Pch08Service {
         T07QuotationD t07New = T07QuotationD.create();
         BeanUtils.copyProperties(t07, t07New);
 
-            t07.setDelFlag("Y");
-            t07.setUpTime(DateTools.getInstantNow());
-            t07.setUpBy(pch08Dao.getUserId());
-            d007Dao.update(t07);
+        t07.setDelFlag("Y");
+        t07.setUpTime(DateTools.getInstantNow());
+        t07.setUpBy(pch08Dao.getUserId());
+        d007Dao.update(t07);
 
-            t07New.setPersonNo1(personNo);
-            t07New.setUpTime(DateTools.getInstantNow());
-            t07New.setUpBy(pch08Dao.getUserId());
-            t07New.setPrice(price);
-            t07New.setId(null);
-            t07New.setStatus("3");
-            t07New.setDelFlag("N");
-            d007Dao.insert(t07New);
+        t07New.setPersonNo1(personNo);
+        t07New.setUpTime(DateTools.getInstantNow());
+        t07New.setUpBy(pch08Dao.getUserId());
+        t07New.setPrice(price);
+        t07New.setId(null);
+        t07New.setStatus("3");
+        t07New.setDelFlag("N");
+        d007Dao.insert(t07New);
+
+        // 更新t06状态
+        updateHeaderReplyStatus(t07New.getQuoNumber());
     }
 
     private void updateCase1(JSONObject o, int size) {
-        //Case 1: 员数扩展，所以员数的id即为数据id，按员数id更新，此种情况下所有物料单价一样
+        // Case 1: 员数扩展，所以员数的id即为数据id，按员数id更新，此种情况下所有物料单价一样
         BigDecimal price = BigDecimal.ZERO;
         for (int i = 1; i <= size; i++) {
             String id = o.getString("PERSON_KEY_" + i);
-            int personNo = o.getInteger("PERSON_" + i) != null? o.getInteger("PERSON_" + i) : 0;
+            BigDecimal personNo = o.getBigDecimal("PERSON_" + i) != null ? o.getBigDecimal("PERSON_" + i)
+                    : new BigDecimal(0);
 
             // 取第一个不为空的价格
             if (Objects.equals(price, BigDecimal.ZERO)) {
@@ -390,32 +394,34 @@ public class Pch08Service {
     }
 
     private void updateCase2(JSONObject o, int size) {
-        //Case 2: 数量扩展，所以数量的id即为数据id，按数量id更新，此种情况下所有物料员数一样
-        int personNo = 0;
+        // Case 2: 数量扩展，所以数量的id即为数据id，按数量id更新，此种情况下所有物料员数一样
+        BigDecimal personNo = new BigDecimal(0);
         for (int i = 1; i <= size; i++) {
             String id = o.getString("QTY_KEY_" + i);
 
             // 取第一个不为空的员数
-            if (personNo == 0){
-                personNo = o.getInteger("PERSON_" + i) != null ? o.getInteger("PERSON_" + i) : 0;
+            if (BigDecimal.ZERO.compareTo(personNo) == 0) {
+                personNo = o.getBigDecimal("PERSON_" + i) != null ? o.getBigDecimal("PERSON_" + i)
+                        : new BigDecimal(0);
+
             }
 
-            BigDecimal price = o.getBigDecimal("PRICE_" + i) != null? o.getBigDecimal("PRICE_" + i) : BigDecimal.ZERO;
+            BigDecimal price = o.getBigDecimal("PRICE_" + i) != null ? o.getBigDecimal("PRICE_" + i) : BigDecimal.ZERO;
 
             updateT07DetailData(id, personNo, price);
         }
     }
 
     public void updateT07New(JSONObject o, int personSize, int qtySize) {
-        //Case 1: 员数扩展，数量合并，先更新员数-按key更新，数量-因为合并按采购报价单+行号更新
-        if (personSize > qtySize){
+        // Case 1: 员数扩展，数量合并，先更新员数-按key更新，数量-因为合并按采购报价单+行号更新
+        if (personSize > qtySize) {
             updateCase1(o, personSize);
-        } else {//Case 2: 数量扩展，所以数量的id即为数据id，按数量id更新，此种情况下所有物料员数一样
+        } else {// Case 2: 数量扩展，所以数量的id即为数据id，按数量id更新，此种情况下所有物料员数一样
             updateCase2(o, qtySize);
         }
     }
 
-    public List<Pch08Template> downloadTemplate(String param){
+    public List<Pch08Template> downloadTemplate(String param) {
         String[] paramKeys = param.split(",");
         List<Pch08DetailParam> detailParams = new ArrayList<>();
         List<Pch08Template> resultList = new ArrayList<>();
@@ -431,7 +437,7 @@ public class Pch08Service {
         }
 
         if (detailParams.isEmpty()) {
-           return new ArrayList<>();
+            return new ArrayList<>();
         }
 
         Pch08QueryResult queryResult = pch08Dao.queryTemplateData(detailParams);
@@ -442,20 +448,20 @@ public class Pch08Service {
             return new ArrayList<>();
         }
 
-        for(T07QuotationD item : itemList){
-            headerList.stream().filter(e->e.getQuoNumber().equals(item.getQuoNumber()))
-                          .findFirst()
-                          .ifPresent(header->{
-                              Pch08Template template = setTemplateData(header, item);
-                              resultList.add(template);
-                          });
+        for (T07QuotationD item : itemList) {
+            headerList.stream().filter(e -> e.getQuoNumber().equals(item.getQuoNumber()))
+                    .findFirst()
+                    .ifPresent(header -> {
+                        Pch08Template template = setTemplateData(header, item);
+                        resultList.add(template);
+                    });
 
         }
 
         return resultList;
     }
 
-    private Pch08Template setTemplateData(T06QuotationH header, T07QuotationD item){
+    private Pch08Template setTemplateData(T06QuotationH header, T07QuotationD item) {
         Pch08Template template = new Pch08Template();
         template.setQUO_NUMBER(item.getQuoNumber());
         template.setQUO_ITEM(item.getQuoItem());
@@ -518,18 +524,18 @@ public class Pch08Service {
         return template;
     }
 
-    public Pch08UploadResult upload(String param, boolean isTestRun){
+    public Pch08UploadResult upload(String param, boolean isTestRun) {
         Pch08Template uploadData;
         Pch08UploadResult checkResult = new Pch08UploadResult();
-        try{
+        try {
             uploadData = JSONObject.parseObject(param, Pch08Template.class);
-        }catch (Exception e){
+        } catch (Exception e) {
             checkResult.setSTATUS("E");
             checkResult.setMESSAGE("データエラー");
             return checkResult;
         }
 
-        if (uploadData == null){
+        if (uploadData == null) {
             checkResult.setSTATUS("E");
             checkResult.setMESSAGE("データエラー");
             return checkResult;
@@ -537,19 +543,19 @@ public class Pch08Service {
 
         checkResult = uploadCheck(uploadData);
 
-        if (checkResult == null){
+        if (checkResult == null) {
             return null;
         }
 
-        if (checkResult.getSTATUS().equals("E")){
+        if (checkResult.getSTATUS().equals("E")) {
             return checkResult;
         }
 
-        if (isTestRun){
+        if (isTestRun) {
             return checkResult;
         }
 
-        //update db
+        // update db
         String id = pch08Dao.getT07QuotationId(checkResult.getQUO_NUMBER(), checkResult.getQUO_ITEM(),
                 checkResult.getSALES_NUMBER(), checkResult.getSALES_D_NO());
 
@@ -606,13 +612,15 @@ public class Pch08Service {
         checkResult.setSTATUS("S");
         checkResult.setMESSAGE("実行成功");
 
+        // 更新t06状态
+        updateHeaderReplyStatus(t07New.getQuoNumber());
+
         return checkResult;
     }
 
-    public Pch08UploadResult uploadCheck(Pch08Template uploadData){
+    public Pch08UploadResult uploadCheck(Pch08Template uploadData) {
         Pch08UploadResult uploadResult = new Pch08UploadResult();
 
-        String customer = uploadData.getCUSTOMER();
         String quoNumber = uploadData.getQUO_NUMBER();
         Integer quoItem = uploadData.getQUO_ITEM();
         String salesNumber = uploadData.getSALES_NUMBER();
@@ -623,53 +631,53 @@ public class Pch08Service {
         uploadResult.setSALES_NUMBER(salesNumber);
         uploadResult.setSALES_D_NO(salesDNo);
 
-        if (quoNumber == null || quoNumber.isEmpty()){
+        if (quoNumber == null || quoNumber.isEmpty()) {
             uploadResult.setSTATUS("E");
             uploadResult.setMESSAGE("購買見積番号は空欄です");
             return uploadResult;
         }
 
-        if (quoItem == null){
+        if (quoItem == null) {
             uploadResult.setSTATUS("E");
             uploadResult.setMESSAGE("管理Noは空欄です");
             return uploadResult;
         }
 
-        if (salesNumber == null || salesNumber.isEmpty()){
+        if (salesNumber == null || salesNumber.isEmpty()) {
             uploadResult.setSTATUS("E");
             uploadResult.setMESSAGE("販売見積案件は空欄です");
             return uploadResult;
         }
 
-        if (salesDNo == null || salesDNo.isEmpty()){
+        if (salesDNo == null || salesDNo.isEmpty()) {
             uploadResult.setSTATUS("E");
             uploadResult.setMESSAGE("販売見積案件明細は空欄です");
             return uploadResult;
         }
 
-        if (customer == null || customer.isEmpty()){
-            uploadResult.setSTATUS("E");
-            uploadResult.setMESSAGE("客先は空欄です");
-            return uploadResult;
-        }
+        // if (customer == null || customer.isEmpty()){
+        // uploadResult.setSTATUS("E");
+        // uploadResult.setMESSAGE("客先は空欄です");
+        // return uploadResult;
+        // }
 
         BigDecimal price = uploadData.getPRICE();
-        if (price == null){
+        if (price == null) {
             uploadResult.setSTATUS("E");
             uploadResult.setMESSAGE("单价は空欄です");
             return uploadResult;
         }
 
-        Integer personNo = uploadData.getPERSON_NO1();
-        if (personNo == null){
-            uploadResult.setSTATUS("E");
-            uploadResult.setMESSAGE("员数は空欄です");
-            return uploadResult;
-        }
+        // Integer personNo = uploadData.getPERSON_NO1();
+        // if (personNo == null){
+        // uploadResult.setSTATUS("E");
+        // uploadResult.setMESSAGE("员数は空欄です");
+        // return uploadResult;
+        // }
 
-        //判断采购报价单+销售订单的组合是否存在
+        // 判断采购报价单+销售订单的组合是否存在
         String id = pch08Dao.getT07QuotationId(quoNumber, quoItem, salesNumber, salesDNo);
-        if (id == null || id.isEmpty()){
+        if (id == null || id.isEmpty()) {
             uploadResult.setSTATUS("E");
             uploadResult.setMESSAGE("購買見積番号、管理No、販売見積案件、販売見積案件明細は存在しません");
             return uploadResult;
@@ -678,6 +686,19 @@ public class Pch08Service {
         uploadResult.setSTATUS("S");
         uploadResult.setMESSAGE("チェック成功");
         return uploadResult;
+    }
+
+    private void updateHeaderReplyStatus(String quoNumber) {
+        if (quoNumber == null || quoNumber.isEmpty()) {
+            return;
+        }
+
+        List<T07QuotationD> unReplyItems = pch08Dao.getT07UnReplyItemsByQuoNumber(quoNumber);
+        if (unReplyItems != null && !unReplyItems.isEmpty()) {
+            return;
+        }
+
+        pch08Dao.updateT06ReplyStatus(quoNumber);
     }
 
 }

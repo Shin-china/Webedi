@@ -2,6 +2,7 @@ package customer.bean.bp;
 
 public class SapBpRoot {
 
+
     private D d;
 
     public void setD(D d) {

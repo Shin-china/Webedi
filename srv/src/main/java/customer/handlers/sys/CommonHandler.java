@@ -38,12 +38,20 @@ import cds.gen.pch.T06QuotationH;
 import cds.gen.pch.T07QuotationD;
 import cds.gen.sys.T13Attachment;
 import customer.bean.com.UmcConstants;
+import customer.bean.ifm.IFLog;
 import customer.dao.pch.Pch08Dao;
 import customer.dao.pch.PchD006;
 import customer.dao.pch.PchD007;
 import customer.dao.sys.DocNoDao;
+import customer.dao.sys.IFSManageDao;
 import customer.dao.sys.T13AttachmentDao;
 import customer.odata.BaseMoveService;
+import customer.service.ifm.Ifm01BpService;
+import customer.service.ifm.Ifm02MstService;
+import customer.service.ifm.Ifm03PoService;
+import customer.service.ifm.Ifm04PrService;
+import customer.service.ifm.Ifm05PayService;
+import customer.service.ifm.Ifm06BpPurchaseService;
 import customer.service.sys.ObjectStoreService;
 
 @Component
@@ -64,7 +72,80 @@ public class CommonHandler implements EventHandler {
     SendService sendService;
     private static final Logger logger = LoggerFactory.getLogger(CommonHandler.class);
 
-    // IFM054 購買見積依頼受信+送信
+    @Autowired
+    private Ifm01BpService ifm01BpService;
+
+    @Autowired
+    private Ifm02MstService ifm02MstService;
+
+    @Autowired
+    private Ifm03PoService ifm03PoService;
+
+    @Autowired
+    private Ifm04PrService ifm04PrService;
+
+    @Autowired
+    private Ifm05PayService ifm05PayService;
+
+    @Autowired
+    private Ifm06BpPurchaseService ifm06BpPurchaseService;
+
+
+    //BP 接口外部调用
+    @On(event = "IF_S4_BP")
+    public void IF_S4_BP(IFS4BPContext context) throws IOException {
+
+        IFLog ifLog = new IFLog(IFSManageDao.IF_S4_BP);
+        ifm01BpService.process(ifLog);
+        context.setResult("OK");
+    }
+
+    // BP PUERCHASE 接口外部调用
+    @On(event = "IF_S4_BPPURCHASE")
+    public void IF_S4_BP(IFS4BPPURCHASEContext context) throws IOException {
+
+        IFLog ifLog = new IFLog(IFSManageDao.IF_S4_BPPURCHASE);
+        ifm06BpPurchaseService.process(ifLog);
+        context.setResult("OK");
+    }
+
+    // MST 接口外部调用
+    @On(event = "IF_S4_MST")
+    public void IF_S4_BP(IFS4MSTContext context) throws IOException {
+
+        IFLog ifLog = new IFLog(IFSManageDao.IF_S4_MST);
+        ifm02MstService.process(ifLog, null);
+        context.setResult("OK");
+    }
+
+    // PO 接口外部调用
+    @On(event = "IF_S4_PO")
+    public void IF_S4_BP(IFS4POContext context) throws IOException {
+
+        IFLog ifLog = new IFLog(IFSManageDao.IF_S4_PO);
+        ifm03PoService.process(ifLog);
+        context.setResult("OK");
+    }
+
+    // PR 接口外部调用
+    @On(event = "IF_S4_PR")
+    public void IF_S4_BP(IFS4PRContext context)  throws IOException{
+
+        IFLog ifLog = new IFLog(IFSManageDao.IF_S4_PR);
+        ifm04PrService.process(ifLog);
+        context.setResult("OK");
+    }
+
+    // PAY 接口外部调用
+    @On(event = "IF_S4_PAY")
+    public void IF_S4_BP(IFS4PAYContext context) throws IOException {
+
+        IFLog ifLog = new IFLog(IFSManageDao.IF_S4_PAY);
+        ifm05PayService.process(ifLog);
+        context.setResult("OK");
+    }
+
+    // IFM054 購買見積依頼受信
     @On(event = "pch06BatchImport")
     public void pch06BatchImport(Pch06BatchImportContext context) throws Exception {
         // 获取uqmc传入的t06数据
@@ -76,20 +157,18 @@ public class CommonHandler implements EventHandler {
 
         // 将 Collection 转换为 Listpch06BatchImport
         ArrayList<PchT06QuotationH> pch06List = new ArrayList<>(context.getPch06());
-        ArrayList<cds.gen.pch.T06QuotationH> pch06List2 = new ArrayList<>();
+
         String msg = "";
-        try {
-            // 提取数据，插入表中
-            sendService.extracted(pch06List, pch06List2);
 
-            msg = sendService.sendPost(pch06List2);
-        } catch (Exception e) {
-            msg = UmcConstants.ERROR;
-        }
+        // 提取数据，插入表中
+        sendService.extracted(pch06List);
+        System.out.println("提取数据完成");
 
-        System.out.println(msg);
+        // msg = sendService.sendPost(pch06List2);
 
-        context.setResult(msg);
+        System.out.println("success");
+
+        context.setResult("success");
     }
 
     // IFM055 購買見積依頼送信
@@ -97,20 +176,26 @@ public class CommonHandler implements EventHandler {
     public void pch06BatchSending(Pch06BatchSendingContext context) throws Exception {
         ArrayList<T06QuotationH> pch06List = new ArrayList<>();
         String msg = "";
-        try {
-            pch06List = sendService.getJson(context.getJson());
 
-            // 调用接口传值
-            if (pch06List != null && pch06List.size() > 0) {
-                msg = sendService.sendPost(pch06List);
-                System.out.println(msg);
-            }
+        pch06List = sendService.getJson(context.getJson());
 
-        } catch (Exception e) {
-            logger.info(UmcConstants.ERROR + e.getMessage());
-            context.setResult(UmcConstants.ERROR + e.getMessage());
+        // 调用接口传值
+        if (pch06List != null && pch06List.size() > 0) {
+            msg = sendService.sendPost(pch06List);
+            System.out.println(msg);
         }
-        context.setResult(msg);
+        if (msg.equals("success")) {
+            context.setResult("販売見積への連携は成功になりました。");
+            // 更新明细
+            sendService.update(pch06List);
+
+            // 更新头部
+            sendService.update(context.getJson());
+
+        } else {
+            context.setResult("販売見積への連携は失敗になりました。");
+        }
+
     }
 
 }

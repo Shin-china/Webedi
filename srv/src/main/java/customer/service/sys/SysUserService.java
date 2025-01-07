@@ -2,6 +2,7 @@ package customer.service.sys;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -20,6 +21,8 @@ import customer.dao.sys.User2BpDao;
 import customer.dao.sys.User2PlantDao;
 import customer.dao.sys.User2RoleDao;
 import customer.dao.sys.UserDao;
+import customer.tool.UniqueIDTool;
+
 import com.sap.cds.services.ErrorStatuses;
 
 @Component
@@ -43,7 +46,7 @@ public class SysUserService {
      * Insert User
      */
     public String insertUser(Sys001User user) {
-        T01User o = T01User.create();
+        T01User o = T01User.create(UniqueIDTool.getUUID());
         o.setUserId(user.getUserId());
         o.setUserType(user.getUserType());
         o.setUserName(user.getUserName());
@@ -55,16 +58,14 @@ public class SysUserService {
 
         String userID = userDao.insert(o);
 
-        /***
-         * // 插入用户角色
-         * user2RoleDao.deleteUser2Role(o.getUserId());
-         * for (String roleId : user.getRoles()) {
-         * T04User2Role role = T04User2Role.create();
-         * role.setRoleId(roleId);
-         * role.setUserId(o.getUserId());
-         * user2RoleDao.insertUser2Role(role);
-         * }
-         */
+        // 插入用户角色
+        user2RoleDao.deleteUser2Role(o.getId());
+        for (String roleId : user.getRoles()) {
+            T04User2Role role = T04User2Role.create();
+            role.setRoleId(roleId);
+            role.setUserId(o.getId());
+            user2RoleDao.insertUser2Role(role);
+        }
 
         // 插入用户→工厂
         user2PlantDao.deleteByUserId(o.getId());
@@ -102,15 +103,13 @@ public class SysUserService {
         userDao.update(o);
 
         // 插入用户角色
-        /***
-         * user2RoleDao.deleteUser2Role(o.getUserId());
-         * for (String roleId : user.getRoles()) {
-         * T04User2Role role = T04User2Role.create();
-         * role.setRoleId(roleId);
-         * role.setUserId(o.getUserId());
-         * user2RoleDao.insertUser2Role(role);
-         * }
-         */
+        user2RoleDao.deleteUser2Role(o.getId());
+        for (String roleId : user.getRoles()) {
+            T04User2Role role = T04User2Role.create();
+            role.setRoleId(roleId);
+            role.setUserId(o.getId());
+            user2RoleDao.insertUser2Role(role);
+        }
 
         // 插入用户→工厂
         user2PlantDao.deleteByUserId(o.getId());

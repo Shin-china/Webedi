@@ -16,6 +16,8 @@ import cds.gen.tableservice.PCH01CheckDATAContext;
 import cds.gen.tableservice.PCH01SaveDATAContext;
 import cds.gen.tableservice.TableService_;
 import customer.bean.pch.Pch01List;
+import customer.service.ifm.Ifm01BpService;
+import customer.service.ifm.Ifm04PrService;
 import customer.service.pch.Pch01Service;
 import customer.task.JobMonotor;
 
@@ -29,14 +31,12 @@ public class Pch01Handler implements EventHandler {
   @Autowired
   private Pch01Service Pch01Service;
 
-  @Autowired
-  private JobMonotor jobMonotor;
 
   // check数据
   @On(event = "PCH01_CHECK_DATA")
   public void checkData(PCH01CheckDATAContext context) throws IOException {
     Pch01List list = JSON.parseObject(context.getShelfJson(), Pch01List.class);
-    // jobMonotor.poolMonitor3();
+
     Pch01Service.detailsCheck(list);
     context.setResult(JSON.toJSONString(list));
   }

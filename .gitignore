@@ -33,3 +33,11 @@ Makefile_*.mta
 
 # added by cds
 .cdsrc-private.json
+app/router_umceq/package.json
+app/router_umceq/package.json
+app/router_umchq/package.json
+package-lock.json
+package.json
+app/package.json
+app/package-lock.json
+package.json

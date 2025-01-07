@@ -17,7 +17,7 @@
                 <Title id="sidSysTitle" text="{sys>sys05Title}"/>
             </f:heading>
             <f:navigationActions>
-                <Button id="idButton" icon="sap-icon://nav-back" press="navTo('RouteMainView')" tooltip="nav-back"/>
+                <Button id="idButton" icon="sap-icon://home" tooltip="nav-back" press="navToHome"/>
             </f:navigationActions>
         </f:DynamicPageTitle>
     </f:title>

@@ -151,11 +151,20 @@ public class UmcConstants {
     // 公司code的常量
     public static final String C_INFO_TEL = "C_INFO_TEL";
     // 注文书的常量
-    public static final String ZWS_TYPE_1 = "IUSSE";
-    public static final String ZWS_TYPE_2 = "REIUSSE";
+    public static final String ZWS_TYPE_1 = "ISSUE";
+    public static final String ZWS_TYPE_2 = "REISSUE";
     public static final String ZWS_TYPE_3 = "CANCEL";
+    // csv的常量
+    public static final String ZWS_TYPE_1_NAME = "新規";
+    public static final String ZWS_TYPE_2_NAME = "変更";
+    public static final String ZWS_TYPE_3_NAME = "削除";
 
     public static final String SUCCESS = "success";
     public static final String ERROR = "error";
+
+    public static final String T08_EMAIL_ADDRESS = "MM0004";
+
+    public static final String T07_STATUS_03 = "3";
+    public static final String T07_STATUS_05 = "5";
 
 }

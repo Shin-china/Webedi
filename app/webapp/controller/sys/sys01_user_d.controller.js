@@ -27,25 +27,25 @@ sap.ui.define([
 				"ListItems":[
 					{
 						"Type": "A",
-						"Name": "A.Active"
+						"Name": "A.有効"
 					},
 					{
 						"Type": "I",
-						"Name": "I.InActive"
+						"Name": "I.無効"
 					},
 					{
 						"Type": "L",
-						"Name": "L.Lock"  
+						"Name": "L.ロック"  
 					}
 				],
 				"UserType": [
 				    {
 				        "Type": "1",
-						"Name": "1.Internal User"
+						"Name": "1.内部ユーザ"
 				    },
 				    {
 				        "Type": "2",
-						"Name": "2.External Vendor"
+						"Name": "2.外部仕入先"
 				    }
 				]};
 			var oModel =  new JSONModel(oList) ;
@@ -66,6 +66,7 @@ sap.ui.define([
 
 			this._setEditable(false);
 			this._setCreateAble(false);
+			this._setEditableAuth(true);
 
 			const that = this;
 			this._id = headID;
@@ -86,6 +87,7 @@ sap.ui.define([
 			that.byId("smartTable2").rebindTable();
 			that.byId("smartTable3").rebindTable();
 			that.byId("smartTable4").rebindTable();
+			that.byId("roleTable2").rebindTable();
 
 		},
 		_onRouteMatchedCreate:function(oEvent){
@@ -134,6 +136,7 @@ sap.ui.define([
 			var userType = this.byId("idSelectList7").getSelectedKey();
 			var plantIdList = this._getRootId("idTable1","PLANT_ID");
 			var bpIdList = this._getRootId("idTable3","BP_ID");
+			var rootIdList = this._getRootId("roleTable", "ID");
 			var itemObj = {
 				userId:context.USER_ID,
 				userType:userType,
@@ -142,7 +145,8 @@ sap.ui.define([
 				validDateFrom:dateF,
 				validDateTo:dateT,
 				plants:plantIdList,
-				bps:bpIdList
+				bps:bpIdList,
+				roles: rootIdList
 			};
 
 			var resStr = { userJson: JSON.stringify(itemObj) };
@@ -248,6 +252,19 @@ sap.ui.define([
 			}
 			oEvent.getParameter("bindingParams").parameters.expand = "TO_BP";
 		},
+		onRebindRoot: function (oEvent) {
+			//直过滤
+			var oBindingParams = oEvent.getParameter("bindingParams");
+	  
+			if (this._id != "" && this._id != null) {
+			  oBindingParams.filters.push(new sap.ui.model.Filter("USER_ID", "EQ", this._id));
+	  
+			  // oBindingParams.sorter.push(new sap.ui.model.Sorter("POST_SNO", false));
+			  oEvent.getParameter("bindingParams").parameters.expand = "TO_ROLE";
+			} else {
+			  oBindingParams.filters.push(new sap.ui.model.Filter("USER_ID", "EQ", "1111111111111"));
+			}
+		  },	
     /**
      * 获取字段的某一个id集合
      * @param {画面id} viewId
@@ -270,16 +287,42 @@ sap.ui.define([
 
 			//获取所有工厂数据
 			var plantTable = this.byId("idTable1");
-
+			// 获取明细权限数据
+			var roleTableTable = this.byId("roleTable");
 			//获取所有BP数据
 			var bpTable = this.byId("idTable3");
 			//清空工厂选择项
 			plantTable.clearSelection();
-
+			roleTableTable.clearSelection();
 			bpTable.clearSelection();
 
 			var that = this;
+      //获取权限数据
+			this._getUserRoleData(headID, true)
+				.then((data) => {
+				that.roleData = data;
+				return that._readEntryData("/SYS_T02_ROLE");
+				})
+				.then((oTable) => {
+				var data = that.roleData.results;
+				var tableContext = oTable.results;
 
+				for (var index = 0; index < tableContext.length; index++) {
+					var dataB = tableContext[index];
+					for (var i = 0; i < data.length; i++) {
+					if (dataB.ID === data[i].ROLE_ID) {
+						that.byId("roleTable").addSelectionInterval(index, index);
+					}
+					}
+				}
+				})
+				.catch((oError) => {
+				console.log(oError);
+				})
+				.finally(() => {
+				// that._setBusy1(false);
+				that._setBusy(false);
+				});
 			//获取已选择的工厂数据
 			this._getUserPlantData(headID,true)
 			.then((data) =>{
@@ -333,6 +376,29 @@ sap.ui.define([
 				})
 			})
 		},
+		_getUserRoleData: function (headID, isE) {
+			this._setBusy(true);
+			var that = this;
+			return new Promise(function (resolve, reject) {
+			  that.getModel().read("/SYS_T04_USER_2_ROLE", {
+				filters: [
+				  new sap.ui.model.Filter({
+					path: "USER_ID",
+					value1: headID,
+					operator: sap.ui.model.FilterOperator.EQ,
+				  }),
+				],
+				success: function (oData) {
+				  that._setBusy(false);
+				  resolve(oData);
+				},
+				error: function (oError) {
+				  //   that._clearMessage();
+				  reject(oError);
+				},
+			  });
+			});
+		  },
 		//获取用户选择的工作数据
 		_getUserBpData:function(headID,isE){
 			var that = this;
