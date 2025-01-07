@@ -253,7 +253,9 @@ public class Pch03Handler implements EventHandler {
             pchd03.setZws8(strEmpty(pchd03.getCurrency()) + "\n");
             pchd03.setZws9(DateTools.getCurrentDateString(pchd03.getPoDDate()) + "\n");
 
-            pchd03.setDate1(DateTools.getCurrentDateString());
+            System.out.println(pchd03.getSapCdTime());
+            pchd03.setDate1(DateTools.getCurrentDateString(pchd03.getSapCdTime()));
+
             pchd03.setDate2(DateTools.getCurrentDateString());
             pchd03.setDate3(DateTools.getCurrentDateString(pchd03.getApprovedate()));
             pchd03.setDate4(DateTools.getCurrentDateString());
@@ -404,8 +406,8 @@ public class Pch03Handler implements EventHandler {
             // 先获取品目最后两位
 
             // 発注担当者
-            // String pocdby = getPocdby(pchd03.getPocdby(), pchd03.getSapCdBy());
-            // pchd03.setByname(pocdby);
+            String pocdby = getPocdby(pchd03.getPocdby(), pchd03.getSapCdBy());
+            pchd03.setByname(pocdby);
 
             // 获取po
             String po = pchd03.getPoNo();
