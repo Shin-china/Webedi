@@ -98,15 +98,20 @@ sap.ui.define([
                     
                             var H_CODE = "MM0001";
                             var SUPPLIER = supplierSet.values().next().value;
-                            var entity = "/SYS_T08_COM_OP_D";
+                            var entity = "/SYS07_EMAIL";
 
                     
-                            that._readHead(H_CODE, SUPPLIER, entity).then((oHeadData) => {
+                            that._readHeadEmail(H_CODE, SUPPLIER, entity).then((oHeadData) => {
                                 let mail = oHeadData.results && oHeadData.results.length > 0 ? 
-                                    oHeadData.results.map(result => result.VALUE02).join(", ") : '';
+                                    oHeadData.results.map(result => result.EMAIL_ADDRESS).join(", ") : '';
                                 let absama = oHeadData.results && oHeadData.results.length > 0 ? 
-                                    oHeadData.results.map(result => result.VALUE03 + " 様").join("  ") : '';
-                    
+                                    oHeadData.results.map(result => result.EMAIL_ADDRESS_NAME + " 様").join("  ") : '';
+                                //Add by stanley 20241230
+                                if (mail == "" || mail == null) {
+                                    that.getView().setBusy(false);
+                                            MessageBox.error("仕入先のメールアドレスを取得できません");
+                                            return;
+                                }
                                 let mailobj = {
                                     emailJson: {
                                         TEMPLATE_ID: "UWEB_M001",
@@ -148,39 +153,6 @@ sap.ui.define([
             });
         },
 
-        _readHead: function (a,b, entity) {
-          var that = this;
-          return new Promise(function (resolve, reject) {
-            that.getModel().read(entity, {
-                filters: [
-                  
-                new sap.ui.model.Filter({
-                  path: "H_CODE",
-                  value1: a,
-                  operator: sap.ui.model.FilterOperator.EQ,
-                }),
-                new sap.ui.model.Filter({
-                  path: "VALUE01",
-                  value1: b,
-                  operator: sap.ui.model.FilterOperator.EQ,
-                }),
-
-                new sap.ui.model.Filter({
-                  path: "DEL_FLAG",
-                  value1: "X",
-                  operator: sap.ui.model.FilterOperator.NE,
-                }),
-
-              ],
-              success: function (oData) {
-                resolve(oData);
-              },
-              error: function (oError) {
-                reject(oError);
-              },
-            });
-          });
-        },
         
     });
 });

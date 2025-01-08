@@ -58,7 +58,7 @@ public class Ifm03PoService extends IfmService {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
 
     public SapPchRoot get() throws UnsupportedOperationException, IOException {
-        T11IfManager webServiceConfig = ifsManageDao.getByCode("IFM41");
+        T11IfManager webServiceConfig = ifsManageDao.getByCode("IF041");
         // 调用 Web Service 的 get 方法
         logger.warn("PO同期开始调用接口");
         String response = S4OdataTools.get(webServiceConfig, 0, null, null);
