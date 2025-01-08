@@ -6,8 +6,8 @@ function (Controller, JSONModel, MessageToast) {
     onInit: function () {
       //  设置版本号
       this._setOnInitNo("SYS06");
-      // this.MessageTools._clearMessage();
-      // this.MessageTools._initoMessageManager(this);
+      this.MessageTools._clearMessage();
+      this.MessageTools._initoMessageManager(this);
     },
 
 
