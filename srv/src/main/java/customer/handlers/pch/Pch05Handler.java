@@ -59,6 +59,7 @@ import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.TimeZone;
 import java.util.stream.Stream;
 import java.math.BigDecimal;
 
@@ -342,7 +343,7 @@ public class Pch05Handler implements EventHandler {
         BigDecimal bigTax_Base_Amount = new BigDecimal(item.getTAX_BASE_AMOUNT());
         String absTAX_BASE_AMOUNT = bigTax_Base_Amount.abs().toString();
         //End
-
+        TimeZone.setDefault(TimeZone.getTimeZone("Asia/Shanghai"));
         item.setCOMPANY_CODE1(item.getCOMPANY_CODE()); // 赋值 Company_Code
         item.setLASTDATE1(item.getLASTDATE()); // 将 LASTDATE 的值赋给 LASTDATE1
         item.setLASTDATE2(item.getLASTDATE()); // 将 LASTDATE 的值赋给 LASTDATE2
