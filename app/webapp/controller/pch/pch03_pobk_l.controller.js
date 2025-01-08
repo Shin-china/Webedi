@@ -300,6 +300,7 @@ sap.ui.define([
 								this._setBusy(false);
 								console.log((this.MessageTools._getI18nTextInModel("pch", "PCH_03_ERROR_MSG1", this.getView())))
 								that.MessageTools._addMessages(this.MessageTools._getI18nTextInModel("pch", "PCH_03_ERROR_MSG1", this.getView()), null, 1, this.getView());
+								return;
 							}
 							})
 
@@ -323,6 +324,7 @@ sap.ui.define([
 							this._setBusy(false);
 							console.log((this.MessageTools._getI18nTextInModel("pch", "PCH_03_ERROR_MSG1", this.getView())))
 							that.MessageTools._addMessages(this.MessageTools._getI18nTextInModel("pch", "PCH_03_ERROR_MSG1", this.getView()), null, 1, this.getView());
+							return;
 						}
 
 
