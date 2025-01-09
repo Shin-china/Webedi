@@ -41,6 +41,9 @@ extend service TableService {
                 T01.CD_DATE_TIME,
 
         }
+         where
+                T01.DEL_FLAG = 'N'
+                and T02.DEL_FLAG = 'N';
 
 
     entity PCH10_HISTORY_LIST as
