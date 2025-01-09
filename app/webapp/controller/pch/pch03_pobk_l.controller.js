@@ -277,13 +277,13 @@ sap.ui.define([
 						//将mailobj对象设置到supplierLenMap中
 
 
-						Object.keys(groupedBySupplier).forEach(supplier => {
+						Object.keys(groupedBySupplier).some(supplier => {
 							//所有供应商下的数据	
 							const obj1 = groupedBySupplier[supplier];
 
 							//通过新规变更删除分组
 							var typeList = that._getObjiList(obj1, "TYPE");
-							Object.keys(typeList).forEach(type => {
+							Object.keys(typeList).some(type => {
 								//所有供应商下的数据	
 								const typeObj = typeList[type];
 								if(typeObj[0].EMAIL_ADDRESS){
@@ -300,6 +300,8 @@ sap.ui.define([
 								this._setBusy(false);
 								console.log((this.MessageTools._getI18nTextInModel("pch", "PCH_03_ERROR_MSG1", this.getView())))
 								that.MessageTools._addMessages(this.MessageTools._getI18nTextInModel("pch", "PCH_03_ERROR_MSG1", this.getView()), null, 1, this.getView());
+								throw new Error('StopExecution'); // 抛出异常以停止外层函数
+
 							}
 							})
 
@@ -314,7 +316,7 @@ sap.ui.define([
 					//将工厂分过的数据通过供应商分组
 					const groupedBySupplier = that._getObjiList(plant1400, "SUPPLIER");
 					//将mailobj对象设置到supplierLenMap中
-					Object.keys(groupedBySupplier).forEach(supplier => {
+					Object.keys(groupedBySupplier).some(supplier => {
 						//所有供应商下的数据	
 						const obj1 = groupedBySupplier[supplier];
 						if(obj1[0].EMAIL_ADDRESS){
@@ -323,6 +325,9 @@ sap.ui.define([
 							this._setBusy(false);
 							console.log((this.MessageTools._getI18nTextInModel("pch", "PCH_03_ERROR_MSG1", this.getView())))
 							that.MessageTools._addMessages(this.MessageTools._getI18nTextInModel("pch", "PCH_03_ERROR_MSG1", this.getView()), null, 1, this.getView());
+							throw new Error('StopExecution'); // 抛出异常以停止外层函数
+
+
 						}
 
 

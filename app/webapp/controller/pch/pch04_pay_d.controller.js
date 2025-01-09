@@ -57,7 +57,7 @@ sap.ui.define([
                 // 假设您在这里定义邮件内容模板
                 var H_CODE = "MM0007";
                 var SUPPLIER = supplierSet.values().next().value;
-                var entity = "/SYS_T08_COM_OP_D";
+                var entity = "/SYS07_EMAIL";
              
                 var supplierName = "";
                 var year = "";
@@ -108,11 +108,11 @@ sap.ui.define([
                     finalDay = ("0" + finalDateObj.getDate()).slice(-2);          // 日期补零
                 });
 
-                this._readHead(H_CODE, SUPPLIER, entity).then((oHeadData) => {
+                this._readHeadEmail(H_CODE, SUPPLIER, entity).then((oHeadData) => {
                     let mail = oHeadData.results && oHeadData.results.length > 0 ? 
-                    oHeadData.results.map(result => result.VALUE02).join(", ") : '';            
+                    oHeadData.results.map(result => result.EMAIL_ADDRESS).join(", ") : '';            
                 let absama = oHeadData.results && oHeadData.results.length > 0 ? 
-                    oHeadData.results.map(result => result.VALUE03 + " 様").join("  ") : '';
+                    oHeadData.results.map(result => result.EMAIL_ADDRESS_NAME + " 様").join("  ") : '';
 
                     //Add by stanley 20241230
                     if (mail == "" || mail == null) {
@@ -185,40 +185,7 @@ sap.ui.define([
         });
     },
 
-        _readHead: function (a,b, entity) {
-            var that = this;
-            return new Promise(function (resolve, reject) {
-              that.getModel().read(entity, {
-                  filters: [
-                    
-                  new sap.ui.model.Filter({
-                    path: "H_CODE",
-                    value1: a,
-                    operator: sap.ui.model.FilterOperator.EQ,
-                  }),
-                  new sap.ui.model.Filter({
-                    path: "VALUE01",
-                    value1: b,
-                    operator: sap.ui.model.FilterOperator.EQ,
-                  }),
-  
-                  new sap.ui.model.Filter({
-                    path: "DEL_FLAG",
-                    value1: "X",
-                    operator: sap.ui.model.FilterOperator.NE,
-                  }),
-  
-                ],
-                success: function (oData) {
-                  resolve(oData);
-                },
-                error: function (oError) {
-                  reject(oError);
-                },
-              });
-            });
-          },
-    
+      
         // 从选中的行中获取 ZABC 的值
         getZABCFromSelection: function (oTable, aSelectedIndices) {
             if (aSelectedIndices.length > 0) {

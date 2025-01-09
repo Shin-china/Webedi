@@ -55,12 +55,10 @@ public class Pch02Handler implements EventHandler {
     @Autowired
     private JobMonotor jobMonotor;
 
-    
-
     @On(event = PCH02ConfirmationREQUESTContext.CDS_NAME)
     public void onPCH02ConfirmationREQUEST(PCH02ConfirmationREQUESTContext context) {
 
-    //    jobMonotor.poolMonitor3();
+        // jobMonotor.poolMonitor3();
 
         try {
             // 从前端参数中获取字符串
@@ -70,7 +68,7 @@ public class Pch02Handler implements EventHandler {
             String parameters = parseParameters2(parms);
 
             // 获取 Web Service 配置信息
-            T11IfManager webServiceConfig = ifsManageDao.getByCode("MM028");
+            T11IfManager webServiceConfig = ifsManageDao.getByCode("IF043");
 
             if (webServiceConfig != null) {
                 // 调用 Web Service 的 get 方法
@@ -78,7 +76,7 @@ public class Pch02Handler implements EventHandler {
                 JSONObject object = JSONObject.parseObject(response);
                 System.out.println(StringTool.convertGBKToUTF8(object.getString("message")));
                 // 获取 Web Service 返回的 status 字段
-                String status = object.getString("status"); 
+                String status = object.getString("status");
                 // 判断 status 是否为 "200"
                 if ("200".equals(status)) {
                     // 如果 status 为 "200"，表示成功，执行 PO 明细状态更新

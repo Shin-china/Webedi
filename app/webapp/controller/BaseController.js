@@ -1471,6 +1471,36 @@ sap.ui.define([
             })
 
           },
+          _readHeadEmail: function (a, b,entity) {
+            var that = this;
+            return new Promise(function (resolve, reject) {
+              that.getModel().read(entity, {
+                filters: [
+                    
+                  new sap.ui.model.Filter({
+                    path: "H_CODE",
+                    value1: a,
+                    operator: sap.ui.model.FilterOperator.EQ,
+                  }),
+                  new sap.ui.model.Filter({
+                    path: "BP_ID",
+                    value1: b,
+                    operator: sap.ui.model.FilterOperator.EQ,
+                  }),
+  
+   
+  
+                ],
+                success: function (oData) {
+                  resolve(oData);
+                },
+                error: function (oError) {
+                  reject(oError);
+                },
+              });
+            });
+          },
+      
 
           /**
            * po接口辅助方法
