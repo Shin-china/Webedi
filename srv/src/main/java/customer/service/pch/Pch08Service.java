@@ -78,7 +78,7 @@ public class Pch08Service {
             t07New.setUwebUser(pch08.getUWEB_USER());
 
             if (pch08.getBP_NUMBER() != null) {
-                t07New.setBpNumber(Integer.parseInt(pch08.getBP_NUMBER()));
+                t07New.setBpNumber(pch08.getBP_NUMBER());
             }
 
             t07New.setYlp(pch08.getYLP());
@@ -643,17 +643,17 @@ public class Pch08Service {
             return uploadResult;
         }
 
-        if (salesNumber == null || salesNumber.isEmpty()) {
-            uploadResult.setSTATUS("E");
-            uploadResult.setMESSAGE("販売見積案件は空欄です");
-            return uploadResult;
-        }
+        // if (salesNumber == null || salesNumber.isEmpty()) {
+        //     uploadResult.setSTATUS("E");
+        //     uploadResult.setMESSAGE("販売見積案件は空欄です");
+        //     return uploadResult;
+        // }
 
-        if (salesDNo == null || salesDNo.isEmpty()) {
-            uploadResult.setSTATUS("E");
-            uploadResult.setMESSAGE("販売見積案件明細は空欄です");
-            return uploadResult;
-        }
+        // if (salesDNo == null || salesDNo.isEmpty()) {
+        //     uploadResult.setSTATUS("E");
+        //     uploadResult.setMESSAGE("販売見積案件明細は空欄です");
+        //     return uploadResult;
+        // }
 
         // if (customer == null || customer.isEmpty()){
         // uploadResult.setSTATUS("E");

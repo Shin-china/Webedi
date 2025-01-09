@@ -372,7 +372,7 @@ public class Pch07Service {
             t07QuotationD2.setCurrency(firstItem.getString("Currency"));
             t07QuotationD2.setPlantId(data.getPLANT_ID());
             t07QuotationD2.setMaterialNumber(data.getMATERIAL_NUMBER());
-            t07QuotationD2.setBpNumber(Integer.parseInt(data.getBP_NUMBER()));
+            t07QuotationD2.setBpNumber(data.getBP_NUMBER());
 
             pchD007.updateT07(t07QuotationD2);
             

@@ -187,7 +187,7 @@ entity T07_QUOTATION_D : cuid, IF_CUID_FILED { //
   @title: '{i18n>Material}' Material                     : String(40); //品名
   @title: '{i18n>MAKER}' MAKER                           : String(15); //メーカ
   @title: '{i18n>UWEB_USER}' UWEB_USER                   : String(50); //仕入先連絡先（WEB EDIの担当）（必須）
-  @title: '{i18n>BP_NUMBER}' BP_NUMBER                   : Integer; //SAP BP（任意）
+  @title: '{i18n>BP_NUMBER}' BP_NUMBER                   : String(15); //SAP BP（任意）
   @title: '{i18n>PERSON_NO1}' PERSON_NO1                 : Decimal(18, 3); //員数1
   @title: '{i18n>YLP}' YLP                               : String(50); //依頼品判定
   @title: '{i18n>MANUL}' MANUL                           : String(50); //正式メーカ品番

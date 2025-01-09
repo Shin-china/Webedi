@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
@@ -29,6 +30,7 @@ import customer.bean.pch.Confirmation;
 import customer.bean.pch.Item;
 import customer.bean.pch.Pch01Sap;
 import customer.bean.pch.SapPchRoot;
+import customer.comm.constant.ConfigConstants;
 import customer.comm.odata.OdateValueTool;
 import customer.comm.tool.MessageTools;
 import customer.dao.pch.PchD001;
@@ -40,6 +42,10 @@ import customer.service.comm.TranscationService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import customer.bean.s4.S4Para;
+import customer.comm.tool.DateTools;
+import customer.tool.StringTool;
 
 @Component
 public class Ifm03PoService extends IfmService {
@@ -68,13 +74,38 @@ public class Ifm03PoService extends IfmService {
 
     }
 
-    public void process(IFLog log) throws UnsupportedOperationException, IOException {
+    private SapPchRoot getS4(IFLog log) throws Exception {
+        T11IfManager info = this.getIfMnager(log);
+        logger.info(info.getNextPara()); // 2024-10-15 03:38:55
+
+        S4Para prar = new S4Para();
+        prar.setPlant("1100");
+        if (ConfigConstants.SYSTEM_PLANT_LIST.size() == 1) { // 工厂追加
+            prar.setPlant(ConfigConstants.SYSTEM_PLANT_LIST.get(0));
+        }
+
+        if (!StringTool.isEmpty(info.getNextPara())) {
+            LocalDateTime localDateTime = DateTools.Iso86012DateTime(info.getNextPara());
+            prar.setTimeStamp(DateTools.get14DateStr(localDateTime));
+      
+        }
+
+
+        
+
+        log.gett15log().setIfPara(JSON.toJSONString(prar));
+        String a = S4OdataTools.post2(info,JSON.toJSONString(prar),null);
+        SapPchRoot root = JSON.parseObject(a, SapPchRoot.class);
+        return root;
+    }
+
+    public void process(IFLog log) throws Exception {
         log.setTd(super.transactionInit()); // 事务初始换
         this.insertLog(log);
         Pch01Sap sap = new Pch01Sap();
         // 获取 Web Service 配置信息
 
-        SapPchRoot sapPchRoot = get();
+        SapPchRoot sapPchRoot = getS4(log);
 
         HashSet<String> PoSet = getSet(sapPchRoot);
 
