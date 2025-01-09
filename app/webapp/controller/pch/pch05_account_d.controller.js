@@ -316,7 +316,12 @@ sap.ui.define([
             }
 
             return true;
-        }
+        },
+		onBeforeRebindList:function(oEvent){
+            let oBindingParams = oEvent.getParameter("bindingParams");
+			oBindingParams.filters.push(new sap.ui.model.Filter("TAX_CODE", "EQ", "V3"));
+			oBindingParams.filters.push(new sap.ui.model.Filter("TAX_CODE", "EQ", "V4"));
+		}
 
     });
 });
