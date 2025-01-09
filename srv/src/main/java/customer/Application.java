@@ -56,8 +56,8 @@ public class Application implements CommandLineRunner {
 		ConfigConstants.USER_LANG_CODE = configDao.getConfig("USER_LANG_CODE").getConValue();
 
 		// // 当前系统有几家工厂
-		// ConfigConstants.SYSTEM_PLANT_LIST = Arrays
-		// .asList(configDao.getConfig("SYSTEM_PLANT_ID").getConValue().split(","));
+		ConfigConstants.SYSTEM_PLANT_LIST = Arrays
+		.asList(configDao.getConfig("SYSTEM_PLANT_ID").getConValue().split(","));
 
 		// 设定S4 DESTINATION
 		S4OdataTools.desName = configDao.getConfig("S4_DESTINATION").getConValue();
