@@ -45,7 +45,7 @@ public class Pch04 {
     @ExcelProperty(index = 15, value = "税込支払金額(10%対象)")
     private String TOTAL_PAYMENT_AMOUNT_10_END;  
     @ExcelProperty(index = 16, value = "対象外金額")
-    private String NON_APPLICABLE_AMOUNT;  
+    private String TOTAL_PRICE_AMOUNT_NOT;  
     @ExcelProperty(index = 17, value = "総合計")
     private String TOTAL_PAYMENT_AMOUNT_FINAL;  
     @ExcelProperty(index = 18, value = "INV_MONTH_FORMATTED")

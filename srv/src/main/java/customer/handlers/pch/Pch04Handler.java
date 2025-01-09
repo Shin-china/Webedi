@@ -289,7 +289,6 @@ public class Pch04Handler implements EventHandler {
         if (dataList != null && dataList.getList() != null) {
             // 遍历 Pch04List 中的每一项（每个 item 为 Pch04List 的一个记录）
             for (Pch04 item : dataList.getList()) {
-
                 String grDateString = item.getGR_DATE();
                 String invBaseDateString = item.getINV_BASE_DATE();
 
@@ -364,7 +363,8 @@ public class Pch04Handler implements EventHandler {
             otherData.put("TOTAL_PRICE_AMOUNT_10", dataList.getList().get(0).getTOTAL_PRICE_AMOUNT_10());
             otherData.put("CONSUMPTION_TAX_10", dataList.getList().get(0).getCONSUMPTION_TAX_10());
             otherData.put("TOTAL_PAYMENT_AMOUNT_10_END", dataList.getList().get(0).getTOTAL_PAYMENT_AMOUNT_10_END());
-            otherData.put("NON_APPLICABLE_AMOUNT", dataList.getList().get(0).getNON_APPLICABLE_AMOUNT());
+            //otherData.put("NON_APPLICABLE_AMOUNT", dataList.getList().get(0).getNON_APPLICABLE_AMOUNT());
+            otherData.put("NON_APPLICABLE_AMOUNT",dataList.getList().get(0).getTOTAL_PRICE_AMOUNT_NOT());//Change by stanley 20250109
             otherData.put("TOTAL_PAYMENT_AMOUNT_FINAL", dataList.getList().get(0).getTOTAL_PAYMENT_AMOUNT_FINAL());
             otherData.put("INV_MONTH_FORMATTED", dataList.getList().get(0).getINV_MONTH_FORMATTED());
             otherData.put("SUPPLIER_DESCRIPTION", dataList.getList().get(0).getSUPPLIER_DESCRIPTION());
