@@ -253,8 +253,8 @@ public class Pch03Handler implements EventHandler {
             pchd03.setZws8(strEmpty(pchd03.getCurrency()) + "\n");
             pchd03.setZws9(DateTools.getCurrentDateString(pchd03.getPoDDate()) + "\n");
 
-            System.out.println(pchd03.getSapCdTime());
-            pchd03.setDate1(DateTools.getCurrentDateString(pchd03.getSapCdTime()));
+            // System.out.println(pchd03.getSapCdTime());
+            pchd03.setDate1(DateTools.getCurrentDateString(pchd03.getCdDate()));
 
             pchd03.setDate2(DateTools.getCurrentDateString());
             pchd03.setDate3(DateTools.getCurrentDateString(pchd03.getApprovedate()));

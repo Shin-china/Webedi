@@ -78,6 +78,7 @@ sap.ui.define(["umc/app/controller/BaseController", "sap/m/MessageToast", "sap/m
             jsonModel = new sap.ui.model.json.JSONModel();
             view.setModel(jsonModel, "workInfo");
             jsonModel.setData(oData.results);
+            that.getModel().refresh();
 
             resolve(oData);
 

@@ -28,8 +28,6 @@ sap.ui.define([
 			this.getView().unbindElement();
 			const oTable = this.byId("detailTable");
 			// oTable.setSelectionMode("None");
-			//  设置版本号
-			this._setOnInitNo("MST01");
 			this.MessageTools._clearMessage();
 			this.MessageTools._initoMessageManager(this);
 

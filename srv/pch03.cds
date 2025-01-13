@@ -70,7 +70,7 @@ extend service TableService {
                 T02.TO_MAT.TO_SAP_BP.BP_NAME1 as MANU_MATERIAL,
                 T01.POCDBY,//自设参照者
                 T01.approvedate, //承認日
-                T01.SAP_CD_TIME, //承認日
+                T01.CD_DATE, //承認日
 
                 '' as SAP_CD_BY2 : String, // SAP担当者2
                 '' as checkOk : String, // 検査合区分
@@ -203,7 +203,7 @@ extend service TableService {
                 T02.MAT_ID, // 品目コード
                 T02.PO_TYPE, // 発注区分  C：新規 U：変更 D：削除
 
-                T01.PO_DATE, //発注日
+                T01.CD_DATE as PO_DATE, //発注日
                 T02.STATUS, // ステータス  01：送信済　02：照会済
                 
                 T02.CD_BY, //登録者
@@ -300,7 +300,7 @@ extend service TableService {
                 T02.MAT_ID, // 品目コード
                 T02.PO_TYPE, // 発注区分  C：新規 U：変更 D：削除
 
-                T01.PO_DATE, //発注日
+                T01.CD_DATE as PO_DATE, //発注日
                 T02.STATUS, // ステータス  01：送信済　02：照会済
                 
                 T02.CD_BY, //登録者
