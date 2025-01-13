@@ -642,18 +642,29 @@ public class Pch08Service {
             uploadResult.setMESSAGE("管理Noは空欄です");
             return uploadResult;
         }
+        if (!((salesNumber == null || salesNumber.isEmpty())&&(salesDNo == null || salesDNo.isEmpty()))) {
 
-        // if (salesNumber == null || salesNumber.isEmpty()) {
-        //     uploadResult.setSTATUS("E");
-        //     uploadResult.setMESSAGE("販売見積案件は空欄です");
-        //     return uploadResult;
-        // }
-
-        // if (salesDNo == null || salesDNo.isEmpty()) {
-        //     uploadResult.setSTATUS("E");
-        //     uploadResult.setMESSAGE("販売見積案件明細は空欄です");
-        //     return uploadResult;
-        // }
+            if (salesNumber == null || salesNumber.isEmpty()) {
+                uploadResult.setSTATUS("E");
+                uploadResult.setMESSAGE("販売見積案件は空欄です");
+                return uploadResult;
+            }
+    
+            if (salesDNo == null || salesDNo.isEmpty()) {
+                uploadResult.setSTATUS("E");
+                uploadResult.setMESSAGE("販売見積案件明細は空欄です");
+                return uploadResult;
+            }
+            // 判断采购报价单+销售订单的组合是否存在
+            String id = pch08Dao.getT07QuotationId(quoNumber, quoItem, salesNumber, salesDNo);
+            if (id == null || id.isEmpty()) {
+                uploadResult.setSTATUS("E");
+                uploadResult.setMESSAGE("購買見積番号、管理No、販売見積案件、販売見積案件明細は存在しません");
+                return uploadResult;
+            }
+          
+        }
+      
 
         // if (customer == null || customer.isEmpty()){
         // uploadResult.setSTATUS("E");
@@ -675,13 +686,7 @@ public class Pch08Service {
         // return uploadResult;
         // }
 
-        // 判断采购报价单+销售订单的组合是否存在
-        String id = pch08Dao.getT07QuotationId(quoNumber, quoItem, salesNumber, salesDNo);
-        if (id == null || id.isEmpty()) {
-            uploadResult.setSTATUS("E");
-            uploadResult.setMESSAGE("購買見積番号、管理No、販売見積案件、販売見積案件明細は存在しません");
-            return uploadResult;
-        }
+
 
         uploadResult.setSTATUS("S");
         uploadResult.setMESSAGE("チェック成功");

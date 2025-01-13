@@ -210,7 +210,7 @@ public class Pch03Handler implements EventHandler {
             pchd03.setCop12(pchd03.getSupplierMat());
             pchd03.setCop13(pchd03.getMatId());
 
-            pchd03.setCop14(pchd03.getCustMaterial());
+            pchd03.setCop14(pchd03.getSupplierMat());
             pchd03.setCop15(pchd03.getBpId());
             pchd03.setCop16(pchd03.getCheckOk());
             pchd03.setCop17(pchd03.getPrBy());
