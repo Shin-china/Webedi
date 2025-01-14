@@ -39,6 +39,7 @@ import cds.gen.tableservice.TableService_;
 import customer.bean.sys.Sys005Mail;
 import customer.bean.sys.Sys07;
 import customer.bean.sys.Sys07List;
+import customer.comm.constant.ConfigConstants;
 import customer.service.sys.Sys07Service;
 import customer.service.sys.SysMailService;
 
@@ -95,6 +96,7 @@ public class Sys07Handler implements EventHandler {
     @Before(entity = T16EmailH_.CDS_NAME, event = CqnService.EVENT_CREATE)
     public void beforeCreateT16H(CdsCreateEventContext context, Stream<T16EmailH> t16Hs) {
         t16Hs.forEach(t06 -> {
+            t06.setPlantId(ConfigConstants.SYSTEM_PLANT_LIST.get(0));
             shelfService.checkHcode(t06);
             // 检查头
             shelfService.checkItems(t06.getToItems());
@@ -113,6 +115,7 @@ public class Sys07Handler implements EventHandler {
     @Before(entity = T16EmailH_.CDS_NAME, event = CqnService.EVENT_UPDATE)
     public void beforeUpdateT17H(CdsUpdateEventContext context, Stream<T16EmailH> t16Hs) {
         t16Hs.forEach(t06 -> {
+            t06.setPlantId(ConfigConstants.SYSTEM_PLANT_LIST.get(0));
             shelfService.checkHcode(t06);
             // 检查头
             shelfService.checkItems(t06.getToItems());

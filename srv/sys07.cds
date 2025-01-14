@@ -14,6 +14,7 @@ extend service TableService {
          t01.H_CODE,
          t01.H_NAME,
          t01.BP_ID,
+         t01.PLANT_ID,
          t02.EMAIL_ADDRESS,
          t02.EMAIL_ADDRESS_NAME,
          t02.CD_BY,t02.CD_TIME,t02.UP_BY,t02.UP_TIME

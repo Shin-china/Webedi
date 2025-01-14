@@ -137,11 +137,16 @@ extend service TableService {
 
 
 
-                '' as ZWS_1 : String,
-                '' as ZWS_2 : String,
-                '' as ZWS_3 : String,
-                '' as ZWS_4 : String,
-                '' as ZWS_5 : String,
+                '' as ZWS_1_1 : String,
+                '' as ZWS_1_2 : String,
+                '' as ZWS_2_1 : String,
+                '' as ZWS_2_2 : String,
+                '' as ZWS_3_1 : String,
+                '' as ZWS_3_2 : String,
+                '' as ZWS_4_1 : String,
+                '' as ZWS_4_2 : String,
+                '' as ZWS_5_1 : String,
+                '' as ZWS_5_2 : String,
                 '' as ZWS_6 : String,
                 '' as ZWS_7 : String,
                 '' as ZWS_8 : String,

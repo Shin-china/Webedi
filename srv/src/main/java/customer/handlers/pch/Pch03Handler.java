@@ -237,7 +237,7 @@ public class Pch03Handler implements EventHandler {
              //设置地址
             if(StringUtils.isNotBlank(pchd03.getRegions())){
                 if(StringUtils.isNotBlank(pchd03.getPlaceName())){
-                    pchd03.setT03Addr(strEmpty(pchd03.getRegions()+" "+pchd03.getPlaceName()));
+                    pchd03.setT03Addr(pchd03.getPlaceName()+" "+strEmpty(pchd03.getRegions()));
                 }
                 else{
                     pchd03.setT03Addr(strEmpty(pchd03.getRegions()));
@@ -249,29 +249,37 @@ public class Pch03Handler implements EventHandler {
            
            
             // 设置担当者
+            pchd03.setZws11(strEmpty(pchd03.getPodno()));
+            pchd03.setZws12(strEmpty(pocdby));
+            pchd03.setZws21(strEmpty(pchd03.getMatId()));
+            pchd03.setZws22(strEmpty(pchd03.getPoDTxz01()));
+            pchd03.setZws31(strEmpty(pchd03.getManuMaterial()));
+            pchd03.setZws41(strEmpty(pchd03.getCop2()));
+            pchd03.setZws42(strEmpty(pchd03.getStorage()));
+            pchd03.setZws51(strEmpty(pchd03.getPoPurUnit()));
+            pchd03.setZws52(strEmpty(pchd03.getMemo()));
 
-            pchd03.setZws1(
-                    pchd03.getPodno() + "\n" + strEmpty(pocdby));
-            pchd03.setZws2(strEmpty(pchd03.getMatId()) + "\n" + strEmpty(pchd03.getPoDTxz01()));
-            pchd03.setZws3(strEmpty(pchd03.getManuMaterial()) + "\n");
-            pchd03.setZws4(strEmpty(pchd03.getCop2()) + "\n" + strEmpty(pchd03.getStorage()));
-            pchd03.setZws5(strEmpty(pchd03.getPoPurUnit()) + "\n" + strEmpty(pchd03.getMemo()));
+
+       
+
+
             if (pchd03.getDelPrice() != null && pchd03.getPoPurQty() != null) {
                 pchd03.setZws7(strEmpty(numFromt(
                         NumberTool.toScale(pchd03.getDelPrice().multiply(pchd03.getPoPurQty()),
                                 currency)))
-                        + "\n");
-                pchd03.setZws6(strEmpty(numFromt(pchd03.getDelPrice())) + "\n");
+                        );
+                pchd03.setZws6(strEmpty(numFromt(pchd03.getDelPrice())) );
             }
             // 如果potype为删除是则单价和价格0
             if ("D".equals(pchd03.getPoType())) {
-                pchd03.setZws7("0" + "\n");
-                pchd03.setZws6("0" + "\n");
-                pchd03.setZws4("0" + "\n" + pchd03.getStorage());
+                pchd03.setZws7("0" );
+                pchd03.setZws6("0" );
+                pchd03.setZws41("0" );
+                pchd03.setZws42(strEmpty(pchd03.getStorage()));
             }
 
-            pchd03.setZws8(strEmpty(pchd03.getCurrency()) + "\n");
-            pchd03.setZws9(DateTools.getCurrentDateString(pchd03.getPoDDate()) + "\n");
+            pchd03.setZws8(strEmpty(pchd03.getCurrency()) );
+            pchd03.setZws9(DateTools.getCurrentDateString(pchd03.getPoDDate()));
 
             // System.out.println(pchd03.getSapCdTime());
             pchd03.setDate1(DateTools.getCurrentDateString(pchd03.getCdDate()));

@@ -87,7 +87,10 @@ xmlns:fb="sap.ui.comp.filterbar">
 						<Text  text="{workInfo>BP_ID}"/>
 					</t:template>
 				</t:Column>
-								<t:Column  width="10rem" sortProperty="EMAIL_ADDRESSY" filterProperty="EMAIL_ADDRESSY">
+
+								
+
+				<t:Column  width="10rem" sortProperty="EMAIL_ADDRESSY" filterProperty="EMAIL_ADDRESSY">
 					<t:customData>
 						<core:CustomData key="p13nData" value='\{"columnKey":"EMAIL_ADDRESSY", "leadingProperty":"EMAIL_ADDRESSY"}'/>
 					</t:customData>
@@ -105,7 +108,15 @@ xmlns:fb="sap.ui.comp.filterbar">
 						<Text  text="{workInfo>EMAIL_ADDRESS_NAME}"/>
 					</t:template>
 				</t:Column>
-				
+				<t:Column  width="10rem" sortProperty="PLANT_ID" filterProperty="PLANT_ID">
+					<t:customData>
+						<core:CustomData key="p13nData" value='\{"columnKey":"PLANT_ID", "leadingProperty":"PLANT_ID"}'/>
+					</t:customData>
+					<Label  text="{sys>SYS07_PLANT_ID}"/>
+					<t:template>
+						<Text  text="{workInfo>PLANT_ID}"/>
+					</t:template>
+				</t:Column>
 			
 			</t:columns>
 		</t:Table>

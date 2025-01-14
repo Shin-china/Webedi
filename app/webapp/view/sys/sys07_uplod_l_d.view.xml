@@ -63,6 +63,13 @@
 
 									<smartfield:SmartField id="BP_ID" value="{BP_ID}" showLabel="false" width="20em" mandatory="mandatory" editable="{=${localModel>/editable} || false}"/>
 								</l:VerticalLayout>
+
+								
+								<l:VerticalLayout id="_IDGenVerticalLayout4" class="sapUiSmallMarginEnd">
+									<Label id="_IDGenLabel44" labelFor="SYS07_PLANT_ID" text="{sys>SYS07_PLANT_ID}"/>
+
+									<smartfield:SmartField id="PLANT_ID" value="{PLANT_ID}" showLabel="false" width="20em" mandatory="mandatory" editable="false"/>
+								</l:VerticalLayout>
 							</FlexBox>
 
 						</uxap:blocks>

@@ -230,7 +230,7 @@ entity T16_EMAIL_H  : cuid, CUID_FILED {
   @title: '{i18n>H_NAME}' H_NAME       : String(200); //描述
     @title: '{i18n>BP_ID}' BP_ID       : String(20) not null; //bp_id
   @title: '{i18n>BE_CHANGE}' BE_CHANGE : Boolean default true; //修正可能
-
+  @title: '{i18n>PLANT_ID}' PLANT_ID : String(4) ; //工厂
 
   TO_ITEMS                             : Composition of many T17_EMAIL_D
                                            on TO_ITEMS.H_ID = ID; //ITEM信息
