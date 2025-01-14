@@ -138,4 +138,21 @@ public class Pch08Dao extends Dao {
             return "";
         }
     }
+
+    public String getT07QuotationId(String quoNumber, Integer quoItem) {
+        Optional<T07QuotationD> result = db.run(
+                Select.from(Pch_.T07_QUOTATION_D)
+                        .where(o -> o.QUO_NUMBER().eq(quoNumber).
+                                and(o.QUO_ITEM().eq(quoItem)
+                                .and(o.DEL_FLAG().eq("N"))
+                                ))
+                        .columns(T07QuotationD_::ID)
+        ).first(T07QuotationD.class);
+
+        if (result.isPresent()){
+            return result.get().getId();
+        }else {
+            return "";
+        }
+    }
 }

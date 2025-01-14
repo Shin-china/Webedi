@@ -53,6 +53,8 @@ extend service TableService {
                 T02.DEL_AMOUNT, // 発注金額（値）
                 T02.CUSTOMER_MAT, // 顾客品番
                 T02.MEMO, // 備考
+                T02.MEMO as MEMO1, // 備考
+                T02.MEMO as MEMO2, // 備考
                 T05.FAX,
                 T05.BP_TYPE,
                 T05.BP_NAME1,
@@ -73,6 +75,7 @@ extend service TableService {
                 T01.CD_DATE, //承認日
 
                 '' as SAP_CD_BY2 : String, // SAP担当者2
+                '' as T03_ADDR : String, // SAP担当者2
                 '' as checkOk : String, // 検査合区分
                 '' as order_unit_price : String, // 発注単価
                 '' as exclusive_tax_amount : String, // 税抜額

@@ -316,7 +316,7 @@ public class Pch07Service {
         ar.add(map);
 
         // 获取 Web Service 配置信息
-        T11IfManager webServiceConfig = ifsManageDao.getByCode("MM036");
+        T11IfManager webServiceConfig = ifsManageDao.getByCode("IF056");
         // 调用 Web Service 的 get 方法
         String response = S4OdataTools.post(webServiceConfig, JSON.toJSONString(ar), null);
         return response;

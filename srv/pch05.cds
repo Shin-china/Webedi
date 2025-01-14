@@ -302,7 +302,7 @@ extend service TableService {
      
                 '(' || T01.SUPPLIER || ')' as SUPPLIER_1          : String
 
-        } 
+        } where TAX_CODE in ('V3', 'V4');
 
 ///////////////////////////////////////////////////////////////////////////////////////
 

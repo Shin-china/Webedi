@@ -19,6 +19,8 @@ import com.alibaba.fastjson.JSONObject;
 import java.math.BigDecimal;
 import java.util.*;
 
+import com.alibaba.excel.util.StringUtils;
+
 @Component
 public class Pch08Service {
 
@@ -554,10 +556,23 @@ public class Pch08Service {
         if (isTestRun) {
             return checkResult;
         }
+        String salesNumber = checkResult.getSALES_NUMBER();
+        String salesDNo = checkResult.getSALES_D_NO();
+        String quoNumber = checkResult.getQUO_NUMBER();
+        Integer quoItem = checkResult.getQUO_ITEM();
+        String id = "";
 
-        // update db
-        String id = pch08Dao.getT07QuotationId(checkResult.getQUO_NUMBER(), checkResult.getQUO_ITEM(),
-                checkResult.getSALES_NUMBER(), checkResult.getSALES_D_NO());
+        if (!((StringUtils.isBlank(salesNumber))&&(StringUtils.isBlank(salesDNo)))) {
+
+            // 判断采购报价单+销售订单的组合是否存在
+             id = pch08Dao.getT07QuotationId(quoNumber, quoItem, salesNumber, salesDNo);
+          
+          
+        }else {
+            // 判断采购报价单+销售订单的组合是否存在
+             id = pch08Dao.getT07QuotationId(quoNumber, quoItem);
+           
+        }
 
         T07QuotationD t07 = d007Dao.getByT07Id(id);
         T07QuotationD t07New = T07QuotationD.create();
@@ -642,7 +657,7 @@ public class Pch08Service {
             uploadResult.setMESSAGE("管理Noは空欄です");
             return uploadResult;
         }
-        if (!((salesNumber == null || salesNumber.isEmpty())&&(salesDNo == null || salesDNo.isEmpty()))) {
+        if (!((StringUtils.isBlank(salesNumber))&&(StringUtils.isBlank(salesDNo)))) {
 
             if (salesNumber == null || salesNumber.isEmpty()) {
                 uploadResult.setSTATUS("E");
@@ -663,6 +678,14 @@ public class Pch08Service {
                 return uploadResult;
             }
           
+        }else {
+            // 判断采购报价单+销售订单的组合是否存在
+            String id = pch08Dao.getT07QuotationId(quoNumber, quoItem);
+            if (id == null || id.isEmpty()) {
+                uploadResult.setSTATUS("E");
+                uploadResult.setMESSAGE("購買見積番号、管理Noは存在しません");
+                return uploadResult;
+            }
         }
       
 

@@ -44,6 +44,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -201,20 +202,24 @@ public class Pch03Handler implements EventHandler {
             pchd03.setCop4(DateTools.getCurrentDateString(pchd03.getPoDDate(), "yyyy-MM-dd"));
             pchd03.setCop5(pchd03.getMatId());
             pchd03.setCop6(pchd03.getPoDTxz01());
-            pchd03.setCop20(pchd03.getSupplierMat());
+
+
+            
             pchd03.setCop7(pchd03.getStorage());
             pchd03.setCop8(pchd03.getCheckOk());
             pchd03.setCop9(pchd03.getBpName1());// name1
             pchd03.setCop10(pchd03.getStorage());
             pchd03.setCop11(pchd03.getPodno());
-            pchd03.setCop12(pchd03.getSupplierMat());
-            pchd03.setCop13(pchd03.getMatId());
+            pchd03.setCop12(pchd03.getCop5());
+            pchd03.setCop13(pchd03.getCop6());
 
             pchd03.setCop14(pchd03.getSupplierMat());
             pchd03.setCop15(pchd03.getBpId());
             pchd03.setCop16(pchd03.getCheckOk());
             pchd03.setCop17(pchd03.getPrBy());
             pchd03.setCop18(pchd03.getPoPurUnit());
+
+            pchd03.setCop20(pchd03.getSupplierMat());
 
             pchd03.setCop21(pchd03.getPodno());// 海外
             pchd03.setCop24(pchd03.getPodno());// 海外
@@ -228,11 +233,26 @@ public class Pch03Handler implements EventHandler {
             String pocdby = getPocdby(pchd03.getPocdby(), pchd03.getSapCdBy());
             pchd03.setSapCdBy(pocdby);
             pchd03.setSapCdBy2(pocdby);
+
+             //设置地址
+            if(StringUtils.isNotBlank(pchd03.getRegions())){
+                if(StringUtils.isNotBlank(pchd03.getPlaceName())){
+                    pchd03.setT03Addr(strEmpty(pchd03.getRegions()+" "+pchd03.getPlaceName()));
+                }
+                else{
+                    pchd03.setT03Addr(strEmpty(pchd03.getRegions()));
+                }
+            }else{
+                pchd03.setT03Addr(strEmpty(pchd03.getPlaceName()));
+            }
+
+           
+           
             // 设置担当者
 
             pchd03.setZws1(
                     pchd03.getPodno() + "\n" + strEmpty(pocdby));
-            pchd03.setZws2(strEmpty(pchd03.getSupplierMat()) + "\n" + strEmpty(pchd03.getMatId()));
+            pchd03.setZws2(strEmpty(pchd03.getMatId()) + "\n" + strEmpty(pchd03.getPoDTxz01()));
             pchd03.setZws3(strEmpty(pchd03.getManuMaterial()) + "\n");
             pchd03.setZws4(strEmpty(pchd03.getCop2()) + "\n" + strEmpty(pchd03.getStorage()));
             pchd03.setZws5(strEmpty(pchd03.getPoPurUnit()) + "\n" + strEmpty(pchd03.getMemo()));
@@ -278,7 +298,13 @@ public class Pch03Handler implements EventHandler {
                 }
 
             }
-            StringBuilder qrcode = getQrcode(pchd03);
+            StringBuilder qrcode = new StringBuilder();
+            try {
+                qrcode = getQrcode(pchd03);
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
             pchd03.setQrCode(qrcode.toString());
             pchd03.setCop26(qrcode.toString());
             // jcs2设置
@@ -296,8 +322,8 @@ public class Pch03Handler implements EventHandler {
         pchd03.setJcs3(pchd03.getStorage());
         pchd03.setJcs4(pchd03.getSapCdBy());
         pchd03.setJcs5(pchd03.getCop1());
-        pchd03.setJcs6(pchd03.getMatId());
-        pchd03.setJcs7(pchd03.getPoDTxz01());
+        pchd03.setJcs6(pchd03.getCop5());
+        pchd03.setJcs7(pchd03.getCop6());
         pchd03.setJcs8(pchd03.getSupplierMat());
         pchd03.setJcs9(pchd03.getPoDDate2());
         pchd03.setJcs10(pchd03.getPoPurQty2());
@@ -315,7 +341,7 @@ public class Pch03Handler implements EventHandler {
 
     }
 
-    private StringBuilder getQrcode(PchT03PoItemPrint pchd03) {
+    private StringBuilder getQrcode(PchT03PoItemPrint pchd03) throws Exception {
         // 获取qrcode
         StringBuilder qrcode = new StringBuilder();
         // 納入日：
@@ -323,12 +349,12 @@ public class Pch03Handler implements EventHandler {
         // 品目コード：
         qrcode.append(customer.tool.StringTool.padOrTruncate(pchd03.getCop5(), 40));
         // 品名：
-        qrcode.append(customer.tool.StringTool.padOrTruncate(pchd03.getCop6(), 40));
+        qrcode.append(outStringByByte(pchd03.getCop6(), 40));
         // P/N：
         qrcode.append(customer.tool.StringTool.padOrTruncate(pchd03.getCustMaterial(),
                 40));
         // 納品場所：
-        qrcode.append(customer.tool.StringTool.padOrTruncate(pchd03.getStorage(),
+        qrcode.append(outStringByByte(pchd03.getStorage(),
                 40));
         // 得意先：
         qrcode.append(customer.tool.StringTool.padOrTruncate(pchd03.getBpId(), 10));
@@ -342,7 +368,21 @@ public class Pch03Handler implements EventHandler {
                 18));
         return qrcode;
     }
+  public static String outStringByByte(String str, int len) throws IOException {
+        
+        byte[] btf = str.getBytes("Shift_JIS");
+        if(btf.length <= len){
+            return new String(btf, 0, btf.length, "Shift_JIS");
+        }
+        System.out.println(btf);
+        String string = new String(btf, 0, len, "Shift_JIS");
 
+        if (!string.endsWith("�"))
+        return new String(btf, 0, len, "Shift_JIS");
+        else
+        return new String(btf, 0, len - 1, "Shift_JIS");
+
+    }
     private String numFromt(BigDecimal poPurQty) {
         // 获取小数部分
         BigDecimal fractionalPart = poPurQty.subtract(poPurQty.setScale(0,
