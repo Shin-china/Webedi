@@ -37,7 +37,9 @@ extend service TableService {
                 T01.CD_BY,
                 T02.PLANT_ID,
                 T02.SUPPLIER_MAT,
-                T02.INITIAL_OBJ,
+                case T02.INITIAL_OBJ
+                when '1' then '1'
+                else '2' end as INITIAL_OBJ : String,
                 T01.CD_DATE_TIME,
 
         }
@@ -234,5 +236,6 @@ extend service TableService {
 annotate TableService.PCH10_Header with {
 
     STATUS @(Common: {ValueList: {entity: 'PCH10_STATUS_POP', }});
+    INITIAL_OBJ @(Common: {ValueList: {entity: 'PCH10_INITIAL_OBJ_POP', }});
 
 };

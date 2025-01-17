@@ -19,19 +19,19 @@ sap.ui.define(["umc/app/controller/BaseController", "sap/m/MessageToast","sap/m/
 
     onRebind: function (oEvent) {
 
-      var select = this.byId("sch_INITIAL_OBJ").getSelected();
+      // var select = this.byId("sch_INITIAL_OBJ").getSelected();
 
-      var mBindingParams = oEvent.getParameter("bindingParams");
+      // var mBindingParams = oEvent.getParameter("bindingParams");
 
-      var newFilter;
+      // var newFilter;
 
-      if (select === true) {
-        newFilter = new sap.ui.model.Filter("INITIAL_OBJ", sap.ui.model.FilterOperator.EQ, "1");
-      } else {
-        newFilter = new sap.ui.model.Filter("INITIAL_OBJ", sap.ui.model.FilterOperator.EQ, null);
-      }
+      // if (select === true) {
+      //   newFilter = new sap.ui.model.Filter("INITIAL_OBJ", sap.ui.model.FilterOperator.EQ, "1");
+      // } else {
+      //   newFilter = new sap.ui.model.Filter("INITIAL_OBJ", sap.ui.model.FilterOperator.EQ, null);
+      // }
       
-      mBindingParams.filters.push(newFilter);
+      // mBindingParams.filters.push(newFilter);
       this._rowNoMap == null;
       let sorts = ["QUO_NUMBER"];
       let ascs = [false]; //true desc false asc

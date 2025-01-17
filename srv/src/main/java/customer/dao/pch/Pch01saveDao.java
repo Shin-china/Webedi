@@ -20,6 +20,7 @@ import cds.gen.pch.T02PoD;
 import cds.gen.pch.T03PoC;
 import cds.gen.pch.Pch_;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 
 @Repository
@@ -124,7 +125,7 @@ public class Pch01saveDao extends Dao {
             db.run(Delete.from(Pch_.T03_PO_C)
                     .where(o -> o.PO_NO().eq(po_NO)
                             .and(o.D_NO().eq(d_NO))
-                            .and(o.RelevantQuantity().isNull()))); // 检查A字段是否为空
+                            .and(o.RelevantQuantity().isNull().or(o.RelevantQuantity().eq(BigDecimal.ZERO))))); // 检查A字段是否为空
             return true;
         } catch (Exception e) {
             return false;

@@ -283,6 +283,7 @@ public class Pch07Service {
         t07QuotationD2.setManufactMaterial(data.getMANUFACT_MATERIAL());
         t07QuotationD2.setSalesNumber(data.getSALES_NUMBER());
         t07QuotationD2.setPlantId(data.getPLANT_ID());
+        t07QuotationD2.setBpNumber(data.getBP_NUMBER());
         // t06QuotationH.setPlantId(data.getPLANT_ID());
 
         pchD007.insert(t07QuotationD2);
@@ -303,6 +304,7 @@ public class Pch07Service {
         t06QuotationH.setValidateEnd(validateEnd);
 
         t06QuotationH.setQuoNumber(data.getQUO_NUMBER());
+        t06QuotationH.setStatus("1");
 
         pchD006.insert(t06QuotationH);
     }

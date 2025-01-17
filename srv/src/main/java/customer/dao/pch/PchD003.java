@@ -24,6 +24,7 @@ import cds.gen.pch.T03PoC;
 import cds.gen.pch.T03PoC_;
 import cds.gen.pch.Pch_;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 
 @Repository
@@ -51,7 +52,7 @@ public class PchD003 extends Dao {
         Delete<T03PoC_> delete = Delete.from(Pch_.T03_PO_C);
         // delete.where(o ->
         // o.PO_NO().eq(po).and(o.D_NO().eq(dno).and(o.RelevantQuantity().isNull())));
-        delete.where(o -> o.PO_NO().eq(po).and(o.D_NO().eq(dno).and(o.RelevantQuantity().isNull())));
+        delete.where(o -> o.PO_NO().eq(po).and(o.D_NO().eq(dno).and(o.RelevantQuantity().isNull().or(o.RelevantQuantity().eq(BigDecimal.ZERO)))));
         db.run(delete);
     }
 
