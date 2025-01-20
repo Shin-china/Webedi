@@ -251,7 +251,7 @@ public class Pch03Handler implements EventHandler {
             // 设置担当者
             pchd03.setZws11(strEmpty(pchd03.getPodno()));
             pchd03.setZws12(strEmpty(pocdby));
-            pchd03.setZws21(strEmpty(pchd03.getMatId()));
+            pchd03.setZws21(strEmpty(pchd03.getSupplierMat()));
             pchd03.setZws22(strEmpty(pchd03.getPoDTxz01()));
             pchd03.setZws31(strEmpty(pchd03.getManuMaterial()));
             pchd03.setZws41(strEmpty(pchd03.getCop2()));

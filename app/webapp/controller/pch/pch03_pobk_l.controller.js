@@ -48,7 +48,8 @@ sap.ui.define([
 			var that = this;
 			//取得权限
 			this._readEntryData(_objectCommData._entity).then((odata) => {
-				that._setEditableAuth(odata.results[0].USER_TYPE);
+				that._setIsCreate(true);
+				
 			})
 
 			that.setSysConFig().then(res => {

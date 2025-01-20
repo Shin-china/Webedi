@@ -562,16 +562,21 @@ public class Pch08Service {
         Integer quoItem = checkResult.getQUO_ITEM();
         String id = "";
 
-        if (!((StringUtils.isBlank(salesNumber))&&(StringUtils.isBlank(salesDNo)))) {
 
+
+        if (StringUtils.isNotBlank(salesNumber)&&(StringUtils.isNotBlank(salesDNo))) {
             // 判断采购报价单+销售订单的组合是否存在
              id = pch08Dao.getT07QuotationId(quoNumber, quoItem, salesNumber, salesDNo);
+
           
-          
-        }else {
+        }else if(StringUtils.isNotBlank(salesNumber)){
             // 判断采购报价单+销售订单的组合是否存在
-             id = pch08Dao.getT07QuotationId(quoNumber, quoItem);
-           
+             id = pch08Dao.getT07QuotationIdSalesNumber(quoNumber, quoItem,salesNumber);
+
+        }else if(StringUtils.isNotBlank(salesDNo)){
+            // 判断采购报价单+销售订单的组合是否存在
+             id = pch08Dao.getT07QuotationIdSalesDNo(quoNumber, quoItem,salesDNo);
+
         }
 
         T07QuotationD t07 = d007Dao.getByT07Id(id);

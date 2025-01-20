@@ -36,7 +36,7 @@
           <smartFilterBar:ControlConfiguration id="idControlConfiguration3"  key="SALES_D_NO"         visibleInAdvancedArea="true" label="{pch>SALES_D_NO}"       filterType='single' controlType="auto" index="2"/>
           <smartFilterBar:ControlConfiguration id="idControlConfiguration4"  key="SAP_MAT_ID"         visibleInAdvancedArea="true" label="{pch>SAP_MAT_ID}"       filterType='single' controlType="auto" index="3"/>
         
-          <smartFilterBar:ControlConfiguration id="idControlConfiguration7"  key="QUO_NUMBER"         visibleInAdvancedArea="true" label="{pch>QUO_NUMBER}"       filterType='single' controlType="date" index="4"/> 
+          <smartFilterBar:ControlConfiguration id="idControlConfiguration7"  key="QUO_NUMBER"         visibleInAdvancedArea="true" label="{pch>QUO_NUMBER}"       filterType='single'  index="4"/> 
           <smartFilterBar:ControlConfiguration id="idControlConfiguration8"  key="VALIDATE_START"     visibleInAdvancedArea="true" label="{pch>VALIDATE_START}"   filterType='single' controlType="date" index="5"/> 
           <smartFilterBar:ControlConfiguration id="idControlConfiguration9"  key="VALIDATE_END"       visibleInAdvancedArea="true" label="{pch>VALIDATE_END}"     filterType='single' controlType="auto" index="6"/> 
           <smartFilterBar:ControlConfiguration id="idControlConfiguration10" key="MATERIAL_NUMBER"    visibleInAdvancedArea="true" label="{pch>MATERIAL_NUMBER}"  filterType='single' controlType="auto" index="7"/>      
