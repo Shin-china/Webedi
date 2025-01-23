@@ -61,7 +61,7 @@ public class Ifm04PrService extends IfmService {
 
             SapPrRoot data = get(log);
 
-            // log.setTotalNum(data.get__count());// 得到记录总数
+            log.setTotalNum(data.getItems().size());// 得到记录总数
             // int pageCount = log.getPageCount(); // 得到页数
 
             onePage(log, data.getItems()); // 处理第0页的数据

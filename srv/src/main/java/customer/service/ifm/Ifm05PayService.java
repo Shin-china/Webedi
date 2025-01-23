@@ -1,6 +1,7 @@
 package customer.service.ifm;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -62,7 +63,7 @@ public class Ifm05PayService extends IfmService {
 
             SapSupRoot data = get(log);
 
-            // log.setTotalNum(data.get__count());// 得到记录总数
+            log.setTotalNum(data.getItems().size());// 得到记录总数
             // int pageCount = log.getPageCount(); // 得到页数
 
             onePage(log, data.getItems()); // 处理第0页的数据
@@ -122,6 +123,10 @@ public class Ifm05PayService extends IfmService {
                     p.setMatId(suplist.getPurchaseorderitemmaterial());
                     p.setCurrency(suplist.getDocumentcurrency());
                     p.setPriceAmount(suplist.getSupplierinvoiceitemamount());
+                    if(BigDecimal.ZERO.compareTo(suplist.getSupplierinvoiceitemamount()) == 0){
+                        p.setPriceAmount(suplist.getSuplrInvcItmUnplndDelivCost());
+                    }
+                    
                     p.setQuantity(suplist.getQuantityinpurchaseorderunit());
                     p.setUnit(suplist.getPurchaseorderquantityunit());
                     p.setUnitPrice(suplist.getUnitprice());

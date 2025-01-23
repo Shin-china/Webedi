@@ -79,7 +79,7 @@ public class Ifm03PoService extends IfmService {
         logger.info(info.getNextPara()); // 2024-10-15 03:38:55
 
         S4Para prar = new S4Para();
-        prar.setPlant("1100");
+        prar.setPlant(ConfigConstants.SYSTEM_PLANT_LIST.get(0));
         if (ConfigConstants.SYSTEM_PLANT_LIST.size() == 1) { // 工厂追加
             prar.setPlant(ConfigConstants.SYSTEM_PLANT_LIST.get(0));
         }
@@ -108,13 +108,20 @@ public class Ifm03PoService extends IfmService {
         SapPchRoot sapPchRoot = getS4(log);
 
         HashSet<String> PoSet = getSet(sapPchRoot);
-
+        
+        log.setTotalNum(PoSet.size());// 得到记录总数
         for (String po : PoSet) { // 循环一个PO
             this.processOne(sap, po, sapPchRoot, log);
         }
 
         log.setSuccessMsg(MessageTools.getMsgText(rbms, "IFM06_01", log.getSuccessNum(), log.getErrorNum(),
                 log.getConsumTimeS()));
+                
+        if ( log.getErrorNum() == 0) { // 没有错误记录的时候
+            log.getIfConfig().setNextPara(log.gett15log().getStartTime().toString()); // 设定最大变更时间，作为下次的参数
+        }
+        //变更接口配置
+        ifsManageDao.updateIfManager(log.getIfConfig());
 
         this.updateLog(log);
 
