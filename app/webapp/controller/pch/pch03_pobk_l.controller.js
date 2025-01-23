@@ -48,7 +48,7 @@ sap.ui.define([
 			var that = this;
 			//取得权限
 			this._readEntryData(_objectCommData._entity).then((odata) => {
-				that._setIsCreate(true);
+				that._setIsCreate(odata.isCreate); //使用新建来表示是否可以编辑
 				
 			})
 
@@ -223,6 +223,7 @@ sap.ui.define([
 							this._setBusy(false);
 							console.log((this.MessageTools._getI18nTextInModel("pch", "PCH_03_ERROR_MSG1", this.getView())))
 							that.MessageTools._addMessages(this.MessageTools._getI18nTextInModel("pch", "PCH_03_ERROR_MSG1", this.getView()), null, 1, this.getView());
+							throw new Error('StopExecution'); // 抛出异常以停止外层函数
 						}
 					})
 					this._isQuerenDb(selectedIndices, "eml");

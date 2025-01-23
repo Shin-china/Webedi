@@ -14,6 +14,9 @@ extend service TableService {
              and (T04.HEADER_TEXT <> '仮払消費税調整' OR T04.HEADER_TEXT IS NULL OR TRIM(T04.HEADER_TEXT) = '')
         left join PCH.T01_PO_H as T01
             on T05.PO_NO = T01.PO_NO
+        left join PCH.T02_PO_D as T02
+            on T05.PO_NO = T02.PO_NO
+            and T05.D_NO = T02.D_NO
         left join MST.T03_SAP_BP as T03
             on T04.SUPPLIER = T03.BP_ID
         left join SYS.T08_COM_OP_D as T08
@@ -26,6 +29,7 @@ extend service TableService {
             key T05.D_NO, // 明細
             key T04.SUPPLIER, // 仕入先
             key T05.ITEM_NO,
+                T02.SUPPLIER_MAT,
                 T05.Company_Code,
                 T04.SUPPLIER_DESCRIPTION, // 仕入先名称
                 T04.INV_CONFIRMATION, // インボイス
