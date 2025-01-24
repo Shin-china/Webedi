@@ -124,7 +124,7 @@ public class Ifm05PayService extends IfmService {
                     p.setCurrency(suplist.getDocumentcurrency());
                     p.setPriceAmount(suplist.getSupplierinvoiceitemamount());
                     if(BigDecimal.ZERO.compareTo(suplist.getSupplierinvoiceitemamount()) == 0){
-                        p.setPriceAmount(suplist.getSuplrInvcItmUnplndDelivCost());
+                        p.setPriceAmount(suplist.getSuplrInvcItmUnplndDelivCost().multiply(new BigDecimal(100)));
                     }
                     
                     p.setQuantity(suplist.getQuantityinpurchaseorderunit());
