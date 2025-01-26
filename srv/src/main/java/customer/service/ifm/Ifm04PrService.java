@@ -5,11 +5,14 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.TransactionStatus;
 
 import com.alibaba.fastjson.JSON;
+
 import java.time.LocalDate;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+
+import org.apache.commons.math3.stat.interval.ConfidenceInterval;
 
 import cds.gen.mst.T01SapMat;
 import cds.gen.pch.T09Forcast;
@@ -20,6 +23,7 @@ import customer.bean.mst.Value;
 import customer.bean.pch.Items;
 import customer.bean.pch.SapPchRoot;
 import customer.bean.pch.SapPrRoot;
+import customer.comm.constant.ConfigConstants;
 import customer.comm.tool.MessageTools;
 import customer.dao.pch.PurchaseDataDao;
 import customer.dao.sys.IFSManageDao;
@@ -89,6 +93,10 @@ public class Ifm04PrService extends IfmService {
                 TransactionStatus s = null;
 
                 try {
+                    //工厂限制为配置表工厂
+                    if(this.checkPlant(v.getPlant())){
+
+                    
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
                     s = this.begin(log.getTd()); // 开启新事务
 
@@ -124,6 +132,7 @@ public class Ifm04PrService extends IfmService {
 
                     this.commit(s); // 提交事务
                     log.addSuccessNum();
+                }
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -137,5 +146,7 @@ public class Ifm04PrService extends IfmService {
         }
         return log;
     }
+
+   
 
 }

@@ -186,9 +186,10 @@ extend service TableService {
             and T01.PO_ORG = T04.PURCHASE_ORG
 
 
-         join view.SYS_T01_USER as Tu
-            on Tu.USER_ID = (select user from view.USER_CODE   ) 
-            and Tu.BP_NUMBER = T01.SUPPLIER
+            join view.SYS_T01_USER as Tu
+                on Tu.USER_ID = COALESCE($user, 'anonymous')
+                and  (T01.SUPPLIER in (select BP_ID from view.AUTH_USER_BP   ) and Tu.USER_TYPE = '2') 
+
         
         left join view.PO_TYPE_POP T06
             on T02.PO_TYPE = T06.VALUE
@@ -281,12 +282,10 @@ extend service TableService {
                 and T01.PO_ORG = T04.PURCHASE_ORG
 
             join view.SYS_T01_USER as Tu
-                on Tu.USER_ID = (select user from view.USER_CODE   ) 
+                on Tu.USER_ID = COALESCE($user, 'anonymous')
+                and Tu.USER_TYPE = '1'
 
                 
-            join view.SYS_T09_USER_2_PLANT t09
-                on  t09.PLANT_ID = T02.PLANT_ID
-                and t09.USER_ID  = Tu.ID
             left join view.PO_TYPE_POP T06
                 on T02.PO_TYPE = T06.VALUE
             left join view.PCH03_STATUS_POP T07

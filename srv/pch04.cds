@@ -23,6 +23,10 @@ extend service TableService {
                 T05.INV_NO = T04.INV_NO
                 and T05.GL_YEAR = T04.GL_YEAR
             )
+        join view.SYS_T01_USER as Tu
+            on Tu.USER_ID = COALESCE($user, 'anonymous')
+                and (Tu.USER_TYPE = '1' or (T04.SUPPLIER in (select BP_ID from view.AUTH_USER_BP   ) and Tu.USER_TYPE = '2') )
+
         left join MST.T03_SAP_BP as M03
             on (
                 T04.SUPPLIER = M03.BP_ID

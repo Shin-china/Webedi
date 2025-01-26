@@ -118,7 +118,8 @@ public class Ifm03PoService extends IfmService {
                 log.getConsumTimeS()));
                 
         if ( log.getErrorNum() == 0) { // 没有错误记录的时候
-            log.getIfConfig().setNextPara(log.gett15log().getStartTime().toString()); // 设定最大变更时间，作为下次的参数
+             int indexOf = log.gett15log().getStartTime().toString().indexOf('.');
+            log.getIfConfig().setNextPara(log.gett15log().getStartTime().toString().substring(0,indexOf)+'Z'); // 设定最大变更时间，作为下次的参数
         }
         //变更接口配置
         ifsManageDao.updateIfManager(log.getIfConfig());
@@ -150,13 +151,17 @@ public class Ifm03PoService extends IfmService {
 
     }
 
-    private Pch01Sap processOne(Pch01Sap sap, String poNo, SapPchRoot sapPchRoot, IFLog log) {
+    private Pch01Sap  processOne(Pch01Sap sap, String poNo, SapPchRoot sapPchRoot, IFLog log) {
         TransactionStatus s = null;
 
         try {
             s = this.begin(log.getTd());
 
             for (Item Items : sapPchRoot.getItems()) {
+
+                //工厂限制为配置表工厂
+                if(this.checkPlant(Items.getPlant())||this.checkOrg(Items.getPurchasingorganization())){
+                
 
                 if (!poNo.equals(Items.getPurchaseorder()))
                     continue;
@@ -339,6 +344,7 @@ public class Ifm03PoService extends IfmService {
                 }
 
             }
+        }
             log.addSuccessNum();
             this.commit(s);
 

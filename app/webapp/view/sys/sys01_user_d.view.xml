@@ -82,85 +82,16 @@
 	</f:header>
 
 	<f:content>
-		<!-- Plant View -->
 		<IconTabBar id="idIconTabBar" expanded="true" expandable="false" class="sapUiSmallMarginBottom" backgroundDesign="Translucent">
 			<items>
-				<!-- Plant -->
-				<IconTabFilter  id="idIconTabFilter" text="{sys>SYS01_TAB_PLANT}" icon="sap-icon://folder"  >
-				   <!-- 编辑状态下显示所有表中的工厂作为选择 -->
-					<smarttable:SmartTable id="smartTable1" persistencyKey="Table1" visible="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'}],formatter: '.formatter.getEditableSaveCommon'}" entitySet="MST_T02_SAP_PLANT" useVariantManagement="false" header="{sys>SYS01_TAB_TITLE_PLANT}" enableAutoBinding="true">
-						<t:Table id="idTable1" rowActionCount="1" >
-							<t:columns>
-								<!--Plant ID-->
-								<t:Column id="idColumn1" autoResizable="true" sortProperty="PLANT_ID" filterProperty="PLANT_ID">
-									<t:customData>
-										<c:CustomData key="p13nData" value='\{"columKey":"PLANT_ID","leadingProperty":"PLANT_ID"}' />
-									</t:customData>
-									<t:label>
-										<Label id="_IDGenLabel10" text="{sys>SYS01_LABEL_PLANT_ID}" />
-									</t:label>
-									<t:template>
-										<Text id="_IDGenText1" text="{PLANT_ID}"/>
-									</t:template>
-								</t:Column>
-								<!--Plant Name-->
-								<t:Column id="idColumn2" autoResizable="true" sortProperty="PLANT_NAME" filterProperty="PLANT_NAME">
-									<t:customData>
-										<c:CustomData key="p13nData" value='\{"columKey":"PLANT_NAME","leadingProperty":"PLANT_NAME"}' />
-									</t:customData>
-									<t:label>
-										<Label id="_IDGenLabel11" text="{sys>SYS01_LABEL_PLANT_NAME}" />
-									</t:label>
-									<t:template>
-										<Text id="_IDGenText2" text="{PLANT_NAME}"/>
-									</t:template>
-								</t:Column>
-							</t:columns>
-						</t:Table>
-
-					</smarttable:SmartTable>
-
-				   <!-- 显示状态显示保重存的数据 -->
-				   <smarttable:SmartTable id="smartTable2" persistencyKey="Table2" visible="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'}],formatter: '.formatter.getEditableDCommon'}"
-					 entitySet="SYS_T09_USER_2_PLANT"  beforeRebindTable=".onRebindPlant" useVariantManagement="false" header="{sys>SYS01_TAB_TITLE_PLANT}" enableAutoBinding="true" >
-					<t:Table id="idTable2" rowActionCount="1" selectionMode="None">
-						<t:columns>
-							<!--Plant ID-->
-							<t:Column id="idColumn21" autoResizable="true" sortProperty="TO_PLANT/PLANT_ID" filterProperty="TO_PLANT/PLANT_ID">
-								<t:customData>
-									<c:CustomData key="p13nData" value='\{"columKey":"TO_PLANT/PLANT_ID","leadingProperty":"TO_PLANT/PLANT_ID"}' />
-								</t:customData>
-								<t:label>
-									<Label id="_IDGenLabel20" text="{sys>SYS01_LABEL_PLANT_ID}" />
-								</t:label>
-								<t:template>
-									<Text id="_IDGenText21" text="{TO_PLANT/PLANT_ID}"/>
-								</t:template>
-							</t:Column>
-							<!--Plant Name-->
-							<t:Column id="idColumn22" autoResizable="true" sortProperty="PLANT_NAME" filterProperty="PLANT_NAME">
-								<t:customData>
-									<c:CustomData key="p13nData" value='\{"columKey":"TO_PLANT/PLANT_NAME","leadingProperty":"TO_PLANT/PLANT_NAME"}' />
-								</t:customData>
-								<t:label>
-									<Label id="_IDGenLabel22" text="{sys>SYS01_LABEL_PLANT_NAME}" />
-								</t:label>
-								<t:template>
-									<Text id="_IDGenText22" text="{TO_PLANT/PLANT_NAME}"/>
-								</t:template>
-							</t:Column>
-						</t:columns>
-					</t:Table>
-
-				   </smarttable:SmartTable>
-				</IconTabFilter>
 
 				<!-- BP -->
 				<IconTabFilter id="idIconTabFilter2" text="{sys>SYS01_TAB_BP}" icon="sap-icon://folder" >
 				   <!-- 编辑状态下显示所有表中的BP作为选择 -->
-					<smarttable:SmartTable id="smartTable3" persistencyKey="Table3" visible="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'}],formatter: '.formatter.getEditableSaveCommon'}" entitySet="MST_T03_SAP_BP" useVariantManagement="false" header="{sys>SYS01_TAB_TITLE_BP}" enableAutoBinding="true">
-						<t:Table id="idTable3" rowActionCount="1" >
+					<smarttable:SmartTable id="smartTable3" persistencyKey="Table3"  visible="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'}],formatter: '.formatter.getEditableSaveCommon'}" entitySet="MST_T03_SAP_BP" useVariantManagement="false" header="{sys>SYS01_TAB_TITLE_BP}" enableAutoBinding="true">
+						<t:Table id="idTable3" rowActionCount="1" threshold="2000" >
 							<t:columns>
+
 								<!--Plant ID-->
 								<t:Column id="idColumnBPID1" autoResizable="true" sortProperty="BP_ID" filterProperty="BP_ID">
 									<t:customData>

@@ -10,7 +10,7 @@ entity T01_PO_H : IF_CUID_FILED { //采购订单抬头
                              @title: '{i18n>SUPPLIER}' SUPPLIER         : String(10); //供应商
                              @title: '{i18n>approvedate}' approvedate   : Date; //承認日
                              @title: '{i18n>PO_BUKRS}' PO_BUKRS         : String(4); //供应商
-                             @title: '{i18n>PO_ORG}' PO_ORG             : String(4); //供应商
+                             @title: '{i18n>PO_ORG}' PO_ORG             : String(4); //采购组织
                              @title: '{i18n>PO_GROUP}' PO_GROUP         : String(3); //供应商
                              @title: '{i18n>PO_BSTYP}' PO_BSTYP         : String(1); //PO Status
                              @title: '{i18n>REMARK}' REMARK             : String(1000); //Remark(Header)
