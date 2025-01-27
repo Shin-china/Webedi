@@ -80,9 +80,10 @@ public class Ifm03PoService extends IfmService {
 
         S4Para prar = new S4Para();
         prar.setPlant(ConfigConstants.SYSTEM_PLANT_LIST.get(0));
-        if (ConfigConstants.SYSTEM_PLANT_LIST.size() == 1) { // 工厂追加
-            prar.setPlant(ConfigConstants.SYSTEM_PLANT_LIST.get(0));
-        }
+        // 工厂追加不追加工厂了
+        // if (ConfigConstants.SYSTEM_PLANT_LIST.size() == 1) { 
+        //     prar.setPlant(ConfigConstants.SYSTEM_PLANT_LIST.get(0));
+        // }
 
         if (!StringTool.isEmpty(info.getNextPara())) {
             LocalDateTime localDateTime = DateTools.Iso86012DateTime(info.getNextPara());
@@ -109,7 +110,7 @@ public class Ifm03PoService extends IfmService {
 
         HashSet<String> PoSet = getSet(sapPchRoot);
         
-        log.setTotalNum(PoSet.size());// 得到记录总数
+        // log.setTotalNum(PoSet.size());// 得到记录总数
         for (String po : PoSet) { // 循环一个PO
             this.processOne(sap, po, sapPchRoot, log);
         }
@@ -345,10 +346,12 @@ public class Ifm03PoService extends IfmService {
 
             }
         }
-            log.addSuccessNum();
+            log.addSuccessCount();
             this.commit(s);
 
         } catch (Exception e) {
+            e.printStackTrace();
+            log.addErrorCount();
         } finally {
 
             this.rollback(s);

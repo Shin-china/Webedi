@@ -14,9 +14,9 @@ extend service TableService {
                 ) 
             inner join (select max(ID) AS ID, QUO_NUMBER, QUO_ITEM from PCH.T07_QUOTATION_D as T03
               where DEL_FLAG = 'N'  group by T03.QUO_NUMBER, QUO_ITEM ) AS T04 on T02.ID = T04.ID
-        join view.SYS_T01_USER as Tu
-            on Tu.USER_ID = COALESCE($user, 'anonymous')
-                and (Tu.USER_TYPE = '1' or (T04.SUPPLIER in (select BP_ID from view.AUTH_USER_BP   ) and Tu.USER_TYPE = '2') )
+            join view.SYS_T01_USER as Tu
+                on Tu.USER_ID = COALESCE($user, 'anonymous')
+                and (Tu.USER_TYPE = '1' or (T02.BP_NUMBER in (select BP_ID from view.AUTH_USER_BP   ) and Tu.USER_TYPE = '2') )
 
             distinct {
                 key T02.QUO_NUMBER,

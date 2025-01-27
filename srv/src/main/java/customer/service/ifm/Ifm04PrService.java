@@ -65,7 +65,7 @@ public class Ifm04PrService extends IfmService {
 
             SapPrRoot data = get(log);
 
-            log.setTotalNum(data.getItems().size());// 得到记录总数
+            // log.setTotalNum(data.getItems().size());// 得到记录总数
             // int pageCount = log.getPageCount(); // 得到页数
 
             onePage(log, data.getItems()); // 处理第0页的数据
@@ -131,11 +131,13 @@ public class Ifm04PrService extends IfmService {
                     PchDao.modify3(o);
 
                     this.commit(s); // 提交事务
-                    log.addSuccessNum();
+                    log.addSuccessCount();
                 }
 
                 } catch (Exception e) {
+                    log.addSuccessCount();
                     e.printStackTrace();
+                    
 
                 } finally {
                     this.rollback(s); // 回滚事务

@@ -921,7 +921,7 @@ extend service TableService {
             and T01.Company_Code  = T03.Company_Code
         join view.SYS_T01_USER as Tu
             on Tu.USER_ID = COALESCE($user, 'anonymous')
-                and (Tu.USER_TYPE = '1' or (T04.SUPPLIER in (select BP_ID from view.AUTH_USER_BP   ) and Tu.USER_TYPE = '2') )
+                and (Tu.USER_TYPE = '1' or (T01.SUPPLIER in (select BP_ID from view.AUTH_USER_BP   ) and Tu.USER_TYPE = '2') )
 
         distinct {
             key T01.SUPPLIER,

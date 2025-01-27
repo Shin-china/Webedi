@@ -95,7 +95,7 @@
 								<!--Plant ID-->
 								<t:Column id="idColumnBPID1" autoResizable="true" sortProperty="BP_ID" filterProperty="BP_ID">
 									<t:customData>
-										<c:CustomData key="p13nData" value='\{"columKey":"BP_ID","leadingProperty":"BP_ID"}' />
+										<c:CustomData key="p13nData" value='\{"columnKey":"BP_ID", "leadingProperty":"BP_ID", "sortProperty":"BP_ID", "filterProperty":"BP_ID"}' />
 									</t:customData>
 									<t:label>
 										<Label id="_IDGenLabelBPID" text="{sys>BP_ID}" />
@@ -107,7 +107,7 @@
 								<!--Plant Name-->
 								<t:Column id="idColumnBPName1" autoResizable="true" sortProperty="BP_NAME1" filterProperty="BP_NAME1">
 									<t:customData>
-										<c:CustomData key="p13nData" value='\{"columKey":"BP_NAME1","leadingProperty":"BP_NAME1"}' />
+										<c:CustomData key="p13nData" value='\{"columnKey":"BP_NAME1", "leadingProperty":"BP_NAME1", "sortProperty":"BP_NAME1", "filterProperty":"BP_NAME1"}' />
 									</t:customData>
 									<t:label>
 										<Label id="_IDLabelBpname" text="{sys>BP_NAME1}" />

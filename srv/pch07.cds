@@ -10,7 +10,8 @@ extend service TableService {
             select from PCH.T06_QUOTATION_H as T01
             left join PCH.T07_QUOTATION_D as T02
                 on T01.QUO_NUMBER = T02.QUO_NUMBER
-           
+
+  
             {
                 KEY T02.PLANT_ID,                   // プラント
                 KEY T02.MATERIAL_NUMBER,            // SAP品目コード
