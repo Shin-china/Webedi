@@ -57,6 +57,9 @@ extend service TableService {
             on(
                 T01.QUO_NUMBER = T02.QUO_NUMBER
             )
+            join view.SYS_T01_USER as Tu
+                on Tu.USER_ID = COALESCE($user, 'anonymous')
+                and (Tu.USER_TYPE = '1' or (T01.BP_NUMBER in (select BP_ID from view.AUTH_USER_BP   ) and Tu.USER_TYPE = '2') )
 
         distinct {
             key T01.ID,
@@ -138,6 +141,9 @@ extend service TableService {
                 T01.QUO_NUMBER = T02.QUO_NUMBER
 
             )
+            join view.SYS_T01_USER as Tu
+                on Tu.USER_ID = COALESCE($user, 'anonymous')
+                and (Tu.USER_TYPE = '1' or (T02.BP_NUMBER in (select BP_ID from view.AUTH_USER_BP   ) and Tu.USER_TYPE = '2') )
 
         inner join (
             select
