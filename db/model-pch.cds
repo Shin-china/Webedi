@@ -16,6 +16,8 @@ entity T01_PO_H : IF_CUID_FILED { //采购订单抬头
                              @title: '{i18n>REMARK}' REMARK             : String(1000); //Remark(Header)
                              @title: '{i18n>POCDBY}' POCDBY             : String(12); //自社参照
                              @title: '{i18n>CD_DATE}' CD_DATE           : Date; //创建日
+                             @title: '{i18n>SAP_CD_BY_TEXT}' SAP_CD_BY_TEXT  : String(1000); //自社参照
+                             
                              @title: '{i18n>CD_DATE_TIME}' CD_DATE_TIME : String(10); //创建日时
                              TO_ITEMS                                   : Association to many T02_PO_D //采购订单行
                                                                             on TO_ITEMS.PO_NO = PO_NO;
