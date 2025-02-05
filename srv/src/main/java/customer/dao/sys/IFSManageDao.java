@@ -16,13 +16,6 @@ import customer.dao.common.Dao;
 @Repository
 public class IFSManageDao extends Dao {
     
-    public static final String IF_S4_BP = "IFM01";
-    public static final String IF_S4_BPPURCHASE = "IFM02";
-    public static final String IF_S4_MST = "IFM39";
-    public static final String IF_S4_PO = "IFM41";
-    public static final String IF_S4_PR = "IFM65";
-    public static final String IF_S4_PAY = "IFM42";
-
     public static final String IF_S4_BP = "IF040_1";
     public static final String IF_S4_BPPURCHASE = "IF040_2";
     public static final String IF_S4_MST = "IF039";
