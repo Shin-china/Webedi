@@ -53,6 +53,8 @@ extend service TableService {
                 T02.DEL_AMOUNT, // 発注金額（値）
                 T02.CUSTOMER_MAT, // 顾客品番
                 T02.MEMO, // 備考
+                T02.MEMO as MEMO1, // 備考
+                T02.MEMO as MEMO2, // 備考
                 T05.FAX,
                 T05.BP_TYPE,
                 T05.BP_NAME1,
@@ -70,9 +72,10 @@ extend service TableService {
                 T02.TO_MAT.TO_SAP_BP.BP_NAME1 as MANU_MATERIAL,
                 T01.POCDBY,//自设参照者
                 T01.approvedate, //承認日
-                T01.SAP_CD_TIME, //承認日
+                T01.CD_DATE, //承認日
 
                 '' as SAP_CD_BY2 : String, // SAP担当者2
+                '' as T03_ADDR : String, // SAP担当者2
                 '' as checkOk : String, // 検査合区分
                 '' as order_unit_price : String, // 発注単価
                 '' as exclusive_tax_amount : String, // 税抜額
@@ -134,11 +137,16 @@ extend service TableService {
 
 
 
-                '' as ZWS_1 : String,
-                '' as ZWS_2 : String,
-                '' as ZWS_3 : String,
-                '' as ZWS_4 : String,
-                '' as ZWS_5 : String,
+                '' as ZWS_1_1 : String,
+                '' as ZWS_1_2 : String,
+                '' as ZWS_2_1 : String,
+                '' as ZWS_2_2 : String,
+                '' as ZWS_3_1 : String,
+                '' as ZWS_3_2 : String,
+                '' as ZWS_4_1 : String,
+                '' as ZWS_4_2 : String,
+                '' as ZWS_5_1 : String,
+                '' as ZWS_5_2 : String,
                 '' as ZWS_6 : String,
                 '' as ZWS_7 : String,
                 '' as ZWS_8 : String,
@@ -178,9 +186,10 @@ extend service TableService {
             and T01.PO_ORG = T04.PURCHASE_ORG
 
 
-         join view.SYS_T01_USER as Tu
-            on Tu.USER_ID = (select user from view.USER_CODE   ) 
-            and Tu.BP_NUMBER = T01.SUPPLIER
+            join view.SYS_T01_USER as Tu
+                on Tu.USER_ID = COALESCE($user, 'anonymous')
+                and  (T01.SUPPLIER in (select BP_ID from view.AUTH_USER_BP   ) and Tu.USER_TYPE = '2') 
+
         
         left join view.PO_TYPE_POP T06
             on T02.PO_TYPE = T06.VALUE
@@ -203,7 +212,7 @@ extend service TableService {
                 T02.MAT_ID, // 品目コード
                 T02.PO_TYPE, // 発注区分  C：新規 U：変更 D：削除
 
-                T01.PO_DATE, //発注日
+                T01.CD_DATE as PO_DATE, //発注日
                 T02.STATUS, // ステータス  01：送信済　02：照会済
                 
                 T02.CD_BY, //登録者
@@ -273,12 +282,10 @@ extend service TableService {
                 and T01.PO_ORG = T04.PURCHASE_ORG
 
             join view.SYS_T01_USER as Tu
-                on Tu.USER_ID = (select user from view.USER_CODE   ) 
+                on Tu.USER_ID = COALESCE($user, 'anonymous')
+                and Tu.USER_TYPE = '1'
 
                 
-            join view.SYS_T09_USER_2_PLANT t09
-                on  t09.PLANT_ID = T02.PLANT_ID
-                and t09.USER_ID  = Tu.ID
             left join view.PO_TYPE_POP T06
                 on T02.PO_TYPE = T06.VALUE
             left join view.PCH03_STATUS_POP T07
@@ -300,7 +307,7 @@ extend service TableService {
                 T02.MAT_ID, // 品目コード
                 T02.PO_TYPE, // 発注区分  C：新規 U：変更 D：削除
 
-                T01.PO_DATE, //発注日
+                T01.CD_DATE as PO_DATE, //発注日
                 T02.STATUS, // ステータス  01：送信済　02：照会済
                 
                 T02.CD_BY, //登録者

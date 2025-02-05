@@ -19,9 +19,9 @@ sap.ui.define([
 
         return Controller.extend("umc.app.controller.HomePage", {
             onInit: function () {
-              this.MessageTools._clearMessage();
-              //this.MessageTools._initoMessageManager(this);
-
+              // this.MessageTools._clearMessage();
+              // this.MessageTools._initoMessageManager(this);
+              // this.getModel().refresh();
               },
               homeOnPress: function (oEvent) {
                 //功能跳转

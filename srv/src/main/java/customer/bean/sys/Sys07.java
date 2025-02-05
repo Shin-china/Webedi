@@ -36,5 +36,6 @@ public class Sys07 {
     private String EMAIL_ADDRESSY;
     @JSONField(name = "EMAIL_ADDRESS_NAME")
     private String EMAIL_ADDRESS_NAME;
-
+    @JSONField(name = "PLANT_ID")
+    private String PLANT_ID;
 }

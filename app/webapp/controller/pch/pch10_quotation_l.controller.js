@@ -1,4 +1,4 @@
-sap.ui.define(["umc/app/controller/BaseController", "sap/m/MessageToast"], function (Controller, MessageToast) {
+sap.ui.define(["umc/app/controller/BaseController", "sap/m/MessageToast","sap/m/MessageBox"], function (Controller, MessageToast,MessageBox) {
   "use strict";
   return Controller.extend("umc.app.controller.pch.pch10_quotation_l", {
 
@@ -19,19 +19,19 @@ sap.ui.define(["umc/app/controller/BaseController", "sap/m/MessageToast"], funct
 
     onRebind: function (oEvent) {
 
-      var select = this.byId("sch_INITIAL_OBJ").getSelected();
+      // var select = this.byId("sch_INITIAL_OBJ").getSelected();
 
-      var mBindingParams = oEvent.getParameter("bindingParams");
+      // var mBindingParams = oEvent.getParameter("bindingParams");
 
-      var newFilter;
+      // var newFilter;
 
-      if (select === true) {
-        newFilter = new sap.ui.model.Filter("INITIAL_OBJ", sap.ui.model.FilterOperator.EQ, "1");
-      } else {
-        newFilter = new sap.ui.model.Filter("INITIAL_OBJ", sap.ui.model.FilterOperator.EQ, null);
-      }
+      // if (select === true) {
+      //   newFilter = new sap.ui.model.Filter("INITIAL_OBJ", sap.ui.model.FilterOperator.EQ, "1");
+      // } else {
+      //   newFilter = new sap.ui.model.Filter("INITIAL_OBJ", sap.ui.model.FilterOperator.EQ, null);
+      // }
       
-      mBindingParams.filters.push(newFilter);
+      // mBindingParams.filters.push(newFilter);
       this._rowNoMap == null;
       let sorts = ["QUO_NUMBER"];
       let ascs = [false]; //true desc false asc
@@ -48,6 +48,7 @@ sap.ui.define(["umc/app/controller/BaseController", "sap/m/MessageToast"], funct
 
   var selectedIndices = that._TableList("detailTable10"); // 获取选中行 
   if( selectedIndices != undefined){
+    this.getView().setBusy(false);
     var txt = that.MessageTools._getI18nTextInModel("com", "Dialog", that.getView())
       
     sap.m.MessageBox.confirm(txt, {
@@ -260,14 +261,21 @@ sap.ui.define(["umc/app/controller/BaseController", "sap/m/MessageToast"], funct
                 if (BP_NUMBERSet.size > 0) { 
                   var H_CODE = "MM0002";
                   var BP_NUMBER = BP_NUMBERSet;
-                  var entity = "/SYS_T08_COM_OP_D";
-                  that._readHeademail(H_CODE, BP_NUMBER, entity).then((oHeadData) => {
+                  var entity = "/SYS07_EMAIL";
+                  that._readHeadEmail(H_CODE, BP_NUMBER, entity).then((oHeadData) => {
               
               
                     let mail = oHeadData.results && oHeadData.results.length > 0 ? 
-                      oHeadData.results.map(result => result.VALUE02).join(", ") : '';  
+                      oHeadData.results.map(result => result.EMAIL_ADDRESS).join(", ") : '';  
                     let absama = oHeadData.results && oHeadData.results.length > 0 ? 
-                      oHeadData.results.map(result => result.VALUE03 + " 様").join("  ") : '';
+                      oHeadData.results.map(result => result.EMAIL_ADDRESS_NAME + " 様").join("  ") : '';
+
+                      //Add by stanley 20241230
+                      if (mail == "" || mail == null) {
+                        that.getView().setBusy(false);
+                        MessageBox.error("仕入先のメールアドレスを取得できません");
+                        return;
+                       }
                     let mailobj = {
                       emailJson: {
                         TEMPLATE_ID: "UWEB_M002",
@@ -346,6 +354,79 @@ sap.ui.define(["umc/app/controller/BaseController", "sap/m/MessageToast"], funct
         month = (currentDate.getMonth() + 1).toString().padStart(2, '0'); // 当前月份，确保是两位数格式
       });
       
+    },
+
+    _readBpNumber(a, entity) {
+      var that = this;
+      return new Promise(function (resolve, reject) {
+        that.getModel().read(entity, {
+            filters: [
+              
+            new sap.ui.model.Filter({
+              path: "QUO_NUMBER",
+              value1: a,
+              operator: sap.ui.model.FilterOperator.EQ,
+            }),
+            new sap.ui.model.Filter({
+              path: "DEL_FLAG",
+              value1: "N",
+              operator: sap.ui.model.FilterOperator.EQ,
+            })  
+              ],
+              success: function (oData) { 
+                resolve(oData); 
+              },
+              error: function (oError) { 
+                reject(oError); 
+              },
+        });
+      });
+      },
+
+
+      _readHeadEmail: function (a, b, entity) {
+        var that = this;
+        return new Promise(function (resolve, reject) {
+            // 如果 b 是一个 Set，将其转换为数组
+            var aValues = Array.isArray(b) ? b : Array.from(b);
+    
+            // 动态创建 VALUE01 的过滤器
+            var aValueFilters = aValues.map(function (sValue) {
+                return new sap.ui.model.Filter({
+                    path: "BP_ID",
+                    operator: sap.ui.model.FilterOperator.Contains,
+                    value1: sValue
+                });
+            });
+    
+            // 将多个 VALUE01 的过滤器组合为一个 OR 过滤器
+            var oValueFilter = new sap.ui.model.Filter({
+                filters: aValueFilters,
+                and: false // 使用 OR 逻辑
+            });
+    
+            // 组合其他过滤器
+            var aFilters = [
+                new sap.ui.model.Filter({
+                    path: "H_CODE",
+                    operator: sap.ui.model.FilterOperator.EQ,
+                    value1: a
+                }),
+                oValueFilter // 动态生成的 OR 过滤器
+
+            ];
+    
+            // 执行读操作
+            that.getModel().read(entity, {
+                filters: aFilters,
+                success: function (oData) {
+                    resolve(oData);
+                },
+                error: function (oError) {
+                    reject(oError);
+                }
+            });
+        });
     },
 
     _readBpNumber(a, entity) {

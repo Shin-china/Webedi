@@ -33,13 +33,87 @@
         <smartFilterBar:controlConfiguration>
           <smartFilterBar:ControlConfiguration id="idControlConfiguration1"  key="SALES_NUMBER"       visibleInAdvancedArea="true" label="{pch>SALES_NUMBER}"     index="0"/>
           <smartFilterBar:ControlConfiguration id="idControlConfiguration2"  key="QUO_VERSION"        visibleInAdvancedArea="true" label="{pch>QUO_VERSION}"      index="1"/>
-          <smartFilterBar:ControlConfiguration id="idControlConfiguration3"  key="SALES_D_NO"         visibleInAdvancedArea="true" label="{pch>SALES_D_NO}"       filterType='single' controlType="auto" index="2"/>
-          <smartFilterBar:ControlConfiguration id="idControlConfiguration4"  key="SAP_MAT_ID"         visibleInAdvancedArea="true" label="{pch>SAP_MAT_ID}"       filterType='single' controlType="auto" index="3"/>
+          <smartFilterBar:ControlConfiguration id="idControlConfiguration3"  key="SALES_D_NO"         visibleInAdvancedArea="true" label="{pch>SALES_D_NO}"        index="2"/>
+          <smartFilterBar:ControlConfiguration id="idControlConfiguration4"  key="SAP_MAT_ID"         visibleInAdvancedArea="true" label="{pch>SAP_MAT_ID}"        index="3"/>
         
-          <smartFilterBar:ControlConfiguration id="idControlConfiguration7"  key="QUO_NUMBER"         visibleInAdvancedArea="true" label="{pch>QUO_NUMBER}"       filterType='single' controlType="date" index="4"/> 
+          <smartFilterBar:ControlConfiguration id="idControlConfiguration7"  key="QUO_NUMBER"         visibleInAdvancedArea="true" label="{pch>QUO_NUMBER}"         index="4"/> 
           <smartFilterBar:ControlConfiguration id="idControlConfiguration8"  key="VALIDATE_START"     visibleInAdvancedArea="true" label="{pch>VALIDATE_START}"   filterType='single' controlType="date" index="5"/> 
           <smartFilterBar:ControlConfiguration id="idControlConfiguration9"  key="VALIDATE_END"       visibleInAdvancedArea="true" label="{pch>VALIDATE_END}"     filterType='single' controlType="auto" index="6"/> 
-          <smartFilterBar:ControlConfiguration id="idControlConfiguration10" key="MATERIAL_NUMBER"    visibleInAdvancedArea="true" label="{pch>MATERIAL_NUMBER}"  filterType='single' controlType="auto" index="7"/>      
+          <smartFilterBar:ControlConfiguration id="idControlConfiguration10" key="MATERIAL_NUMBER"    visibleInAdvancedArea="true" label="{pch>MATERIAL_NUMBER}"   index="7"/>      
+       
+        <smartFilterBar:ControlConfiguration key="ID"  visible="false" />	
+        
+        <smartFilterBar:ControlConfiguration key="QUO_ITEM"  visible="false" />
+        <smartFilterBar:ControlConfiguration key="SALES_NUMBER"  visible="false" />
+        <smartFilterBar:ControlConfiguration key="QUO_VERSION"  visible="false" />
+        <smartFilterBar:ControlConfiguration key="CUSTOMER"  visible="false" />
+        <smartFilterBar:ControlConfiguration key="MACHINE_TYPE"  visible="false" />
+        <smartFilterBar:ControlConfiguration key="Item"  visible="false" />
+        <smartFilterBar:ControlConfiguration key="QUANTITY"  visible="false" />	
+        <smartFilterBar:ControlConfiguration key="TIME"  visible="false" />
+        <smartFilterBar:ControlConfiguration key="LOCATION"  visible="false" />
+        <smartFilterBar:ControlConfiguration key="VALIDATE_START"  visible="false" />
+        <smartFilterBar:ControlConfiguration key="VALIDATE_END"  visible="false" />
+        <smartFilterBar:ControlConfiguration key="SALES_D_NO"  visible="false" />
+        <smartFilterBar:ControlConfiguration key="SAP_MAT_ID"  visible="false" />
+        <smartFilterBar:ControlConfiguration key="REFRENCE_NO"  visible="false" />
+        <smartFilterBar:ControlConfiguration key="MATERIAL_NUMBER"  visible="false" />	
+        <smartFilterBar:ControlConfiguration key="CUST_MATERIAL"  visible="false" />
+        <smartFilterBar:ControlConfiguration key="MANUFACT_MATERIAL"  visible="false" />
+        <smartFilterBar:ControlConfiguration key="Attachment"  visible="false" />
+        <smartFilterBar:ControlConfiguration key="Material"  visible="false" />
+        <smartFilterBar:ControlConfiguration key="MAKER"  visible="false" />
+        <smartFilterBar:ControlConfiguration key="UWEB_USER"  visible="false" />
+        <smartFilterBar:ControlConfiguration key="BP_NUMBER"  visible="false" />
+        <smartFilterBar:ControlConfiguration key="PERSON_NO1"  visible="false" />
+         <smartFilterBar:ControlConfiguration key="YLP"  visible="false" />
+        <smartFilterBar:ControlConfiguration key="MANUL"  visible="false" />
+        <smartFilterBar:ControlConfiguration key="MANUFACT_CODE"  visible="false" />
+         <smartFilterBar:ControlConfiguration key="CUSTOMER_MMODEL"  visible="false" />
+        <smartFilterBar:ControlConfiguration key="MID_QF"  visible="false" />
+        <smartFilterBar:ControlConfiguration key="SMALL_QF"  visible="false" />
+         <smartFilterBar:ControlConfiguration key="OTHER_QF"  visible="false" />
+        <smartFilterBar:ControlConfiguration key="QTY"  visible="false" />
+        <smartFilterBar:ControlConfiguration key="CURRENCY"  visible="false" />
+         <smartFilterBar:ControlConfiguration key="PRICE"  visible="false" />
+        <smartFilterBar:ControlConfiguration key="PRICE_CONTROL"  visible="false" />
+        <smartFilterBar:ControlConfiguration key="LEAD_TIME"  visible="false" />
+         <smartFilterBar:ControlConfiguration key="MOQ"  visible="false" />
+        <smartFilterBar:ControlConfiguration key="UNIT"  visible="false" />
+        <smartFilterBar:ControlConfiguration key="SPQ"  visible="false" />
+        <smartFilterBar:ControlConfiguration key="KBXT"  visible="false" />
+        <smartFilterBar:ControlConfiguration key="PRODUCT_WEIGHT"  visible="false" />
+        <smartFilterBar:ControlConfiguration key="ORIGINAL_COU"  visible="false" />
+        <smartFilterBar:ControlConfiguration key="EOL"  visible="false" />
+        <smartFilterBar:ControlConfiguration key="ISBOI"  visible="false" />
+        <smartFilterBar:ControlConfiguration key="Incoterms"  visible="false" />
+        <smartFilterBar:ControlConfiguration key="Incoterms_Text"  visible="false" />
+        <smartFilterBar:ControlConfiguration key="MEMO1"  visible="false" />
+        <smartFilterBar:ControlConfiguration key="MEMO2"  visible="false" />
+        <smartFilterBar:ControlConfiguration key="MEMO3"  visible="false" />
+        <smartFilterBar:ControlConfiguration key="SL"  visible="false" />
+        <smartFilterBar:ControlConfiguration key="TZ"  visible="false" />
+        <smartFilterBar:ControlConfiguration key="RMATERIAL"  visible="false" />
+        <smartFilterBar:ControlConfiguration key="RMATERIAL_CURRENCY"  visible="false" />
+        <smartFilterBar:ControlConfiguration key="RMATERIAL_PRICE"  visible="false" />
+        <smartFilterBar:ControlConfiguration key="RMATERIAL_LT"  visible="false" />
+        <smartFilterBar:ControlConfiguration key="RMATERIAL_MOQ"  visible="false" />
+        <smartFilterBar:ControlConfiguration key="RMATERIAL_KBXT"  visible="false" />
+        <smartFilterBar:ControlConfiguration key="UMC_SELECTION"  visible="false" />
+        <smartFilterBar:ControlConfiguration key="UMC_COMMENT_1"  visible="false" />
+        <smartFilterBar:ControlConfiguration key="UMC_COMMENT_2"  visible="false" />
+        <smartFilterBar:ControlConfiguration key="FINAL_CHOICE"  visible="false" />
+        <smartFilterBar:ControlConfiguration key="STATUS"  visible="false" />
+        <smartFilterBar:ControlConfiguration key="INITIAL_OBJ"  visible="false" />
+        <smartFilterBar:ControlConfiguration key="PLANT_ID"  visible="false" />
+        <smartFilterBar:ControlConfiguration key="SUPPLIER_MAT"  visible="false" />
+        <smartFilterBar:ControlConfiguration key="CD_BY"  visible="false" />
+        <smartFilterBar:ControlConfiguration key="CD_DATE_TIME"  visible="false" />
+        <smartFilterBar:ControlConfiguration key="CD_DATE"  visible="false" />
+        <smartFilterBar:ControlConfiguration key="NO"  visible="false" />
+
+       
+       
         </smartFilterBar:controlConfiguration>
       </smartFilterBar:SmartFilterBar>
     </f:content>

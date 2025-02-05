@@ -51,7 +51,7 @@ sap.ui.define(
             //获得 sheet
             var oSheet = oWB.Sheets[oWB.SheetNames[0]];
             //设置头
-            var header = ["H_CODE","H_NAME","BP_ID","EMAIL_ADDRESSY","EMAIL_ADDRESS_NAME"];   //,"CUSTOMER_MAT" 存疑
+            var header = ["H_CODE","H_NAME","BP_ID","EMAIL_ADDRESSY","EMAIL_ADDRESS_NAME","PLANT_ID"];   //,"CUSTOMER_MAT" 存疑
             // 通过 XLSX 将sheet转为json  要转的oSheet，header标题，range起始行（1：第二行开始）
             var jsonS = XLSX.utils.sheet_to_json(oSheet,{header: header, range: 1});
 

@@ -111,9 +111,9 @@
 					<content>
 					<ToolbarSpacer id="ID_ToolbarSpacer" />
 					<Button id="_IDGenButton22" text="{pch>PCH03_BUTTON_CSV}" press="onCsvdow" enabled="true" width="6em"/>
-					<Button id="_IDGenButton23" text="{pch>PCH03_BUTTON_FAX}" press="onFax" visible="{parts: [{path: 'localModel>/jurisdiction'}], formatter: '.formatter.checkUserPermission1'}" width="5em"/>
-					<Button id="_IDGenButton24" text="{pch>PCH03_BUTTON_MAIL}" press="onEmail" visible="{parts: [{path: 'localModel>/jurisdiction'}], formatter: '.formatter.checkUserPermission1'}" width="6em"/>
-					<Button id="_IDGenButton25" text="{pch>PCH03_BUTTON_QR}" press="onQr" visible="{parts: [{path: 'localModel>/jurisdiction'}], formatter: '.formatter.checkUserPermission2'}" width="4em"/>
+					<Button id="_IDGenButton23" text="{pch>PCH03_BUTTON_FAX}" press="onFax" visible="{path: 'localModel>/editable'}" width="5em"/>
+					<Button id="_IDGenButton24" text="{pch>PCH03_BUTTON_MAIL}" press="onEmail" visible="{path: 'localModel>/editable'}" width="6em"/>
+					<!-- <Button id="_IDGenButton25" text="{pch>PCH03_BUTTON_QR}" press="onQr" visible="{parts: [{path: 'localModel>/jurisdiction'}], formatter: '.formatter.checkUserPermission2'}" width="4em"/> -->
 					<Button id="_IDGenButton26" text="{pch>PCH03_BUTTON_ZWS_NPS}" press="onPrintZwsNps" enabled="true" width="13em"/>
 					<Button id="_IDGenButton27" text="{pch>PCH03_BUTTON_ZWS}" press="onPrintZws" enabled="true" width="8em"/>
 					<Button id="_IDGenButton28" text="{pch>PCH03_BUTTON_NPS}" press="onPrintNPS" enabled="true" width="10em"/>

@@ -67,14 +67,14 @@ public class SysUserService {
             user2RoleDao.insertUser2Role(role);
         }
 
-        // 插入用户→工厂
-        user2PlantDao.deleteByUserId(o.getId());
-        for (String plantId : user.getPlants()) {
-            T09User2Plant plant = T09User2Plant.create();
-            plant.setPlantId(plantId);
-            plant.setUserId(o.getId());
-            user2PlantDao.insertUser2Plant(plant);
-        }
+        // 插入用户→工厂//删除工厂控制
+        // user2PlantDao.deleteByUserId(o.getId());
+        // for (String plantId : user.getPlants()) {
+        //     T09User2Plant plant = T09User2Plant.create();
+        //     plant.setPlantId(plantId);
+        //     plant.setUserId(o.getId());
+        //     user2PlantDao.insertUser2Plant(plant);
+        // }
         // 插入用户->BP
         user2BpDao.deleteByUserId(o.getId());
         for (String bpId : user.getBps()) {
@@ -111,14 +111,14 @@ public class SysUserService {
             user2RoleDao.insertUser2Role(role);
         }
 
-        // 插入用户→工厂
-        user2PlantDao.deleteByUserId(o.getId());
-        for (String plantId : user.getPlants()) {
-            T09User2Plant plant = T09User2Plant.create();
-            plant.setPlantId(plantId);
-            plant.setUserId(o.getId());
-            user2PlantDao.insertUser2Plant(plant);
-        }
+        // 插入用户→工厂//删除工厂控制
+        // user2PlantDao.deleteByUserId(o.getId());
+        // for (String plantId : user.getPlants()) {
+        //     T09User2Plant plant = T09User2Plant.create();
+        //     plant.setPlantId(plantId);
+        //     plant.setUserId(o.getId());
+        //     user2PlantDao.insertUser2Plant(plant);
+        // }
 
         // 插入用户->BP
         user2BpDao.deleteByUserId(o.getId());

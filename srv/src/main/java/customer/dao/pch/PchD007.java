@@ -122,7 +122,7 @@ public class PchD007 extends Dao {
         // 获取 key 的值
         String plantId = o.getPlantId();
         String materialNumber = o.getMaterialNumber();
-        Integer bpNumber = o.getBpNumber();
+        String bpNumber = o.getBpNumber();
 
         // 构建更新条件
         Map<String, Object> keys = new HashMap<>();

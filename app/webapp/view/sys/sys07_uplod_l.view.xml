@@ -96,6 +96,18 @@
 								<smartfield:SmartField value="{BP_ID}"  editable="false"/>
 							</table:template>
 						</table:Column>
+						<!-- 仕入先 -->
+						<table:Column visible="true" autoResizable="true" sortProperty="PLANT_ID" filterProperty="PLANT_ID" width="10em">
+							<table:customData>
+								<core:CustomData key="p13nData" value='\{"columnKey":"PLANT_ID", "leadingProperty":"PLANT_ID"}'/>
+							</table:customData>
+							<table:label>
+								<Label text="{sys>SYS07_PLANT_ID}"/>
+							</table:label>
+							<table:template>
+								<smartfield:SmartField value="{PLANT_ID}"  editable="false"/>
+							</table:template>
+						</table:Column>
 						<!--メールアドレス -->
 						<table:Column visible="true" autoResizable="true" sortProperty="EMAIL_ADDRESS" filterProperty="EMAIL_ADDRESS" width="20em">
 							<table:customData>

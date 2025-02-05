@@ -17,6 +17,10 @@ extend service TableService {
                         T02.PO_NO = T03.PO_NO
                     and T02.D_NO  = T03.D_NO
                 )
+            join view.SYS_T01_USER as Tu
+                on Tu.USER_ID = COALESCE($user, 'anonymous')
+                and (Tu.USER_TYPE = '1' or (T01.SUPPLIER in (select BP_ID from view.AUTH_USER_BP   ) and Tu.USER_TYPE = '2') )
+
   
             distinct {
                 // key T02.PO_NO || T02.D_NO || T03.SEQ || T04.ID as KEYID  : String,
@@ -48,11 +52,12 @@ extend service TableService {
 
              entity PCH_T02_USER_2 as
             select from PCH.T08_UPLOAD as T01
-            left join PCH.T02_PO_D as T02
-                on(
-                    T01.PO_NO = T02.PO_NO
-                    and T01.D_NO  = T02.D_NO
-                )
+            inner join PCH.T01_PO_H as T02
+                on(T01.PO_NO = T02.PO_NO)
+           join view.SYS_T01_USER as Tu
+                on Tu.USER_ID = COALESCE($user, 'anonymous')
+                and (Tu.USER_TYPE = '1' or (T02.SUPPLIER in (select BP_ID from view.AUTH_USER_BP   ) and Tu.USER_TYPE = '2') )
+
 
     distinct {
 

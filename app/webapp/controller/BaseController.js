@@ -254,11 +254,15 @@ sap.ui.define([
           let i = 0;
           selectedIndices.forEach((index) => {
             let checkContext = detailTable.getContextByIndex(index);
-            if (null != checkContext) {
-              let receiveDetail = checkContext.getObject();
-              idArr[i] = receiveDetail;
-              i++;
+            if(checkContext){
+              if (null != checkContext) {
+                let receiveDetail = checkContext.getObject();
+                idArr[i] = receiveDetail;
+                i++;
+              }
+
             }
+           
           });
   
           return idArr;
@@ -666,8 +670,11 @@ sap.ui.define([
           //设值
           for (var j = 0; j < roleTableIndices.length; j++) {
             var deleteContext = roleTableTable.getContextByIndex(roleTableIndices[j]);
-            var receiveDetail = deleteContext.getObject();
-            dataList.push(receiveDetail);
+            if(deleteContext){
+              var receiveDetail = deleteContext.getObject();
+              dataList.push(receiveDetail);
+            }
+            
           }
           return dataList;
         },
@@ -1471,6 +1478,36 @@ sap.ui.define([
             })
 
           },
+          _readHeadEmail: function (a, b,entity) {
+            var that = this;
+            return new Promise(function (resolve, reject) {
+              that.getModel().read(entity, {
+                filters: [
+                    
+                  new sap.ui.model.Filter({
+                    path: "H_CODE",
+                    value1: a,
+                    operator: sap.ui.model.FilterOperator.EQ,
+                  }),
+                  new sap.ui.model.Filter({
+                    path: "BP_ID",
+                    value1: b,
+                    operator: sap.ui.model.FilterOperator.EQ,
+                  }),
+  
+   
+  
+                ],
+                success: function (oData) {
+                  resolve(oData);
+                },
+                error: function (oError) {
+                  reject(oError);
+                },
+              });
+            });
+          },
+      
 
           /**
            * po接口辅助方法

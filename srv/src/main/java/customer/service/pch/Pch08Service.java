@@ -19,6 +19,8 @@ import com.alibaba.fastjson.JSONObject;
 import java.math.BigDecimal;
 import java.util.*;
 
+import com.alibaba.excel.util.StringUtils;
+
 @Component
 public class Pch08Service {
 
@@ -78,7 +80,7 @@ public class Pch08Service {
             t07New.setUwebUser(pch08.getUWEB_USER());
 
             if (pch08.getBP_NUMBER() != null) {
-                t07New.setBpNumber(Integer.parseInt(pch08.getBP_NUMBER()));
+                t07New.setBpNumber(pch08.getBP_NUMBER());
             }
 
             t07New.setYlp(pch08.getYLP());
@@ -554,10 +556,28 @@ public class Pch08Service {
         if (isTestRun) {
             return checkResult;
         }
+        String salesNumber = checkResult.getSALES_NUMBER();
+        String salesDNo = checkResult.getSALES_D_NO();
+        String quoNumber = checkResult.getQUO_NUMBER();
+        Integer quoItem = checkResult.getQUO_ITEM();
+        String id = "";
 
-        // update db
-        String id = pch08Dao.getT07QuotationId(checkResult.getQUO_NUMBER(), checkResult.getQUO_ITEM(),
-                checkResult.getSALES_NUMBER(), checkResult.getSALES_D_NO());
+
+
+        if (StringUtils.isNotBlank(salesNumber)&&(StringUtils.isNotBlank(salesDNo))) {
+            // 判断采购报价单+销售订单的组合是否存在
+             id = pch08Dao.getT07QuotationId(quoNumber, quoItem, salesNumber, salesDNo);
+
+          
+        }else if(StringUtils.isNotBlank(salesNumber)){
+            // 判断采购报价单+销售订单的组合是否存在
+             id = pch08Dao.getT07QuotationIdSalesNumber(quoNumber, quoItem,salesNumber);
+
+        }else if(StringUtils.isNotBlank(salesDNo)){
+            // 判断采购报价单+销售订单的组合是否存在
+             id = pch08Dao.getT07QuotationIdSalesDNo(quoNumber, quoItem,salesDNo);
+
+        }
 
         T07QuotationD t07 = d007Dao.getByT07Id(id);
         T07QuotationD t07New = T07QuotationD.create();
@@ -642,18 +662,33 @@ public class Pch08Service {
             uploadResult.setMESSAGE("管理Noは空欄です");
             return uploadResult;
         }
-
-        if (salesNumber == null || salesNumber.isEmpty()) {
-            uploadResult.setSTATUS("E");
-            uploadResult.setMESSAGE("販売見積案件は空欄です");
-            return uploadResult;
+        if (StringUtils.isNotBlank(salesNumber)&&(StringUtils.isNotBlank(salesDNo))) {
+            // 判断采购报价单+销售订单的组合是否存在
+            String id = pch08Dao.getT07QuotationId(quoNumber, quoItem, salesNumber, salesDNo);
+            if (id == null || id.isEmpty()) {
+                uploadResult.setSTATUS("E");
+                uploadResult.setMESSAGE("購買見積番号、管理No、販売見積案件、販売見積案件明細は存在しません");
+                return uploadResult;
+            }
+          
+        }else if(StringUtils.isNotBlank(salesNumber)){
+            // 判断采购报价单+销售订单的组合是否存在
+            String id = pch08Dao.getT07QuotationIdSalesNumber(quoNumber, quoItem,salesNumber);
+            if (id == null || id.isEmpty()) {
+                uploadResult.setSTATUS("E");
+                uploadResult.setMESSAGE("購買見積番号、管理No、販売見積案件は存在しません");
+                return uploadResult;
+            }
+        }else if(StringUtils.isNotBlank(salesDNo)){
+            // 判断采购报价单+销售订单的组合是否存在
+            String id = pch08Dao.getT07QuotationIdSalesDNo(quoNumber, quoItem,salesDNo);
+            if (id == null || id.isEmpty()) {
+                uploadResult.setSTATUS("E");
+                uploadResult.setMESSAGE("購買見積番号、管理No、販売見積案件明細は存在しません");
+                return uploadResult;
+            }
         }
-
-        if (salesDNo == null || salesDNo.isEmpty()) {
-            uploadResult.setSTATUS("E");
-            uploadResult.setMESSAGE("販売見積案件明細は空欄です");
-            return uploadResult;
-        }
+      
 
         // if (customer == null || customer.isEmpty()){
         // uploadResult.setSTATUS("E");
@@ -675,13 +710,7 @@ public class Pch08Service {
         // return uploadResult;
         // }
 
-        // 判断采购报价单+销售订单的组合是否存在
-        String id = pch08Dao.getT07QuotationId(quoNumber, quoItem, salesNumber, salesDNo);
-        if (id == null || id.isEmpty()) {
-            uploadResult.setSTATUS("E");
-            uploadResult.setMESSAGE("購買見積番号、管理No、販売見積案件、販売見積案件明細は存在しません");
-            return uploadResult;
-        }
+
 
         uploadResult.setSTATUS("S");
         uploadResult.setMESSAGE("チェック成功");

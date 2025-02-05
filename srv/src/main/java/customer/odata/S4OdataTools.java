@@ -16,6 +16,8 @@ import org.apache.logging.log4j.util.Base64Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.sap.xsa.core.instancemanager.util.Json;
+
 import cds.gen.sys.T11IfManager;
 import customer.comm.tool.HttpTools;
 import customer.comm.tool.StringTool;
@@ -59,13 +61,49 @@ public class S4OdataTools extends S4OdataBase {
 
         return a;
     }
+    @SuppressWarnings("null")
+    public static String post2(T11IfManager info, String body, HashMap<String, String> headMap)
+            throws UnsupportedOperationException, IOException {
 
+        logger.info("post paramater=============================");
+        logger.info(JSON.toJSONString(headMap));
+        logger.info(body);
+
+        HttpClient client = getClent(info);
+        // 这是get方法
+        ODataRequestCreate requestcreate = new ODataRequestCreate(info.getServicepath(), info.getEntityname(), body,
+                ODataProtocol.V2);
+        String userInfo = Base64Util.encode(info.getSapuser());// 用户名,密码
+        requestcreate.addHeader("Authorization", "Basic " + userInfo);
+        requestcreate.addHeader("Accept-Language", info.getLangCode());
+        requestcreate.addHeader("sap-language", info.getLangCode());
+        requestcreate.addHeader("Content-Type", "application/json");
+        requestcreate.addHeader("Accept", "application/json");
+
+        if (headMap != null) {
+            for (String key : headMap.keySet()) {
+                requestcreate.addHeader(key, headMap.get(key)); // 设定追加的head
+            }
+        }
+
+        ODataRequestResultGeneric resultGene = requestcreate.execute(client);
+
+        final InputStream httpResponseContent = resultGene.getHttpResponse().getEntity().getContent();
+        String a = StringTool.InputStream2String(httpResponseContent);
+        logger.info("post return=============================");
+        logger.info(a);
+
+        httpResponseContent.close();
+        return a;
+
+    }
     @SuppressWarnings("null")
     public static ODataRequestResultGeneric getBase(T11IfManager info, Integer currentPage,
             HashMap<String, String> addParaMap, HashMap<String, String> headMap, String body)
             throws UnsupportedOperationException, IOException {
 
         logger.info("if info=============================" + info.getServicepath());
+        logger.info("if info=============================" + JSON.toJSONString(addParaMap));
 
         HttpClient client = getClent(info);
 

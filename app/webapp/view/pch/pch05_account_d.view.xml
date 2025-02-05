@@ -27,10 +27,10 @@
             <smartFilterBar:SmartFilterBar id="smartFilterBar" entitySet="PCH_T05_ACCOUNT_DETAIL1" persistencyKey="PCH_T05_ACCOUNT_DETAIL1" showFilterConfiguration="true">
                 <smartFilterBar:controlConfiguration>
 
-                <smartFilterBar:ControlConfiguration id="PCH_PO_BUKRS"      key="PO_BUKRS"             visibleInAdvancedArea="true" label="{pch>PO_BUKRS}"              index="1"/>
                 <smartFilterBar:ControlConfiguration id="PCH_INV_MONTH"     key="INV_MONTH"            visibleInAdvancedArea="true" label="{pch>INV_MONTH}"             index="2"/>
                 <smartFilterBar:ControlConfiguration id="PCH_SUPPLIER"      key="SUPPLIER"             visibleInAdvancedArea="true" label="{pch>SUPPLIER}"              index="3"/>
                 <smartFilterBar:ControlConfiguration id="PCH_PO_NO"         key="PO_NO"                visibleInAdvancedArea="true" label="{pch>PO_NO}"                 index="4"/>
+                <smartFilterBar:ControlConfiguration id="SUPPLIER_MAT"         key="SUPPLIER_MAT"                visibleInAdvancedArea="true"                index="5"/>
 
                 <smartFilterBar:ControlConfiguration key="VALUE01"   visible="false"  index="99"/>
                 <smartFilterBar:ControlConfiguration key="POSTCODE"  visible="false"  index="99"/>
@@ -74,7 +74,7 @@
 
     <smartTable:SmartTable id="ID" enableAutoColumnWidth="true" entitySet="PCH_T05_ACCOUNT_DETAIL1" 
         ignoredFields="INV_MONTH,ADRESS,NO_DETAILS,PO_BUKRS,POSTCODE,VALUE01,SHKZG,Company_Code" requestAtLeastFields="SHKZG,TAX_AMOUNT,TOTAL_AMOUNT"   initiallyVisibleFields="INV_NO,GL_YEAR,ITEM_NO,PO_NO,D_NO,SUPPLIER,SUPPLIER_DESCRIPTION,INV_CONFIRMATION,PO_TRACK_NO,PR_BY,GL_ACCOUNT,COST_CENTER,PURCHASE_GROUP,PURCHASE_GROUP_DESC,CURRENCY,MAT_ID,QUANTITY,UNIT,MAT_DESC,TAX_CODE,TAX_RATE,INV_POST_DATE,SEND_FLAG,UNIT_PRICE,PRICE_AMOUNT,TAX_AMOUNT,TOTAL_AMOUNT,INV_BASE_DATE,GR_DATE,LOG_NO" 
-        smartFilterId="smartFilterBar" enableExport="true" beforeExport="onBeforeExport" 
+        smartFilterId="smartFilterBar" enableExport="true" beforeExport="onBeforeExport" beforeRebindTable="onBeforeRebindList"
         useVariantManagement="true" useTablePersonalisation="true" header="{pch>TITLE_RESULT}" showRowCount="true" persistencyKey="pch05_SmartTableAnalytical_Explored" enableAutoBinding="false" >
         
       <smartTable:customToolbar>
@@ -454,7 +454,17 @@
         <Text id="textLogNo" text="{LOG_NO}"/>
     </table:template>
 </table:Column>
-
+<table:Column id="colLogNo2" width="10rem" sortProperty="SUPPLIER_MAT" filterProperty="SUPPLIER_MAT">
+    <table:customData>
+        <core:CustomData key="p13nData" value='{"columnKey":"SUPPLIER_MAT", "leadingProperty":"SUPPLIER_MAT", "sortProperty":"SUPPLIER_MAT", "filterProperty":"SUPPLIER_MAT"}'/>
+    </table:customData>
+    <table:label>
+        <Label id="labelLogNo2" text="{pch>SUPPLIER_MAT}"/>
+    </table:label>
+    <table:template>
+        <Text id="textLogNo2" text="{SUPPLIER_MAT}"/>
+    </table:template>
+</table:Column>
 </table:columns>
         </table:Table>
     </smartTable:SmartTable>

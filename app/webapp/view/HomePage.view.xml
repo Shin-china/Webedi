@@ -54,11 +54,11 @@
                 </uxap:ObjectPageSection>
             </uxap:sections>
             <!-- 通用消息框 -->
-            <uxap:footer>
+            <!-- <uxap:footer>
                 <OverflowToolbar id="otbFooter" visible="true">
                     <Button id="messageButton" icon="sap-icon://alert" text="{i18n>MSG_CLOSE}" press="onClickMessagePopover" />
                 </OverflowToolbar>
-            </uxap:footer>
+            </uxap:footer> -->
         </uxap:ObjectPageLayout>
     </f:content>
 </f:DynamicPage>

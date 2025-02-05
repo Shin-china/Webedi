@@ -27,6 +27,7 @@ import cds.gen.sys.T17EmailD;
 import cds.gen.tableservice.SysT08ComOpD;
 import customer.bean.sys.Sys07;
 import customer.bean.sys.Sys07List;
+import customer.comm.constant.ConfigConstants;
 import customer.comm.tool.MessageTools;
 import customer.comm.tool.StringTool;
 import customer.comm.tool.TranscationTool;
@@ -73,6 +74,7 @@ public class Sys07Service {
                     ckd.checkData(s, dno);
                 }
                 if (s.getSUCCESS()) {
+                    s.setPLANT_ID(ConfigConstants.SYSTEM_PLANT_LIST.get(0));
                     // 设置图标
                     s.setI_CON("sap-icon://sys-enter-2");
                     s.setSTATUS("Success");
@@ -168,7 +170,8 @@ public class Sys07Service {
         t.setHName(s.getH_NAME());
         // BP_ID
         t.setBpId(s.getBP_ID());
-
+        // PLANT_ID
+        t.setPlantId(s.getPLANT_ID());
         t16EmailHDao.insert(t);
         // 设置新規头Id
         hashMap.put(s.getH_CODE() + s.getBP_ID(), t.getId());

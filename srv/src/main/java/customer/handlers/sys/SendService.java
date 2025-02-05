@@ -108,7 +108,7 @@ public class SendService {
         HashMap<String, Object> retMap = new HashMap<String, Object>();
         retMap.put("pch06", pch06List);
         // 获取 Web Service 配置信息
-        T11IfManager webServiceConfig = ifsManageDao.getByCode("IFM050");
+        T11IfManager webServiceConfig = ifsManageDao.getByCode("IF055");
 
         // 调用送信接口
         String postMove = base.postMove(webServiceConfig, retMap, null);

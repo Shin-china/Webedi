@@ -111,12 +111,16 @@ service TableService {
   entity USER_AUTH               as
     select from SYS_T01_USER distinct {
       key USER_ID,
-      key USER_TYPE
+      key USER_TYPE,
+      case USER_TYPE
+        when '1' then 
+          true
+        when '2' then 
+          false
+        else false end as AUTH : Boolean
     }
     where
-      USER_ID = (
-            select user from USER_CODE
-          );
+      USER_ID = COALESCE($user, 'anonymous');
 
   entity SYS_T13_ATTACHMENT  as 
     select from SYS.T13_ATTACHMENT {

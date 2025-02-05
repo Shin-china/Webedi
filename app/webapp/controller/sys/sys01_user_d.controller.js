@@ -83,11 +83,13 @@ sap.ui.define([
 			});
 
 
-			that.byId("smartTable1").rebindTable();
-			that.byId("smartTable2").rebindTable();
+			
+			
 			that.byId("smartTable3").rebindTable();
 			that.byId("smartTable4").rebindTable();
-			that.byId("roleTable2").rebindTable();
+			
+			// that.byId("roleTable").rebindTable();
+			// that.byId("roleTable2").rebindTable();
 
 		},
 		_onRouteMatchedCreate:function(oEvent){
@@ -108,6 +110,12 @@ sap.ui.define([
 			})
 
 			that.getView().setBindingContext(newHeaderContext);
+			
+			
+			that.byId("smartTable3").rebindTable();
+			that.byId("smartTable4").rebindTable();
+			// that.byId("roleTable").rebindTable();
+			that.byId("roleTable2").rebindTable();
 
 		},
 		//Edit Button
@@ -120,6 +128,7 @@ sap.ui.define([
 		//Save Button
 		onSave:function(){
 			const that = this;
+			
 			//清除消息
 			this.MessageTools._clearMessage();
 			var noErrorFlag = that.MessageTools._checkInputErrorMSG();
@@ -127,14 +136,14 @@ sap.ui.define([
 				noErrorFlag = that._checkHead();
 			}
 
-
+			
 			//保存数据
 			var context = this._getHeadBingdingContext();
 			var dateT = this.CommTools._getDateYYYYMMDD(context.VALID_DATE_TO);
 			var dateF = this.CommTools._getDateYYYYMMDD(context.VALID_DATE_FROM);
 			var userStatus = this.byId("idSelectList").getSelectedKey();
 			var userType = this.byId("idSelectList7").getSelectedKey();
-			var plantIdList = this._getRootId("idTable1","PLANT_ID");
+			var plantIdList = [];
 			var bpIdList = this._getRootId("idTable3","BP_ID");
 			var rootIdList = this._getRootId("roleTable", "ID");
 			var itemObj = {
@@ -151,6 +160,7 @@ sap.ui.define([
 
 			var resStr = { userJson: JSON.stringify(itemObj) };
 			if(noErrorFlag){
+				that._setBusy(true);
 				if(this._id){
 					//Create New User
 					this.getModel().callFunction("/SYS01_USER_editUser", {
@@ -160,9 +170,11 @@ sap.ui.define([
 							that._id = context.ID;
 							that._setEditable(false);
 							that.getModel().refresh();
+							that._setBusy(false);
 						},
 						error: function(oError) {
 							that._setEditable(true);
+							that._setBusy(false);
 						}
 					})
 
@@ -176,8 +188,10 @@ sap.ui.define([
 							that._id = context.ID;
 							that.byId("USER_ID").rebindTable(smartTable1);
 							that.getModel().refresh();
+							that._setBusy(false);
 						},
 						error: function(oError) {
+							that._setBusy(false);
 							
 						}
 					})
@@ -286,13 +300,13 @@ sap.ui.define([
 		_addSelection:function(headID){
 
 			//获取所有工厂数据
-			var plantTable = this.byId("idTable1");
+			// var plantTable = this.byId("idTable1");
 			// 获取明细权限数据
 			var roleTableTable = this.byId("roleTable");
 			//获取所有BP数据
 			var bpTable = this.byId("idTable3");
 			//清空工厂选择项
-			plantTable.clearSelection();
+			// plantTable.clearSelection();
 			roleTableTable.clearSelection();
 			bpTable.clearSelection();
 
@@ -323,24 +337,24 @@ sap.ui.define([
 				// that._setBusy1(false);
 				that._setBusy(false);
 				});
-			//获取已选择的工厂数据
-			this._getUserPlantData(headID,true)
-			.then((data) =>{
-				that.plantData = data;
-				return that._getPlantData(headID);
-			}).then((oTable) =>{
-			    var data = that.plantData.results;
-				var tableContext = oTable.results;
-				//对比工厂数据对选中的进行选中
-				for(var index = 0; index < tableContext.length; index++){
-					for(var i = 0; i < data.length; i++){
-						if(tableContext[index].PLANT_ID === data[i].PLANT_ID){
-							//plantTable.setSelectedIndex(index,index);
-							plantTable.addSelectionInterval(index,index);
-						}
-					}
-				}
-			});
+			//获取已选择的工厂数据//删除工厂选择
+			// this._getUserPlantData(headID,true)
+			// .then((data) =>{
+			// 	that.plantData = data;
+			// 	return that._getPlantData(headID);
+			// }).then((oTable) =>{
+			//     var data = that.plantData.results;
+			// 	var tableContext = oTable.results;
+			// 	//对比工厂数据对选中的进行选中
+			// 	for(var index = 0; index < tableContext.length; index++){
+			// 		for(var i = 0; i < data.length; i++){
+			// 			if(tableContext[index].PLANT_ID === data[i].PLANT_ID){
+			// 				//plantTable.setSelectedIndex(index,index);
+			// 				plantTable.addSelectionInterval(index,index);
+			// 			}
+			// 		}
+			// 	}
+			// });
 
 			//获取已选择的BP数据
 			this._getUserBpData(headID,true)
@@ -354,7 +368,6 @@ sap.ui.define([
 				for(var index = 0; index < tableContext.length; index++){
 					for(var i = 0; i < data.length; i++){
 						if(tableContext[index].BP_ID === data[i].BP_ID){
-							//plantTable.setSelectedIndex(index,index);
 							bpTable.addSelectionInterval(index,index);
 						}
 					}

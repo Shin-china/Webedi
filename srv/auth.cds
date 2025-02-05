@@ -60,4 +60,20 @@ extend service TableService {
     };
 
 
+//数据权限相关，如果usertype为1则内部员工，2为供应商，内部员工可以查看所有数据，供应商只能查看自己数据
+  entity AUTH_USER_BP     as
+    select from TableService.SYS_T01_USER as T01
+    inner join TableService.SYS_T14_USER_2_BP as T02
+      on T01.ID = T02.USER_ID
+    
+    distinct{
+      key T02.BP_ID
+    } where
+      T01.USER_ID = COALESCE(
+        $user, 'anonymous'
+      );
+
+
+
+
 }

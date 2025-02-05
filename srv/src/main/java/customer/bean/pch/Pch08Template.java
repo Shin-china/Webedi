@@ -70,7 +70,7 @@ public class Pch08Template {
     private String UWEB_USER;
 
     @JSONField(name = "BP_NUMBER")
-    private Integer BP_NUMBER;
+    private String BP_NUMBER;
 
     @JSONField(name = "PERSON_NO1")
     private BigDecimal PERSON_NO1;
@@ -348,13 +348,7 @@ public class Pch08Template {
         UWEB_USER = uWEB_USER;
     }
 
-    public Integer getBP_NUMBER() {
-        return BP_NUMBER;
-    }
-
-    public void setBP_NUMBER(Integer bP_NUMBER) {
-        BP_NUMBER = bP_NUMBER;
-    }
+  
 
     public String getYLP() {
         return YLP;
@@ -643,5 +637,15 @@ public class Pch08Template {
     public void setPERSON_NO1(BigDecimal pERSON_NO1) {
         PERSON_NO1 = pERSON_NO1;
     }
+
+    public String getBP_NUMBER() {
+        return BP_NUMBER;
+    }
+
+    public void setBP_NUMBER(String BP_NUMBER) {
+        this.BP_NUMBER = BP_NUMBER;
+    }
+
+
 
 }

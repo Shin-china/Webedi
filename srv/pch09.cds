@@ -7,7 +7,13 @@ extend service TableService {
 
 
     entity PCH09_LIST as
-        select from PCH.T09_FORCAST as T01 distinct {
+        select from PCH.T09_FORCAST as T01 
+        join view.SYS_T01_USER as Tu
+            on Tu.USER_ID = COALESCE($user, 'anonymous')
+                and (Tu.USER_TYPE = '1' or (T01.SUPPLIER in (select BP_ID from view.AUTH_USER_BP   ) and Tu.USER_TYPE = '2') )
+
+        
+        distinct {
 
             key T01.PUR_GROUP,
             key T01.SUPPLIER,

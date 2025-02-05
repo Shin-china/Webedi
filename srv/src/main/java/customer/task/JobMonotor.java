@@ -1,18 +1,6 @@
 package customer.task;
 
 import java.io.IOException;
-import com.sap.cds.services.persistence.PersistenceService;
-
-import customer.bean.ifm.IFLog;
-import customer.dao.sys.IFSManageDao;
-import customer.service.ifm.Ifm01BpService;
-import customer.service.ifm.Ifm02MstService;
-// import customer.service.ifm.Ifm03PoService;
-import customer.service.ifm.Ifm03PoService;
-import customer.service.ifm.Ifm04PrService;
-// import customer.service.ifm.Ifm05PrService;
-import customer.service.ifm.Ifm05PayService;
-import customer.service.ifm.Ifm06BpPurchaseService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +8,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+
+import customer.bean.ifm.IFLog;
+import customer.dao.sys.IFSManageDao;
+import customer.service.ifm.Ifm01BpService;
+import customer.service.ifm.Ifm02MstService;
+import customer.service.ifm.Ifm03PoService;
+import customer.service.ifm.Ifm04PrService;
+import customer.service.ifm.Ifm05PayService;
+import customer.service.ifm.Ifm06BpPurchaseService;
 
 @Component
 @Lazy(false)
@@ -71,7 +68,7 @@ public class JobMonotor {
     }
 
     @Scheduled(cron = "0 0/30 * * * ?") // 每30分钟执行一次
-    public void poolMonitor3() throws IOException {
+    public void poolMonitor3() throws Exception {
 
         // IF041 po同期 自开发
         IFLog ifLog = new IFLog(IFSManageDao.IF_S4_PO);

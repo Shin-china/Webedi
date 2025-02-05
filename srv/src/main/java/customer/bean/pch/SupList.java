@@ -31,6 +31,7 @@ public class SupList {
     private String Purchaseorderitemmaterial;
     private String Documentcurrency;
     private BigDecimal Supplierinvoiceitemamount;
+    private BigDecimal SuplrInvcItmUnplndDelivCost;
     private BigDecimal Quantityinpurchaseorderunit;
     private String Purchaseorderquantityunit;
     private String Costcenter;

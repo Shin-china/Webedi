@@ -120,7 +120,7 @@ public class CommonHandler implements EventHandler {
 
     // PO 接口外部调用
     @On(event = "IF_S4_PO")
-    public void IF_S4_BP(IFS4POContext context) throws IOException {
+    public void IF_S4_BP(IFS4POContext context) throws Exception {
 
         IFLog ifLog = new IFLog(IFSManageDao.IF_S4_PO);
         ifm03PoService.process(ifLog);

@@ -1,4 +1,4 @@
-sap.ui.define(["umc/app/controller/BaseController", "sap/m/MessageToast", "sap/m/BusyDialog",], function (Controller, MessageToast, BusyDialog) {
+sap.ui.define(["umc/app/controller/BaseController", "sap/m/MessageToast", "sap/m/BusyDialog","sap/m/MessageBox"], function (Controller, MessageToast, BusyDialog,MessageBox) {
   "use strict";
 
   var _objectCommData = {
@@ -78,6 +78,7 @@ sap.ui.define(["umc/app/controller/BaseController", "sap/m/MessageToast", "sap/m
             jsonModel = new sap.ui.model.json.JSONModel();
             view.setModel(jsonModel, "workInfo");
             jsonModel.setData(oData.results);
+            that.getModel().refresh();
 
             resolve(oData);
 
@@ -485,10 +486,10 @@ sap.ui.define(["umc/app/controller/BaseController", "sap/m/MessageToast", "sap/m
                       if (BP_NUMBERset.size > 0) {
                           var H_CODE = "MM0002";
                           var BP_NUMBER = BP_NUMBERset;
-                          var entity = "/SYS_T08_COM_OP_D";
+                          var entity = "/SYS07_EMAIL";
                           var supplierName = "";
             
-                          that._readHeademail(H_CODE, BP_NUMBER, entity).then((oHeadData) => {
+                          that._readHeadEmail(H_CODE, BP_NUMBER, entity).then((oHeadData) => {
                               if (oHeadData.results.length == 0) {
                                   that._setBusy(false);
                                   sap.m.MessageToast.show("BPに対してメールが設定されていません、送信できません。");
@@ -498,12 +499,18 @@ sap.ui.define(["umc/app/controller/BaseController", "sap/m/MessageToast", "sap/m
                               
                               // 多人邮件地址（，分隔隔开）
                               let mail = oHeadData.results && oHeadData.results.length > 0 ?
-                                  oHeadData.results.map(result => result.VALUE02).join(", ") : '';
+                                  oHeadData.results.map(result => result.EMAIL_ADDRESS).join(", ") : '';
                               
                               //担当着姓名 替换邮件模板中{absama}
                               let absama = oHeadData.results && oHeadData.results.length > 0 ? 
-                                  oHeadData.results.map(result => result.VALUE03 + " 様").join("  ") : '';
-                              
+                                  oHeadData.results.map(result => result.EMAIL_ADDRESS_NAME + " 様").join("  ") : '';
+                                //Add by stanley 20241230
+                                if (mail == "" || mail == null) {
+                                  that._setBusy(false);
+                                  that.getView().setBusy(false);
+                                  MessageBox.error("仕入先のメールアドレスを取得できません");
+                                  return;
+                                  }
                               // 邮件obj
                               let mailobj = {
                                   emailJson: {
@@ -698,55 +705,51 @@ sap.ui.define(["umc/app/controller/BaseController", "sap/m/MessageToast", "sap/m
       },
 
       
-      _readHeademail: function (a,b, entity) {
-          var that = this;
-          return new Promise(function (resolve, reject) {
-                      // 如果 b 是一个 Set，将其转换为数组
-        
-              var aValues = Array.isArray(b) ? b : Array.from(b);
-              // 动态创建 VALUE01 的过滤器
-        
-              var aValueFilters = aValues.map(function (sValue) {
-                  return new sap.ui.model.Filter({
-                      path: "VALUE01",
-                      operator: sap.ui.model.FilterOperator.Contains,
-                      value1: sValue
-                  });
-              });
-
-              // 将多个 VALUE01 的过滤器组合为一个 OR 过滤器
-              var oValueFilter = new sap.ui.model.Filter({
-                  filters: aValueFilters,
-                  and: false // 使用 OR 逻辑
-              });
-              
-              // 组合其他过滤器
-              var aFilters = [
-                  new sap.ui.model.Filter({
-                      path: "H_CODE",
-                      operator: sap.ui.model.FilterOperator.EQ,
-                      value1: a
-                  }),
-                  oValueFilter, // 动态生成的 OR 过滤器
-                  new sap.ui.model.Filter({
-                      path: "DEL_FLAG",
-                      operator: sap.ui.model.FilterOperator.NE,
-                      value1: "X"
-                    })
-              ];
-              that.getModel().read(entity, {
-                  filters: aFilters,
-                  
-                
-              success: function (oData) {
-                resolve(oData);
-              },
-              error: function (oError) {
-                reject(oError);
-              },
+      _readHeadEmail: function (a, b, entity) {
+        var that = this;
+        return new Promise(function (resolve, reject) {
+            // 如果 b 是一个 Set，将其转换为数组
+            var aValues = Array.isArray(b) ? b : Array.from(b);
+    
+            // 动态创建 VALUE01 的过滤器
+            var aValueFilters = aValues.map(function (sValue) {
+                return new sap.ui.model.Filter({
+                    path: "BP_ID",
+                    operator: sap.ui.model.FilterOperator.Contains,
+                    value1: sValue
+                });
             });
-          });
-        },
+    
+            // 将多个 VALUE01 的过滤器组合为一个 OR 过滤器
+            var oValueFilter = new sap.ui.model.Filter({
+                filters: aValueFilters,
+                and: false // 使用 OR 逻辑
+            });
+    
+            // 组合其他过滤器
+            var aFilters = [
+                new sap.ui.model.Filter({
+                    path: "H_CODE",
+                    operator: sap.ui.model.FilterOperator.EQ,
+                    value1: a
+                }),
+                oValueFilter // 动态生成的 OR 过滤器
+
+            ];
+    
+            // 执行读操作
+            that.getModel().read(entity, {
+                filters: aFilters,
+                success: function (oData) {
+                    resolve(oData);
+                },
+                error: function (oError) {
+                    reject(oError);
+                }
+            });
+        });
+    },
+
     
     /*==============================
 		复制

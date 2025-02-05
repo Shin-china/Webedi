@@ -44,6 +44,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -201,20 +202,24 @@ public class Pch03Handler implements EventHandler {
             pchd03.setCop4(DateTools.getCurrentDateString(pchd03.getPoDDate(), "yyyy-MM-dd"));
             pchd03.setCop5(pchd03.getMatId());
             pchd03.setCop6(pchd03.getPoDTxz01());
-            pchd03.setCop20(pchd03.getSupplierMat());
+
+
+            
             pchd03.setCop7(pchd03.getStorage());
             pchd03.setCop8(pchd03.getCheckOk());
             pchd03.setCop9(pchd03.getBpName1());// name1
             pchd03.setCop10(pchd03.getStorage());
             pchd03.setCop11(pchd03.getPodno());
-            pchd03.setCop12(pchd03.getSupplierMat());
-            pchd03.setCop13(pchd03.getMatId());
+            pchd03.setCop12(pchd03.getCop5());
+            pchd03.setCop13(pchd03.getCop6());
 
-            pchd03.setCop14(pchd03.getCustMaterial());
+            pchd03.setCop14(pchd03.getSupplierMat());
             pchd03.setCop15(pchd03.getBpId());
             pchd03.setCop16(pchd03.getCheckOk());
             pchd03.setCop17(pchd03.getPrBy());
             pchd03.setCop18(pchd03.getPoPurUnit());
+
+            pchd03.setCop20(pchd03.getSupplierMat());
 
             pchd03.setCop21(pchd03.getPodno());// 海外
             pchd03.setCop24(pchd03.getPodno());// 海外
@@ -228,37 +233,60 @@ public class Pch03Handler implements EventHandler {
             String pocdby = getPocdby(pchd03.getPocdby(), pchd03.getSapCdBy());
             pchd03.setSapCdBy(pocdby);
             pchd03.setSapCdBy2(pocdby);
-            // 设置担当者
 
-            pchd03.setZws1(
-                    pchd03.getPodno() + "\n" + strEmpty(pocdby));
-            pchd03.setZws2(strEmpty(pchd03.getSupplierMat()) + "\n" + strEmpty(pchd03.getMatId()));
-            pchd03.setZws3(strEmpty(pchd03.getManuMaterial()) + "\n");
-            pchd03.setZws4(strEmpty(pchd03.getCop2()) + "\n" + strEmpty(pchd03.getStorage()));
-            pchd03.setZws5(strEmpty(pchd03.getPoPurUnit()) + "\n" + strEmpty(pchd03.getMemo()));
+             //设置地址
+            if(StringUtils.isNotBlank(pchd03.getRegions())){
+                if(StringUtils.isNotBlank(pchd03.getPlaceName())){
+                    pchd03.setT03Addr(pchd03.getPlaceName()+" "+strEmpty(pchd03.getRegions()));
+                }
+                else{
+                    pchd03.setT03Addr(strEmpty(pchd03.getRegions()));
+                }
+            }else{
+                pchd03.setT03Addr(strEmpty(pchd03.getPlaceName()));
+            }
+
+           
+           
+            // 设置担当者
+            pchd03.setZws11(strEmpty(pchd03.getPodno()));
+            pchd03.setZws12(strEmpty(pocdby));
+            pchd03.setZws21(strEmpty(pchd03.getSupplierMat()));
+            pchd03.setZws22(strEmpty(pchd03.getPoDTxz01()));
+            pchd03.setZws31(strEmpty(pchd03.getManuMaterial()));
+            pchd03.setZws41(strEmpty(pchd03.getCop2()));
+            pchd03.setZws42(strEmpty(pchd03.getStorage()));
+            pchd03.setZws51(strEmpty(pchd03.getPoPurUnit()));
+            pchd03.setZws52(strEmpty(pchd03.getMemo()));
+
+
+       
+
+
             if (pchd03.getDelPrice() != null && pchd03.getPoPurQty() != null) {
                 pchd03.setZws7(strEmpty(numFromt(
                         NumberTool.toScale(pchd03.getDelPrice().multiply(pchd03.getPoPurQty()),
                                 currency)))
-                        + "\n");
-                pchd03.setZws6(strEmpty(numFromt(pchd03.getDelPrice())) + "\n");
+                        );
+                pchd03.setZws6(strEmpty(numFromt(pchd03.getDelPrice())) );
             }
             // 如果potype为删除是则单价和价格0
             if ("D".equals(pchd03.getPoType())) {
-                pchd03.setZws7("0" + "\n");
-                pchd03.setZws6("0" + "\n");
-                pchd03.setZws4("0" + "\n" + pchd03.getStorage());
+                pchd03.setZws7("0" );
+                pchd03.setZws6("0" );
+                pchd03.setZws41("0" );
+                pchd03.setZws42(strEmpty(pchd03.getStorage()));
             }
 
-            pchd03.setZws8(strEmpty(pchd03.getCurrency()) + "\n");
-            pchd03.setZws9(DateTools.getCurrentDateString(pchd03.getPoDDate()) + "\n");
+            pchd03.setZws8(strEmpty(pchd03.getCurrency()) );
+            pchd03.setZws9(DateTools.getCurrentDateString(pchd03.getPoDDate()));
 
-            System.out.println(pchd03.getSapCdTime());
-            pchd03.setDate1(DateTools.getCurrentDateString(pchd03.getSapCdTime()));
+            // System.out.println(pchd03.getSapCdTime());
+            pchd03.setDate1(DateTools.getCurrentDateString(pchd03.getCdDate()));
 
             pchd03.setDate2(DateTools.getCurrentDateString());
             pchd03.setDate3(DateTools.getCurrentDateString(pchd03.getApprovedate()));
-            pchd03.setDate4(DateTools.getCurrentDateString());
+            pchd03.setDate4(DateTools.getCurrentDateString(pchd03.getApprovedate()));
             List<T08ComOpD> byList = pchD008Dao.getByList(UmcConstants.C_INFO);
             for (T08ComOpD t08ComOpD : byList) {
                 if (UmcConstants.C_INFO_NAME.equals(t08ComOpD.getDName())) {
@@ -278,7 +306,13 @@ public class Pch03Handler implements EventHandler {
                 }
 
             }
-            StringBuilder qrcode = getQrcode(pchd03);
+            StringBuilder qrcode = new StringBuilder();
+            try {
+                qrcode = getQrcode(pchd03);
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
             pchd03.setQrCode(qrcode.toString());
             pchd03.setCop26(qrcode.toString());
             // jcs2设置
@@ -296,8 +330,8 @@ public class Pch03Handler implements EventHandler {
         pchd03.setJcs3(pchd03.getStorage());
         pchd03.setJcs4(pchd03.getSapCdBy());
         pchd03.setJcs5(pchd03.getCop1());
-        pchd03.setJcs6(pchd03.getMatId());
-        pchd03.setJcs7(pchd03.getPoDTxz01());
+        pchd03.setJcs6(pchd03.getCop5());
+        pchd03.setJcs7(pchd03.getCop6());
         pchd03.setJcs8(pchd03.getSupplierMat());
         pchd03.setJcs9(pchd03.getPoDDate2());
         pchd03.setJcs10(pchd03.getPoPurQty2());
@@ -315,7 +349,7 @@ public class Pch03Handler implements EventHandler {
 
     }
 
-    private StringBuilder getQrcode(PchT03PoItemPrint pchd03) {
+    private StringBuilder getQrcode(PchT03PoItemPrint pchd03) throws Exception {
         // 获取qrcode
         StringBuilder qrcode = new StringBuilder();
         // 納入日：
@@ -323,12 +357,12 @@ public class Pch03Handler implements EventHandler {
         // 品目コード：
         qrcode.append(customer.tool.StringTool.padOrTruncate(pchd03.getCop5(), 40));
         // 品名：
-        qrcode.append(customer.tool.StringTool.padOrTruncate(pchd03.getCop6(), 40));
+        qrcode.append(outStringByByte(pchd03.getCop6(), 40));
         // P/N：
         qrcode.append(customer.tool.StringTool.padOrTruncate(pchd03.getCustMaterial(),
                 40));
         // 納品場所：
-        qrcode.append(customer.tool.StringTool.padOrTruncate(pchd03.getStorage(),
+        qrcode.append(outStringByByte(pchd03.getStorage(),
                 40));
         // 得意先：
         qrcode.append(customer.tool.StringTool.padOrTruncate(pchd03.getBpId(), 10));
@@ -342,7 +376,21 @@ public class Pch03Handler implements EventHandler {
                 18));
         return qrcode;
     }
+  public static String outStringByByte(String str, int len) throws IOException {
+        
+        byte[] btf = str.getBytes("Shift_JIS");
+        if(btf.length <= len){
+            return new String(btf, 0, btf.length, "Shift_JIS");
+        }
+        System.out.println(btf);
+        String string = new String(btf, 0, len, "Shift_JIS");
 
+        if (!string.endsWith("�"))
+        return new String(btf, 0, len, "Shift_JIS");
+        else
+        return new String(btf, 0, len - 1, "Shift_JIS");
+
+    }
     private String numFromt(BigDecimal poPurQty) {
         // 获取小数部分
         BigDecimal fractionalPart = poPurQty.subtract(poPurQty.setScale(0,

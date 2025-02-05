@@ -12,8 +12,15 @@ extend service TableService {
         inner join PCH.T04_PAYMENT_H as T04
             on T05.INV_NO = T04.INV_NO
              and (T04.HEADER_TEXT <> '仮払消費税調整' OR T04.HEADER_TEXT IS NULL OR TRIM(T04.HEADER_TEXT) = '')
+        join view.SYS_T01_USER as Tu
+            on Tu.USER_ID = COALESCE($user, 'anonymous')
+                and (Tu.USER_TYPE = '1' or (T04.SUPPLIER in (select BP_ID from view.AUTH_USER_BP   ) and Tu.USER_TYPE = '2') )
+
         left join PCH.T01_PO_H as T01
             on T05.PO_NO = T01.PO_NO
+        left join PCH.T02_PO_D as T02
+            on T05.PO_NO = T02.PO_NO
+            and T05.D_NO = T02.D_NO
         left join MST.T03_SAP_BP as T03
             on T04.SUPPLIER = T03.BP_ID
         left join SYS.T08_COM_OP_D as T08
@@ -26,6 +33,7 @@ extend service TableService {
             key T05.D_NO, // 明細
             key T04.SUPPLIER, // 仕入先
             key T05.ITEM_NO,
+                T02.SUPPLIER_MAT,
                 T05.Company_Code,
                 T04.SUPPLIER_DESCRIPTION, // 仕入先名称
                 T04.INV_CONFIRMATION, // インボイス
@@ -302,7 +310,7 @@ extend service TableService {
      
                 '(' || T01.SUPPLIER || ')' as SUPPLIER_1          : String
 
-        } 
+        } where TAX_CODE in ('V3', 'V4');
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -911,6 +919,9 @@ extend service TableService {
             on  T01.SUPPLIER  = T03.SUPPLIER
             and T01.INV_MONTH = T03.INV_MONTH
             and T01.Company_Code  = T03.Company_Code
+        join view.SYS_T01_USER as Tu
+            on Tu.USER_ID = COALESCE($user, 'anonymous')
+                and (Tu.USER_TYPE = '1' or (T01.SUPPLIER in (select BP_ID from view.AUTH_USER_BP   ) and Tu.USER_TYPE = '2') )
 
         distinct {
             key T01.SUPPLIER,

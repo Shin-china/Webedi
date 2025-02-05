@@ -3,6 +3,10 @@
  */
 package customer.tool;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * @author h-xiong
  *
@@ -30,6 +34,8 @@ public class UWebConstants {
 	public final static String JPY = "JPY"; // 日元
 	public final static String USD = "USD"; // 美元元
 	public final static String EUR = "EUR"; // 欧元元
+
+	public static final List<String> PLANT_1100_ORG = new ArrayList<>(Arrays.asList("1100", "1000"));
 
 
 	public final static String PCH04_TEP_PATH = "template/支払通知照会.xlsx"; // exc模板路径

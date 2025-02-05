@@ -26,6 +26,8 @@ public class DateTools {
     private static final DateTimeFormatter dateFormatter_8 = DateTimeFormatter.ofPattern(FORMATTER_DATE_8);
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(FORMATTER_DATETIME);
 
+    private static final DateTimeFormatter dateFormatter_14 = DateTimeFormatter.ofPattern(FORMATTER_DATETIME_14);
+
     // ZoneId.of( "UTC+9") 日本时区
     // ZoneId.of( "UTC+8") 中国时区
     public static Instant getInstantNow() { // 得到0时区时间戳。没有时区信息
@@ -261,4 +263,9 @@ public class DateTools {
         LocalDate today = LocalDate.now();
         return date.isBefore(today);
     }
+
+    public static String get14DateStr(LocalDateTime localDateTime) {
+        return localDateTime.format(dateFormatter_14);
+    }
+
 }

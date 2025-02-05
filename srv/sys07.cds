@@ -4,17 +4,20 @@ using {SYS} from '../db/model-sys';
 extend service TableService {
 
   entity SYS07_EMAIL  as
-    select from SYS.T16_EMAIL_H 
+    select from SYS.T16_EMAIL_H as t01
+    inner join SYS.T17_EMAIL_D as t02
+    on t01.ID = t02.H_ID
 
     {
-      key ID,
-      key TO_ITEMS.ID AS D_ID,
-         H_CODE,
-         H_NAME,
-         BP_ID,
-         TO_ITEMS.EMAIL_ADDRESS,
-         TO_ITEMS.EMAIL_ADDRESS_NAME,
-         TO_ITEMS.CD_BY,TO_ITEMS.CD_TIME,TO_ITEMS.UP_BY,TO_ITEMS.UP_TIME
+      key t01.ID,
+      key t02.ID AS D_ID,
+         t01.H_CODE,
+         t01.H_NAME,
+         t01.BP_ID,
+         t01.PLANT_ID,
+         t02.EMAIL_ADDRESS,
+         t02.EMAIL_ADDRESS_NAME,
+         t02.CD_BY,t02.CD_TIME,t02.UP_BY,t02.UP_TIME
 
     };
 

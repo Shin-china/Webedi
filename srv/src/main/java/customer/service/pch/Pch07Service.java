@@ -283,6 +283,7 @@ public class Pch07Service {
         t07QuotationD2.setManufactMaterial(data.getMANUFACT_MATERIAL());
         t07QuotationD2.setSalesNumber(data.getSALES_NUMBER());
         t07QuotationD2.setPlantId(data.getPLANT_ID());
+        t07QuotationD2.setBpNumber(data.getBP_NUMBER());
         // t06QuotationH.setPlantId(data.getPLANT_ID());
 
         pchD007.insert(t07QuotationD2);
@@ -303,6 +304,7 @@ public class Pch07Service {
         t06QuotationH.setValidateEnd(validateEnd);
 
         t06QuotationH.setQuoNumber(data.getQUO_NUMBER());
+        t06QuotationH.setStatus("1");
 
         pchD006.insert(t06QuotationH);
     }
@@ -316,7 +318,7 @@ public class Pch07Service {
         ar.add(map);
 
         // 获取 Web Service 配置信息
-        T11IfManager webServiceConfig = ifsManageDao.getByCode("MM036");
+        T11IfManager webServiceConfig = ifsManageDao.getByCode("IF056");
         // 调用 Web Service 的 get 方法
         String response = S4OdataTools.post(webServiceConfig, JSON.toJSONString(ar), null);
         return response;
@@ -372,7 +374,7 @@ public class Pch07Service {
             t07QuotationD2.setCurrency(firstItem.getString("Currency"));
             t07QuotationD2.setPlantId(data.getPLANT_ID());
             t07QuotationD2.setMaterialNumber(data.getMATERIAL_NUMBER());
-            t07QuotationD2.setBpNumber(Integer.parseInt(data.getBP_NUMBER()));
+            t07QuotationD2.setBpNumber(data.getBP_NUMBER());
 
             pchD007.updateT07(t07QuotationD2);
             
