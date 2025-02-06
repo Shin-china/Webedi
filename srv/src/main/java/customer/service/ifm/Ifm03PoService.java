@@ -82,7 +82,7 @@ public class Ifm03PoService extends IfmService {
         logger.info(info.getNextPara()); // 2024-10-15 03:38:55
 
         S4Para prar = new S4Para();
-        prar.setPlant(ConfigConstants.SYSTEM_PLANT_LIST.get(0));
+        prar.setPlant("");
         // 工厂追加不追加工厂了
         // if (ConfigConstants.SYSTEM_PLANT_LIST.size() == 1) { 
         //     prar.setPlant(ConfigConstants.SYSTEM_PLANT_LIST.get(0));
