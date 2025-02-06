@@ -34,6 +34,8 @@ import customer.tool.StringTool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import customer.tool.UWebConstants;
+
 @Component
 public class Ifm04PrService extends IfmService {
 
@@ -94,7 +96,7 @@ public class Ifm04PrService extends IfmService {
 
                 try {
                     //工厂限制为配置表工厂
-                    if(this.checkPlant(v.getPlant())){
+                    if(this.checkPlant(v.getPlant(),UWebConstants.IF065_PLANT)){
 
                     
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
@@ -135,7 +137,7 @@ public class Ifm04PrService extends IfmService {
                 }
 
                 } catch (Exception e) {
-                    log.addSuccessCount();
+                    log.addErrorCount();
                     e.printStackTrace();
                     
 

@@ -43,9 +43,12 @@ import customer.service.comm.TranscationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.alibaba.excel.util.StringUtils;
+
 import customer.bean.s4.S4Para;
 import customer.comm.tool.DateTools;
 import customer.tool.StringTool;
+import customer.tool.UWebConstants;
 
 @Component
 public class Ifm03PoService extends IfmService {
@@ -96,6 +99,9 @@ public class Ifm03PoService extends IfmService {
 
         log.gett15log().setIfPara(JSON.toJSONString(prar));
         String a = S4OdataTools.post2(info,JSON.toJSONString(prar),null);
+        if(StringUtils.isEmpty(a)){
+            return  new SapPchRoot();
+        }
         SapPchRoot root = JSON.parseObject(a, SapPchRoot.class);
         return root;
     }
@@ -161,7 +167,7 @@ public class Ifm03PoService extends IfmService {
             for (Item Items : sapPchRoot.getItems()) {
 
                 //工厂限制为配置表工厂
-                if(this.checkPlant(Items.getPlant())||this.checkOrg(Items.getPurchasingorganization())){
+                if(this.checkPlant(Items.getPlant(),UWebConstants.IF041_PLANT_ORG)||this.checkOrg(Items.getPurchasingorganization())){
                 
 
                 if (!poNo.equals(Items.getPurchaseorder()))
