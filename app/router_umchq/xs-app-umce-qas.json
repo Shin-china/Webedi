@@ -5,7 +5,7 @@
     {
       "source": "^/srv/(.*)$",
       "target": "$1",
-      "destination": "uweb_umce_qas_api",
+      "destination": "uweb_umch_qas_api",
       "authenticationType": "xsuaa",
       "csrfProtection": false
     },
@@ -29,7 +29,7 @@
     {
       "source": "^/webapp/srv/(.*)$",
       "target": "$1",
-      "destination": "uweb_umce_qas_api",
+      "destination": "uweb_umch_qas_api",
       "authenticationType": "xsuaa",
       "csrfProtection": false
     },

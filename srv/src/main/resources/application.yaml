@@ -51,11 +51,9 @@ cds:
   drafts:
     deletionTimeout: 1D
   security:
-    authentication:
-      mode: never #访问CDS不需要登录
     mock:
       users:
-        - name: tom
+        - name: stanley.shi@sh.shin-china.com
           password: 1
           roles:
             - Administrators
