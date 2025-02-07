@@ -35,6 +35,10 @@ public class UWebConstants {
 	public final static String USD = "USD"; // 美元元
 	public final static String EUR = "EUR"; // 欧元元
 
+	public final static String IF065_PLANT = "IF065_PLANT"; // IF065プラント設定
+	public final static String IF041_PLANT_ORG = "IF041_PLANT_ORG"; // IF041プラントと購買組織設定
+	public final static String IF042_COMPANY_CODE = "IF042_COMPANY_CODE"; // IF042会社コード設定
+
 	public static final List<String> PLANT_1100_ORG = new ArrayList<>(Arrays.asList("1100", "1000"));
 
 

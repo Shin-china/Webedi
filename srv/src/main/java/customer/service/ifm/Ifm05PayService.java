@@ -34,6 +34,7 @@ import customer.dao.sys.IFSManageDao;
 import customer.dao.sys.SysD008Dao;
 import customer.odata.S4OdataTools;
 import customer.service.comm.IfmService;
+import customer.tool.UWebConstants;
 
 @Component
 public class Ifm05PayService extends IfmService {
@@ -63,7 +64,7 @@ public class Ifm05PayService extends IfmService {
 
             SapSupRoot data = get(log);
 
-            log.setTotalNum(data.getItems().size());// 得到记录总数
+            // log.setTotalNum(data.getItems().size());// 得到记录总数
             // int pageCount = log.getPageCount(); // 得到页数
 
             onePage(log, data.getItems()); // 处理第0页的数据
@@ -87,10 +88,12 @@ public class Ifm05PayService extends IfmService {
         if (items != null && items.size() > 0) {
 
             for (SupList suplist : items) {
-
+                //工厂限制为配置表工厂
+                if(this.checkPlant(suplist.getCompanycode(),UWebConstants.IF042_COMPANY_CODE)){
                 TransactionStatus s = null;
 
                 try {
+                  
 
                     s = this.begin(log.getTd()); // 开启新事务
 
@@ -145,16 +148,18 @@ public class Ifm05PayService extends IfmService {
                     p.setMatDesc(suplist.getPurchaseorderitemtext());
 
                     PchDao.modifyT05(p);
-                    log.addSuccessNum();
+                    log.addSuccessCount();
                     this.commit(s);
+                
 
                 } catch (Exception e) {
+                    log.addErrorCount();
                     e.printStackTrace();
 
                 } finally {
                     this.rollback(s); // 回滚事务
                 }
-
+            }
             }
         }
     }

@@ -126,11 +126,13 @@ public class IFLog {
         t15log.setErrorNum(num);
     }
     public void addSuccessCount() {
-        t15log.setIgnoreNum(t15log.getIgnoreNum() + 1);
+        t15log.setSuccessNum(t15log.getSuccessNum() + 1);
+        t15log.setTotalNum(t15log.getTotalNum()+1);
         
     }
     public void addErrorCount() {
-        t15log.setIgnoreNum(t15log.getErrorNum() + 1);
+        t15log.setErrorNum(t15log.getErrorNum() + 1);
+        t15log.setTotalNum(t15log.getTotalNum()+1);
         
     }
     public void addIgnoreNum() {

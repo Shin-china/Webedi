@@ -11,6 +11,7 @@ import com.sap.cloud.sdk.datamodel.odata.client.request.ODataRequestCreate;
 import com.sap.cloud.sdk.datamodel.odata.client.request.ODataRequestRead;
 import com.sap.cloud.sdk.datamodel.odata.client.request.ODataRequestResultGeneric;
 
+import org.apache.http.HttpEntity;
 import org.apache.http.client.HttpClient;
 import org.apache.logging.log4j.util.Base64Util;
 import org.slf4j.Logger;
@@ -88,6 +89,11 @@ public class S4OdataTools extends S4OdataBase {
 
         ODataRequestResultGeneric resultGene = requestcreate.execute(client);
 
+        HttpEntity entity = resultGene.getHttpResponse().getEntity();
+        if (resultGene == null || resultGene.getHttpResponse() == null || resultGene.getHttpResponse().getEntity() == null) {
+            logger.info("HTTP response or entity is null, returning empty string");
+            return "";
+        }
         final InputStream httpResponseContent = resultGene.getHttpResponse().getEntity().getContent();
         String a = StringTool.InputStream2String(httpResponseContent);
         logger.info("post return=============================");
