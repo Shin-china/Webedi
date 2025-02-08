@@ -64,6 +64,7 @@ public class Ifm03PoService extends IfmService {
     @Autowired
     private IFSManageDao ifsManageDao;
 
+
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
 
     public SapPchRoot get() throws UnsupportedOperationException, IOException {
@@ -107,6 +108,9 @@ public class Ifm03PoService extends IfmService {
     }
 
     public void process(IFLog log) throws Exception {
+        //初始化工厂判断条件
+        this.t08ComOpD = sysD08Dao.getT08ByHcode(UWebConstants.IF041_PLANT_ORG).get(0);
+
         log.setTd(super.transactionInit()); // 事务初始换
         this.insertLog(log);
         Pch01Sap sap = new Pch01Sap();
@@ -167,7 +171,7 @@ public class Ifm03PoService extends IfmService {
             for (Item Items : sapPchRoot.getItems()) {
 
                 //工厂限制为配置表工厂
-                if(this.checkPlant(Items.getPlant(),UWebConstants.IF041_PLANT_ORG)||this.checkOrg(Items.getPurchasingorganization())){
+                if(this.checkPlant(Items.getPlant())||this.checkOrg(Items.getPurchasingorganization())){
                 
 
                 if (!poNo.equals(Items.getPurchaseorder()))
@@ -258,6 +262,7 @@ public class Ifm03PoService extends IfmService {
                     o.setPocdby(Items.getCorrespncinternalreference());
                     o.setSapCdBy(Items.getCreatedbyuser());
                     o.setPoOrg(Items.getPurchasingorganization());
+                    o.setSapCdByText(StringUtils.isBlank(Items.getSapCdByText())?"":Items.getSapCdByText());
 
                     PchDao.modify(o);
 

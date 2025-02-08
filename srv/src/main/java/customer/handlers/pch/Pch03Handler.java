@@ -230,7 +230,7 @@ public class Pch03Handler implements EventHandler {
             pchd03.setCop19(pchd03.getCop27());
             // 公司固定值取出
             // 発注担当者
-            String pocdby = getPocdby(pchd03.getPocdby(), pchd03.getSapCdBy());
+            String pocdby = getPocdby(pchd03.getPocdby(), pchd03.getSapCdByText());
             pchd03.setSapCdBy(pocdby);
             pchd03.setSapCdBy2(pocdby);
 
@@ -454,7 +454,7 @@ public class Pch03Handler implements EventHandler {
             // 先获取品目最后两位
 
             // 発注担当者
-            String pocdby = getPocdby(pchd03.getPocdby(), pchd03.getSapCdBy());
+            String pocdby = getPocdby(pchd03.getPocdby(), pchd03.getSapCdByText());
             pchd03.setByname(pocdby);
 
             // 获取po

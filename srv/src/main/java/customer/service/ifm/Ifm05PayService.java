@@ -56,6 +56,9 @@ public class Ifm05PayService extends IfmService {
     }
 
     public void process(IFLog log) {
+        //初始化工厂判断条件
+        this.t08ComOpD = sysD08Dao.getT08ByHcode(UWebConstants.IF042_COMPANY_CODE).get(0);
+
 
         log.setTd(super.transactionInit()); // 事务初始换
 
@@ -89,7 +92,8 @@ public class Ifm05PayService extends IfmService {
 
             for (SupList suplist : items) {
                 //工厂限制为配置表工厂
-                if(this.checkPlant(suplist.getCompanycode(),UWebConstants.IF042_COMPANY_CODE)){
+                //公司代码=1400)or(公司代码=1100 &工厂=1400)
+                if(this.checkPlant(suplist.getCompanycode())|| "1100".equals(suplist.getCompanycode()) && this.checkPlant(suplist.getPlant())){
                 TransactionStatus s = null;
 
                 try {

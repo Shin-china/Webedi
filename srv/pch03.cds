@@ -71,6 +71,7 @@ extend service TableService {
                 T02.SAP_CD_BY, // SAP担当者
                 T02.TO_MAT.TO_SAP_BP.BP_NAME1 as MANU_MATERIAL,
                 T01.POCDBY,//自设参照者
+                T01.SAP_CD_BY_TEXT , // 発注担当者
                 T01.approvedate, //承認日
                 T01.CD_DATE, //承認日
 
@@ -258,6 +259,7 @@ extend service TableService {
                 @title: '{i18n>CD_BY}'
                '' AS BYNAME : String(50), // 発注担当者
                 T01.POCDBY , // 発注担当者
+                T01.SAP_CD_BY_TEXT , // 発注担当者
                 @title: '{i18n>CD_BY}'
                 T02.SAP_CD_BY, // SAP担当者
                 T02.INT_NUMBER,
@@ -353,6 +355,7 @@ extend service TableService {
                 @title: '{i18n>CD_BY}'
                 '' AS BYNAME : String(50), // 発注担当者
                 T01.POCDBY , // 発注担当者
+                T01.SAP_CD_BY_TEXT , // 発注担当者
                 @title: '{i18n>CD_BY}'
                 T02.SAP_CD_BY, // SAP担当者
                 T02.INT_NUMBER,

@@ -37,6 +37,21 @@ public class IfmService extends TranscationService {
     @Autowired
     public ResourceBundleMessageSource rbms;
 
+    public T08ComOpD t08ComOpD = T08ComOpD.create();
+
+    //考虑到每次数据都会调用数据库，所以把数据缓存起来
+    /**
+     * 输入code提前得到要判断的数据
+     */
+    public IfmService(String code) {
+         t08ComOpD = sysD08Dao.getT08ByHcode(code).get(0);
+    }
+    public IfmService() {
+        
+    }
+
+    
+
     //暂时不需要md5
     // @Autowired
     // public IFMd5ValueDao md5Dao;
@@ -83,8 +98,8 @@ public class IfmService extends TranscationService {
      * @param o 购买组织
      * @return
      */
-    public boolean checkPlant(String v,String code) {
-        T08ComOpD t08ComOpD = sysD08Dao.getT08ByHcode(code).get(0);
+    public boolean checkPlant(String v) {
+        
         if(t08ComOpD.getValue01().equals(v)){
             return true;
         }
@@ -98,7 +113,7 @@ public class IfmService extends TranscationService {
      * @return
      */
     public boolean checkOrg(String org) {
-        T08ComOpD t08ComOpD = sysD08Dao.getT08ByHcode(UWebConstants.IF041_PLANT_ORG).get(0);
+        
 
         String[] split = t08ComOpD.getValue02().split(",");
         List<String> asList = Arrays.asList(split);

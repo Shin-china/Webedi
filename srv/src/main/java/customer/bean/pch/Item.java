@@ -39,6 +39,7 @@ public class Item {
     private String Taxamount;
     private String Approvedate;
     private String Purchasingorganization;
+    private String SapCdByText;
 
     private List<Confirmation> Confirmation = new ArrayList<Confirmation>();
 

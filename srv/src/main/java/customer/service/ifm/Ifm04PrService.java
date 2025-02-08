@@ -47,6 +47,8 @@ public class Ifm04PrService extends IfmService {
     @Autowired
     private PurchaseDataDao PchDao;
 
+
+
     public SapPrRoot get(IFLog log) throws Exception {
 
         T11IfManager info = this.getIfMnager(log);
@@ -59,6 +61,8 @@ public class Ifm04PrService extends IfmService {
     }
 
     public void process(IFLog log) {
+        //初始化工厂判断条件
+        this.t08ComOpD = sysD08Dao.getT08ByHcode(UWebConstants.IF065_PLANT).get(0);
 
         log.setTd(super.transactionInit()); // 事务初始换
 
@@ -96,7 +100,7 @@ public class Ifm04PrService extends IfmService {
 
                 try {
                     //工厂限制为配置表工厂
-                    if(this.checkPlant(v.getPlant(),UWebConstants.IF065_PLANT)){
+                    if(this.checkPlant(v.getPlant())){
 
                     
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
