@@ -20,7 +20,27 @@ extend service TableService {
             T10.MENU_VALUECOLOR,
             T10.MENU_VALUE
         }
-        
+        where
+      T10.MENU_TYPE = 'UI5'
+      and (
+           T10.MENU_ID || '_VIEW' in (
+          select from USER_AUTH_LIST as MAL {
+            key MAL.AUTH_ID
+          }
+        )
+        or T10.MENU_ID || '_ALL'  in (
+          select from USER_AUTH_LIST as MAL {
+            key MAL.AUTH_ID
+          }
+        )
+        or T10.MENU_ID || '_CREAT'  in (
+          select from USER_AUTH_LIST as MAL {
+            key MAL.AUTH_ID
+          }
+        )
+      );
+
+      
   //用户→权限视图
   entity USER_AUTH_LIST     as
     select from SYS.T03_AUTH as T03
@@ -74,6 +94,6 @@ extend service TableService {
       );
 
 
-
+  action SYS_USER_HOME_PAGE(hpRuleJson : String) returns String;
 
 }

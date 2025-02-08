@@ -5,7 +5,7 @@ H_NAME=業務名
 BP_ID=仕入先
 EMAIL_ADDRESS=メールアドレス
 EMAIL_ADDRESS_NAME=担当者
-
+LBL_CURRENT_USER=登録者
 
 
 
