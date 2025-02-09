@@ -753,9 +753,9 @@ sap.ui.define(
           reader.onerror = error => reject(error);
         });
       },
-      //判断是否能使用打印的功能
+      //判断是否能使用打印的功能,改为都可以使用//ldd追加
       _getIsHost() {
-        if(window.location.hostname === "localhost" || window.location.hostname === "220.248.121.53"|| window.location.hostname === "umc-electronics-co---ltd--s01-test-dev-uweb-umce-dev.cfapps.jp10.hana.ondemand.com"){
+        if(window.location.hostname === "localhost" ||true || window.location.hostname === "umc-electronics-co---ltd--s01-test-dev-uweb-umce-dev.cfapps.jp10.hana.ondemand.com"){
           return true;
         }
         else {
