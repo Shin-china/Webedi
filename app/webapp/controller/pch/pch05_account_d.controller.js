@@ -221,11 +221,7 @@ sap.ui.define([
                 var oTable = this.getView().byId("detailTable");
                 var aSelectedIndices = oTable.getSelectedIndices();
     
-                if (aSelectedIndices.length === 0) {
-                    sap.m.MessageToast.show("選択されたデータがありません、データを選択してください。"); // 提示未选择数据
-                    oEvent.preventDefault(); // 取消导出操作
-                    return;
-                }
+
     
                 var oSettings = oEvent.getParameter("exportSettings");
                 if (oSettings) {

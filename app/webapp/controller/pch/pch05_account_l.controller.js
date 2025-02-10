@@ -70,11 +70,7 @@ var _objectCommData = {
             var oTable = this.getView().byId("detailTable");
             var aSelectedIndices = oTable.getSelectedIndices();
         
-            if (aSelectedIndices.length === 0) {
-                sap.m.MessageToast.show(this._ResourceBundle.getText("選択されたデータがありません、データを選択してください。")); // 提示未选择数据
-                oEvent.preventDefault(); // 取消导出操作
-                return;
-            }
+
 
                 // 获取导出设置
                 var oSettings = oEvent.getParameter("exportSettings");
