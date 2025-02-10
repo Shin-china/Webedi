@@ -290,23 +290,7 @@ sap.ui.define([
 			  oBindingParams.filters.push(new sap.ui.model.Filter("USER_ID", "EQ", "1111111111111"));
 			}
 		  },	
-    /**
-     * 获取字段的某一个id集合
-     * @param {画面id} viewId
-     * @param {要取的字段ID} filedId
-     * @returns
-     */
-    _getRootId(viewId, filedId) {
-		// 获取明细权限数据
-		var dataList = this._getByIdObject(viewId);
-		var dataID = new Array();
-		//设值
-		for (var j = 0; j < dataList.length; j++) {
-		  var data = dataList[j];
-		  dataID.push(eval("data." + filedId));
-		}
-		return dataID;
-	  },
+
 		//默认选上已保存的数据
 		_addSelection:function(headID){
 

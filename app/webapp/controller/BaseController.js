@@ -1379,7 +1379,23 @@ sap.ui.define([
             this.CommTools._setExcelFormatDateTime(mExcelSettings, i, "UP_TIME");
           }
         },
-      
+        /**
+         * 获取字段的某一个id集合
+         * @param {画面id} viewId
+         * @param {要取的字段ID} filedId
+         * @returns
+         */
+        _getRootId(viewId, filedId) {
+          // 获取明细权限数据
+          var dataList = this._getByIdObject(viewId);
+          var dataID = new Array();
+          //设值
+          for (var j = 0; j < dataList.length; j++) {
+            var data = dataList[j];
+            dataID.push(eval("data." + filedId));
+          }
+          return dataID;
+          },
            /**
          *获取选中表格的一个固定数据集
          * @param {*表格名字} tableNmae

@@ -48,7 +48,7 @@
 			</smartTable:customToolbar>
 			<!-- End-->
 
-			<table:Table id="detailTable" rowMode="Auto" rowActionCount="1" selectionMode="None" alternateRowColors="true" >
+			<table:Table id="detailTable" rowMode="Auto" rowActionCount="1" alternateRowColors="true" >
 				<table:columns>
                 <!-- User ID -->
 					<table:Column id="USER_ID" width="20rem" sortProperty="USER_ID" filterProperty="USER_ID">
