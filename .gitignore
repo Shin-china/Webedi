@@ -3,7 +3,7 @@
 *.db
 *.sqlite
 schema*.sql
-default-env.json
+
 
 **/bin/
 **/target/
