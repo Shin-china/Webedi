@@ -87,7 +87,7 @@
 
     <smartTable:SmartTable id="ID" enableAutoColumnWidth="true" entitySet="PCH_T04_PAYMENT_UNIT" 
         ignoredFields="INV_MONTH,INV_NO,SHKZG,SUPPLIER_DESCRIPTION,ZABC,PO_BUKRS,LOG_NO,PRICE_AMOUNT,PRICE_AMOUNT_10,PRICE_AMOUNT_8,TOTAL_AMOUNT,Company_Code,D_NO,PO_NO,INV_POST_DATE"  requestAtLeastFields="DOWNLOADID,INV_MONTH,INV_NO,SHKZG,SUPPLIER_DESCRIPTION,ZABC,PO_BUKRS,LOG_NO,PRICE_AMOUNT,PRICE_AMOUNT_10,PRICE_AMOUNT_8,TOTAL_AMOUNT,Company_Code,D_NO,PO_NO,INV_POST_DATE" initiallyVisibleFields="SUPPLIER,NO_DETAILS,MAT_ID,MAT_DESC,GR_DATE,QUANTITY,UNIT_PRICE,CURRENCY,EXCHANGE,SUPPLIER_MAT,PO_TRACK_NO,TAX_RATE,INV_BASE_DATE,SEND_FLAG,TOTAL_AMOUNT_IN_YEN,UNIT_PRICE_IN_YEN"
-        smartFilterId="smartFilterBar" enableExport="true" beforeExport="onBeforeExport" 
+        smartFilterId="smartFilterBar" enableExport="{localModel>/PCH04_OUTPUT_STANDARD}" beforeExport="onBeforeExport" 
         useVariantManagement="true" useTablePersonalisation="true" header="{pch>TITLE_RESULT}" showRowCount="true" persistencyKey="pch02_SmartTableAnalytical_Explored" enableAutoBinding="false">
         
       <smartTable:customToolbar>
