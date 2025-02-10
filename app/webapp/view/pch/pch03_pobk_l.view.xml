@@ -44,7 +44,7 @@
 						<smartFilterBar:ControlConfiguration id="MAT_ID" index="6" key="MAT_ID"  visibleInAdvancedArea="true" />	
 						<smartFilterBar:ControlConfiguration id="PO_DATE" index="7" key="PO_DATE"  visibleInAdvancedArea="true" />	
 						<smartFilterBar:ControlConfiguration id="STATUS" index="8" key="STATUS"  visibleInAdvancedArea="true"  filterType='single' controlType="dropDownList"/>	
-						<smartFilterBar:ControlConfiguration id="SAP_CD_BY" index="9" key="SAP_CD_BY"  visibleInAdvancedArea="true" />	
+						<smartFilterBar:ControlConfiguration id="SAP_CD_BY_TEXT" index="9" key="SAP_CD_BY_TEXT"  visibleInAdvancedArea="true" />	
 						<smartFilterBar:ControlConfiguration id="PO_D_DATE" index="10" key="PO_D_DATE"  visibleInAdvancedArea="true" />	
 						<smartFilterBar:ControlConfiguration id="ZABC" index="11" key="ZABC"  visibleInAdvancedArea="true"  filterType='multiple' controlType="dropDownList"/>	
 						<smartFilterBar:ControlConfiguration id="MEMO" index="11" key="MEMO"  visible="false" />	

@@ -114,14 +114,17 @@ sap.ui.define([
 			
 			that.byId("smartTable3").rebindTable();
 			that.byId("smartTable4").rebindTable();
-			// that.byId("roleTable").rebindTable();
-			that.byId("roleTable2").rebindTable();
+			that.byId("smartTable13").rebindTable();
+			that.byId("smartTable24").rebindTable();
 
 		},
 		//Edit Button
 		onEdit:function(){
+			this.byId("smartTable3").rebindTable();
+			this.byId("smartTable13").rebindTable();
 			this._setEditable(true);
 			this._addSelection(this._id);
+			
 			//清除消息
 			this.MessageTools._clearMessage();
 		},
@@ -171,8 +174,12 @@ sap.ui.define([
 							that._setEditable(false);
 							that.getModel().refresh();
 							that._setBusy(false);
+							that.byId("smartTable4").rebindTable();
+							that.byId("smartTable24").rebindTable();
 						},
 						error: function(oError) {
+							that.byId("smartTable4").rebindTable();
+							that.byId("smartTable24").rebindTable();
 							that._setEditable(true);
 							that._setBusy(false);
 						}
@@ -187,10 +194,14 @@ sap.ui.define([
 							that._setEditable(false);
 							that._id = context.ID;
 							that.byId("USER_ID").rebindTable(smartTable1);
+							that.byId("smartTable4").rebindTable();
+							that.byId("smartTable24").rebindTable();
 							that.getModel().refresh();
 							that._setBusy(false);
 						},
 						error: function(oError) {
+							that.byId("smartTable4").rebindTable();
+							that.byId("smartTable24").rebindTable();
 							that._setBusy(false);
 							
 						}

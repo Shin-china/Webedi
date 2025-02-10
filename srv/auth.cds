@@ -28,16 +28,7 @@ extend service TableService {
             key MAL.AUTH_ID
           }
         )
-        or T10.MENU_ID || '_ALL'  in (
-          select from USER_AUTH_LIST as MAL {
-            key MAL.AUTH_ID
-          }
-        )
-        or T10.MENU_ID || '_CREAT'  in (
-          select from USER_AUTH_LIST as MAL {
-            key MAL.AUTH_ID
-          }
-        )
+
       );
 
       

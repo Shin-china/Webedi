@@ -170,7 +170,7 @@ public class Pch03Handler implements EventHandler {
             }
 
             // 设置検査合区分
-            if (!StringTool.isEmpty(pchd03.getImpComp())) {
+            if (!StringUtils.isBlank(pchd03.getImpComp())) {
                 pchd03.setCheckOk("受入検査あり");
             }
             pchd03.setQrCode(pchService.getQrCode(pchd03));
@@ -437,7 +437,7 @@ public class Pch03Handler implements EventHandler {
 
             }
             // 设置検査合区分
-            if (!StringTool.isEmpty(pchd03.getImpComp())) {
+            if (!StringUtils.isBlank(pchd03.getImpComp())) {
                 // pchd03.setImpComp("受入検査あり");
                 pchd03.setCheckOk("受入検査あり");
             }
