@@ -1,11 +1,11 @@
 _schema-version: "3.1"
-ID: uweb-umce-dev
+ID: uweb-umch-qas
 version: 1.0.0-SNAPSHOT
 description: "A simple CAP project."
 parameters:
   enable-parallel-deployments: true
 modules:
-  - name: uweb-umce-dev-srv
+  - name: uweb-umch-qas-srv
     type: java
     path: srv
     parameters:
@@ -30,14 +30,14 @@ modules:
         properties:
           srv-url: ${default-url}
     requires:
-      - name: uweb-umce-dev-hdi
-      - name: uweb-umce-dev-srv-auth
-      - name: uweb-umce-dev-getDestination
+      - name: uweb-umch-qas-hdi
+      - name: uweb-umch-qas-auth
+      - name: uweb-umch-qas-getDestination
       - name: app-api
         properties:
           CDS_MULTITENANCY_APPUI_URL: ~{url}
 
-  - name: uweb-umce-dev
+  - name: uweb-umch-qas
     type: approuter.nodejs
     path: app\router
     parameters:
@@ -51,9 +51,9 @@ modules:
           name: srv-api # must be used in xs-app.json as well
           url: ~{srv-url}
           forwardAuthToken: true
-      - name: uweb-umce-dev-auth
-      - name: uweb-umce-dev-html5-repo-runtime
-      - name: uweb-umce-dev-getDestination
+      - name: uweb-umch-qas-auth
+      - name: uweb-umch-qas-html5-repo-runtime
+      - name: uweb-umch-qas-getDestination
         parameters:
           content-target: true
     provides:
@@ -61,34 +61,38 @@ modules:
         properties:
           url: ${default-url}
 
+  - name: uweb-umchq-db-deployer
+    type: hdb
+    path: db
+    parameters:
+      buildpack: nodejs_buildpack
+    requires:
+      - name: uweb-umch-qas-hdi
+
 resources:
-  - name: uweb-umce-dev-hdi
+  - name: uweb-umch-qas-hdi
     type: com.sap.xs.hdi-container
     parameters:
       service: hana
       service-plan: hdi-shared
       config:
-        database_id: 627a10ce-f9d1-417d-9e75-7e8c290d95ed
-        schema: uweb_umce_dev
-  - name: uweb-umce-dev-auth
-    type: org.cloudfoundry.managed-service
-    parameters:
-      service: xsuaa
-      service-plan: application
-      path: ./app/xs-security-umce-qas.json
-  - name: uweb-umce-dev-srv-auth
+        database_id: 12ec245b-968d-4e8e-b95f-4b18335e2bd8
+        schema: uweb_umch_qas
+  - name: uweb-umch-qas-auth
     type: org.cloudfoundry.managed-service
     parameters:
       service: xsuaa
       service-plan: application
       path: ./xs-security.json
-
-  - name: uweb-umce-dev-getDestination
+      config:
+        xsappname: uweb-umch-qas-auth
+        tenant-mode: dedicated
+  - name: uweb-umch-qas-getDestination
     parameters:
       service-plan: lite
       service: destination
     type: org.cloudfoundry.managed-service
-  - name: uweb-umce-dev-html5-repo-runtime
+  - name: uweb-umch-qas-html5-repo-runtime
     parameters:
       service-plan: app-runtime
       service: html5-apps-repo
