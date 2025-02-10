@@ -27,9 +27,10 @@
     </f:navigationActions>
   </f:DynamicPageTitle>
 
+<!-- visible="{= ${localModel>/INV41_CREAT} || ${localModel>/INV41_MODIFY} }" -->
   <f:DynamicPageHeader id="DynamicPageHeader" pinnable="true">
     <f:content>
-      <smartFilterBar:SmartFilterBar id="smartFilterBar" entitySet="PCH_01_DL" persistencyKey="PCH01_TEMPLATE" showFilterConfiguration="true">
+      <smartFilterBar:SmartFilterBar id="smartFilterBar" entitySet="PCH_01_DL" persistencyKey="PCH01_TEMPLATE" showFilterConfiguration="true" >
         <smartFilterBar:controlConfiguration>
           <smartFilterBar:ControlConfiguration id="idControlConfiguration1" key="SUPPLIER"      visibleInAdvancedArea="true" label="{pch>D_SUPPLIER}"       index="0"/>
           <smartFilterBar:ControlConfiguration id="idControlConfiguration2" key="BP_NAME1"      visibleInAdvancedArea="true" label="{pch>D_BP_NAME1}"       index="1"/>
@@ -46,7 +47,7 @@
   </f:DynamicPageHeader>
 
   <smartTable:SmartTable  id="idSmartTable" smartFilterId="smartFilterBar" enableAutoColumnWidth="true" entitySet="PCH_01_DL" tableType="Table"
-          ignoredFields="" initiallyVisibleFields="PO_NO,D_NO,MAT_ID,PO_D_TXZ01,PO_PUR_QTY,PO_PUR_UNIT,CUSTOMER_MAT,SUPPLIER_MAT" enableExport="true" beforeExport="onBeforeExport" header="{pch>D_RESULT}" enableAutoBinding="true" editable="false" >
+          ignoredFields="" initiallyVisibleFields="PO_NO,D_NO,MAT_ID,PO_D_TXZ01,PO_PUR_QTY,PO_PUR_UNIT,CUSTOMER_MAT,SUPPLIER_MAT" enableExport="{localModel>/PCH01_DOWNLOAD}" beforeExport="onBeforeExport" header="{pch>D_RESULT}" enableAutoBinding="false" editable="false" >
     <t:Table id="detailTable" rowMode="Auto"  rowActionCount="1" selectionMode="None" alternateRowColors="true" fixedColumnCount="0">
      
       <t:columns>

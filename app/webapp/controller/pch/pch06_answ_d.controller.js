@@ -256,7 +256,9 @@ sap.ui.define([
 			this._setEditable(false);
 
 			;
-
+			
+			this._setAuthByMenuAndUser("PCH06");
+		
 
 		},
 

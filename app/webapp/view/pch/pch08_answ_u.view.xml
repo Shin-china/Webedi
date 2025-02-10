@@ -15,7 +15,7 @@ xmlns:fb="sap.ui.comp.filterbar">
 	    <!--下载模板-->
         <!-- <Button id="downloadTemplateButton" text="{pch>PCH08_UPLOAD_TEMPLATE}" press="onDownloadTemplate" icon="sap-icon://download" type="Transparent"/> -->
 		<!--上传文件-->
-		<unified:FileUploader id="fileUploader" sameFilenameAllowed="true" buttonText="{pch>U07_B_SELECT}" fileType="xlsx,xls" change="onFileChange" width="40rem" />
+		<unified:FileUploader id="fileUploader" sameFilenameAllowed="true" visible="{localModel>/PCH08_FILE_SELECT}" buttonText="{pch>U07_B_SELECT}" fileType="xlsx,xls" change="onFileChange" width="40rem" />
 	</Panel>
 
 	<Panel id="idpanel1" expandable="true" expanded="true" headerText="{pch>U07_RESULT}" width="auto" class="sapUiResponsiveMargin">
@@ -24,9 +24,9 @@ xmlns:fb="sap.ui.comp.filterbar">
 				<OverflowToolbar id="idoverflowtooblar1">	
 					<Text id="idtext1" text="{/logInfo}"/>
 					<ToolbarSpacer id="idtoolbarspacer1"/>
-					<Button id="_IDGenButton2" text="{pch>U07_B_CHECK}" press="onUploadCheck" enabled="true"/>
-					<Button id="_IDGenButton3" text="{pch>U07_B_RUN}" press="onUploadExecute" enabled="{viewModel>/isButtonEnabled}"/>	
-					<Button id="Export" icon="sap-icon://excel-attachment" type="Transparent" press="onExport" enabled="{=${local>/excelSet}.length > 0}" text="{pch>U07_B_EXPORTEXCEL}" tooltip="{pch>U07_B_EXPORTEXCEL}"/>
+					<Button id="_IDGenButton2" text="{pch>U07_B_CHECK}" visible="{localModel>/PCH08_CHECK}" press="onUploadCheck" enabled="true"/>
+					<Button id="_IDGenButton3" text="{pch>U07_B_RUN}" visible="{localModel>/PCH08_EXECUTE}" press="onUploadExecute" enabled="{viewModel>/isButtonEnabled}"/>	
+					<Button id="Export" icon="sap-icon://excel-attachment" visible="{localModel>/PCH08_UL_OUTPUT}" type="Transparent" press="onExport" enabled="{=${local>/excelSet}.length > 0}" text="{pch>U07_B_EXPORTEXCEL}" tooltip="{pch>U07_B_EXPORTEXCEL}"/>
 				</OverflowToolbar>
 			</table:extension>
 

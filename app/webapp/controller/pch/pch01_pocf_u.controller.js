@@ -34,7 +34,11 @@ sap.ui.define([
 		},
 
 		_onRouteMatched: function (oEvent) {
-			//this._viewCreateSet(); 	
+			var that = this;
+			this._setAuthByMenuAndUser("PCH01").then((oAuth) => {
+			    that.byId("smartFilterBar").rebindTable();
+			})
+			;
 		},
 
 		onCheck: function () {

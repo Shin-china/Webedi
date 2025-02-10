@@ -25,7 +25,7 @@ sap.ui.define([
         _onRouteMatched: function (oEvent) {
             let that = this;
             let key = oEvent.getParameter("arguments").headID;
-
+            this._setAuthByMenuAndUser("PCH10");
             let params = { param: key };
             that._callCdsAction("/PCH08_SHOW_DETAIL", params, that).then((oData) => {
                 let json = JSON.parse(oData.PCH08_SHOW_DETAIL);

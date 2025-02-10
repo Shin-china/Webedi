@@ -14,7 +14,20 @@ sap.ui.define([
 
 
     return Controller.extend("umc.app.controller.pch.pch04_pay_d", {
+        onInit: function () {
+			
 
+			this.getRouter().getRoute("RouteCre_pch04").attachPatternMatched(this._onRouteMatched, this);
+			
+			
+			//  设置版本号
+			this._setOnInitNo("PCH04", ".20250209.01");
+		},
+
+
+		_onRouteMatched: function (oEvent) {
+			this._setAuthByMenuAndUser("PCH04");
+		},
         onResend: function () {
             var oTable = this.getView().byId("detailTable");
             var aSelectedIndices = oTable.getSelectedIndices();

@@ -7,7 +7,15 @@ sap.ui.define([
     "use strict";
 
     return Controller.extend("umc.app.controller.pch.pch09_forcast_d", {
+        onInit: function () {
+            
 
+			this.getRouter().getRoute("RouteCre_pch09").attachPatternMatched(this._onRouteMatched, this);
+        },
+        _onRouteMatched: function (oEvent) {
+			
+			this._setAuthByMenuAndUser("PCH09");
+		},
         onBeforeExport: function (oEvent) {
             var oTable = this.getView().byId("detailTable");
             var aSelectedIndices = oTable.getSelectedIndices();

@@ -35,7 +35,7 @@ sap.ui.define(["umc/app/controller/BaseController", "sap/m/MessageToast", "sap/m
     },
 
     _onRouteMatched: function (oEvent) {
-
+        this._setAuthByMenuAndUser("PCH10");
       var that = this;
       // that._setBusy(true);
 

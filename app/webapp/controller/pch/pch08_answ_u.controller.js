@@ -21,7 +21,6 @@ sap.ui.define([
 			this.getView().setModel(oMessageManager.getMessageModel(), "message");
 			oMessageManager.registerObject(this.getView(), true);
 
-			this.getRouter().getRoute("RouteCre_pch07").attachPatternMatched(this._onRouteMatched, this);
             this._PchResourceBundle = this.getOwnerComponent().getModel("pch").getResourceBundle();
 
 			var oViewModel = new sap.ui.model.json.JSONModel({
@@ -32,7 +31,14 @@ sap.ui.define([
 
 			//  设置版本号
 			this._setOnInitNo("PCH07", ".20240812.01");
-		},
+            this.getRouter().getRoute("RouteCre_pch08").attachPatternMatched(this._onRouteMatched, this);
+        },
+
+
+        _onRouteMatched: function (oEvent) {
+            this._setAuthByMenuAndUser("PCH08");
+        },
+
 
 		onDownloadTemplate: function () {
 			var aColumns = [];
@@ -71,7 +77,7 @@ sap.ui.define([
 		},
 
 		_onRouteMatched: function (oEvent) {
-			//this._viewCreateSet(); 	
+			this._setAuthByMenuAndUser("PCH08");
 		},
 
 		// excel上传

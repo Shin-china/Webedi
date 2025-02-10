@@ -63,16 +63,15 @@
       </smartFilterBar:SmartFilterBar>
     </f:content>
   </f:DynamicPageHeader>
-
-      <smartTable:SmartTable id="smartTable10"  tableType="Table" ignoredFields="ID,PLANT_ID,SUPPLIER_MAT,INITIAL_OBJ,CD_DATE_TIME" showFullScreenButton="true" enableAutoColumnWidth="true" entitySet="PCH10_Header" requestAtLeastFields="ID" initiallyVisibleFields="QUO_NUMBER,QUO_VERSION,SALES_NUMBER,CUSTOMER,MACHINE_TYPE,Item,QUANTITY,TIME,LOCATION,VALIDATE_START,VALIDATE_END,PLANT_ID" smartFilterId="smartFilterBar" enableExport="true" beforeExport="onBeforeExport" useVariantManagement="true" useTablePersonalisation="true" header="{com>TITLE_RESULT}" showRowCount="true" persistencyKey="pch10_SmartTableAnalytical_Explored" enableAutoBinding="false" beforeRebindTable="onRebind">
+      <smartTable:SmartTable id="smartTable10"  tableType="Table" ignoredFields="ID,PLANT_ID,SUPPLIER_MAT,INITIAL_OBJ,CD_DATE_TIME" showFullScreenButton="true" enableAutoColumnWidth="true" entitySet="PCH10_Header" requestAtLeastFields="ID" initiallyVisibleFields="QUO_NUMBER,QUO_VERSION,SALES_NUMBER,CUSTOMER,MACHINE_TYPE,Item,QUANTITY,TIME,LOCATION,VALIDATE_START,VALIDATE_END,PLANT_ID" smartFilterId="smartFilterBar" enableExport="{localModel>/PCH10_H_OUTPUT}" beforeExport="onBeforeExport" useVariantManagement="true" useTablePersonalisation="true" header="{com>TITLE_RESULT}" showRowCount="true" persistencyKey="pch10_SmartTableAnalytical_Explored" enableAutoBinding="false" beforeRebindTable="onRebind">
         <smartTable:customToolbar>
           <OverflowToolbar id="_IDGenOverflowToolbar10">
             <content>
               <ToolbarSpacer id="_IDGenToolbarSpacer10"/>
-              <Button id="_IDGenButton1" text="{pch>PCH10_SEND}" icon="sap-icon://accept" press="onSend" visible="{localModel>/PCH10_SEND}"/>
-              <Button id="_IDGenButton2" text="{pch>PCH10_LINK}" icon="sap-icon://chain-link" press="onLink" visible="{localModel>/PCH10_LINK}"/>
-              <Button id="editButton" text="{pch>PCH03_BUTTON_EDI}" enabled="{localModel>/show}" tooltip="{pch>PCH03_BUTTON_EDI}" press="onEdit" />
-              <Button id="saveButton" text="{pch>PCH03_BUTTON_SAV}" enabled="{localModel>/save}" tooltip="{pch>PCH03_BUTTON_SAV}" press="onSave" />
+              <Button id="_IDGenButton1" text="{pch>PCH10_SEND}" icon="sap-icon://accept" visible="{localModel>/PCH10_H_SEND}" press="onSend" />
+              <Button id="_IDGenButton2" text="{pch>PCH10_LINK}" icon="sap-icon://chain-link" visible="{localModel>/PCH10_H_LINK}" press="onLink" />
+              <Button id="editButton" text="{pch>PCH03_BUTTON_EDI}" enabled="{localModel>/show}" visible="{localModel>/PCH10_H_MODIFY}" tooltip="{pch>PCH03_BUTTON_EDI}" press="onEdit" />
+              <Button id="saveButton" text="{pch>PCH03_BUTTON_SAV}" enabled="{localModel>/save}" visible="{localModel>/PCH10_H_SAVE}" tooltip="{pch>PCH03_BUTTON_SAV}" press="onSave" />
             
             </content>
           </OverflowToolbar>

@@ -27,8 +27,13 @@ var _objectCommData = {
             // 初始化代码
             // 这里可以添加其他初始化逻辑，比如绑定数据等
             console.log("Controller initialized.");
+            this.getRouter().getRoute("RouteCre_pch05").attachPatternMatched(this._onRouteMatched, this);
+            //  设置版本号
+			this._setOnInitNo("PCH05", ".20250209.01");
         },
-
+        _onRouteMatched: function (oEvent) {
+			this._setAuthByMenuAndUser("PCH05");
+		},
         onExport: function () {
             var oTable = this.getView().byId("detailTable");
             var aSelectedIndices = oTable.getSelectedIndices();

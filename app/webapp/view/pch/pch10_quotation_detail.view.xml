@@ -36,7 +36,7 @@
                 <OverflowToolbar id="ID_header">
                     <ToolbarSpacer id="idtoolbarspacer1"/>
                     <!-- <m:Button id="Button1" text="{pch>U_B_SAVE}" icon="sap-icon://edit" press="onEdit"/> -->
-                    <m:Button id="Button2" text="Export" icon="sap-icon://download" press="onExport"/>
+                    <m:Button id="Button2" text="Export" visible="{localModel>/PCH10_D_PRICE_OUTPUT}" icon="sap-icon://download" press="onExport"/>
                 </OverflowToolbar>
                 <table:Table id="dataTable" rows="{path: '/dataList'}" selectionMode="None">
                 </table:Table>

@@ -46,10 +46,10 @@
 				<OverflowToolbar id="OverflowToolbarId">
 					<content>
 						<ToolbarSpacer id="ToolbarSpacerId"/>
-						<Button id="_IDGenButton22" text="{pch>PCH03_BUTTON_SAV}" press="onSav" enabled="{path: 'localModel>/editable'}" width="8em"/>
-						<Button id="_IDGenButton23" text="{pch>PCH03_BUTTON_EDI}" press="onEdi" enabled="{= ${path: 'localModel>/editable'} !== true}" width="8em"/>
-						<Button id="ButtonId3" text="{pch>BUTTON_H__TONGQI}"  press="onTongQi" />
-						<Button id="ButtonId4" text="{pch>BUTTON_H__JS}"  press="onJS" />
+						<Button id="_IDGenButton22" text="{pch>PCH03_BUTTON_SAV}" press="onSav" visible="{localModel>/PCH06_SAVE}" enabled="{path: 'localModel>/editable'}" width="8em"/>
+						<Button id="_IDGenButton23" text="{pch>PCH03_BUTTON_EDI}" press="onEdi" visible="{localModel>/PCH06_MODIFY}" enabled="{= ${path: 'localModel>/editable'} !== true}" width="8em"/>
+						<Button id="ButtonId3" text="{pch>BUTTON_H__TONGQI}"  press="onTongQi" visible="{localModel>/PCH06_INTERFACE_PO}" />
+						<Button id="ButtonId4" text="{pch>BUTTON_H__JS}"  press="onJS" visible="{localModel>/PCH06_ADD}"/>
 						</content>
 				</OverflowToolbar>
 			</f:DynamicPageHeader>
@@ -61,9 +61,9 @@
 					<table:extension>
 						<OverflowToolbar id="_IDGenOverflowToolbar1">
 							<ToolbarSpacer id="ID_ToolbarSpacer" />
-							<Button id="ButtonId1" text="{com>BUTTON_COP}" enabled="{path: 'localModel>/editable'}" icon="sap-icon://copy" press="onCop" />
-							<Button id="ButtonId2" text="{com>BUTTON_DELETE}" enabled="{path: 'localModel>/editable'}" icon="sap-icon://delete" press="onDelete" />
-							<Button id="_IDGenButton24" text="{pch>PCH03_BUTTON_QUE}" press="onQue" enabled="{= ${path: 'localModel>/editable'} !== true}" width="8em"/>
+							<Button id="ButtonId1" text="{com>BUTTON_COP}" visible="{localModel>/PCH06_COPY}" enabled="{path: 'localModel>/editable'}" icon="sap-icon://copy" press="onCop" />
+							<Button id="ButtonId2" text="{com>BUTTON_DELETE}" visible="{localModel>/PCH06_DELETE}" enabled="{path: 'localModel>/editable'}" icon="sap-icon://delete" press="onDelete" />
+							<Button id="_IDGenButton24" text="{pch>PCH03_BUTTON_QUE}" visible="{localModel>/PCH06_CONFIRM}" press="onQue" enabled="{= ${path: 'localModel>/editable'} !== true}" width="8em"/>
 						</OverflowToolbar>
 						
 					</table:extension>

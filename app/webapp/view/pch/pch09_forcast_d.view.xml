@@ -61,12 +61,12 @@
 
             <smartTable:SmartTable id="ID" enableAutoColumnWidth="true" entitySet="PCH09_LIST" 
                 ignoredFields="MIN_DELIVERY_QTY"  requestAtLeastFields="" initiallyVisibleFields=""
-                smartFilterId="smartFilterBar" enableExport="true" beforeExport="onBeforeExport"  
+                smartFilterId="smartFilterBar" enableExport="{localModel>/PCH09_OUTPUT}" beforeExport="onBeforeExport"  
                 useVariantManagement="true" useTablePersonalisation="true" header="{pch>TITLE_RESULT}" showRowCount="true" persistencyKey="pch09_SmartTableAnalytical_Explored" enableAutoBinding="true">
             <smartTable:customToolbar>
                 <OverflowToolbar id="myOverflowToolbar1" design="Transparent">
                     <ToolbarSpacer id="myToolbarSpacer1"/>
-                    <OverflowToolbarButton id="sendEmailButton"   icon="sap-icon://email"  text="{pch>PCH09_BUTTON_SEND}" tooltip="{pch>PCH09_BUTTON_SEND}" press="onResend"/>
+                    <OverflowToolbarButton id="sendEmailButton"   icon="sap-icon://email" visible="{localModel>/PCH09_SEND}" text="{pch>PCH09_BUTTON_SEND}" tooltip="{pch>PCH09_BUTTON_SEND}" press="onResend"/>
                 </OverflowToolbar>
             </smartTable:customToolbar>
         

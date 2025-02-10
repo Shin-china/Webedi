@@ -65,7 +65,7 @@
         <smartTable:customToolbar>
             <OverflowToolbar id="myOverflowToolbar" design="Transparent">
                 <ToolbarSpacer id="myToolbarSpacer"/>
-                <Button id="downloadEXCELBtn" text="{pch>PCH05_BUTTON_EXCEL}" press="onExportToEXCEL" />
+                <Button id="downloadEXCELBtn" text="{pch>PCH05_BUTTON_EXCEL}" visible="{localModel>/PCH05_DETAIL_OUTPUT}" press="onExportToEXCEL" />
                 <!-- <OverflowToolbarButton id="downloadEXCELBtn"  text="{pch>PCH05_BUTTON_EXCEL}"    tooltip="{pch>PCH05_BUTTON_EXCEL}"    press="onExportToEXCEL"/> -->
             </OverflowToolbar>
         </smartTable:customToolbar>

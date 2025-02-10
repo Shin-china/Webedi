@@ -23,9 +23,12 @@ sap.ui.define([
 			this.MessageTools._clearMessage();
 			// this.MessageTools._initoMessageManager(this);
 
-			// this.getRouter().getRoute("RouteCre_pch03").attachPatternMatched(this._onRouteMatched, this);
+			this.getRouter().getRoute("RouteCre_pch02").attachPatternMatched(this._onRouteMatched, this);
         },
-        
+        _onRouteMatched: function (oEvent) {
+			var that = this;
+			this._setAuthByMenuAndUser("PCH02");
+		},
 
         onExport: function () {
             var oTable = this.getView().byId("detailTable");

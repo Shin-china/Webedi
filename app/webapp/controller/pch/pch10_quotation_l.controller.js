@@ -6,7 +6,7 @@ sap.ui.define(["umc/app/controller/BaseController", "sap/m/MessageToast","sap/m/
       //  设置版本号
       this._setOnInitNo("PCH10", "20241029");
       //显示页面
-      this.getRouter().getRoute("RouteList_pch10").attachPatternMatched(this._onObjectMatched, this);
+      this.getRouter().getRoute("RouteList_pch10").attachPatternMatched(this._onRouteMatched, this);
       this._localModel = new sap.ui.model.json.JSONModel();
       this._localModel.setData({
         "show": true,
@@ -16,7 +16,10 @@ sap.ui.define(["umc/app/controller/BaseController", "sap/m/MessageToast","sap/m/
       this._BusyDialog = new sap.m.BusyDialog();
       this._PchResourceBundle = this.getOwnerComponent().getModel("pch").getResourceBundle();
     },
-
+    _onRouteMatched: function (oEvent) {
+			
+			this._setAuthByMenuAndUser("PCH10");
+		},
     onRebind: function (oEvent) {
 
       // var select = this.byId("sch_INITIAL_OBJ").getSelected();

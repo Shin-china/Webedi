@@ -103,7 +103,7 @@ sap.ui.define([
 		},
 
 		_onRouteMatched: function (oEvent) {
-			//this._viewCreateSet(); 	
+			this._setAuthByMenuAndUser("PCH07");
 		},
 
 		onCheck: function () {

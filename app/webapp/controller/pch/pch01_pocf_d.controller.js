@@ -8,14 +8,21 @@ sap.ui.define([
 
 	return Controller.extend("umc.app.controller.pch.pch01_pocf_d", {
 		formatter : formatter,
-
 		onInit: function () {
-		// 设置自己的 OData模型为默认模型
-		this._setDefaultDataModel("TableService");
-		//  设置版本号
-		this._setOnInitNo("PCH01", ".20240812.01");
+			
+
+			this.getRouter().getRoute("RouteCre_pch01").attachPatternMatched(this._onRouteMatched, this);
+			
+			
+			//  设置版本号
+			this._setOnInitNo("PCH01", ".20240812.01");
 		},
 
+
+		_onRouteMatched: function (oEvent) {
+			this._setAuthByMenuAndUser("PCH01");
+		},
+		
 		onRebind: function (oEvent) {
 		// this._onListRebindDarft(oEvent);
 		this._onListRebindDarft(oEvent, true);

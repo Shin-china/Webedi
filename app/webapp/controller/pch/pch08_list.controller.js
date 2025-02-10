@@ -32,6 +32,13 @@ sap.ui.define([
             });
             this.getView().setModel(this._localModel, "localModel");
             this._BusyDialog = new sap.m.BusyDialog();
+
+            this.getRouter().getRoute("RouteCre_pch08").attachPatternMatched(this._onRouteMatched, this);
+        },
+
+
+        _onRouteMatched: function (oEvent) {
+            this._setAuthByMenuAndUser("PCH08");
         },
 
         onExport: function () {

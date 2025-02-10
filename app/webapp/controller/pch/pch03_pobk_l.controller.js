@@ -49,6 +49,7 @@ sap.ui.define([
 			//取得权限
 			this._readEntryData(_objectCommData._entity).then((odata) => {
 				that._setIsCreate(odata.isCreate); //使用新建来表示是否可以编辑
+				that._setAuthByMenuAndUser("PCH03");
 				
 			})
 

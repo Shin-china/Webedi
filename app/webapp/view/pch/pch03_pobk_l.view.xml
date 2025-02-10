@@ -104,20 +104,20 @@
 
 
 
-			<smartTable:SmartTable id="smartTable" enableAutoColumnWidth="true" showFullScreenButton="true" persistencyKey="mst02_receiptprintTable" ignoredFields="ID,USER_TYPE,PLANT_ID,STORAGE_LOC,STORAGE_TXT,ZABC,TYPE,BP_NAME1,DOWN_FLAG,MANU_MATERIAL,ISSUEDAMOUNT,POCDBY,INT_NUMBER,CUST_MATERIAL,PR_BY,BP_ID,checkOk,IMP_COMP,EMAIL_ADDRESS,PO_PUR_QTY2,DEL_PRICE2,PO_TYPE,PCH03_BP_NAME1,UNIT_PRICE,STATUS,POCDBY,CD_BY,BYNAME" entitySet="PCH_T03_PO_ITEM" requestAtLeastFields="ID,USER_TYPE,PLANT_ID,STORAGE_LOC,STORAGE_TXT,ZABC,TYPE,BP_NAME1,DOWN_FLAG,MANU_MATERIAL,ISSUEDAMOUNT,POCDBY,INT_NUMBER,CUST_MATERIAL,PR_BY,BP_ID,checkOk,IMP_COMP,EMAIL_ADDRESS,PO_PUR_QTY2,DEL_PRICE2,PO_TYPE,PCH03_BP_NAME1,SAP_CD_BY,BYNAME"  smartFilterId="smartFilterBar" beforeExport="onBeforeExport" enableExport="true" useVariantManagement="true" useTablePersonalisation="true"  initiallyVisibleFields="PO_TYPE_NAME,PO_NO,D_NO,MAT_ID,PO_D_TXZ01,PO_PUR_QTY,PO_PUR_UNIT,STATUS_NAME,ZABC1_NAME,SUPPLIER,SUPPLIER_MAT,CURRENCY,DEL_PRICE,DEL_AMOUNT,PO_DATE,PO_D_DATE,MEMO,USER_TYPE,SAP_CD_BY_TEXT" tableType="Table" showRowCount="true" beforeRebindTable="onRebind" placeToolbarInTable="true" header="{com>TITLE_RESULT}" enableAutoBinding="false">
+			<smartTable:SmartTable id="smartTable" enableAutoColumnWidth="true" showFullScreenButton="true" persistencyKey="mst02_receiptprintTable" ignoredFields="ID,USER_TYPE,PLANT_ID,STORAGE_LOC,STORAGE_TXT,ZABC,TYPE,BP_NAME1,DOWN_FLAG,MANU_MATERIAL,ISSUEDAMOUNT,POCDBY,INT_NUMBER,CUST_MATERIAL,PR_BY,BP_ID,checkOk,IMP_COMP,EMAIL_ADDRESS,PO_PUR_QTY2,DEL_PRICE2,PO_TYPE,PCH03_BP_NAME1,UNIT_PRICE,STATUS,POCDBY,CD_BY,BYNAME" entitySet="PCH_T03_PO_ITEM" requestAtLeastFields="ID,USER_TYPE,PLANT_ID,STORAGE_LOC,STORAGE_TXT,ZABC,TYPE,BP_NAME1,DOWN_FLAG,MANU_MATERIAL,ISSUEDAMOUNT,POCDBY,INT_NUMBER,CUST_MATERIAL,PR_BY,BP_ID,checkOk,IMP_COMP,EMAIL_ADDRESS,PO_PUR_QTY2,DEL_PRICE2,PO_TYPE,PCH03_BP_NAME1,SAP_CD_BY,BYNAME"  smartFilterId="smartFilterBar" beforeExport="onBeforeExport"  useExportToExcel="{localModel>/PCH03_OUTPUT}" useVariantManagement="true" useTablePersonalisation="true"  initiallyVisibleFields="PO_TYPE_NAME,PO_NO,D_NO,MAT_ID,PO_D_TXZ01,PO_PUR_QTY,PO_PUR_UNIT,STATUS_NAME,ZABC1_NAME,SUPPLIER,SUPPLIER_MAT,CURRENCY,DEL_PRICE,DEL_AMOUNT,PO_DATE,PO_D_DATE,MEMO,USER_TYPE,SAP_CD_BY_TEXT" tableType="Table" showRowCount="true" beforeRebindTable="onRebind" placeToolbarInTable="true" header="{com>TITLE_RESULT}" enableAutoBinding="false">
 
 				<smartTable:customToolbar>
 				<OverflowToolbar id="ID_header">
 					<content>
 					<ToolbarSpacer id="ID_ToolbarSpacer" />
-					<Button id="_IDGenButton22" text="{pch>PCH03_BUTTON_CSV}" press="onCsvdow" enabled="true" width="6em"/>
-					<Button id="_IDGenButton23" text="{pch>PCH03_BUTTON_FAX}" press="onFax" visible="{path: 'localModel>/editable'}" width="5em"/>
-					<Button id="_IDGenButton24" text="{pch>PCH03_BUTTON_MAIL}" press="onEmail" visible="{path: 'localModel>/editable'}" width="6em"/>
+					<Button id="_IDGenButton22" text="{pch>PCH03_BUTTON_CSV}" press="onCsvdow" visible="{localModel>/PCH03_CSV_OUTPUT}" enabled="true" width="6em"/>
+					<Button id="_IDGenButton23" text="{pch>PCH03_BUTTON_FAX}" press="onFax" visible="{= ${localModel>/editable} || ${localModel>/PCH03_FAX_SEND} }" width="5em"/>
+					<Button id="_IDGenButton24" text="{pch>PCH03_BUTTON_MAIL}" press="onEmail" visible="{= ${localModel>/editable} || ${localModel>/PCH03_MAIL_SEND} }" width="6em"/>
 					<!-- <Button id="_IDGenButton25" text="{pch>PCH03_BUTTON_QR}" press="onQr" visible="{parts: [{path: 'localModel>/jurisdiction'}], formatter: '.formatter.checkUserPermission2'}" width="4em"/> -->
-					<Button id="_IDGenButton26" text="{pch>PCH03_BUTTON_ZWS_NPS}" press="onPrintZwsNps" enabled="true" width="13em"/>
-					<Button id="_IDGenButton27" text="{pch>PCH03_BUTTON_ZWS}" press="onPrintZws" enabled="true" width="8em"/>
-					<Button id="_IDGenButton28" text="{pch>PCH03_BUTTON_NPS}" press="onPrintNPS" enabled="true" width="10em"/>
-					<Button id="ButtonId3" text="{pch>BUTTON_H__TONGQI}"  press="onTongQi" width="8em"/>
+					<Button id="_IDGenButton26" text="{pch>PCH03_BUTTON_ZWS_NPS}" press="onPrintZwsNps" visible="{localModel>/PCH03_PO_DO_OUTPUT}" enabled="true" width="13em"/>
+					<Button id="_IDGenButton27" text="{pch>PCH03_BUTTON_ZWS}" press="onPrintZws"  visible="{localModel>/PCH03_PO_OUTPUT}" enabled="true" width="8em"/>
+					<Button id="_IDGenButton28" text="{pch>PCH03_BUTTON_NPS}" press="onPrintNPS"  visible="{localModel>/PCH03_DO_OUTPUT}" enabled="true" width="10em"/>
+					<Button id="ButtonId3" text="{pch>BUTTON_H__TONGQI}"  press="onTongQi"  visible="{localModel>/PCH03_LINK}" width="8em"/>
 					</content>
 				</OverflowToolbar>
 				</smartTable:customToolbar>

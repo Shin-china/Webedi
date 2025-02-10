@@ -42,17 +42,17 @@
                   <table:extension>
 						<OverflowToolbar id="_IDGenOverflowToolbar1">
 							<ToolbarSpacer id="ID_ToolbarSpacer" />
-                                 <Button id="sendButton" text="{pch>PCH10_SEND}" icon="sap-icon://accept" press="onSend" visible="{localModel>/PCH10_SEND}"/>
-                                <Button id="_IDGenButton1" text="{pch>PCH10_BPTQ}"  press="onBp"   enabled="true"   visible="{localModel>/PCH10_BP}"/>
-                                <Button id="_IDGenButton2" text="{pch>PCH10_GMTQ}"  press="onGM"   enabled="true" visible="{localModel>/PCH10_GM}"/>
-                                <Button id="showDetailButton" text="{pch>PCH08_SHOW_DETAIL}" press="getDetail"></Button>
+                                 <Button id="sendButton" text="{pch>PCH10_SEND}" icon="sap-icon://accept" press="onSend" visible="{localModel>/PCH10_D_SEND}"/>
+                                <Button id="_IDGenButton1" text="{pch>PCH10_BPTQ}"  press="onBp"   enabled="true"   visible="{localModel>/PCH10_D_INTERFACE_MAT_BP}"/>
+                                <Button id="_IDGenButton2" text="{pch>PCH10_GMTQ}"  press="onGM"   enabled="true" visible="{localModel>/PCH10_D_INTERFACE_PURINFO}"/>
+                                <Button id="showDetailButton" text="{pch>PCH08_SHOW_DETAIL}" press="getDetail" visible="{localModel>/PCH10_D_PRICE}" ></Button>
                                 
-                                <Button id="bpaddButton" text="{pch>PCH10_BP_ADD}" press="onBPAdd"></Button>
-                                <Button id="bpdelButton" text="{pch>PCH10_BP_DEL}" press="onBPDel"></Button>
+                                <Button id="bpaddButton" text="{pch>PCH10_BP_ADD}" press="onBPAdd" visible="{localModel>/PCH10_D_ADD}"></Button>
+                                <Button id="bpdelButton" text="{pch>PCH10_BP_DEL}" press="onBPDel" visible="{localModel>/PCH10_D_DELETE}"></Button>
 
-                                <Button id="editButton" text="{pch>PCH03_BUTTON_EDI}" enabled="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'}], formatter: '.formatter.getEditableDCommon'}" press="onEdit" />
-                                <Button id="saveButton" text="{pch>PCH03_BUTTON_SAV}" enabled="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'}], formatter: '.formatter.getEditableSaveCommon'}" tooltip="{pch>PCH03_BUTTON_SAV}" press="onSave" />
-                                <Button id="id.UBAttachment" text="{pch>ATTACHMENT}" press="onOpenAttachmentDialog" />
+                                <Button id="editButton" text="{pch>PCH03_BUTTON_EDI}" visible="{localModel>/PCH10_D_MODIFY}" enabled="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'}], formatter: '.formatter.getEditableDCommon'}" press="onEdit" />
+                                <Button id="saveButton" text="{pch>PCH03_BUTTON_SAV}" visible="{localModel>/PCH10_D_SAVE}" enabled="{parts: [{path: 'localModel>/editable'},{path: 'localModel>/jurisdiction'}], formatter: '.formatter.getEditableSaveCommon'}" tooltip="{pch>PCH03_BUTTON_SAV}" press="onSave" />
+                                <Button id="id.UBAttachment" text="{pch>ATTACHMENT}" visible="{localModel>/PCH10_D_FILE_SELECT}" press="onOpenAttachmentDialog" />
 
 
                     </OverflowToolbar>

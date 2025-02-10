@@ -93,9 +93,9 @@
       <smartTable:customToolbar>
             <OverflowToolbar id="myOverflowToolbar" design="Transparent">
                 <ToolbarSpacer id="myToolbarSpacer"/>
-                <OverflowToolbarButton id="resendButton"   icon="sap-icon://email"          text="{pch>PCH04_BUTTON_RESEND}" tooltip="{pch>PCH04_BUTTON_RESEND}" press="onResend"/>
-                <OverflowToolbarButton id="downloadPdfBtn" icon="sap-icon://pdf-attachment" text="{pch>PCH04_BUTTON_PDF}"    tooltip="{pch>PCH04_BUTTON_PDF}"    press="onExportToPDF"/>
-                <Button id="downloadEXCELBtn" text="{pch>PCH04_BUTTON_EXCEL}" press="onExportToEXCEL" />
+                <OverflowToolbarButton id="resendButton"   icon="sap-icon://email"         visible="{localModel>/PCH04_SEND}" text="{pch>PCH04_BUTTON_RESEND}" tooltip="{pch>PCH04_BUTTON_RESEND}" press="onResend"/>
+                <OverflowToolbarButton id="downloadPdfBtn" icon="sap-icon://pdf-attachment" visible="{localModel>/PCH04_PDF_OUTPUT}" text="{pch>PCH04_BUTTON_PDF}"    tooltip="{pch>PCH04_BUTTON_PDF}"    press="onExportToPDF"/>
+                <Button id="downloadEXCELBtn" text="{pch>PCH04_BUTTON_EXCEL}" visible="{localModel>/PCH04_OUTPUT}" press="onExportToEXCEL" />
                 <!-- <OverflowToolbarButton id="downloadEXCELBtn"  text="{pch>PCH04_BUTTON_EXCEL}"    tooltip="{pch>PCH04_BUTTON_EXCEL}"    press="onExportToEXCEL"/> -->
             </OverflowToolbar>
         </smartTable:customToolbar>
