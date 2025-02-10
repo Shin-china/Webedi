@@ -1,29 +1,29 @@
 {
-    "xsappname": "uweb_umce_dev",
-    "tenant-mode": "dedicated",
-    "scopes": [
-      {
-        "name": "$XSAPPNAME.uweb_umce_dev_admin",
-        "description": "uweb_umce_dev_admin"
-      }
-    ],
-    "attributes": [],
-    "role-templates": [
-      {
-        "name": "uweb_umce_dev_admin",
-        "description": "generated",
-        "scope-references": ["$XSAPPNAME.uweb_umce_dev_admin"],
-        "attribute-references": []
-      }
-    ],
-    "role-collections": [
-      {
-        "name": "uweb_umce_dev_admin",
-        "description": "uweb_umce_dev Administrators",
-        "role-template-references": ["$XSAPPNAME.uweb_umce_dev_admin"]
-      }
-    ],
-    "oauth2-configuration": {
+  "xsappname": "uweb_umce_qas",
+  "tenant-mode": "dedicated",
+  "scopes": [
+    {
+      "name": "$XSAPPNAME.uweb_umce_qas_admin",
+      "description": "uweb_umce_qas_admin"
     }
+  ],
+  "attributes": [],
+  "role-templates": [
+    {
+      "name": "uweb_umce_qas_admin",
+      "description": "generated",
+      "scope-references": ["$XSAPPNAME.uweb_umce_qas_admin"],
+      "attribute-references": []
+    }
+  ],
+  "role-collections": [
+    {
+      "name": "uweb_umce_qas_admin",
+      "description": "uweb_umce_qas Administrators",
+      "role-template-references": ["$XSAPPNAME.uweb_umce_qas_admin"]
+    }
+  ],
+  "oauth2-configuration": {
+  "credential-types":["instance-secret"]
   }
-  
+}
