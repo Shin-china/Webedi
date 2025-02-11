@@ -198,7 +198,7 @@ sap.ui.define([
 						urlParameters: resStr,
 						success: function(oData) {
 							that._setEditable(false);
-							that._id = oData.SYS01_USER_addUser.ID;
+							that._id = oData.SYS01_USER_addUser;
 							that.byId("smartTable4").rebindTable();
 							that.byId("smartTable24").rebindTable();
 							that.getModel().refresh();
