@@ -381,7 +381,7 @@ extend service TableService {
 
 }
 
-annotate TableService.PCH_T03_PO_ITEM with @(Capabilities: {FilterRestrictions: {NonFilterableProperties: []}});
+
 
 annotate TableService.PCH_T03_PO_ITEM with {
 
