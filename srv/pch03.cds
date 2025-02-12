@@ -218,7 +218,7 @@ extend service TableService {
                 
                 T02.CD_BY, //登録者
                 T02.PO_D_DATE, //所要日付
-                T02.PLANT_ID,
+                T01.PO_BUKRS as PLANT_ID,
                 
                 @title: '{i18n>ZABC1}'
                      case T04.ZABC
@@ -314,7 +314,7 @@ extend service TableService {
                 
                 T02.CD_BY, //登録者
                 T02.PO_D_DATE, //所要日付
-                T02.PLANT_ID,
+                T01.PO_BUKRS as PLANT_ID,
                 
                 @title: '{i18n>ZABC1}'
                      case T04.ZABC

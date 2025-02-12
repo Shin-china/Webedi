@@ -113,6 +113,7 @@ extend service TableService with {
 
     {
       key BP_ID ,
+      @title: '{i18n>SUPPLIER_NAME}'
           BP_NAME1
         
     }
