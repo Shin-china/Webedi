@@ -113,14 +113,8 @@ extend service TableService with {
 
     {
       key BP_ID ,
-      BP_TYPE,
-          BP_NAME1 ,
-          SEARCH2,
-          FAX,
-          TEL,
-          POSTCODE,
-          REGIONS,
-          PLACE_NAME
+          BP_NAME1
+        
     }
 
     entity PCH_T03_PO_POP      as
@@ -318,9 +312,8 @@ extend service TableService with {
                 Tu.USER_TYPE = '1';
 
 }
-annotate TableService.MST_T03_SAP_BP_POP with @(Capabilities: {FilterRestrictions: {NonFilterableProperties: [BP_TYPE,BP_NAME2,BP_NAME3,BP_NAME4,SEARCH2,FAX,TEL,POSTCODE,REGIONS,PLACE_NAME]}});
 
-annotate TableService.PCH10_STATUS_POP with @(Capabilities: {FilterRestrictions: {NonFilterableProperties: [D_NO,SUPPLIER_MAT,CD_BY,PLANT_ID,PO_TYPE_NAME,STATUS_NAME,ZABC1_NAME,PO_D_TXZ01,PO_PUR_QTY,PO_PUR_UNIT,CURRENCY,DEL_PRICE,UNIT_PRICE,DEL_AMOUNT,MEMO,USER_TYPE,STORAGE_LOC,STORAGE_TXT,TYPE,BP_NAME1,DOWN_FLAG,MANU_MATERIAL,ISSUEDAMOUNT,BP_ID,checkOk,BYNAME,POCDBY,SAP_CD_BY,INT_NUMBER,CUST_MATERIAL,PR_BY,EMAIL_ADDRESS,IMP_COMP,PO_PUR_QTY2,DEL_PRICE2]}});
+annotate TableService.PCH_T03_PO_POP with @(Capabilities: {FilterRestrictions: {NonFilterableProperties: [D_NO,SUPPLIER_MAT,CD_BY,PLANT_ID,PO_TYPE_NAME,STATUS_NAME,ZABC1_NAME,PO_D_TXZ01,PO_PUR_QTY,PO_PUR_UNIT,CURRENCY,DEL_PRICE,UNIT_PRICE,DEL_AMOUNT,MEMO,USER_TYPE,STORAGE_LOC,STORAGE_TXT,TYPE,BP_NAME1,DOWN_FLAG,MANU_MATERIAL,ISSUEDAMOUNT,BP_ID,checkOk,BYNAME,POCDBY,SAP_CD_BY,INT_NUMBER,CUST_MATERIAL,PR_BY,EMAIL_ADDRESS,IMP_COMP,PO_PUR_QTY2,DEL_PRICE2]}});
 annotate TableService.PCH01_STATUS_POP_1 with {
   VALUE @Common.Text: {$value: NAME}
 };

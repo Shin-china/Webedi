@@ -1092,7 +1092,7 @@ annotate TableService.PCH_T05_ACCOUNT_DETAIL1 with {
             },
             {
                 $Type             : 'Common.ValueListParameterDisplayOnly',
-                ValueListProperty : 'PO_TYPE'
+                ValueListProperty : 'PO_TYPE_NAME'
             },
             {
                 $Type             : 'Common.ValueListParameterDisplayOnly',
@@ -1104,7 +1104,7 @@ annotate TableService.PCH_T05_ACCOUNT_DETAIL1 with {
             },
             {
                 $Type             : 'Common.ValueListParameterDisplayOnly',
-                ValueListProperty : 'STATUS'
+                ValueListProperty : 'STATUS_NAME'
             },
             {
                 $Type             : 'Common.ValueListParameterDisplayOnly',
@@ -1116,8 +1116,9 @@ annotate TableService.PCH_T05_ACCOUNT_DETAIL1 with {
             },
             {
                 $Type             : 'Common.ValueListParameterDisplayOnly',
-                ValueListProperty : 'ZABC'
+                ValueListProperty : 'ZABC1_NAME'
             }
+
 
         ]
     }});
@@ -1129,44 +1130,15 @@ annotate TableService.PCH_T05_ACCOUNT_DETAIL1 with {
         entity     : 'MST_T03_SAP_BP_POP',
         Parameters : [
 
-            {
-                $Type             : 'Common.ValueListParameterDisplayOnly',
-                ValueListProperty : 'BP_NAME1'
-            },
-            {
+                        {
                 $Type             : 'Common.ValueListParameterInOut',
                 LocalDataProperty : 'SUPPLIER',
                 ValueListProperty : 'BP_ID'
             },
             {
                 $Type             : 'Common.ValueListParameterDisplayOnly',
-                ValueListProperty : 'BP_TYPE'
+                ValueListProperty : 'BP_NAME1'
             },
-            {
-                $Type             : 'Common.ValueListParameterDisplayOnly',
-                ValueListProperty : 'SEARCH2'
-            },
-            {
-                $Type             : 'Common.ValueListParameterDisplayOnly',
-                ValueListProperty : 'FAX'
-            },
-            {
-                $Type             : 'Common.ValueListParameterDisplayOnly',
-                ValueListProperty : 'TEL'
-            },
-            {
-                $Type             : 'Common.ValueListParameterDisplayOnly',
-                ValueListProperty : 'POSTCODE'
-            },
-            {
-                $Type             : 'Common.ValueListParameterDisplayOnly',
-                ValueListProperty : 'REGIONS'
-            },
-            {
-                $Type             : 'Common.ValueListParameterDisplayOnly',
-                ValueListProperty : 'PLACE_NAME'
-            },
-
         ]
     }});
    
@@ -1177,44 +1149,15 @@ annotate TableService.PCH_T05_ACCOUNT_DETAIL_DISPLAY3 with {
         entity     : 'MST_T03_SAP_BP_POP',
         Parameters : [
 
-            {
-                $Type             : 'Common.ValueListParameterDisplayOnly',
-                ValueListProperty : 'BP_NAME1'
-            },
-            {
+                        {
                 $Type             : 'Common.ValueListParameterInOut',
                 LocalDataProperty : 'SUPPLIER',
                 ValueListProperty : 'BP_ID'
             },
             {
                 $Type             : 'Common.ValueListParameterDisplayOnly',
-                ValueListProperty : 'BP_TYPE'
+                ValueListProperty : 'BP_NAME1'
             },
-            {
-                $Type             : 'Common.ValueListParameterDisplayOnly',
-                ValueListProperty : 'SEARCH2'
-            },
-            {
-                $Type             : 'Common.ValueListParameterDisplayOnly',
-                ValueListProperty : 'FAX'
-            },
-            {
-                $Type             : 'Common.ValueListParameterDisplayOnly',
-                ValueListProperty : 'TEL'
-            },
-            {
-                $Type             : 'Common.ValueListParameterDisplayOnly',
-                ValueListProperty : 'POSTCODE'
-            },
-            {
-                $Type             : 'Common.ValueListParameterDisplayOnly',
-                ValueListProperty : 'REGIONS'
-            },
-            {
-                $Type             : 'Common.ValueListParameterDisplayOnly',
-                ValueListProperty : 'PLACE_NAME'
-            },
-
         ]
     }});
    

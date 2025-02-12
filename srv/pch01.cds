@@ -107,7 +107,7 @@ annotate TableService.PCH_01_DL with {
             },
             {
                 $Type             : 'Common.ValueListParameterDisplayOnly',
-                ValueListProperty : 'PO_TYPE'
+                ValueListProperty : 'PO_TYPE_NAME'
             },
             {
                 $Type             : 'Common.ValueListParameterDisplayOnly',
@@ -119,7 +119,7 @@ annotate TableService.PCH_01_DL with {
             },
             {
                 $Type             : 'Common.ValueListParameterDisplayOnly',
-                ValueListProperty : 'STATUS'
+                ValueListProperty : 'STATUS_NAME'
             },
             {
                 $Type             : 'Common.ValueListParameterDisplayOnly',
@@ -131,7 +131,7 @@ annotate TableService.PCH_01_DL with {
             },
             {
                 $Type             : 'Common.ValueListParameterDisplayOnly',
-                ValueListProperty : 'ZABC'
+                ValueListProperty : 'ZABC1_NAME'
             }
 
         ]
