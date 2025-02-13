@@ -52,6 +52,7 @@ import customer.service.ifm.Ifm03PoService;
 import customer.service.ifm.Ifm04PrService;
 import customer.service.ifm.Ifm05PayService;
 import customer.service.ifm.Ifm06BpPurchaseService;
+import customer.service.ifm.SendService;
 import customer.service.sys.ObjectStoreService;
 
 @Component
@@ -151,6 +152,7 @@ public class CommonHandler implements EventHandler {
         // 获取uqmc传入的t06数据
         // 获取
         System.out.println(JSONObject.toJSONString(context.getPch06()));
+        IFLog ifLog = new IFLog(IFSManageDao.IF_S4_IF054);
         // System.out.println(context.getJson());
 
         // Ifm054Bean list = JSON.parseObject(context.getJson(), Ifm054Bean.class);
@@ -161,10 +163,9 @@ public class CommonHandler implements EventHandler {
         String msg = "";
 
         // 提取数据，插入表中
-        sendService.extracted(pch06List);
+        sendService.extracted(pch06List,ifLog);
         System.out.println("提取数据完成");
 
-        // msg = sendService.sendPost(pch06List2);
 
         System.out.println("success");
 
@@ -177,11 +178,12 @@ public class CommonHandler implements EventHandler {
         ArrayList<T06QuotationH> pch06List = new ArrayList<>();
         String msg = "";
 
+        IFLog ifLog = new IFLog(IFSManageDao.IF_S4_IF055);
         pch06List = sendService.getJson(context.getJson());
 
         // 调用接口传值
         if (pch06List != null && pch06List.size() > 0) {
-            msg = sendService.sendPost(pch06List);
+            msg = sendService.sendPost(pch06List,ifLog);
             System.out.println(msg);
         }
         if (msg.equals("success")) {

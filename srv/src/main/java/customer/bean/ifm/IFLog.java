@@ -120,7 +120,10 @@ public class IFLog {
         t15log.setSuccessNum(t15log.getSuccessNum() + 1);
         t15log.setErrorNum(t15log.getErrorNum() - 1);
     }
-
+    public void setTotalNumAndSuccess(Integer num) {
+        t15log.setTotalNum(num);
+        t15log.setSuccessNum(num);
+    }
     public void setTotalNum(Integer num) {
         t15log.setTotalNum(num);
         t15log.setErrorNum(num);

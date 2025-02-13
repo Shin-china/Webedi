@@ -61,52 +61,14 @@ public class Pch02Handler implements EventHandler {
     public void onPCH02ConfirmationREQUEST(PCH02ConfirmationREQUESTContext context) {
 
         // jobMonotor.poolMonitor3();
-        IFLog ifLog = new IFLog(IFSManageDao.IF_S4_COM);
-        String poPost = ifm07PoPost.poPost(ifLog);
+        IFLog ifLog = new IFLog(IFSManageDao.IF_S4_PO_POST);
+        String poPost = ifm07PoPost.poPost(ifLog,context.getParms());
         context.setResult(poPost);
     }
 
-    // 解析前台传入的参数（假设为 JSON 格式字符串）
-    private String parseParameters2(String parms) {
-        JSONArray stringToJsonArray = new JSONArray();
-        HashMap<String, String> parameters = new HashMap<>();
-        if (parms != null && !parms.isEmpty()) {
-            // DeliveryInfoList object = JSON.parseObject(parms,DeliveryInfoList.class);
-            // List<DeliveryInfo> items = object.getItems();
-            stringToJsonArray = stringToJsonArray(parms);
-            stringToJsonArray.toString();
-            System.out.println();
 
-            // parameters.put("items", );
 
-        }
-        return stringToJsonArray.toString();
-    }
 
-    // 解析前台传入的参数（假设为 JSON 格式字符串）
-    private HashMap<String, String> parseParameters(String parms) {
-        HashMap<String, String> parameters = new HashMap<>();
-        if (parms != null && !parms.isEmpty()) {
-            // DeliveryInfoList object = JSON.parseObject(parms,DeliveryInfoList.class);
-            // List<DeliveryInfo> items = object.getItems();
-            JSONArray stringToJsonArray = stringToJsonArray(parms);
-            stringToJsonArray.toString();
-            System.out.println();
 
-            parameters.put("items", stringToJsonArray.toString());
 
-        }
-        return parameters;
-    }
-
-    // 定义一个方法来将String类型的JSON数组转换成JSONArray
-    public JSONArray stringToJsonArray(String jsonString) {
-        JSONArray jsonArray = null;
-        try {
-            jsonArray = new JSONArray(jsonString);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return jsonArray;
-    }
 }
