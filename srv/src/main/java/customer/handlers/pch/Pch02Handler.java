@@ -27,10 +27,12 @@ import org.springframework.stereotype.Component;
 import cds.gen.sys.T11IfManager;
 import cds.gen.tableservice.PCH02ConfirmationREQUESTContext;
 import cds.gen.tableservice.TableService_;
+import customer.bean.ifm.IFLog;
 import customer.bean.sys.DeliveryInfo;
 import customer.bean.sys.DeliveryInfoList;
 import customer.dao.sys.IFSManageDao;
 import customer.odata.S4OdataTools;
+import customer.service.ifm.Ifm07PoPost;
 import customer.service.pch.Pch06Service;
 import customer.service.pch.PchService;
 import customer.task.JobMonotor;
@@ -53,44 +55,15 @@ public class Pch02Handler implements EventHandler {
     private IFSManageDao ifsManageDao;
 
     @Autowired
-    private JobMonotor jobMonotor;
+    private Ifm07PoPost ifm07PoPost;
 
     @On(event = PCH02ConfirmationREQUESTContext.CDS_NAME)
     public void onPCH02ConfirmationREQUEST(PCH02ConfirmationREQUESTContext context) {
 
         // jobMonotor.poolMonitor3();
-
-        try {
-            // 从前端参数中获取字符串
-            String parms = context.getParms();
-
-            // 解析前台传入的参数，将JSON字符串解析为HashMap
-            String parameters = parseParameters2(parms);
-
-            // 获取 Web Service 配置信息
-            T11IfManager webServiceConfig = ifsManageDao.getByCode("IF043");
-
-            if (webServiceConfig != null) {
-                // 调用 Web Service 的 get 方法
-                String response = S4OdataTools.post(webServiceConfig, parameters, null);
-                JSONObject object = JSONObject.parseObject(response);
-                System.out.println(StringTool.convertGBKToUTF8(object.getString("message")));
-                // 获取 Web Service 返回的 status 字段
-                String status = object.getString("status");
-                // 判断 status 是否为 "200"
-                if ("200".equals(status)) {
-                    // 如果 status 为 "200"，表示成功，执行 PO 明细状态更新
-                    pchService.updatePch03(context.getParms());
-                }
-                context.setResult(object.getString("message"));
-            } else {
-                // 如果没有找到配置，返回错误信息
-                context.setResult("Web Service configuration not found.");
-            }
-        } catch (Exception e) {
-            logger.error("Error occurred during PCH02ConfirmationREQUEST handling.", e);
-            context.setResult("Error occurred: " + e.getMessage());
-        }
+        IFLog ifLog = new IFLog(IFSManageDao.IF_S4_COM);
+        String poPost = ifm07PoPost.poPost(ifLog);
+        context.setResult(poPost);
     }
 
     // 解析前台传入的参数（假设为 JSON 格式字符串）

@@ -1,4 +1,4 @@
-package customer.handlers.sys;
+package customer.service.ifm;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -35,7 +35,9 @@ import customer.dao.pch.PchD007;
 import customer.dao.sys.DocNoDao;
 import customer.dao.sys.IFSManageDao;
 import customer.odata.BaseMoveService;
-import cds.gen.common.PchT06QuotationH;
+import customer.service.comm.IfmService;
+import 
+cds.gen.common.PchT06QuotationH;
 import cds.gen.common.PchT07QuotationD;
 import cds.gen.pch.T06QuotationH;
 import cds.gen.pch.T07QuotationD;
@@ -44,7 +46,7 @@ import customer.bean.com.UmcConstants;
 import customer.bean.pch.Pch07;
 
 @Component
-public class SendService {
+public class SendService extends IfmService{
 
     @Autowired
     PchD006 PchD006;
@@ -84,22 +86,7 @@ public class SendService {
             if (t06QuotationH != null)
                 pch06List.add(t06QuotationH);
         }
-        // pch06List.forEach(pch06 -> {
-        // ArrayList<T07QuotationD> list = new ArrayList<T07QuotationD>();
-        // String quoNumber = pch06.getQuoNumber();
-        // String salesNumber = pch06.getSalesNumber();
-        // String quoVersion = pch06.getQuoVersion();
-        // String key = quoNumber + salesNumber + quoVersion;
-        // String salesDno = map.get(key);
-        // String[] split = salesDno.split(",");
-        // for (String string : split) {
-        // T07QuotationD t07QuotationD = PchD007.get(quoNumber, salesNumber, quoVersion,
-        // string);
-        // list.add(t07QuotationD);
-        // }
-        // pch06.setToItemPo(list);
 
-        // });
         return pch06List;
 
     }

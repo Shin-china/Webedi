@@ -22,6 +22,8 @@ public class IFSManageDao extends Dao {
     public static final String IF_S4_PO = "IF041";
     public static final String IF_S4_PR = "IF065";
     public static final String IF_S4_PAY = "IF042";
+    public static final String IF_S4_COM = "IF043";
+
 
     public T11IfManager getByCode(String string) {
         Optional<T11IfManager> first = db
