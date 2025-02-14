@@ -138,6 +138,12 @@ public class IFLog {
         t15log.setTotalNum(t15log.getTotalNum()+1);
         
     }
+    //发送信息的接口用
+    public void setTotalNumAndError() {
+        t15log.setErrorNum(t15log.getSuccessNum());
+        t15log.setSuccessNum(0);
+        
+    }
     public void addIgnoreNum() {
         t15log.setIgnoreNum(t15log.getIgnoreNum() + 1);
         t15log.setErrorNum(t15log.getErrorNum() - 1);

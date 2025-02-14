@@ -63,8 +63,8 @@ public class SendService extends IfmService{
     private IFSManageDao ifsManageDao;
 
     // 发送t06数据，传入json,返回ArrayList<T06QuotationH>
-    public ArrayList<T06QuotationH> getJson(String json) {
-        ArrayList<T06QuotationH> pch06List = new ArrayList<>();
+    public ArrayList<PchT06QuotationH> getJson(String json) {
+        ArrayList<PchT06QuotationH> pch06List = new ArrayList<>();
         HashMap<String, String> map = new HashMap<>();
         // 直接从上下文中获取参数
         JSONArray jsonArray = JSONArray.parseArray(json);
@@ -84,7 +84,7 @@ public class SendService extends IfmService{
                 map.put(key, salesDno);
             }
 
-            T06QuotationH t06QuotationH = PchD006.get(quoNumber, salesNumber, quoVersion);
+            PchT06QuotationH t06QuotationH = PchD006.get(quoNumber, salesNumber, quoVersion);
 
             if (t06QuotationH != null)
                 pch06List.add(t06QuotationH);
@@ -93,13 +93,14 @@ public class SendService extends IfmService{
         return pch06List;
 
     }
-
-    public String sendPost(ArrayList<T06QuotationH> pch06List, IFLog log) throws Exception {
+    public String sendPost(ArrayList<PchT06QuotationH> pch06List, IFLog log, String json) throws Exception {
         HashMap<String, Object> retMap = new HashMap<String, Object>();
         retMap.put("pch06", pch06List);
+        log.setTd(super.transactionInit()); // 事务初始换
+        this.insertLog(log);
 
         T11IfManager webServiceConfig = this.getIfMnager(log);
-        
+
         log.gett15log().setIfPara(JSON.toJSONString(JSON.toJSONString(retMap)));
 
         // 调用送信接口
@@ -110,16 +111,43 @@ public class SendService extends IfmService{
 
         String re = getJsonObject2(postMove);
 
-        if (re.equals("success")) {
-            log.setSuccessMsg("販売見積への連携は成功になりました。");
+        TransactionStatus s = null;
 
-        } else {
-            log.setFairMsg("販売見積への連携は失敗になりました。");
+        try {
+            s = this.begin(log.getTd());
+
+            if (re.equals("success")) {
+                if(StringUtils.isNotBlank(json)){
+                    // 更新明细
+                    this.update(pch06List);
+
+                    // 更新头部
+                    this.update(json);
+                }
+               
+                log.setSuccessMsg("販売見積への連携は成功になりました。");
+                re = "販売見積への連携は成功になりました。";
+
+            } else {
+                log.setFairMsg("販売見積への連携は失敗になりました。");
+                re = "販売見積への連携は失敗になりました。";
+            }
+            
+            this.commit(s);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.setTotalNumAndError();
+        } finally {
+
+            this.rollback(s);
         }
-        
         this.updateLog(log);
+
         return re;
     }
+
+
 
     private String getJsonObject2(String postMove) {
         JSONObject jsonObject2 = JSONObject.parseObject(postMove);
@@ -137,10 +165,16 @@ public class SendService extends IfmService{
 
         try {
             s = this.begin(log.getTd());
-            pch06List.forEach(pchT06QuotationH -> {
-
-                // 获取購買見積番号
-                pchT06QuotationH.setQuoNumber(pchT06QuotationH.getQuoNumber());
+            for(PchT06QuotationH pchT06QuotationH:pch06List){
+         
+                 String  docNo = pchT06QuotationH.getQuoNumber();
+                if(StringUtils.isBlank(pchT06QuotationH.getQuoNumber())){
+                    // 获取購買見積番号
+                    
+                    docNo = docNoDao.getQuoNumber(1);
+                    pchT06QuotationH.setQuoNumber(docNo);
+                }
+                         
 
                 // 插入头标，首先删除原key值数据
                 T06QuotationH t06QuotationH = T06QuotationH.create();
@@ -158,10 +192,16 @@ public class SendService extends IfmService{
                 // 插入明细
                 List<PchT07QuotationD> toItems = pchT06QuotationH.getToItemPo();
                 if (toItems != null) {
-                    toItems.forEach(pchT07QuotationD -> {
+
+                    for(PchT07QuotationD pchT07QuotationD:toItems){
+                    
 
                         T07QuotationD t07QuotationD = T07QuotationD.create();
 
+        
+                        if(StringUtils.isBlank( pchT07QuotationD.getQuoNumber())){
+                            pchT07QuotationD.setQuoNumber(docNo);
+                        }
                         // // 复制类属性
                         BeanUtils.copyProperties(pchT07QuotationD, t07QuotationD);
 
@@ -187,10 +227,10 @@ public class SendService extends IfmService{
                         } else {
                             PchD007.insert(t07QuotationD);
                         }
-                    });
+                    }
                 }
                 log.addSuccessCount();
-            });
+            }
             
             this.commit(s);
 
@@ -280,7 +320,7 @@ public class SendService extends IfmService{
 
     }
 
-    public void update(ArrayList<T06QuotationH> pch06List) {
+    public void update(ArrayList<PchT06QuotationH> pch06List) {
         pch06List.forEach(pch06 -> {
             pch06.getToItemPo().forEach(toItemPo -> {
                 toItemPo.setStatus(UmcConstants.T07_STATUS_05);

@@ -72,9 +72,9 @@ public class T17EmailDDao extends Dao {
         logger.info("插入SYSt17表code" + o.getEmailAddress() + "================");
         o.setCdBy(getUserId());
         o.setCdTime(getNow());
-        if (o.getId() == null) {
+        
             o.setId(UniqueIDTool.getUUID());
-        }
+        
         db.run(Insert.into(Sys_.T17_EMAIL_D).entry(o));
     }
 

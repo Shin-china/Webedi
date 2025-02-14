@@ -27,6 +27,7 @@ import com.sap.cds.services.request.UserInfo;
 
 import cds.gen.sys.Sys_;
 import cds.gen.sys.T06DocNo;
+import customer.comm.constant.ConfigConstants;
 import customer.dao.common.Dao;
 import customer.tool.NumberTool;
 
@@ -58,6 +59,27 @@ public class DocNoDao extends Dao {
 		// 是否一次取多条
 		// 販売組織＝1100の場合、UWE；それ以外はUWH
 		if ("1100".equals(plantId)) {
+			code = "PROJECT_UWE";
+		}
+		T06DocNo index = this.getIndex(code, count);
+		// 取得发番编辑
+		return getDocIndexNo(index, DOC_NO_PROJECT);
+	}
+	/**
+	 * QUO_NUMBER 通过系统采番 購買見積番号
+	 * 
+	 * @param SALES_ORGANIZATION
+	 * @param count
+	 * @return
+	 * @throws Exception
+	 */
+	public String getQuoNumber(int count)
+			throws Exception {
+
+		String code = "PROJECT_UWH";
+
+		// 販売組織＝1100の場合、UWE；それ以外はUWH
+		if ("1100".equals(ConfigConstants.SYSTEM_PLANT_LIST.get(0))) {
 			code = "PROJECT_UWE";
 		}
 		T06DocNo index = this.getIndex(code, count);

@@ -25,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 
 import cds.gen.pch.T06QuotationH;
+import cds.gen.common.PchT06QuotationH;
 import cds.gen.pch.Pch_;
 import cds.gen.tableservice.TableService_;
 import cds.gen.tableservice.PCHT07QuoItemMax1;
@@ -53,7 +54,7 @@ public class PchD006 extends Dao {
     public T06QuotationH getByID(String saNum, String ver) {
         Optional<T06QuotationH> result = db.run(
                 Select.from(Pch_.T06_QUOTATION_H)
-                        .where(o -> o.SALES_NUMBER().eq(saNum).and(o.QUO_VERSION().eq(ver))))
+                        .where(o -> o.SALES_NUMBER().eq(saNum).and(o.QUO_VERSION().eq(ver)).and(o.QUO_NUMBER().isNull())))
                 .first(T06QuotationH.class);
 
         if (result.isPresent()) {
@@ -81,9 +82,9 @@ public class PchD006 extends Dao {
         logger.info("=================插入pchd06表号码" + "================");
         o.setCdBy(getUserId());
         o.setCdTime(getNow());
-        if (o.getId() == null) {
-            o.setId(UniqueIDTool.getUUID());
-        }
+        
+        o.setId(UniqueIDTool.getUUID());
+        
 
         o.setCdDate(DateTools.getLocalDate(o.getCdTime()));
         o.setCdDateTime(DateTools.getTimeAsString(o.getCdTime()));
@@ -92,12 +93,12 @@ public class PchD006 extends Dao {
     }
 
     // dao层获取传入的QUO_NUMBER所有明细以及头表
-    public T06QuotationH get(String quoNumber, String salesNumber, String quoVersion) {
-        Optional<T06QuotationH> first = db
+    public PchT06QuotationH get(String quoNumber, String salesNumber, String quoVersion) {
+        Optional<PchT06QuotationH> first = db
                 .run(Select.from(Pch_.T06_QUOTATION_H).columns(o -> o._all(), o -> o.TO_ITEM_PO().expand())
                         .where(o -> o.QUO_NUMBER().eq(quoNumber).and(o.SALES_NUMBER().eq(salesNumber))
                                 .and(o.QUO_VERSION().eq(quoVersion)).and(o.DEL_FLAG().eq("N"))))
-                .first(T06QuotationH.class);
+                .first(PchT06QuotationH.class);
 
         if (first.isPresent()) {
             return first.get();
@@ -175,7 +176,13 @@ public class PchD006 extends Dao {
 
     public void modefind(T06QuotationH o) {
         // 如果已经存在则更新，如果不存在则插入
-        T06QuotationH byID = this.getByID(o.getQuoNumber(),o.getSalesNumber(),o.getQuoVersion());
+        T06QuotationH byID =null;
+        if(o.getQuoNumber() != null ){
+            byID = this.getByID(o.getQuoNumber(),o.getSalesNumber(),o.getQuoVersion());
+        }else{
+            byID = this.getByID(o.getSalesNumber(),o.getQuoVersion());
+        }
+
         if (byID != null) {
             Map<String, Object> data = getT06DaoData(byID);
             Map<String, Object> keys = new HashMap<>();

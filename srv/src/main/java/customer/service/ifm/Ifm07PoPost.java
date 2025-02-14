@@ -93,7 +93,7 @@ public class Ifm07PoPost extends IfmService{
                 if ("200".equals(status)) {
                     // 如果 status 为 "200"，表示成功，执行 PO 明细状态更新
                     pchService.updatePch03(parms);
-                    log.addSuccessCount();
+                    
                     
                     
                 }
@@ -108,7 +108,7 @@ public class Ifm07PoPost extends IfmService{
             }
         } catch (Exception e) {
             log.setFairMsg("Error occurred: " + e.getMessage());
-            log.addErrorCount();
+            log.setTotalNumAndError();
             this.updateLog(log);
             this.rollback(s);
             logger.error("Error occurred during PCH02ConfirmationREQUEST handling.", e);
@@ -124,6 +124,9 @@ public class Ifm07PoPost extends IfmService{
                 // List<DeliveryInfo> items = object.getItems();
                 stringToJsonArray = stringToJsonArray(parms);
                 stringToJsonArray.toString();
+                
+                log.setTotalNumAndSuccess(stringToJsonArray.length());
+
                 System.out.println();
     
                 // parameters.put("items", );
