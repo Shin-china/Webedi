@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -166,17 +167,19 @@ public class CommonHandler implements EventHandler {
         sendService.extracted(pch06List,ifLog);
 
         System.out.println("提取数据完成");
+            HashMap<String, Object> retMap = new HashMap<String, Object>();
+        retMap.put("pch06", pch06List);
         //受信完成后送信
-        IFLog ifLog2 = new IFLog(IFSManageDao.IF_S4_IF055);
-        if (pch06List != null && pch06List.size() > 0) {
-            msg = sendService.sendPost(pch06List,ifLog2,null);
-            System.out.println(msg);
-        }
+        // IFLog ifLog2 = new IFLog(IFSManageDao.IF_S4_IF055);
+        // if (pch06List != null && pch06List.size() > 0) {
+        //     System.out.println(msg);
+        // }
 
 
-        System.out.println("success");
 
-        context.setResult("success");
+        System.out.println(JSONObject.toJSONString(retMap));
+
+        context.setResult(JSONObject.toJSONString(retMap));
     }
 
     // IFM055 購買見積依頼送信
