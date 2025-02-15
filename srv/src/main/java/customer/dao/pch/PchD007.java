@@ -21,6 +21,7 @@ import org.springframework.stereotype.Repository;
 
 import cds.gen.pch.T07QuotationD;
 import cds.gen.pch.T07QuotationD_;
+import cds.gen.common.PchT07QuotationD;
 import cds.gen.pch.Pch_;
 import cds.gen.pch.T06QuotationH;
 
@@ -72,9 +73,9 @@ public class PchD007 extends Dao {
         logger.info("=================插入pchd07表号码" + "================");
         o.setCdBy(getUserId());
         o.setCdTime(getNow());
-        if (o.getId() == null) {
+        
             o.setId(UniqueIDTool.getUUID());
-        }
+        
         o.setCdDate(DateTools.getLocalDate(o.getCdTime()));
         o.setCdDateTime(DateTools.getTimeAsString(o.getCdTime()));
 
@@ -90,6 +91,13 @@ public class PchD007 extends Dao {
     }
 
     public void update(T07QuotationD o) {
+        o.setUpTime(getNow());
+        o.setUpBy(this.getUserId());
+
+        logger.info("修改PCHD007" + o.getId());
+        db.run(Update.entity(Pch_.T07_QUOTATION_D).data(o));
+    }
+    public void update(PchT07QuotationD o) {
         o.setUpTime(getNow());
         o.setUpBy(this.getUserId());
 

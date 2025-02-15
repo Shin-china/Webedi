@@ -22,6 +22,10 @@ public class IFSManageDao extends Dao {
     public static final String IF_S4_PO = "IF041";
     public static final String IF_S4_PR = "IF065";
     public static final String IF_S4_PAY = "IF042";
+    public static final String IF_S4_PO_POST = "IF043";
+    public static final String IF_S4_IF055 = "IF055";//購買見積結果送信
+    public static final String IF_S4_IF054 = "IF054";//購買見積依頼受信
+
 
     public T11IfManager getByCode(String string) {
         Optional<T11IfManager> first = db

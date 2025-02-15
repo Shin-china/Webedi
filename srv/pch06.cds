@@ -54,10 +54,19 @@ extend service TableService {
 }
 
 // annotate TableService.T03_PO_C with @odata.draft.enabled;
-annotate TableService.T03_PO_C with {
+annotate TableService.PCH_T06_PO_ITEM with {
     PO_NO @(Common : {ValueList : {
-        entity     : 'PCH_T03_PO_ITEM',
+        entity     : 'PCH_T03_PO_POP',
         Parameters : [
+
+            {
+                $Type             : 'Common.ValueListParameterDisplayOnly',
+                ValueListProperty : 'SUPPLIER'
+            },
+            {
+                $Type             : 'Common.ValueListParameterDisplayOnly',
+                ValueListProperty : 'PCH03_BP_NAME1'
+            },
             {
                 $Type             : 'Common.ValueListParameterInOut',
                 LocalDataProperty : 'PO_NO',
@@ -65,19 +74,11 @@ annotate TableService.T03_PO_C with {
             },
             {
                 $Type             : 'Common.ValueListParameterDisplayOnly',
-                ValueListProperty : 'D_NO'
+                ValueListProperty : 'ID'
             },
             {
                 $Type             : 'Common.ValueListParameterDisplayOnly',
-                ValueListProperty : 'STORAGE'
-            },
-            {
-                $Type             : 'Common.ValueListParameterDisplayOnly',
-                ValueListProperty : 'SUPPLIER'
-            },
-            {
-                $Type             : 'Common.ValueListParameterDisplayOnly',
-                ValueListProperty : 'SUPPLIER_MAT'
+                ValueListProperty : 'PO_TYPE_NAME'
             },
             {
                 $Type             : 'Common.ValueListParameterDisplayOnly',
@@ -85,19 +86,15 @@ annotate TableService.T03_PO_C with {
             },
             {
                 $Type             : 'Common.ValueListParameterDisplayOnly',
-                ValueListProperty : 'PO_TYPE'
-            },
-            {
-                $Type             : 'Common.ValueListParameterDisplayOnly',
                 ValueListProperty : 'PO_DATE'
             },
             {
                 $Type             : 'Common.ValueListParameterDisplayOnly',
-                ValueListProperty : 'STATUS'
+                ValueListProperty : 'STATUS_NAME'
             },
             {
                 $Type             : 'Common.ValueListParameterDisplayOnly',
-                ValueListProperty : 'CD_BY'
+                ValueListProperty : 'SAP_CD_BY_TEXT'
             },
             {
                 $Type             : 'Common.ValueListParameterDisplayOnly',
@@ -105,40 +102,9 @@ annotate TableService.T03_PO_C with {
             },
             {
                 $Type             : 'Common.ValueListParameterDisplayOnly',
-                ValueListProperty : 'ZABC'
-            },
-            {
-                $Type             : 'Common.ValueListParameterDisplayOnly',
-                ValueListProperty : 'PO_D_TXZ01'
-            },
-            {
-                $Type             : 'Common.ValueListParameterDisplayOnly',
-                ValueListProperty : 'PO_PUR_QTY'
-            },
-            {
-                $Type             : 'Common.ValueListParameterDisplayOnly',
-                ValueListProperty : 'PO_PUR_UNIT'
-            },
-            {
-                $Type             : 'Common.ValueListParameterDisplayOnly',
-                ValueListProperty : 'CURRENCY'
-            },
-            {
-                $Type             : 'Common.ValueListParameterDisplayOnly',
-                ValueListProperty : 'DEL_PRICE'
-            },
-            {
-                $Type             : 'Common.ValueListParameterDisplayOnly',
-                ValueListProperty : 'UNIT_PRICE'
-            },
-            {
-                $Type             : 'Common.ValueListParameterDisplayOnly',
-                ValueListProperty : 'DEL_AMOUNT'
-            },
-            {
-                $Type             : 'Common.ValueListParameterDisplayOnly',
-                ValueListProperty : 'MEMO'
-            },
+                ValueListProperty : 'ZABC1_NAME'
+            }
+
 
         ]
     }});

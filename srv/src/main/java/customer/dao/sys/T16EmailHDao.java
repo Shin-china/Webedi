@@ -77,9 +77,9 @@ public class T16EmailHDao extends Dao {
         logger.info("插入T16EmailH表code" + o.getHCode() + "================");
         o.setCdBy(getUserId());
         o.setCdTime(getNow());
-        if (o.getId() == null) {
+        
             o.setId(UniqueIDTool.getUUID());
-        }
+        
         db.run(Insert.into(Sys_.T16_EMAIL_H).entry(o));
     }
 

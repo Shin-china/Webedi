@@ -45,7 +45,7 @@ public class Sys01Handler implements EventHandler {
         // 检查用户是否重复
         sysUserService.checkUserExist(user);
         String userId = sysUserService.insertUser(user);
-        context.setResult("success");
+        context.setResult(userId);
     }
 
     // 编辑用户
