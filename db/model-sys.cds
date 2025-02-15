@@ -206,7 +206,7 @@ entity T14_USER_2_BP : cuid, UP_FILED {
 entity T15_IF_LOG : cuid {
 
   @title: '{i18n>IF_CODE}' IF_CODE         : String(20); //接口编号
-  @title: '{i18n>IF_PARA}' IF_PARA         : String(200); //接口参数
+  @title: '{i18n>IF_PARA}' IF_PARA         : String(5000); //接口参数
   @title: '{i18n>IF_RESULT}' IF_RESULT     : String(2) default 'D'; //处理结果  OK  NG  DO
   @title: '{i18n>IF_MSG}' IF_MSG           : String(200); //接口处理消息
 

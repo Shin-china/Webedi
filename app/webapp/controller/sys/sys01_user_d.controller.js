@@ -84,20 +84,31 @@ sap.ui.define([
 
 
 			
-			
-			that.byId("smartTable3").rebindTable();
+			//所有的bp
+			// that.byId("smartTable3").rebindTable();
+			//用户的bp
 			that.byId("smartTable4").rebindTable();
-			
-			// that.byId("roleTable").rebindTable();
-			// that.byId("roleTable2").rebindTable();
+
+			//所有的权限
+			// that.byId("smartTable13").rebindTable();
+			//用户的权限
+			that.byId("smartTable24").rebindTable();
 
 		},
 		_onRouteMatchedCreate:function(oEvent){
 		    const that = this;
 			this._id = "";
+			//所有的bp
+			that.byId("smartTable3").rebindTable();
+			//用户的bp
+			// that.byId("smartTable4").rebindTable();
+
+			//所有的权限
+			that.byId("smartTable13").rebindTable();
+			//用户的权限
+			// that.byId("smartTable24").rebindTable();
 			this._setEditable(true);
 			this._setCreateAble(true);
-			that.getModel().refresh(true);
 
 			//Unbind element
 			that.getView().unbindElement();
@@ -111,11 +122,6 @@ sap.ui.define([
 
 			that.getView().setBindingContext(newHeaderContext);
 			
-			
-			that.byId("smartTable3").rebindTable();
-			that.byId("smartTable4").rebindTable();
-			that.byId("smartTable13").rebindTable();
-			that.byId("smartTable24").rebindTable();
 
 		},
 		//Edit Button
@@ -192,8 +198,7 @@ sap.ui.define([
 						urlParameters: resStr,
 						success: function(oData) {
 							that._setEditable(false);
-							that._id = context.ID;
-							that.byId("USER_ID").rebindTable(smartTable1);
+							that._id = oData.SYS01_USER_addUser;
 							that.byId("smartTable4").rebindTable();
 							that.byId("smartTable24").rebindTable();
 							that.getModel().refresh();
@@ -274,8 +279,11 @@ sap.ui.define([
 
 			if(this._id != "" && this._id != null){
 				oBindingParams.filters.push(new sap.ui.model.Filter("USER_ID", "EQ", this._id));
-			}
-			oEvent.getParameter("bindingParams").parameters.expand = "TO_BP";
+				oEvent.getParameter("bindingParams").parameters.expand = "TO_BP";
+			}else {
+				oBindingParams.filters.push(new sap.ui.model.Filter("USER_ID", "EQ", "1111111111111"));
+			  }
+			
 		},
 		onRebindRoot: function (oEvent) {
 			//直过滤

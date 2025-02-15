@@ -41,3 +41,23 @@ annotate TableService.T17_EMAIL_D with {
     EMAIL_ADDRESS_NAME @(Common : {FieldControl : #Mandatory});
 
 };
+
+annotate TableService.SYS07_EMAIL with {
+    BP_ID @(Common : {ValueList : {
+        entity     : 'MST_T03_SAP_BP_POP',
+        Parameters : [
+
+                  {
+                $Type             : 'Common.ValueListParameterInOut',
+                LocalDataProperty : 'BP_ID',
+                ValueListProperty : 'BP_ID'
+            },
+            {
+                $Type             : 'Common.ValueListParameterDisplayOnly',
+                ValueListProperty : 'BP_NAME1'
+            },
+
+        ]
+    }});
+   
+};

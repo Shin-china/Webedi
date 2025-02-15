@@ -62,7 +62,7 @@ sap.ui.define([
 									urlParameters: restStr,
 										success: function(data){
 											that.getModel().refresh();
-											that._showMessageToast(successDel);
+											MessageBox.alert(successDel);
 										},
 										error: function(error){
 											console.log(error);

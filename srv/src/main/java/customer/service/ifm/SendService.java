@@ -1,4 +1,4 @@
-package customer.handlers.sys;
+package customer.service.ifm;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -17,6 +17,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.TransactionStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -30,21 +31,25 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.excel.write.metadata.fill.FillConfig;
 
 import customer.bean.sys.Ifm054Bean;
+import customer.comm.tool.MessageTools;
 import customer.dao.pch.PchD006;
 import customer.dao.pch.PchD007;
 import customer.dao.sys.DocNoDao;
 import customer.dao.sys.IFSManageDao;
 import customer.odata.BaseMoveService;
-import cds.gen.common.PchT06QuotationH;
+import customer.service.comm.IfmService;
+import 
+cds.gen.common.PchT06QuotationH;
 import cds.gen.common.PchT07QuotationD;
 import cds.gen.pch.T06QuotationH;
 import cds.gen.pch.T07QuotationD;
 import cds.gen.sys.T11IfManager;
 import customer.bean.com.UmcConstants;
+import customer.bean.ifm.IFLog;
 import customer.bean.pch.Pch07;
 
 @Component
-public class SendService {
+public class SendService extends IfmService{
 
     @Autowired
     PchD006 PchD006;
@@ -58,8 +63,8 @@ public class SendService {
     private IFSManageDao ifsManageDao;
 
     // 发送t06数据，传入json,返回ArrayList<T06QuotationH>
-    public ArrayList<T06QuotationH> getJson(String json) {
-        ArrayList<T06QuotationH> pch06List = new ArrayList<>();
+    public ArrayList<PchT06QuotationH> getJson(String json) {
+        ArrayList<PchT06QuotationH> pch06List = new ArrayList<>();
         HashMap<String, String> map = new HashMap<>();
         // 直接从上下文中获取参数
         JSONArray jsonArray = JSONArray.parseArray(json);
@@ -79,45 +84,70 @@ public class SendService {
                 map.put(key, salesDno);
             }
 
-            T06QuotationH t06QuotationH = PchD006.get(quoNumber, salesNumber, quoVersion);
+            PchT06QuotationH t06QuotationH = PchD006.get(quoNumber, salesNumber, quoVersion);
 
             if (t06QuotationH != null)
                 pch06List.add(t06QuotationH);
         }
-        // pch06List.forEach(pch06 -> {
-        // ArrayList<T07QuotationD> list = new ArrayList<T07QuotationD>();
-        // String quoNumber = pch06.getQuoNumber();
-        // String salesNumber = pch06.getSalesNumber();
-        // String quoVersion = pch06.getQuoVersion();
-        // String key = quoNumber + salesNumber + quoVersion;
-        // String salesDno = map.get(key);
-        // String[] split = salesDno.split(",");
-        // for (String string : split) {
-        // T07QuotationD t07QuotationD = PchD007.get(quoNumber, salesNumber, quoVersion,
-        // string);
-        // list.add(t07QuotationD);
-        // }
-        // pch06.setToItemPo(list);
 
-        // });
         return pch06List;
 
     }
-
-    public String sendPost(ArrayList<T06QuotationH> pch06List) throws Exception {
+    public String sendPost(ArrayList<PchT06QuotationH> pch06List, IFLog log, String json) throws Exception {
         HashMap<String, Object> retMap = new HashMap<String, Object>();
         retMap.put("pch06", pch06List);
-        // 获取 Web Service 配置信息
-        T11IfManager webServiceConfig = ifsManageDao.getByCode("IF055");
+        log.setTd(super.transactionInit()); // 事务初始换
+        this.insertLog(log);
+
+        T11IfManager webServiceConfig = this.getIfMnager(log);
+
+        log.gett15log().setIfPara(JSON.toJSONString(JSON.toJSONString(retMap)));
 
         // 调用送信接口
         String postMove = base.postMove(webServiceConfig, retMap, null);
 
         // 使用fastjson将字符串转换为JSONObject
+        log.setTotalNumAndSuccess(pch06List.size());
 
         String re = getJsonObject2(postMove);
+
+        TransactionStatus s = null;
+
+        try {
+            s = this.begin(log.getTd());
+
+            if (re.equals("success")) {
+                if(StringUtils.isNotBlank(json)){
+                    // 更新明细
+                    this.update(pch06List);
+
+                    // 更新头部
+                    this.update(json);
+                }
+               
+                log.setSuccessMsg("販売見積への連携は成功になりました。");
+                re = "販売見積への連携は成功になりました。";
+
+            } else {
+                log.setFairMsg("販売見積への連携は失敗になりました。");
+                re = "販売見積への連携は失敗になりました。";
+            }
+            
+            this.commit(s);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.setTotalNumAndError();
+        } finally {
+
+            this.rollback(s);
+        }
+        this.updateLog(log);
+
         return re;
     }
+
+
 
     private String getJsonObject2(String postMove) {
         JSONObject jsonObject2 = JSONObject.parseObject(postMove);
@@ -125,60 +155,96 @@ public class SendService {
         return (String) jsonObject2.get("value");
     }
 
-    public void extracted(ArrayList<PchT06QuotationH> pch06List) {
+    public void extracted(ArrayList<PchT06QuotationH> pch06List, IFLog log) {
         ArrayList<cds.gen.pch.T06QuotationH> pch06List2 = new ArrayList<>();
         System.out.println("开始插入");
-        pch06List.forEach(pchT06QuotationH -> {
+        log.setTd(super.transactionInit()); // 事务初始换
+        this.insertLog(log);
 
-            // 获取購買見積番号
-            pchT06QuotationH.setQuoNumber(pchT06QuotationH.getQuoNumber());
+        TransactionStatus s = null;
 
-            // 插入头标，首先删除原key值数据
-            T06QuotationH t06QuotationH = T06QuotationH.create();
+        try {
+            s = this.begin(log.getTd());
+            for(PchT06QuotationH pchT06QuotationH:pch06List){
+         
+                 String  docNo = pchT06QuotationH.getQuoNumber();
+                if(StringUtils.isBlank(pchT06QuotationH.getQuoNumber())){
+                    // 获取購買見積番号
+                    
+                    docNo = docNoDao.getQuoNumber(1);
+                    pchT06QuotationH.setQuoNumber(docNo);
+                }
+                         
 
-            // 复制类属性
-            BeanUtils.copyProperties(pchT06QuotationH, t06QuotationH);
+                // 插入头标，首先删除原key值数据
+                T06QuotationH t06QuotationH = T06QuotationH.create();
 
-            pch06List2.add(t06QuotationH);
-            t06QuotationH.remove("TO_ITEMS");
-            t06QuotationH.remove("TO_ITEM_PO");
-            // 如果已经存在则更新，如果不存在则插入
-            PchD006.modefind(t06QuotationH);
+                // 复制类属性
+                BeanUtils.copyProperties(pchT06QuotationH, t06QuotationH);
 
-            // 插入明细
-            List<PchT07QuotationD> toItems = pchT06QuotationH.getToItemPo();
-            if (toItems != null) {
-                toItems.forEach(pchT07QuotationD -> {
+                pch06List2.add(t06QuotationH);
+                t06QuotationH.remove("TO_ITEMS");
+                t06QuotationH.remove("TO_ITEM_PO");
+                // 如果已经存在则更新，如果不存在则插入
+                PchD006.modefind(t06QuotationH);
+               
 
-                    T07QuotationD t07QuotationD = T07QuotationD.create();
+                // 插入明细
+                List<PchT07QuotationD> toItems = pchT06QuotationH.getToItemPo();
+                if (toItems != null) {
 
-                    // // 复制类属性
-                    BeanUtils.copyProperties(pchT07QuotationD, t07QuotationD);
+                    for(PchT07QuotationD pchT07QuotationD:toItems){
+                    
 
-                    // // 如果已经存在则更新，如果不存在则插入
-                    T07QuotationD byID2 = PchD007.getId(t07QuotationD.getQuoNumber(), t07QuotationD.getSalesNumber(),
-                            t07QuotationD.getQuoVersion(), t07QuotationD.getQuoItem(), t07QuotationD.getSalesDNo());
+                        T07QuotationD t07QuotationD = T07QuotationD.create();
 
-                    if (byID2 != null) {
+        
+                        if(StringUtils.isBlank( pchT07QuotationD.getQuoNumber())){
+                            pchT07QuotationD.setQuoNumber(docNo);
+                        }
+                        // // 复制类属性
+                        BeanUtils.copyProperties(pchT07QuotationD, t07QuotationD);
 
-                        // PchD007.update(t07QuotationD);
+                        // // 如果已经存在则更新，如果不存在则插入
+                        T07QuotationD byID2 = PchD007.getId(t07QuotationD.getQuoNumber(),
+                                t07QuotationD.getSalesNumber(),
+                                t07QuotationD.getQuoVersion(), t07QuotationD.getQuoItem(), t07QuotationD.getSalesDNo());
 
-                        Map<String, Object> data = new HashMap<>();
-                        getT07DaoData(t07QuotationD, data);
-                        Map<String, Object> keys = new HashMap<>();
-                        keys.put("SALES_NUMBER", t07QuotationD.getSalesNumber());
-                        keys.put("QUO_NUMBER", t07QuotationD.getQuoNumber());
-                        keys.put("QUO_VERSION", t07QuotationD.getQuoVersion());
-                        keys.put("SALES_D_NO", t07QuotationD.getSalesDNo());
-                        keys.put("QUO_ITEM", t07QuotationD.getQuoItem());
-                        PchD007.update(data, keys);
+                        if (byID2 != null) {
 
-                    } else {
-                        PchD007.insert(t07QuotationD);
+                            // PchD007.update(t07QuotationD);
+
+                            Map<String, Object> data = new HashMap<>();
+                            getT07DaoData(t07QuotationD, data);
+                            Map<String, Object> keys = new HashMap<>();
+                            keys.put("SALES_NUMBER", t07QuotationD.getSalesNumber());
+                            keys.put("QUO_NUMBER", t07QuotationD.getQuoNumber());
+                            keys.put("QUO_VERSION", t07QuotationD.getQuoVersion());
+                            keys.put("SALES_D_NO", t07QuotationD.getSalesDNo());
+                            keys.put("QUO_ITEM", t07QuotationD.getQuoItem());
+                            PchD007.update(data, keys);
+
+                        } else {
+                            PchD007.insert(t07QuotationD);
+                        }
                     }
-                });
+                }
+                log.addSuccessCount();
             }
-        });
+            
+            this.commit(s);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.addErrorCount();
+        } finally {
+
+            this.rollback(s);
+        }
+
+        log.setSuccessMsg(MessageTools.getMsgText(rbms, "IF054", log.getSuccessNum(), log.getErrorNum(),
+                log.getConsumTimeS()));
+        this.updateLog(log);
     }
 
     public void getT07DaoData(T07QuotationD t07QuotationD, Map<String, Object> data) {
@@ -254,7 +320,7 @@ public class SendService {
 
     }
 
-    public void update(ArrayList<T06QuotationH> pch06List) {
+    public void update(ArrayList<PchT06QuotationH> pch06List) {
         pch06List.forEach(pch06 -> {
             pch06.getToItemPo().forEach(toItemPo -> {
                 toItemPo.setStatus(UmcConstants.T07_STATUS_05);

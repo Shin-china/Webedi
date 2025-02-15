@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -52,6 +53,7 @@ import customer.service.ifm.Ifm03PoService;
 import customer.service.ifm.Ifm04PrService;
 import customer.service.ifm.Ifm05PayService;
 import customer.service.ifm.Ifm06BpPurchaseService;
+import customer.service.ifm.SendService;
 import customer.service.sys.ObjectStoreService;
 
 @Component
@@ -151,6 +153,7 @@ public class CommonHandler implements EventHandler {
         // 获取uqmc传入的t06数据
         // 获取
         System.out.println(JSONObject.toJSONString(context.getPch06()));
+        IFLog ifLog = new IFLog(IFSManageDao.IF_S4_IF054);
         // System.out.println(context.getJson());
 
         // Ifm054Bean list = JSON.parseObject(context.getJson(), Ifm054Bean.class);
@@ -161,40 +164,40 @@ public class CommonHandler implements EventHandler {
         String msg = "";
 
         // 提取数据，插入表中
-        sendService.extracted(pch06List);
+        sendService.extracted(pch06List,ifLog);
+
         System.out.println("提取数据完成");
+            HashMap<String, Object> retMap = new HashMap<String, Object>();
+        retMap.put("pch06", pch06List);
+        //受信完成后送信
+        // IFLog ifLog2 = new IFLog(IFSManageDao.IF_S4_IF055);
+        // if (pch06List != null && pch06List.size() > 0) {
+        //     System.out.println(msg);
+        // }
 
-        // msg = sendService.sendPost(pch06List2);
 
-        System.out.println("success");
 
-        context.setResult("success");
+        System.out.println(JSONObject.toJSONString(retMap));
+
+        context.setResult(JSONObject.toJSONString(retMap));
     }
 
     // IFM055 購買見積依頼送信
     @On(event = "pch06BatchSending")
     public void pch06BatchSending(Pch06BatchSendingContext context) throws Exception {
-        ArrayList<T06QuotationH> pch06List = new ArrayList<>();
+        ArrayList<PchT06QuotationH> pch06List = new ArrayList<>();
         String msg = "";
 
+        IFLog ifLog = new IFLog(IFSManageDao.IF_S4_IF055);
         pch06List = sendService.getJson(context.getJson());
 
         // 调用接口传值
         if (pch06List != null && pch06List.size() > 0) {
-            msg = sendService.sendPost(pch06List);
+            msg = sendService.sendPost(pch06List,ifLog,context.getJson());
             System.out.println(msg);
         }
-        if (msg.equals("success")) {
-            context.setResult("販売見積への連携は成功になりました。");
-            // 更新明细
-            sendService.update(pch06List);
-
-            // 更新头部
-            sendService.update(context.getJson());
-
-        } else {
-            context.setResult("販売見積への連携は失敗になりました。");
-        }
+        context.setResult(msg);
+      
 
     }
 

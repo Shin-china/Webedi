@@ -49,3 +49,22 @@ extend service TableService {
 
 
 };
+
+annotate TableService.PCH09_LIST with {
+    SUPPLIER @(Common : {ValueList : {
+        entity     : 'MST_T03_SAP_BP_POP',
+        Parameters : [
+
+            {
+                $Type             : 'Common.ValueListParameterInOut',
+                LocalDataProperty : 'SUPPLIER',
+                ValueListProperty : 'BP_ID'
+            },
+            {
+                $Type             : 'Common.ValueListParameterDisplayOnly',
+                ValueListProperty : 'BP_NAME1'
+            },
+        ]
+    }});
+   
+};

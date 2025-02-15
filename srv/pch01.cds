@@ -79,3 +79,62 @@ annotate TableService.PCH_01_DL with {
   STATUS @(Common: {ValueList: {entity: 'PCH01_STATUS_POP_1', }});
 
 };
+
+
+
+
+// annotate TableService.T03_PO_C with @odata.draft.enabled;
+annotate TableService.PCH_01_DL with {
+    PO_NO @(Common : {ValueList : {
+        entity     : 'PCH_T03_PO_POP',
+        Parameters : [
+           {
+                $Type             : 'Common.ValueListParameterDisplayOnly',
+                ValueListProperty : 'SUPPLIER'
+            },
+            {
+                $Type             : 'Common.ValueListParameterDisplayOnly',
+                ValueListProperty : 'PCH03_BP_NAME1'
+            },
+            {
+                $Type             : 'Common.ValueListParameterInOut',
+                LocalDataProperty : 'PO_NO',
+                ValueListProperty : 'PO_NO'
+            },
+            {
+                $Type             : 'Common.ValueListParameterDisplayOnly',
+                ValueListProperty : 'ID'
+            },
+            {
+                $Type             : 'Common.ValueListParameterDisplayOnly',
+                ValueListProperty : 'PO_TYPE_NAME'
+            },
+            {
+                $Type             : 'Common.ValueListParameterDisplayOnly',
+                ValueListProperty : 'MAT_ID'
+            },
+            {
+                $Type             : 'Common.ValueListParameterDisplayOnly',
+                ValueListProperty : 'PO_DATE'
+            },
+            {
+                $Type             : 'Common.ValueListParameterDisplayOnly',
+                ValueListProperty : 'STATUS_NAME'
+            },
+            {
+                $Type             : 'Common.ValueListParameterDisplayOnly',
+                ValueListProperty : 'SAP_CD_BY_TEXT'
+            },
+            {
+                $Type             : 'Common.ValueListParameterDisplayOnly',
+                ValueListProperty : 'PO_D_DATE'
+            },
+            {
+                $Type             : 'Common.ValueListParameterDisplayOnly',
+                ValueListProperty : 'ZABC1_NAME'
+            }
+
+        ]
+    }});
+   
+};
