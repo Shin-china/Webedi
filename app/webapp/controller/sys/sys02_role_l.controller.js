@@ -1,7 +1,9 @@
 sap.ui.define([
-	"umc/app/controller/BaseController"
+	"umc/app/controller/BaseController",
+	"sap/m/MessageBox"
 ], function(
-	Controller
+	Controller,
+	MessageBox
 ) {
 	"use strict";
 
@@ -11,8 +13,7 @@ sap.ui.define([
             this._setOnInitNo("SYS02",".20240418");
             // 设置自己的 OData模型为默认模型
             this._setDefaultDataModel("TableService");
-            // 设置选中框 无
-            this._setSelectionNone("detailTable");
+
         },
 
         onRebind: function (oEvent) {
@@ -37,9 +38,9 @@ sap.ui.define([
 			var that = this;
 			var sResponsivePaddingClasses = "sapUiResponsivePadding--header sapUiResponsivePadding--content sapUiResponsivePadding--footer";
 			//弹框
-			var confirmTxt = this.MessageTools._getI18nTextInModel("sys", "deleteUserMsg", this.getView());
-			var confirmTitle = this.MessageTools._getI18nTextInModel("sys", "deleteUserTitle", this.getView());
-			var successDel = this.MessageTools._getI18nTextInModel("sys", "deleteUserSuccess", this.getView());
+			var confirmTxt = this.MessageTools._getI18nTextInModel("sys", "deleteRoleMsg", this.getView());
+			var confirmTitle = this.MessageTools._getI18nTextInModel("sys", "deleteRoleTitle", this.getView());
+			var successDel = this.MessageTools._getI18nTextInModel("sys", "deleteRoleSuccess", this.getView());
 			MessageBox.warning(
 				confirmTxt,
 				{
@@ -51,27 +52,28 @@ sap.ui.define([
 					styleClass: sResponsivePaddingClasses,
 					onClose:function(sAction){
 						if(sAction === "OK"){
+							var itemObj =[];
 							//删除权限
-							var userList = that._getRootId("detailTable","USER_ID");
+							var userList = that._getRootId("detailTable","ID");
 							for(var ind = 0;ind < userList.length;ind++){
-								var itemObj = {
-									"USER_ID": userList[ind]
-								};
+	
+								itemObj.push({"ID": userList[ind]});
 
-								var restStr = {userJson: JSON.stringify(itemObj)};
-								that.getModel().callFunction("/SYS01_USER_deleteUser",{
-									method: "POST",
-									urlParameters: restStr,
-										success: function(data){
-											that.getModel().refresh();
-											MessageBox.alert(successDel);
-										},
-										error: function(error){
-											console.log(error);
-										}
-								});
+							
 	
 							}
+							var restStr = {roleJson: JSON.stringify(itemObj)};
+							that.getModel().callFunction("/SYS02_Role_deleteRole",{
+								method: "POST",
+								urlParameters: restStr,
+									success: function(data){
+										that.getModel().refresh();
+										MessageBox.alert(successDel);
+									},
+									error: function(error){
+										console.log(error);
+									}
+							});
 						}
 					},
 					dependentOn: this.getView()

@@ -120,11 +120,7 @@ extend service TableService {
 annotate TableService.PCH_T02_USER with {
   
   STATUS @(Common: {ValueList: {entity: 'PCH02_STATUS_POP', }}); 
-
-};
-
-annotate TableService.PCH_T02_USER with {
-    PO_NO @(Common : {ValueList : {
+   PO_NO @(Common : {ValueList : {
         entity     : 'PCH_T03_PO_POP',
         Parameters : [
 
@@ -177,10 +173,6 @@ annotate TableService.PCH_T02_USER with {
 
         ]
     }});
-   
-};
-
-annotate TableService.PCH_T02_USER with {
      SUPPLIER @(Common : {ValueList : {
         entity     : 'MST_T03_SAP_BP_POP',
         Parameters : [
@@ -198,4 +190,6 @@ annotate TableService.PCH_T02_USER with {
         ]
     }});
    
+
 };
+

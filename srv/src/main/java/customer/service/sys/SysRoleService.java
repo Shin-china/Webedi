@@ -10,7 +10,9 @@ import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.databind.JsonNode;
 import cds.gen.sys.T02Role;
 import cds.gen.tableservice.SYS02RoleAddRoleContext;
+import cds.gen.tableservice.SYS02RoleDeleteRoleContext;
 import cds.gen.tableservice.SYS02RoleEditRoleContext;
+import customer.bean.sys.Sys002Role;
 import customer.comm.tool.DateTools;
 import customer.comm.tool.JsonUtils;
 import customer.dao.sys.Role2AuthDao;
@@ -77,5 +79,15 @@ public class SysRoleService {
             roleDao.updateRole(role);
             role2AuthDao.addRole2Auth(id, list);
         }
+    }
+
+
+
+    public void deleteRole(Sys002Role json2) {
+       // 删除权限表
+       roleDao.deleteRole(json2.getID());
+       // 删除用户对应的工厂表
+       // 根据角色id 删除 Role2Auth
+       role2AuthDao.deleteByRoleId(json2.getID());
     }
 }

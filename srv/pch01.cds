@@ -77,15 +77,7 @@ extend service TableService {
 annotate TableService.PCH_01_DL with {
 
   STATUS @(Common: {ValueList: {entity: 'PCH01_STATUS_POP_1', }});
-
-};
-
-
-
-
-// annotate TableService.T03_PO_C with @odata.draft.enabled;
-annotate TableService.PCH_01_DL with {
-    PO_NO @(Common : {ValueList : {
+  PO_NO @(Common : {ValueList : {
         entity     : 'PCH_T03_PO_POP',
         Parameters : [
            {
@@ -136,5 +128,6 @@ annotate TableService.PCH_01_DL with {
 
         ]
     }});
-   
+
 };
+

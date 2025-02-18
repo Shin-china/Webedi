@@ -1068,8 +1068,25 @@ extend service TableService {
 
 }
 
+
+
 annotate TableService.PCH_T05_ACCOUNT_DETAIL1 with {
-    PO_NO @(Common : {ValueList : {
+    SUPPLIER @(Common : {ValueList : {
+        entity     : 'MST_T03_SAP_BP_POP',
+        Parameters : [
+
+                        {
+                $Type             : 'Common.ValueListParameterInOut',
+                LocalDataProperty : 'SUPPLIER',
+                ValueListProperty : 'BP_ID'
+            },
+            {
+                $Type             : 'Common.ValueListParameterDisplayOnly',
+                ValueListProperty : 'BP_NAME1'
+            },
+        ]
+    }});
+   PO_NO @(Common : {ValueList : {
         entity     : 'PCH_T03_PO_POP',
         Parameters : [
 
@@ -1122,26 +1139,6 @@ annotate TableService.PCH_T05_ACCOUNT_DETAIL1 with {
 
         ]
     }});
-   
-};
-
-annotate TableService.PCH_T05_ACCOUNT_DETAIL1 with {
-    SUPPLIER @(Common : {ValueList : {
-        entity     : 'MST_T03_SAP_BP_POP',
-        Parameters : [
-
-                        {
-                $Type             : 'Common.ValueListParameterInOut',
-                LocalDataProperty : 'SUPPLIER',
-                ValueListProperty : 'BP_ID'
-            },
-            {
-                $Type             : 'Common.ValueListParameterDisplayOnly',
-                ValueListProperty : 'BP_NAME1'
-            },
-        ]
-    }});
-   
 };
 
 annotate TableService.PCH_T05_ACCOUNT_DETAIL_DISPLAY3 with {

@@ -34,13 +34,7 @@
 		<f:header>
 			<f:DynamicPageHeader id="DynamicPageHeader" pinnable="true">
 				<f:content>
-					<OverflowToolbar id="_IDGenOverflowToolbar1">
-						<content>
-							<ToolbarSpacer id="_IDGenToolbarSpacer1"/>
 
-							<Button id="_IDGenButton2" icon="sap-icon://edit" text="{sys>SYS02_BUTTON_CREAT}" press="onCreateRole" enabled="true" width="10em"/>
-						</content>
-					</OverflowToolbar>
 					<smartFilterBar:SmartFilterBar id="smartFilterBar" useToolbar="false" entitySet="SYS_T02_ROLE" persistencyKey="receiptprintFilterBar" showFilterConfiguration="true">
 						<smartFilterBar:controlConfiguration>
 							<smartFilterBar:ControlConfiguration id="_IDGenControlConfiguration1" key="ROLE_CODE" label="{sys>SYS02_LABEL_D__ROLE_CODE}" visibleInAdvancedArea="true" filterType="single">
@@ -63,9 +57,13 @@
 
 			<smartTable:SmartTable id="smartTable" smartVariant="__SVM01" persistencyKey="receiptprintTable" entitySet="SYS_T02_ROLE" requestAtLeastFields="ID,ROLE_CODE,ROLE_NAME,UP_BY,UP_TIME" smartFilterId="smartFilterBar" useExportToExcel="true" useVariantManagement="false" useTablePersonalisation="false" tableType="Table" showRowCount="true" beforeRebindTable="onRebind" placeToolbarInTable="true" header="{i8>tableHeaderTitle}" enableAutoBinding="false">
 
-				<smartTable:customToolbar>
-
-				</smartTable:customToolbar>
+			<smartTable:customToolbar>
+				<OverflowToolbar design="Transparent">
+					<ToolbarSpacer />
+					<OverflowToolbarButton icon="sap-icon://add" text="{sys>SYS02_BUTTON_CREAT}" tooltip="{sys>SYS01_BUTTON_CREAT}" press="onCreateRole"></OverflowToolbarButton>
+					<OverflowToolbarButton icon="sap-icon://delete" text="{sys>SYS01_BUTTON_DEL}" tooltip="{sys>SYS01_BUTTON_DEL}" press="onDel"></OverflowToolbarButton>
+				</OverflowToolbar>
+			</smartTable:customToolbar>
 				<table:Table id="detailTable" rowActionCount="1" rowMode="Auto">
 
 					<table:columns>
