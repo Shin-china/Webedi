@@ -10,7 +10,13 @@
     <f:title>
         <f:DynamicPageTitle id="DynamicPageTitle">
             <f:content>
-                <m:Label id="_IDGenLabel1" labelFor="MENU_NAME" text="{com>SYSTEM_NAME}" vAlign="Bottom" width="15em" />
+                     <m:Label id="_IDGenLabel1" labelFor="MENU_NAME" text="{com>SYSTEM_NAME}" vAlign="Bottom" width="15em" design="Bold"/>
+
+
+					<m:Label id="_IDGenLabel2" labelFor="MENU_NAME" text="{com>LBL_CURRENT_USER}" vAlign="Bottom" width="10em" design="Bold" showColon="true" textAlign="End"/>
+					<m:Label id="_IDGenLabel3" labelFor="MENU_NAME" text="" vAlign="Bottom" width="15em" textAlign="Begin"/>
+
+              
             </f:content>
         </f:DynamicPageTitle>
     </f:title>
