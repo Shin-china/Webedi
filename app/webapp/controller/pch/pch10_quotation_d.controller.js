@@ -455,6 +455,7 @@ sap.ui.define(["umc/app/controller/BaseController", "sap/m/MessageToast", "sap/m
 
           if (selectedIndices.length == 0) { 
               sap.m.MessageToast.show("選択されたデータがありません、データを選択してください。");
+              that._setBusy(false);
             return false;
           }
 
@@ -552,7 +553,7 @@ sap.ui.define(["umc/app/controller/BaseController", "sap/m/MessageToast", "sap/m
           if (aSelectedIndices.length === 0) {
                 
               sap.m.MessageToast.show("選択されたデータがありません、データを選択してください。"); // 提示未选择数据
-                
+              that._setBusy(false);
               return;
 
           }
@@ -618,7 +619,7 @@ sap.ui.define(["umc/app/controller/BaseController", "sap/m/MessageToast", "sap/m
           if (aSelectedIndices.length === 0) {
                 
               sap.m.MessageToast.show("選択されたデータがありません、データを選択してください。"); // 提示未选择数据
-                
+              that._setBusy(false);
               return;
 
           }
@@ -669,6 +670,7 @@ sap.ui.define(["umc/app/controller/BaseController", "sap/m/MessageToast", "sap/m
                         var oResult = JSON.parse(oData.PCH10_GMTQ);
 
                         if (oResult.err) {
+                            that._setBusy(false);
                             bError = true;
                         }
 
