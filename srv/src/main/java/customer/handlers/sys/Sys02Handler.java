@@ -1,6 +1,7 @@
 package customer.handlers.sys;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +11,11 @@ import com.sap.cds.services.handler.annotations.On;
 import com.sap.cds.services.handler.annotations.ServiceName;
 import com.sap.cds.services.handler.EventHandler;
 import cds.gen.tableservice.SYS02RoleAddRoleContext;
+import cds.gen.tableservice.SYS02RoleDeleteRoleContext;
 import cds.gen.tableservice.SYS02RoleEditRoleContext;
 import cds.gen.tableservice.TableService_;
+import customer.bean.sys.Sys001User;
+import customer.bean.sys.Sys002Role;
 import customer.comm.tool.JsonUtils;
 import customer.service.sys.SysRoleService;
 
@@ -43,4 +47,19 @@ public class Sys02Handler implements EventHandler{
         roleService.editRole(context);
         context.setResult("success");
     }
+
+    @On(event = "SYS02_Role_deleteRole")
+    public void delete(SYS02RoleDeleteRoleContext context) {
+         String jsonStr = context.getRoleJson();
+        List<Sys002Role> json2ListBean = JsonUtils.json2ListBean(jsonStr,Sys002Role.class);
+        for(Sys002Role json2:json2ListBean){
+            roleService.deleteRole(json2);
+        }
+
+
+        context.setResult("success");
+    }
+
+       
+
 }

@@ -2,6 +2,7 @@ package customer.dao.sys;
 
 import org.springframework.stereotype.Repository;
 
+import com.sap.cds.ql.Delete;
 import com.sap.cds.ql.Insert;
 import com.sap.cds.ql.Select;
 import com.sap.cds.ql.Update;
@@ -37,4 +38,10 @@ public class RoleDao extends Dao{
         }
         return null;
     }  
+
+       public void deleteRole(String id) {
+
+        db.run(Delete.from(Sys_.T02_ROLE).where(o -> o.ID().eq(id)));
+
+    }
 }

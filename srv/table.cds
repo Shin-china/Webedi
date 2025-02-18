@@ -144,7 +144,7 @@ service TableService {
 
   action SYS02_ROLE_addRole(roleJson : String)  returns String; // 角色管理新增
   action SYS02_ROLE_editRole(roleJson : String) returns String;
-
+  action SYS02_Role_deleteRole(roleJson : String) returns String;
   //草稿数据删除 共通使用
   action cancelDarft(parms : String)                  returns String;
 

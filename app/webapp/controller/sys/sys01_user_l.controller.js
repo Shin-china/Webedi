@@ -49,14 +49,15 @@ sap.ui.define([
 					styleClass: sResponsivePaddingClasses,
 					onClose:function(sAction){
 						if(sAction === "OK"){
+							var itemObj =[];
 							//删除用户
 							var userList = that._getRootId("detailTable","USER_ID");
 							for(var ind = 0;ind < userList.length;ind++){
-								var itemObj = {
-									"USER_ID": userList[ind]
-								};
+								itemObj.push({"USER_ID": userList[ind]});
 
-								var restStr = {userJson: JSON.stringify(itemObj)};
+								
+							}
+							var restStr = {userJson: JSON.stringify(itemObj)};
 								that.getModel().callFunction("/SYS01_USER_deleteUser",{
 									method: "POST",
 									urlParameters: restStr,
@@ -69,7 +70,6 @@ sap.ui.define([
 										}
 								});
 	
-							}
 						}
 					},
 					dependentOn: this.getView()

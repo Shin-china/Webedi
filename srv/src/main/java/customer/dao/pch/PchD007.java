@@ -149,6 +149,8 @@ public class PchD007 extends Dao {
         updatedFields.put("Incoterms", o.getIncoterms());
         updatedFields.put("Incoterms_Text", o.getIncotermsText());
         updatedFields.put("CURRENCY", o.getCurrency());
+        
+        updatedFields.put("PRICE", o.getPrice());
 
         // 执行更新
         db.run(Update.entity(Pch_.T07_QUOTATION_D, b -> b.matching(keys)).data(updatedFields));

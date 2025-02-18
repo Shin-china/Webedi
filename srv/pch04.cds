@@ -373,11 +373,6 @@ extend service TableService {
 }
 annotate TableService.PCH_T04_PAYMENT_UNIT with {
   INV_MONTH @(Common : {FieldControl : #Mandatory});
-};
-annotate TableService.PCH_T04_PAYMENT with {
-    SEND_FLAG @(Common: {ValueList: {entity: 'PCH04_STATUS_POP1', }}); 
-};
-annotate TableService.PCH_T04_PAYMENT_UNIT with {
     PO_NO @(Common : {ValueList : {
         entity     : 'PCH_T03_PO_POP',
         Parameters : [
@@ -431,10 +426,7 @@ annotate TableService.PCH_T04_PAYMENT_UNIT with {
 
         ]
     }});
-   
-};
-annotate TableService.PCH_T04_PAYMENT_UNIT with {
-    SUPPLIER @(Common : {ValueList : {
+     SUPPLIER @(Common : {ValueList : {
         entity     : 'MST_T03_SAP_BP_POP',
         Parameters : [
 
@@ -449,5 +441,7 @@ annotate TableService.PCH_T04_PAYMENT_UNIT with {
             },
         ]
     }});
-   
+};
+annotate TableService.PCH_T04_PAYMENT with {
+    SEND_FLAG @(Common: {ValueList: {entity: 'PCH04_STATUS_POP1', }}); 
 };

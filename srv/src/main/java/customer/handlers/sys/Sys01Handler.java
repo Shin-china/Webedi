@@ -18,6 +18,7 @@ import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.write.metadata.WriteSheet;
 import com.alibaba.excel.write.metadata.fill.FillConfig;
 import com.alibaba.fastjson.JSON;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.sap.cds.services.handler.EventHandler;
 import com.sap.cds.services.handler.annotations.On;
 import com.sap.cds.services.handler.annotations.ServiceName;
@@ -29,6 +30,7 @@ import cds.gen.tableservice.SYS01UserEditUserContext;
 import cds.gen.tableservice.TableService_;
 import customer.bean.sys.Sys001User;
 import customer.bean.tmpl.test;
+import customer.comm.tool.JsonUtils;
 import customer.service.sys.SysUserService;
 
 @Component
@@ -62,10 +64,14 @@ public class Sys01Handler implements EventHandler {
     @On(event = "SYS01_USER_deleteUser")
     public void deleteUser(SYS01UserDeleteUserContext context) {
         String jsonStr = context.getUserJson();
-        Sys001User user = JSON.parseObject(jsonStr, Sys001User.class);
-        sysUserService.deleteUser(user);
+        List<Sys001User> json2ListBean = JsonUtils.json2ListBean(jsonStr,Sys001User.class);
+        for(Sys001User json2:json2ListBean){
+            sysUserService.deleteUser(json2);
+        }
         context.setResult("success");
+
     }
+
 
     // Excel 导出测试
     @On(event = "EXCEL_TEST")
