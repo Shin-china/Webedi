@@ -43,7 +43,7 @@
 						<OverflowToolbar id="_IDGenOverflowToolbar1">
 							<ToolbarSpacer id="ID_ToolbarSpacer" />
                                  <Button id="sendButton" text="{pch>PCH10_SEND}" icon="sap-icon://accept" press="onSend" visible="{localModel>/PCH10_D_SEND}"/>
-                                <Button id="_IDGenButton1" text="{pch>PCH10_BPTQ}"  press="onBp"   enabled="true"   visible="{localModel>/PCH10_D_INTERFACE_MAT_BP}"/>
+                                <Button id="_IDGenButton1" text="{pch>PCH10_BPTQ}"  press="onBpMat"   enabled="true"   visible="{localModel>/PCH10_D_INTERFACE_MAT_BP}"/>
                                 <Button id="_IDGenButton2" text="{pch>PCH10_GMTQ}"  press="onGM"   enabled="true" visible="{localModel>/PCH10_D_INTERFACE_PURINFO}"/>
                                 <Button id="showDetailButton" text="{pch>PCH08_SHOW_DETAIL}" press="getDetail" visible="{localModel>/PCH10_D_PRICE}" ></Button>
                                 

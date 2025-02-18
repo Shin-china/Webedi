@@ -102,7 +102,7 @@ sap.ui.define(["umc/app/controller/BaseController", "sap/m/MessageToast", "sap/m
 
        let that = this;
             var selectedIndices = this._TableList("tableUploadData"); // 获取选中行
-            if (selectedIndices.length == 0) {
+            if (!selectedIndices) {
                 sap.m.MessageToast.show("選択されたデータがありません、データを選択してください。");
                 return false;
             }
@@ -448,17 +448,15 @@ sap.ui.define(["umc/app/controller/BaseController", "sap/m/MessageToast", "sap/m
       */
       onSend: function (oEvent) {
           var that = this;
-          that._setBusy(true);
+         
 
           var oTable = that.byId("tableUploadData");
           var selectedIndices = this._TableList("tableUploadData"); // 获取选中行
 
-          if (selectedIndices.length == 0) { 
-              sap.m.MessageToast.show("選択されたデータがありません、データを選択してください。");
-              that._setBusy(false);
+          if (!selectedIndices) { 
             return false;
           }
-
+          that._setBusy(true);
           //如果状态有5，则提示错误信息
           var aStatusData = selectedIndices.filter(data => data.STATUS === "5");
           if (aStatusData.length > 0) {
@@ -470,6 +468,14 @@ sap.ui.define(["umc/app/controller/BaseController", "sap/m/MessageToast", "sap/m
               MessageToast.show("購買見積番号" + arr.join("、") + "に対して、ステータスは完了となりましたので、送信できません。");
               that._setBusy(false);
               return;
+          }
+
+          var aStatusData2 = selectedIndices.filter(item => (item.BP_NUMBER == undefined || item.BP_NUMBER == "" || item.BP_NUMBER == null ));
+          if (aStatusData2.length > 0) {
+            sap.m.MessageToast.show(that.MessageTools._getI18nTextInModel("pch","PCH10_ERROR_1", that.getView()), null, 1, that.getView()); // 提示未选择数据
+            that._setBusy(false);
+            return;
+
           }
           
           var confirmMsg = "送信しますか？";
@@ -483,7 +489,7 @@ sap.ui.define(["umc/app/controller/BaseController", "sap/m/MessageToast", "sap/m
         
                   if (sAction == "YES") {
                       var BP_NUMBERset = new Set(selectedIndices.map(item => item.BP_NUMBER));
-        
+
                       if (BP_NUMBERset.size > 0) {
                           var H_CODE = "MM0002";
                           var BP_NUMBER = BP_NUMBERset;
@@ -540,16 +546,16 @@ sap.ui.define(["umc/app/controller/BaseController", "sap/m/MessageToast", "sap/m
                       that._setBusy(false);
 
                       }
-              }
+                    }
               });
+        
       },  
 
-      onBP: function (oEvent) {
+      onBpMat: function (oEvent) {
           var that = this;
 
           var oTable = this.byId("tableUploadData");
-          var aSelectedIndices = this.byId("tableUploadData"); // 获取选中行
-
+          var aSelectedIndices = oTable.getSelectedIndices(); // 获取选中行
           if (aSelectedIndices.length === 0) {
                 
               sap.m.MessageToast.show("選択されたデータがありません、データを選択してください。"); // 提示未选择数据
@@ -557,10 +563,10 @@ sap.ui.define(["umc/app/controller/BaseController", "sap/m/MessageToast", "sap/m
               return;
 
           }
-
+          that._setBusy(true);
           //因为http param 长度有限制，必须循环一条条调用，不要一次性提交
             var oPostData = {}, oPostList = {}, aPostItem = [], iDoCount = 0, bError;
-              aSelectedIndices.forEach(iIndex => {
+            aSelectedIndices.forEach(iIndex => {
               aPostItem = [];
               oPostData = {};
               oPostList = {};
@@ -568,8 +574,8 @@ sap.ui.define(["umc/app/controller/BaseController", "sap/m/MessageToast", "sap/m
               var oItem = oTable.getContextByIndex(iIndex).getObject();
 
                   if (oItem.BP_NUMBER == null) {
-                      sap.m.MessageToast.show("BP为空，无法调用接口"); // 提示未选择数据
-                                  that._setBusy(false);
+                    sap.m.MessageToast.show(that.MessageTools._getI18nTextInModel("pch","PCH10_ERROR_1", that.getView()), null, 1, that.getView()); // 提示未选择数据
+                    that._setBusy(false);
                   return;
 
                   }
@@ -606,6 +612,7 @@ sap.ui.define(["umc/app/controller/BaseController", "sap/m/MessageToast", "sap/m
               });
                 
           });
+        
 
       },
 
@@ -633,20 +640,20 @@ sap.ui.define(["umc/app/controller/BaseController", "sap/m/MessageToast", "sap/m
               var oItem = oTable.getContextByIndex(iIndex).getObject();
 
                   if (oItem.MATERIAL_NUMBER == null) {
-                      sap.m.MessageToast.show("物料为空，无法调用接口"); // 提示未选择数据
+                      sap.m.MessageToast.show(that.MessageTools._getI18nTextInModel("pch","PCH10_ERROR_1", that.getView()), null, 1, that.getView()); // 提示未选择数据
                                   that._setBusy(false);
                       return;
                   
               }
 
                   if (oItem.BP_NUMBER == null) {
-                      sap.m.MessageToast.show("BP为空，无法调用接口"); // 提示未选择数据
+                      sap.m.MessageToast.show(that.MessageTools._getI18nTextInModel("pch","PCH10_ERROR_2", that.getView()), null, 1, that.getView()); // 提示未选择数据
                                   that._setBusy(false);
                   return;
 
               }
                   if (oItem.PLANT_ID == null) {   
-                      sap.m.MessageToast.show("工厂为空，无法调用接口"); // 提示未选择数据
+                      sap.m.MessageToast.show(that.MessageTools._getI18nTextInModel("pch","PCH10_ERROR_3", that.getView()), null, 1, that.getView()); // 提示未选择数据
                                   that._setBusy(false);
                   return;
 
