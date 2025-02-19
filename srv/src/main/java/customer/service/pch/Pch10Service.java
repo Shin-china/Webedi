@@ -11,14 +11,18 @@ import org.checkerframework.checker.units.qual.t;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.TransactionStatus;
 
 import com.alibaba.fastjson.annotation.JSONField;
 
+import cds.gen.mst.T01SapMat;
+import cds.gen.mst.T03SapBp;
 import cds.gen.pch.T06QuotationH;
 import cds.gen.pch.T07QuotationD;
 import cds.gen.sys.T07ComOpH;
 import cds.gen.sys.T08ComOpD;
 import ch.qos.logback.core.status.Status;
+import customer.bean.ifm.IFLog;
 import customer.bean.pch.Pch08;
 import customer.bean.pch.Pch10;
 import customer.bean.pch.Pch10DataList;
@@ -27,17 +31,36 @@ import customer.bean.pch.Pch10Save;
 import customer.bean.pch.Pch10SaveDataList;
 import customer.bean.tmpl.pch04excel;
 import customer.comm.tool.DateTools;
+import customer.dao.mst.MstD001;
+import customer.dao.mst.MstD003;
 import customer.dao.pch.Pch08Dao;
 import customer.dao.pch.Pch10Dao;
+import customer.dao.pch.PchD001;
+import customer.dao.pch.PchD003;
+import customer.dao.pch.PchD007;
+import customer.dao.sys.IFSManageDao;
+import customer.service.comm.IfmService;
 
 @Component
-public class Pch10Service {
+public class Pch10Service extends IfmService{
 
     @Autowired
     private Pch10Dao Pch10Dao;
 
     @Autowired
     private Pch08Dao pch08Dao;
+
+    @Autowired
+    private PchD007 pch07Dao;
+
+    @Autowired
+    private MstD001 mstD001;
+
+    @Autowired
+    private MstD003 mstD003;
+
+
+
 
     public void setQuostatus(String sal_Num) {
 
@@ -353,5 +376,38 @@ public class Pch10Service {
         }
 
         Pch10Dao.SetHStatus(QUO_NUMBERset);
+    }
+
+    public void updateT07(String id) {
+        IFLog log = new IFLog(IFSManageDao.IF_S4_MST);
+        log.setTd(super.transactionInit()); // 事务初始换
+
+        TransactionStatus s = null;
+
+        try {
+            s = this.begin(log.getTd()); // 开启新事务
+        
+        T07QuotationD t07QuotationD = pch07Dao.get(id);
+
+        T01SapMat custMat = mstD001.getCustMat(t07QuotationD.getCustMaterial());
+        t07QuotationD.setMaterial(custMat.getMatName());
+        t07QuotationD.setMaterialNumber(custMat.getMatId());
+        //获取品目和bp
+        T03SapBp byID = mstD003.getByID(t07QuotationD.getBpNumber());
+        t07QuotationD.setUwebUser(byID.getBpName1());
+
+
+        //更新t07表数据
+        pch07Dao.update(t07QuotationD);
+
+
+        this.commit(s); // 提交事务
+
+    } catch (Exception e) {
+        e.printStackTrace();
+    } finally {
+        this.rollback(s); // 回滚事务
+    }
+      
     }
 }

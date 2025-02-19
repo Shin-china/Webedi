@@ -61,7 +61,22 @@ sap.ui.define(["umc/app/controller/BaseController", "sap/m/MessageToast", "sap/m
         
       var view = this.getView();
       var jsonModel = view.getModel("workInfo");
+      //刷新数据
+    that._cleanView().then(function (oData) {
+            jsonModel = new sap.ui.model.json.JSONModel();
+            view.setModel(jsonModel, "workInfo");
+            jsonModel.setData(oData.results);
+            that.getModel().refresh();
+        })
+      
+  },
 
+  /**
+   * 刷新画面
+   *
+   */
+  _cleanView: function () {
+      var that = this;
       return new Promise(function (resolve, reject) {
 
         that.getModel().read("/PCH10_LIST", {
@@ -75,10 +90,7 @@ sap.ui.define(["umc/app/controller/BaseController", "sap/m/MessageToast", "sap/m
                       // 如果需要降序排序，可以使用 b.SALES_D_NO - a.SALES_D_NO;
                   });
 
-            jsonModel = new sap.ui.model.json.JSONModel();
-            view.setModel(jsonModel, "workInfo");
-            jsonModel.setData(oData.results);
-            that.getModel().refresh();
+          
 
             resolve(oData);
 
@@ -172,9 +184,20 @@ sap.ui.define(["umc/app/controller/BaseController", "sap/m/MessageToast", "sap/m
                       if (bError) {
                           that.MessageTools._addMessage(that.MessageTools._getI18nTextInModel("pch", oResult.reTxt, this.getView()), null, 1, this.getView());
                       } else {
-                          that._setEditable(false);
-                          sap.m.MessageToast.show(that._PchResourceBundle.getText("PCH10_SAVE_SUCCESS"));
-                      }
+
+                        
+
+                          
+                                                        //刷新数据
+                        that._cleanView().then(function (oData) {
+                            var jsonModel = that.getView().getModel("workInfo");
+                            jsonModel.setData(oData.results);
+                            that.getModel().refresh();
+                            that._setEditable(false);
+                            sap.m.MessageToast.show(that._PchResourceBundle.getText("PCH10_SAVE_SUCCESS"));
+
+                        })
+                                               }
                       that._setBusy(false);
                   }
               });
@@ -327,91 +350,7 @@ sap.ui.define(["umc/app/controller/BaseController", "sap/m/MessageToast", "sap/m
                 
           });
 
-        // var that = this;
-        // // that._setBusy(true);
-        // var view = this.getView();
-        // //清除msg
-        // this.MessageTools._clearMessage();
-        // var oTable = this.byId("tableUploadData");
-
-
-        // var aSelectedIndices = this._TableList("tableUploadData"); // 获取选中行
-
-        //     if (aSelectedIndices.length == 0) {
-        //         sap.m.MessageToast.show("選択されたデータがありません、データを選択してください。");
-        //         return false;
-        //     }
-
-        //     //因为http param 长度有限制，必须循环一条条调用，不要一次性提交
-        // var oPostData = {}, oPostList = {}, aPostItem = [], iDoCount = 0, bError;
-              
-        // aSelectedIndices.forEach(iIndex => {
-             
-        //     aPostItem = [];
-        //     oPostData = {};
-        //     oPostList = {};
-
-        //     var oItem = oTable.getContextByIndex(iIndex).getObject();             
-        //     aPostItem.push(oItem);
-
-        //     oPostList = JSON.stringify({
-        //         "list": aPostItem
-        //     });
-
-        //     oPostData = {
-        //         "json": oPostList
-        //     };
-        
-        //     }
-        // );
-
-
-        // if (that._isCheckData()) {
-        //     var jsonModel = view.getModel("workInfo");
-        //     this._callCdsAction("/PCH10_SAVE_DATA", oPostData, this).then((oData) => {
-
-
-        //         var myArray = JSON.parse(oData.PCH10_SAVE_DATA);
-        //         this._setEditable(false);
-        //         if (myArray.err) {
-        //             this._setEditable(true);
-        //             var rt = myArray.reTxt.split("||");
-        //             for (var i = 1; i < rt.length; i++) {
-
-        //                 that.MessageTools._addMessages(this.MessageTools._getI18nTextInModel("pch", rt[i], this.getView()), null, 1, this.getView());
-        //             }
-
-        // } else {
-        
-        // return new Promise(function (resolve, reject) {
-
-        //     that.getModel().read("/PCH10_LIST", {
-            
-        //     filters: that._aFilters,
-        //     success: function (oData) {
-
-        //         oData.results.sort(function(a, b) {
-        //             return a.QUO_ITEM - b.QUO_ITEM; // 升序排序
-        //             // 如果需要降序排序，可以使用 b.SALES_D_NO - a.SALES_D_NO;
-        //         });
-
-        //         jsonModel = new sap.ui.model.json.JSONModel();
-        //         view.setModel(jsonModel, "workInfo");
-        //         jsonModel.setData(oData.results);
-
-        //     },
-        //     error: function (oError) {
-        //         reject(oError);
-        //     },
-        //     })
-        // })
-        //         }
-        //         // that._setBusy(false);
-
-        //     });
-        // } else {
-        //     // that._setBusy(false);
-        // }
+    
     },
 
     /*==============================
@@ -470,7 +409,7 @@ sap.ui.define(["umc/app/controller/BaseController", "sap/m/MessageToast", "sap/m
               return;
           }
 
-          var aStatusData2 = selectedIndices.filter(item => (item.BP_NUMBER == undefined || item.BP_NUMBER == "" || item.BP_NUMBER == null ));
+          var aStatusData2 = selectedIndices.filter(item => that._isStringIsEmpty(item.BP_NUMBER) );
           if (aStatusData2.length > 0) {
             sap.m.MessageToast.show(that.MessageTools._getI18nTextInModel("pch","PCH10_ERROR_1", that.getView()), null, 1, that.getView()); // 提示未选择数据
             that._setBusy(false);
@@ -573,42 +512,37 @@ sap.ui.define(["umc/app/controller/BaseController", "sap/m/MessageToast", "sap/m
 
               var oItem = oTable.getContextByIndex(iIndex).getObject();
 
-                  if (oItem.BP_NUMBER == null) {
+                  if (that._isStringIsEmpty( oItem.BP_NUMBER) ) {
                     sap.m.MessageToast.show(that.MessageTools._getI18nTextInModel("pch","PCH10_ERROR_1", that.getView()), null, 1, that.getView()); // 提示未选择数据
                     that._setBusy(false);
                   return;
 
                   }
                   
-                  aPostItem.push(oItem);
+                  aPostItem.push(oItem.T02_ID);
 
-              oPostData = JSON.stringify({
-                  "str": oPostList
-              });
+              oPostData ={"str": JSON.stringify({aPostItem})} 
+              
 
-              oPostData = {
-                  "str": oPostList
-                  };
 
-                  this._callCdsAction("/PCH10_BPTQ", oPostData, this).then((oData) => {
+                this._callCdsAction("/PCH10_BPTQ", oPostData, this).then((oData) => {
                   
+                        var oResult = JSON.parse(oData.PCH10_BPTQ);
+
+                   
+                        sap.m.MessageToast.show(that._PchResourceBundle.getText("PCH10_BP_SUCCESS"));
+
+                            
+                        
+
+                              //刷新数据
+                        that._cleanView().then(function (oData) {
+                            var jsonModel = that.getView().getModel("workInfo");
+                            jsonModel.setData(oData.results);
+                            that.getModel().refresh();
+                        })
+                        that._setBusy(false);
                   
-                  iDoCount++;
-                        var oResult = JSON.parse(oData.PCH10_GMTQ);
-
-                        if (oResult.err) {
-                            bError = true;
-                        }
-
-                        if (iDoCount === aSelectedIndices.length) {
-                            if (bError) {
-                                that.MessageTools._addMessage(that.MessageTools._getI18nTextInModel("pch", oResult.reTxt, this.getView()), null, 1, this.getView());
-                            } else {
-
-                                sap.m.MessageToast.show(that._PchResourceBundle.getText("PCH10_SAVE_SUCCESS"));
-                            }
-                            that._setBusy(false);
-                  }
               });
                 
           });
@@ -639,20 +573,20 @@ sap.ui.define(["umc/app/controller/BaseController", "sap/m/MessageToast", "sap/m
 
               var oItem = oTable.getContextByIndex(iIndex).getObject();
 
-                  if (oItem.MATERIAL_NUMBER == null) {
-                      sap.m.MessageToast.show(that.MessageTools._getI18nTextInModel("pch","PCH10_ERROR_1", that.getView()), null, 1, that.getView()); // 提示未选择数据
+                  if (that._isStringIsEmpty(oItem.MATERIAL_NUMBER)) {
+                      sap.m.MessageToast.show(that.MessageTools._getI18nTextInModel("pch","PCH10_ERROR_2", that.getView()), null, 1, that.getView()); // 提示未选择数据
                                   that._setBusy(false);
                       return;
                   
               }
 
-                  if (oItem.BP_NUMBER == null) {
-                      sap.m.MessageToast.show(that.MessageTools._getI18nTextInModel("pch","PCH10_ERROR_2", that.getView()), null, 1, that.getView()); // 提示未选择数据
+                  if (that._isStringIsEmpty(oItem.BP_NUMBER )) {
+                      sap.m.MessageToast.show(that.MessageTools._getI18nTextInModel("pch","PCH10_ERROR_1", that.getView()), null, 1, that.getView()); // 提示未选择数据
                                   that._setBusy(false);
                   return;
 
               }
-                  if (oItem.PLANT_ID == null) {   
+                  if (that._isStringIsEmpty(oItem.PLANT_ID )) {   
                       sap.m.MessageToast.show(that.MessageTools._getI18nTextInModel("pch","PCH10_ERROR_3", that.getView()), null, 1, that.getView()); // 提示未选择数据
                                   that._setBusy(false);
                   return;
@@ -685,6 +619,13 @@ sap.ui.define(["umc/app/controller/BaseController", "sap/m/MessageToast", "sap/m
                             if (bError) {
                                 that.MessageTools._addMessage(that.MessageTools._getI18nTextInModel("pch", oResult.reTxt, this.getView()), null, 1, this.getView());
                             } else {
+                                
+                              //刷新数据
+                                that._cleanView().then(function (oData) {
+                                    var jsonModel = that.getView().getModel("workInfo");
+                                    jsonModel.setData(oData.results);
+                                    that.getModel().refresh();
+                                })
                                 sap.m.MessageToast.show(that._PchResourceBundle.getText("GMSUCCESS_MSG"));
                             }
                             that._setBusy(false);

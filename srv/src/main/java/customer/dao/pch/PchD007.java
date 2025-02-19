@@ -21,6 +21,8 @@ import org.springframework.stereotype.Repository;
 
 import cds.gen.pch.T07QuotationD;
 import cds.gen.pch.T07QuotationD_;
+import cds.gen.sys.Sys_;
+import cds.gen.sys.T16EmailH;
 import cds.gen.common.PchT07QuotationD;
 import cds.gen.pch.Pch_;
 import cds.gen.pch.T06QuotationH;
@@ -90,13 +92,7 @@ public class PchD007 extends Dao {
                 .listOf(T07QuotationD.class);
     }
 
-    public void update(T07QuotationD o) {
-        o.setUpTime(getNow());
-        o.setUpBy(this.getUserId());
 
-        logger.info("修改PCHD007" + o.getId());
-        db.run(Update.entity(Pch_.T07_QUOTATION_D).data(o));
-    }
     public void update(PchT07QuotationD o) {
         o.setUpTime(getNow());
         o.setUpBy(this.getUserId());
@@ -155,5 +151,22 @@ public class PchD007 extends Dao {
         // 执行更新
         db.run(Update.entity(Pch_.T07_QUOTATION_D, b -> b.matching(keys)).data(updatedFields));
 
+    }
+
+    public T07QuotationD get(String id) {
+        Optional<T07QuotationD> result = db.run(
+                Select.from(Pch_.T07_QUOTATION_D)
+                        .where(o -> o.ID().eq(id)))
+                .first(T07QuotationD.class);
+
+        return result.orElse(null);
+    }
+
+    public void update(T07QuotationD o) {
+        o.setUpTime(getNow());
+        o.setUpBy(this.getUserId());
+
+        logger.info("变更T07QuotationD表code" + o.getQuoNumber() + "====" + o.getSalesNumber() + "===="+ o.getQuoNumber() + "===========");
+        db.run(Update.entity(Pch_.T07_QUOTATION_D).data(o));
     }
 }

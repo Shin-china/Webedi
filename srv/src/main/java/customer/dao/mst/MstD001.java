@@ -43,4 +43,17 @@ public class MstD001 extends Dao {
         return null;
     }
 
+    public T01SapMat getCustMat(String CUST_MATERIAL) {
+        Optional<T01SapMat> result = db.run(
+                Select.from(Mst_.T01_SAP_MAT)
+                        .where(o -> o.CUST_MATERIAL().eq(CUST_MATERIAL)))
+                .first(T01SapMat.class);
+
+        if (result.isPresent()) {
+            return result.get();
+            
+        }
+        return null;
+    }
+
 }

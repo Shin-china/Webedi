@@ -1380,6 +1380,18 @@ sap.ui.define([
           }
         },
         /**
+         * 
+         * @returns {boolean}
+         * 判断是否是空字符
+         * */
+        _isStringIsEmpty: function (str) {
+          if(str == null || str == undefined || str == ""){
+            return true;
+          }else{
+            return false;
+          }
+        },
+        /**
          * 获取字段的某一个id集合
          * @param {画面id} viewId
          * @param {要取的字段ID} filedId

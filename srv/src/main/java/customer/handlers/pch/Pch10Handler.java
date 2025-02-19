@@ -46,7 +46,10 @@ import customer.service.ifm.Ifm02MstService;
 import customer.service.ifm.SendService;
 import customer.service.pch.Pch07Service;
 import customer.service.pch.Pch10Service;
+import customer.task.JobMonotor;
+
 import com.sap.cds.services.cds.CdsReadEventContext;
+import com.sap.xsa.core.instancemanager.util.Json;
 
 @Component
 @ServiceName(TableService_.CDS_NAME)
@@ -66,6 +69,10 @@ public class Pch10Handler implements EventHandler {
 
     @Autowired
     private Ifm02MstService ifm02MstService;
+
+    @Autowired
+    private JobMonotor jobMonotor;
+    
 
     @After(entity = PCH10Header_.CDS_NAME, event = CqnService.EVENT_READ)
     public void AfterreadPch10Header(CdsReadEventContext context, Stream<PCH10Header> pch10Header) {
@@ -162,11 +169,17 @@ public class Pch10Handler implements EventHandler {
     @On(event = "PCH10_BPTQ")
     public void BPTQ(PCH10BPTQContext context) throws IOException {
 
-        // ifm01BpService.syncBP();
+        jobMonotor.poolMonitor();
 
-        // ifm02MstService.syncMst();
-
-        
+        jobMonotor.poolMonitor6();
+        jobMonotor.poolMonitor1();
+        JSONObject jsonObject = JSON.parseObject(context.getStr());
+        JSONArray jsonArray = JSON.parseArray(jsonObject.getString("aPostItem"));
+        for (int i = 0; i < jsonArray.size(); i++) {
+            String id = jsonArray.getString(i);
+            //更新完，需要写入t07表数据
+           pch10Service.updateT07(id);
+        }
 
         context.setResult("1");
 

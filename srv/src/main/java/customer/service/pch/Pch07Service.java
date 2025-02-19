@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.stereotype.Component;
 
+import com.alibaba.excel.util.StringUtils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -335,10 +336,16 @@ public class Pch07Service {
     }
 
     public void UpdateT07(Pch07 data) throws IOException {
-
-        String response = getResponse(data);
+        String response = "";
+        try {
+             response = getResponse(data);
+        } catch (Exception e) {
+            return;
+        }
+     
 
         System.out.println(response);
+        if(StringUtils.isNotBlank(response)){
 
         T07QuotationD t07QuotationD2 = T07QuotationD.create();
 
@@ -379,5 +386,6 @@ public class Pch07Service {
             pchD007.updateT07(t07QuotationD2);
             
         }
+    }
     }
 }
