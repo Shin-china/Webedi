@@ -17,7 +17,7 @@ import customer.bean.bp.D;
 import customer.bean.bp.Results;
 import customer.bean.bp.SapBpRoot;
 import customer.bean.bp.To_AddressIndependentFax;
-
+import customer.bean.bp.To_BusinessPartnerAddress;
 import customer.bean.bp.To_BusinessPartnerTax;
 import customer.bean.ifm.IFLog;
 
@@ -105,10 +105,16 @@ public class Ifm01BpService extends IfmService {
                 o.setBpName4(v.getOrganizationBPName4());
                 o.setSearch2(v.getSearchTerm2());
 
+
                 for (To_AddressIndependentFax fax : v.getTo_AddressIndependentFax().getResults()) {
                     o.setFax(fax.getInternationalFaxNumber());
                 }
-
+               // Address
+                for (To_BusinessPartnerAddress addr : v.getTo_BusinessPartnerAddress().getResults()) {
+                    o.setPostcode(addr.getPostalCode());
+                    o.setRegions(addr.getStreetName());
+                    o.setPlaceName(addr.getCityName());
+                }
                 // Tax Number
                 for (To_BusinessPartnerTax tax : v.getTo_BusinessPartnerTax().getResults()) {
                     o.setLogNo(tax.getBPTaxNumber());
