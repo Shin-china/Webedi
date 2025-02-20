@@ -17,6 +17,7 @@ import customer.dao.common.Dao;
 public class IFSManageDao extends Dao {
 
     public static final String IF_S4_BP = "IF040_1";
+    public static final String IF_S4_BP_PHONE = "IF040_3";
     public static final String IF_S4_BPPURCHASE = "IF040_2";
     public static final String IF_S4_MST = "IF039";
     public static final String IF_S4_PO = "IF041";
